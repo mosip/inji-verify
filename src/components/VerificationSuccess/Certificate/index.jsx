@@ -1,25 +1,7 @@
 import React from 'react';
 import StyledButton from "../../commons/StyledButton.js";
 import {Grid} from "@mui/material";
-
-const convertToTitleCase = (text) => {
-    let titleCaseText;
-    if (text?.length > 0)
-    titleCaseText = text.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
-    titleCaseText = titleCaseText.charAt(0).toUpperCase() + titleCaseText.slice(1);
-    return titleCaseText;
-};
-
-const getDisplayValue = (data) => {
-    if (data instanceof Array && data?.length > 0) {
-        let displayValue = "";
-        data.forEach(value => {
-            displayValue += `${value}, `;
-        });
-        return displayValue.slice(0, displayValue.length - 2);
-    }
-    return data;
-}
+import {convertToTitleCase, getDisplayValue} from "../../../utils/misc.js";
 
 function Certificate({vc, back}) {
     return (

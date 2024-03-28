@@ -3,6 +3,7 @@ import PromptToScan from "../components/ScanAndVerify/PromptToScan.js";
 import React from "react";
 import VerificationFailed from "../components/VerificationFailed/index.jsx";
 import VerificationSuccess from "../components/VerificationSuccess/index.jsx";
+import {convertToTitleCase, getDisplayValue} from "../utils/misc.js";
 
 const sampleCred = {
     "id": "did:rcw:164f4b00-0141-40ef-b34a-5b9e1d5dfeca",
@@ -15,7 +16,7 @@ const sampleCred = {
         "created": "2024-02-13T09:31:40Z",
         "proofValue": "z3acdb2TypHyxciB5AtB7Y4WJQBUVa3r6aZ7bdF2MNGgb3vuM57nSvY1xAkLJFn4C1bZ26qyprG1mNweyrENUeNCx",
         "proofPurpose": "assertionMethod",
-        "verificationMethod": "did:abc:d1e50903-c0ee-42b2-abdf-74f68365759f#key-0" // use this
+        "verificationMethod": "did:abc:d1e50903-c0ee-42b2-abdf-74f68365759f#key-0"
     },
     "issuer": "did:abc:d1e50903-c0ee-42b2-abdf-74f68365759f",
     "@context": [
@@ -65,5 +66,12 @@ describe("Test Scan And Verify component", () => {
         render(<VerificationSuccess back={() => {}} vc={sampleCred}/>)
         expect(screen.getByText("Certificate Successfully verified"))
             .toBeVisible()
-    })
+        // Check whether all the credential subject properties are being displayed
+        Object.keys(sampleCred.credentialSubject)
+            .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
+            .forEach(key => {
+                expect(screen.getByText(convertToTitleCase(key))).toBeVisible()
+                expect(screen.getByText(getDisplayValue(sampleCred.credentialSubject[key]))).toBeVisible()
+            })
+    });
 })
