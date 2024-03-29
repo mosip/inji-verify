@@ -15,4 +15,3 @@ ScanAndVerify.propTypes = {
 }
 
 export default ScanAndVerify;
-

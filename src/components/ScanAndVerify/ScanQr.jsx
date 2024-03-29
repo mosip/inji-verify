@@ -2,6 +2,7 @@ import React from 'react';
 import QrReader from "react-qr-scanner";
 import StyledButton from "../commons/StyledButton.js";
 import PropTypes from "prop-types";
+import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../utils/config.js";
 
 function ScanQr({setScanning, onScan}) {
     const previewStyle = {
@@ -22,7 +23,7 @@ function ScanQr({setScanning, onScan}) {
             />
             <br/>
             <StyledButton onClick={() => {setScanning(false)}}>
-                <span>Back</span>
+                <span>{DISPLAY_TEXT[SUPPORTED_LANGUAGE].back}</span>
             </StyledButton>
         </div>
     );

@@ -4,6 +4,7 @@ import {Grid} from "@mui/material";
 import {convertToTitleCase, getDisplayValue} from "../../../utils/misc.js";
 import PropTypes from "prop-types";
 import {CertificateContainer, DisplayPropertiesContainer, Property} from "./styles.js";
+import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../../utils/config.js";
 
 function Certificate({vc, back}) {
     return (
@@ -12,10 +13,10 @@ function Certificate({vc, back}) {
                  width="50px" height="50px"
                 src="https://cdn-icons-png.freepik.com/512/5610/5610944.png" alt="verified icon"/>
             <p style={{margin: "8px auto", fontWeight: 500, fontSize: "32px"}}>
-                Certificate Successfully verified
+                {DISPLAY_TEXT[SUPPORTED_LANGUAGE].certificateVerified}
             </p>
             <p style={{margin: "24px auto", fontWeight: 500, fontSize: "24px"}}>
-                Certificate for {convertToTitleCase(vc.credentialSubject.type)}
+                {DISPLAY_TEXT[SUPPORTED_LANGUAGE].certificateFor}{convertToTitleCase(vc.credentialSubject.type)}
             </p>
             <DisplayPropertiesContainer container>
                 {
@@ -33,7 +34,7 @@ function Certificate({vc, back}) {
             </DisplayPropertiesContainer>
             <div style={{margin: "24px auto"}}>
                 <StyledButton onClick={back}>
-                    Verify another certificate
+                    {DISPLAY_TEXT[SUPPORTED_LANGUAGE].verifyAnotherCertificate}
                 </StyledButton>
             </div>
         </CertificateContainer>

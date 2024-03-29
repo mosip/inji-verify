@@ -2,16 +2,17 @@ import React from 'react';
 import StyledButton from "../commons/StyledButton.js";
 import PropTypes from "prop-types";
 import {PromptToScanContainer, StyledHeader} from "./styles.js";
+import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../utils/config.js";
 
 function PromptToScan({setScanning}) {
     return (
         <PromptToScanContainer>
             <StyledHeader>
-                Verify a certificate
+                {DISPLAY_TEXT[SUPPORTED_LANGUAGE].verifyCertificate}
             </StyledHeader>
             <StyledButton onClick={() => {setScanning(true)}}>
                 <span>
-                    Scan QR code
+                    {DISPLAY_TEXT[SUPPORTED_LANGUAGE].scanQr}
                 </span>
                 <img
                     style={{marginLeft: '1rem'}}
