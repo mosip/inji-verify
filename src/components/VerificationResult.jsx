@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {sampleCred, verify} from "../utils/verification-utils.js";
+import {verify} from "../utils/verification-utils.js";
 import VerificationSuccess from "./VerificationSuccess";
 import VerificationFailed from "./VerificationFailed";
 import { CircularProgress, Grid, Typography} from "@mui/material";
@@ -49,19 +49,19 @@ const Loader = () => {
 
 function VerificationResult({qrData, back}) {
     const [vcStatus, setVcStatus] = useState({status: "Evaluating", checks: []});
-    const [vc, setVc] = useState(sampleCred);
+    const [vc, setVc] = useState();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // getVcStatus(qrData, setVc, setVcStatus, setLoading);
+        getVcStatus(qrData, setVc, setVcStatus, setLoading);
     }, [qrData]);
 
     return (
         loading ? (<Loader/>)
             :
-            (/*vcStatus?.status === "OK"
-                ? */(<VerificationSuccess vc={vc} back={back}/>)
-                /*: (<VerificationFailed back={back}/>)*/
+            (vcStatus?.status === "OK"
+                ? (<VerificationSuccess vc={vc} back={back}/>)
+                : (<VerificationFailed back={back}/>)
             )
     );
 }

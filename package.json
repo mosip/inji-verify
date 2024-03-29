@@ -16,7 +16,7 @@
     "react-dom": "^18.2.0",
     "react-qr-scanner": "^1.0.0-alpha.11",
     "react-scripts": "5.0.1",
-    "verification-sdk": "^0.2.4",
+    "verification-sdk": "^0.2.5",
     "web-did-resolver": "^2.0.27",
     "web-vitals": "^2.1.4"
   },
