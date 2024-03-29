@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {verify} from "../utils/verification-utils.js";
 import VerificationSuccess from "./VerificationSuccess";
 import VerificationFailed from "./VerificationFailed";
-import { CircularProgress, Grid, Typography} from "@mui/material";
 import PropTypes from "prop-types";
+import {Loader} from "./commons/Loader.js";
 
 const decompressData = (compressedData) => {
     //TODO: implement this
@@ -33,22 +33,7 @@ const getVcStatus = (qrData, setVc, setVcStatus, setLoading) => {
     });
 }
 
-const Loader = () => {
-    return (
-        <Grid container style={{margin: "32px auto", maxWidth: "200px", justifyContent: "center"}}>
-            <Grid item xs={12}>
-                <Typography variant="h4">
-                    Verifying...
-                </Typography>
-            </Grid>
-            <Grid item xs={6}>
-                <CircularProgress style={{fontSize: "32px", margin: "24px auto", justifySelf: "center"}}/>
-            </Grid>
-        </Grid>
-    )
-}
-
-function VerificationResult({qrData, back}) {
+function VerificationResult({qrData, onBackPress}) {
     const [vcStatus, setVcStatus] = useState({status: "Evaluating", checks: []});
     const [vc, setVc] = useState();
     const [loading, setLoading] = useState(false);
@@ -61,15 +46,15 @@ function VerificationResult({qrData, back}) {
         loading ? (<Loader/>)
             :
             (vcStatus?.status === "OK"
-                ? (<VerificationSuccess vc={vc} back={back}/>)
-                : (<VerificationFailed back={back}/>)
+                ? (<VerificationSuccess vc={vc} onBackPress={onBackPress}/>)
+                : (<VerificationFailed onBackPress={onBackPress}/>)
             )
     );
 }
 
 VerificationResult.propTypes = {
     qrData: PropTypes.object.isRequired,
-    back: PropTypes.func.isRequired
+    onBackPress: PropTypes.func.isRequired
 }
 
 export default VerificationResult;

@@ -63,7 +63,7 @@ describe("UI Components tests", () => {
     });
 
     test("Verification Success", () => {
-        render(<VerificationSuccess back={() => {}} vc={sampleCred}/>)
+        render(<VerificationSuccess onBackPress={() => {}} vc={sampleCred}/>)
         expect(screen.getByText("Certificate Successfully verified"))
             .toBeVisible()
         // Check whether all the credential subject properties are being displayed

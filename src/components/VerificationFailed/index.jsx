@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {StyledHeader, VerificationFailedContainer} from "./styles.js";
 import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../utils/config.js";
 
-function VerificationFailed({back}) {
+function VerificationFailed({onBackPress}) {
     return (
         <VerificationFailedContainer>
             <img
@@ -12,7 +12,7 @@ function VerificationFailed({back}) {
             <StyledHeader>
                 {DISPLAY_TEXT[SUPPORTED_LANGUAGE].certificateInvalid}
             </StyledHeader>
-            <StyledButton onClick={back}>
+            <StyledButton onClick={onBackPress}>
                 {DISPLAY_TEXT[SUPPORTED_LANGUAGE].verifyAnotherCertificate}
             </StyledButton>
         </VerificationFailedContainer>
@@ -20,7 +20,7 @@ function VerificationFailed({back}) {
 }
 
 VerificationFailed.propTypes = {
-    back: PropTypes.func.isRequired
+    onBackPress: PropTypes.func.isRequired
 }
 
 export default VerificationFailed;

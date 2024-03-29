@@ -2,15 +2,15 @@ import React from 'react';
 import Certificate from "./Certificate";
 import PropTypes from "prop-types";
 
-function VerificationSuccess({vc, back}) {
+function VerificationSuccess({vc, onBackPress}) {
     return (
-        <Certificate vc={vc} back={back}/>
+        <Certificate vc={vc} onBackPress={onBackPress}/>
     );
 }
 
 VerificationSuccess.propTypes = {
     vc: PropTypes.object.isRequired,
-    back: PropTypes.func.isRequired
+    onBackPress: PropTypes.func.isRequired
 }
 
 export default VerificationSuccess;

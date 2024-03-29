@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import {CertificateContainer, DisplayPropertiesContainer, Property} from "./styles.js";
 import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../../utils/config.js";
 
-function Certificate({vc, back}) {
+function Certificate({vc, onBackPress}) {
     return (
         <CertificateContainer>
             <img style={{margin: "12px auto"}}
@@ -33,7 +33,7 @@ function Certificate({vc, back}) {
                 }
             </DisplayPropertiesContainer>
             <div style={{margin: "24px auto"}}>
-                <StyledButton onClick={back}>
+                <StyledButton onClick={onBackPress}>
                     {DISPLAY_TEXT[SUPPORTED_LANGUAGE].verifyAnotherCertificate}
                 </StyledButton>
             </div>
@@ -43,7 +43,7 @@ function Certificate({vc, back}) {
 
 Certificate.propTypes = {
     vc: PropTypes.object.isRequired,
-    back: PropTypes.func.isRequired
+    onBackPress: PropTypes.func.isRequired
 }
 
 export default Certificate;
