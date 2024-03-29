@@ -3,7 +3,7 @@ import PromptToScan from "../components/ScanAndVerify/PromptToScan.js";
 import React from "react";
 import VerificationFailed from "../components/VerificationFailed/index.jsx";
 import VerificationSuccess from "../components/VerificationSuccess/index.jsx";
-import {convertToTitleCase, getDisplayValue} from "../utils/misc.js";
+import {convertToTitleCase, getDisplayValue} from "../utils/commonUtils.js";
 
 const sampleCred = {
     "id": "did:rcw:164f4b00-0141-40ef-b34a-5b9e1d5dfeca",

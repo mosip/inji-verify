@@ -1,4 +1,4 @@
-import {convertToTitleCase, getDisplayValue} from "../utils/misc.js";
+import {convertToTitleCase, getDisplayValue} from "../utils/commonUtils.js";
 
 describe("Functionality tests", () => {
     test("misc utils", () => {

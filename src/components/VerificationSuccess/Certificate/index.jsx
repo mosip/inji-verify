@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledButton from "../../commons/StyledButton.js";
 import {Grid} from "@mui/material";
-import {convertToTitleCase, getDisplayValue} from "../../../utils/misc.js";
+import {convertToTitleCase, getDisplayValue} from "../../../utils/commonUtils.js";
 import PropTypes from "prop-types";
 import {CertificateContainer, DisplayPropertiesContainer, Property} from "./styles.js";
 import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../../utils/config.js";
