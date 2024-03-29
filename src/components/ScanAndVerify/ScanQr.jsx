@@ -1,6 +1,5 @@
 import React from 'react';
 import QrReader from "react-qr-scanner";
-import {verify} from "../../utils/verification-utils.js";
 import StyledButton from "../commons/StyledButton.js";
 
 function ScanQr({setScanning, setQrData, onScan}) {
@@ -18,7 +17,7 @@ function ScanQr({setScanning, setQrData, onScan}) {
                     console.log("Error occurred while reading the qr code: ", error);
                     onScan(null);
                 }}
-                onScan={/*onScan*/() => {}}
+                onScan={onScan}
             />
             <br/>
             <StyledButton onClick={() => {setScanning(false)}}>
