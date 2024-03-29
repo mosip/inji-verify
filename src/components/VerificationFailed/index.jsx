@@ -1,5 +1,6 @@
 import React from 'react';
 import StyledButton from "../commons/StyledButton.js";
+import PropTypes from "prop-types";
 
 function VerificationFailed({back}) {
     return (
@@ -14,6 +15,10 @@ function VerificationFailed({back}) {
             </StyledButton>
         </div>
     );
+}
+
+VerificationFailed.propTypes = {
+    back: PropTypes.func.isRequired
 }
 
 export default VerificationFailed;

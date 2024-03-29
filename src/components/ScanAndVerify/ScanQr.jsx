@@ -1,8 +1,9 @@
 import React from 'react';
 import QrReader from "react-qr-scanner";
 import StyledButton from "../commons/StyledButton.js";
+import PropTypes from "prop-types";
 
-function ScanQr({setScanning, setQrData, onScan}) {
+function ScanQr({setScanning, onScan}) {
     const previewStyle = {
         height: 480,
         width: 640,
@@ -25,6 +26,11 @@ function ScanQr({setScanning, setQrData, onScan}) {
             </StyledButton>
         </div>
     );
+}
+
+ScanQr.propTypes = {
+    setScanning: PropTypes.func.isRequired,
+    onScan: PropTypes.func.isRequired
 }
 
 export default ScanQr;

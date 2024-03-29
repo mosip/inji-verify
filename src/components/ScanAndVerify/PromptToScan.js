@@ -1,5 +1,6 @@
 import React from 'react';
 import StyledButton from "../commons/StyledButton.js";
+import PropTypes from "prop-types";
 
 function PromptToScan({setScanning}) {
     return (
@@ -33,6 +34,10 @@ function PromptToScan({setScanning}) {
             </StyledButton>
         </div>
     );
+}
+
+PromptToScan.propTypes = {
+    setScanning: PropTypes.func.isRequired
 }
 
 export default PromptToScan;

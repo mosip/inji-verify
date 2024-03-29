@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import PromptToScan from "./PromptToScan.js";
 import ScanQr from "./ScanQr.jsx";
+import PropTypes from "prop-types";
 
 function ScanAndVerify({readQrData}) {
     const [scanning, setScanning] = useState(false);
@@ -9,4 +10,9 @@ function ScanAndVerify({readQrData}) {
     ): (<PromptToScan setScanning={setScanning}/>);
 }
 
+ScanAndVerify.propTypes = {
+    readQrData: PropTypes.func.isRequired
+}
+
 export default ScanAndVerify;
+

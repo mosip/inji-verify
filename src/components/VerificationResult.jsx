@@ -3,6 +3,7 @@ import {verify} from "../utils/verification-utils.js";
 import VerificationSuccess from "./VerificationSuccess";
 import VerificationFailed from "./VerificationFailed";
 import { CircularProgress, Grid, Typography} from "@mui/material";
+import PropTypes from "prop-types";
 
 const decompressData = (compressedData) => {
     //TODO: implement this
@@ -64,6 +65,11 @@ function VerificationResult({qrData, back}) {
                 : (<VerificationFailed back={back}/>)
             )
     );
+}
+
+VerificationResult.propTypes = {
+    qrData: PropTypes.object.isRequired,
+    back: PropTypes.func.isRequired
 }
 
 export default VerificationResult;

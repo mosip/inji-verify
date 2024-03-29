@@ -2,6 +2,7 @@ import React from 'react';
 import StyledButton from "../../commons/StyledButton.js";
 import {Grid} from "@mui/material";
 import {convertToTitleCase, getDisplayValue} from "../../../utils/misc.js";
+import PropTypes from "prop-types";
 
 function Certificate({vc, back}) {
     return (
@@ -42,6 +43,11 @@ function Certificate({vc, back}) {
             </div>
         </div>
     );
+}
+
+Certificate.propTypes = {
+    vc: PropTypes.object.isRequired,
+    back: PropTypes.func.isRequired
 }
 
 export default Certificate;
