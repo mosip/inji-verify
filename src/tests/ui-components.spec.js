@@ -45,7 +45,7 @@ const sampleCred = {
     }
 }
 
-describe("Test Scan And Verify component", () => {
+describe("UI Components tests", () => {
     test("Renders Scan prompt", () => {
         render(<PromptToScan setScanning={() => {console.log("Clicked on setScanning")}}/>);
         expect(screen.getByText("Scan QR code"))
