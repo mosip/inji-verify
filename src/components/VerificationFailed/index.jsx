@@ -1,19 +1,20 @@
 import React from 'react';
 import StyledButton from "../commons/StyledButton.js";
 import PropTypes from "prop-types";
+import {StyledHeader, VerificationFailedContainer} from "./styles.js";
 
 function VerificationFailed({back}) {
     return (
-        <div style={{margin: "auto", width: "300px", textAlign: "center"}}>
+        <VerificationFailedContainer>
             <img
                 src="https://verify.cowin.gov.in/static/media/certificate-invalid.a9ac96af.svg"/>
-            <p style={{fontWeight: 500, fontSize: "24px"}}>
+            <StyledHeader>
                 Certificate Invalid!
-            </p>
+            </StyledHeader>
             <StyledButton onClick={back}>
                 Verify another certificate
             </StyledButton>
-        </div>
+        </VerificationFailedContainer>
     );
 }
 
