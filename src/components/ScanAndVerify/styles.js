@@ -8,7 +8,7 @@ export const PromptToScanContainer = styled.div`
     width: 100%;
     padding: 0 15px;
     margin: 0 auto;
-`
+`;
 
 export const StyledHeader = styled.p`
     text-align: center;
@@ -17,4 +17,9 @@ export const StyledHeader = styled.p`
     font-weight: 500;
     line-height: 1.2;
     box-sizing: border-box;
-`
+`;
+
+export const QrScannerPreviewStyle = {
+    height: 480,
+    width: 640,
+};

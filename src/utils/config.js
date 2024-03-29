@@ -13,6 +13,8 @@ export const DISPLAY_TEXT = {
         certificateVerified: "Certificate Successfully verified",
         certificateFor: "Certificate for ",
 
+        verifying: "Verifying"
+
     }
 }
 

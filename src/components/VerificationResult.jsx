@@ -4,6 +4,7 @@ import VerificationSuccess from "./VerificationSuccess";
 import VerificationFailed from "./VerificationFailed";
 import PropTypes from "prop-types";
 import {Loader} from "./commons/Loader.js";
+import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../utils/config.js";
 
 const decompressData = (compressedData) => {
     //TODO: implement this
@@ -21,20 +22,21 @@ const getVcStatus = (qrData, setVc, setVcStatus, setLoading) => {
         verify(vc)
             .then(response => {
                 setVcStatus(response);
-                setLoading(false);
             })
             .catch(error => {
                 console.error("Error occurred while verifying the VC. Error: ", error);
                 setVcStatus({status: "NOK", checks: []});
-                setLoading(false);
             })
     }).catch(error => {
         console.error("Error occurred while reading the qr data. Error: ", error);
+        setVcStatus({status: "NOK", checks: []});
+    }).finally(() => {
+        setLoading(false);
     });
 }
 
 function VerificationResult({qrData, onBackPress}) {
-    const [vcStatus, setVcStatus] = useState({status: "Evaluating", checks: []});
+    const [vcStatus, setVcStatus] = useState({status: DISPLAY_TEXT[SUPPORTED_LANGUAGE].verifying, checks: []});
     const [vc, setVc] = useState();
     const [loading, setLoading] = useState(false);
 

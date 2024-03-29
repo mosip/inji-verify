@@ -3,18 +3,14 @@ import QrReader from "react-qr-scanner";
 import StyledButton from "../commons/StyledButton.js";
 import PropTypes from "prop-types";
 import {DISPLAY_TEXT, SUPPORTED_LANGUAGE} from "../../utils/config.js";
+import {QrScannerPreviewStyle} from "./styles.js";
 
 function ScanQr({setScanning, onScan}) {
-    const previewStyle = {
-        height: 480,
-        width: 640,
-    };
-
     return (
         <div>
             <QrReader
                 delay={100}
-                style={previewStyle}
+                style={QrScannerPreviewStyle}
                 onError={(error) => {
                     console.log("Error occurred while reading the qr code: ", error);
                     onScan(null);
