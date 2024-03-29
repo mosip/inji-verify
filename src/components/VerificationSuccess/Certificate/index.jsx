@@ -44,13 +44,11 @@ function Certificate({vc, back}) {
                         .filter(key => key?.toLowerCase() !== "id" && key.toLowerCase() !== "type")
                         .map(key => {
                         return (
-                            <>
-                                <Grid item container xs={12} md={6}
-                                      style={{display: "flex", flexDirection: "row", justifyContent: "center", margin: "12px auto", padding: "0px 8px"}}>
-                                    <Grid item xs={12}>{convertToTitleCase(key)}</Grid>
-                                    <Grid item xs={12} style={{fontWeight: 500, marginTop: "8px"}}>{getDisplayValue(vc.credentialSubject[key])}</Grid>
-                                </Grid>
-                            </>
+                            <Grid item container xs={12} md={6} key={key}
+                                  style={{display: "flex", flexDirection: "row", justifyContent: "center", margin: "12px auto", padding: "0px 8px"}}>
+                                <Grid item xs={12}>{convertToTitleCase(key)}</Grid>
+                                <Grid item xs={12} style={{fontWeight: 500, marginTop: "8px"}}>{getDisplayValue(vc.credentialSubject[key])}</Grid>
+                            </Grid>
                         )
                     })
                 }
