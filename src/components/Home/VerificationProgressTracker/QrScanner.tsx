@@ -14,6 +14,7 @@ function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
                     console.log(text, result);
                     setVerifying(true);
                     setActiveStep(2);
+                    setQrData(text);
                     setDataRead(true);
                 }
             }}

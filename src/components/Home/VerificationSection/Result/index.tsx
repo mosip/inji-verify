@@ -17,14 +17,21 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
     return positioning;
 }
 
-const Result = ({vc, setActiveStep}: {
-    vc: any, setActiveStep: (activeStep: number) => void
+const Result = ({vc, setActiveStep, vcStatus}: {
+    vc: any, setActiveStep: (activeStep: number) => void, vcStatus: {
+        status: "OK" | "NOK", checks: {
+            "active": string | null,
+            "revoked": "OK" | "NOK",
+            "expired": "OK" | "NOK",
+            "proof": "OK" | "NOK"
+        }[]
+    } | null
 }) => {
-    const initialPositioning: {top?: number, right?: number} = {};
+    const initialPositioning: { top?: number, right?: number } = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);
 
-    useEffect(()=> {
+    useEffect(() => {
         if (resultSectionRef?.current && !(!!vcDisplayCardPositioning.top)) {
             let positioning = getPositioning(resultSectionRef);
             console.log("Positioning: ", positioning);
@@ -32,13 +39,15 @@ const Result = ({vc, setActiveStep}: {
         }
     }, [resultSectionRef]);
 
-    let success = true;
+    let success = vcStatus?.status === "OK";
     // validate vc and show success/failure component
     return (
         <Box id="result-section" ref={resultSectionRef}>
-            <Box style={{height: "340px",
-                backgroundColor: success ? "#4B9D1F": "#CB4242",
-                color: "white"}}>
+            <Box style={{
+                height: "340px",
+                backgroundColor: success ? "#4B9D1F" : "#CB4242",
+                color: "white"
+            }}>
                 <ResultSummary success={success} vc={null} setActiveStep={setActiveStep}/>
             </Box>
             <Box style={{
@@ -47,7 +56,7 @@ const Result = ({vc, setActiveStep}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                <VcDisplayCard
+                {vc && <VcDisplayCard
                     vc={{
                         credentialSubject: {
                             "Full Name": "Shiva Kumar",
@@ -58,8 +67,16 @@ const Result = ({vc, setActiveStep}: {
                             "Expires On": "2025-12-31"
                         }
                     }}
-                />
-                <StyledButton style={{margin: "24px auto"}}>
+                />}
+            </Box>
+            <Box style={{
+                height: 'calc(100vh - 340px)',
+                display: 'grid',
+                placeContent: 'center'
+            }}>
+                <StyledButton style={{margin: "24px auto"}} onClick={() => {
+                    setActiveStep(0)
+                }}>
                     Scan Another QR Code
                 </StyledButton>
             </Box>

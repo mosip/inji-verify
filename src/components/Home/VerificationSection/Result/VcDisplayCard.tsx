@@ -1,5 +1,6 @@
 import React from 'react';
-import {Grid, Typography} from "@mui/material";
+import {Grid, Typography} from '@mui/material';
+import {convertToTitleCase, getDisplayValue} from "../../../../utils/common-utils";
 
 function VcDisplayCard({vc}: any) {
     return (
@@ -22,10 +23,10 @@ function VcDisplayCard({vc}: any) {
                             font: "normal normal normal 11px/14px Inter",
                             marginBottom: "4px"
                         }}>
-                            {key}
+                            {convertToTitleCase(key)}
                         </Typography>
                         <Typography style={{font: "normal normal 600 12px/15px Inter"}}>
-                            {vc.credentialSubject[key]}
+                            {getDisplayValue(vc.credentialSubject[key])}
                         </Typography>
                     </Grid>
                 ))

@@ -1,13 +1,40 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
+import {verify} from "../../../utils/verification-utils";
 
-const Verification = ({setVc, setActiveStep}: {
-    setVc: (vc: any) => void, setActiveStep: (activeStep: number) => void
+const Verification = ({setVc, setVcStatus, setActiveStep}: {
+    setVc: (vc: any) => void, setVcStatus: (status: any) => void, setActiveStep: (activeStep: number) => void
 }) => {
     const [verifying, setVerifying] = useState(false);
+    const [qrData, setQrData] = useState("");
+
+    useEffect(() => {
+        if (qrData === "") return;
+        try {
+            let vc = JSON.parse(qrData);
+            verify(vc)
+                .then(status => {
+                    setVc(vc);
+                    setVcStatus(status);
+                    setActiveStep(3);
+                })
+                .catch(error => {
+                    console.error("Error occurred while verifying the VC: ", error);
+                    setVc(null);
+                    setVcStatus({status: "NOK"});
+                });
+        } catch (error) {
+            console.error("Error occurred while reading the qrData: ", error);
+            setVc(null);
+            setVcStatus({status: "NOK"});
+        } finally {
+            setQrData("");
+            setActiveStep(3);
+        }
+    }, [qrData]);
 
     return (
         <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>
@@ -32,7 +59,15 @@ const Verification = ({setVc, setActiveStep}: {
                     placeContent: "center",
                     margin: "auto",
                 }}>
-                    {verifying ? (<Loader/>) : (<QrScanner setVerifying={setVerifying} setActiveStep={setActiveStep}/>)}
+                    {
+                        verifying
+                            ? (<Loader/>)
+                            : (<QrScanner
+                                setVerifying={setVerifying}
+                                setActiveStep={setActiveStep}
+                                setQrData={setQrData}
+                            />)
+                    }
                 </Box>
             </Grid>
         </Grid>
