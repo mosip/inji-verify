@@ -7,7 +7,7 @@ function Home(props: any) {
     return (
         <Grid container>
             <Grid item xs={6}>
-                <VerificationProgressTracker/>
+                <VerificationProgressTracker activeStep={1}/>
             </Grid>
             <Grid item xs={6}>
                 <VerificationSection activeStep={1}/>

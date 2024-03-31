@@ -1,8 +1,23 @@
 import React from 'react';
+import {Box, Button, Grid, Typography} from "@mui/material";
+import scanQr from "../../../assets/scan-qr.png";
 
 const ScanQrCode = (props:any) => {
     return (
-        <div>scan qr code</div>
+        <Grid container style={{padding: "104px", textAlign: "center"}}>
+            <Grid item xs={12} style={{
+                font: 'normal normal 600 20px/24px Inter',
+                marginBottom: "44px"
+            }}>Scan QR Code</Grid>
+            <Grid item xs={12}>
+                <img src={scanQr} width={350}/>
+            </Grid>
+            <Grid item xs={12}>
+                <Button style={{margin: "20px 0"}}>
+                    Scan the QR Code
+                </Button>
+            </Grid>
+        </Grid>
     );
 }
 

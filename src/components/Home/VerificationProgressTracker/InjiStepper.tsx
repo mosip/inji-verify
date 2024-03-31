@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Paper, Step, StepContent, StepLabel, Stepper, Typography} from "@mui/material";
+import {Box, Step, StepContent, StepLabel, Stepper, Typography} from "@mui/material";
 
 const steps = [
     {
@@ -23,7 +23,7 @@ const steps = [
 
 const InjiStepper = ({activeStep}: any) => {
     return (
-        <Box sx={{ maxWidth: 400 }}>
+        <Box style={{ marginTop: '30px' }}>
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((step, index) => (
                     <Step key={step.label} style={{alignContent: 'start'}}>
@@ -31,8 +31,12 @@ const InjiStepper = ({activeStep}: any) => {
                             <Typography style={{font: 'normal normal bold 16px/20px Inter'}}>
                                 {step.label}
                             </Typography>
-                            <Typography>{step.description}</Typography>
                         </StepLabel>
+                        <StepContent
+                            TransitionProps={{appear: true, unmountOnExit: false}}
+                            hidden={false} style={{borderColor: '#FF7F00', display: 'block'}}>
+                            <Typography>{step.description}</Typography>
+                        </StepContent>
                     </Step>
                 ))}
             </Stepper>
