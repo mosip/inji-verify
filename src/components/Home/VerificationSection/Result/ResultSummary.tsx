@@ -1,10 +1,9 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
-import GppGoodIcon from "@mui/icons-material/GppGood";
 import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 
-const ResultSkeleton = ({success, vc, setActiveStep}: {
+const ResultSummary = ({success, vc, setActiveStep}: {
     success: boolean,
     vc: any,
     setActiveStep: (activeStep: number) => void
@@ -55,4 +54,4 @@ const ResultSkeleton = ({success, vc, setActiveStep}: {
     );
 }
 
-export default ResultSkeleton;
+export default ResultSummary;
