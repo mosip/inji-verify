@@ -28,7 +28,8 @@ const Verification = (props: any) => {
                     backgroundImage: `url(${scanQr})`,
                     backgroundSize: 'cover',
                     display: "grid",
-                    placeContent: "center"
+                    placeContent: "center",
+                    margin: "auto"
                 }}>
                     {verifying ? (<Loader/>) : (<QrScanner setVerifying={setVerifying}/>)}
                 </Box>

@@ -13,10 +13,13 @@ const getVideoDeviceId = (deviceList: MediaDeviceInfo[]): string => {
 function QrScanner({setVerifying}: any) {
     const videoRef = React.createRef<HTMLVideoElement>();
     const deviceList = useDeviceList();
-    console.log("Devicelist: ", deviceList);
+    console.log("Device list: ", deviceList);
     const scannerHook = useContinuousScanner({
         options: {
-            deviceId: getVideoDeviceId(deviceList)
+            deviceId: getVideoDeviceId(deviceList),
+            constraints: {
+                aspectRatio: 1
+            }
         },
         audio: true,
         onError: (error) => console.log(error?.message),
@@ -30,32 +33,20 @@ function QrScanner({setVerifying}: any) {
     useEffect(() => {
         if (!!(videoRef?.current)) {
             scannerHook.ref = videoRef;
-            if(!!scannerHook.getSettings) {
-                console.log(scannerHook.getSettings())
-            }
-            console.log(scannerHook.loading)
-            console.log(scannerHook.scanning)
-            let video = videoRef.current;
             navigator.mediaDevices
-                .getUserMedia({ video: { width: 300, aspectRatio: 1 } })
+                .getUserMedia({ video: { width: 300 } })
                 .then(stream => {
-                    video.srcObject = stream;
-                    /*video.onplay = (event) => {
-                        console.log("Trying to start scanning inside the event listener")
-                        scannerHook.startScanning();
-                        console.log(scannerHook.scanning);
-                        console.log(video.srcObject)
-                        if(!!scannerHook.getSettings) {
-                            console.log(scannerHook.getSettings())
-                        }
-                    };*/
-                    video.play()
-                        .then(response => {
-                            console.log("Video stream response: ", response)
-                            scannerHook.startScanning();
-                            console.log(scannerHook.scanning);
-                        })
-                        .catch(error => console.log("Error while streaming: ", error));
+                    if (videoRef?.current) {
+                        let video = videoRef.current;
+                        video.srcObject = stream;
+                        video.play()
+                            .then(response => {
+                                // console.log("Video stream response: ", response)
+                                // scannerHook.startScanning();
+                                // console.log(scannerHook.scanning);
+                            })
+                            .catch(error => console.log("Error while streaming: ", error));
+                    }
                 })
                 .catch(err => {
                     console.error("error:", err);
@@ -63,15 +54,26 @@ function QrScanner({setVerifying}: any) {
         }
     }, [videoRef]);
 
+    function getScanningStatus() {
+        return {scanning: scannerHook.scanning, loading: scannerHook.loading};
+    }
 
     return (
         <video
             ref={videoRef}
             autoPlay={true} playsInline={true}
                style={{
-                   height: "90%"
+                   height: "100%",
+                   margin: "auto"
                }}
-               muted={true}>
+               muted={true}
+            onPlay={() => {
+                console.log("Trying to start scanning inside the event listener")
+                scannerHook.startScanning();
+                console.log(scannerHook.loading, scannerHook.scanning);
+                console.log(getScanningStatus())
+            }}
+        >
 
         </video>
     );
