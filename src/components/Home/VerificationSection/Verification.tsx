@@ -23,6 +23,8 @@ const Verification = (props: any) => {
             </Grid>
             <Grid item xs={12}>
                 <Box style={{
+                    width: "350px",
+                    height: "350px",
                     backgroundImage: `url(${scanQr})`,
                     backgroundSize: 'cover',
                     display: "grid",
