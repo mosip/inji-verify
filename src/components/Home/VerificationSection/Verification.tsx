@@ -4,9 +4,10 @@ import scanQr from "../../../assets/scan-qr.png";
 import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
 
-const Verification = (props: any) => {
+const Verification = ({setVc, setActiveStep}: {
+    setVc: (vc: any) => void, setActiveStep: (activeStep: number) => void
+}) => {
     const [verifying, setVerifying] = useState(false);
-
 
     return (
         <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>
@@ -26,12 +27,12 @@ const Verification = (props: any) => {
                     width: "350px",
                     height: "350px",
                     backgroundImage: `url(${scanQr})`,
-                    backgroundSize: 'cover',
+                    backgroundSize: "cover",
                     display: "grid",
                     placeContent: "center",
-                    margin: "auto"
+                    margin: "auto",
                 }}>
-                    {verifying ? (<Loader/>) : (<QrScanner setVerifying={setVerifying}/>)}
+                    {verifying ? (<Loader/>) : (<QrScanner setVerifying={setVerifying} setActiveStep={setActiveStep}/>)}
                 </Box>
             </Grid>
         </Grid>

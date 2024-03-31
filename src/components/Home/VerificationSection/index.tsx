@@ -1,26 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
 
-const getActiveStep = (activeStep: number) => {
+const DisplayActiveStep = ({activeStep, setActiveStep}: {
+    activeStep: number, setActiveStep: (activeStep: number) => void
+}) => {
+    const [vc, setVc] = useState(null);
     switch (activeStep) {
         case 0:
-            return <ScanQrCode />;
+            return (<ScanQrCode setActiveStep={setActiveStep}/>);
         case 1:
         case 2:
-            return <Verification />;  // Handle cases 1 and 2 with the same component
+            return (<Verification setActiveStep={setActiveStep} setVc={setVc}/>);
         case 3:
-            return <Result />;
+            return (<Result setActiveStep={setActiveStep} vc={vc}/>);
         default:
-            return null; // Or return any default component/message
+            return (<></>); // Or return any default component/message
     }
 }
 
-const VerificationSection = ({activeStep}: {activeStep: number}) => {
+const VerificationSection = ({activeStep, setActiveStep}: {
+    activeStep: number,
+    setActiveStep: (activeStep: number) => void
+}) => {
     return (
         <div>
-            {getActiveStep(activeStep)}
+            <DisplayActiveStep activeStep={activeStep} setActiveStep={setActiveStep}/>
         </div>
     );
 }

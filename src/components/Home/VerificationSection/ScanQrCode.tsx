@@ -2,7 +2,9 @@ import React from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scan-qr.png";
 
-const ScanQrCode = (props:any) => {
+const ScanQrCode = ({setActiveStep}: {
+    setActiveStep: (activeStep: number) => void
+}) => {
     return (
         <Grid container style={{padding: "104px", textAlign: "center"}}>
             <Grid item xs={12} style={{
@@ -13,7 +15,7 @@ const ScanQrCode = (props:any) => {
                 <img src={scanQr} width={350}/>
             </Grid>
             <Grid item xs={12}>
-                <Button style={{margin: "20px 0"}}>
+                <Button style={{margin: "20px 0"}} onClick={() => setActiveStep(1)}>
                     Scan the QR Code
                 </Button>
             </Grid>
