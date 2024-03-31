@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
-import scanQr from "../../../assets/scan-qr.png";
+import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
 

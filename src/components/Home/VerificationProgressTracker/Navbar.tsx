@@ -1,10 +1,14 @@
 import React from 'react';
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 function Navbar(props: any) {
     // Logo goes here
     return (
-        <Box style={{height: "52px", margin: "60px 0"}}></Box>
+        <Box style={{height: "52px", margin: "60px 0"}}>
+            <Typography style={{fontFamily: 'Inter', color: '#FF8F00'}}>
+                Inji Logo comes here
+            </Typography>
+        </Box>
     );
 }
 

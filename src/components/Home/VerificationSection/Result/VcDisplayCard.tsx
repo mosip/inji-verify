@@ -1,14 +1,11 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
 
-function VcDisplayCard({vc, vcPositioning}: any) {
+function VcDisplayCard({vc}: any) {
     return (
         <Grid container style={{
             width: "calc(min(340px, 100vw))",
             margin: "auto",
-            position: "absolute",
-            top: `${vcPositioning.top ?? 212}px`,
-            right: `${vcPositioning.right ?? 0}px`,
             background: "white",
             borderRadius: "12px",
             padding: "5px 15px",

@@ -4,7 +4,7 @@ import VerificationProgressTracker from "../components/Home/VerificationProgress
 import VerificationSection from "../components/Home/VerificationSection";
 
 function Home(props: any) {
-    const [activeStep, setActiveStep] = useState(3);
+    const [activeStep, setActiveStep] = useState(0);
     return (
         <Grid container>
             <Grid item xs={6}>

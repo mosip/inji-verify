@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 
 
 function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
+    const [dataRead, setDataRead] = useState(false)
+    const isDataRead = useCallback(() => dataRead, [dataRead]);
+
     return (
         <Scanner
+            enabled={!dataRead}
             onResult={(text, result) => {
-                console.log(text, result);
-                setVerifying(true);
-                setActiveStep(2);
+                if (!isDataRead()) {
+                    console.log(text, result);
+                    setVerifying(true);
+                    setActiveStep(2);
+                    setDataRead(true);
+                }
             }}
             onError={(error) => console.log(error?.message)}
             components={{
@@ -26,7 +33,10 @@ function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
                         "ideal": 720,
                         "max": 1080
                     }
-                }
+                },
+                delayBetweenScanSuccess: 500,
+                delayBetweenScanAttempts: 50,
+                tryPlayVideoTimeout: 1000
             }}
             styles={{
                 container: {

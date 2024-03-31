@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
+import StyledButton from "../commons/StyledButton";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
     // top = 340 - it is precalculated based in the xd design
@@ -13,7 +14,6 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
         }
         return {...positioning, right: (resultSectionWidth - 340) / 2};
     }
-    console.log("result section not found");
     return positioning;
 }
 
@@ -32,7 +32,7 @@ const Result = ({vc, setActiveStep}: {
         }
     }, [resultSectionRef]);
 
-    let success = false;
+    let success = true;
     // validate vc and show success/failure component
     return (
         <Box id="result-section" ref={resultSectionRef}>
@@ -42,7 +42,10 @@ const Result = ({vc, setActiveStep}: {
                 <ResultSummary success={success} vc={null} setActiveStep={setActiveStep}/>
             </Box>
             <Box style={{
-                margin: "auto"
+                margin: "auto",
+                position: "absolute",
+                top: `${vcDisplayCardPositioning.top ?? 212}px`,
+                right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
                 <VcDisplayCard
                     vc={{
@@ -55,7 +58,10 @@ const Result = ({vc, setActiveStep}: {
                             "Expires On": "2025-12-31"
                         }
                     }}
-                    vcPositioning={vcDisplayCardPositioning}/>
+                />
+                <StyledButton style={{margin: "24px auto"}}>
+                    Scan Another QR Code
+                </StyledButton>
             </Box>
         </Box>
     );

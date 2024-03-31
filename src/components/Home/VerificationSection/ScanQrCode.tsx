@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
-import scanQr from "../../../assets/scan-qr.png";
+import scanQr from "../../../assets/scanner-ouline.svg";
+import StyledButton from "./commons/StyledButton";
 
 const ScanQrCode = ({setActiveStep}: {
     setActiveStep: (activeStep: number) => void
@@ -15,9 +16,9 @@ const ScanQrCode = ({setActiveStep}: {
                 <img src={scanQr} width={350}/>
             </Grid>
             <Grid item xs={12}>
-                <Button style={{margin: "20px 0"}} onClick={() => setActiveStep(1)}>
+                <StyledButton style={{margin: "40px 0"}} onClick={() => setActiveStep(1)}>
                     Scan the QR Code
-                </Button>
+                </StyledButton>
             </Grid>
         </Grid>
     );
