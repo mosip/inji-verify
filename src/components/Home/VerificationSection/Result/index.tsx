@@ -56,18 +56,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                {vc && <VcDisplayCard
-                    vc={{
-                        credentialSubject: {
-                            "Full Name": "Shiva Kumar",
-                            "DOB": "02-09-1996",
-                            "Policy Name": "Policy 1",
-                            "Policy Number": "123456",
-                            "Status": "Valid",
-                            "Expires On": "2025-12-31"
-                        }
-                    }}
-                />}
+                {vc && <VcDisplayCard vc={vc}/>}
             </Box>
             <Box style={{
                 height: 'calc(100vh - 340px)',

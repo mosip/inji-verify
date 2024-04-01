@@ -15,9 +15,11 @@ function VcDisplayCard({vc}: any) {
             overflowY: "scroll"
         }}>
             {
-                vc && Object.keys(vc.credentialSubject).map(key => (
+                vc && Object.keys(vc.credentialSubject)
+                    .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
+                    .map(key => (
                     <Grid item xs={12} lg={6} key={key} style={{
-                        padding: "10px 0px"
+                        padding: "10px 4px"
                     }}>
                         <Typography style={{
                             font: "normal normal normal 11px/14px Inter",
