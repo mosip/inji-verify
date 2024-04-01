@@ -19,9 +19,6 @@ function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
                 }
             }}
             onError={(error) => console.log(error?.message)}
-            components={{
-                tracker: false
-            }}
             options={{
                 constraints: {
                     "width": {
