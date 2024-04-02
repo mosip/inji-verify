@@ -34,7 +34,6 @@ const Result = ({vc, setActiveStep, vcStatus}: {
     useEffect(() => {
         if (resultSectionRef?.current && !(!!vcDisplayCardPositioning.top)) {
             let positioning = getPositioning(resultSectionRef);
-            console.log("Positioning: ", positioning);
             setVcDisplayCardPositioning(positioning);
         }
     }, [resultSectionRef]);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
@@ -8,6 +8,9 @@ const DisplayActiveStep = ({activeStep, setActiveStep}: {
 }) => {
     const [vc, setVc] = useState(null);
     const [vcStatus, setVcStatus] = useState(null);
+    useEffect(() => {
+        console.log({vc, vcStatus})
+    }, [vc, vcStatus]);
     switch (activeStep) {
         case 0:
             return (<ScanQrCode setActiveStep={setActiveStep}/>);
