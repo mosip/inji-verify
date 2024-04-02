@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="784cd976-e646-4a7d-8dec-4daf0b41f876" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/chart-lint-publish.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/push-trigger.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/release-changes.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/tag.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/logo192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/logo512.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/inji-logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/inji-logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/scan-qr.png" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/scan-qr.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/scanner-ouline.svg" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/scanner-ouline.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/verification-failed-icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/verification-failed-icon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/verification-success-icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/assets/verification-success-icon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/InjiStepper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/InjiStepper.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/QrScanner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/QrScanner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/StepperContentHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/StepperContentHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationProgressTracker/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationProgressTracker/styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/Result/ResultSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/Result/ResultSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/Result/VcDisplayCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/Result/VcDisplayCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/Result/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/Result/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/ScanQrCode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/ScanQrCode.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/Verification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/Verification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/commons/StyledButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/commons/StyledButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home/VerificationSection/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/Home/VerificationSection/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/commons/Loader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/components/commons/Loader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/pages/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react-app-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/react-app-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reportWebVitals.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/reportWebVitals.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setupTests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/setupTests.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/common-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/common-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/did-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/did-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/inji-theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/inji-theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/samples.ts" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/samples.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/verification-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/inji-verify/src/utils/verification-utils.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2eX66ilWwTPA7dimR6591DNPiO4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/inji-verify" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="784cd976-e646-4a7d-8dec-4daf0b41f876" name="Changes" comment="" />
+      <created>1712038402539</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712038402539</updated>
+    </task>
+    <servers />
+  </component>
+</project>
