@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Check if '/app/src/App.js' exists
+RUN ls /app/src/App.js
+
 # Build the React app
 RUN npm run build
 
@@ -25,7 +28,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
-EXPOSE 3004
+EXPOSE 80
 
 # The main command to start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
