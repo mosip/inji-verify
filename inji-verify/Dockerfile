@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
-# Check if '/app/src/App.js' exists
-RUN ls /app/src/App.js
+# Check the contents of the '/app/src' directory
+RUN ls /app/src
 
 # Build the React app
 RUN npm run build
