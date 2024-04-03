@@ -14,7 +14,7 @@ const ScanQrCode = ({setActiveStep}: {
                 marginBottom: "44px"
             }}>Scan QR Code</Grid>
             <Grid item xs={12}>
-                <img src={scanQr} width={350}/>
+                <img src={scanQr} style={{width: "calc(min(45vw, 350px))"}}/>
             </Grid>
             <Grid item xs={12}>
                 <StyledButton style={{margin: "40px 0 10px 0"}} onClick={() => setActiveStep(1)}>

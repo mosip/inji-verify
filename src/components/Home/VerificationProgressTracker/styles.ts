@@ -8,4 +8,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     height: 100vh;
     max-height: 100vh;
     overflow-y: scroll;
+    @media (max-width: 600px) {
+        max-height: 430px;
+    }
 `;
