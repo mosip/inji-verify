@@ -4,13 +4,12 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
 import {verify} from "../../../utils/verification-utils";
+import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
 
 const Verification = ({setQrData, setActiveStep}: {
-    setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
+    setQrData: SetQrDataFunction, setActiveStep: SetActiveStepFunction
 }) => {
     const [verifying, setVerifying] = useState(false);
-
-
 
     return (
         <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>

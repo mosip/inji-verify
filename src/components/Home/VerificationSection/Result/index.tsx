@@ -3,9 +3,10 @@ import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
 import StyledButton from "../commons/StyledButton";
-import {VcStatus} from "../../../../types/types";
+import {CardPositioning, VcStatus} from "../../../../types/data-types";
+import {SetActiveStepFunction} from "../../../../types/function-types";
 
-const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
+const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
     const positioning = {top: 212, right: 0};
     if (!!resultSectionRef?.current) {
@@ -19,9 +20,9 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
 }
 
 const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: (activeStep: number) => void, vcStatus: VcStatus | null
+    vc: any, setActiveStep: SetActiveStepFunction, vcStatus: VcStatus | null
 }) => {
-    const initialPositioning: { top?: number, right?: number } = {};
+    const initialPositioning: CardPositioning = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);
 

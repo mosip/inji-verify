@@ -4,7 +4,7 @@ import {SUPPORTED_DID_METHODS} from "./config";
 
 const getDIDMethod = (did: string) => {
     const regex = /^did:([^:]+):/;
-    const match = did.match(regex);
+    const match = did?.match(regex);
     return match ? match[1] : "";
 }
 

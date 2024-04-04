@@ -2,8 +2,9 @@ import React from 'react';
 import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
+import {InjiStepperStep} from "../../../../types/data-types";
 
-const steps = [
+const steps: InjiStepperStep[] = [
     {
         label: 'Scan QR Code',
         description: 'Tap the button and display the QR code shown on your digital certificate / card',

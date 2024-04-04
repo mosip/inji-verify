@@ -3,10 +3,11 @@ import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
-import {QrScanResult, VcStatus} from "../../../types/types";
+import {SetActiveStepFunction} from "../../../types/function-types";
+import {QrScanResult, VcStatus} from "../../../types/data-types";
 
 const DisplayActiveStep = ({activeStep, setActiveStep}: {
-    activeStep: number, setActiveStep: (activeStep: number) => void
+    activeStep: number, setActiveStep: SetActiveStepFunction
 }) => {
     const [qrData, setQrData] = useState("");
     const [vc, setVc] = useState(null);
@@ -15,6 +16,7 @@ const DisplayActiveStep = ({activeStep, setActiveStep}: {
         if (qrData === "") return;
         try {
             let vc = JSON.parse(qrData);
+            // TODO: is it a vc? - check format
             verify(vc)
                 .then(status => {
                     setVc(vc);

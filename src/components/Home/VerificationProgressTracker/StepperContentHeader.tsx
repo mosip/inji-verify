@@ -3,7 +3,6 @@ import {Box, Typography, useMediaQuery} from "@mui/material";
 
 function StepperContentHeader(props: any) {
     const isTabletOrAbove = useMediaQuery("@media(min-width:600px)");
-    console.log("Is tablet: ", isTabletOrAbove);
     return (
         <Box>
             <Typography variant='h4' style={{

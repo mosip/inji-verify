@@ -1,7 +1,8 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {QrScanResult} from "../../../types/types";
+import {QrScanResult} from "../../../types/data-types";
+import {SetScanResultFunction} from "../../../types/function-types";
 
-export const ImportFromFile = ({setScanResult}: {setScanResult: (result: QrScanResult) => void}) => {
+export const ImportFromFile = ({setScanResult}: {setScanResult: SetScanResultFunction}) => {
     return (
         <div style={{margin: "12px auto", display: "grid", placeContent: "center"}}>
             <label htmlFor={"upload-qr"} style={{font: 'normal normal normal 16px/21px Inter'}}>Upload your certificate</label><br/>
@@ -21,7 +22,6 @@ export const ImportFromFile = ({setScanResult}: {setScanResult: (result: QrScanR
                             setScanResult(scanResult);
                         });
                 }}
-            />
-            <canvas id="canvas" style={{"display": "none"}}></canvas>
+            />`
         </div>);
 }

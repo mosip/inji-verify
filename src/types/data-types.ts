@@ -12,3 +12,15 @@ export type VcStatus = {
         proof: "OK" | "NOK";
     }[];
 }
+
+export type InjiStepperStep = {
+    label: string,
+    description: string
+}
+
+export type CardPositioning = {
+    top?: number,
+    right?: number,
+    bottom?: number,
+    left?: number
+}

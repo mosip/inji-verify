@@ -2,11 +2,12 @@ import React from 'react';
 import {Grid, Typography} from "@mui/material";
 import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
+import {SetActiveStepFunction} from "../../../../types/function-types";
 
 const ResultSummary = ({success, vc, setActiveStep}: {
     success: boolean,
     vc: any,
-    setActiveStep: (activeStep: number) => void
+    setActiveStep: SetActiveStepFunction
 }) => {
     return (
         <Grid container>

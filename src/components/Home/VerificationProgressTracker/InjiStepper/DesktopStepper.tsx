@@ -1,7 +1,8 @@
 import React from 'react';
 import {Box, Step, StepContent, StepLabel, Stepper, Typography} from "@mui/material";
+import {InjiStepperStep} from "../../../../types/data-types";
 
-function DesktopStepper({steps, activeStep}: {steps: {label: string, description: string}[], activeStep: number}) {
+function DesktopStepper({steps, activeStep}: {steps: InjiStepperStep[], activeStep: number}) {
     return (
         <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((step, index) => (

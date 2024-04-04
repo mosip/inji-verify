@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid, Typography} from '@mui/material';
 import {convertToTitleCase, getDisplayValue} from "../../../../utils/common-utils";
 
-function VcDisplayCard({vc}: any) {
+function VcDisplayCard({vc}: {vc: any}) {
     return (
         <Grid container style={{
             width: "calc(min(340px, 100vw))",
