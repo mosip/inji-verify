@@ -4,7 +4,7 @@ import {resolveDid} from "./did-utils";
 let revocationList = [];
 
 const verify = async (credential) => {
-    let resolutionResult = await resolveDid(credential.proof.verificationMethod);
+    let resolutionResult = await resolveDid(credential?.proof?.verificationMethod);
     if (resolutionResult.didResolutionMetadata.error) {
         throw new Error(resolutionResult.didResolutionMetadata.error)
     }

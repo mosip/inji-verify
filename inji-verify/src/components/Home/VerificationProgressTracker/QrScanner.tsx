@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 
-
-function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
+function QrScanner({setVerifying, setActiveStep, setQrData}: {
+    setVerifying: (verifying: boolean) => void, setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
+}) {
     const [dataRead, setDataRead] = useState(false)
     const isDataRead = useCallback(() => dataRead, [dataRead]);
 
@@ -46,8 +47,7 @@ function QrScanner({setVerifying, setActiveStep, setQrData}: any) {
                 video: {
                     zIndex: 1000
                 }
-            }
-        }
+            }}
         />
     );
 }

@@ -7,5 +7,4 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     margin-top: 0;
     height: 100vh;
     max-height: 100vh;
-    overflow-y: scroll;
 `;

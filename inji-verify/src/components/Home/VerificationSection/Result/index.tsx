@@ -3,8 +3,11 @@ import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
 import StyledButton from "../commons/StyledButton";
+import {CardPositioning, VcStatus} from "../../../../types/data-types";
+import {SetActiveStepFunction} from "../../../../types/function-types";
+import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
 
-const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
+const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
     const positioning = {top: 212, right: 0};
     if (!!resultSectionRef?.current) {
@@ -18,23 +21,15 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
 }
 
 const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: (activeStep: number) => void, vcStatus: {
-        status: "OK" | "NOK", checks: {
-            "active": string | null,
-            "revoked": "OK" | "NOK",
-            "expired": "OK" | "NOK",
-            "proof": "OK" | "NOK"
-        }[]
-    } | null
+    vc: any, setActiveStep: SetActiveStepFunction, vcStatus: VcStatus | null
 }) => {
-    const initialPositioning: { top?: number, right?: number } = {};
+    const initialPositioning: CardPositioning = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);
 
     useEffect(() => {
         if (resultSectionRef?.current && !(!!vcDisplayCardPositioning.top)) {
             let positioning = getPositioning(resultSectionRef);
-            console.log("Positioning: ", positioning);
             setVcDisplayCardPositioning(positioning);
         }
     }, [resultSectionRef]);
@@ -56,19 +51,23 @@ const Result = ({vc, setActiveStep, vcStatus}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                {vc && <VcDisplayCard vc={vc}/>}
+                {vc && <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>}
             </Box>
-            <Box style={{
-                height: 'calc(100vh - 340px)',
-                display: 'grid',
-                placeContent: 'center'
-            }}>
-                <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                    setActiveStep(0)
-                }}>
-                    Scan Another QR Code
-                </StyledButton>
-            </Box>
+            {
+                !vc && (
+                    <Box style={{
+                        height: 'calc(100vh - 340px)',
+                        display: 'grid',
+                        placeContent: 'center'
+                    }}>
+                        <StyledButton style={{margin: "24px auto"}} onClick={() => {
+                            setActiveStep(0)
+                        }}>
+                            Scan Another QR Code
+                        </StyledButton>
+                    </Box>
+                )
+            }
         </Box>
     );
 }

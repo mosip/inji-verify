@@ -13,7 +13,7 @@ export const convertToTitleCase = (text: string): string => {
         .replace(lowercaseStartRegex, (match) => match.toUpperCase());
 };
 
-export const getDisplayValue = (data:any): string => {
+export const getDisplayValue = (data: any): string => {
     if (data instanceof Array && data?.length > 0) {
         let displayValue = "";
         data.forEach(value => {

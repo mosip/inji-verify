@@ -4,37 +4,12 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
 import {verify} from "../../../utils/verification-utils";
+import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
 
-const Verification = ({setVc, setVcStatus, setActiveStep}: {
-    setVc: (vc: any) => void, setVcStatus: (status: any) => void, setActiveStep: (activeStep: number) => void
+const Verification = ({setQrData, setActiveStep}: {
+    setQrData: SetQrDataFunction, setActiveStep: SetActiveStepFunction
 }) => {
     const [verifying, setVerifying] = useState(false);
-    const [qrData, setQrData] = useState("");
-
-    useEffect(() => {
-        if (qrData === "") return;
-        try {
-            let vc = JSON.parse(qrData);
-            verify(vc)
-                .then(status => {
-                    setVc(vc);
-                    setVcStatus(status);
-                    setActiveStep(3);
-                })
-                .catch(error => {
-                    console.error("Error occurred while verifying the VC: ", error);
-                    setVc(null);
-                    setVcStatus({status: "NOK"});
-                });
-        } catch (error) {
-            console.error("Error occurred while reading the qrData: ", error);
-            setVc(null);
-            setVcStatus({status: "NOK"});
-        } finally {
-            setQrData("");
-            setActiveStep(3);
-        }
-    }, [qrData]);
 
     return (
         <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>

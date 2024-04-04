@@ -1,16 +1,21 @@
 import React from 'react';
-import {Button, ButtonProps, Typography} from "@mui/material";
+import {Button, ButtonProps} from "@mui/material";
 
-function StyledButton(props: ButtonProps) {
+type StyledButtonProps = ButtonProps & {
+    fill?: boolean
+}
+
+function StyledButton(props: StyledButtonProps) {
     return (
         <Button
             {...props}
             style={{
-                background: '#FFFFFF 0% 0% no-repeat padding-box',
+                background: `${props.fill ? '#FF7F00' : '#FFFFFF'} 0% 0% no-repeat padding-box`,
                 border: '2px solid #FF7F00',
                 borderRadius: '9999px',
                 opacity: 1,
                 padding: '18px 28px',
+                color: props.fill ? '#FFFFFF' : '#FF7F00',
                 ...props.style
             }}
         >
