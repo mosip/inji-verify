@@ -3,13 +3,13 @@ import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import StyledButton from "./commons/StyledButton";
 import {ImportFromFile} from "./ImportFromFile";
-import {QrScanResult} from "../../../types/data-types";
-import {SetActiveStepFunction, SetScanResultFunction} from "../../../types/function-types";
+import {useActiveStepContext} from "../../../pages/Home";
+import {SetScanResultFunction} from "../../../types/function-types";
 
-const ScanQrCode = ({setActiveStep, setScanResult}: {
-    setActiveStep: SetActiveStepFunction,
+const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
 }) => {
+    const {setActiveStep} = useActiveStepContext();
     return (
         <Grid container style={{padding: "104px", textAlign: "center"}}>
             <Grid item xs={12} style={{

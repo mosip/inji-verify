@@ -52,6 +52,7 @@ export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFu
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
+                    
                     scanFilesForQr(file)
                         .then(scanResult => {
                             setAlert({

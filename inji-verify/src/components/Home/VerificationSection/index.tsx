@@ -5,10 +5,12 @@ import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
 import {SetActiveStepFunction} from "../../../types/function-types";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
+import {useActiveStepContext} from "../../../pages/Home";
 
-const DisplayActiveStep = ({activeStep, setActiveStep}: {
-    activeStep: number, setActiveStep: SetActiveStepFunction
-}) => {
+const DisplayActiveStep = () => {
+    const {getActiveStep, setActiveStep} = useActiveStepContext();
+    const activeStep = getActiveStep();
+
     const [qrData, setQrData] = useState("");
     const [vc, setVc] = useState(null);
     const [vcStatus, setVcStatus] = useState({status: "Verifying", checks: []} as VcStatus);
@@ -42,16 +44,17 @@ const DisplayActiveStep = ({activeStep, setActiveStep}: {
         if (!!qrData) {
             // show error message in snackbar
         }
+        setActiveStep(2);
         setQrData(result.data || "");
     }
 
     switch (activeStep) {
         case 0:
-            return (<ScanQrCode setActiveStep={setActiveStep} setScanResult={setScanResult}/>);
+            return (<ScanQrCode setScanResult={setScanResult}/>);
         case 1:
-            return (<Verification setActiveStep={setActiveStep} setQrData={setQrData} verifying={false}/>);
+            return (<Verification setQrData={setQrData} verifying={false}/>);
         case 2:
-            return (<Verification setActiveStep={setActiveStep} setQrData={setQrData} verifying={true}/>);
+            return (<Verification setQrData={setQrData} verifying={true}/>);
         case 3:
             return (<Result setActiveStep={setActiveStep} vc={vc} vcStatus={vcStatus}/>);
         default:
@@ -59,13 +62,10 @@ const DisplayActiveStep = ({activeStep, setActiveStep}: {
     }
 }
 
-const VerificationSection = ({activeStep, setActiveStep}: {
-    activeStep: number,
-    setActiveStep: (activeStep: number) => void
-}) => {
+const VerificationSection = () => {
     return (
         <div>
-            <DisplayActiveStep activeStep={activeStep} setActiveStep={setActiveStep}/>
+            <DisplayActiveStep/>
         </div>
     );
 }

@@ -4,12 +4,12 @@ import InjiStepper from "./InjiStepper";
 import Navbar from "./Navbar";
 import {VerificationProgressTrackerContainer} from "./styles";
 
-function VerificationProgressTracker({activeStep}: {activeStep: number}) {
+function VerificationProgressTracker() {
     return (
         <VerificationProgressTrackerContainer>
             <Navbar/>
             <StepperContentHeader/>
-            <InjiStepper activeStep={activeStep}/>
+            <InjiStepper/>
         </VerificationProgressTrackerContainer>
     );
 }

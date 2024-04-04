@@ -3,6 +3,7 @@ import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} f
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
 import {InjiStepperStep} from "../../../../types/data-types";
+import {useActiveStepContext} from "../../../../pages/Home";
 
 const steps: InjiStepperStep[] = [
     {
@@ -24,8 +25,10 @@ const steps: InjiStepperStep[] = [
     }
 ];
 
-const InjiStepper = ({activeStep}: {activeStep: number}) => {
+const InjiStepper = () => {
     const isDesktop = useMediaQuery('@media (min-width:768px)');
+    const {getActiveStep} = useActiveStepContext();
+    const activeStep = getActiveStep();
 
     return (
         <Box style={{marginTop: '30px'}}>
