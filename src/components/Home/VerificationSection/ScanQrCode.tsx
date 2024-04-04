@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import StyledButton from "./commons/StyledButton";
-import {ImportFromFile} from "./FileReader";
+import {ImportFromFile} from "./ImportFromFile";
 
 const ScanQrCode = ({setActiveStep}: {
     setActiveStep: (activeStep: number) => void

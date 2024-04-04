@@ -26,7 +26,7 @@ export const ImportFromFile = ({setQrData}: {setQrData: (qrData?: string) => voi
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept="image/png, image/jpeg"
+                accept=".png, .jpeg"
                 style={{
                     margin: "8px auto"
                 }}
@@ -36,6 +36,7 @@ export const ImportFromFile = ({setQrData}: {setQrData: (qrData?: string) => voi
                     const reader = new FileReader();
                     reader.onload = (ev: ProgressEvent<FileReader>) => onFileReaderLoad(ev, setQrData)
                     reader.readAsDataURL(file);
+                    console.log({file, reader})
                 }}
             />
             <canvas id="canvas" style={{"display": "none"}}></canvas>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
+import MobileStepper from "./MobileStepper";
 
 const steps = [
     {
@@ -23,10 +24,15 @@ const steps = [
 ];
 
 const InjiStepper = ({activeStep}: {activeStep: number}) => {
+    const isDesktop = useMediaQuery('@media (min-width:768px)');
 
     return (
         <Box style={{marginTop: '30px'}}>
-            <DesktopStepper steps={steps} activeStep={activeStep}/>
+            {
+                isDesktop
+                    ? (<DesktopStepper steps={steps} activeStep={activeStep}/>)
+                    : (<MobileStepper steps={steps} activeStep={activeStep}/>)
+            }
         </Box>
     );
 }
