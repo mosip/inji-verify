@@ -49,8 +49,9 @@ const DisplayActiveStep = ({activeStep, setActiveStep}: {
         case 0:
             return (<ScanQrCode setActiveStep={setActiveStep} setScanResult={setScanResult}/>);
         case 1:
+            return (<Verification setActiveStep={setActiveStep} setQrData={setQrData} verifying={false}/>);
         case 2:
-            return (<Verification setActiveStep={setActiveStep} setQrData={setQrData}/>);
+            return (<Verification setActiveStep={setActiveStep} setQrData={setQrData} verifying={true}/>);
         case 3:
             return (<Result setActiveStep={setActiveStep} vc={vc} vcStatus={vcStatus}/>);
         default:

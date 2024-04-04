@@ -1,9 +1,8 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {QrScanResult} from "../../../types/data-types";
+import {AlertInfo} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
-import StyledButton from "./commons/StyledButton";
-import {Alert, Snackbar} from "@mui/material";
 import {useState} from "react";
+import AlertMessage from "../../commons/AlertMessage";
 
 const AlertMessages = {
     success: "QR code uploaded successfully!",
@@ -31,10 +30,10 @@ function UploadButton() {
 }
 
 export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFunction }) => {
-    const [snackbarMessage, setSnackbarMessage] = useState(AlertMessages.success);
+    const [alert, setAlert] = useState({open: false} as AlertInfo);
 
-    function handleSnackbarClose() {
-        setSnackbarMessage("");
+    function handleAlertClose() {
+        setAlert({open: false});
     }
 
     return (
@@ -55,31 +54,15 @@ export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFu
                     if (!file) return;
                     scanFilesForQr(file)
                         .then(scanResult => {
-                            setSnackbarMessage(!!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected);
+                            setAlert({
+                                message: !!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected,
+                                severity: !!scanResult.data ? "success" : "error",
+                                open: true
+                            });
                             setScanResult(scanResult);
                         });
                 }}
             />
-            <Snackbar
-                open={!!snackbarMessage}
-                autoHideDuration={6000}
-                onClose={() => setSnackbarMessage("")}
-                message={snackbarMessage}
-                anchorOrigin={{vertical: "top", horizontal: "right"}}
-            >
-                <Alert
-                    onClose={handleSnackbarClose}
-                    severity={snackbarMessage === AlertMessages.success ? "success" : "error"}
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                    style={{
-                        borderRadius: '10px',
-                        padding: '16px 18px'
-                    }}
-
-                >
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
+            <AlertMessage alertInfo={alert} handleClose={handleAlertClose}/>
         </div>);
 }

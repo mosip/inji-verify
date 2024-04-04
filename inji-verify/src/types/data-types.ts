@@ -24,3 +24,11 @@ export type CardPositioning = {
     bottom?: number,
     left?: number
 }
+
+export type AlertSeverity = "success" | "info" | "warning" | "error" | undefined;
+
+export type AlertInfo = {
+    message?: string,
+    severity?: AlertSeverity,
+    open: boolean
+}
