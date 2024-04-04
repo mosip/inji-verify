@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
+import qr from "../../../assets/qr.svg";
 import StyledButton from "./commons/StyledButton";
 import {ImportFromFile} from "./ImportFromFile";
 import {useActiveStepContext} from "../../../pages/Home";
@@ -17,10 +18,31 @@ const ScanQrCode = ({setScanResult}: {
                 marginBottom: "44px"
             }}>Scan QR Code</Grid>
             <Grid item xs={12}>
-                <img src={scanQr} style={{width: "calc(min(45vw, 350px))"}}/>
+                <Box
+                    style={{
+                        backgroundImage: `url(${scanQr})`,
+                        backgroundSize: 'cover',
+                        display: 'grid',
+                        placeContent: 'center',
+                        width: 'calc(min(45vw, 350px))',
+                        height: 'calc(min(45vw, 350px))',
+                        margin: 'auto'
+                    }}
+                >
+                    <div style={{
+                        background: 'rgb(255, 127, 0, 0.1)',
+                        borderRadius: '12px',
+                        width: 'calc(min(42vw, 320px))',
+                        height: 'calc(min(42vw, 320px))',
+                        display: 'grid',
+                        placeContent: 'center'
+                    }}>
+                        <img src={qr} style={{width: "100px"}}/>
+                    </div>
+                </Box>
             </Grid>
             <Grid item xs={12}>
-                <StyledButton style={{margin: "40px 0 12px 0", width: "350px"}} fill onClick={() => setActiveStep(1)}>
+            <StyledButton style={{margin: "40px 0 12px 0", width: "350px"}} fill onClick={() => setActiveStep(1)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>
