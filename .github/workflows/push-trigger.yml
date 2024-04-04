@@ -1,0 +1,34 @@
+name: inji-verify build upon a push
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - '!release-branch'
+      - release*
+      - master
+      - 1.*
+      - develop
+      - MOSIP*
+
+jobs:
+  build-dockers-inji-verify:
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: "inji-verify"
+            SERVICE_NAME: "inji-verify"
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
