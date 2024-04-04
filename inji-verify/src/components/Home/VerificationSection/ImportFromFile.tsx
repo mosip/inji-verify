@@ -6,9 +6,10 @@ import StyledButton from "./commons/StyledButton";
 export const ImportFromFile = ({setScanResult}: {setScanResult: SetScanResultFunction}) => {
     return (
         <div style={{margin: "12px auto", display: "grid", placeContent: "center"}}>
-            <StyledButton>
+            <StyledButton style={{width: "350px"}}>
                 <label htmlFor={"upload-qr"}>
-                    Upload your certificate</label>
+                    Upload QR Code
+                </label>
             </StyledButton>
             <br/>
             <input

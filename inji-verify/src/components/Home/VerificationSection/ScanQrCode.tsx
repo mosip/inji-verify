@@ -20,15 +20,17 @@ const ScanQrCode = ({setActiveStep, setScanResult}: {
                 <img src={scanQr} style={{width: "calc(min(45vw, 350px))"}}/>
             </Grid>
             <Grid item xs={12}>
-                <StyledButton style={{margin: "40px 0 10px 0"}} onClick={() => setActiveStep(1)}>
+                <StyledButton style={{margin: "40px 0 12px 0", width: "350px"}} fill onClick={() => setActiveStep(1)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>
             <Grid item xs={12}>
-                OR
-            </Grid>
-            <Grid item xs={12}>
                 <ImportFromFile setScanResult={setScanResult}/>
+            </Grid>
+            <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}}>
+                <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
+                    Allowed file formats: PNG/JPEG/JPG Min Size : 2 x 2 cm | Max Size : 10 x 10 cm
+                </Typography>
             </Grid>
         </Grid>
     );
