@@ -2,6 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 import AlertMessage from "../../commons/AlertMessage";
 import {AlertInfo} from "../../../types/data-types";
+import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
 
 const InitialAlert: AlertInfo = {
     message: "",
@@ -17,6 +18,8 @@ function QrScanner({setActiveStep, setQrData}: {
 
     const [alert, setAlert] = useState(InitialAlert);
 
+    const [isCameraBlocked, setIsCameraBlocked] = useState(false);
+
     return (
         <>
             <Scanner
@@ -30,11 +33,7 @@ function QrScanner({setActiveStep, setQrData}: {
                     }
                 }}
                 onError={(error) => {
-                    setAlert({
-                        message: "Please allow the camera to continue",
-                        severity: "error",
-                        open: true
-                    })
+                    setIsCameraBlocked(true);
                 }}
                 options={{
                     constraints: {
@@ -57,7 +56,7 @@ function QrScanner({setActiveStep, setQrData}: {
                     container: {
                         width: "350px",
                         placeContent: "center",
-                        display: "grid",
+                        display: "g:rid",
                         placeItems: "center"
                     },
                     video: {
@@ -65,14 +64,7 @@ function QrScanner({setActiveStep, setQrData}: {
                     }
                 }}
             />
-            <AlertMessage
-                alertInfo={alert}
-                handleClose={() => setAlert((currentAlert) => {
-                    return {
-                        ...currentAlert, open: false
-                    };
-                })
-            }/>
+            <CameraAccessDenied open={isCameraBlocked} handleClose={() => setIsCameraBlocked(false)}/>
         </>
     );
 }

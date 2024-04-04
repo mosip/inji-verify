@@ -23,7 +23,7 @@ const style = {
     padding: '38px'
 };
 
-const CameraAccessDenied = ({open, handleClose}: {open: boolean, handleClose: (open: boolean) => void}) =>  {
+const CameraAccessDenied = ({open, handleClose}: {open: boolean, handleClose: () => void}) =>  {
 
     return (
         <Modal
@@ -40,7 +40,9 @@ const CameraAccessDenied = ({open, handleClose}: {open: boolean, handleClose: (o
                     <Typography style={{font: 'normal normal normal 16px/20px Inter', color: '#707070', margin: '12px auto'}}>
                         We need your camera to scan the code. Go to your browser settings and allow camera access for this website.
                     </Typography>
-                    <StyledButton style={{width: '180px', margin: '18px auto'}}>
+                    <StyledButton
+                        onClick={handleClose}
+                        style={{width: '180px', margin: '18px auto'}}>
                         I Understand
                     </StyledButton>
                 </Box>
