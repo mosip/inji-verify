@@ -3,6 +3,7 @@ import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
 import StyledButton from "../commons/StyledButton";
+import {VcStatus} from "../../../../types/types";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
     // top = 340 - it is precalculated based in the xd design
@@ -18,14 +19,7 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>) => {
 }
 
 const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: (activeStep: number) => void, vcStatus: {
-        status: "OK" | "NOK", checks: {
-            "active": string | null,
-            "revoked": "OK" | "NOK",
-            "expired": "OK" | "NOK",
-            "proof": "OK" | "NOK"
-        }[]
-    } | null
+    vc: any, setActiveStep: (activeStep: number) => void, vcStatus: VcStatus | null
 }) => {
     const initialPositioning: { top?: number, right?: number } = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();

@@ -3,9 +3,11 @@ import {Box, Button, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import StyledButton from "./commons/StyledButton";
 import {ImportFromFile} from "./ImportFromFile";
+import {QrScanResult} from "../../../types/types";
 
-const ScanQrCode = ({setActiveStep}: {
-    setActiveStep: (activeStep: number) => void
+const ScanQrCode = ({setActiveStep, setScanResult}: {
+    setActiveStep: (activeStep: number) => void,
+    setScanResult: (result: QrScanResult) => void
 }) => {
     return (
         <Grid container style={{padding: "104px", textAlign: "center"}}>
@@ -25,7 +27,7 @@ const ScanQrCode = ({setActiveStep}: {
                 OR
             </Grid>
             <Grid item xs={12}>
-                <ImportFromFile setQrData={(qrData) => {console.log(qrData)}}/>
+                <ImportFromFile setScanResult={setScanResult}/>
             </Grid>
         </Grid>
     );
