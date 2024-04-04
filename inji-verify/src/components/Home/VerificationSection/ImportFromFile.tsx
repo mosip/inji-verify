@@ -11,20 +11,35 @@ const AlertMessages = {
     qrNotDetected: "No MultiFormat Readers were able to detect the QR code."
 };
 
-export const ImportFromFile = ({setScanResult}: {setScanResult: SetScanResultFunction}) => {
+function UploadButton() {
+    return (
+        <label
+            style={{
+                background: `#FFFFFF 0% 0% no-repeat padding-box`,
+                border: '2px solid #FF7F00',
+                borderRadius: '9999px',
+                opacity: 1,
+                padding: '18px 0',
+                color: '#FF7F00',
+                width: '350px',
+                cursor: 'pointer'
+            }}
+            htmlFor={"upload-qr"}>
+            Upload QR Code
+        </label>
+    );
+}
+
+export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFunction }) => {
     const [snackbarMessage, setSnackbarMessage] = useState(AlertMessages.success);
 
-    function handleSnackbarClose () {
+    function handleSnackbarClose() {
         setSnackbarMessage("");
     }
 
     return (
         <div style={{margin: "12px auto", display: "grid", placeContent: "center"}}>
-            <StyledButton style={{width: "350px"}}>
-                <label htmlFor={"upload-qr"}>
-                    Upload QR Code
-                </label>
-            </StyledButton>
+            <UploadButton/>
             <br/>
             <input
                 type="file"
@@ -40,10 +55,7 @@ export const ImportFromFile = ({setScanResult}: {setScanResult: SetScanResultFun
                     if (!file) return;
                     scanFilesForQr(file)
                         .then(scanResult => {
-                            if (scanResult.data === null) {
-                                setSnackbarMessage(AlertMessages.qrNotDetected);
-                            }
-                            setSnackbarMessage(AlertMessages.success);
+                            setSnackbarMessage(!!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected);
                             setScanResult(scanResult);
                         });
                 }}
