@@ -5,6 +5,7 @@ import {Box} from "@mui/material";
 import StyledButton from "../commons/StyledButton";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
 import {SetActiveStepFunction} from "../../../../types/function-types";
+import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
@@ -50,19 +51,23 @@ const Result = ({vc, setActiveStep, vcStatus}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                {vc && <VcDisplayCard vc={vc}/>}
+                {vc && <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>}
             </Box>
-            <Box style={{
-                height: 'calc(100vh - 340px)',
-                display: 'grid',
-                placeContent: 'center'
-            }}>
-                <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                    setActiveStep(0)
-                }}>
-                    Scan Another QR Code
-                </StyledButton>
-            </Box>
+            {
+                !vc && (
+                    <Box style={{
+                        height: 'calc(100vh - 340px)',
+                        display: 'grid',
+                        placeContent: 'center'
+                    }}>
+                        <StyledButton style={{margin: "24px auto"}} onClick={() => {
+                            setActiveStep(0)
+                        }}>
+                            Scan Another QR Code
+                        </StyledButton>
+                    </Box>
+                )
+            }
         </Box>
     );
 }
