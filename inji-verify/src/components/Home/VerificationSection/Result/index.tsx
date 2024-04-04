@@ -51,7 +51,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                {vc && <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>}
+                <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
             </Box>
             {
                 !vc && (
