@@ -32,15 +32,16 @@ const DisplayActiveStep = () => {
                     console.error("Error occurred while verifying the VC: ", error);
                     setVc(null);
                     setVcStatus({status: "NOK", checks: []});
-                });
+                }).finally(() => {
+                    setQrData("");
+                    setVerifying(false);
+                    setActiveStep(3);
+            });
         } catch (error) {
             console.error("Error occurred while reading the qrData: ", error);
+            setQrData("");
             setVc(null);
             setVcStatus({status: "NOK", checks: []});
-        } finally {
-            setQrData("");
-            setVerifying(false);
-            setActiveStep(3);
         }
     }, [qrData]);
 
