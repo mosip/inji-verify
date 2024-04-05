@@ -3,6 +3,7 @@ import {Scanner} from '@yudiel/react-qr-scanner';
 import AlertMessage from "../../commons/AlertMessage";
 import {AlertInfo} from "../../../types/data-types";
 import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
+import StyledButton from "../VerificationSection/commons/StyledButton";
 
 const InitialAlert: AlertInfo = {
     message: "",
@@ -56,7 +57,7 @@ function QrScanner({setActiveStep, setQrData}: {
                     container: {
                         width: "350px",
                         placeContent: "center",
-                        display: "g:rid",
+                        display: "grid",
                         placeItems: "center"
                     },
                     video: {
@@ -64,7 +65,10 @@ function QrScanner({setActiveStep, setQrData}: {
                     }
                 }}
             />
-            <CameraAccessDenied open={isCameraBlocked} handleClose={() => setIsCameraBlocked(false)}/>
+            <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
+                setActiveStep(0);
+                setIsCameraBlocked(false)
+            }}/>
         </>
     );
 }
