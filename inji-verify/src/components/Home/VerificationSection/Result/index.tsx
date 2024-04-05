@@ -15,7 +15,7 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): Card
         if (window.innerWidth === resultSectionWidth) {
             return positioning;
         }
-        return {...positioning, right: (resultSectionWidth - 340) / 2};
+        return {...positioning, right: (resultSectionWidth - 400) / 2};
     }
     return positioning;
 }

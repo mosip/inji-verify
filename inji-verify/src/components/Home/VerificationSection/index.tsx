@@ -14,16 +14,19 @@ const DisplayActiveStep = () => {
     const [qrData, setQrData] = useState("");
     const [vc, setVc] = useState(null);
     const [vcStatus, setVcStatus] = useState({status: "Verifying", checks: []} as VcStatus);
+    const [verifying, setVerifying] = useState(false);
+
     useEffect(() => {
         if (qrData === "") return;
         try {
+            setActiveStep(2);
+            setVerifying(true);
             let vc = JSON.parse(qrData);
             // TODO: is it a vc? - check format
             verify(vc)
                 .then(status => {
-                    setVc(vc);
                     setVcStatus(status);
-                    setActiveStep(3);
+                    setVc(vc);
                 })
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
@@ -36,6 +39,7 @@ const DisplayActiveStep = () => {
             setVcStatus({status: "NOK", checks: []});
         } finally {
             setQrData("");
+            setVerifying(false);
             setActiveStep(3);
         }
     }, [qrData]);
@@ -44,7 +48,6 @@ const DisplayActiveStep = () => {
         if (!!qrData) {
             // show error message in snackbar
         }
-        setActiveStep(2);
         setQrData(result.data || "");
     }
 
@@ -52,9 +55,8 @@ const DisplayActiveStep = () => {
         case 0:
             return (<ScanQrCode setScanResult={setScanResult}/>);
         case 1:
-            return (<Verification setQrData={setQrData} verifying={false}/>);
         case 2:
-            return (<Verification setQrData={setQrData} verifying={true}/>);
+            return (<Verification setQrData={setQrData} verifying={verifying}/>);
         case 3:
             return (<Result setActiveStep={setActiveStep} vc={vc} vcStatus={vcStatus}/>);
         default:

@@ -10,7 +10,7 @@ function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveSt
     return (
         <Box>
             <Grid container style={{
-                width: "calc(min(340px, 100vw))",
+                width: "calc(min(400px, 90vw))",
                 margin: "auto",
                 background: "white",
                 borderRadius: "12px",
