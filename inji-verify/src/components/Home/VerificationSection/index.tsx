@@ -3,13 +3,15 @@ import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
-import {SetActiveStepFunction} from "../../../types/function-types";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
 import {useActiveStepContext} from "../../../pages/Home";
+import {useNavigate} from "react-router-dom";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
     const activeStep = getActiveStep();
+
+    const navigate = useNavigate();
 
     const [qrData, setQrData] = useState("");
     const [vc, setVc] = useState(null);
@@ -25,11 +27,22 @@ const DisplayActiveStep = () => {
             // TODO: is it a vc? - check format
             verify(vc)
                 .then(status => {
+                    console.log("Status: ", status);
+                    // did-resolution fails if the internet is not available and proof can't be verified
+                    if (status?.checks?.proof === "NOK"
+                        && !window.navigator.onLine) {
+                        navigate('/offline');
+                    }
                     setVcStatus(status);
                     setVc(vc);
                 })
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
+                    console.error("Error code: ", error.code);
+                    if (!window.navigator.onLine) {
+                        navigate('/offline');
+                        return;
+                    }
                     setVc(null);
                     setVcStatus({status: "NOK", checks: []});
                 }).finally(() => {

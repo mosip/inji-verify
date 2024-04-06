@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Grid, Typography} from '@mui/material';
-import {convertToTitleCase, getDisplayValue} from "../../../../utils/common-utils";
+import {convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
 import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
 import {SetActiveStepFunction} from "../../../../types/function-types";

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import injiLogo from "../../../assets/inji-logo.png";
+import injiLogo from "../../../assets/inji-logo.svg";
 
 function Navbar(props: any) {
     // Logo goes here
