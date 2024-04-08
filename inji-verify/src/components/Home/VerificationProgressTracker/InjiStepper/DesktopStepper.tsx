@@ -6,7 +6,7 @@ function DesktopStepper({steps, activeStep}: {steps: InjiStepperStep[], activeSt
     return (
         <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((step, index) => (
-                <Step key={step.label} style={{alignContent: 'start'}}>
+                <Step key={step.label} style={{alignContent: 'start'}} expanded>
                     <StepLabel>
                         <Typography style={{font: 'normal normal bold 16px/20px Inter'}}>
                             {step.label}
@@ -15,7 +15,13 @@ function DesktopStepper({steps, activeStep}: {steps: InjiStepperStep[], activeSt
                     <StepContent
                         TransitionProps={{appear: true, unmountOnExit: false}}
                         hidden={false} style={{borderColor: '#FF7F00', display: 'block'}}>
-                        <Typography>{step.description}</Typography>
+                        <Typography
+                            style={{
+                                font: 'normal normal normal 14px/19px Inter',
+                                color: '#535353'
+                            }}>
+                            {step.description}
+                        </Typography>
                     </StepContent>
                 </Step>
             ))}
