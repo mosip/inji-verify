@@ -2,6 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import {Grid} from "@mui/material";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import VerificationSection from "../components/Home/VerificationSection";
+import Copyrights from "../components/Home/VerificationProgressTracker/Copyrights";
 
 let activeStep: number = 0;
 const setActiveStep = (newValue: number) => {
@@ -29,6 +30,7 @@ function Home(props: any) {
                     <VerificationSection/>
                 </Grid>
             </Grid>
+            <Copyrights/>
         </ActiveStepContext.Provider>
     );
 }
