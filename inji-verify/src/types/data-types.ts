@@ -3,6 +3,8 @@ export type QrScanResult = {
     error: string | null
 }
 
+export type ScanStatus = "Success" | "NotScanned" | "Failed";
+
 export type VcStatus = {
     status: "OK" | "NOK" | "Verifying";
     checks: {
@@ -23,4 +25,12 @@ export type CardPositioning = {
     right?: number,
     bottom?: number,
     left?: number
+}
+
+export type AlertSeverity = "success" | "info" | "warning" | "error" | undefined;
+
+export type AlertInfo = {
+    message?: string,
+    severity?: AlertSeverity,
+    open: boolean
 }

@@ -5,12 +5,12 @@ import Loader from "../../commons/Loader";
 import QrScanner from "../VerificationProgressTracker/QrScanner";
 import {verify} from "../../../utils/verification-utils";
 import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
+import {useActiveStepContext} from "../../../pages/Home";
 
-const Verification = ({setQrData, setActiveStep}: {
-    setQrData: SetQrDataFunction, setActiveStep: SetActiveStepFunction
+const Verification = ({setQrData, verifying}: {
+    setQrData: SetQrDataFunction, verifying: boolean
 }) => {
-    const [verifying, setVerifying] = useState(false);
-
+    const {setActiveStep} = useActiveStepContext();
     return (
         <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>
             <Grid item xs={12} style={{
@@ -38,7 +38,6 @@ const Verification = ({setQrData, setActiveStep}: {
                         verifying
                             ? (<Loader/>)
                             : (<QrScanner
-                                setVerifying={setVerifying}
                                 setActiveStep={setActiveStep}
                                 setQrData={setQrData}
                             />)

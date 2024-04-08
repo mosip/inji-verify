@@ -15,7 +15,7 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): Card
         if (window.innerWidth === resultSectionWidth) {
             return positioning;
         }
-        return {...positioning, right: (resultSectionWidth - 340) / 2};
+        return {...positioning, right: (resultSectionWidth - 400) / 2};
     }
     return positioning;
 }
@@ -51,23 +51,8 @@ const Result = ({vc, setActiveStep, vcStatus}: {
                 top: `${vcDisplayCardPositioning.top ?? 212}px`,
                 right: `${vcDisplayCardPositioning.right ?? 0}px`
             }}>
-                {vc && <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>}
+                <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
             </Box>
-            {
-                !vc && (
-                    <Box style={{
-                        height: 'calc(100vh - 340px)',
-                        display: 'grid',
-                        placeContent: 'center'
-                    }}>
-                        <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                            setActiveStep(0)
-                        }}>
-                            Scan Another QR Code
-                        </StyledButton>
-                    </Box>
-                )
-            }
         </Box>
     );
 }
