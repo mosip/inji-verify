@@ -53,18 +53,16 @@ function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveSt
                         )
                 }
             </Grid>
-            {
-                vc && (<Box style={{
-                    display: 'grid',
-                    placeContent: 'center'
+            <Box style={{
+                display: 'grid',
+                placeContent: 'center'
+            }}>
+                <StyledButton style={{margin: "24px auto"}} onClick={() => {
+                    setActiveStep(0)
                 }}>
-                    <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                        setActiveStep(0)
-                    }}>
-                        Scan Another QR Code
-                    </StyledButton>
-                </Box>)
-            }
+                    Scan Another QR Code
+                </StyledButton>
+            </Box>
         </Box>
     );
 }

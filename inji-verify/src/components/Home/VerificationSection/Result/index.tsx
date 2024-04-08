@@ -53,21 +53,6 @@ const Result = ({vc, setActiveStep, vcStatus}: {
             }}>
                 <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
             </Box>
-            {
-                !vc && (
-                    <Box style={{
-                        height: 'calc(100vh - 340px)',
-                        display: 'grid',
-                        placeContent: 'center'
-                    }}>
-                        <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                            setActiveStep(0)
-                        }}>
-                            Scan Another QR Code
-                        </StyledButton>
-                    </Box>
-                )
-            }
         </Box>
     );
 }
