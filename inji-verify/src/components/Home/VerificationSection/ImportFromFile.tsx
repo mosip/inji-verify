@@ -1,17 +1,11 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {AlertInfo} from "../../../types/data-types";
+import {AlertInfo, ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {useState} from "react";
 import AlertMessage from "../../commons/AlertMessage";
 import {useActiveStepContext} from "../../../pages/Home";
 
-const AlertMessages = {
-    success: "QR code uploaded successfully!",
-    sessionExpired: "The scan session has expired due to inactivity. Please initiate a new scan.",
-    qrNotDetected: "No MultiFormat Readers were able to detect the QR code."
-};
-
-function UploadButton() {
+function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
             style={{
@@ -24,23 +18,23 @@ function UploadButton() {
                 width: '350px',
                 cursor: 'pointer'
             }}
-            htmlFor={"upload-qr"}>
-            Upload QR Code
+            htmlFor={"upload-qr"}
+        >
+            {displayMessage}
         </label>
     );
 }
 
-export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFunction }) => {
-    const [alert, setAlert] = useState({open: false} as AlertInfo);
+export const ImportFromFile = ({setScanResult, displayMessage, setScanStatus}:
+                                   { setScanResult: SetScanResultFunction,
+                                       displayMessage: string,
+                                       setScanStatus: (status: ScanStatus) => void
+                                   }) => {
     const {setActiveStep} = useActiveStepContext();
 
-    function handleAlertClose() {
-        setAlert({open: false});
-    }
-
     return (
-        <div style={{margin: "12px auto", display: "grid", placeContent: "center"}}>
-            <UploadButton/>
+        <div style={{margin: "6px auto", display: "flex", placeContent: "center"}}>
+            <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input
                 type="file"
@@ -49,22 +43,18 @@ export const ImportFromFile = ({setScanResult}: { setScanResult: SetScanResultFu
                 accept=".png, .jpeg, .jpg, .pdf"
                 style={{
                     margin: "8px auto",
-                    display: "none"
+                    display: "none",
+                    height: 0
                 }}
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
                     scanFilesForQr(file)
                         .then(scanResult => {
-                            setAlert({
-                                message: !!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected,
-                                severity: !!scanResult.data ? "success" : "error",
-                                open: true
-                            });
+                            setScanStatus(!!scanResult.data ? "Success" : "Failed")
                             setScanResult(scanResult);
                         });
                 }}
             />
-            <AlertMessage alertInfo={alert} handleClose={handleAlertClose}/>
         </div>);
 }

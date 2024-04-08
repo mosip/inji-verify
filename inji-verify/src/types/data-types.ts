@@ -3,6 +3,8 @@ export type QrScanResult = {
     error: string | null
 }
 
+export type ScanStatus = "Success" | "NotScanned" | "Failed";
+
 export type VcStatus = {
     status: "OK" | "NOK" | "Verifying";
     checks: {
