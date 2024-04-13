@@ -7,10 +7,10 @@ import {verify} from "../../../utils/verification-utils";
 import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
 
-const Verification = ({setQrData, verifying}: {
-    setQrData: SetQrDataFunction, verifying: boolean
+const Verification = ({setQrData}: {
+    setQrData: SetQrDataFunction
 }) => {
-    const {setActiveStep} = useActiveStepContext();
+    const {getActiveStep, setActiveStep} = useActiveStepContext();
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{
@@ -35,7 +35,7 @@ const Verification = ({setQrData, verifying}: {
                     margin: "auto",
                 }}>
                     {
-                        verifying
+                        getActiveStep() === 2
                             ? (<Loader/>)
                             : (<QrScanner
                                 setActiveStep={setActiveStep}

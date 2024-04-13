@@ -1,9 +1,10 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 import AlertMessage from "../../commons/AlertMessage";
 import {AlertInfo} from "../../../types/data-types";
 import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
 import StyledButton from "../VerificationSection/commons/StyledButton";
+import {VerificationSteps} from "../../../utils/config";
 
 const InitialAlert: AlertInfo = {
     message: "",
@@ -21,6 +22,10 @@ function QrScanner({setActiveStep, setQrData}: {
 
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
+    useEffect(() => {
+
+    }, []);
+
     return (
         <>
             <Scanner
@@ -28,7 +33,7 @@ function QrScanner({setActiveStep, setQrData}: {
                 onResult={(text, result) => {
                     if (!isDataRead()) {
                         console.log(text, result);
-                        setActiveStep(2);
+                        setActiveStep(VerificationSteps.Verifying);
                         setQrData(text);
                         setDataRead(true);
                     }
@@ -66,7 +71,7 @@ function QrScanner({setActiveStep, setQrData}: {
                 }}
             />
             <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
-                setActiveStep(0);
+                setActiveStep(VerificationSteps.ScanQrCodePrompt);
                 setIsCameraBlocked(false)
             }}/>
         </>

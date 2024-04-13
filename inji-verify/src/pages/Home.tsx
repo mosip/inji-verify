@@ -3,6 +3,7 @@ import {Grid} from "@mui/material";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import VerificationSection from "../components/Home/VerificationSection";
 import Copyrights from "../components/Home/VerificationProgressTracker/Copyrights";
+import {VerificationSteps} from "../utils/config";
 
 let activeStep: number = 0;
 const setActiveStep = (newValue: number) => {
@@ -16,7 +17,7 @@ const ActiveStepContext = createContext({getActiveStep, setActiveStep});
 export const useActiveStepContext = () => useContext(ActiveStepContext);
 
 function Home(props: any) {
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(VerificationSteps.ScanQrCodePrompt);
     const getActiveStep = () => activeStep;
     return (
         <ActiveStepContext.Provider value={{getActiveStep, setActiveStep}}>

@@ -5,6 +5,7 @@ import StyledButton from "../commons/StyledButton";
 import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
 import {SetActiveStepFunction} from "../../../../types/function-types";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import {VerificationSteps} from "../../../../utils/config";
 
 function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveStepFunction}) {
     return (
@@ -58,7 +59,7 @@ function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveSt
                 placeContent: 'center'
             }}>
                 <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                    setActiveStep(0)
+                    setActiveStep(VerificationSteps.ScanQrCodePrompt)
                 }}>
                     Scan Another QR Code
                 </StyledButton>

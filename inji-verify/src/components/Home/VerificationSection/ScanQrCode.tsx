@@ -8,6 +8,7 @@ import {useActiveStepContext} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {AlertInfo, QrScanResult, ScanStatus} from "../../../types/data-types";
 import AlertMessage from "../../commons/AlertMessage";
+import {VerificationSteps} from "../../../utils/config";
 
 const AlertMessages = {
     success: "QR code uploaded successfully!",
@@ -74,20 +75,20 @@ const ScanQrCode = ({setScanResult}: {
             </Grid>
             {
                 scanStatus === "Failed" && (
-                    <Grid item xs={12} style={{width: '350px'}}>
+                    <Grid item xs={12}>
                         <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
                     </Grid>
                 )
             }
             <Grid item xs={12}>
-                <StyledButton style={{margin: "6px 0", width: "350px"}} fill onClick={() => setActiveStep(1)}>
+                <StyledButton style={{margin: "6px 0", width: "350px"}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>
             {
                 scanStatus !== "Failed" && (
                     <>
-                        <Grid item xs={12} style={{width: '350px'}}>
+                        <Grid item xs={12}>
                             <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
                         </Grid>
                         <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}}>
