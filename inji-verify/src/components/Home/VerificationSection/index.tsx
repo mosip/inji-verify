@@ -6,6 +6,7 @@ import {verify} from "../../../utils/verification-utils";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
 import {useActiveStepContext} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
+import {decodeQrData} from "../../../utils/qr-utils";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
@@ -23,7 +24,7 @@ const DisplayActiveStep = () => {
         try {
             setActiveStep(2);
             setVerifying(true);
-            let vc = JSON.parse(qrData);
+            let vc = JSON.parse(decodeQrData(qrData));
             // TODO: is it a vc? - check format
             verify(vc)
                 .then(status => {
