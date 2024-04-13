@@ -5,6 +5,7 @@ import {AlertInfo} from "../../../types/data-types";
 import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
 import StyledButton from "../VerificationSection/commons/StyledButton";
 import {VerificationSteps} from "../../../utils/config";
+import {useAlertMessages} from "../../../pages/Home";
 
 const InitialAlert: AlertInfo = {
     message: "",
@@ -17,13 +18,19 @@ function QrScanner({setActiveStep, setQrData}: {
 }) {
     const [dataRead, setDataRead] = useState(false)
     const isDataRead = useCallback(() => dataRead, [dataRead]);
-
-    const [alert, setAlert] = useState(InitialAlert);
-
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
-    useEffect(() => {
+    const {setAlertInfo} = useAlertMessages();
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+            setAlertInfo({
+                open: true,
+                message: "The scan session has expired due to inactivity. Please initiate a new scan.",
+                severity: "error"
+            })
+        }, 1000)
     }, []);
 
     return (

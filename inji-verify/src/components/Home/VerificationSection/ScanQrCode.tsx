@@ -20,14 +20,8 @@ const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
 }) => {
     const {setActiveStep} = useActiveStepContext();
-    const {alertInfo, setAlertInfo} = useAlertMessages();
+    const {setAlertInfo} = useAlertMessages();
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
-
-    function handleAlertClose() {
-        setAlertInfo((currentAlert: AlertInfo) => {
-            return {...currentAlert, open: false} as AlertInfo;
-        });
-    }
 
     function checkScanResult(scanResult: QrScanResult) {
         setAlertInfo({
