@@ -56,6 +56,8 @@ const DisplayActiveStep = () => {
             setQrData("");
             setVc(null);
             setVcStatus({status: "NOK", checks: []});
+            setVerifying(false);
+            setActiveStep(3);
         }
     }, [qrData]);
 
