@@ -4,7 +4,7 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr.svg";
 import StyledButton from "./commons/StyledButton";
 import {ImportFromFile} from "./ImportFromFile";
-import {useActiveStepContext} from "../../../pages/Home";
+import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {AlertInfo, QrScanResult, ScanStatus} from "../../../types/data-types";
 import AlertMessage from "../../commons/AlertMessage";
@@ -20,15 +20,17 @@ const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
 }) => {
     const {setActiveStep} = useActiveStepContext();
-    const [alert, setAlert] = useState({open: false} as AlertInfo);
+    const {alertInfo, setAlertInfo} = useAlertMessages();
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
 
     function handleAlertClose() {
-        setAlert({open: false});
+        setAlertInfo((currentAlert: AlertInfo) => {
+            return {...currentAlert, open: false} as AlertInfo;
+        });
     }
 
     function checkScanResult(scanResult: QrScanResult) {
-        setAlert({
+        setAlertInfo({
             message: !!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected,
             severity: !!scanResult.data ? "success" : "error",
             open: true
@@ -99,7 +101,6 @@ const ScanQrCode = ({setScanResult}: {
                     </>
                 )
             }
-            <AlertMessage alertInfo={alert} handleClose={handleAlertClose}/>
         </Grid>
     );
 }
