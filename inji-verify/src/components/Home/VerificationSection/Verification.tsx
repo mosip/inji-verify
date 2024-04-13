@@ -12,7 +12,7 @@ const Verification = ({setQrData, verifying}: {
 }) => {
     const {setActiveStep} = useActiveStepContext();
     return (
-        <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>
+        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"

@@ -36,7 +36,7 @@ const ScanQrCode = ({setScanResult}: {
     }
 
     return (
-        <Grid container style={{padding: "78px 104px", textAlign: "center"}}>
+        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"
@@ -74,7 +74,7 @@ const ScanQrCode = ({setScanResult}: {
             </Grid>
             {
                 scanStatus === "Failed" && (
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{width: '350px'}}>
                         <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
                     </Grid>
                 )
@@ -87,7 +87,7 @@ const ScanQrCode = ({setScanResult}: {
             {
                 scanStatus !== "Failed" && (
                     <>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{width: '350px'}}>
                             <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
                         </Grid>
                         <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}}>
