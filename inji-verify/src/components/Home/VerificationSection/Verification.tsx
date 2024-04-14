@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import React from 'react';
+import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
-import QrScanner from "../VerificationProgressTracker/QrScanner";
-import {verify} from "../../../utils/verification-utils";
-import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
+import QrScanner from "./QrScanner";
+import {SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction
 }) => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
+
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{

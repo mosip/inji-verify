@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
-import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
+import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
 import {useAlertMessages} from "../../../pages/Home";
 
@@ -12,6 +12,7 @@ function QrScanner({setActiveStep, setQrData}: {
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
     const {setAlertInfo} = useAlertMessages();
+    const scannerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         timer = setTimeout(() => {
@@ -28,8 +29,18 @@ function QrScanner({setActiveStep, setQrData}: {
         };
     }, []);
 
+    useEffect(() => {
+        // Disable inbuilt border around the video
+        if (scannerRef?.current) {
+            let svgElements = scannerRef?.current?.getElementsByTagName('svg');
+            if (svgElements.length === 1) {
+                svgElements[0].style.display = 'none';
+            }
+        }
+    }, [scannerRef]);
+
     return (
-        <>
+        <div ref={scannerRef}>
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
@@ -57,10 +68,11 @@ function QrScanner({setActiveStep, setQrData}: {
                 }}
                 styles={{
                     container: {
-                        width: "350px",
+                        width: "330px",
                         placeContent: "center",
                         display: "grid",
-                        placeItems: "center"
+                        placeItems: "center",
+                        borderRadius: "6px"
                     },
                     video: {
                         zIndex: 1000
@@ -71,7 +83,7 @@ function QrScanner({setActiveStep, setQrData}: {
                 setActiveStep(VerificationSteps.ScanQrCodePrompt);
                 setIsCameraBlocked(false)
             }}/>
-        </>
+        </div>
     );
 }
 
