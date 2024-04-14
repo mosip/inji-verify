@@ -64,7 +64,8 @@ function QrScanner({setActiveStep, setQrData}: {
                             "ideal": 720,
                             "max": 1080
                         }
-                    }
+                    },
+                    delayBetweenScanSuccess: 100000 // Scan once
                 }}
                 styles={{
                     container: {
