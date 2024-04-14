@@ -1,27 +1,20 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
-import {AlertInfo} from "../../../types/data-types";
 import CameraAccessDenied from "../VerificationSection/CameraAccessDenied";
 import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
 import {useAlertMessages} from "../../../pages/Home";
 
-const InitialAlert: AlertInfo = {
-    message: "",
-    severity: undefined,
-    open: false
-}
+let timer: NodeJS.Timeout;
 
 function QrScanner({setActiveStep, setQrData}: {
     setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
 }) {
-    const [dataRead, setDataRead] = useState(false)
-    const isDataRead = useCallback(() => dataRead, [dataRead]);
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
     const {setAlertInfo} = useAlertMessages();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        timer = setTimeout(() => {
             setActiveStep(VerificationSteps.ScanQrCodePrompt);
             setAlertInfo({
                 open: true,
@@ -39,13 +32,13 @@ function QrScanner({setActiveStep, setQrData}: {
         <>
             <Scanner
                 onResult={(text, result) => {
-                    if (!isDataRead()) {
-                        console.log(text, result);
-                        setActiveStep(VerificationSteps.Verifying);
-                        setQrData(text);
-                    }
+                    console.log(text, result);
+                    setActiveStep(VerificationSteps.Verifying);
+                    setQrData(text);
                 }}
                 onError={(error) => {
+                    console.log('Clearing timeout - camera blocked');
+                    clearTimeout(timer);
                     setIsCameraBlocked(true);
                 }}
                 options={{

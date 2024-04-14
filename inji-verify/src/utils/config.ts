@@ -18,4 +18,4 @@ export const AlertMessages = {
     qrNotDetected: {message: "No MultiFormat Readers were able to detect the QR code.", severity: "error"} as AlertInfo
 };
 
-export const ScanSessionExpiryTime = 60000;
+export const ScanSessionExpiryTime = 60000; // in milliseconds
