@@ -58,15 +58,6 @@ const DisplayActiveStep = () => {
         }
     }, [qrData]);
 
-    useEffect(() => {
-        if (activeStep === 1) {
-            const timer = setTimeout(() => {
-
-            }, 60000);
-            return () => clearTimeout(timer);
-        }
-    }, [activeStep]);
-
     const setScanResult = (result: QrScanResult) => {
         if (!!qrData) {
             // show error message in snackbar

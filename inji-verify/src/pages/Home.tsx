@@ -26,9 +26,9 @@ function Home(props: any) {
     const getActiveStep = () => activeStep;
 
     const [alertInfo, setAlertInfo] = useState({
-        open: true,
+        open: false,
         severity: 'success',
-        message: 'Testing'
+        message: ''
     } as AlertInfo);
 
     return (

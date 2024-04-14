@@ -6,15 +6,8 @@ import StyledButton from "./commons/StyledButton";
 import {ImportFromFile} from "./ImportFromFile";
 import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
-import {AlertInfo, QrScanResult, ScanStatus} from "../../../types/data-types";
-import AlertMessage from "../../commons/AlertMessage";
-import {VerificationSteps} from "../../../utils/config";
-
-const AlertMessages = {
-    success: "QR code uploaded successfully!",
-    sessionExpired: "The scan session has expired due to inactivity. Please initiate a new scan.",
-    qrNotDetected: "No MultiFormat Readers were able to detect the QR code."
-};
+import {QrScanResult, ScanStatus} from "../../../types/data-types";
+import {AlertMessages, VerificationSteps} from "../../../utils/config";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
@@ -24,9 +17,10 @@ const ScanQrCode = ({setScanResult}: {
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
 
     function checkScanResult(scanResult: QrScanResult) {
+        let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
         setAlertInfo({
-            message: !!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected,
-            severity: !!scanResult.data ? "success" : "error",
+            message: alertInfo.message,
+            severity: alertInfo.severity,
             open: true
         });
         setScanResult(scanResult);
