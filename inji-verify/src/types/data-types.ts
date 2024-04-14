@@ -15,7 +15,7 @@ export type VcStatus = {
     }[];
 }
 
-export type InjiStepperStep = {
+export type VerificationStep = {
     label: string,
     description: string
 }
