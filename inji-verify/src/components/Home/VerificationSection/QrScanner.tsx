@@ -69,11 +69,11 @@ function QrScanner({setActiveStep, setQrData}: {
                 }}
                 styles={{
                     container: {
-                        width: "330px",
+                        width: "316px",
                         placeContent: "center",
                         display: "grid",
                         placeItems: "center",
-                        borderRadius: "6px"
+                        borderRadius: "12px"
                     },
                     video: {
                         zIndex: 1000

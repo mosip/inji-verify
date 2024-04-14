@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr.svg";
 import StyledButton from "./commons/StyledButton";
-import {ImportFromFile} from "./ImportFromFile";
+import {UploadQrCode} from "./UploadQrCode";
 import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {QrScanResult, ScanStatus} from "../../../types/data-types";
@@ -31,7 +31,7 @@ const ScanQrCode = ({setScanResult}: {
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"
-            }}>
+            }} order={0}>
                 <Typography style={{font: 'normal normal 600 20px/24px Inter', padding: '3px 0'}}>
                     Scan QR Code or Upload an Image
                 </Typography>
@@ -39,7 +39,7 @@ const ScanQrCode = ({setScanResult}: {
                     Please keep the QR code in the centre & clearly visible.
                 </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} order={1}>
                 <Box
                     style={{
                         backgroundImage: `url(${scanQr})`,
@@ -63,30 +63,22 @@ const ScanQrCode = ({setScanResult}: {
                     </div>
                 </Box>
             </Grid>
-            {
-                scanStatus === "Failed" && (
-                    <Grid item xs={12}>
-                        <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
-                    </Grid>
-                )
-            }
-            <Grid item xs={12}>
-                <StyledButton style={{margin: "6px 0", width: "350px"}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
+            <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
+                <UploadQrCode setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
+            </Grid>
+            <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
+                <StyledButton
+                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>
             {
                 scanStatus !== "Failed" && (
-                    <>
-                        <Grid item xs={12}>
-                            <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
-                        </Grid>
-                        <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}}>
-                            <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
-                                Allowed file formats: PNG/JPEG/JPG Min Size : 2 x 2 cm | Max Size : 10 x 10 cm
-                            </Typography>
-                        </Grid>
-                    </>
+                    <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
+                        <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
+                            Allowed file formats: PNG/JPEG/JPG Min Size : 2 x 2 cm | Max Size : 10 x 10 cm
+                        </Typography>
+                    </Grid>
                 )
             }
         </Grid>

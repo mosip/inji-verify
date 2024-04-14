@@ -25,13 +25,11 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const ImportFromFile = ({setScanResult, displayMessage, setScanStatus}:
+export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                                    { setScanResult: SetScanResultFunction,
                                        displayMessage: string,
                                        setScanStatus: (status: ScanStatus) => void
                                    }) => {
-    const {setActiveStep} = useActiveStepContext();
-
     return (
         <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
             <UploadButton displayMessage={displayMessage}/>
