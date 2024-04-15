@@ -19,8 +19,7 @@ const ScanQrCode = ({setScanResult}: {
     function checkScanResult(scanResult: QrScanResult) {
         let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
         setAlertInfo({
-            message: alertInfo.message,
-            severity: alertInfo.severity,
+            ...alertInfo,
             open: true
         });
         setScanResult(scanResult);

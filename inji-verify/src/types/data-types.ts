@@ -32,5 +32,6 @@ export type AlertSeverity = "success" | "info" | "warning" | "error" | undefined
 export type AlertInfo = {
     message?: string,
     severity?: AlertSeverity,
-    open?: boolean
+    open?: boolean,
+    autoHideDuration?: number
 }
