@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import {StepContent, Typography} from "@mui/material";
 
-const ColorlibStepIconRoot = styled('div')(({ ownerState }: {
+export const StepperIconContainer = styled('div')(({ ownerState }: {
     ownerState: { completed: boolean, active: boolean }
 }) => ({
     backgroundColor: '#FFF',
@@ -20,12 +21,17 @@ const ColorlibStepIconRoot = styled('div')(({ ownerState }: {
     font: 'normal normal 600 12px/15px Inter'
 }));
 
-export default function InjiStepperIcon(props: any) {
-    const { active, completed, className } = props;
+export const StepLabelContent = styled(Typography)`
+    font: normal normal bold 16px/20px Inter;
+`;
 
-    return (
-        <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
-            {props.icon}
-        </ColorlibStepIconRoot>
-    );
-}
+export const StepContentContainer = styled(StepContent)`
+    border-color: #FF7F00;
+    padding-bottom: 30px;
+    display: block
+`
+
+export const StepContentDescription = styled(Typography)`
+    font: normal normal normal 14px/19px Inter;
+    color: #535353;
+`

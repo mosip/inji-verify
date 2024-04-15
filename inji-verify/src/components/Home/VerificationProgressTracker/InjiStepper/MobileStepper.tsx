@@ -1,16 +1,17 @@
 import React from 'react';
-import {Step, StepLabel, Stepper, Typography} from "@mui/material";
-import {InjiStepperStep} from "../../../../types/data-types";
+import {Step, StepLabel, Stepper} from "@mui/material";
+import {VerificationStep} from "../../../../types/data-types";
+import {StepLabelContent} from "./styles";
 
-function MobileStepper({steps, activeStep}: {steps: InjiStepperStep[], activeStep: number}) {
+function MobileStepper({steps, activeStep}: {steps: VerificationStep[], activeStep: number}) {
     return (
         <Stepper style={{maxHeight: '350px'}} activeStep={activeStep} orientation="horizontal" alternativeLabel>
             {steps.map((step, index) => (
-                <Step key={step.label} style={{alignContent: 'start'}}>
+                <Step key={step.label}>
                     <StepLabel>
-                        <Typography style={{font: 'normal normal bold 16px/20px Inter'}}>
+                        <StepLabelContent>
                             {step.label}
-                        </Typography>
+                        </StepLabelContent>
                     </StepLabel>
                 </Step>
             ))}

@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
-import StyledButton from "../commons/StyledButton";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
 import {SetActiveStepFunction} from "../../../../types/function-types";
-import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
+import {ResultsSummaryContainer, VcDisplayCardContainer} from "./styles";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
@@ -38,21 +37,14 @@ const Result = ({vc, setActiveStep, vcStatus}: {
     // validate vc and show success/failure component
     return (
         <Box id="result-section" ref={resultSectionRef}>
-            <Box style={{
-                height: "340px",
-                backgroundColor: success ? "#4B9D1F" : "#CB4242",
-                color: "white"
-            }}>
-                <ResultSummary success={success} vc={null} setActiveStep={setActiveStep}/>
-            </Box>
-            <Box style={{
-                margin: "auto",
-                position: "absolute",
-                top: `${vcDisplayCardPositioning.top ?? 212}px`,
-                right: `${vcDisplayCardPositioning.right ?? 0}px`
-            }}>
+            <ResultsSummaryContainer success={success}>
+                <ResultSummary success={success}/>
+            </ResultsSummaryContainer>
+            <VcDisplayCardContainer
+                style={{position: "absolute"}}
+                cardPositioning={{top: vcDisplayCardPositioning.top, right: vcDisplayCardPositioning.right}}>
                 <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
-            </Box>
+            </VcDisplayCardContainer>
         </Box>
     );
 }

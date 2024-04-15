@@ -15,7 +15,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
                 opacity: 1,
                 padding: '18px 0',
                 color: '#FF7F00',
-                width: '350px',
+                width: '100%',
                 cursor: 'pointer'
             }}
             htmlFor={"upload-qr"}
@@ -25,15 +25,13 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const ImportFromFile = ({setScanResult, displayMessage, setScanStatus}:
+export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                                    { setScanResult: SetScanResultFunction,
                                        displayMessage: string,
                                        setScanStatus: (status: ScanStatus) => void
                                    }) => {
-    const {setActiveStep} = useActiveStepContext();
-
     return (
-        <div style={{margin: "6px auto", display: "flex", placeContent: "center"}}>
+        <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
             <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input

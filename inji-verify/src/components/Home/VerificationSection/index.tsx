@@ -6,6 +6,8 @@ import {verify} from "../../../utils/verification-utils";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
 import {useActiveStepContext} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
+import {decodeQrData} from "../../../utils/qr-utils";
+import {VerificationSteps} from "../../../utils/config";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
@@ -16,14 +18,12 @@ const DisplayActiveStep = () => {
     const [qrData, setQrData] = useState("");
     const [vc, setVc] = useState(null);
     const [vcStatus, setVcStatus] = useState({status: "Verifying", checks: []} as VcStatus);
-    const [verifying, setVerifying] = useState(false);
 
     useEffect(() => {
         if (qrData === "") return;
         try {
-            setActiveStep(2);
-            setVerifying(true);
-            let vc = JSON.parse(qrData);
+            setActiveStep(VerificationSteps.Verifying);
+            let vc = JSON.parse(decodeQrData(qrData));
             // TODO: is it a vc? - check format
             verify(vc)
                 .then(status => {
@@ -47,14 +47,14 @@ const DisplayActiveStep = () => {
                     setVcStatus({status: "NOK", checks: []});
                 }).finally(() => {
                     setQrData("");
-                    setVerifying(false);
-                    setActiveStep(3);
+                    setActiveStep(VerificationSteps.DisplayResult);
             });
         } catch (error) {
             console.error("Error occurred while reading the qrData: ", error);
             setQrData("");
             setVc(null);
             setVcStatus({status: "NOK", checks: []});
+            setActiveStep(VerificationSteps.DisplayResult);
         }
     }, [qrData]);
 
@@ -66,12 +66,12 @@ const DisplayActiveStep = () => {
     }
 
     switch (activeStep) {
-        case 0:
+        case VerificationSteps.ScanQrCodePrompt:
             return (<ScanQrCode setScanResult={setScanResult}/>);
-        case 1:
-        case 2:
-            return (<Verification setQrData={setQrData} verifying={verifying}/>);
-        case 3:
+        case VerificationSteps.ActivateCamera:
+        case VerificationSteps.Verifying:
+            return (<Verification setQrData={setQrData}/>);
+        case VerificationSteps.DisplayResult:
             return (<Result setActiveStep={setActiveStep} vc={vc} vcStatus={vcStatus}/>);
         default:
             return (<></>);

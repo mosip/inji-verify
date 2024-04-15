@@ -4,10 +4,8 @@ import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/veri
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 import {SetActiveStepFunction} from "../../../../types/function-types";
 
-const ResultSummary = ({success, vc, setActiveStep}: {
-    success: boolean,
-    vc: any,
-    setActiveStep: SetActiveStepFunction
+const ResultSummary = ({success}: {
+    success: boolean
 }) => {
     return (
         <Grid container>
