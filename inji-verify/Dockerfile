@@ -22,6 +22,18 @@ RUN npm run build
 # Use an official Nginx image as the final production image
 FROM nginx:latest
 
+# Add the ARGs as environment variables
+ARG SOURCE
+ARG COMMIT_HASH
+ARG COMMIT_ID
+ARG BUILD_TIME
+
+# Copy labels from build stage
+LABEL source=${SOURCE}
+LABEL commit_hash=${COMMIT_HASH}
+LABEL commit_id=${COMMIT_ID}
+LABEL build_time=${BUILD_TIME}
+
 # Copy the built React app from the build container to the Nginx container
 COPY --from=build /app/build /usr/share/nginx/html
 
