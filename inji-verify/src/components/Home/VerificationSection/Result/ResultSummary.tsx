@@ -40,8 +40,8 @@ const ResultSummary = ({success}: {
                     <Grid item xs={12}>
                         <Typography style={{font: "normal normal normal 16px/20px Inter"}}>
                             {success
-                                ? "Congratulations, the given certificate is valid!"
-                                : "Unfortunately, the given certificate is Invalid!"}
+                                ? "Congratulations, the given credential is valid!"
+                                : "Unfortunately, the given credential is invalid!"}
                         </Typography>
                     </Grid>
                 </Grid>

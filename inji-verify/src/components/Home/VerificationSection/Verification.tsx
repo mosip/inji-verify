@@ -5,6 +5,7 @@ import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import {SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
+import StyledButton from "./commons/StyledButton";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction
@@ -43,6 +44,13 @@ const Verification = ({setQrData}: {
                             />)
                     }
                 </Box>
+            </Grid>
+            <Grid item xs={12}>
+                <StyledButton
+                    style={{width: '350px', marginTop: "18px"}}
+                    onClick={() => {setActiveStep(0)}}>
+                    Back
+                </StyledButton>
             </Grid>
         </Grid>
     );
