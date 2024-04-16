@@ -64,7 +64,10 @@ const ScanQrCode = ({setScanResult}: {
                 </Box>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
-                <UploadQrCode setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
+                <UploadQrCode
+                    setScanResult={checkScanResult}
+                    setScanStatus={setScanStatus}
+                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton

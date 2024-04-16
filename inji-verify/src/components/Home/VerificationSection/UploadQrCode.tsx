@@ -69,6 +69,7 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                         setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
                         return;
                     }
+                    setActiveStep(VerificationSteps.Verifying);
                     scanFilesForQr(file)
                         .then(scanResult => {
                             setScanStatus(!!scanResult.data ? "Success" : "Failed")
