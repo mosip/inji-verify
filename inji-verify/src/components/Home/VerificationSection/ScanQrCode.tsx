@@ -19,8 +19,7 @@ const ScanQrCode = ({setScanResult}: {
     function checkScanResult(scanResult: QrScanResult) {
         let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
         setAlertInfo({
-            message: alertInfo.message,
-            severity: alertInfo.severity,
+            ...alertInfo,
             open: true
         });
         setScanResult(scanResult);
@@ -64,7 +63,7 @@ const ScanQrCode = ({setScanResult}: {
                 </Box>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
-                <UploadQrCode setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
+                <UploadQrCode setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton
@@ -76,7 +75,7 @@ const ScanQrCode = ({setScanResult}: {
                 scanStatus !== "Failed" && (
                     <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
                         <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
-                            Allowed file formats: PNG/JPEG/JPG Min Size : 2 x 2 cm | Max Size : 10 x 10 cm
+                            Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB
                         </Typography>
                     </Grid>
                 )

@@ -1,9 +1,8 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {AlertInfo, ScanStatus} from "../../../types/data-types";
+import {ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
-import {useState} from "react";
-import AlertMessage from "../../commons/AlertMessage";
-import {useActiveStepContext} from "../../../pages/Home";
+import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
+import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -30,6 +29,8 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                                        displayMessage: string,
                                        setScanStatus: (status: ScanStatus) => void
                                    }) => {
+    const {setActiveStep} = useActiveStepContext();
+    const {setAlertInfo} = useAlertMessages();
     return (
         <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
             <UploadButton displayMessage={displayMessage}/>
@@ -47,6 +48,12 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
+                    if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
+                        console.log(`File size: `, file?.size);
+                        setActiveStep(VerificationSteps.ScanQrCodePrompt);
+                        setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
+                        return;
+                    }
                     scanFilesForQr(file)
                         .then(scanResult => {
                             setScanStatus(!!scanResult.data ? "Success" : "Failed")

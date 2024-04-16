@@ -8,7 +8,7 @@ const AlertMessage = ({alertInfo, handleClose}: {
     return (
         <Snackbar
             open={alertInfo.open}
-            autoHideDuration={6000}
+            autoHideDuration={alertInfo.autoHideDuration ?? 4000}
             onClose={handleClose}
             message={alertInfo.message}
             anchorOrigin={{vertical: "top", horizontal: "right"}}
