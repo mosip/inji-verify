@@ -20,7 +20,7 @@ export const AlertMessages = {
     unsupportedFileSize: {message: "QR code size is not supported. Please use a QR code within the specified dimensions.", severity: "error"} as AlertInfo,
 };
 
-export const ScanSessionExpiryTime = 3000; // in milliseconds
+export const ScanSessionExpiryTime = 60000; // in milliseconds
 
 export const UploadFileSizeLimits = {
     min: 10000, // 10KB
