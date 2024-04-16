@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr.svg";
+import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
