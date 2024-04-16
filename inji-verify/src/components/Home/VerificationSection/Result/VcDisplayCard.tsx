@@ -39,7 +39,7 @@ function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveSt
                 <StyledButton style={{margin: "24px auto"}} onClick={() => {
                     setActiveStep(VerificationSteps.ScanQrCodePrompt)
                 }}>
-                    Scan Another QR Code
+                    Verify Another QR Code
                 </StyledButton>
             </Box>
         </Box>

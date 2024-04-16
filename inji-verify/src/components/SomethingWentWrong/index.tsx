@@ -28,14 +28,14 @@ function SomethingWentWrong(props: any) {
                     font: 'normal normal 500 24px/29px Inter',
                     color: '#2C2C2C', margin: '5px auto'
                 }}>
-                    Something went wrong!
+                    No Internet Connection!
                 </Typography>
                 <Typography style={{
                     font: 'normal normal normal 14px/20px Inter',
                     color: '#7B7B7B',
                     margin: '5px auto'
                 }}>
-                    Our experts are working hard to make things working again.
+                    Oops! We can’t seem to connect. Check your internet connection and try again.
                 </Typography>
                 <StyledButton
                     style={{margin: '30px auto'}}

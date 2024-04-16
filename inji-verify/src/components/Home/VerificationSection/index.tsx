@@ -71,6 +71,9 @@ const DisplayActiveStep = () => {
             // show error message in snackbar
         }
         setQrData(result.data || "");
+        if (!result.data) {
+            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+        }
     }
 
     switch (activeStep) {

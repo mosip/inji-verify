@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr.svg";
+import qr from "../../../assets/qr-icon.png";
+import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
@@ -63,10 +64,14 @@ const ScanQrCode = ({setScanResult}: {
                 </Box>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
-                <UploadQrCode setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
+                <UploadQrCode
+                    setScanResult={checkScanResult}
+                    setScanStatus={setScanStatus}
+                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton
+                    icon={<TabScanIcon/>}
                     style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>
