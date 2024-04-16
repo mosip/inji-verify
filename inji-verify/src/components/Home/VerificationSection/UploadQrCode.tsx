@@ -3,6 +3,7 @@ import {ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
+import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -14,19 +15,33 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
                 opacity: 1,
                 padding: '18px 0',
                 color: '#FF7F00',
-                width: '100%',
-                cursor: 'pointer'
+                width: '350px',
+                cursor: 'pointer',
+                textAlign: 'center'
             }}
             htmlFor={"upload-qr"}
         >
-            {displayMessage}
+            <span style={{
+                margin: "auto",
+                display: 'flex',
+                placeContent: 'center',
+                width: '100%'
+            }}>
+                <span style={{display: "inline-grid", marginRight: "6px"}}>
+                    <UploadIcon/>
+                </span>
+                <span style={{display: "inline-grid"}}>
+                    {displayMessage}
+                </span>
+            </span>
         </label>
     );
 }
 
 export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
-                                   { setScanResult: SetScanResultFunction,
-                                       displayMessage: string,
+                                 {
+                                     setScanResult: SetScanResultFunction,
+                                     displayMessage: string,
                                        setScanStatus: (status: ScanStatus) => void
                                    }) => {
     const {setActiveStep} = useActiveStepContext();
