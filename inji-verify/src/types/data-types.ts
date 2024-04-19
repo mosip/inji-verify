@@ -35,3 +35,34 @@ export type AlertInfo = {
     open?: boolean,
     autoHideDuration?: number
 }
+
+export type ApplicationActionType = 'TRIGGER_QR_READ' | 'QR_READ_COMPLETE' | 'TRIGGER_VERIFICATION' | 'VERIFICATION_COMPLETE' | 'GO_HOME_SCREEN' | 'RAISE_ALERT';
+
+export type VerificationFlow = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
+
+export type ApplicationAction = {
+    type: ApplicationActionType,
+    payload: ApplicationState
+}
+
+export type ApplicationState = {
+    flow: VerificationFlow,
+    activeScreen: number, // Verification steps
+    qrReadResult?: QrReadResult | undefined,
+    verificationResult?: VerificationResult,
+    alert?: AlertInfo
+}
+
+export type QrReadResult = {
+    alert?: AlertInfo,
+    qrData?: string
+}
+
+export type VerificationTrigger = {
+
+}
+
+export type VerificationResult = {
+    vc: any,
+    vcStatus: VcStatus
+}

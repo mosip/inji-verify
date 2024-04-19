@@ -1,9 +1,11 @@
 import React from 'react';
-import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
+import {Box, Button, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
 import {VerificationStep} from "../../../../types/data-types";
 import {useActiveStepContext} from "../../../../pages/Home";
+import {useAppDispatch, useAppSelector} from "../../../../redux/hooks";
+import {ApplicationActions, TriggerQrRead} from "../../../../redux/action";
 
 const steps: VerificationStep[] = [
     {
@@ -27,15 +29,16 @@ const steps: VerificationStep[] = [
 
 const InjiStepper = () => {
     const isDesktop = useMediaQuery('@media (min-width:768px)');
-    const {getActiveStep} = useActiveStepContext();
-    const activeStep = getActiveStep();
+    const activeScreen = useAppSelector(state => state.state.activeScreen);
+
+    console.log("Screen: ", activeScreen);
 
     return (
         <Box style={{marginTop: '30px'}}>
             {
                 isDesktop
-                    ? (<DesktopStepper steps={steps} activeStep={activeStep}/>)
-                    : (<MobileStepper steps={steps} activeStep={activeStep}/>)
+                    ? (<DesktopStepper steps={steps} activeStep={activeScreen}/>)
+                    : (<MobileStepper steps={steps} activeStep={activeScreen}/>)
             }
         </Box>
     );

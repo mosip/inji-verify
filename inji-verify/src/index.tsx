@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {GlobalStyles, ThemeProvider} from "@mui/material";
 import {InjiTheme} from "./utils/inji-theme";
+import {Provider} from "react-redux";
+import store from "./redux/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,10 +17,12 @@ const inputGlobalStyles = <GlobalStyles styles={{ fontFamily: 'Inter'}} />;
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={InjiTheme}>
-        {inputGlobalStyles}
-        <App />
-    </ThemeProvider>
+    <Provider store={store}>
+        <ThemeProvider theme={InjiTheme}>
+            {inputGlobalStyles}
+            <App />
+        </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 
