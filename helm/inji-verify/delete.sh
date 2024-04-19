@@ -6,13 +6,13 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-function Deleting_injiverify-ui() {
-  NS=esignet
+function Deleting_injiverify() {
+  NS=injiverify
   while true; do
       read -p "Are you sure you want to delete all esignet helm charts?(Y/n) " yn
       if [ $yn = "Y" ]
         then
-          helm -n $NS delete injiverify-ui
+          helm -n $NS delete injiverify
           break
         else
           break

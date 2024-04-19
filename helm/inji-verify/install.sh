@@ -6,8 +6,8 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-NS=esignet
-CHART_VERSION=1.0.0
+NS=injiverify
+CHART_VERSION=0.0.1-develop
 
 echo Create $NS namespace
 kubectl create ns $NS
@@ -20,18 +20,17 @@ function installing_inji-verify() {
   helm repo update
 
   echo Copy configmaps
- # ./copy_cm.sh
+  ./copy_cm.sh
 
-  ESIGNET_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-esignet-host})
-  INJI_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiweb-host})
+  INJI_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIWEB
   helm -n $NS install inji-verify mosip/inji-verify \
   -f values.yaml \
   --set esignet_redirect_url=$ESIGNET_HOST \
-  --set istio.hosts\[0\]=$INJI_HOST \
+  --set istio.hosts\[0\]=$INJIVERIFY_HOST \
   --version $CHART_VERSION
 
-#  kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
+  kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
   echo Installed inji-verify
   return 0
