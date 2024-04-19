@@ -30,6 +30,7 @@ const DisplayActiveStep = () => {
         catch (error) {
             setActiveStep(VerificationSteps.ScanQrCodePrompt);
             setAlertInfo({...AlertMessages.qrNotSupported, open: true})
+            setQrData("");
             return;
         }
         try {
