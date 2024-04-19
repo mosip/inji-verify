@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Button, ButtonProps} from "@mui/material";
 
 type StyledButtonProps = ButtonProps & {
-    fill?: boolean
+    fill?: boolean,
+    icon?: ReactElement
 }
 
 function StyledButton(props: StyledButtonProps) {
@@ -19,6 +20,13 @@ function StyledButton(props: StyledButtonProps) {
                 ...props.style
             }}
         >
+            {
+                props.icon && (
+                    <span style={{display: "inline-grid", marginRight: "6px"}}>
+                        {props.icon}
+                    </span>
+                )
+            }
             <span style={{
                 font: 'normal normal bold 16px/21px Inter',
                 textTransform: 'none'

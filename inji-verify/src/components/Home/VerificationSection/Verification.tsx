@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import React from 'react';
+import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
-import QrScanner from "../VerificationProgressTracker/QrScanner";
-import {verify} from "../../../utils/verification-utils";
-import {SetActiveStepFunction, SetQrDataFunction} from "../../../types/function-types";
+import QrScanner from "./QrScanner";
+import {SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
+import StyledButton from "./commons/StyledButton";
 
-const Verification = ({setQrData, verifying}: {
-    setQrData: SetQrDataFunction, verifying: boolean
+const Verification = ({setQrData}: {
+    setQrData: SetQrDataFunction
 }) => {
-    const {setActiveStep} = useActiveStepContext();
+    const {getActiveStep, setActiveStep} = useActiveStepContext();
+
     return (
-        <Grid container style={{padding: "104px", textAlign: "center", placeContent: "center"}}>
+        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"
@@ -35,7 +36,7 @@ const Verification = ({setQrData, verifying}: {
                     margin: "auto",
                 }}>
                     {
-                        verifying
+                        getActiveStep() === 2
                             ? (<Loader/>)
                             : (<QrScanner
                                 setActiveStep={setActiveStep}
@@ -43,6 +44,13 @@ const Verification = ({setQrData, verifying}: {
                             />)
                     }
                 </Box>
+            </Grid>
+            <Grid item xs={12}>
+                <StyledButton
+                    style={{width: '350px', marginTop: "18px"}}
+                    onClick={() => {setActiveStep(0)}}>
+                    Back
+                </StyledButton>
             </Grid>
         </Grid>
     );

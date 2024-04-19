@@ -2,18 +2,18 @@ import React from 'react';
 import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
-import {InjiStepperStep} from "../../../../types/data-types";
+import {VerificationStep} from "../../../../types/data-types";
 import {useActiveStepContext} from "../../../../pages/Home";
 
-const steps: InjiStepperStep[] = [
+const steps: VerificationStep[] = [
     {
-        label: 'Scan QR Code',
-        description: 'Tap the button and display the QR code shown on your digital certificate / card',
+        label: 'Scan QR Code or Upload QR code',
+        description: 'Tap the button and display the QR code shown on your digital credentials / card',
     },
     {
         label: 'Activate your device’s camera',
         description:
-            'A notification will prompt to activate your device’s camera',
+            'Activate your device camera for scanning: A notification will be prompt to activate your device camera',
     },
     {
         label: 'Verification',

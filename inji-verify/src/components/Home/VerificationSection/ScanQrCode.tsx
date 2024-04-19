@@ -1,46 +1,37 @@
 import React, {useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr.svg";
+import qr from "../../../assets/qr-icon.png";
+import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
-import {ImportFromFile} from "./ImportFromFile";
-import {useActiveStepContext} from "../../../pages/Home";
+import {UploadQrCode} from "./UploadQrCode";
+import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
-import {AlertInfo, QrScanResult, ScanStatus} from "../../../types/data-types";
-import AlertMessage from "../../commons/AlertMessage";
-
-const AlertMessages = {
-    success: "QR code uploaded successfully!",
-    sessionExpired: "The scan session has expired due to inactivity. Please initiate a new scan.",
-    qrNotDetected: "No MultiFormat Readers were able to detect the QR code."
-};
+import {QrScanResult, ScanStatus} from "../../../types/data-types";
+import {AlertMessages, VerificationSteps} from "../../../utils/config";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
 }) => {
     const {setActiveStep} = useActiveStepContext();
-    const [alert, setAlert] = useState({open: false} as AlertInfo);
+    const {setAlertInfo} = useAlertMessages();
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
 
-    function handleAlertClose() {
-        setAlert({open: false});
-    }
-
     function checkScanResult(scanResult: QrScanResult) {
-        setAlert({
-            message: !!scanResult.data ? AlertMessages.success : AlertMessages.qrNotDetected,
-            severity: !!scanResult.data ? "success" : "error",
+        let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
+        setAlertInfo({
+            ...alertInfo,
             open: true
         });
         setScanResult(scanResult);
     }
 
     return (
-        <Grid container style={{padding: "78px 104px", textAlign: "center"}}>
+        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"
-            }}>
+            }} order={0}>
                 <Typography style={{font: 'normal normal 600 20px/24px Inter', padding: '3px 0'}}>
                     Scan QR Code or Upload an Image
                 </Typography>
@@ -48,7 +39,7 @@ const ScanQrCode = ({setScanResult}: {
                     Please keep the QR code in the centre & clearly visible.
                 </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} order={1}>
                 <Box
                     style={{
                         backgroundImage: `url(${scanQr})`,
@@ -72,33 +63,28 @@ const ScanQrCode = ({setScanResult}: {
                     </div>
                 </Box>
             </Grid>
-            {
-                scanStatus === "Failed" && (
-                    <Grid item xs={12}>
-                        <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload Another QR Code"/>
-                    </Grid>
-                )
-            }
-            <Grid item xs={12}>
-                <StyledButton style={{margin: "6px 0", width: "350px"}} fill onClick={() => setActiveStep(1)}>
+            <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
+                <UploadQrCode
+                    setScanResult={checkScanResult}
+                    setScanStatus={setScanStatus}
+                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
+            </Grid>
+            <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
+                <StyledButton
+                    icon={<TabScanIcon/>}
+                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>
             {
                 scanStatus !== "Failed" && (
-                    <>
-                        <Grid item xs={12}>
-                            <ImportFromFile setScanResult={checkScanResult} setScanStatus={setScanStatus} displayMessage="Upload QR Code"/>
-                        </Grid>
-                        <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}}>
-                            <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
-                                Allowed file formats: PNG/JPEG/JPG Min Size : 2 x 2 cm | Max Size : 10 x 10 cm
-                            </Typography>
-                        </Grid>
-                    </>
+                    <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
+                        <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
+                            Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB
+                        </Typography>
+                    </Grid>
                 )
             }
-            <AlertMessage alertInfo={alert} handleClose={handleAlertClose}/>
         </Grid>
     );
 }

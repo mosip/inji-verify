@@ -4,10 +4,8 @@ import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/veri
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 import {SetActiveStepFunction} from "../../../../types/function-types";
 
-const ResultSummary = ({success, vc, setActiveStep}: {
-    success: boolean,
-    vc: any,
-    setActiveStep: SetActiveStepFunction
+const ResultSummary = ({success}: {
+    success: boolean
 }) => {
     return (
         <Grid container>
@@ -42,8 +40,8 @@ const ResultSummary = ({success, vc, setActiveStep}: {
                     <Grid item xs={12}>
                         <Typography style={{font: "normal normal normal 16px/20px Inter"}}>
                             {success
-                                ? "Congratulations, the given certificate is valid!"
-                                : "Unfortunately, the given certificate is Invalid!"}
+                                ? "Congratulations, the given credential is valid!"
+                                : "Unfortunately, the given credential is invalid!"}
                         </Typography>
                     </Grid>
                 </Grid>
