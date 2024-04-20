@@ -9,6 +9,7 @@ import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {QrScanResult, ScanStatus} from "../../../types/data-types";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {useNavigate} from "react-router-dom";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
@@ -16,6 +17,8 @@ const ScanQrCode = ({setScanResult}: {
     const {setActiveStep} = useActiveStepContext();
     const {setAlertInfo} = useAlertMessages();
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
+
+    const navigate = useNavigate();
 
     function checkScanResult(scanResult: QrScanResult) {
         let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
@@ -72,7 +75,17 @@ const ScanQrCode = ({setScanResult}: {
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton
                     icon={<TabScanIcon/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
+                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}}
+                    fill
+                    onClick={() => {
+                        if (!window.navigator.onLine) {
+                            navigate('/offline');
+                        }
+                        else {
+                            setActiveStep(VerificationSteps.ActivateCamera)
+                        }
+                    }}
+                >
                     Scan the QR Code
                 </StyledButton>
             </Grid>
