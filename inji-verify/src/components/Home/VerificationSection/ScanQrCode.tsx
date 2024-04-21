@@ -74,7 +74,7 @@ const ScanQrCode = ({setScanResult}: {
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton
                     icon={<img src={tabScanIcon}/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
+                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill={true} onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>

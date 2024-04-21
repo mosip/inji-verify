@@ -41,6 +41,7 @@ const CameraAccessDenied = ({open, handleClose}: {open: boolean, handleClose: ()
                         We need your camera to scan the code. Go to your browser settings and allow camera access for this website.
                     </Typography>
                     <StyledButton
+                        dataTestId='i-understand-camera-access-denied'
                         onClick={handleClose}
                         style={{width: '180px', margin: '18px auto'}}>
                         I Understand
