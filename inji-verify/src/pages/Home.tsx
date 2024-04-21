@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Grid} from "@mui/material";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import VerificationSection from "../components/Home/VerificationSection";
@@ -6,7 +6,7 @@ import Copyrights from "../components/Home/VerificationProgressTracker/Copyright
 import {VerificationSteps} from "../utils/config";
 import {AlertInfo} from "../types/data-types";
 import AlertMessage from "../components/commons/AlertMessage";
-import {ActiveStepContext} from "../hooks/useActiveStepContext";
+import ActiveStepContext from "../hooks/useActiveStepContext";
 import {AlertsContext} from "../hooks/useAlertMessages";
 
 function Home(props: any) {

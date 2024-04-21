@@ -5,5 +5,7 @@ const setActiveStep = (newValue: number) => {
     activeStep = newValue;
 }
 const getActiveStep = () => activeStep;
-export const ActiveStepContext = createContext({getActiveStep, setActiveStep});
+const ActiveStepContext = createContext({getActiveStep, setActiveStep});
 export const useActiveStepContext = () => useContext(ActiveStepContext);
+
+export default ActiveStepContext;

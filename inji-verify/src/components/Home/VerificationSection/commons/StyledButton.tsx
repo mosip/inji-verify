@@ -3,13 +3,15 @@ import {Button, ButtonProps} from "@mui/material";
 
 type StyledButtonProps = ButtonProps & {
     fill?: boolean,
-    icon?: ReactElement
+    icon?: ReactElement,
+    dataTestId?: string
 }
 
 function StyledButton(props: StyledButtonProps) {
     return (
         <Button
-            {...props}
+            {...(props as ButtonProps)}
+            data-testid={props.dataTestId ?? 'styled-button'}
             style={{
                 background: `${props.fill ? '#FF7F00' : '#FFFFFF'} 0% 0% no-repeat padding-box`,
                 border: '2px solid #FF7F00',

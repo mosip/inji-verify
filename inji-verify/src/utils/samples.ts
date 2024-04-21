@@ -62,7 +62,7 @@ export const SAMPLE_VERIFIABLE_CREDENTIAL = {
     }
 }
 
-export const SAMPLE_WEB_DID_VC = {
+export const SAMPLE_WEB_DID_VC: any = {
     "id": "did:rcw:4b9f26f7-a356-4347-bcdb-5dcd6ef52059",
     "type": [
         "VerifiableCredential",
