@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr-icon.png";
-import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
+// import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
+import tabScanIcon from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {SetScanResultFunction} from "../../../types/function-types";
@@ -72,7 +73,7 @@ const ScanQrCode = ({setScanResult}: {
             </Grid>
             <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
                 <StyledButton
-                    icon={<TabScanIcon/>}
+                    icon={<img src={tabScanIcon}/>}
                     style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => setActiveStep(VerificationSteps.ActivateCamera)}>
                     Scan the QR Code
                 </StyledButton>

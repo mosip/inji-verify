@@ -33,7 +33,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --passWithNoTests --updateSnapshot --coverage",
+    "test": "jest --passWithNoTests --updateSnapshot --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
