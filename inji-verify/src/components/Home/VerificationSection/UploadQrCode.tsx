@@ -1,13 +1,15 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
 import {ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
+import {useActiveStepContext} from "../../../hooks/useActiveStepContext";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
+import {useAlertMessages} from "../../../hooks/useAlertMessages";
 
-function UploadButton({ displayMessage }: {displayMessage: string}) {
+export function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
+            data-testid={"upload-qr-label"}
             style={{
                 background: `#FFFFFF 0% 0% no-repeat padding-box`,
                 border: '2px solid #FF7F00',
@@ -53,6 +55,7 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
             <input
                 type="file"
                 id="upload-qr"
+                data-testid="upload-qr-input"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg, .pdf"
                 style={{

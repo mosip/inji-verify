@@ -4,6 +4,10 @@ module.exports = {
   testEnvironment: 'jsdom',
   rootDir: './',
   testPathIgnorePatterns: ["<rootDir>/node_modules"],
-  testMatch: ["<rootDir>/src/**/*.test.ts"],
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"]
+  testMatch: ["<rootDir>/src/__tests__/**/*.spec.tsx", "<rootDir>/src/__tests__/**/*.spec.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  transform: {
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  }
 };

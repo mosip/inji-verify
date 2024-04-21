@@ -5,10 +5,11 @@ import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {QrScanResult, ScanStatus} from "../../../types/data-types";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {useActiveStepContext} from "../../../hooks/useActiveStepContext";
+import {useAlertMessages} from "../../../hooks/useAlertMessages";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction

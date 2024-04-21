@@ -6,20 +6,8 @@ import Copyrights from "../components/Home/VerificationProgressTracker/Copyright
 import {VerificationSteps} from "../utils/config";
 import {AlertInfo} from "../types/data-types";
 import AlertMessage from "../components/commons/AlertMessage";
-import {SetAlertInfoFunction} from "../types/function-types";
-
-let activeStep: number = 0;
-const setActiveStep = (newValue: number) => {
-    activeStep = newValue;
-}
-const getActiveStep = () => activeStep;
-const ActiveStepContext = createContext({getActiveStep, setActiveStep});
-export const useActiveStepContext = () => useContext(ActiveStepContext);
-
-let alert: AlertInfo = {open: false};
-let setAlertInfo: React.Dispatch<React.SetStateAction<AlertInfo>> = value => {};
-const AlertsContext = createContext({alertInfo: alert, setAlertInfo});
-export const useAlertMessages = () => useContext(AlertsContext);
+import {ActiveStepContext} from "../hooks/useActiveStepContext";
+import {AlertsContext} from "../hooks/useAlertMessages";
 
 function Home(props: any) {
     const [activeStep, setActiveStep] = useState(VerificationSteps.ScanQrCodePrompt);
