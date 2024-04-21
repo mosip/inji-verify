@@ -9,5 +9,9 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
     '^.+\\.(js|jsx)$': 'babel-jest',
+    "\\.svg$": "<rootDir>/__mocks__/svgFileTransformer.js"
+  },
+  moduleNameMapper: {
+    "@mosip/pixelpass": "<rootDir>/__mocks__/@mosip/pixelpass/src/index.js"
   }
 };

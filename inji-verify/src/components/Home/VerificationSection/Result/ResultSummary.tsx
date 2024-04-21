@@ -1,8 +1,11 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
-import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
-import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
-import {SetActiveStepFunction} from "../../../../types/function-types";
+// import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
+// import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
+
+import verificationSuccessIcon from "../../../../assets/verification-success-icon.svg";
+import verificationFailedIcon from "../../../../assets/verification-failed-icon.svg";
+
 
 const ResultSummary = ({success}: {
     success: boolean
@@ -27,7 +30,7 @@ const ResultSummary = ({success}: {
                         fontSize: "24px",
                         margin: "7px auto"
                     }}>
-                        {success ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
+                        <img src={success ? verificationSuccessIcon : verificationFailedIcon} alt='status-icon'/>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography style={{

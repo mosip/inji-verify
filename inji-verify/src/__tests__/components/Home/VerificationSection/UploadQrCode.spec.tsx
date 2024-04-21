@@ -18,7 +18,7 @@ describe("UploadQrCode", () => {
         render(<UploadQrCode setScanResult={setScanResultMock} displayMessage={displayMessage} setScanStatus={setScanStatusMock}/>);
 
         expect(screen.getByText("Upload Qr Code")).toBeInTheDocument();
-        expect(screen.getByTestId("upload-qr-label")).toHaveAttribute("htmlFor", id);
+        expect(screen.getByTestId("upload-qr-label")).toHaveAttribute("for", id);
         expect(screen.getByTestId("upload-qr-input")).toHaveAttribute("id", id)
 
     })

@@ -3,7 +3,7 @@ import {ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../hooks/useActiveStepContext";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
-import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
+import uploadIcon from "../../../assets/upload-icon.svg";
 import {useAlertMessages} from "../../../hooks/useAlertMessages";
 
 export function UploadButton({ displayMessage }: {displayMessage: string}) {
@@ -30,7 +30,7 @@ export function UploadButton({ displayMessage }: {displayMessage: string}) {
                 width: '100%'
             }}>
                 <span style={{display: "inline-grid", marginRight: "6px"}}>
-                    <UploadIcon/>
+                    <img src={uploadIcon} alt='upload-icon'/>
                 </span>
                 <span style={{display: "inline-grid"}}>
                     {displayMessage}
