@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.24.1",
+    "@babel/preset-env": "^7.24.4",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mosip/pixelpass": "0.1.2",
@@ -31,7 +33,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --passWithNoTests --updateSnapshot --coverage",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --passWithNoTests --updateSnapshot --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -53,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.24.4",
     "@babel/preset-typescript": "^7.24.1",
     "@types/jest": "^29.5.12",
     "add": "^2.0.6",

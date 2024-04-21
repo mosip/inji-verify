@@ -4,8 +4,8 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import {SetQrDataFunction} from "../../../types/function-types";
-import {useActiveStepContext} from "../../../pages/Home";
 import StyledButton from "./commons/StyledButton";
+import {useActiveStepContext} from "../../../hooks/useActiveStepContext";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction

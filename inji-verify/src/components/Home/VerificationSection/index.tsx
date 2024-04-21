@@ -4,10 +4,11 @@ import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {useActiveStepContext} from "../../../hooks/useActiveStepContext";
+import {useAlertMessages} from "../../../hooks/useAlertMessages";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
-import {useAlertMessages} from "../../../pages/Home";
+import {useAlertMessages} from "../../../hooks/useAlertMessages";
 
 let timer: NodeJS.Timeout;
 
