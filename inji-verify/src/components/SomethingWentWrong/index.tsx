@@ -1,6 +1,5 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
-import underConstruction from '../../assets/under_construction.svg';
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 
@@ -19,7 +18,7 @@ function SomethingWentWrong(props: any) {
             width: '90%'
         }}>
             <Grid item xs={12}>
-                <img src={underConstruction} width={372} style={{margin: '30px auto'}}/>
+                <img src={'/assets/images/under_construction.svg'} width={372} style={{margin: '30px auto'}}/>
             </Grid>
             <Grid item xs={12}>
                 <Typography
