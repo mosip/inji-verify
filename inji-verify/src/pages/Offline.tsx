@@ -1,6 +1,5 @@
 import React from 'react';
 import {Box} from "@mui/material";
-import injiLogo from '../assets/inji-logo.svg';
 import SomethingWentWrong from "../components/SomethingWentWrong";
 
 function Offline(props: any) {
@@ -10,7 +9,7 @@ function Offline(props: any) {
             background: '#FAFBFD 0% 0% no-repeat padding-box',
             height: '100%'
         }}>
-            <img src={injiLogo}/>
+            <img src={'/assets/images/inji-logo.svg'}/>
             <SomethingWentWrong/>
         </Box>
     );
