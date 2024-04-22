@@ -4,8 +4,10 @@ import {SetScanResultFunction} from "../../../types/function-types";
 import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
+import {useNavigate} from "react-router-dom";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
+    const navigate = useNavigate();
     return (
         <label
             style={{
@@ -20,6 +22,12 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
                 textAlign: 'center'
             }}
             htmlFor={"upload-qr"}
+            onClick={(event) => {
+                if (!window.navigator.onLine) {
+                    event.preventDefault();
+                    navigate('/offline');
+                }
+            }}
         >
             <span style={{
                 margin: "auto",
