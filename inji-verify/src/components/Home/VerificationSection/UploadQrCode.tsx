@@ -54,7 +54,7 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept=".png, .jpeg, .jpg, .pdf"
+                accept=".png, .jpeg, .jpg"
                 style={{
                     margin: "8px auto",
                     display: "none",
