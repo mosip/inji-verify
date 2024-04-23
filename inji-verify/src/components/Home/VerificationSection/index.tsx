@@ -43,7 +43,9 @@ const DisplayActiveStep = () => {
                         navigate('/offline');
                     }
                     setVcStatus(status);
-                    setVc(vc);
+                    if (vcStatus?.status === "OK") {
+                        setVc(vc);
+                    }
                 })
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
