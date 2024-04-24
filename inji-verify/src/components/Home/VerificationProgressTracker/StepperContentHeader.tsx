@@ -7,12 +7,12 @@ function StepperContentHeader(props: any) {
     return (
         <Box>
             <Heading variant='h4'>
-                Verify your credentials in <span style={{color: '#FF7F00'}}>4 easy steps</span>
+                Verify credentials with ease!
             </Heading>
             {
                 isTabletOrAbove && (
                     <Description variant='body1'>
-                        Credentials are digitally signed documents with tamper-evident QR codes. These QR codes can be easily verified using the Inji Verify app. Simply scan the QR code with your smartphone camera or use the dedicated verification tool on this page.
+                        Effortlessly verify credentials with <b>Inji Verify!</b> Just scan the QR code or upload it for instant validation, following the steps below.
                     </Description>
                 )
             }
