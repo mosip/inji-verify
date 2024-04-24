@@ -86,7 +86,7 @@ const ScanQrCode = ({setScanResult}: {
                         }
                     }}
                 >
-                    Scan the QR Code
+                    Scan QR Code
                 </StyledButton>
             </Grid>
             {

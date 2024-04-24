@@ -1,9 +1,18 @@
 import React from 'react';
-import {Step, StepContent, StepLabel, Stepper, Typography} from "@mui/material";
+import {Step, StepLabel, Stepper} from "@mui/material";
 import {VerificationStep} from "../../../../types/data-types";
 import StepperIcon from "./StepperIcon";
 import {StepperConnector} from "./StepperConnector";
 import {StepContentContainer, StepContentDescription, StepLabelContent} from "./styles";
+
+const getDescriptionContent = (description: string | string[]): string | React.ReactElement => {
+    if (typeof description === 'string') {
+        return description;
+    }
+    return (<>
+        {description.map(point => (<><span>{point}</span><br/></>))}
+    </>);
+}
 
 function DesktopStepper({steps, activeStep}: {steps: VerificationStep[], activeStep: number}) {
     return (
@@ -19,7 +28,7 @@ function DesktopStepper({steps, activeStep}: {steps: VerificationStep[], activeS
                         TransitionProps={{appear: true, unmountOnExit: false}}
                         hidden={false}>
                         <StepContentDescription>
-                            {step.description}
+                            {getDescriptionContent(step.description)}
                         </StepContentDescription>
                     </StepContentContainer>
                 </Step>
