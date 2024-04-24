@@ -43,7 +43,7 @@ const DisplayActiveStep = () => {
                         navigate('/offline');
                     }
                     setVcStatus(status);
-                    if (vcStatus?.status === "OK") {
+                    if (status?.status === "OK") {
                         setVc(vc);
                     }
                 })
