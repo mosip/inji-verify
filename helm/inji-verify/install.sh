@@ -14,7 +14,7 @@ kubectl create ns $NS
 
 function ensure_injiverify_host() {
   # Check if mosip-injiverify-host is present in global config map of config-server
-  if ! kubectl get cm config-server -n $NS -o jsonpath='{.data}' | grep -q 'mosip-injiverify-host'; then
+  if ! kubectl get cm config-server -n $NS -o jsonpath='{.data.mosip-injiverify-host}' | grep -q 'mosip-injiverify-host'; then
     echo "Adding mosip-injiverify-host to config-server global config map"
     kubectl patch configmap config-server -n $NS --type json -p '[{"op": "add", "path": "/data/mosip-injiverify-host", "value": "injiverify.sandbox.xyz.net"}]'
     # Restart config-server
