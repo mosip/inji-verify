@@ -43,7 +43,7 @@ const CameraAccessDenied = ({open, handleClose}: {open: boolean, handleClose: ()
                     <StyledButton
                         onClick={handleClose}
                         style={{width: '180px', margin: '18px auto'}}>
-                        I Understand
+                        Okay
                     </StyledButton>
                 </Box>
             </Fade>

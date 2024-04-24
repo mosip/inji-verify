@@ -17,7 +17,7 @@ export type VcStatus = {
 
 export type VerificationStep = {
     label: string,
-    description: string
+    description: string | string[]
 }
 
 export type CardPositioning = {

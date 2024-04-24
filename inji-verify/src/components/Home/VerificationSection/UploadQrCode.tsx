@@ -74,7 +74,8 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
                         setActiveStep(VerificationSteps.ScanQrCodePrompt);
-                        setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
+                        setAlertInfo({...AlertMessages.unsupportedFileSize, open: true});
+                        setScanStatus("Failed");
                         return;
                     }
                     setActiveStep(VerificationSteps.Verifying);
