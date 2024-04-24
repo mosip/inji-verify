@@ -12,6 +12,18 @@ CHART_VERSION=0.0.1-develop
 echo Create $NS namespace
 kubectl create ns $NS
 
+function ensure_injiverify_host() {
+  # Check if mosip-injiverify-host is present in global config map of config-server
+  if ! kubectl get cm config-server -n $NS -o jsonpath='{.data}' | grep -q 'mosip-injiverify-host'; then
+    echo "Adding mosip-injiverify-host to config-server global config map"
+    kubectl patch configmap config-server -n $NS --type json -p '[{"op": "add", "path": "/data/mosip-injiverify-host", "value": "injiverify.sandbox.xyz.net"}]'
+    # Restart config-server
+    kubectl rollout restart deployment config-server -n $NS
+  else
+    echo "mosip-injiverify-host already present in config-server global config map"
+  fi
+}
+
 function installing_inji-verify() {
   echo Istio label
   kubectl label ns $NS istio-injection=enabled --overwrite
