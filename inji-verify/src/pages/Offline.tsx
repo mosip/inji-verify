@@ -9,7 +9,7 @@ function Offline(props: any) {
             background: '#FAFBFD 0% 0% no-repeat padding-box',
             height: '100%'
         }}>
-            <img src={'/assets/images/inji-logo.svg'}/>
+            <img src={'/assets/images/inji_verify.svg'}/>
             <SomethingWentWrong/>
         </Box>
     );
