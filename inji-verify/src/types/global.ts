@@ -2,6 +2,6 @@ export {};
 
 declare global {
     interface Window {
-        encodeVc: (vc: any) => void;
+        encodeData: (data: string) => void;
     }
 }

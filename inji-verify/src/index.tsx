@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 // Store in a constant to avoid re-rendering and recalculating the style
 const inputGlobalStyles = <GlobalStyles styles={{ fontFamily: 'Inter'}} />;
 
-window.encodeVc = (vc: any) => encodeData(JSON.stringify(vc));
+window.encodeData = (data: string) => encodeData(data);
 
 root.render(
   <React.StrictMode>
