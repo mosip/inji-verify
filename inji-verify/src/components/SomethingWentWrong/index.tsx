@@ -1,6 +1,5 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
-import underConstruction from '../../assets/under_construction.svg';
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 
@@ -19,7 +18,7 @@ function SomethingWentWrong(props: any) {
             width: '90%'
         }}>
             <Grid item xs={12}>
-                <img src={underConstruction} width={372} style={{margin: '30px auto'}}/>
+                <img src={'/assets/images/under_construction.svg'} width={372} style={{margin: '30px auto'}}/>
             </Grid>
             <Grid item xs={12}>
                 <Typography
@@ -28,14 +27,14 @@ function SomethingWentWrong(props: any) {
                     font: 'normal normal 500 24px/29px Inter',
                     color: '#2C2C2C', margin: '5px auto'
                 }}>
-                    Something went wrong!
+                    No Internet Connection!
                 </Typography>
                 <Typography style={{
                     font: 'normal normal normal 14px/20px Inter',
                     color: '#7B7B7B',
                     margin: '5px auto'
                 }}>
-                    Our experts are working hard to make things working again.
+                    Oops! We can’t seem to connect. Check your internet connection and try again.
                 </Typography>
                 <StyledButton
                     style={{margin: '30px auto'}}

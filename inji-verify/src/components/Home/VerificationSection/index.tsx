@@ -4,13 +4,14 @@ import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
-import {useActiveStepContext} from "../../../pages/Home";
+import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
-import {VerificationSteps} from "../../../utils/config";
+import {AlertMessages, VerificationSteps} from "../../../utils/config";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
+    const {setAlertInfo} = useAlertMessages();
     const activeStep = getActiveStep();
 
     const navigate = useNavigate();
@@ -21,10 +22,18 @@ const DisplayActiveStep = () => {
 
     useEffect(() => {
         if (qrData === "") return;
+        let vc: any;
+        setActiveStep(VerificationSteps.Verifying);
         try {
-            setActiveStep(VerificationSteps.Verifying);
-            let vc = JSON.parse(decodeQrData(qrData));
-            // TODO: is it a vc? - check format
+            vc = JSON.parse(decodeQrData(qrData));
+        }
+        catch (error) {
+            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+            setAlertInfo({...AlertMessages.qrNotSupported, open: true})
+            setQrData("");
+            return;
+        }
+        try {
             verify(vc)
                 .then(status => {
                     console.log("Status: ", status);
@@ -34,7 +43,9 @@ const DisplayActiveStep = () => {
                         navigate('/offline');
                     }
                     setVcStatus(status);
-                    setVc(vc);
+                    if (status?.status === "OK") {
+                        setVc(vc);
+                    }
                 })
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
@@ -63,6 +74,9 @@ const DisplayActiveStep = () => {
             // show error message in snackbar
         }
         setQrData(result.data || "");
+        if (!result.data) {
+            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+        }
     }
 
     switch (activeStep) {

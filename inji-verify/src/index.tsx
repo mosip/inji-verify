@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {GlobalStyles, ThemeProvider} from "@mui/material";
 import {InjiTheme} from "./utils/inji-theme";
+import {encodeData} from "./utils/qr-utils";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,6 +13,8 @@ const root = ReactDOM.createRoot(
 
 // Store in a constant to avoid re-rendering and recalculating the style
 const inputGlobalStyles = <GlobalStyles styles={{ fontFamily: 'Inter'}} />;
+
+window.encodeData = (data: string) => encodeData(data);
 
 root.render(
   <React.StrictMode>

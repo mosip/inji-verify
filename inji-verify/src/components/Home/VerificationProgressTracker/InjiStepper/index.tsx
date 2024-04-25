@@ -7,21 +7,21 @@ import {useActiveStepContext} from "../../../../pages/Home";
 
 const steps: VerificationStep[] = [
     {
-        label: 'Scan QR Code',
-        description: 'Tap the button and display the QR code shown on your digital certificate / card',
+        label: 'Select ‘Scan QR Code’ or ‘Upload QR Code’ ',
+        description: ['Tap \'Scan QR Code\' and scan to capture the QR code shown on your digital credentials/card.', 'Tap ‘Upload QR Code’ to upload the preferred file.'],
     },
     {
         label: 'Activate your device’s camera',
         description:
-            'A notification will prompt to activate your device’s camera',
+            'Activate your device camera for scanning: A notification will be prompt to activate your device camera (Valid for ‘Scan QR Code’ feature only)',
     },
     {
-        label: 'Verification',
-        description: 'Validating and verification of your digital document / card'
+        label: 'Verify document',
+        description: 'Allow Inji Verify to verify & validate the digital document / card'
     },
     {
-        label: 'Result',
-        description: 'Credibility result of your digital document / card'
+        label: 'View result',
+        description: 'Check the validation result'
     }
 ];
 
