@@ -1,16 +1,21 @@
-import React from 'react';
-import {Box, Grid, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Autocomplete, Box, Grid, TextField, Typography, useMediaQuery} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import {SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
 import StyledButton from "./commons/StyledButton";
+import {useCameraSelectionHook} from "../../../hooks/useCameraSelectionHook";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction
 }) => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
+    const isTabletOrMobile = useMediaQuery("@media(max-width: 720px)");
+
+    const {videoInputOptions} = useCameraSelectionHook();
+    const [selectedDeviceId, setSelectedDeviceId] = useState<string | undefined>();
 
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
@@ -41,6 +46,7 @@ const Verification = ({setQrData}: {
                             : (<QrScanner
                                 setActiveStep={setActiveStep}
                                 setQrData={setQrData}
+                                deviceId={selectedDeviceId}
                             />)
                     }
                 </Box>
@@ -51,6 +57,26 @@ const Verification = ({setQrData}: {
                     onClick={() => {setActiveStep(0)}}>
                     Back
                 </StyledButton>
+            </Grid>
+            <Grid item xs={12}>
+                {isTabletOrMobile && (<Autocomplete
+                    id="grouped-demo"
+                    options={videoInputOptions.map(option => ({
+                        label: option.label,
+                        deviceId: option.deviceId
+                    }))}
+                    getOptionLabel={(option) => option.label}
+                    onChange={(event, value) => {
+                        setSelectedDeviceId(value?.deviceId);
+                    }}
+                    sx={{width: 350, margin: "18px auto"}}
+                    renderInput={(params) =>
+                        <TextField {...params}
+                                   style={{borderColor: '#FF7F00', borderRadius: 1000}}
+                                   label="Select Camera"
+                        />
+                    }
+                />)}
             </Grid>
         </Grid>
     );
