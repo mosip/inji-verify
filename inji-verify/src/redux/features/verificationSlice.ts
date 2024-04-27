@@ -4,7 +4,7 @@ import {VerificationSteps} from "../../utils/config";
 
 export const PreloadedState: ApplicationState = {
     alert: {},
-    qrReadResult: {},
+    qrReadResult: {status: "NOT_READ"},
     flow: "TO_BE_SELECTED",
     activeScreen: VerificationSteps.ScanQrCodePrompt,
     verificationResult: {vc: undefined, vcStatus: undefined}
@@ -16,12 +16,10 @@ const verificationSlice = createSlice({
             state.activeScreen = VerificationSteps.ActivateCamera;
             state.flow = action.payload.flow;
         },
-        qrReadComplete: (state, action) => {
-            state.activeScreen = action.payload.qrReadResult?.qrData ? VerificationSteps.ScanQrCodePrompt : VerificationSteps.Verifying;
-            state.qrReadResult = action.payload.qrReadResult;
-        },
+        // qrReadComplete and init verification
         verificationInit: (state, action) => {
             state.activeScreen = VerificationSteps.Verifying;
+            state.qrReadResult = action.payload.qrReadResult;
         },
         verificationComplete: (state, action) => {
             state.activeScreen = VerificationSteps.DisplayResult;
@@ -29,7 +27,7 @@ const verificationSlice = createSlice({
         },
         goHomeScreen: (state, action) => {
             state.alert = {};
-            state.qrReadResult = {};
+            state.qrReadResult = {status: "NOT_READ"};
             state.flow = "TO_BE_SELECTED";
             state.activeScreen = VerificationSteps.ScanQrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
@@ -43,7 +41,7 @@ const verificationSlice = createSlice({
 })
 
 export const {
-    qrReadInit, qrReadComplete, verificationInit,
+    qrReadInit, verificationInit,
     verificationComplete, raiseAlert, goHomeScreen
 } = verificationSlice.actions;
 

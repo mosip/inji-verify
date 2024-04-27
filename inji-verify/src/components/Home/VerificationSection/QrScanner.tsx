@@ -8,9 +8,7 @@ import {goHomeScreen, verificationInit} from "../../../redux/features/verificati
 
 let timer: NodeJS.Timeout;
 
-function QrScanner({setQrData}: {
-    setQrData: (data: string) => void
-}) {
+function QrScanner() {
     const dispatch = useAppDispatch();
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
@@ -47,8 +45,7 @@ function QrScanner({setQrData}: {
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
-                    dispatch(verificationInit({activeScreen: VerificationSteps.Verifying}));
-                    setQrData(text);
+                    dispatch(verificationInit({qrReadResult: {qrData: text, status: "SUCCESS"}, flow: "SCAN"}));
                 }}
                 onError={(error) => {
                     console.log('Clearing timeout - camera blocked');

@@ -1,9 +1,10 @@
 export type QrScanResult = {
     data: string | null,
-    error: string | null
+    error: string | null,
+    status: QrReadStatus
 }
 
-export type ScanStatus = "Success" | "NotScanned" | "Failed";
+export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = {
     status: "OK" | "NOK" | "Verifying";
@@ -55,7 +56,8 @@ export type ApplicationState = {
 
 export type QrReadResult = {
     alert?: AlertInfo,
-    qrData?: string
+    qrData?: string,
+    status: QrReadStatus
 }
 
 export type VerificationTrigger = {

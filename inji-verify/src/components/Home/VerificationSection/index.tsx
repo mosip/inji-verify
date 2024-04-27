@@ -1,32 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
-import {QrScanResult, VcStatus} from "../../../types/data-types";
 import {useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {goHomeScreen, verificationComplete, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, verificationComplete} from "../../../redux/features/verificationSlice";
 
 const DisplayActiveStep = () => {
-    const activeScreen = useAppSelector(state => state.activeScreen);
+    const {activeScreen, qrData} = useAppSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
     const dispatch = useAppDispatch();
 
     const {setAlertInfo} = useAlertMessages();
 
     const navigate = useNavigate();
 
-    const [qrData, setQrData] = useState("");
-    const [vc, setVc] = useState(null);
-    const [vcStatus, setVcStatus] = useState({status: "Verifying", checks: []} as VcStatus);
-
     useEffect(() => {
-        if (qrData === "") return;
+        console.log("Qr data changed: ", qrData);
+        if (!(!!qrData)) return;
         let vc: any;
-        dispatch(verificationInit({activeScreen: VerificationSteps.Verifying}));
         try {
             vc = JSON.parse(decodeQrData(qrData));
         }
@@ -44,8 +39,7 @@ const DisplayActiveStep = () => {
                         && !window.navigator.onLine) {
                         navigate('/offline');
                     }
-                    setVcStatus(status);
-                    setVc(vc);
+                    dispatch(verificationComplete({verificationResult: {vc, vcStatus: status}}))
                 })
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
@@ -54,39 +48,29 @@ const DisplayActiveStep = () => {
                         navigate('/offline');
                         return;
                     }
-                    setVc(null);
-                    setVcStatus({status: "NOK", checks: []});
-                }).finally(() => {
-                    setQrData("");
-                    dispatch(verificationComplete({activeScreen: VerificationSteps.DisplayResult}));
-            });
+                });
         } catch (error) {
             console.error("Error occurred while reading the qrData: ", error);
-            setQrData("");
-            setVc(null);
-            setVcStatus({status: "NOK", checks: []});
-            dispatch(verificationComplete({activeScreen: VerificationSteps.DisplayResult, vcStatus: {status: "NOK", checks: []}, vc: null}));
+            dispatch(verificationComplete({
+                verificationResult: {
+                    vcStatus: {
+                        status: "NOK", checks:
+                            []
+                    },
+                    vc: null
+                }
+        }));
         }
     }, [qrData]);
 
-    const setScanResult = (result: QrScanResult) => {
-        if (!!qrData) {
-            // show error message in snackbar
-        }
-        setQrData(result.data || "");
-        if (!result.data) {
-            dispatch(goHomeScreen({}));
-        }
-    }
-
     switch (activeScreen) {
         case VerificationSteps.ScanQrCodePrompt:
-            return (<ScanQrCode setScanResult={setScanResult}/>);
+            return (<ScanQrCode/>);
         case VerificationSteps.ActivateCamera:
         case VerificationSteps.Verifying:
-            return (<Verification setQrData={setQrData}/>);
+            return (<Verification/>);
         case VerificationSteps.DisplayResult:
-            return (<Result vc={vc} vcStatus={vcStatus}/>);
+            return (<Result/>);
         default:
             return (<></>);
     }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr-icon.png";
@@ -6,27 +6,14 @@ import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAlertMessages} from "../../../pages/Home";
-import {SetScanResultFunction} from "../../../types/function-types";
-import {QrScanResult, ScanStatus} from "../../../types/data-types";
+import {QrScanResult} from "../../../types/data-types";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
-import {useAppDispatch} from "../../../redux/hooks";
-import {qrReadInit} from "../../../redux/features/verificationSlice";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {verificationInit, qrReadInit} from "../../../redux/features/verificationSlice";
 
-const ScanQrCode = ({setScanResult}: {
-    setScanResult: SetScanResultFunction
-}) => {
+const ScanQrCode = () => {
     const dispatch = useAppDispatch();
-    const {setAlertInfo} = useAlertMessages();
-    const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
-
-    function checkScanResult(scanResult: QrScanResult) {
-        let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
-        setAlertInfo({
-            ...alertInfo,
-            open: true
-        });
-        setScanResult(scanResult);
-    }
+    const scanStatus = useAppSelector(state => state.qrReadResult?.status);
 
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
@@ -65,13 +52,11 @@ const ScanQrCode = ({setScanResult}: {
                     </div>
                 </Box>
             </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
+            <Grid item xs={12} order={scanStatus === "FAILED" ? 2 : 3}>
                 <UploadQrCode
-                    setScanResult={checkScanResult}
-                    setScanStatus={setScanStatus}
-                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
+                    displayMessage={scanStatus === "FAILED" ? "Upload Another QR Code" : "Upload QR Code"}/>
             </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
+            <Grid item xs={12} order={scanStatus === "FAILED" ? 3 : 2}>
                 <StyledButton
                     icon={<TabScanIcon/>}
                     style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => dispatch(qrReadInit({activeScreen: VerificationSteps.ActivateCamera, flow: "SCAN"}))}>
@@ -79,7 +64,7 @@ const ScanQrCode = ({setScanResult}: {
                 </StyledButton>
             </Grid>
             {
-                scanStatus !== "Failed" && (
+                scanStatus !== "FAILED" && (
                     <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
                         <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
                             Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB

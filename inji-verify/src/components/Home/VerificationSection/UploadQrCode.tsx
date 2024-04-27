@@ -1,5 +1,5 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {ScanStatus} from "../../../types/data-types";
+import {QrReadStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
 import {useAlertMessages} from "../../../pages/Home";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
@@ -40,12 +40,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
-                                 {
-                                     setScanResult: SetScanResultFunction,
-                                     displayMessage: string,
-                                       setScanStatus: (status: ScanStatus) => void
-                                   }) => {
+export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
     const dispatch = useAppDispatch();
     const {setAlertInfo} = useAlertMessages();
     return (
@@ -71,11 +66,15 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                         setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
                         return;
                     }
-                    dispatch(verificationInit({activeScreen: VerificationSteps.Verifying, flow: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
-                            setScanStatus(!!scanResult.data ? "Success" : "Failed")
-                            setScanResult(scanResult);
+                            if (scanResult.error) console.error(scanResult.error);
+                            let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
+                            setAlertInfo({
+                                ...alertInfo,
+                                open: true
+                            });
+                            dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: !!scanResult.data ? "SUCCESS" : "FAILED"}}));
                         });
                 }}
             />

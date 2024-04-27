@@ -7,10 +7,9 @@ import {SetQrDataFunction} from "../../../types/function-types";
 import StyledButton from "./commons/StyledButton";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {goHomeScreen} from "../../../redux/features/verificationSlice";
+import {VerificationSteps} from "../../../utils/config";
 
-const Verification = ({setQrData}: {
-    setQrData: SetQrDataFunction
-}) => {
+const Verification = () => {
     const dispatch = useAppDispatch();
     const activeScreen = useAppSelector(state => state.activeScreen);
 
@@ -38,11 +37,9 @@ const Verification = ({setQrData}: {
                     margin: "auto",
                 }}>
                     {
-                        activeScreen === 2
+                        activeScreen === VerificationSteps.Verifying
                             ? (<Loader/>)
-                            : (<QrScanner
-                                setQrData={setQrData}
-                            />)
+                            : (<QrScanner/>)
                     }
                 </Box>
             </Grid>
