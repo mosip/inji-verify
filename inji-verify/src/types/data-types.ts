@@ -42,7 +42,7 @@ export type VerificationFlow = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
 
 export type ApplicationAction = {
     type: ApplicationActionType,
-    payload: ApplicationState
+    payload?: ApplicationState
 }
 
 export type ApplicationState = {
@@ -63,6 +63,6 @@ export type VerificationTrigger = {
 }
 
 export type VerificationResult = {
-    vc: any,
-    vcStatus: VcStatus
+    vc?: any,
+    vcStatus?: VcStatus
 }

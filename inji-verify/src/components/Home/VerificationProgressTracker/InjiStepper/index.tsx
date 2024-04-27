@@ -3,9 +3,7 @@ import {Box, Button, Step, StepContent, StepLabel, Stepper, Typography, useMedia
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
 import {VerificationStep} from "../../../../types/data-types";
-import {useActiveStepContext} from "../../../../pages/Home";
-import {useAppDispatch, useAppSelector} from "../../../../redux/hooks";
-import {ApplicationActions, TriggerQrRead} from "../../../../redux/action";
+import {useAppSelector} from "../../../../redux/hooks";
 
 const steps: VerificationStep[] = [
     {
@@ -29,10 +27,7 @@ const steps: VerificationStep[] = [
 
 const InjiStepper = () => {
     const isDesktop = useMediaQuery('@media (min-width:768px)');
-    const activeScreen = useAppSelector(state => state.state.activeScreen);
-
-    console.log("Screen: ", activeScreen);
-
+    const activeScreen = useAppSelector(state => state.activeScreen);
     return (
         <Box style={{marginTop: '30px'}}>
             {

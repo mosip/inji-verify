@@ -1,10 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {PreloadedState, rootReducer} from './reducer';
-import {thunk} from "redux-thunk";
+import verificationFlowReducer, {PreloadedState} from './features/verificationSlice';
 
 const store = configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+        reducer: verificationFlowReducer,
+        /*middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),*/
         devTools: true/*process.env.NODE_ENV !== 'production'*/,
         preloadedState: PreloadedState as any
     }
