@@ -3,7 +3,6 @@ import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {Box} from "@mui/material";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {SetActiveStepFunction} from "../../../../types/function-types";
 import {ResultsSummaryContainer, VcDisplayCardContainer} from "./styles";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
@@ -19,8 +18,8 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): Card
     return positioning;
 }
 
-const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: SetActiveStepFunction, vcStatus: VcStatus | null
+const Result = ({vc, vcStatus}: {
+    vc: any, vcStatus: VcStatus | null
 }) => {
     const initialPositioning: CardPositioning = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
@@ -43,7 +42,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
             <VcDisplayCardContainer
                 style={{position: "absolute"}}
                 cardPositioning={{top: vcDisplayCardPositioning.top, right: vcDisplayCardPositioning.right}}>
-                <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
+                <VcDisplayCard vc={vc}/>
             </VcDisplayCardContainer>
         </Box>
     );

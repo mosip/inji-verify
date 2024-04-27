@@ -7,8 +7,11 @@ import {SetActiveStepFunction} from "../../../../types/function-types";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {VerificationSteps} from "../../../../utils/config";
 import {VcDisplay, VcProperty, VcPropertyKey, VcPropertyValue, VcVerificationFailedContainer} from "./styles";
+import {useAppDispatch} from "../../../../redux/hooks";
+import {goHomeScreen} from "../../../../redux/features/verificationSlice";
 
-function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveStepFunction}) {
+function VcDisplayCard({vc}: {vc: any}) {
+    const dispatch = useAppDispatch();
     return (
         <Box>
             <VcDisplay container>
@@ -37,7 +40,7 @@ function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveSt
                 placeContent: 'center'
             }}>
                 <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                    setActiveStep(VerificationSteps.ScanQrCodePrompt)
+                    dispatch(goHomeScreen({}))
                 }}>
                     Verify Another QR Code
                 </StyledButton>

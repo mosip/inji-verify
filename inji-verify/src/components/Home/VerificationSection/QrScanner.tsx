@@ -3,12 +3,15 @@ import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
 import {useAlertMessages} from "../../../pages/Home";
+import {useAppDispatch} from "../../../redux/hooks";
+import {goHomeScreen, verificationInit} from "../../../redux/features/verificationSlice";
 
 let timer: NodeJS.Timeout;
 
-function QrScanner({setActiveStep, setQrData}: {
-    setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
+function QrScanner({setQrData}: {
+    setQrData: (data: string) => void
 }) {
+    const dispatch = useAppDispatch();
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
     const {setAlertInfo} = useAlertMessages();
@@ -16,7 +19,7 @@ function QrScanner({setActiveStep, setQrData}: {
 
     useEffect(() => {
         timer = setTimeout(() => {
-            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+            dispatch(goHomeScreen({}));
             setAlertInfo({
                 open: true,
                 message: "The scan session has expired due to inactivity. Please initiate a new scan.",
@@ -44,7 +47,7 @@ function QrScanner({setActiveStep, setQrData}: {
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
-                    setActiveStep(VerificationSteps.Verifying);
+                    dispatch(verificationInit({activeScreen: VerificationSteps.Verifying}));
                     setQrData(text);
                 }}
                 onError={(error) => {
@@ -81,7 +84,7 @@ function QrScanner({setActiveStep, setQrData}: {
                 }}
             />
             <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
-                setActiveStep(VerificationSteps.ScanQrCodePrompt);
+                dispatch(goHomeScreen({}));
                 setIsCameraBlocked(false)
             }}/>
         </div>

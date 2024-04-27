@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
+import {Box, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
 import {VerificationStep} from "../../../../types/data-types";

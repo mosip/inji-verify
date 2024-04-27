@@ -28,7 +28,11 @@ const verificationSlice = createSlice({
             state.verificationResult = action.payload.verificationResult;
         },
         goHomeScreen: (state, action) => {
-            state = PreloadedState;
+            state.alert = {};
+            state.qrReadResult = {};
+            state.flow = "TO_BE_SELECTED";
+            state.activeScreen = VerificationSteps.ScanQrCodePrompt;
+            state.verificationResult = {vc: undefined, vcStatus: undefined};
         },
         raiseAlert: (state, action) => {
             state.alert = action.payload.alert;

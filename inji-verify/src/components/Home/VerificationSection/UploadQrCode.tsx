@@ -1,9 +1,11 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
 import {ScanStatus} from "../../../types/data-types";
 import {SetScanResultFunction} from "../../../types/function-types";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
+import {useAlertMessages} from "../../../pages/Home";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
+import {useAppDispatch} from "../../../redux/hooks";
+import {goHomeScreen, verificationInit} from "../../../redux/features/verificationSlice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -44,7 +46,7 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                                      displayMessage: string,
                                        setScanStatus: (status: ScanStatus) => void
                                    }) => {
-    const {setActiveStep} = useActiveStepContext();
+    const dispatch = useAppDispatch();
     const {setAlertInfo} = useAlertMessages();
     return (
         <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
@@ -65,11 +67,11 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                     if (!file) return;
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
-                        setActiveStep(VerificationSteps.ScanQrCodePrompt);
+                        dispatch(goHomeScreen({}));
                         setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
                         return;
                     }
-                    setActiveStep(VerificationSteps.Verifying);
+                    dispatch(verificationInit({activeScreen: VerificationSteps.Verifying, flow: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
                             setScanStatus(!!scanResult.data ? "Success" : "Failed")

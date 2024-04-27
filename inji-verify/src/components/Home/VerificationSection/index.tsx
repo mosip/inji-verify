@@ -4,15 +4,18 @@ import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
 import {QrScanResult, VcStatus} from "../../../types/data-types";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
+import {useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {goHomeScreen, verificationComplete, verificationInit} from "../../../redux/features/verificationSlice";
 
 const DisplayActiveStep = () => {
-    const {getActiveStep, setActiveStep} = useActiveStepContext();
+    const activeScreen = useAppSelector(state => state.activeScreen);
+    const dispatch = useAppDispatch();
+
     const {setAlertInfo} = useAlertMessages();
-    const activeStep = getActiveStep();
 
     const navigate = useNavigate();
 
@@ -23,12 +26,12 @@ const DisplayActiveStep = () => {
     useEffect(() => {
         if (qrData === "") return;
         let vc: any;
-        setActiveStep(VerificationSteps.Verifying);
+        dispatch(verificationInit({activeScreen: VerificationSteps.Verifying}));
         try {
             vc = JSON.parse(decodeQrData(qrData));
         }
         catch (error) {
-            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+            dispatch(goHomeScreen({}));
             setAlertInfo({...AlertMessages.qrNotSupported, open: true})
             return;
         }
@@ -55,14 +58,14 @@ const DisplayActiveStep = () => {
                     setVcStatus({status: "NOK", checks: []});
                 }).finally(() => {
                     setQrData("");
-                    setActiveStep(VerificationSteps.DisplayResult);
+                    dispatch(verificationComplete({activeScreen: VerificationSteps.DisplayResult}));
             });
         } catch (error) {
             console.error("Error occurred while reading the qrData: ", error);
             setQrData("");
             setVc(null);
             setVcStatus({status: "NOK", checks: []});
-            setActiveStep(VerificationSteps.DisplayResult);
+            dispatch(verificationComplete({activeScreen: VerificationSteps.DisplayResult, vcStatus: {status: "NOK", checks: []}, vc: null}));
         }
     }, [qrData]);
 
@@ -72,18 +75,18 @@ const DisplayActiveStep = () => {
         }
         setQrData(result.data || "");
         if (!result.data) {
-            setActiveStep(VerificationSteps.ScanQrCodePrompt);
+            dispatch(goHomeScreen({}));
         }
     }
 
-    switch (activeStep) {
+    switch (activeScreen) {
         case VerificationSteps.ScanQrCodePrompt:
             return (<ScanQrCode setScanResult={setScanResult}/>);
         case VerificationSteps.ActivateCamera:
         case VerificationSteps.Verifying:
             return (<Verification setQrData={setQrData}/>);
         case VerificationSteps.DisplayResult:
-            return (<Result setActiveStep={setActiveStep} vc={vc} vcStatus={vcStatus}/>);
+            return (<Result vc={vc} vcStatus={vcStatus}/>);
         default:
             return (<></>);
     }

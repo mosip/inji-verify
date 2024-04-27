@@ -4,13 +4,15 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import {SetQrDataFunction} from "../../../types/function-types";
-import {useActiveStepContext} from "../../../pages/Home";
 import StyledButton from "./commons/StyledButton";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {goHomeScreen} from "../../../redux/features/verificationSlice";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction
 }) => {
-    const {getActiveStep, setActiveStep} = useActiveStepContext();
+    const dispatch = useAppDispatch();
+    const activeScreen = useAppSelector(state => state.activeScreen);
 
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
@@ -36,10 +38,9 @@ const Verification = ({setQrData}: {
                     margin: "auto",
                 }}>
                     {
-                        getActiveStep() === 2
+                        activeScreen === 2
                             ? (<Loader/>)
                             : (<QrScanner
-                                setActiveStep={setActiveStep}
                                 setQrData={setQrData}
                             />)
                     }
@@ -48,7 +49,7 @@ const Verification = ({setQrData}: {
             <Grid item xs={12}>
                 <StyledButton
                     style={{width: '350px', marginTop: "18px"}}
-                    onClick={() => {setActiveStep(0)}}>
+                    onClick={() => {dispatch(goHomeScreen({}))}}>
                     Back
                 </StyledButton>
             </Grid>
