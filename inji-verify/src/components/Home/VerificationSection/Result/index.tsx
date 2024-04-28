@@ -42,7 +42,7 @@ const Result = () => {
             <VcDisplayCardContainer
                 style={{position: "absolute"}}
                 cardPositioning={{top: vcDisplayCardPositioning.top, right: vcDisplayCardPositioning.right}}>
-                <VcDisplayCard vc={vc}/>
+                <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
             </VcDisplayCardContainer>
         </Box>
     );

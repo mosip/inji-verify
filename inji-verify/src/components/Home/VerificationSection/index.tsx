@@ -45,20 +45,33 @@ const DisplayActiveStep = () => {
                         navigate('/offline');
                         return;
                     }
+                    dispatch(verificationComplete({
+                        verificationResult: {
+                            vcStatus: {
+                                status: "NOK",
+                                checks: []
+                            },
+                            vc: null
+                        }
+                    }));
                 });
         } catch (error) {
             console.error("Error occurred while reading the qrData: ", error);
             dispatch(verificationComplete({
                 verificationResult: {
                     vcStatus: {
-                        status: "NOK", checks:
-                            []
+                        status: "NOK",
+                        checks: []
                     },
                     vc: null
                 }
-        }));
+            }));
         }
     }, [qrData]);
+
+    useEffect(() => {
+        console.log("Data change: ", {qrData, activeScreen})
+    }, [qrData, activeScreen]);
 
     switch (activeScreen) {
         case VerificationSteps.ScanQrCodePrompt:

@@ -5,7 +5,6 @@ import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {VerificationSteps} from "../../../utils/config";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verificationSlice";
 
@@ -57,7 +56,7 @@ const ScanQrCode = () => {
             <Grid item xs={12} order={scanStatus === "FAILED" ? 3 : 2}>
                 <StyledButton
                     icon={<TabScanIcon/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => dispatch(qrReadInit({activeScreen: VerificationSteps.ActivateCamera, flow: "SCAN"}))}>
+                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill onClick={() => dispatch(qrReadInit({flow: "SCAN"}))}>
                     Scan the QR Code
                 </StyledButton>
             </Grid>

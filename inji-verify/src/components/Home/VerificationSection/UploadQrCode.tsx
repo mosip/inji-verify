@@ -2,7 +2,7 @@ import {scanFilesForQr} from "../../../utils/qr-utils";
 import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -59,24 +59,20 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
                         dispatch(goHomeScreen({}));
-                        dispatch(raiseAlert({
-                            alert: {
-                                ...AlertMessages.unsupportedFileSize, open: true
-                            }
-                        }))
+                        dispatch(raiseAlert({alert: {...AlertMessages.unsupportedFileSize, open: true}}))
                         return;
                     }
+                    dispatch(qrReadInit({flow: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
                             if (scanResult.error) console.error(scanResult.error);
-                            let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
-                            dispatch(raiseAlert({
-                                alert: {
-                                    ...alertInfo,
-                                    open: true
-                                }
-                            }));
-                            dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: !!scanResult.data ? "SUCCESS" : "FAILED"}}));
+                            if (!!scanResult.data) {
+                                dispatch(raiseAlert({alert: {...AlertMessages.qrUploadSuccess, open: true}}));
+                                dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: "SUCCESS"}}));
+                            } else {
+                                dispatch(raiseAlert({alert: {...AlertMessages.qrNotDetected, open: true}}));
+                                dispatch(goHomeScreen({}));
+                            }
                         });
                 }}
             />

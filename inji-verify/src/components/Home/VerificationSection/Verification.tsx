@@ -12,6 +12,7 @@ import {VerificationSteps} from "../../../utils/config";
 const Verification = () => {
     const dispatch = useAppDispatch();
     const activeScreen = useAppSelector(state => state.activeScreen);
+    console.log("Verifying... : ", activeScreen);
 
     return (
         <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>

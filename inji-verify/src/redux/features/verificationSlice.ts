@@ -13,8 +13,9 @@ export const PreloadedState: ApplicationState = {
 const verificationSlice = createSlice({
     reducers: {
         qrReadInit: (state, action) => {
-            state.activeScreen = VerificationSteps.ActivateCamera;
-            state.flow = action.payload.flow;
+            const flow = action.payload.flow;
+            state.activeScreen = flow === "SCAN" ? VerificationSteps.ActivateCamera : VerificationSteps.Verifying;
+            state.flow = flow;
         },
         // qrReadComplete and init verification
         verificationInit: (state, action) => {
@@ -26,7 +27,6 @@ const verificationSlice = createSlice({
             state.verificationResult = action.payload.verificationResult;
         },
         goHomeScreen: (state, action) => {
-            state.alert = {};
             state.qrReadResult = {status: "NOT_READ"};
             state.flow = "TO_BE_SELECTED";
             state.activeScreen = VerificationSteps.ScanQrCodePrompt;
