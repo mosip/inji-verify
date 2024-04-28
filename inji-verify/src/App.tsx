@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from './assets/logo.svg';
 import './App.css';
 import Home from "./pages/Home";
 import Offline from "./pages/Offline";
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import AlertMessage from "./components/commons/AlertMessage";
+import {AlertInfo} from "./types/data-types";
+import {useAppSelector} from "./redux/hooks";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +21,10 @@ const router = createBrowserRouter([
 
 function App() {
     return (
-        <RouterProvider router={router}/>
+        <div>
+            <RouterProvider router={router}/>
+            <AlertMessage/>
+        </div>
     );
 }
 

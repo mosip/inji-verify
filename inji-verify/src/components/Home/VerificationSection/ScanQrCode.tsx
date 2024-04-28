@@ -5,11 +5,9 @@ import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useAlertMessages} from "../../../pages/Home";
-import {QrScanResult} from "../../../types/data-types";
-import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {VerificationSteps} from "../../../utils/config";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {verificationInit, qrReadInit} from "../../../redux/features/verificationSlice";
+import {qrReadInit} from "../../../redux/features/verificationSlice";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();

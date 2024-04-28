@@ -3,18 +3,15 @@ import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
 import {verify} from "../../../utils/verification-utils";
-import {useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {goHomeScreen, verificationComplete} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, raiseAlert, verificationComplete} from "../../../redux/features/verificationSlice";
 
 const DisplayActiveStep = () => {
     const {activeScreen, qrData} = useAppSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
     const dispatch = useAppDispatch();
-
-    const {setAlertInfo} = useAlertMessages();
 
     const navigate = useNavigate();
 
@@ -27,7 +24,7 @@ const DisplayActiveStep = () => {
         }
         catch (error) {
             dispatch(goHomeScreen({}));
-            setAlertInfo({...AlertMessages.qrNotSupported, open: true})
+            dispatch(raiseAlert({alert: {...AlertMessages.qrNotSupported, open: true}}))
             return;
         }
         try {

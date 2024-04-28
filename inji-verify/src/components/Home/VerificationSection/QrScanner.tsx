@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
-import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
-import {useAlertMessages} from "../../../pages/Home";
+import {ScanSessionExpiryTime} from "../../../utils/config";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
 
 let timer: NodeJS.Timeout;
 
@@ -12,17 +11,18 @@ function QrScanner() {
     const dispatch = useAppDispatch();
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
-    const {setAlertInfo} = useAlertMessages();
     const scannerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         timer = setTimeout(() => {
             dispatch(goHomeScreen({}));
-            setAlertInfo({
-                open: true,
-                message: "The scan session has expired due to inactivity. Please initiate a new scan.",
-                severity: "error"
-            })
+            dispatch(raiseAlert({
+                alert: {
+                    open: true,
+                    message: "The scan session has expired due to inactivity. Please initiate a new scan.",
+                    severity: "error"
+                }
+            }))
         }, ScanSessionExpiryTime);
         return () => {
             console.log('Clearing timeout');

@@ -6,11 +6,6 @@ import Copyrights from "../components/Home/VerificationProgressTracker/Copyright
 import {AlertInfo} from "../types/data-types";
 import AlertMessage from "../components/commons/AlertMessage";
 
-let alert: AlertInfo = {open: false};
-let setAlertInfo: React.Dispatch<React.SetStateAction<AlertInfo>> = value => {};
-const AlertsContext = createContext({alertInfo: alert, setAlertInfo});
-export const useAlertMessages = () => useContext(AlertsContext);
-
 function Home(props: any) {
     const [alertInfo, setAlertInfo] = useState({
         open: false,
@@ -18,7 +13,7 @@ function Home(props: any) {
         message: ''
     } as AlertInfo);
     return (
-        <AlertsContext.Provider value={{alertInfo, setAlertInfo}}>
+        <div>
             <Grid container>
                 <Grid item xs={12} md={6} style={{
                     background: '#FAFBFD 0 0 no-repeat padding-box'
@@ -30,10 +25,7 @@ function Home(props: any) {
                 </Grid>
             </Grid>
             <Copyrights/>
-            <AlertMessage alertInfo={alertInfo} handleClose={() => {
-                setAlertInfo({...alertInfo, open: false})
-            }}/>
-        </AlertsContext.Provider>
+        </div>
     );
 }
 

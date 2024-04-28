@@ -1,10 +1,14 @@
 import React from 'react';
 import {Alert, Snackbar} from "@mui/material";
-import {AlertInfo} from "../../types/data-types";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {raiseAlert} from "../../redux/features/verificationSlice";
 
-const AlertMessage = ({alertInfo, handleClose}: {
-    alertInfo: AlertInfo, handleClose: () => void
-}) => {
+const AlertMessage = () => {
+    const alertInfo = useAppSelector(state => state.alert ?? {});
+    const dispatch = useAppDispatch();
+
+    const handleClose = () => dispatch(raiseAlert({alert: {...alertInfo, open: false}}));
+
     return (
         <Snackbar
             open={alertInfo.open}

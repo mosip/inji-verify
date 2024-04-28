@@ -1,11 +1,8 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {QrReadStatus} from "../../../types/data-types";
-import {SetScanResultFunction} from "../../../types/function-types";
-import {useAlertMessages} from "../../../pages/Home";
-import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
+import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -42,7 +39,6 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
 
 export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
     const dispatch = useAppDispatch();
-    const {setAlertInfo} = useAlertMessages();
     return (
         <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
             <UploadButton displayMessage={displayMessage}/>
@@ -63,17 +59,23 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
                         dispatch(goHomeScreen({}));
-                        setAlertInfo({...AlertMessages.unsupportedFileSize, open: true})
+                        dispatch(raiseAlert({
+                            alert: {
+                                ...AlertMessages.unsupportedFileSize, open: true
+                            }
+                        }))
                         return;
                     }
                     scanFilesForQr(file)
                         .then(scanResult => {
                             if (scanResult.error) console.error(scanResult.error);
                             let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
-                            setAlertInfo({
-                                ...alertInfo,
-                                open: true
-                            });
+                            dispatch(raiseAlert({
+                                alert: {
+                                    ...alertInfo,
+                                    open: true
+                                }
+                            }));
                             dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: !!scanResult.data ? "SUCCESS" : "FAILED"}}));
                         });
                 }}
