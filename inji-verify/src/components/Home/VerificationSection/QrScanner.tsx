@@ -6,8 +6,8 @@ import {useAlertMessages} from "../../../pages/Home";
 
 let timer: NodeJS.Timeout;
 
-function QrScanner({setActiveStep, setQrData, deviceId}: {
-    setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void, deviceId?: string
+function QrScanner({setActiveStep, setQrData}: {
+    setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
 }) {
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
@@ -65,8 +65,7 @@ function QrScanner({setActiveStep, setQrData, deviceId}: {
                             "max": 1080
                         }
                     },
-                    delayBetweenScanSuccess: 100000, // Scan once
-                    deviceId
+                    delayBetweenScanSuccess: 100000 // Scan once
                 }}
                 styles={{
                     container: {
