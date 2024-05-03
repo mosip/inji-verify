@@ -1,7 +1,14 @@
 import React, {useEffect} from 'react';
-import {Alert, Snackbar} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {raiseAlert} from "../../redux/features/verificationSlice";
+import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
+
+const severityColorMapping = {
+    "success": "bg-[#57A04B]",
+    "info": "bg-[#03a9f4]",
+    "warning": "bg-[#ff9800]",
+    "error": "bg-[#D73E3E]"
+}
 
 const AlertMessage = () => {
     const alertInfo = useAppSelector(state => {
@@ -17,26 +24,19 @@ const AlertMessage = () => {
     const handleClose = () => dispatch(raiseAlert({alert: {...alertInfo, open: false}}));
 
     return (
-        <Snackbar
-            open={alertInfo.open}
-            autoHideDuration={alertInfo.autoHideDuration ?? 4000}
-            onClose={handleClose}
-            message={alertInfo.message}
-            anchorOrigin={{vertical: "top", horizontal: "right"}}
-        >
-            <Alert
-                onClose={handleClose}
-                severity={alertInfo.severity}
-                variant="filled"
-                sx={{ width: '100%' }}
-                style={{
-                    borderRadius: '10px',
-                    padding: '16px 18px'
-                }}
-            >
-                {alertInfo.message}
-            </Alert>
-        </Snackbar>
+        <>
+            <div
+                className={`fixed top-[44px] right-[16px] py-[22px] px-[18px] text-white rounded-[12px] ${alertInfo.severity === "success" ? "bg-[#57A04B]" : "bg-[#D73E3E]"} ${alertInfo.open ? "" : "hidden"}`}>
+                <div className="flex items-center">
+                    <p>
+                        {alertInfo.message}
+                    </p>
+                    <div className="pl-4 cursor-pointer" onClick={handleClose}>
+                        <CloseIcon/>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
 
