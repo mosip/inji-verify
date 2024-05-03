@@ -3,13 +3,6 @@ import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {raiseAlert} from "../../redux/features/verificationSlice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 
-const severityColorMapping = {
-    "success": "bg-[#57A04B]",
-    "info": "bg-[#03a9f4]",
-    "warning": "bg-[#ff9800]",
-    "error": "bg-[#D73E3E]"
-}
-
 const AlertMessage = () => {
     const alertInfo = useAppSelector(state => {
         console.log("State alert: ", state.alert);
@@ -22,7 +15,7 @@ const AlertMessage = () => {
     }, [alertInfo]);
 
     const handleClose = () => dispatch(raiseAlert({alert: {...alertInfo, open: false}}));
-
+    //TODO: add timeout
     return (
         <>
             <div
