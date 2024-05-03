@@ -1,13 +1,12 @@
 import React from 'react';
 import injiLogo from "../../../assets/inji-logo.svg";
-import {NavbarContainer} from "./styles";
 
 function Navbar(props: any) {
     // Logo goes here
     return (
-        <NavbarContainer>
+        <div className={"h-[52px] mx-0 mt-[46px] mb-[60px]"}>
             <img src={injiLogo}/>
-        </NavbarContainer>
+        </div>
     );
 }
 

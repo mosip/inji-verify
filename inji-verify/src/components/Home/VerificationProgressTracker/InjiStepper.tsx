@@ -46,8 +46,7 @@ function InjiStepper() {
                                 <div className="w-6 h-[100%] col-end-2">
                                     <div className={`${!isLastStep(index) ? "border-l-[#FF7F00]" : "border-none"} border-[1px] h-[100%] m-auto w-0`}/>
                                 </div>
-                                <div
-                                    className="ml-[10px] text-[14px] text-[#535353] font-normal leading-5 font-inter col-end-13">
+                                <div className="ml-[10px] text-[14px] text-[#535353] font-normal leading-5 font-inter col-end-13">
                                     {step.description}
                                 </div>
                                 {

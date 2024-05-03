@@ -1,16 +1,15 @@
 import React from 'react';
 import StepperContentHeader from "./StepperContentHeader";
-import InjiStepper from "./InjiStepper";
 import Navbar from "./Navbar";
-import {VerificationProgressTrackerContainer} from "./styles";
+import InjiStepper from "./InjiStepper";
 
 function VerificationProgressTracker() {
     return (
-        <VerificationProgressTrackerContainer>
+        <div className="bg-[#FAFBFD] bg-no-repeat py-0 pr-[60px] pl-[76px] max-h-[100vh] mt-0">
             <Navbar/>
             <StepperContentHeader/>
             <InjiStepper/>
-        </VerificationProgressTrackerContainer>
+        </div>
     );
 }
 
