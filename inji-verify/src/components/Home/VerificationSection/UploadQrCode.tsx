@@ -7,29 +7,14 @@ import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../r
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            style={{
-                background: `#FFFFFF 0% 0% no-repeat padding-box`,
-                border: '2px solid #FF7F00',
-                borderRadius: '9999px',
-                opacity: 1,
-                padding: '18px 0',
-                color: '#FF7F00',
-                width: '350px',
-                cursor: 'pointer',
-                textAlign: 'center'
-            }}
+            className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-[#FF7F00] font-bold text-[#FF7F00] w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
         >
-            <span style={{
-                margin: "auto",
-                display: 'flex',
-                placeContent: 'center',
-                width: '100%'
-            }}>
-                <span style={{display: "inline-grid", marginRight: "6px"}}>
+            <span className="flex m-auto content-center justify-center w-[100%]">
+                <span className="inline-grid mr-1.5">
                     <UploadIcon/>
                 </span>
-                <span style={{display: "inline-grid"}}>
+                <span className="inline-grid">
                     {displayMessage}
                 </span>
             </span>
@@ -40,7 +25,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
 export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
     const dispatch = useAppDispatch();
     return (
-        <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
+        <div className="mx-auto my-1.5 flex content-center justify-center w-[350px]">
             <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input
@@ -48,11 +33,7 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                 id="upload-qr"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg, .pdf"
-                style={{
-                    margin: "8px auto",
-                    display: "none",
-                    height: 0
-                }}
+                className="mx-auto my-2 hidden h-0"
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
