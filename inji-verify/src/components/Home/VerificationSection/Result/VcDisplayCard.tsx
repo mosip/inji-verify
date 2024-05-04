@@ -1,41 +1,36 @@
 import React from 'react';
-import {Box, Grid, Typography} from '@mui/material';
 import {convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
-import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
-import {SetActiveStepFunction} from "../../../../types/function-types";
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import {VerificationSteps} from "../../../../utils/config";
-import {VcDisplay, VcProperty, VcPropertyKey, VcPropertyValue, VcVerificationFailedContainer} from "./styles";
+import {ReactComponent as DocumentIcon} from '../../../../assets/document.svg';
 import {useAppDispatch} from "../../../../redux/hooks";
 import {goHomeScreen} from "../../../../redux/features/verificationSlice";
 
 function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();
     return (
-        <Box>
-            <VcDisplay container>
+        <div>
+            <div className={`grid xs:w-[90vw] md:w-[400px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] max-h-[320px] shadow-lg ${vc ? "overflow-y-scroll" : ""}`}>
                 {
                     vc ? Object.keys(vc.credentialSubject)
                         .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
-                        .map(key => (
-                            <VcProperty item xs={12} lg={6} key={key}>
-                                <VcPropertyKey>
+                        .map((key, index) => (
+                            <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "md:col-start-1 md:col-end-6" : "md:col-start-8 md:col-end-13"}`} key={key}>
+                                <p className="font-normal font-inter text-[11px]">
                                     {convertToTitleCase(key)}
-                                </VcPropertyKey>
-                                <VcPropertyValue>
+                                </p>
+                                <p className="font-bold text-[12px] font-inter">
                                     {getDisplayValue(vc.credentialSubject[key])}
-                                </VcPropertyValue>
-                            </VcProperty>
+                                </p>
+                            </div>
                         ))
                         : (
-                            <VcVerificationFailedContainer>
-                                <DescriptionOutlinedIcon fontSize={"inherit"} color={"inherit"}/>
-                            </VcVerificationFailedContainer>
+                            <div className="grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10">
+                                <DocumentIcon/>
+                            </div>
                         )
                 }
-            </VcDisplay>
-            <Box style={{
+            </div>
+            <div style={{
                 display: 'grid',
                 placeContent: 'center'
             }}>
@@ -44,8 +39,8 @@ function VcDisplayCard({vc}: {vc: any}) {
                 }}>
                     Verify Another QR Code
                 </StyledButton>
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 }
 
