@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {Box} from "@mui/material";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {ResultsSummaryContainer, VcDisplayCardContainer} from "./styles";
 import {useAppSelector} from "../../../../redux/hooks";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
@@ -29,22 +27,26 @@ const Result = () => {
         if (resultSectionRef?.current && !(!!vcDisplayCardPositioning.top)) {
             let positioning = getPositioning(resultSectionRef);
             setVcDisplayCardPositioning(positioning);
+            console.log("Positioning updated to: ", positioning);
         }
     }, [resultSectionRef]);
 
     let success = vcStatus?.status === "OK";
     // validate vc and show success/failure component
     return (
-        <Box id="result-section" ref={resultSectionRef}>
-            <ResultsSummaryContainer success={success}>
+        <div id="result-section" ref={resultSectionRef}>
+            <div className={`h-[340px] text-white ${success ? "bg-[#4B9D1F]" : "bg-[#CB4242]"}`}>
                 <ResultSummary success={success}/>
-            </ResultsSummaryContainer>
-            <VcDisplayCardContainer
-                style={{position: "absolute"}}
-                cardPositioning={{top: vcDisplayCardPositioning.top, right: vcDisplayCardPositioning.right}}>
+            </div>
+            <div
+                className={`absolute m-auto`}
+                style={{
+                    top: `${vcDisplayCardPositioning.top ?? 212}px`,
+                    right: `${vcDisplayCardPositioning.right ?? 0}px`
+                }}>
                 <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
-            </VcDisplayCardContainer>
-        </Box>
+            </div>
+        </div>
     );
 }
 
