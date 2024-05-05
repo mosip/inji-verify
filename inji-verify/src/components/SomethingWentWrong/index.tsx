@@ -1,5 +1,4 @@
 import React from 'react';
-import {Grid, Typography} from "@mui/material";
 import underConstruction from '../../assets/under_construction.svg';
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";

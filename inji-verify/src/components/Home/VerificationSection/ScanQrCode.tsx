@@ -1,5 +1,4 @@
 import React from 'react';
-import {Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
