@@ -34,6 +34,9 @@ const verificationSlice = createSlice({
         },
         raiseAlert: (state, action) => {
             state.alert = action.payload.alert;
+        },
+        closeAlert: (state, action) => {
+            state.alert = {...state.alert, open: false}
         }
     },
     name: "VcVerification",
@@ -42,7 +45,7 @@ const verificationSlice = createSlice({
 
 export const {
     qrReadInit, verificationInit,
-    verificationComplete, raiseAlert, goHomeScreen
+    verificationComplete, raiseAlert, closeAlert, goHomeScreen
 } = verificationSlice.actions;
 
 export default verificationSlice.reducer;

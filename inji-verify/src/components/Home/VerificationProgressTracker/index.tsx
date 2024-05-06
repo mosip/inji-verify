@@ -5,7 +5,7 @@ import InjiStepper from "./InjiStepper";
 
 function VerificationProgressTracker() {
     return (
-        <div className="bg-[#FAFBFD] bg-no-repeat py-0 pr-[60px] pl-[76px] max-h-[100vh] mt-0">
+        <div className="bg-[#FAFBFD] bg-no-repeat pt-0 pb-[100px] pr-[60px] pl-[76px] mt-0">
             <Navbar/>
             <StepperContentHeader/>
             <InjiStepper/>
