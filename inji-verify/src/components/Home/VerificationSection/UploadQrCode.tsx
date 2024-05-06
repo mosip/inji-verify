@@ -2,7 +2,7 @@ import {scanFilesForQr} from "../../../utils/qr-utils";
 import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../redux/features/verification/verificationSlice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (

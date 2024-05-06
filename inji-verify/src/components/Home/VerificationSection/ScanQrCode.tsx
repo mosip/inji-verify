@@ -5,7 +5,7 @@ import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {qrReadInit} from "../../../redux/features/verificationSlice";
+import {qrReadInit} from "../../../redux/features/verification/verificationSlice";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();

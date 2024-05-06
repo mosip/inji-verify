@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {closeAlert, raiseAlert} from "../../redux/features/verificationSlice";
+import {closeAlert} from "../../redux/features/verification/verificationSlice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 
 const AlertMessage = () => {

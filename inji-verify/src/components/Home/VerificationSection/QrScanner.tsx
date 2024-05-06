@@ -3,7 +3,7 @@ import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime} from "../../../utils/config";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verificationSlice";
+import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verification/verificationSlice";
 
 let timer: NodeJS.Timeout;
 

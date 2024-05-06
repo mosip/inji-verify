@@ -3,7 +3,7 @@ import {convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
 import {ReactComponent as DocumentIcon} from '../../../../assets/document.svg';
 import {useAppDispatch} from "../../../../redux/hooks";
-import {goHomeScreen} from "../../../../redux/features/verificationSlice";
+import {goHomeScreen} from "../../../../redux/features/verification/verificationSlice";
 
 function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();

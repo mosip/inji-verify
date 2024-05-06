@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
-import verificationFlowReducer, {PreloadedState} from './features/verificationSlice';
-import verificationSaga from './features/verificationSaga';
+import verificationFlowReducer, {PreloadedState} from './features/verification/verificationSlice';
+import verificationSaga from './features/verification/verificationSaga';
 import createSagaMiddleware from "redux-saga";
 
 const sagaMiddleware = createSagaMiddleware();

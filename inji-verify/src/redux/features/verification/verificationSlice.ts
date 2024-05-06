@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {ApplicationState} from "../../types/data-types";
-import {VerificationSteps} from "../../utils/config";
+import {ApplicationState} from "../../../types/data-types";
+import {VerificationSteps} from "../../../utils/config";
 
 export const PreloadedState: ApplicationState = {
     alert: {},
