@@ -1,77 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ScanQrCode from "./ScanQrCode";
 import Verification from "./Verification";
 import Result from "./Result";
-import {verify} from "../../../utils/verification-utils";
-import {useNavigate} from "react-router-dom";
-import {decodeQrData} from "../../../utils/qr-utils";
-import {AlertMessages, VerificationSteps} from "../../../utils/config";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {goHomeScreen, raiseAlert, verificationComplete} from "../../../redux/features/verificationSlice";
+import {VerificationSteps} from "../../../utils/config";
+import {useAppSelector} from "../../../redux/hooks";
 
 const DisplayActiveStep = () => {
-    const {activeScreen, qrData} = useAppSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
-    const dispatch = useAppDispatch();
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        console.log("Qr data changed: ", qrData);
-        if (!(!!qrData)) return;
-        let vc: any;
-        try {
-            vc = JSON.parse(decodeQrData(qrData));
-        }
-        catch (error) {
-            dispatch(goHomeScreen({}));
-            dispatch(raiseAlert({alert: {...AlertMessages.qrNotSupported, open: true}}))
-            return;
-        }
-        try {
-            verify(vc)
-                .then(status => {
-                    console.log("Status: ", status);
-                    // did-resolution fails if the internet is not available and proof can't be verified
-                    if (status?.checks?.proof === "NOK"
-                        && !window.navigator.onLine) {
-                        navigate('/offline');
-                    }
-                    dispatch(verificationComplete({verificationResult: {vc, vcStatus: status}}))
-                })
-                .catch(error => {
-                    console.error("Error occurred while verifying the VC: ", error);
-                    console.error("Error code: ", error.code);
-                    if (!window.navigator.onLine) {
-                        navigate('/offline');
-                        return;
-                    }
-                    dispatch(verificationComplete({
-                        verificationResult: {
-                            vcStatus: {
-                                status: "NOK",
-                                checks: []
-                            },
-                            vc: null
-                        }
-                    }));
-                });
-        } catch (error) {
-            console.error("Error occurred while reading the qrData: ", error);
-            dispatch(verificationComplete({
-                verificationResult: {
-                    vcStatus: {
-                        status: "NOK",
-                        checks: []
-                    },
-                    vc: null
-                }
-            }));
-        }
-    }, [qrData]);
-
-    useEffect(() => {
-        console.log("Data change: ", {qrData, activeScreen})
-    }, [qrData, activeScreen]);
+    const {activeScreen} = useAppSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
 
     switch (activeScreen) {
         case VerificationSteps.ScanQrCodePrompt:

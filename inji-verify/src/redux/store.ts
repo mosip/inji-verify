@@ -1,9 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import verificationFlowReducer, {PreloadedState} from './features/verificationSlice';
+import verificationSaga from './features/verificationSaga';
+import createSagaMiddleware from "redux-saga";
+
+const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
         reducer: verificationFlowReducer,
-        /*middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),*/
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
         devTools: true/*process.env.NODE_ENV !== 'production'*/,
         preloadedState: PreloadedState as any
     }
@@ -12,5 +16,8 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
+
+// Run the saga
+sagaMiddleware.run(verificationSaga);
 
 export default store;
