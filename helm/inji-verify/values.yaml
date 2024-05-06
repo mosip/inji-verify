@@ -415,7 +415,12 @@ metrics:
     rules: []
 
 ## The url below is to access esignet API services.
-## CAUTION: Domain name to access injiweb UI must be secure/internal/over vpn.
+## CAUTION: Domain name to access injiverify UI must be secure/internal/over vpn.
+## Slash is important!
+inji_verify:
+  inji_verify_port: '3004'
+  inji_verify_service_host: 'mimoto.mimoto'
+esignet_redirect_url: 'esignet.sandbox.xyz.net'
 istio:
   enabled: true
   ingressController:
