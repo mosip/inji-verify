@@ -9,6 +9,12 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
         <label
             className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-[#FF7F00] font-bold text-[#FF7F00] w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
+            onClick={(event) => {
+                if (!window.navigator.onLine) {
+                    event.preventDefault();
+                    window.location.assign('/offline');
+                }
+            }}
         >
             <span className="flex m-auto content-center justify-center w-[100%]">
                 <span className="inline-grid mr-1.5">
@@ -32,7 +38,7 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept=".png, .jpeg, .jpg, .pdf"
+                accept=".png, .jpeg, .jpg"
                 className="mx-auto my-2 hidden h-0"
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];

@@ -5,7 +5,7 @@ function Navbar(props: any) {
     // Logo goes here
     return (
         <div className={"h-[52px] mx-0 mt-[46px] mb-[60px]"}>
-            <img src={injiLogo}/>
+            <img src='/assets/images/inji_verify.svg'/>
         </div>
     );
 }

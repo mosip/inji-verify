@@ -11,7 +11,7 @@ const getDIDMethod = (did: string) => {
 export const resolveDid = async (did: string)  => {
     const didMethod = getDIDMethod(did);
     if (SUPPORTED_DID_METHODS.indexOf(didMethod) === -1)
-        throw new Error("Unsupported DID method");
+        throw new Error(`Unsupported DID method: ${didMethod}. DID: ${did}`);
     const webResolver = getResolver();
     let didResolver = new Resolver({
         ...webResolver

@@ -1,5 +1,4 @@
 import React from 'react';
-import underConstruction from '../../assets/under_construction.svg';
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 
@@ -8,7 +7,7 @@ function SomethingWentWrong(props: any) {
     return (
         <div className="grid content-center justify-center rounded-[10px] h-[540px] mx-auto my-7 shadow-lg text-center w-[90%] bg-white bg-no-repeat bg-clip-padding">
             <div className="col-end-13">
-                <img src={underConstruction} width={372} style={{margin: '30px auto'}}/>
+                <img src={'/assets/images/under_construction.svg'} width={372} style={{margin: '30px auto'}}/>
             </div>
             <div className="col-end-13">
                 <h6 className="font-medium text-2xl font-inter text-[#2C2C2C] mx-auto my-[5px]">

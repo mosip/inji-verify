@@ -59,7 +59,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                         className="w-[180px] mx-auto my-[18px]"
                         fill={false}
                     >
-                        I Understand
+                        Okay
                     </StyledButton>
                 </div>
             </Fade>

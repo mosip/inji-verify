@@ -1,5 +1,5 @@
 import { scanFile } from "@openhealthnz-credentials/pdf-image-qr-scanner";
-import {decodeData} from '@mosip/pixelpass';
+import {decodeData, generateQRData} from '@mosip/pixelpass';
 import {HEADER_DELIMITER, SUPPORTED_QR_HEADERS} from "./config";
 
 export const scanFilesForQr = async (selectedFile) => {
@@ -34,3 +34,5 @@ export const decodeQrData = (qrData) => {
     console.log('Decoded data: ', decodedData);
     return decodedData;
 }
+
+export const encodeData = (data) => generateQRData(data);
