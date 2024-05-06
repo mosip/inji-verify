@@ -6,7 +6,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        "base": "var(--iv-font-base)"
+        base: "var(--iv-font-base)"
+      },
+      colors: {
+        primary: "var(--iv-primary-color)"
       }
     },
   },

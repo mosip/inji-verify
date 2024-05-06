@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: "#FF7F00";
+    --iv-primary-color: #FF7F00;
   }
 }
 

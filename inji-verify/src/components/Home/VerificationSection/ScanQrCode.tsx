@@ -26,7 +26,7 @@ const ScanQrCode = () => {
                     className={`relative grid content-center justify-center xs:w-[45vw] md:w-[350px] xs:h-[45vw] md:h-[350px] my-1.5 mx-auto bg-cover`}
                     style={{backgroundImage: `url(${scanQr})`}}>
                     <div
-                        className="grid bg-[#FF7F00] opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
+                        className="grid bg-primary opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
                     </div>
                     <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
                         <img src={qrIcon} className="w-[100px]"/>

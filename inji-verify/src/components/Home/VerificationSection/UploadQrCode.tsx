@@ -7,7 +7,7 @@ import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../r
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-[#FF7F00] font-bold text-[#FF7F00] w-[350px] cursor-pointer text-center px-0 py-[18px]"
+            className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-primary font-bold text-primary w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
             onClick={(event) => {
                 if (!window.navigator.onLine) {
