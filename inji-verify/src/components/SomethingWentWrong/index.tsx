@@ -10,10 +10,10 @@ function SomethingWentWrong(props: any) {
                 <img src={'/assets/images/under_construction.svg'} width={372} style={{margin: '30px auto'}}/>
             </div>
             <div className="col-end-13">
-                <h6 className="font-medium text-2xl font-inter text-[#2C2C2C] mx-auto my-[5px]">
+                <h6 className="font-medium text-2xl  text-[#2C2C2C] mx-auto my-[5px]">
                     No Internet Connection!
                 </h6>
-                <p className="font-normal text-[14px] font-inter text-[#7B7B7B] mx-auto my-[5px]">
+                <p className="font-normal text-[14px]  text-[#7B7B7B] mx-auto my-[5px]">
                     Oops! We can’t seem to connect. Check your internet connection and try again.
                 </p>
                 <StyledButton

@@ -4,10 +4,11 @@ module.exports = {
     "./src/**/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
-    fontFamily: {
-      "inter": ["Inter"]
-    }
+    extend: {
+      fontFamily: {
+        "base": "var(--iv-font-base)"
+      }
+    },
   },
   plugins: [],
 }

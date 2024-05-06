@@ -14,11 +14,11 @@ const Verification = () => {
 
     return (
         <div className="grid py-[78px] px-[104px] text-center content-center justify-center">
-            <div className="col-end-12 font-bold text-xl font-inter mb-11">
-                <p className="font-bold text-xl font-inter mb-2" style={{font: 'normal normal 600 20px/24px Inter', marginBottom: '8px'}}>
+            <div className="col-end-12 font-bold text-xl  mb-11">
+                <p className="font-bold text-xl  mb-2" style={{font: 'normal normal 600 20px/24px Inter', marginBottom: '8px'}}>
                     Verification in Progress
                 </p>
-                <p className="font-normal text-[16px] font-inter">
+                <p className="font-normal text-[16px] ">
                     This verification will take sometime, please don’t close the browser.
                 </p>
             </div>

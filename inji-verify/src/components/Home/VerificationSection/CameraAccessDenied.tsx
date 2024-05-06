@@ -46,11 +46,11 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
             <Fade>
                 <div className="grid justify-items-center items-center text-center shadow-lg" style={style}>
                     <NoPhotographyIcon fontSize={"inherit"} style={{color: '#FF8F00', margin: '12px auto'}}/>
-                    <p className="font-bold font-inter text-[20px]"
+                    <p className="font-bold  text-[20px]"
                        style={{font: 'normal normal 600 20px/24px Inter', margin: '12px auto'}}>
                         Camera Access Denied
                     </p>
-                    <p className="font-normal text-[16px] font-inter text-[#707070] my-3 mx-auto">
+                    <p className="font-normal text-[16px]  text-[#707070] my-3 mx-auto">
                         We need your camera to scan the code. Go to your browser settings and allow camera access for
                         this website.
                     </p>

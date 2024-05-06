@@ -13,12 +13,12 @@ const ResultSummary = ({success}: {
                         {success ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
                     </div>
                     <div className="col-end-13">
-                        <p className="font-bold text-[20px] font-inter mx-auto my-[7px]">
+                        <p className="font-bold text-[20px]  mx-auto my-[7px]">
                             Results
                         </p>
                     </div>
                     <div className="col-end-13">
-                        <p className="font-normal text-[4px] font-inter" style={{font: "normal normal normal 16px/20px Inter"}}>
+                        <p className="font-normal text-[4px] " style={{font: "normal normal normal 16px/20px Inter"}}>
                             {success
                                 ? "Congratulations, the given credential is valid!"
                                 : "Unfortunately, the given credential is invalid!"}

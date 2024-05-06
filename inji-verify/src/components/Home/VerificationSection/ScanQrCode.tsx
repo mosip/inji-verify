@@ -13,11 +13,11 @@ const ScanQrCode = () => {
 
     return (
         <div className="flex flex-col py-[78px] px-[104px] text-center content-center justify-center">
-            <div className="xs:col-end-13 mb-11 font-bold font-inter text-[20px]">
-                <h4 className="font-bold text-[20px] font-inter px-0 py-[3px]">
+            <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
+                <h4 className="font-bold text-[20px]  px-0 py-[3px]">
                     Scan QR Code or Upload an Image
                 </h4>
-                <p className="font-normal font-inter text-[16px] text-[#717171] py-[3px] px-0">
+                <p className="font-normal  text-[16px] text-[#717171] py-[3px] px-0">
                     Please keep the QR code in the centre & clearly visible.
                 </p>
             </div>
@@ -49,7 +49,7 @@ const ScanQrCode = () => {
             {
                 scanStatus !== "FAILED" && (
                     <div className="grid text-center content-center justify-center">
-                        <p className="font-normal text-[14px] font-inter text-[#8E8E8E] w-[280px]">
+                        <p className="font-normal text-[14px]  text-[#8E8E8E] w-[280px]">
                             Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB
                         </p>
                     </div>
