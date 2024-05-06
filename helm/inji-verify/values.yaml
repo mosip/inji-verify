@@ -249,7 +249,7 @@ extraEnvVarsCM:
   - config-server-share
   - artifactory-share
   #- softhsm-esignet-share
-  - oidc-ui
+  #- oidc-ui
 
 ## Secret with extra environment variables
 ##
