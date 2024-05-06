@@ -1,6 +1,6 @@
 import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr-icon.png";
+import qrIcon from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
@@ -23,11 +23,13 @@ const ScanQrCode = () => {
             </div>
             <div className="xs:col-end-13">
                 <div
-                    className={`grid content-center justify-center xs:w-[45vw] md:w-[350px] xs:h-[45vw] md:h-[350px] my-1.5 mx-auto bg-cover`}
+                    className={`relative grid content-center justify-center xs:w-[45vw] md:w-[350px] xs:h-[45vw] md:h-[350px] my-1.5 mx-auto bg-cover`}
                     style={{backgroundImage: `url(${scanQr})`}}>
                     <div
-                        className="grid bg-[#FF7F00] opacity-10 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
-                        <img src={qr} className="w-[100px] z-20"/>
+                        className="grid bg-[#FF7F00] opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
+                    </div>
+                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                        <img src={qrIcon} className="w-[100px]"/>
                     </div>
                 </div>
             </div>
