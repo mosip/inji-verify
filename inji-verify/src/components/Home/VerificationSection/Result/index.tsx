@@ -4,7 +4,7 @@ import VcDisplayCard from "./VcDisplayCard";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
 import {useAppSelector} from "../../../../redux/hooks";
 
-const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
+export const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
     const positioning = {top: 212, right: 0};
     if (!!resultSectionRef?.current) {

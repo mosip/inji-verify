@@ -8,7 +8,7 @@ import configureMockStore from "redux-mock-store";
 const mockStore = configureMockStore();
 const store = mockStore({activeScreen: VerificationSteps.ScanQrCodePrompt});
 
-describe("Stepper Content Header", () => {
+describe("Inji Stepper", () => {
     test("Test rendering", () => {
         render(
             <Provider store={store}>

@@ -8,7 +8,7 @@ import {VerificationStepsContent} from "../../../../utils/config";
 const mockStore = configureMockStore();
 const store = mockStore();
 
-describe("Stepper Content Header", () => {
+describe("Verification Progress Tracker", () => {
     test("Test rendering", () => {
         render(<Provider store={store}>
             <VerificationProgressTracker/>
