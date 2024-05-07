@@ -20,7 +20,6 @@ export const scanFilesForQr = async (selectedFile) => {
 }
 
 export const decodeQrData = (qrData) => {
-    console.log('Decoding: ', qrData);
     if (!(!!qrData)) return;
     let encodedData = qrData
     if (!!HEADER_DELIMITER) {
