@@ -37,8 +37,6 @@ echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
     # Restart the configserver deployment
     kubectl -n config-server get deploy -o name | xargs -n1 -t kubectl -n config-server rollout restart 
 
-sleep 400s
-
 echo Create $NS namespace
 kubectl create ns $NS
 
@@ -52,7 +50,7 @@ function installing_inji-verify() {
   echo Copy configmaps
   ./copy_cm.sh
 
-  INJI_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
+  INJIVERIFY_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIVERIFY
   helm -n $NS install inji-verify mosip/inji-verify \
   -f values.yaml \
