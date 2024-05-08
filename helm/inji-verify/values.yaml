@@ -51,8 +51,8 @@ service:
 
 image:
   registry: docker.io
-  repository: mosipdev/inji-verify
-  tag: develop
+  repository: mosipid/inji-verify
+  tag: 0.8.0
 
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
