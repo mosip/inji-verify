@@ -5,6 +5,7 @@ import Offline from "./pages/Offline";
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 
 import PreloadImages from "./components/commons/PreloadImages";
+import CheckInternetConnectivity from "./components/commons/CheckInternetConnectivity";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,7 @@ function App() {
         <>
             <RouterProvider router={router}/>
             <PreloadImages imageUrls={preloadImages}/>
+            <CheckInternetConnectivity/>
         </>
     );
 }

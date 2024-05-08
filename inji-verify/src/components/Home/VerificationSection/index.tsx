@@ -8,6 +8,7 @@ import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {useNavigate} from "react-router-dom";
 import {decodeQrData} from "../../../utils/qr-utils";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
+import {isOnline} from "../../../utils/misc";
 
 const DisplayActiveStep = () => {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
@@ -39,7 +40,7 @@ const DisplayActiveStep = () => {
                     console.log("Status: ", status);
                     // did-resolution fails if the internet is not available and proof can't be verified
                     if (status?.checks?.proof === "NOK"
-                        && !window.navigator.onLine) {
+                        && !isOnline()) {
                         navigate('/offline');
                     }
                     setVcStatus(status);
@@ -50,7 +51,7 @@ const DisplayActiveStep = () => {
                 .catch(error => {
                     console.error("Error occurred while verifying the VC: ", error);
                     console.error("Error code: ", error.code);
-                    if (!window.navigator.onLine) {
+                    if (!isOnline()) {
                         navigate('/offline');
                         return;
                     }

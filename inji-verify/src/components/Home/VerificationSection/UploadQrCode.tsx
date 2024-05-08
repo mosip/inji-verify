@@ -5,6 +5,7 @@ import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
 import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useNavigate} from "react-router-dom";
+import {isOnline} from "../../../utils/misc";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
             }}
             htmlFor={"upload-qr"}
             onClick={(event) => {
-                if (!window.navigator.onLine) {
+                if (!isOnline()) {
                     event.preventDefault();
                     navigate('/offline');
                 }

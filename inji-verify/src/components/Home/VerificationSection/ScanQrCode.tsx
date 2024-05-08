@@ -10,6 +10,7 @@ import {SetScanResultFunction} from "../../../types/function-types";
 import {QrScanResult, ScanStatus} from "../../../types/data-types";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
 import {useNavigate} from "react-router-dom";
+import {isOnline} from "../../../utils/misc";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
@@ -78,7 +79,7 @@ const ScanQrCode = ({setScanResult}: {
                     style={{margin: "6px 0", width: "350px", textAlign: 'center'}}
                     fill
                     onClick={() => {
-                        if (!window.navigator.onLine) {
+                        if (!isOnline()) {
                             navigate('/offline');
                         }
                         else {
