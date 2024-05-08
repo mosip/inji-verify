@@ -26,4 +26,4 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
-export const isOnline = () => (window.localStorage.getItem('isOnline')) === true.toString()
+export const isOnline = () => ((window.localStorage.getItem('isOnline') === undefined) || (window.localStorage.getItem('isOnline') === true.toString()))
