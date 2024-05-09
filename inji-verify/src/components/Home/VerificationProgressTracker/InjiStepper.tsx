@@ -22,7 +22,7 @@ const steps: VerificationStep[] = [
 ];
 
 function InjiStepper() {
-    const activeScreen = useAppSelector(state => state.activeScreen);
+    const activeScreen = useAppSelector(state => state.verification.activeScreen);
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen >= index;
 

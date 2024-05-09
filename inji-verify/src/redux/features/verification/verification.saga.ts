@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import {goHomeScreen, raiseAlert, verificationComplete, verificationInit} from './verificationSlice';
+import {goHomeScreen, raiseAlert, verificationComplete, verificationInit} from './verification.slice';
 import { AlertMessages } from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';

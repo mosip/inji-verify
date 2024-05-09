@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {closeAlert} from "../../redux/features/verification/verificationSlice";
+import {closeAlert} from "../../redux/features/verification/verification.slice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 
 const AlertMessage = () => {
     const alertInfo = useAppSelector(state => {
-        console.log("State alert: ", state.alert);
-        return state.alert ?? {}
+        console.log("State alert: ", state.verification.alert);
+        return state.verification.alert ?? {}
     });
     const dispatch = useAppDispatch();
 

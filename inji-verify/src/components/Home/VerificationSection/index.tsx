@@ -6,7 +6,7 @@ import {VerificationSteps} from "../../../utils/config";
 import {useAppSelector} from "../../../redux/hooks";
 
 const DisplayActiveStep = () => {
-    const {activeScreen} = useAppSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
+    const {activeScreen} = useAppSelector(state => ({activeScreen: state.verification.activeScreen, qrData: state.verification.qrReadResult?.qrData}));
 
     switch (activeScreen) {
         case VerificationSteps.ScanQrCodePrompt:

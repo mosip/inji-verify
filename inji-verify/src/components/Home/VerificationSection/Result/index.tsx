@@ -18,7 +18,7 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): Card
 }
 
 const Result = () => {
-    const {vc, vcStatus} = useAppSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
+    const {vc, vcStatus} = useAppSelector(state => state.verification.verificationResult ?? {vc: null, vcStatus: null})
     const initialPositioning: CardPositioning = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);

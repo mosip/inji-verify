@@ -5,11 +5,11 @@ import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {qrReadInit} from "../../../redux/features/verification/verificationSlice";
+import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
-    const scanStatus = useAppSelector(state => state.qrReadResult?.status);
+    const scanStatus = useAppSelector(state => state.verification.qrReadResult?.status);
 
     return (
         <div className="flex flex-col py-[78px] px-[104px] text-center content-center justify-center">

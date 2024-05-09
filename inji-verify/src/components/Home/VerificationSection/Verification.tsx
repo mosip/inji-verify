@@ -4,12 +4,12 @@ import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {goHomeScreen} from "../../../redux/features/verification/verificationSlice";
+import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
 import {VerificationSteps} from "../../../utils/config";
 
 const Verification = () => {
     const dispatch = useAppDispatch();
-    const activeScreen = useAppSelector(state => state.activeScreen);
+    const activeScreen = useAppSelector(state => state.verification.activeScreen);
 
     return (
         <div className="grid py-[78px] px-[104px] text-center content-center justify-center">
