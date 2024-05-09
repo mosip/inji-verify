@@ -3,6 +3,7 @@ import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
 import {useAppSelector} from "../../../../redux/hooks";
+import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
 
 const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): CardPositioning => {
     // top = 340 - it is precalculated based in the xd design
@@ -18,7 +19,7 @@ const getPositioning = (resultSectionRef: React.RefObject<HTMLDivElement>): Card
 }
 
 const Result = () => {
-    const {vc, vcStatus} = useAppSelector(state => state.verification.verificationResult ?? {vc: null, vcStatus: null})
+    const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
     const initialPositioning: CardPositioning = {};
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);

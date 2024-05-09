@@ -6,10 +6,11 @@ import StyledButton from "./commons/StyledButton";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
 import {VerificationSteps} from "../../../utils/config";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const Verification = () => {
     const dispatch = useAppDispatch();
-    const activeScreen = useAppSelector(state => state.verification.activeScreen);
+    const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
 
     return (
         <div className="grid py-[78px] px-[104px] text-center content-center justify-center">

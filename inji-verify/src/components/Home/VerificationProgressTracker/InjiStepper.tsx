@@ -1,6 +1,7 @@
 import React from 'react';
 import {useAppSelector} from "../../../redux/hooks";
 import {VerificationStep} from "../../../types/data-types";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const steps: VerificationStep[] = [
     {
@@ -22,7 +23,7 @@ const steps: VerificationStep[] = [
 ];
 
 function InjiStepper() {
-    const activeScreen = useAppSelector(state => state.verification.activeScreen);
+    const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen >= index;
 

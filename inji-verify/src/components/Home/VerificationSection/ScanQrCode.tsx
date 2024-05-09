@@ -6,10 +6,11 @@ import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
-    const scanStatus = useAppSelector(state => state.verification.qrReadResult?.status);
+    const scanStatus = useVerificationFlowSelector(state => state.qrReadResult?.status);
 
     return (
         <div className="flex flex-col py-[78px] px-[104px] text-center content-center justify-center">
