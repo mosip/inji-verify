@@ -36,7 +36,8 @@ const ScanQrCode = () => {
             <div className="col-end-13">
                 <StyledButton
                     icon={<TabScanIcon/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}} fill
+                    className='mx-0 my-1.5 w-[350px] text-center'
+                    fill
                     onClick={() => dispatch(qrReadInit({flow: "SCAN"}))}>
                     Scan QR Code
                 </StyledButton>

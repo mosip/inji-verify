@@ -30,11 +30,8 @@ function VcDisplayCard({vc}: {vc: any}) {
                         )
                 }
             </div>
-            <div style={{
-                display: 'grid',
-                placeContent: 'center'
-            }}>
-                <StyledButton style={{margin: "24px auto"}} onClick={() => {
+            <div className="grid content-center justify-center">
+                <StyledButton className="mx-auto my-6" onClick={() => {
                     dispatch(goHomeScreen({}))
                 }}>
                     Verify QR Code

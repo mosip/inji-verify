@@ -41,13 +41,12 @@ const Fade = ({children}: any) => (
 )
 
 const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: () => void }) => {
-    return (
+    return open ? (
         <Modal>
             <Fade>
                 <div className="grid justify-items-center items-center text-center shadow-lg" style={style}>
-                    <NoPhotographyIcon fontSize={"inherit"} style={{color: '#FF8F00', margin: '12px auto'}}/>
-                    <p className="font-bold  text-[20px]"
-                       style={{font: 'normal normal 600 20px/24px Inter', margin: '12px auto'}}>
+                    <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto"/>
+                    <p className="font-bold  text-[20px] my-3 mx-auto">
                         Camera Access Denied
                     </p>
                     <p className="font-normal text-[16px]  text-[#707070] my-3 mx-auto">
@@ -64,7 +63,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                 </div>
             </Fade>
         </Modal>
-    );
+    ) : (<></>);
 }
 
 export default CameraAccessDenied;

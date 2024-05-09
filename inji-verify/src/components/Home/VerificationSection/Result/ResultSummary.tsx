@@ -18,7 +18,7 @@ const ResultSummary = ({success}: {
                         </p>
                     </div>
                     <div className="col-end-13">
-                        <p className="font-normal text-[4px] " style={{font: "normal normal normal 16px/20px Inter"}}>
+                        <p className="font-normal text-[16px]">
                             {success
                                 ? "Congratulations, the given credential is valid!"
                                 : "Unfortunately, the given credential is invalid!"}
