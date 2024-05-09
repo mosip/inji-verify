@@ -2,7 +2,8 @@ import {scanFilesForQr} from "../../../utils/qr-utils";
 import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, qrReadInit, raiseAlert, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
@@ -46,7 +47,7 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
                         dispatch(goHomeScreen({}));
-                        dispatch(raiseAlert({alert: {...AlertMessages.unsupportedFileSize, open: true}}))
+                        dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
                         return;
                     }
                     dispatch(qrReadInit({flow: "UPLOAD"}));
@@ -54,10 +55,10 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                         .then(scanResult => {
                             if (scanResult.error) console.error(scanResult.error);
                             if (!!scanResult.data) {
-                                dispatch(raiseAlert({alert: {...AlertMessages.qrUploadSuccess, open: true}}));
+                                dispatch(raiseAlert({...AlertMessages.qrUploadSuccess, open: true}));
                                 dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: "SUCCESS"}}));
                             } else {
-                                dispatch(raiseAlert({alert: {...AlertMessages.qrNotDetected, open: true}}));
+                                dispatch(raiseAlert({...AlertMessages.qrNotDetected, open: true}));
                                 dispatch(goHomeScreen({}));
                             }
                         });

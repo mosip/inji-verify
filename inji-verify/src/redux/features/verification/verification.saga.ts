@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import {goHomeScreen, raiseAlert, verificationComplete, verificationInit} from './verification.slice';
+import {goHomeScreen, verificationComplete, verificationInit} from './verification.slice';
+import {raiseAlert} from "../alerts/alerts.slice";
 import { AlertMessages } from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
@@ -11,7 +12,7 @@ function* handleVerification(qrData: string) {
         yield call(verifyVC, vc);
     } catch (error) {
         yield put(goHomeScreen({}));
-        yield put(raiseAlert({ alert: { ...AlertMessages.qrNotSupported, open: true } }));
+        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
 }
 

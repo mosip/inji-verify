@@ -3,7 +3,8 @@ import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime} from "../../../utils/config";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, raiseAlert, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {goHomeScreen, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 
 let timer: NodeJS.Timeout;
 
@@ -17,11 +18,9 @@ function QrScanner() {
         timer = setTimeout(() => {
             dispatch(goHomeScreen({}));
             dispatch(raiseAlert({
-                alert: {
-                    open: true,
-                    message: "The scan session has expired due to inactivity. Please initiate a new scan.",
-                    severity: "error"
-                }
+                open: true,
+                message: "The scan session has expired due to inactivity. Please initiate a new scan.",
+                severity: "error"
             }))
         }, ScanSessionExpiryTime);
         return () => {
