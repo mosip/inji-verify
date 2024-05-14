@@ -8,7 +8,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     max-height: 100vh;
     padding: 0 60px 0 76px;
     @media (max-width: 768px) {
-        padding: 0 30px 25px 30px;
+        padding: 0 30px 0 30px;
         height: auto;
     }
 `;
