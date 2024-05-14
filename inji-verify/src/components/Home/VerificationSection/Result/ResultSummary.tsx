@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Typography} from "@mui/material";
+import {Grid, Typography, useMediaQuery} from "@mui/material";
 import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 import {SetActiveStepFunction} from "../../../../types/function-types";
@@ -14,7 +14,7 @@ const ResultSummary = ({success}: {
                     display: "grid",
                     placeItems: "center",
                     placeContent: "center",
-                    paddingTop: "30px"
+                    paddingTop: "25px"
                 }}>
                     <Grid item xs={12} style={{
                         borderRadius: "50%",
@@ -45,9 +45,6 @@ const ResultSummary = ({success}: {
                         </Typography>
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs={12}>
-
             </Grid>
         </Grid>
     );

@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import {Box, Grid, Typography} from "@mui/material";
 
-export const ResultsSummaryContainer = styled(Box)(({success}: { success: boolean }) => (
+export const ResultsSummaryContainer = styled(Box)(({success, isMobile}: { success: boolean, isMobile: boolean }) => (
     {
-        height: "340px",
+        height: isMobile ? "auto" : "340px",
         backgroundColor: success ? "#4B9D1F" : "#CB4242",
-        color: "white"
+        color: "white",
+        paddingBottom: "25px"
     }
 ));
 
@@ -21,6 +22,11 @@ export const VcDisplayCardContainer = styled(Box)(({cardPositioning}: {
     )
 );
 
+export const VcDisplayCardContainerMobile = styled(Box)`
+    margin: auto;
+    padding: 30px
+`;
+
 export const VcDisplay = styled(Grid)`
     width: calc(min(400px, 90vw));
     margin: auto;
@@ -28,18 +34,14 @@ export const VcDisplay = styled(Grid)`
     border-radius: 12px;
     padding: 5px 15px;
     box-shadow: 0 3px 15px #0000000F;
-    max-height: 320px;
-    overflow-y: auto;
-`
-
-export const VcContent = styled(Box)`
-    width: 100%;
-    height: auto;
-`
+    @media (max-width: 768px) {
+        margin-top: 25px;
+    }
+`;
 
 export const VcProperty = styled(Grid)`
     padding: 10px 4px;
-`
+`;
 
 export const VcPropertyKey = styled(Typography)`
     font: normal normal normal 11px/14px Inter;
