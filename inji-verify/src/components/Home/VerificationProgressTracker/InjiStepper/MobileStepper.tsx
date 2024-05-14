@@ -9,7 +9,7 @@ function MobileStepper({steps, activeStep}: {steps: VerificationStep[], activeSt
             {steps.map((step, index) => (
                 <Step key={step.label}>
                     <StepLabel>
-                        <StepLabelContent>
+                        <StepLabelContent style={{fontWeight: 400}}>
                             {step.label}
                         </StepLabelContent>
                     </StepLabel>
