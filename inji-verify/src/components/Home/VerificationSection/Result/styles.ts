@@ -29,7 +29,12 @@ export const VcDisplay = styled(Grid)`
     padding: 5px 15px;
     box-shadow: 0 3px 15px #0000000F;
     max-height: 320px;
-    overflow-y: hidden;
+    overflow-y: auto;
+`
+
+export const VcContent = styled(Box)`
+    width: 100%;
+    height: auto;
 `
 
 export const VcProperty = styled(Grid)`
