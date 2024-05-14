@@ -94,7 +94,7 @@ const DisplayActiveStep = () => {
 
 const VerificationSection = () => {
     return (
-        <div>
+        <div style={{paddingBottom: '40px'}}>
             <DisplayActiveStep/>
         </div>
     );

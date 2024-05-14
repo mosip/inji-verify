@@ -8,7 +8,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     max-height: 100vh;
     padding: 0 60px 0 76px;
     @media (max-width: 768px) {
-        padding: 0 30px 15px 30px;
+        padding: 0 30px 25px 30px;
         height: auto;
     }
 `;
@@ -41,6 +41,9 @@ export const CopyrightsContainer = styled(Box)`
     display: grid;
     place-content: center;
     background: white;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `
 
 export const CopyrightsContent = styled(Typography)`
