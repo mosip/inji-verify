@@ -5,7 +5,7 @@ function Navbar(props: any) {
     // Logo goes here
     return (
         <NavbarContainer>
-            <img src='/assets/images/inji_verify.svg'/>
+            <img src='/assets/images/inji_verify.svg' height='100%'/>
         </NavbarContainer>
     );
 }

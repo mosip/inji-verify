@@ -31,7 +31,7 @@ const InjiStepper = () => {
     const activeStep = getActiveStep();
 
     return (
-        <Box style={{marginTop: '30px'}}>
+        <Box style={{marginTop: '25px'}}>
             {
                 isDesktop
                     ? (<DesktopStepper steps={steps} activeStep={activeStep}/>)

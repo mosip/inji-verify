@@ -8,7 +8,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     max-height: 100vh;
     padding: 0 60px 0 76px;
     @media (max-width: 768px) {
-        padding: 0 30px 0 30px;
+        padding: 0 25px;
         height: auto;
     }
 `;
@@ -17,7 +17,8 @@ export const NavbarContainer = styled(Box)`
     height: 52px;
     margin: 46px 0 60px 0;
     @media (max-width: 768px) {
-        margin: 30px 0 40px 0;
+        margin: 25px 0;
+        height: 50px;
     }
 `
 
@@ -26,6 +27,7 @@ export const Heading = styled(Typography)`
     font: normal normal bold 26px/31px Inter;
     @media (max-width: 768px) {
         font: normal normal 600 24px/28px Inter;
+        margin: 0
     }
 `
 
