@@ -9,21 +9,45 @@ export const ResultsSummaryContainer = styled(Box)(({success, isMobile}: { succe
     }
 ));
 
-export const VcDisplayCardContainer = styled(Box)(({cardPositioning}: {
-        cardPositioning: { top?: number, right?: number }
-    }) => (
-        {
-            margin: "auto",
-            top: cardPositioning.top ?? 212,
-            right: cardPositioning.right ?? 0,
-            // position: "absolute"
-        }
-    )
-);
+export const ResultSummaryComponent = styled(Grid)`
+    display: flex;
+    place-items: center;
+    place-content: center;
+    padding: 30px;
+    text-align: center;
+    @media (max-width: 900px) {
+        padding: 25px;
+        text-align: left;
+        place-content: flex-start;
+        max-width: 550px;
+        margin: auto
+    }
+    @media (min-width: 600px) {
+        place-content: space-around;
+    }
+`;
 
-export const VcDisplayCardContainerMobile = styled(Box)`
+export const ResultIconContainer = styled(Box)`
+    border-radius: 50%;
+    background-color: white;
+    height: 68px;
+    width: 68px;
+    display: grid;
+    place-content: center;
+    font-size: 24px;
+    margin: 7px auto;
+    @media (max-width: 900px) {
+        height: 30px;
+        width: 30px;
+        font-size: 24px;
+        margin: 4px auto;
+    }
+`
+
+export const VcDisplayCardContainer = styled(Box)`
     margin: auto;
-    padding: 30px
+    top: 212px;
+    right: calc((50vw - 400px) / 2);
 `;
 
 export const VcDisplay = styled(Grid)`

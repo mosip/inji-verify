@@ -27,7 +27,8 @@ export const Heading = styled(Typography)`
     font: normal normal bold 26px/31px Inter;
     @media (max-width: 900px) {
         font: normal normal 600 24px/28px Inter;
-        margin: 0
+        margin: 0;
+        text-align: center;
     }
 `
 
