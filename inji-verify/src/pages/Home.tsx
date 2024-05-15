@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {Grid} from "@mui/material";
+import {Grid, Theme, useMediaQuery} from "@mui/material";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import VerificationSection from "../components/Home/VerificationSection";
 import Copyrights from "../components/Home/VerificationProgressTracker/Copyrights";

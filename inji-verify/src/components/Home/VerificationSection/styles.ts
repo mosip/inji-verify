@@ -6,7 +6,7 @@ export const ScanQrCodeContainer = styled(Grid)`
     display: grid;
     place-content: center;
     padding: 78px 104px;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         padding: 25px 52px;
     }
 `;
@@ -16,7 +16,7 @@ export const VerificationBlockContainer = styled(Grid)`
     display: grid;
     place-content: center;
     padding: 78px 104px;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         padding: 25px 52px;
     }
 `;

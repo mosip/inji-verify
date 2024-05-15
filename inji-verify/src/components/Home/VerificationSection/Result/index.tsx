@@ -26,7 +26,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
     const resultSectionRef = React.createRef<HTMLDivElement>();
     const [vcDisplayCardPositioning, setVcDisplayCardPositioning] = useState(initialPositioning);
 
-    const isMobile = useMediaQuery("@media (max-width: 768px)");
+    const isMobile = useMediaQuery("@media (max-width: 900px)");
 
     useEffect(() => {
         if (resultSectionRef?.current && !(!!vcDisplayCardPositioning.top)) {

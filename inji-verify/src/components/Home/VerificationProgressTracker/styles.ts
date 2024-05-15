@@ -7,7 +7,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
     height: 100vh;
     max-height: 100vh;
     padding: 0 60px 0 76px;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         padding: 0 25px;
         height: auto;
     }
@@ -16,7 +16,7 @@ export const VerificationProgressTrackerContainer = styled(Box)`
 export const NavbarContainer = styled(Box)`
     height: 52px;
     margin: 46px 0 60px 0;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         margin: 25px 0;
         height: 50px;
     }
@@ -25,7 +25,7 @@ export const NavbarContainer = styled(Box)`
 export const Heading = styled(Typography)`
     margin: 6px 0;
     font: normal normal bold 26px/31px Inter;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         font: normal normal 600 24px/28px Inter;
         margin: 0
     }
@@ -43,7 +43,7 @@ export const CopyrightsContainer = styled(Box)`
     display: grid;
     place-content: center;
     background: white;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         width: 100%;
         position: static;
         padding-bottom: 60px

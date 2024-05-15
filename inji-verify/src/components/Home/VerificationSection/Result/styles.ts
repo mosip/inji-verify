@@ -33,7 +33,7 @@ export const VcDisplay = styled(Grid)`
     border-radius: 12px;
     padding: 5px 15px;
     box-shadow: 0 3px 15px #0000000F;
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         margin-top: 25px;
     }
 `;
