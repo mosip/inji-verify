@@ -32,8 +32,8 @@ jobs:
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
   sonar_analysis:
-    needs: build-maven-esignet
     if: "${{  github.event_name != 'pull_request' }}"
     uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master
     with:
