@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Step, StepContent, StepLabel, Stepper, Typography, useMediaQuery} from "@mui/material";
+import {Box, Step, StepContent, StepLabel, Stepper, Theme, Typography, useMediaQuery} from "@mui/material";
 import DesktopStepper from "./DesktopStepper";
 import MobileStepper from "./MobileStepper";
 import {VerificationStep} from "../../../../types/data-types";
@@ -26,14 +26,15 @@ const steps: VerificationStep[] = [
 ];
 
 const InjiStepper = () => {
-    const isDesktop = useMediaQuery('@media (min-width:768px)');
+    const isTableOrAbove = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
     const {getActiveStep} = useActiveStepContext();
     const activeStep = getActiveStep();
 
     return (
-        <Box style={{marginTop: '30px'}}>
+        <Box style={{marginTop: '25px'}}>
             {
-                isDesktop
+                isTableOrAbove
                     ? (<DesktopStepper steps={steps} activeStep={activeStep}/>)
                     : (<MobileStepper steps={steps} activeStep={activeStep}/>)
             }

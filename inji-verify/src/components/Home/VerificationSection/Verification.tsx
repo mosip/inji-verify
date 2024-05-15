@@ -6,6 +6,7 @@ import QrScanner from "./QrScanner";
 import {SetQrDataFunction} from "../../../types/function-types";
 import {useActiveStepContext} from "../../../pages/Home";
 import StyledButton from "./commons/StyledButton";
+import {VerificationBlockContainer} from "./styles";
 
 const Verification = ({setQrData}: {
     setQrData: SetQrDataFunction
@@ -13,7 +14,7 @@ const Verification = ({setQrData}: {
     const {getActiveStep, setActiveStep} = useActiveStepContext();
 
     return (
-        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
+        <VerificationBlockContainer container>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
                 marginBottom: "44px"
@@ -52,7 +53,7 @@ const Verification = ({setQrData}: {
                     Back
                 </StyledButton>
             </Grid>
-        </Grid>
+        </VerificationBlockContainer>
     );
 }
 

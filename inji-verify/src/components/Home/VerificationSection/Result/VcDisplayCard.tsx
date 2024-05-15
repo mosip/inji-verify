@@ -10,7 +10,7 @@ import {VcDisplay, VcProperty, VcPropertyKey, VcPropertyValue, VcVerificationFai
 
 function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveStepFunction}) {
     return (
-        <Box>
+        <Box style={{paddingBottom: 60}}>
             <VcDisplay container>
                 {
                     vc ? Object.keys(vc.credentialSubject)

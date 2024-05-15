@@ -3,20 +3,33 @@ import styled from "@emotion/styled";
 
 export const VerificationProgressTrackerContainer = styled(Box)`
     background: #FAFBFD 0 0 no-repeat padding-box;
-    padding: 0 60px 0 76px;
     margin-top: 0;
     height: 100vh;
     max-height: 100vh;
+    padding: 0 60px 0 76px;
+    @media (max-width: 900px) {
+        padding: 0 25px;
+        height: auto;
+    }
 `;
 
 export const NavbarContainer = styled(Box)`
     height: 52px;
     margin: 46px 0 60px 0;
+    @media (max-width: 900px) {
+        margin: 25px 0;
+        height: 50px;
+    }
 `
 
 export const Heading = styled(Typography)`
+    margin: 6px 0;
     font: normal normal bold 26px/31px Inter;
-    margin: 6px 0
+    @media (max-width: 900px) {
+        font: normal normal 600 24px/28px Inter;
+        margin: 0;
+        text-align: center;
+    }
 `
 
 export const Description = styled(Typography)`
@@ -31,6 +44,11 @@ export const CopyrightsContainer = styled(Box)`
     display: grid;
     place-content: center;
     background: white;
+    @media (max-width: 900px) {
+        width: 100%;
+        position: static;
+        padding-bottom: 60px
+    }
 `
 
 export const CopyrightsContent = styled(Typography)`

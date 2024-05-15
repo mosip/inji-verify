@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Grid, Typography} from "@mui/material";
+import {Box, Grid, Typography, useMediaQuery} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qr from "../../../assets/qr-icon.png";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
@@ -10,6 +10,7 @@ import {SetScanResultFunction} from "../../../types/function-types";
 import {QrScanResult, ScanStatus} from "../../../types/data-types";
 import {AlertMessages, VerificationSteps} from "../../../utils/config";
 import {useNavigate} from "react-router-dom";
+import {ScanQrCodeContainer} from "./styles";
 
 const ScanQrCode = ({setScanResult}: {
     setScanResult: SetScanResultFunction
@@ -19,6 +20,7 @@ const ScanQrCode = ({setScanResult}: {
     const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
 
     const navigate = useNavigate();
+    const isTabletOrAbove = useMediaQuery("@media (min-width: 768px)");
 
     function checkScanResult(scanResult: QrScanResult) {
         let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
@@ -30,10 +32,10 @@ const ScanQrCode = ({setScanResult}: {
     }
 
     return (
-        <Grid container style={{padding: "78px 104px", textAlign: "center", display: "grid", placeContent: "center"}}>
+        <ScanQrCodeContainer container>
             <Grid item xs={12} style={{
                 font: 'normal normal 600 20px/24px Inter',
-                marginBottom: "44px"
+                marginBottom: isTabletOrAbove ? "44px" : "10px"
             }} order={0}>
                 <Typography style={{font: 'normal normal 600 20px/24px Inter', padding: '3px 0'}}>
                     Scan QR Code or Upload an Image
@@ -51,7 +53,7 @@ const ScanQrCode = ({setScanResult}: {
                         placeContent: 'center',
                         width: 'calc(min(45vw, 350px))',
                         height: 'calc(min(45vw, 350px))',
-                        margin: '6px auto'
+                        margin: '16px auto'
                     }}
                 >
                     <div style={{
@@ -98,7 +100,7 @@ const ScanQrCode = ({setScanResult}: {
                     </Grid>
                 )
             }
-        </Grid>
+        </ScanQrCodeContainer>
     );
 }
 
