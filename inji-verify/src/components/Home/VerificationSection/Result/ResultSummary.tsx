@@ -4,8 +4,9 @@ import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/veri
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 import {SetActiveStepFunction} from "../../../../types/function-types";
 
-const ResultSummary = ({success}: {
-    success: boolean
+const ResultSummary = ({success, isMobile}: {
+    success: boolean,
+    isMobile: boolean
 }) => {
     return (
         <Grid container>
@@ -14,7 +15,8 @@ const ResultSummary = ({success}: {
                     display: "grid",
                     placeItems: "center",
                     placeContent: "center",
-                    paddingTop: "25px"
+                    padding: isMobile ? 25 : 30,
+                    textAlign: "center"
                 }}>
                     <Grid item xs={12} style={{
                         borderRadius: "50%",

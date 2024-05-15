@@ -42,7 +42,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
     return (
         <Box id="result-section" ref={resultSectionRef}>
             <ResultsSummaryContainer success={success} isMobile={isMobile}>
-                <ResultSummary success={success}/>
+                <ResultSummary success={success} isMobile={isMobile}/>
             </ResultsSummaryContainer>
             <VcDisplayCardContainer
                 style={{position: !isMobile ? "absolute" : "static"}}

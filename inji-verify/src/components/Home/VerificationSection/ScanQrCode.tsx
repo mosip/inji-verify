@@ -53,7 +53,7 @@ const ScanQrCode = ({setScanResult}: {
                         placeContent: 'center',
                         width: 'calc(min(45vw, 350px))',
                         height: 'calc(min(45vw, 350px))',
-                        margin: '6px auto'
+                        margin: '16px auto'
                     }}
                 >
                     <div style={{

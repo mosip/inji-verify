@@ -5,8 +5,7 @@ export const ResultsSummaryContainer = styled(Box)(({success, isMobile}: { succe
     {
         height: isMobile ? "auto" : "340px",
         backgroundColor: success ? "#4B9D1F" : "#CB4242",
-        color: "white",
-        paddingBottom: "25px"
+        color: "white"
     }
 ));
 

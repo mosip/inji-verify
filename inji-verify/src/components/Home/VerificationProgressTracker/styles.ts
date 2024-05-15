@@ -45,6 +45,8 @@ export const CopyrightsContainer = styled(Box)`
     background: white;
     @media (max-width: 768px) {
         width: 100%;
+        position: static;
+        padding-bottom: 60px
     }
 `
 

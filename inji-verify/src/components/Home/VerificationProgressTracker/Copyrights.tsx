@@ -5,7 +5,7 @@ import {CopyrightsContainer, CopyrightsContent} from "./styles";
 function Copyrights(props: any) {
     return (
         <CopyrightsContainer>
-            <Divider style={{width: '40vw'}}/>
+            <Divider style={{width: '40vw', margin: "auto"}}/>
             <CopyrightsContent>
                 2024 © MOSIP - All rights reserved.
             </CopyrightsContent>
