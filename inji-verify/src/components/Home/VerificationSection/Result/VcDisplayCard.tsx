@@ -9,7 +9,7 @@ function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();
     return (
         <div>
-            <div className={`grid xs:w-[90vw] md:w-[400px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] max-h-[320px] shadow-lg ${vc ? "overflow-y-scroll" : ""}`}>
+            <div className={`grid xs:w-[90vw] md:w-[400px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}>
                 {
                     vc ? Object.keys(vc.credentialSubject)
                         .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
