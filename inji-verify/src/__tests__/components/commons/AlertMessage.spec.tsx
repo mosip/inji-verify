@@ -3,7 +3,7 @@ import AlertMessage from "../../../components/commons/AlertMessage";
 import {render, screen} from "@testing-library/react";
 import {Provider} from "react-redux";
 import configureMockStore from 'redux-mock-store';
-import {PreloadedState} from "../../../redux/features/verification/verificationSlice";
+import {PreloadedState} from "../../../redux/features/verification/verification.slice";
 import {AlertMessages} from "../../../utils/config";
 
 const mockStore = configureMockStore();

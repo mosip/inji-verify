@@ -3,10 +3,10 @@ import {render, screen} from "@testing-library/react";
 import VerificationProgressTracker from "../../../../components/Home/VerificationProgressTracker";
 import configureMockStore from "redux-mock-store";
 import {Provider} from "react-redux";
-import {VerificationStepsContent} from "../../../../utils/config";
+import {VerificationSteps, VerificationStepsContent} from "../../../../utils/config";
 
 const mockStore = configureMockStore();
-const store = mockStore();
+const store = mockStore({verification: {activeScreen: VerificationSteps.ScanQrCodePrompt}});
 
 describe("Verification Progress Tracker", () => {
     test("Test rendering", () => {
