@@ -57,6 +57,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                         onClick={handleClose}
                         className="w-[180px] mx-auto my-[18px]"
                         fill={false}
+                        data-testid="camer-access-denied-okay"
                     >
                         Okay
                     </StyledButton>

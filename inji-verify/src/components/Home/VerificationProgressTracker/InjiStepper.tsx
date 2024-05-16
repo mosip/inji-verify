@@ -5,7 +5,7 @@ import {useVerificationFlowSelector} from "../../../redux/features/verification/
 
 const steps: VerificationStep[] = [
     {
-        label: 'Select ‘Scan QR Code’ or ‘Upload QR Code’ ',
+        label: 'Select \'Scan QR Code\' or \'Upload QR Code\' ',
         description: ['Tap \'Scan QR Code\' and scan to capture the QR code shown on your digital credentials/card.', 'Tap ‘Upload QR Code’ to upload the preferred file.'],
     },
     {

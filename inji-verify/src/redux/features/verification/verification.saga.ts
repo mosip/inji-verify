@@ -49,3 +49,4 @@ function* verificationSaga() {
 }
 
 export default verificationSaga;
+export {handleVerification, verifyVC}

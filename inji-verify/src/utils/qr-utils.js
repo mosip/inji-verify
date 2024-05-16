@@ -20,7 +20,6 @@ export const scanFilesForQr = async (selectedFile) => {
 }
 
 export const decodeQrData = (qrData) => {
-    console.log('Decoding: ', qrData);
     if (!(!!qrData)) return;
     let encodedData = qrData
     if (!!HEADER_DELIMITER) {
@@ -30,9 +29,7 @@ export const decodeQrData = (qrData) => {
         if (splitQrData.length !== 2) return; // throw some error and handle it
         encodedData = splitQrData[1];
     }
-    const decodedData =  decode(encodedData);
-    console.log('Decoded data: ', decodedData);
-    return decodedData;
+    return decode(encodedData);
 }
 
 export const encodeData = (data) => generateQRData(data);
