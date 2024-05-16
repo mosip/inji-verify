@@ -8,6 +8,7 @@ export const HEADER_DELIMITER = '';
 export const VerificationSteps = {
     ScanQrCodePrompt: 0,
     ActivateCamera: 1,
+    UploadQr: 1,
     Verifying: 2,
     DisplayResult: 3
 }

@@ -1,44 +1,27 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {ScanStatus} from "../../../types/data-types";
-import {SetScanResultFunction} from "../../../types/function-types";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
-import {AlertMessages, UploadFileSizeLimits, VerificationSteps} from "../../../utils/config";
+import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
-import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../../redux/hooks";
+import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
-    const navigate = useNavigate();
     return (
         <label
-            style={{
-                background: `#FFFFFF 0% 0% no-repeat padding-box`,
-                border: '2px solid #FF7F00',
-                borderRadius: '9999px',
-                opacity: 1,
-                padding: '18px 0',
-                color: '#FF7F00',
-                width: '350px',
-                cursor: 'pointer',
-                textAlign: 'center'
-            }}
+            className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-primary font-bold text-primary w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
             onClick={(event) => {
                 if (!window.navigator.onLine) {
                     event.preventDefault();
-                    navigate('/offline');
+                    window.location.assign('/offline');
                 }
             }}
         >
-            <span style={{
-                margin: "auto",
-                display: 'flex',
-                placeContent: 'center',
-                width: '100%'
-            }}>
-                <span style={{display: "inline-grid", marginRight: "6px"}}>
+            <span className="flex m-auto content-center justify-center w-[100%]">
+                <span className="inline-grid mr-1.5">
                     <UploadIcon/>
                 </span>
-                <span style={{display: "inline-grid"}}>
+                <span className="inline-grid">
                     {displayMessage}
                 </span>
             </span>
@@ -46,16 +29,10 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
-                                 {
-                                     setScanResult: SetScanResultFunction,
-                                     displayMessage: string,
-                                       setScanStatus: (status: ScanStatus) => void
-                                   }) => {
-    const {setActiveStep} = useActiveStepContext();
-    const {setAlertInfo} = useAlertMessages();
+export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
+    const dispatch = useAppDispatch();
     return (
-        <div style={{margin: "6px auto", display: "flex", placeContent: "center", width: "350px"}}>
+        <div className="mx-auto my-1.5 flex content-center justify-center w-[350px]">
             <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input
@@ -63,26 +40,27 @@ export const UploadQrCode = ({setScanResult, displayMessage, setScanStatus}:
                 id="upload-qr"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg"
-                style={{
-                    margin: "8px auto",
-                    display: "none",
-                    height: 0
-                }}
+                className="mx-auto my-2 hidden h-0"
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
                     if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
                         console.log(`File size: `, file?.size);
-                        setActiveStep(VerificationSteps.ScanQrCodePrompt);
-                        setAlertInfo({...AlertMessages.unsupportedFileSize, open: true});
-                        setScanStatus("Failed");
+                        dispatch(goHomeScreen({}));
+                        dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
                         return;
                     }
-                    setActiveStep(VerificationSteps.Verifying);
+                    dispatch(qrReadInit({flow: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
-                            setScanStatus(!!scanResult.data ? "Success" : "Failed")
-                            setScanResult(scanResult);
+                            if (scanResult.error) console.error(scanResult.error);
+                            if (!!scanResult.data) {
+                                dispatch(raiseAlert({...AlertMessages.qrUploadSuccess, open: true}));
+                                dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: "SUCCESS"}}));
+                            } else {
+                                dispatch(raiseAlert({...AlertMessages.qrNotDetected, open: true}));
+                                dispatch(goHomeScreen({}));
+                            }
                         });
                 }}
             />

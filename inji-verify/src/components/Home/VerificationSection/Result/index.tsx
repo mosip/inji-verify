@@ -1,28 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {Box, useMediaQuery} from "@mui/material";
 import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {SetActiveStepFunction} from "../../../../types/function-types";
-import {ResultsSummaryContainer, VcDisplayCardContainer} from "./styles";
+import {useAppSelector} from "../../../../redux/hooks";
+import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
 
-const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: SetActiveStepFunction, vcStatus: VcStatus | null
-}) => {
-    const resultSectionRef = React.createRef<HTMLDivElement>();
-    const isMobile = useMediaQuery("@media (max-width: 900px)");
-
+const Result = () => {
+    const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
     let success = vcStatus?.status === "OK";
     // validate vc and show success/failure component
     return (
-        <Box id="result-section" ref={resultSectionRef}>
-            <ResultsSummaryContainer success={success} isMobile={isMobile}>
-                <ResultSummary success={success} isMobile={isMobile}/>
-            </ResultsSummaryContainer>
-            <VcDisplayCardContainer style={{position: !isMobile ? "absolute" : "static"}}>
-                <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
-            </VcDisplayCardContainer>
-        </Box>
+        <div id="result-section">
+            <div className={`h-[340px] text-white ${success ? "bg-[#4B9D1F]" : "bg-[#CB4242]"}`}>
+                <ResultSummary success={success}/>
+            </div>
+            <div
+                className={`absolute m-auto`}
+                style={{
+                    top: `212px`,
+                    right: `calc((50vw - 400px) / 2)`
+                }}>
+                <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
+            </div>
+        </div>
     );
 }
 
