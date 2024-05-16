@@ -15,15 +15,12 @@ function StyledButton(props: StyledButtonProps) {
         >
             {
                 props.icon && (
-                    <span style={{display: "inline-grid", marginRight: "6px"}}>
+                    <span className="inline-grid mr-1.5">
                         {props.icon}
                     </span>
                 )
             }
-            <span style={{
-                font: 'normal normal bold 16px/21px Inter',
-                textTransform: 'none'
-            }}>
+            <span className="font-bold text-[16px] normal-case">
                 {props.children}
             </span>
         </button>

@@ -4,18 +4,18 @@ import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {goHomeScreen} from "../../../redux/features/verification/verificationSlice";
+import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
 import {VerificationSteps} from "../../../utils/config";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const Verification = () => {
     const dispatch = useAppDispatch();
-    const activeScreen = useAppSelector(state => state.activeScreen);
-    console.log("Verifying... : ", activeScreen);
+    const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
 
     return (
         <div className="grid py-[78px] px-[104px] text-center content-center justify-center">
             <div className="col-end-12 font-bold text-xl  mb-11">
-                <p className="font-bold text-xl  mb-2" style={{font: 'normal normal 600 20px/24px Inter', marginBottom: '8px'}}>
+                <p className="font-bold text-xl mb-2">
                     Verification in Progress
                 </p>
                 <p className="font-normal text-[16px] ">
@@ -35,7 +35,7 @@ const Verification = () => {
             </div>
             <div className="col-end-12">
                 <StyledButton
-                    style={{width: '350px', marginTop: "18px"}}
+                    className="w-[350px] mt-[18px]"
                     onClick={() => {dispatch(goHomeScreen({}))}}>
                     Back
                 </StyledButton>
