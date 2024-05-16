@@ -31,12 +31,6 @@ const verificationSlice = createSlice({
             state.flow = "TO_BE_SELECTED";
             state.activeScreen = VerificationSteps.ScanQrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
-        },
-        raiseAlert: (state, action) => {
-            state.alert = action.payload.alert;
-        },
-        closeAlert: (state, action) => {
-            state.alert = {...state.alert, open: false}
         }
     },
     name: "VcVerification",
@@ -45,7 +39,7 @@ const verificationSlice = createSlice({
 
 export const {
     qrReadInit, verificationInit,
-    verificationComplete, raiseAlert, closeAlert, goHomeScreen
+    verificationComplete, goHomeScreen
 } = verificationSlice.actions;
 
 export default verificationSlice.reducer;

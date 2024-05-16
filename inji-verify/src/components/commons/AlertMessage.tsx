@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {closeAlert} from "../../redux/features/verification/verificationSlice";
+import {closeAlert} from "../../redux/features/alerts/alerts.slice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
+import {useAlertsSelector} from "../../redux/features/alerts/alerts.selector";
 
 const AlertMessage = () => {
-    const alertInfo = useAppSelector(state => {
-        return state.alert ?? {}
-    });
+    const alertInfo = useAlertsSelector();
     const dispatch = useAppDispatch();
 
     const handleClose = () => dispatch(closeAlert({}));

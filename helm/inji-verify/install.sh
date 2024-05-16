@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installs inji-verify helm charts
+## Installs inji-verify helm charts
 ## Usage: ./install.sh [kubeconfig]
 
 if [ $# -ge 1 ] ; then
@@ -31,13 +31,12 @@ fi
 
 echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
     # Add injiverify host to global
-    kubectl patch configmap global -n config-server --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INIJIVERIFY_HOST\"}}"
+    kubectl patch configmap global -n config-server --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
+    kubectl patch configmap global -n default --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
     # Add the host
     kubectl set env deployment/config-server SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_MOSIP_ESIGNET_INJIVERIFY_HOST=$MOSIP_INJIVERIFY_HOST -n config-server
     # Restart the configserver deployment
-    kubectl -n config-server get deploy -o name | xargs -n1 -t kubectl -n config-server rollout restart 
-
-sleep 400s
+    kubectl -n config-server get deploy -o name | xargs -n1 -t kubectl -n config-server rollout status 
 
 echo Create $NS namespace
 kubectl create ns $NS
@@ -52,9 +51,9 @@ function installing_inji-verify() {
   echo Copy configmaps
   ./copy_cm.sh
 
-  INJI_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
+  INJIVERIFY_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIVERIFY
-  helm -n $NS install inji-verify mosip/inji-verify \
+  helm -n $NS install inji-verify mosip/injiverify \
   -f values.yaml \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
   --version $CHART_VERSION
