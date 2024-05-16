@@ -1,6 +1,6 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import verificationSaga from "../../../redux/features/verification/verificationSaga";
-import verificationReducer, {verificationInit} from "../../../redux/features/verification/verificationSlice";
+import verificationSaga from "../../../redux/features/verification/verification.saga";
+import verificationReducer, {verificationInit} from "../../../redux/features/verification/verification.slice";
 import {VerificationSteps} from "../../../utils/config";
 import '@mosip/pixelpass';
 import {decode} from "@mosip/pixelpass";

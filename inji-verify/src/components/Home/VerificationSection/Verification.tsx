@@ -11,6 +11,7 @@ import {useVerificationFlowSelector} from "../../../redux/features/verification/
 const Verification = () => {
     const dispatch = useAppDispatch();
     const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
+    console.log({activeScreen})
 
     return (
         <div className="grid py-[78px] px-[104px] text-center content-center justify-center">

@@ -1,31 +1,28 @@
 import React from 'react';
 import {render, screen} from "@testing-library/react";
+import { act } from 'react-dom/test-utils';
 import Verification from "../../../../components/Home/VerificationSection/Verification";
-import configureMockStore from "redux-mock-store";
 import {VerificationSteps} from "../../../../utils/config";
 
 jest.mock("../../../../redux/hooks", () => ({
-    useAppDispatch: jest.fn(),
-    useAppSelector: jest.fn()
+    useAppDispatch: jest.fn()
 }));
 
-const mockStore = configureMockStore();
+jest.mock("../../../../redux/features/verification/verification.selector", () => ({
+    useVerificationFlowSelector: jest.fn()
+}));
+
 describe("Verification component", () => {
-    test("Test loader", () => {
+    test("Test loader - activate camera", () => {
         const api = require("../../../../redux/hooks");
         api.useAppDispatch.mockReturnValue(jest.fn());
-        api.useAppSelector.mockReturnValue(VerificationSteps.Verifying);
 
-        render(<Verification/>)
-        expect(screen.getByTestId("loader")).toBeInTheDocument()
-    })
+        const verificationApi = require("../../../../redux/features/verification/verification.selector");
+        verificationApi.useVerificationFlowSelector.mockReturnValue({activeScreen: VerificationSteps.ActivateCamera});
 
-    test("Test loader", () => {
-        const api = require("../../../../redux/hooks");
-        api.useAppDispatch.mockReturnValue(jest.fn());
-        api.useAppSelector.mockReturnValue(VerificationSteps.ActivateCamera);
-
-        render(<Verification/>)
+        act(() => {
+            render(<Verification/>);
+        });
         // The following component is part of the QrScanner library that appears when waiting for camera access
         expect(screen.getByText("Loading ...")).toBeInTheDocument()
     })

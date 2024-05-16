@@ -4,9 +4,13 @@ import Result from "../../../../../components/Home/VerificationSection/Result";
 import {convertToTitleCase, getDisplayValue} from "../../../../../utils/misc";
 
 jest.mock("../../../../../redux/hooks", () => ({
-    useAppSelector: jest.fn(),
-    useAppDispatch: jest.fn()
+    useAppDispatch: jest.fn(),
 }))
+
+jest.mock("../../../../../redux/features/verification/verification.selector", () => ({
+    useVerificationFlowSelector: jest.fn()
+}))
+
 
 let workingVc = {
     "id": "did:rcw:eb658f9b-879e-4628-8fcf-2fea22c5a522",
@@ -63,8 +67,10 @@ let failureVcStatus = {
 
 describe("Vc Result", () => {
     test("VC Verification Successful", () => {
+        const verificationApi = require("../../../../../redux/features/verification/verification.selector")
+        verificationApi.useVerificationFlowSelector.mockReturnValue({vc: workingVc, vcStatus: successVcStatus});
+
         const api = require("../../../../../redux/hooks")
-        api.useAppSelector.mockReturnValue({vc: workingVc, vcStatus: successVcStatus});
         api.useAppDispatch.mockReturnValue(jest.fn());
         render(<Result/>)
         // Success message should appear
@@ -75,8 +81,10 @@ describe("Vc Result", () => {
     })
 
     test("VC Verification Failure", () => {
+        const verificationApi = require("../../../../../redux/features/verification/verification.selector")
+        verificationApi.useVerificationFlowSelector.mockReturnValue({vc: undefined, vcStatus: failureVcStatus});
+
         const api = require("../../../../../redux/hooks")
-        api.useAppSelector.mockReturnValue({vc: undefined, vcStatus: failureVcStatus});
         api.useAppDispatch.mockReturnValue(jest.fn());
         render(<Result/>)
         // Success message should appear
