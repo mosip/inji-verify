@@ -3,7 +3,7 @@ import {Box, CircularProgress} from "@mui/material";
 
 function Loader(props: any) {
     return (
-        <Box style={{color: "#FF7F00"}}>
+        <Box style={{color: "#FF7F00", display: "block", textAlign: "center", ...props.style}}>
             <CircularProgress size={76} thickness={2} color={"inherit"}/>
         </Box>
     );

@@ -25,3 +25,15 @@ export const getDisplayValue = (data: any): string => {
     }
     return data?.toString();
 }
+
+
+export const fetchWellknownProperties = async (url: string | null) => {
+    if (!url) return null;
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    }
+    catch (error) {
+        console.log(`Error occurred while fetching display properties of the credential. url: ${url}, error: ${error}`)
+    }
+}
