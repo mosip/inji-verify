@@ -14,9 +14,9 @@ import Loader from "../../../commons/Loader";
 const DisplayVc = ({loadingWellKnown, credentialDisplayProperties, vc}: {credentialDisplayProperties: any, loadingWellKnown: boolean, vc: any}) => {
     return loadingWellKnown ?
         (<Box style={{width: "100%", margin: 4}}>
-            <Loader style={{margin: "12px auto"}}/>
-            <Box style={{padding: "12px 0px", width: "100%", textAlign: "center"}}>
-                <p>Displaying the credential...</p>
+            <Loader style={{marginTop: 20}}/>
+            <Box style={{padding: "8px 0px", width: "100%", textAlign: "center", fontWeight: 500, fontSize: 15}}>
+                <p>Rendering the credential...</p>
             </Box>
         </Box>)
         : (<>
