@@ -37,13 +37,16 @@ export type AlertInfo = {
     autoHideDuration?: number
 }
 
-export type ApplicationState = {
-    online: boolean
-}
+export type ApplicationActionType = 'TRIGGER_QR_READ' | 'QR_READ_COMPLETE' | 'TRIGGER_VERIFICATION' | 'VERIFICATION_COMPLETE' | 'GO_HOME_SCREEN' | 'RAISE_ALERT';
 
 export type VerificationFlow = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
 
-export type VerificationFlowState = {
+export type ApplicationAction = {
+    type: ApplicationActionType,
+    payload?: ApplicationState
+}
+
+export type ApplicationState = {
     flow: VerificationFlow,
     activeScreen: number, // Verification steps
     qrReadResult?: QrReadResult | undefined,
