@@ -1,6 +1,7 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import verificationFlowReducer, {PreloadedState} from './features/verification/verification.slice';
-import alertsReducer, {InitialState as alertsState} from "./features/alerts/alerts.slice";
+import verificationFlowReducer from './features/verification/verification.slice';
+import alertsReducer from "./features/alerts/alerts.slice";
+import appStateReducer from "./features/app-state/app-state.slice";
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
 
@@ -8,7 +9,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
     verification: verificationFlowReducer,
-    alert: alertsReducer
+    alert: alertsReducer,
+    appState: appStateReducer
 });
 
 const store = configureStore({
