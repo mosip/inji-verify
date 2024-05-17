@@ -39,7 +39,7 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept=".png, .jpeg, .jpg"
+                accept=".png, .jpeg, .jpg, .pdf"
                 className="mx-auto my-2 hidden h-0"
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
