@@ -6,6 +6,7 @@ import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import AlertMessage from "./components/commons/AlertMessage";
 
 import PreloadImages from "./components/commons/PreloadImages";
+import CheckInternetConnectivity from "./components/commons/CheckInternetConnectivity";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,7 @@ function App() {
             <RouterProvider router={router}/>
             <AlertMessage/>
             <PreloadImages imageUrls={preloadImages}/>
+            <CheckInternetConnectivity/>
         </div>
     );
 }

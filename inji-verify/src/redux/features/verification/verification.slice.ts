@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {ApplicationState} from "../../../types/data-types";
+import {VerificationFlowState} from "../../../types/data-types";
 import {VerificationSteps} from "../../../utils/config";
 
-export const PreloadedState: ApplicationState = {
+export const PreloadedState: VerificationFlowState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
     flow: "TO_BE_SELECTED",
