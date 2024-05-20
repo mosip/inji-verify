@@ -1,4 +1,4 @@
-import {AlertInfo} from "../types/data-types";
+import {AlertInfo, VerificationStep} from "../types/data-types";
 
 export const SUPPORTED_DID_METHODS = ["web"];
 
@@ -8,6 +8,7 @@ export const HEADER_DELIMITER = '';
 export const VerificationSteps = {
     ScanQrCodePrompt: 0,
     ActivateCamera: 1,
+    UploadQr: 1,
     Verifying: 2,
     DisplayResult: 3
 }
@@ -26,3 +27,23 @@ export const UploadFileSizeLimits = {
     min: 10000, // 10KB
     max: 5000000 // 5MB
 }
+
+
+export const VerificationStepsContent: VerificationStep[] = [
+    {
+        label: 'Select \'Scan QR Code\' or \'Upload QR Code\'',
+        description: ['Tap \'Scan QR Code\' and scan to capture the QR code shown on your digital credentials/card.', 'Tap ‘Upload QR Code’ to upload the preferred file.'],
+    },
+    {
+        label: 'Activate your device’s camera',
+        description: 'Activate your device camera for scanning: A notification will be prompt to activate your device camera (Valid for ‘Scan QR Code’ feature only)',
+    },
+    {
+        label: 'Verify document',
+        description: 'Allow Inji Verify to verify & validate the digital document / card'
+    },
+    {
+        label: 'View result',
+        description: 'Check the validation result'
+    }
+];

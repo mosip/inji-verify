@@ -3,25 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {GlobalStyles, ThemeProvider} from "@mui/material";
-import {InjiTheme} from "./utils/inji-theme";
 import {encodeData} from "./utils/qr-utils";
+import {Provider} from "react-redux";
+import store from "./redux/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// Store in a constant to avoid re-rendering and recalculating the style
-const inputGlobalStyles = <GlobalStyles styles={{ fontFamily: 'Inter'}} />;
-
 window.encodeData = (data: string) => encodeData(data);
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={InjiTheme}>
-        {inputGlobalStyles}
-        <App />
-    </ThemeProvider>
+    <Provider store={store}>
+        <App/>
+    </Provider>
   </React.StrictMode>
 );
 

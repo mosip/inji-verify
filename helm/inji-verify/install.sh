@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installs inji-verify helm charts
+## Installs inji-verify helm charts
 ## Usage: ./install.sh [kubeconfig]
 
 if [ $# -ge 1 ] ; then

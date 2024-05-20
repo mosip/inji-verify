@@ -1,27 +1,27 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
-import {ScanSessionExpiryTime, VerificationSteps} from "../../../utils/config";
-import {useAlertMessages} from "../../../pages/Home";
+import {ScanSessionExpiryTime} from "../../../utils/config";
+import {useAppDispatch} from "../../../redux/hooks";
+import {goHomeScreen, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 
 let timer: NodeJS.Timeout;
 
-function QrScanner({setActiveStep, setQrData}: {
-    setQrData: (data: string) => void, setActiveStep: (activeStep: number) => void
-}) {
+function QrScanner() {
+    const dispatch = useAppDispatch();
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
-    const {setAlertInfo} = useAlertMessages();
     const scannerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         timer = setTimeout(() => {
-            setActiveStep(VerificationSteps.ScanQrCodePrompt);
-            setAlertInfo({
+            dispatch(goHomeScreen({}));
+            dispatch(raiseAlert({
                 open: true,
                 message: "The scan session has expired due to inactivity. Please initiate a new scan.",
                 severity: "error"
-            })
+            }))
         }, ScanSessionExpiryTime);
         return () => {
             console.log('Clearing timeout');
@@ -44,8 +44,7 @@ function QrScanner({setActiveStep, setQrData}: {
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
-                    setActiveStep(VerificationSteps.Verifying);
-                    setQrData(text);
+                    dispatch(verificationInit({qrReadResult: {qrData: text, status: "SUCCESS"}, flow: "SCAN"}));
                 }}
                 onError={(error) => {
                     console.log('Clearing timeout - camera blocked');
@@ -82,7 +81,7 @@ function QrScanner({setActiveStep, setQrData}: {
                 }}
             />
             <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
-                setActiveStep(VerificationSteps.ScanQrCodePrompt);
+                dispatch(goHomeScreen({}));
                 setIsCameraBlocked(false)
             }}/>
         </div>
