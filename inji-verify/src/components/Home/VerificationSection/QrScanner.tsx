@@ -63,8 +63,7 @@ function QrScanner({setActiveStep, setQrData}: {
                             "min": 640,
                             "ideal": 720,
                             "max": 1080
-                        },
-                        facingMode: "environment"
+                        }
                     },
                     delayBetweenScanSuccess: 100000 // Scan once
                 }}
