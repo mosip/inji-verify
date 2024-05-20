@@ -1,106 +1,63 @@
-import React, {useState} from 'react';
-import {Box, Grid, Typography, useMediaQuery} from "@mui/material";
+import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr-icon.png";
+import qrIcon from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
-import {SetScanResultFunction} from "../../../types/function-types";
-import {QrScanResult, ScanStatus} from "../../../types/data-types";
-import {AlertMessages, VerificationSteps} from "../../../utils/config";
-import {useNavigate} from "react-router-dom";
-import {ScanQrCodeContainer} from "./styles";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {qrReadInit} from "../../../redux/features/verification/verification.slice";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
-const ScanQrCode = ({setScanResult}: {
-    setScanResult: SetScanResultFunction
-}) => {
-    const {setActiveStep} = useActiveStepContext();
-    const {setAlertInfo} = useAlertMessages();
-    const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
-
-    const navigate = useNavigate();
-    const isTabletOrAbove = useMediaQuery("@media (min-width: 768px)");
-
-    function checkScanResult(scanResult: QrScanResult) {
-        let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
-        setAlertInfo({
-            ...alertInfo,
-            open: true
-        });
-        setScanResult(scanResult);
-    }
+const ScanQrCode = () => {
+    const dispatch = useAppDispatch();
+    const scanStatus = useVerificationFlowSelector(state => state.qrReadResult?.status);
 
     return (
-        <ScanQrCodeContainer container>
-            <Grid item xs={12} style={{
-                font: 'normal normal 600 20px/24px Inter',
-                marginBottom: isTabletOrAbove ? "44px" : "10px"
-            }} order={0}>
-                <Typography style={{font: 'normal normal 600 20px/24px Inter', padding: '3px 0'}}>
+        <div className="flex flex-col py-[78px] px-[104px] text-center content-center justify-center">
+            <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
+                <h4 className="font-bold text-[20px]  px-0 py-[3px]">
                     Scan QR Code or Upload an Image
-                </Typography>
-                <Typography style={{font: 'normal normal normal 16px/20px Inter', padding: '3px 0', color: '#717171'}}>
+                </h4>
+                <p className="font-normal  text-[16px] text-[#717171] py-[3px] px-0">
                     Please keep the QR code in the centre & clearly visible.
-                </Typography>
-            </Grid>
-            <Grid item xs={12} order={1}>
-                <Box
-                    style={{
-                        backgroundImage: `url(${scanQr})`,
-                        backgroundSize: 'cover',
-                        display: 'grid',
-                        placeContent: 'center',
-                        width: 'calc(min(45vw, 350px))',
-                        height: 'calc(min(45vw, 350px))',
-                        margin: '16px auto'
-                    }}
-                >
-                    <div style={{
-                        background: 'rgb(255, 127, 0, 0.1)',
-                        borderRadius: '12px',
-                        width: 'calc(min(42vw, 320px))',
-                        height: 'calc(min(42vw, 320px))',
-                        display: 'grid',
-                        placeContent: 'center'
-                    }}>
-                        <img src={qr} style={{width: "100px"}}/>
+                </p>
+            </div>
+            <div className="xs:col-end-13">
+                <div
+                    className={`relative grid content-center justify-center xs:w-[45vw] md:w-[350px] xs:h-[45vw] md:h-[350px] my-1.5 mx-auto bg-cover`}
+                    style={{backgroundImage: `url(${scanQr})`}}>
+                    <div
+                        className="grid bg-primary opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
                     </div>
-                </Box>
-            </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
-                <UploadQrCode
-                    setScanResult={checkScanResult}
-                    setScanStatus={setScanStatus}
-                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
-            </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
+                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                        <img src={qrIcon} className="w-[100px]"/>
+                    </div>
+                </div>
+            </div>
+            <div className="col-end-13">
                 <StyledButton
                     icon={<TabScanIcon/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}}
+                    className='mx-0 my-1.5 w-[350px] text-center'
                     fill
-                    onClick={() => {
-                        if (!window.navigator.onLine) {
-                            navigate('/offline');
-                        }
-                        else {
-                            setActiveStep(VerificationSteps.ActivateCamera)
-                        }
-                    }}
-                >
+                    onClick={() => dispatch(qrReadInit({flow: "SCAN"}))}>
                     Scan QR Code
                 </StyledButton>
-            </Grid>
+            </div>
+            <div className="col-end-13">
+                <UploadQrCode
+                    displayMessage={scanStatus === "FAILED" ? "Upload Another QR Code" : "Upload QR Code"}
+                />
+            </div>
             {
-                scanStatus !== "Failed" && (
-                    <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
-                        <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
+                scanStatus !== "FAILED" && (
+                    <div className="grid text-center content-center justify-center">
+                        <p className="font-normal text-[14px]  text-[#8E8E8E] w-[280px]">
                             Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB
-                        </Typography>
-                    </Grid>
+                        </p>
+                    </div>
                 )
             }
-        </ScanQrCodeContainer>
+        </div>
     );
 }
 

@@ -1,59 +1,47 @@
 import React from 'react';
-import {Box, Grid, Typography} from "@mui/material";
 import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
-import {SetQrDataFunction} from "../../../types/function-types";
-import {useActiveStepContext} from "../../../pages/Home";
 import StyledButton from "./commons/StyledButton";
-import {VerificationBlockContainer} from "./styles";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
+import {VerificationSteps} from "../../../utils/config";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
-const Verification = ({setQrData}: {
-    setQrData: SetQrDataFunction
-}) => {
-    const {getActiveStep, setActiveStep} = useActiveStepContext();
+const Verification = () => {
+    const dispatch = useAppDispatch();
+    const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
+    console.log({activeScreen})
 
     return (
-        <VerificationBlockContainer container>
-            <Grid item xs={12} style={{
-                font: 'normal normal 600 20px/24px Inter',
-                marginBottom: "44px"
-            }}>
-                <Typography style={{font: 'normal normal 600 20px/24px Inter', marginBottom: '8px'}}>
+        <div className="grid py-[78px] px-[104px] text-center content-center justify-center">
+            <div className="col-end-12 font-bold text-xl  mb-11">
+                <p className="font-bold text-xl mb-2">
                     Verification in Progress
-                </Typography>
-                <Typography style={{font: 'normal normal normal 16px/20px Inter'}}>
+                </p>
+                <p className="font-normal text-[16px] ">
                     This verification will take sometime, please don’t close the browser.
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Box style={{
-                    width: "350px",
-                    height: "350px",
-                    backgroundImage: `url(${scanQr})`,
-                    backgroundSize: "cover",
-                    display: "grid",
-                    placeContent: "center",
-                    margin: "auto",
+                </p>
+            </div>
+            <div className="col-end-12">
+                <div className="grid w-[350px] h-[350px] bg-cover content-center justify-center m-auto" style={{
+                    backgroundImage: `url(${scanQr})`
                 }}>
                     {
-                        getActiveStep() === 2
+                        activeScreen === VerificationSteps.Verifying
                             ? (<Loader/>)
-                            : (<QrScanner
-                                setActiveStep={setActiveStep}
-                                setQrData={setQrData}
-                            />)
+                            : (<QrScanner/>)
                     }
-                </Box>
-            </Grid>
-            <Grid item xs={12}>
+                </div>
+            </div>
+            <div className="col-end-12">
                 <StyledButton
-                    style={{width: '350px', marginTop: "18px"}}
-                    onClick={() => {setActiveStep(0)}}>
+                    className="w-[350px] mt-[18px]"
+                    onClick={() => {dispatch(goHomeScreen({}))}}>
                     Back
                 </StyledButton>
-            </Grid>
-        </VerificationBlockContainer>
+            </div>
+        </div>
     );
 }
 

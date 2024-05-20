@@ -1,39 +1,29 @@
-import React, {ReactElement} from 'react';
-import {Button, ButtonProps} from "@mui/material";
+import React, {HTMLAttributes, ReactElement} from 'react';
 
-type StyledButtonProps = ButtonProps & {
+type StyledButtonProps = HTMLAttributes<HTMLButtonElement> & {
     fill?: boolean,
     icon?: ReactElement
 }
 
 function StyledButton(props: StyledButtonProps) {
     return (
-        <Button
+        <button
             {...props}
-            style={{
-                background: `${props.fill ? '#FF7F00' : '#FFFFFF'} 0% 0% no-repeat padding-box`,
-                border: '2px solid #FF7F00',
-                borderRadius: '9999px',
-                opacity: 1,
-                padding: '18px 28px',
-                color: props.fill ? '#FFFFFF' : '#FF7F00',
-                ...props.style
-            }}
+            className={`inline-flex content-center justify-center border-2 border-primary py-[18px] px-7 ` +
+                `rounded-[9999px] ${props.fill ? 'bg-primary' : 'bg-[#FFFFFF]'} ` +
+                `${props.fill ? 'text-[#FFFFFF]' : 'text-primary'} ${props.className}`}
         >
             {
                 props.icon && (
-                    <span style={{display: "inline-grid", marginRight: "6px"}}>
+                    <span className="inline-grid mr-1.5">
                         {props.icon}
                     </span>
                 )
             }
-            <span style={{
-                font: 'normal normal bold 16px/21px Inter',
-                textTransform: 'none'
-            }}>
+            <span className="font-bold text-[16px] normal-case">
                 {props.children}
             </span>
-        </Button>
+        </button>
     );
 }
 

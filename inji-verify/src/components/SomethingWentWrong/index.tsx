@@ -1,51 +1,31 @@
 import React from 'react';
-import {Grid, Typography} from "@mui/material";
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 
 function SomethingWentWrong(props: any) {
     const navigate = useNavigate();
     return (
-        <Grid container style={{
-            display: 'grid',
-            placeContent: 'center',
-            height: '540px',
-            margin: '28px auto',
-            background: '#FFFFFF 0% 0% no-repeat padding-box',
-            boxShadow: '0px 2px 5px #0000001A',
-            borderRadius: '10px',
-            textAlign: 'center',
-            width: '90%'
-        }}>
-            <Grid item xs={12}>
-                <img src={'/assets/images/under_construction.svg'} width={372} style={{margin: '30px auto'}}/>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography
-                    variant={'h6'}
-                    style={{
-                    font: 'normal normal 500 24px/29px Inter',
-                    color: '#2C2C2C', margin: '5px auto'
-                }}>
+        <div className="grid content-center justify-center rounded-[10px] h-[540px] mx-auto my-7 shadow-lg text-center w-[90%] bg-white bg-no-repeat bg-clip-padding">
+            <div className="col-end-13">
+                <img src={'/assets/images/under_construction.svg'} className="my-[30px] mx-auto w-[372px]"/>
+            </div>
+            <div className="col-end-13">
+                <h6 className="font-medium text-2xl  text-[#2C2C2C] mx-auto my-[5px]">
                     No Internet Connection!
-                </Typography>
-                <Typography style={{
-                    font: 'normal normal normal 14px/20px Inter',
-                    color: '#7B7B7B',
-                    margin: '5px auto'
-                }}>
+                </h6>
+                <p className="font-normal text-[14px]  text-[#7B7B7B] mx-auto my-[5px]">
                     Oops! We can’t seem to connect. Check your internet connection and try again.
-                </Typography>
+                </p>
                 <StyledButton
-                    style={{margin: '30px auto'}}
+                    className="my-[30px] mx-auto"
                     onClick={() => {
                         navigate('/');
                     }}
                 >
                     Please try again
                 </StyledButton>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     );
 }
 
