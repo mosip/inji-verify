@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useAppDispatch} from "../../redux/hooks";
 import {closeAlert} from "../../redux/features/alerts/alerts.slice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 import {useAlertsSelector} from "../../redux/features/alerts/alerts.selector";
@@ -17,7 +17,7 @@ const AlertMessage = () => {
             }, alertInfo.autoHideDuration ?? 3500);
             return () => clearTimeout(timer);
         }
-    }, [alertInfo]);
+    }, [alertInfo, dispatch]);
 
     return (
         <>

@@ -27,7 +27,7 @@ function QrScanner() {
             console.log('Clearing timeout');
             clearTimeout(timer)
         };
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         // Disable inbuilt border around the video

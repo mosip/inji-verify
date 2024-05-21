@@ -7,7 +7,7 @@ function SomethingWentWrong(props: any) {
     return (
         <div className="grid content-center justify-center rounded-[10px] h-[540px] mx-auto my-7 shadow-lg text-center w-[90%] bg-white bg-no-repeat bg-clip-padding">
             <div className="col-end-13">
-                <img src={'/assets/images/under_construction.svg'} className="my-[30px] mx-auto w-[372px]"/>
+                <img alt="under-construction" src={'/assets/images/under_construction.svg'} className="my-[30px] mx-auto w-[372px]"/>
             </div>
             <div className="col-end-13">
                 <h6 className="font-medium text-2xl  text-[#2C2C2C] mx-auto my-[5px]">

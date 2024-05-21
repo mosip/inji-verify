@@ -1,5 +1,4 @@
 import React from 'react';
-import {useAppSelector} from "../../../redux/hooks";
 import {VerificationStep} from "../../../types/data-types";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 

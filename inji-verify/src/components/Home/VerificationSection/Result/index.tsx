@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {useAppSelector} from "../../../../redux/hooks";
 import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
 
 const Result = () => {

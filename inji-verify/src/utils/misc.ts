@@ -1,6 +1,4 @@
 // match fot the occurrence of an uppercase letter
-import {VcStatus} from "../types/data-types";
-
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
 
 // match if the first char is lower case

@@ -4,7 +4,7 @@ import qrIcon from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
@@ -30,7 +30,7 @@ const ScanQrCode = () => {
                         className="grid bg-primary opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
                     </div>
                     <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-                        <img src={qrIcon} className="w-[100px]"/>
+                        <img alt="qr-icon" src={qrIcon} className="w-[100px]"/>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import verificationFlowReducer, {PreloadedState} from './features/verification/verification.slice';
-import alertsReducer, {InitialState as alertsState} from "./features/alerts/alerts.slice";
+import verificationFlowReducer from './features/verification/verification.slice';
+import alertsReducer from "./features/alerts/alerts.slice";
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
 
