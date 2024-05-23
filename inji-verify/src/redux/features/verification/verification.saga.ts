@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {goHomeScreen, verificationComplete, verificationInit} from './verification.slice';
-import {raiseAlert} from "../alerts/alerts.slice";
+import {closeAlert, raiseAlert} from "../alerts/alerts.slice";
 import { AlertMessages } from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
@@ -27,6 +27,7 @@ function* verifyVC(vc: any) {
             yield call(navigateToOffline);
         }
         yield put(verificationComplete({ verificationResult: { vc, vcStatus: status } }));
+        yield put(closeAlert({}));
     } catch (error) {
         console.error("Error occurred while verifying the VC: ", error);
         if (!onLine) {
@@ -42,6 +43,7 @@ function* verifyVC(vc: any) {
                 vc: null
             }
         }));
+        yield put(closeAlert({}));
     }
 }
 
