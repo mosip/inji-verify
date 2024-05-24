@@ -13,7 +13,7 @@ const ScanQrCode = () => {
     const scanStatus = useVerificationFlowSelector(state => state.qrReadResult?.status);
 
     return (
-        <div className="flex flex-col py-[78px] px-[104px] text-center content-center justify-center">
+        <div className="flex flex-col py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
             <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
                 <h4 className="font-bold text-[20px]  px-0 py-[3px]">
                     Scan QR Code or Upload an Image

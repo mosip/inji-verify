@@ -4,7 +4,7 @@ import Copyrights from "./Copyrights";
 
 const PageTemplate = (props: any) => {
     return (
-        <div className="xs:px-4 md:px-20">
+        <div>
             <Navbar/>
             {props.children}
             <Copyrights/>
