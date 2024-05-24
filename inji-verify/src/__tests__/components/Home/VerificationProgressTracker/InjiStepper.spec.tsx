@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, screen} from "@testing-library/react";
-import InjiStepper from "../../../../components/Home/VerificationProgressTracker/InjiStepper";
+import DesktopStepper from "../../../../components/Home/VerificationProgressTracker/DesktopStepper";
 import {VerificationSteps, VerificationStepsContent} from "../../../../utils/config";
 import {Provider} from "react-redux";
 import configureMockStore from "redux-mock-store";
@@ -12,7 +12,7 @@ describe("Inji Stepper", () => {
     test("Test rendering", () => {
         render(
             <Provider store={store}>
-                <InjiStepper/>
+                <DesktopStepper/>
             </Provider>
         )
 
