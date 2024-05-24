@@ -18,8 +18,9 @@ function* handleVerification(qrData: string) {
 
 function* verifyVC(vc: any) {
     try {
+        // console.log("VC Status [logging in saga]: ", {vc});
         const status: VcStatus = yield call(verify, vc);
-        console.log("VC Status [logging in saga]: ", status);
+        console.log("VC Status [logging in saga]: ", {vc, status});
         if (status?.checks?.length >= 0 && status?.checks[0].proof === "NOK" && !window.navigator.onLine) {
             yield call(window.location.assign, '/offline');
         }

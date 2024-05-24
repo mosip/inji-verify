@@ -1,11 +1,11 @@
 import React from 'react';
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import VerificationSection from "../components/Home/VerificationSection";
-import Copyrights from "../components/Home/VerificationProgressTracker/Copyrights";
+import PageTemplate from "../components/PageTemplate";
 
 function Home(props: any) {
     return (
-        <div>
+        <PageTemplate>
             <div className="grid columns-12">
                 <div className="xs:col-end-12 md:col-start-1 md:col-span-6 bg-[#FAFBFD] xs:w-[100vw] md:max-w-[50vw]">
                     <VerificationProgressTracker/>
@@ -14,8 +14,7 @@ function Home(props: any) {
                     <VerificationSection/>
                 </div>
             </div>
-            <Copyrights/>
-        </div>
+        </PageTemplate>
     );
 }
 
