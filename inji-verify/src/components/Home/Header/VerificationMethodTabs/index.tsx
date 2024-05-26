@@ -15,7 +15,7 @@ const Tab = ({active, label, disabled}: {active: boolean, label: string, disable
 
 function VerificationMethodTabs(props: any) {
     return (
-        <div className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-scroll">
+        <div className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-scroll md:overflow-x-auto">
             <div className="flex flex-col items-center mx-auto justify-center">
                 <div className="w-full">
                     <div className="flex space-x-0.5 border-b border-gray-200 font-bold">
