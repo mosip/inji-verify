@@ -28,7 +28,7 @@ function DesktopStepper() {
     const isStepCompleted = (index: number) => activeScreen >= index;
 
     return (
-        <div className="hidden md:flex flex-col items-start justify-start ml-0 mt-9">
+        <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] md:flex flex-col items-start justify-start ml-0 mt-9">
             <div className="flex flex-col items-start space-y-2">
                 {
                     steps.map((step, index) => (

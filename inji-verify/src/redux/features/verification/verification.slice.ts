@@ -6,7 +6,7 @@ export const PreloadedState: ApplicationState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
     flow: "TO_BE_SELECTED",
-    activeScreen: VerificationSteps.ScanQrCodePrompt,
+    activeScreen: VerificationSteps.Verifying,
     verificationResult: {vc: undefined, vcStatus: undefined}
 };
 

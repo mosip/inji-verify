@@ -14,17 +14,17 @@ const Verification = () => {
     console.log({activeScreen})
 
     return (
-        <div className="grid py-[78px] px-[104px] text-center content-center justify-center">
+        <div className="grid mx-auto py-1 px-[60px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
             <div className="col-end-12 font-bold text-xl  mb-11">
                 <p className="font-bold text-xl mb-2">
                     Verification in Progress
                 </p>
-                <p className="font-normal text-[16px] ">
+                <p className="font-normal text-[16px] text-center overflow-visible">
                     This verification will take sometime, please don’t close the browser.
                 </p>
             </div>
             <div className="col-end-12">
-                <div className="grid w-[350px] h-[350px] bg-cover content-center justify-center m-auto" style={{
+                <div className="grid w-[100%] md:w-[350px] aspect-square max-w-[280px] md:max-w-none bg-cover content-center justify-center m-auto" style={{
                     backgroundImage: `url(${scanQr})`
                 }}>
                     {
@@ -36,7 +36,7 @@ const Verification = () => {
             </div>
             <div className="col-end-12">
                 <StyledButton
-                    className="w-[350px] mt-[18px]"
+                    className="w-[100%] md:w-[350px] max-w-[280px] md:max-w-none mt-[18px]"
                     onClick={() => {dispatch(goHomeScreen({}))}}>
                     Back
                 </StyledButton>
