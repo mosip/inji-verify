@@ -1,6 +1,8 @@
 
 package stepdefinitions;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 
 import com.microsoft.playwright.Page;
@@ -37,7 +39,7 @@ public class StepDef {
 	
 	@Then("Verify that inji verify logo is displayed")
 	public void verifyThatInjiVerifyLogoIsDisplayed() {
-		Assert.assertEquals(homePage.isLogoDisplayed(), true);
+		assertTrue(homePage.isLogoDisplayed());
 	}
 	
 	@Then("Verify that header is displayed")
@@ -52,12 +54,12 @@ public class StepDef {
 
 	@Then("Verify that scan QR button is displayed")
 	public void verifyThatScanQRButtonIsDisplayed() {
-	    Assert.assertEquals(homePage.isQrCodeScanButtonEnabled(), true);
+		assertTrue(homePage.isQrCodeScanButtonEnabled());
 	}
 	
 	@Then("Verify the scanner icon in scan QR button")
 	public void verifyTheScannerIconInScanQRButton() {
-		 Assert.assertEquals(homePage.isScannerIconDisplayed(), true);
+		assertTrue(homePage.isScannerIconDisplayed());
 	}
 
 }
