@@ -2,15 +2,16 @@ import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qrIcon from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
+import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
-    const scanStatus = useVerificationFlowSelector(state => state.qrReadResult?.status);
+    const {scanStatus, method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
 
     return (
         <div className="flex flex-col py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
@@ -24,26 +25,40 @@ const ScanQrCode = () => {
             </div>
             <div className="xs:col-end-13">
                 <div
-                    className={`relative grid content-center justify-center xs:w-[45vw] md:w-[350px] xs:h-[45vw] md:h-[350px] my-1.5 mx-auto bg-cover`}
+                    className={`relative grid content-center justify-center w-[275px] md:w-[350px] aspect-square my-1.5 mx-auto bg-cover`}
                     style={{backgroundImage: `url(${scanQr})`}}>
                     <div
-                        className="grid bg-primary opacity-5 rounded-[12px] xs:w-[42vw] xs:h-[42vw] md:w-[320px] md:h-[320px] content-center justify-center">
+                        className="grid bg-primary opacity-5 rounded-[12px] w-[250px] md:w-[320px] aspect-square content-center justify-center">
                     </div>
-                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-                        <img src={qrIcon} className="w-[100px]"/>
+                    <div className="absolute top-[58px] left-[98px] md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%]">
+                        <img src={qrIcon} className="w-[78px] md:w-[100px]"/>
                     </div>
+                    {
+                        method === "SCAN" ? (<StyledButton
+                            icon={<TabScanFillIcon/>}
+                            className='mx-0 my-1.5 w-[205px] md:w-[350px] py-3.5 text-center inline-flex md:hidden absolute top-[160px] left-[33px]'
+                            fill={false}
+                            onClick={() => dispatch(qrReadInit({method}))}>
+                            Scan
+                        </StyledButton>) : (
+                            <UploadQrCode
+                                className="w-[205px] absolute top-[160px] left-[33px]"
+                                displayMessage="Upload"
+                            />
+                        )
+                    }
                 </div>
             </div>
             <div className="col-end-13">
                 <StyledButton
                     icon={<TabScanIcon/>}
-                    className='mx-0 my-1.5 w-[350px] text-center'
+                    className='mx-0 my-1.5 w-[205px] md:w-[350px] text-center hidden md:inline-flex'
                     fill
-                    onClick={() => dispatch(qrReadInit({flow: "SCAN"}))}>
+                    onClick={() => dispatch(qrReadInit({method: "SCAN"}))}>
                     Scan QR Code
                 </StyledButton>
             </div>
-            <div className="col-end-13">
+            <div className="col-end-13 hidden md:inline-flex">
                 <UploadQrCode
                     displayMessage={scanStatus === "FAILED" ? "Upload Another QR Code" : "Upload QR Code"}
                 />

@@ -3,7 +3,7 @@ import scanQr from "../../../assets/scanner-ouline.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
 import {VerificationSteps} from "../../../utils/config";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";

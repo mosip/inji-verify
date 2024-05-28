@@ -29,10 +29,10 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
+export const UploadQrCode = ({displayMessage, className}: { displayMessage: string, className?: string }) => {
     const dispatch = useAppDispatch();
     return (
-        <div className="mx-auto my-1.5 flex content-center justify-center w-[350px]">
+        <div className={`mx-auto my-1.5 flex content-center justify-center w-[350px] ${className}`}>
             <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input
@@ -50,7 +50,7 @@ export const UploadQrCode = ({displayMessage}: { displayMessage: string }) => {
                         dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
                         return;
                     }
-                    dispatch(qrReadInit({flow: "UPLOAD"}));
+                    dispatch(qrReadInit({method: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
                             if (scanResult.error) console.error(scanResult.error);

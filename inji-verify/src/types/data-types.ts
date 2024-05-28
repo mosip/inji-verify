@@ -39,7 +39,7 @@ export type AlertInfo = {
 
 export type ApplicationActionType = 'TRIGGER_QR_READ' | 'QR_READ_COMPLETE' | 'TRIGGER_VERIFICATION' | 'VERIFICATION_COMPLETE' | 'GO_HOME_SCREEN' | 'RAISE_ALERT';
 
-export type VerificationFlow = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
+export type VerificationMethod = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
 
 export type ApplicationAction = {
     type: ApplicationActionType,
@@ -47,7 +47,7 @@ export type ApplicationAction = {
 }
 
 export type ApplicationState = {
-    flow: VerificationFlow,
+    method: VerificationMethod,
     activeScreen: number, // Verification steps
     qrReadResult?: QrReadResult | undefined,
     verificationResult?: VerificationResult,

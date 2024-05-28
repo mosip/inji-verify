@@ -9,10 +9,13 @@ const ResultSummary = ({success}: {
         <div className="grid">
             <div className="xs:col-end-13">
                 <div className="grid justify-items-center items-center justify-center content-center pt-[30px]">
-                    <div className={`col-end-13 grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${success ? "bg-[#4B9D1F]": "bg-[#CB4242]"}`}>
+                    <div className={`col-end-13 hidden md:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${success ? "bg-[#4B9D1F]": "bg-[#CB4242]"}`}>
                         {success ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
                     </div>
-                    <div className="col-end-13">
+                    <div className="block md:hidden">
+                        {success ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
+                    </div>
+                    <div className="hidden md:block col-end-13">
                         <p className="font-bold text-[20px]  mx-auto my-[7px]">
                             Results
                         </p>
