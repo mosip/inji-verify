@@ -1,4 +1,4 @@
-import {verifyCredential/*, downloadRevocationList*/} from "@sunbird-rc/verification-sdk";
+import {verifyCredential/*, downloadRevocationList*/} from "verification-sdk";
 import {resolveDid} from "./did-utils";
 
 let revocationList = [];

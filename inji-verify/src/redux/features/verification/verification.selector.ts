@@ -6,6 +6,6 @@ export const useVerificationFlowSelector = (selector: (state: ApplicationState) 
 export const useVerificationFlowActiveScreenSelector = () => useVerificationFlowSelector(state => state.activeScreen);
 export const useVerificationFlowQrDataSelector = () => useVerificationFlowSelector(state => state.qrReadResult);
 export const useVerificationFlowResultSelector = () => useVerificationFlowSelector(state => state.verificationResult);
-export const useVerificationFlowTypeSelector = () => useVerificationFlowSelector(state => state.flow);
+export const useVerificationFlowTypeSelector = () => useVerificationFlowSelector(state => state.method);
 
 
