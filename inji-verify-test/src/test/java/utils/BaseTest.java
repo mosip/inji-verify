@@ -17,9 +17,6 @@ public class BaseTest {
 
 	protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
 			: System.getProperty("env");
-	protected static final String browserType = System.getProperty("browser") == null ? "chrome"
-			: System.getProperty("browser");
-	protected static String headless = System.getProperty("headless");
 
 	BaseTestUtil baseTestUtil = new BaseTestUtil();
 
