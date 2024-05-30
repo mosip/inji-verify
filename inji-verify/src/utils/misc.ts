@@ -23,3 +23,25 @@ export const getDisplayValue = (data: any): string => {
     }
     return data?.toString();
 }
+
+export const checkInternetStatus = async (): Promise<boolean> => {
+    try {
+        if (!window.navigator.onLine) return false;
+        // Try making an api call if the window.navigator.onLine is true
+        await fetch("https://dns.google/", {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'text/plain'
+            }
+        }); // Use a reliable external endpoint
+        return true;
+    } catch (error) {
+        return false; // Network request failed, assume offline
+    }
+}
+
+export const navigateToOffline = () => {
+    window.location.assign("/offline");
+}
