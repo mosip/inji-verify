@@ -1,10 +1,16 @@
 import React from 'react';
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const getRangeOfNumbers = (length: number): number[] => {
     return Array.from(new Array(length), (x, i) => i + 1);
 }
 
-const Step = ({stepNumber, activeOrCompleted}: {stepNumber: number, activeOrCompleted: boolean}) => {
+const methodToStepsCountMap: any = {
+    "UPLOAD": 3,
+    "SCAN": 4
+}
+
+const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
     const stepperActiveOrCompleted = "rounded-full bg-[#FF7F00] text-white";
     const stepperUpcomingStep = "bg-white text-[#FF7F00]";
@@ -18,10 +24,10 @@ const Step = ({stepNumber, activeOrCompleted}: {stepNumber: number, activeOrComp
 }
 
 function MobileStepper(props: any) {
+    const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
     const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
 
-    const stepCount = 4;
-    const activeScreen = 2;
+    const stepCount = methodToStepsCountMap[method];
     return (
         <div className="block md:hidden container mx-auto my-7">
             <div className="flex justify-between items-center w-full max-w-xl mx-auto" id="stepper">
