@@ -4,16 +4,19 @@ import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
+import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
             className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-primary font-bold text-primary w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
-            onClick={(event) => {
-                if (!window.navigator.onLine) {
+            onClick={async (event) => {
+                let isOnline = await checkInternetStatus();
+                console.log({isOnline})
+                if (!isOnline) {
                     event.preventDefault();
-                    window.location.assign('/offline');
+                    navigateToOffline();
                 }
             }}
         >
