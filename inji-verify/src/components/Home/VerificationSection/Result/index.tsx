@@ -1,24 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {useAppSelector} from "../../../../redux/hooks";
 import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
 
 const Result = () => {
     const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
-    let success = vcStatus?.status === "OK";
+    let status: any = vcStatus?.status === "OK" ? "SUCCESS" : vcStatus?.checks[0].expired === "OK" ? "INVALID" : "EXPIRED";
+
     // validate vc and show success/failure component
     return (
-        <div id="result-section">
-            <div className={`h-[340px] text-white ${success ? "bg-[#4B9D1F]" : "bg-[#CB4242]"}`}>
-                <ResultSummary success={success}/>
+        <div id="result-section" className="relative">
+            <div className={`text-white`}>
+                <ResultSummary status={status}/>
             </div>
             <div
                 className={`absolute m-auto`}
                 style={{
-                    top: `212px`,
-                    right: `calc((50vw - 400px) / 2)`
+                    top: window.innerWidth >= 1024 ? `532px` : "190px",
+                    right: window.innerWidth >= 1024 ? `calc((50vw - 400px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
                 <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
             </div>

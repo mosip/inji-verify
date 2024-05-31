@@ -6,7 +6,7 @@ import {Provider} from "react-redux";
 import {VerificationSteps, VerificationStepsContent} from "../../../../utils/config";
 
 const mockStore = configureMockStore();
-const store = mockStore({verification: {activeScreen: VerificationSteps.ScanQrCodePrompt}});
+const store = mockStore({verification: {activeScreen: VerificationSteps[method].QrCodePrompt}});
 
 describe("Verification Progress Tracker", () => {
     test("Test rendering", () => {

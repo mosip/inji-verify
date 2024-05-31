@@ -65,11 +65,11 @@ function QrScanner() {
                         },
                         facingMode: "environment"
                     },
-                    delayBetweenScanSuccess: 100000 // Scan once
+                    delayBetweenScanSuccess: 1000000 // Scan once
                 }}
                 styles={{
                     container: {
-                        width: "316px",
+                        width: window.innerWidth < 1024 ? "250px" : "316px",
                         placeContent: "center",
                         display: "grid",
                         placeItems: "center",
