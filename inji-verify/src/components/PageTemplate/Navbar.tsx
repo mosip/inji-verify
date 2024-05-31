@@ -32,10 +32,10 @@ function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
     // Logo goes here
     return (
-        <nav className="bg-white border-gray-200 xs:px-4 md:px-20 py-3.5 rounded dark:bg-gray-900">
-            <div className="container flex flex-wrap xs:justify-start md:justify-between items-center h-[40px] mx-0">
+        <nav className="bg-white border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded dark:bg-gray-900">
+            <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
                         onClick={() => setShowMenu(show=>!show)}
                 >
@@ -47,36 +47,36 @@ function Navbar(props: any) {
                 <div>
                     {showMenu && <MobileDropDownMenu showMenu={showMenu}/>}
                 </div>
-                <div className="w-full md:block md:w-auto" id="navbar-default">
-                    <ul className="hidden md:flex mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+                <div className="w-full lg:block lg:w-auto" id="navbar-default">
+                    <ul className="hidden lg:flex mt-4 lg:flex-row lg:space-x-8 lg:mt-0 lg:text-sm lg:font-medium">
                         <li>
                             <a href="/"
-                               className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-gray-700 md:p-0 dark:text-white"
+                               className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded lg:bg-transparent lg:text-gray-700 lg:p-0 dark:text-white"
                                aria-current="page">
                                 Home
                             </a>
                         </li>
                         <li>
                             <a href="/"
-                               className="block py-2 pr-4 pl-10 text-primary font-medium rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                               className="block py-2 pr-4 pl-10 text-primary font-medium rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent">
                                 Verify Credentials
                             </a>
                         </li>
                         <li>
                             <a href=""
-                               className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                               className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent">
                                 Documents
                             </a>
                         </li>
                         <li>
                             <a href="https://community.mosip.io/"
-                               className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                               className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent">
                                 MOSIP Community
                             </a>
                         </li>
                         <li>
                             <a href="#"
-                               className="block py-2 pr-4 pl-3 text-gray-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                               className="block py-2 pr-4 pl-3 text-gray-400 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent">
                                 Help
                             </a>
                         </li>

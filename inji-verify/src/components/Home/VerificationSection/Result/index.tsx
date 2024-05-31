@@ -16,8 +16,8 @@ const Result = () => {
             <div
                 className={`absolute m-auto`}
                 style={{
-                    top: window.innerWidth >= 768 ? `532px` : "190px",
-                    right: window.innerWidth >= 768 ? `calc((50vw - 400px) / 2)` : `calc((100vw - 340px) / 2)`
+                    top: window.innerWidth >= 1024 ? `532px` : "190px",
+                    right: window.innerWidth >= 1024 ? `calc((50vw - 400px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
                 <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
             </div>

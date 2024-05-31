@@ -14,7 +14,7 @@ const Tab = ({active, label, disabled, onClick}: {active: boolean, label: string
     const enabledTab = active ? activeTab : inactiveTab;
     return (<div>
         <button
-            className={`w-[172px] md:w-[214px] py-4 focus:outline-none self-end rounded-t-xl ${disabled ? disabledTab : enabledTab}`}
+            className={`w-[172px] lg:w-[214px] py-4 focus:outline-none self-end rounded-t-xl ${disabled ? disabledTab : enabledTab}`}
             onClick={onClick}
         >
             {label}
@@ -29,7 +29,7 @@ function VerificationMethodTabs(props: any) {
     function showAlert() {dispatch(raiseAlert({...AlertMessages.verificationMethodComingSoon, open: true}))}
 
     return (
-        <div className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-scroll md:overflow-x-auto">
+        <div className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-scroll lg:overflow-x-auto">
             <div className="flex flex-row items-center mx-auto justify-center">
                 <div className="w-full">
                     <div className="flex space-x-0.5 border-gray-200 font-bold">
