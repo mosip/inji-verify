@@ -33,7 +33,7 @@ const verificationSlice = createSlice({
             state.qrReadResult = {status: "NOT_READ"};
             state.activeScreen = VerificationSteps[state.method].QrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
-            state.method = action.payload.method ?? "UPLOAD";
+            state.method = action.payload.method ?? state.method;
         }
     },
     name: "VcVerification",
