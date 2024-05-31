@@ -19,14 +19,14 @@ const Result = () => {
     }, [positionReference?.current]);
     // validate vc and show success/failure component
     return (
-        <div id="result-section">
+        <div id="result-section" className="relative">
             <div className={`text-white`}>
                 <ResultSummary status={status}/>
             </div>
             <div
                 className={`absolute m-auto`}
                 style={{
-                    top: window.innerWidth >= 768 ? `532px` : "684px",
+                    top: window.innerWidth >= 768 ? `532px` : "190px",
                     right: window.innerWidth >= 768 ? `calc((50vw - 400px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
                 <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
