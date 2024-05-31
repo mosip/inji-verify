@@ -22,13 +22,13 @@ const steps: VerificationStep[] = [
     }
 ];
 
-function InjiStepper() {
+function DesktopStepper() {
     const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen >= index;
 
     return (
-        <div className="flex flex-col items-start justify-start ml-0 mt-9">
+        <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
             <div className="flex flex-col items-start space-y-2">
                 {
                     steps.map((step, index) => (
@@ -62,4 +62,4 @@ function InjiStepper() {
     );
 }
 
-export default InjiStepper;
+export default DesktopStepper;

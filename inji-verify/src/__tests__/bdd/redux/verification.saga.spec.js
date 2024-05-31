@@ -110,7 +110,7 @@ describe("Verification Saga", () => {
             .hasFinalState({
                 qrReadResult: {status: "SUCCESS", qrData: encodedWorkingVc},
                 flow: "SCAN",
-                activeScreen: VerificationSteps.DisplayResult,
+                activeScreen: VerificationSteps[method].DisplayResult,
                 verificationResult: {
                     vc: workingVc,
                     vcStatus: successVcStatus
@@ -134,7 +134,7 @@ describe("Verification Saga", () => {
             .hasFinalState({
                 qrReadResult: {status: "SUCCESS", qrData: encodedInvalidVc},
                 flow: "SCAN",
-                activeScreen: VerificationSteps.DisplayResult,
+                activeScreen: VerificationSteps[method].DisplayResult,
                 verificationResult: {
                     vc: invalidVc,
                     vcStatus: failureVcStatus
@@ -159,7 +159,7 @@ describe("Verification Saga", () => {
             .hasFinalState({
                 qrReadResult: {status: "NOT_READ"},
                 flow: "TO_BE_SELECTED",
-                activeScreen: VerificationSteps.ScanQrCodePrompt,
+                activeScreen: VerificationSteps[method].QrCodePrompt,
                 verificationResult: {vc: undefined, vcStatus: undefined},
                 alert: {message: "QR code format is not supported.", severity: "error", open: true}
             })

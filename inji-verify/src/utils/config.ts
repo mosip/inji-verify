@@ -5,10 +5,29 @@ export const SUPPORTED_DID_METHODS = ["web"];
 export const SUPPORTED_QR_HEADERS = [''];
 export const HEADER_DELIMITER = '';
 
-export const VerificationSteps = {
-    ScanQrCodePrompt: 0,
-    ActivateCamera: 1,
-    UploadQr: 1,
+export const VerificationSteps: any = {
+    "SCAN": {
+        QrCodePrompt: 1,
+        ActivateCamera: 2,
+        Verifying: 3,
+        DisplayResult: 4
+    },
+    "UPLOAD": {
+        QrCodePrompt: 1,
+        Verifying: 2,
+        DisplayResult: 3
+    }
+}
+
+export const ScanMethodSteps = {
+    ScanQrCodePrompt: 1,
+    ActivateCamera: 2,
+    Verifying: 3,
+    DisplayResult: 4
+}
+
+export const UploadMethodSteps = {
+    UploadQrCodePrompt: 1,
     Verifying: 2,
     DisplayResult: 3
 }
@@ -19,6 +38,7 @@ export const AlertMessages = {
     qrNotDetected: {message: "No MultiFormat Readers were able to detect the QR code.", severity: "error"} as AlertInfo,
     qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
     unsupportedFileSize: {message: "QR code size is not supported. Please use a QR code within the specified dimensions.", severity: "error"} as AlertInfo,
+    verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
 };
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
