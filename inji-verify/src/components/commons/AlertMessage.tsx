@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useAppDispatch} from "../../redux/hooks";
 import {closeAlert} from "../../redux/features/alerts/alerts.slice";
 import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 import {useAlertsSelector} from "../../redux/features/alerts/alerts.selector";
@@ -28,7 +28,7 @@ const AlertMessage = () => {
     return (
         <>
             <div
-                className={`fixed top-[44px] right-[16px] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
+                className={`fixed top-[80px] md:top-[44px] right-4 md:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
                 <div className="flex items-center">
                     <p>
                         {alertInfo.message}
