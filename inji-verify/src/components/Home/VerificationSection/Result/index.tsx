@@ -5,7 +5,7 @@ import {useVerificationFlowSelector} from "../../../../redux/features/verificati
 
 const Result = () => {
     const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
-    let success = vcStatus?.status === "OK";
+    let status: any = vcStatus?.status === "OK" ? "SUCCESS" : vcStatus?.checks[0].expired === "OK" ? "INVALID" : "EXPIRED";
     const [vcCardPosition, setVcCardPosition] = useState<{top?: string, left?: string} | undefined>();
 
     const positionReference: any = useRef();
@@ -21,7 +21,7 @@ const Result = () => {
     return (
         <div id="result-section">
             <div className={`text-white`}>
-                <ResultSummary success={success}/>
+                <ResultSummary status={status}/>
             </div>
             <div
                 className={`absolute m-auto`}
