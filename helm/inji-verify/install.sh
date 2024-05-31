@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.8.0
+CHART_VERSION=0.8.1
 
 DEFAULT_MOSIP_INJIVERIFY_HOST=$( kubectl get cm global -n config-server -o jsonpath={.data.mosip-injiverify-host} )
 # Check if MOSIP_INJIVERIFY_HOST is present under configmap/global of configserver
