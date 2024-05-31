@@ -6,8 +6,8 @@ const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
     return (<div>
         <div id="menu"
              className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px]">
-            <a href="#" className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
-            <a href="#" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
+            <a href="/" className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+            <a href="/" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
             <div className="relative">
                 <button id="submenuButton"
                         className="w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
@@ -17,10 +17,10 @@ const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
                 {
                     showSubMenu && (<div id="submenu"
                                          className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5">
-                        <a href="#" className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">Contact us</a>
-                        <a href="#"
+                        <a href="https://community.mosip.io/" className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">Contact us</a>
+                        <a href="https://docs.mosip.io/inji/inji-verify/overview"
                            className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">Documentation</a>
-                        <a href="#" className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">FAQs</a>
+                        <a href="#" className="block px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100">FAQs</a>
                     </div>)
                 }
             </div>
@@ -50,33 +50,33 @@ function Navbar(props: any) {
                 <div className="w-full md:block md:w-auto" id="navbar-default">
                     <ul className="hidden md:flex mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                         <li>
-                            <a href="#"
+                            <a href="/"
                                className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-gray-700 md:p-0 dark:text-white"
                                aria-current="page">
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="/"
                                className="block py-2 pr-4 pl-10 text-primary font-medium rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                                 Verify Credentials
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href=""
                                className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                                 Documents
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="https://community.mosip.io/"
                                className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                                 MOSIP Community
                             </a>
                         </li>
                         <li>
                             <a href="#"
-                               className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                               className="block py-2 pr-4 pl-3 text-gray-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                                 Help
                             </a>
                         </li>
