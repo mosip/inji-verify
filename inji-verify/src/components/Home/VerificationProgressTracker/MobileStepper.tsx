@@ -28,8 +28,9 @@ function MobileStepper(props: any) {
     const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
 
     const stepCount = methodToStepsCountMap[method];
+    const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`
     return (
-        <div className="block md:hidden container mx-auto my-7">
+        <div className={`block md:hidden container mx-auto my-7`} style={{maxWidth}}>
             <div className="flex justify-between items-center w-full max-w-xl mx-auto" id="stepper">
                 {
                     getRangeOfNumbers(stepCount).map((value, index) => (

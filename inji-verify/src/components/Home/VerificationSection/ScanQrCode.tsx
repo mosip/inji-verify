@@ -8,19 +8,20 @@ import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
+import {VerificationMethod} from "../../../types/data-types";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
     const {scanStatus, method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
 
     return (
-        <div className="flex flex-col py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
+        <div className="flex flex-col py-0 md:py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
             <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
                 <h4 className="font-bold text-[20px]  px-0 py-[3px]">
-                    Scan QR Code or Upload an Image
+                    {method as VerificationMethod === "UPLOAD" ? "Upload QR Code" : ""}
                 </h4>
                 <p className="font-normal  text-[16px] text-[#717171] py-[3px] px-0">
-                    Please keep the QR code in the centre & clearly visible.
+                    {method as VerificationMethod === "UPLOAD" ? "Upload a file that contains a QR code" : ""}
                 </p>
             </div>
             <div className="xs:col-end-13">
@@ -42,7 +43,7 @@ const ScanQrCode = () => {
                             Scan
                         </StyledButton>) : (
                             <UploadQrCode
-                                className="w-[205px] absolute top-[160px] left-[33px]"
+                                className="w-[205px] md:hidden absolute top-[160px] left-[33px]"
                                 displayMessage="Upload"
                             />
                         )
