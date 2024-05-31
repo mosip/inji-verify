@@ -14,7 +14,7 @@ const Verification = () => {
     console.log({activeScreen})
 
     return (
-        <div className="grid mx-auto py-1 px-[60px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
+        <div className="grid mx-auto pt-1 pb-[100px] px-[60px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
             <div className="col-end-12 font-bold text-xl  mb-11">
                 <p className="font-bold text-xl mb-2">
                     Verification in Progress

@@ -1,25 +1,52 @@
-import React from 'react';
-import injiLogo from "../../../assets/inji-logo.svg";
+import React, {useState} from 'react';
+import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
+
+const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
+    const [showSubMenu, setShowSubMenu] = useState(false);
+    return (<div>
+        <div id="menu"
+             className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px]">
+            <a href="#" className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+            <a href="#" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
+            <div className="relative">
+                <button id="submenuButton"
+                        className="w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowSubMenu(show => !show)}
+                >Help
+                </button>
+                {
+                    showSubMenu && (<div id="submenu"
+                                         className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5">
+                        <a href="#" className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">Contact us</a>
+                        <a href="#"
+                           className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">Documentation</a>
+                        <a href="#" className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100">FAQs</a>
+                    </div>)
+                }
+            </div>
+        </div>
+    </div>)
+}
 
 function Navbar(props: any) {
+    const [showMenu, setShowMenu] = useState(false);
     // Logo goes here
     return (
         <nav className="bg-white border-gray-200 xs:px-4 md:px-20 py-3.5 rounded dark:bg-gray-900">
             <div className="container flex flex-wrap xs:justify-start md:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        aria-controls="navbar-default" aria-expanded="false">
-                    <span className="sr-only">Open main menu</span>
-                    <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 15a1 1 0 000 2h12a1 1 0 100-2H4z"
-                              clip-rule="evenodd"></path>
-                    </svg>
+                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        aria-controls="navbar-default" aria-expanded="false" id="hamburger"
+                        onClick={() => setShowMenu(show=>!show)}
+                >
+                    <MenuIcon style={{width: "25px", height: "19px"}}/>
                 </button>
-                <a href="/inji-verify/public" className="flex items-center">
+                <a href="/" className="flex items-center">
                     <img className="h-[100%]" src='/assets/images/inji_verify.svg'/>
                 </a>
+                <div>
+                    {showMenu && <MobileDropDownMenu showMenu={showMenu}/>}
+                </div>
                 <div className="w-full md:block md:w-auto" id="navbar-default">
                     <ul className="hidden md:flex mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                         <li>

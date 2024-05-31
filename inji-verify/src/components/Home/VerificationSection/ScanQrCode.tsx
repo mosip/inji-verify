@@ -15,13 +15,14 @@ const ScanQrCode = () => {
     const {scanStatus, method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
 
     return (
-        <div className="flex flex-col py-0 md:py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
+        <div className="flex flex-col pt-0 pb-[100px] md:py-[78px] px-0 md:px-[104px] text-center content-center justify-center">
             <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
                 <h4 className="font-bold text-[20px]  px-0 py-[3px]">
-                    {method as VerificationMethod === "UPLOAD" ? "Upload QR Code" : ""}
+                    {method as VerificationMethod === "UPLOAD" ? "Upload QR Code" : "Scan QR Code"}
                 </h4>
                 <p className="font-normal  text-[16px] text-[#717171] py-[3px] px-0">
-                    {method as VerificationMethod === "UPLOAD" ? "Upload a file that contains a QR code" : ""}
+                    {method as VerificationMethod === "UPLOAD" ? "Upload a file that contains a QR code"
+                        : "Tap “Scan” to start scanning the document or card with a QR code"}
                 </p>
             </div>
             <div className="xs:col-end-13">
