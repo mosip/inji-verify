@@ -18,7 +18,7 @@ describe("Verification component", () => {
         api.useAppDispatch.mockReturnValue(jest.fn());
 
         const verificationApi = require("../../../../redux/features/verification/verification.selector");
-        verificationApi.useVerificationFlowSelector.mockReturnValue({activeScreen: VerificationSteps.ActivateCamera});
+        verificationApi.useVerificationFlowSelector.mockReturnValue({activeScreen: VerificationSteps[method].ActivateCamera});
 
         act(() => {
             render(<Verification/>);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, screen} from "@testing-library/react";
-import Copyrights from "../../../../components/Home/VerificationProgressTracker/Copyrights";
+import Copyrights from "../../../../components/PageTemplate/Copyrights";
 
 describe("Copyrights", () => {
     test("Test rendering", () => {

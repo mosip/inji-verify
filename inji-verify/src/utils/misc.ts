@@ -25,3 +25,30 @@ export const getDisplayValue = (data: any): string => {
     }
     return data?.toString();
 }
+
+export const checkInternetStatus = async (): Promise<boolean> => {
+    if (!window.navigator.onLine) return false;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1000);
+    try {
+        // Try making an api call if the window.navigator.onLine is true
+        await fetch("https://dns.google/", {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            signal: controller.signal
+        }); // Use a reliable external endpoint
+        return true;
+    } catch (error) {
+        return false; // Network request failed, assume offline
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
+
+export const navigateToOffline = () => {
+    window.location.assign("/offline");
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, screen} from "@testing-library/react";
-import StepperContentHeader from "../../../../components/Home/VerificationProgressTracker/StepperContentHeader";
+import StepperContentHeader from "../../../../components/Home/Header";
 
 describe("Stepper Content Header", () => {
     test("Test rendering", () => {
