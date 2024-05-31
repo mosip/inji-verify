@@ -6,7 +6,7 @@ export const PreloadedState: ApplicationState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
     method: "UPLOAD",
-    activeScreen: VerificationSteps.ScanQrCodePrompt,
+    activeScreen: VerificationSteps["UPLOAD"].QrCodePrompt,
     verificationResult: {vc: undefined, vcStatus: undefined}
 };
 
@@ -17,21 +17,21 @@ const verificationSlice = createSlice({
         },
         qrReadInit: (state, action) => {
             const method = action.payload.method;
-            state.activeScreen = method === "SCAN" ? VerificationSteps.ActivateCamera : VerificationSteps.Verifying;
+            state.activeScreen = method === "SCAN" ? VerificationSteps[state.method].ActivateCamera : VerificationSteps[method].Verifying;
             state.method = method;
         },
         // qrReadComplete and init verification
         verificationInit: (state, action) => {
-            state.activeScreen = VerificationSteps.Verifying;
+            state.activeScreen = VerificationSteps[state.method].Verifying;
             state.qrReadResult = action.payload.qrReadResult;
         },
         verificationComplete: (state, action) => {
-            state.activeScreen = VerificationSteps.DisplayResult;
+            state.activeScreen = VerificationSteps[state.method].DisplayResult;
             state.verificationResult = action.payload.verificationResult;
         },
         goHomeScreen: (state, action) => {
             state.qrReadResult = {status: "NOT_READ"};
-            state.activeScreen = VerificationSteps.ScanQrCodePrompt;
+            state.activeScreen = VerificationSteps[state.method].QrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
             state.method = action.payload.method ?? "UPLOAD";
         }

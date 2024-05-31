@@ -10,9 +10,8 @@ import {useVerificationFlowSelector} from "../../../redux/features/verification/
 
 const Verification = () => {
     const dispatch = useAppDispatch();
-    const activeScreen = useVerificationFlowSelector(state => state.activeScreen);
-    console.log({activeScreen})
-
+    const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
+    console.log({activeScreen});
     return (
         <div className="grid mx-auto pt-1 pb-[100px] px-[16px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
             <div className="col-end-12 font-bold text-xl  mb-11">
@@ -28,7 +27,7 @@ const Verification = () => {
                     backgroundImage: `url(${scanQr})`
                 }}>
                     {
-                        activeScreen === VerificationSteps.Verifying
+                        activeScreen === VerificationSteps[method].Verifying
                             ? (<Loader/>)
                             : (<QrScanner/>)
                     }

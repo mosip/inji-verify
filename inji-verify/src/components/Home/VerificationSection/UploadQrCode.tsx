@@ -32,7 +32,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
 export const UploadQrCode = ({displayMessage, className}: { displayMessage: string, className?: string }) => {
     const dispatch = useAppDispatch();
     return (
-        <div className={`mx-auto my-1.5 flex content-center justify-center w-[350px] ${className}`}>
+        <div className={`mx-auto my-1.5 flex content-center justify-center ${className}`}>
             <UploadButton displayMessage={displayMessage}/>
             <br/>
             <input

@@ -62,6 +62,7 @@ const ScanQrCode = () => {
             </div>
             <div className="col-end-13 hidden md:inline-flex">
                 <UploadQrCode
+                    className="w-[350px]"
                     displayMessage={scanStatus === "FAILED" ? "Upload Another QR Code" : "Upload QR Code"}
                 />
             </div>

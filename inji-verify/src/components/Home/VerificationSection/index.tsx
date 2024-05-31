@@ -7,15 +7,15 @@ import {useAppSelector} from "../../../redux/hooks";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
 const DisplayActiveStep = () => {
-    const {activeScreen} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData}));
+    const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData, method: state.method}));
 
     switch (activeScreen) {
-        case VerificationSteps.ScanQrCodePrompt:
+        case VerificationSteps[method].QrCodePrompt:
             return (<ScanQrCode/>);
-        case VerificationSteps.ActivateCamera:
-        case VerificationSteps.Verifying:
+        case VerificationSteps[method].ActivateCamera:
+        case VerificationSteps[method].Verifying:
             return (<Verification/>);
-        case VerificationSteps.DisplayResult:
+        case VerificationSteps[method].DisplayResult:
             return (<Result/>);
         default:
             return (<></>);
