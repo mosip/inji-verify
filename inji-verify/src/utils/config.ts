@@ -19,6 +19,7 @@ export const AlertMessages = {
     qrNotDetected: {message: "No MultiFormat Readers were able to detect the QR code.", severity: "error"} as AlertInfo,
     qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
     unsupportedFileSize: {message: "QR code size is not supported. Please use a QR code within the specified dimensions.", severity: "error"} as AlertInfo,
+    verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
 };
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
