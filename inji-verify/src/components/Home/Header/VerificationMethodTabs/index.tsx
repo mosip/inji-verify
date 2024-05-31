@@ -32,7 +32,7 @@ function VerificationMethodTabs(props: any) {
         <div className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-scroll lg:overflow-x-auto">
             <div className="flex flex-row items-center mx-auto justify-center">
                 <div className="w-full">
-                    <div className="flex space-x-0.5 border-gray-200 font-bold">
+                    <div className="flex space-x-0.5 border-gray-200 font-bold items-end mx-auto md:justify-center">
                         <Tab active={method === "UPLOAD"} label="Upload QR Code" onClick={() => switchToVerificationMethod("UPLOAD")}/>
                         <Tab active={method === "SCAN"} label="Scan the QR Code" onClick={() => switchToVerificationMethod("SCAN")}/>
                         <Tab active={false} label="VP Verification" disabled onClick={showAlert}/>
