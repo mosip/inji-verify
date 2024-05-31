@@ -6,17 +6,7 @@ import {useVerificationFlowSelector} from "../../../../redux/features/verificati
 const Result = () => {
     const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
     let status: any = vcStatus?.status === "OK" ? "SUCCESS" : vcStatus?.checks[0].expired === "OK" ? "INVALID" : "EXPIRED";
-    const [vcCardPosition, setVcCardPosition] = useState<{top?: string, left?: string} | undefined>();
 
-    const positionReference: any = useRef();
-    useEffect(() => {
-        console.log({vcCardPosition})
-        if (positionReference?.current && !vcCardPosition) {
-            let resultSectionPosition = positionReference?.current?.getBoundingClientRect();
-            console.log({resultSectionPosition})
-            setVcCardPosition({top: `${resultSectionPosition.bottom - 100}px`})
-        }
-    }, [positionReference?.current]);
     // validate vc and show success/failure component
     return (
         <div id="result-section" className="relative">
