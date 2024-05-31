@@ -67,7 +67,7 @@ const ScanQrCode = () => {
                 />
             </div>
             {
-                scanStatus !== "FAILED" && (
+                scanStatus !== "FAILED" && method === "UPLOAD" && (
                     <div className="grid text-center content-center justify-center">
                         <p className="font-normal text-[14px]  text-[#8E8E8E] w-[280px]">
                             Allowed file formats: PNG/JPEG/JPG/PDF <br/>Min Size : 10KB | Max Size : 5MB
