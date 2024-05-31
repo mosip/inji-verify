@@ -6,7 +6,7 @@ import {Provider} from "react-redux";
 import configureMockStore from "redux-mock-store";
 
 const mockStore = configureMockStore();
-const store = mockStore({verification: {activeScreen: VerificationSteps.ScanQrCodePrompt}});
+const store = mockStore({verification: {activeScreen: VerificationSteps[method].QrCodePrompt}});
 
 describe("Inji Stepper", () => {
     test("Test rendering", () => {
