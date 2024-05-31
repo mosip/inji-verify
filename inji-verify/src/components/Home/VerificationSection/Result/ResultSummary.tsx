@@ -7,7 +7,7 @@ import {ReactComponent as VerificationFailedMobileIcon} from "../../../../assets
 const backgroundColorMapping: any = {
     EXPIRED: "bg-[#BF7A1C]",
     INVALID: "bg-[#D73E3E]",
-    SUCCESS: "bg-[#57A04B]"
+    SUCCESS: "bg-[#4B9D1F]"
 }
 
 const displayMessageMapping = {
