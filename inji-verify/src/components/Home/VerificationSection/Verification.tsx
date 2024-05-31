@@ -14,13 +14,13 @@ const Verification = () => {
     console.log({activeScreen})
 
     return (
-        <div className="grid mx-auto pt-1 pb-[100px] px-[60px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
+        <div className="grid mx-auto pt-1 pb-[100px] px-[16px] md:py-[78px] md:px-[104px] text-center content-center justify-center">
             <div className="col-end-12 font-bold text-xl  mb-11">
-                <p className="font-bold text-xl mb-2">
-                    Verification in Progress
+                <p className="font-bold text-[19px] md:text-[26px] mb-2">
+                    Position QR Code
                 </p>
-                <p className="font-normal text-[16px] text-center overflow-visible">
-                    This verification will take sometime, please don’t close the browser.
+                <p className="font-normal text-[14px] md:text-[16px] text-center overflow-visible">
+                    Hold up the document or card with the QR code in front of your camera and ensure the QR code is within the camera frame to initiate verification.
                 </p>
             </div>
             <div className="col-end-12">

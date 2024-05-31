@@ -34,7 +34,7 @@ function VcDisplayCard({vc}: {vc: any}) {
                 <StyledButton className="mx-auto mt-6 mb-20 md:mb-6" onClick={() => {
                     dispatch(goHomeScreen({}))
                 }}>
-                    Verify QR Code
+                    Verify Another QR code
                 </StyledButton>
             </div>
         </div>

@@ -23,10 +23,10 @@ const ResultSummary = ({status}: {
     return (
         <div className="grid">
             <div className="xs:col-end-13 md:hidden text-center bg-white text-black pb-8">
-                <p className="font-bold text-lg">
+                <p className="font-bold text-[16px]">
                     View Results
                 </p>
-                <p>
+                <p className="text-[14px]">
                     View the verification result.
                 </p>
             </div>
