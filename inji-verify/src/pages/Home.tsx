@@ -12,10 +12,10 @@ function Home(props: any) {
                     <Header/>
                 </div>
                 <div
-                    className="col-start-1 col-end-12 md:col-start-1 md:col-span-6 md:bg-[#FAFBFD] xs:w-[100vw] md:max-w-[50vw]">
+                    className="col-start-1 col-end-12 lg:col-start-1 lg:col-span-6 lg:bg-[#FAFBFD] xs:w-[100vw] lg:max-w-[50vw]">
                     <VerificationProgressTracker/>
                 </div>
-                <div className="col-start-1 col-end-12 md:col-start-7 md:col-end-12 xs:[100vw] md:w-[50vw]">
+                <div className="col-start-1 col-end-12 lg:col-start-7 lg:col-end-12 xs:[100vw] lg:w-[50vw]">
                     <VerificationSection/>
                 </div>
             </div>

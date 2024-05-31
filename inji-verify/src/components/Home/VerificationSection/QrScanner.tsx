@@ -69,7 +69,7 @@ function QrScanner() {
                 }}
                 styles={{
                     container: {
-                        width: window.innerWidth < 768 ? "250px" : "316px",
+                        width: window.innerWidth < 1024 ? "250px" : "316px",
                         placeContent: "center",
                         display: "grid",
                         placeItems: "center",

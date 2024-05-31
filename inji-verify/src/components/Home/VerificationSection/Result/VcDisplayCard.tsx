@@ -9,12 +9,12 @@ function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();
     return (
         <div>
-            <div className={`grid w-[340px] md:w-[400px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}>
+            <div className={`grid w-[340px] lg:w-[400px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}>
                 {
                     vc ? Object.keys(vc.credentialSubject)
                         .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
                         .map((key, index) => (
-                            <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "md:col-start-1 md:col-end-6" : "md:col-start-8 md:col-end-13"}`} key={key}>
+                            <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "lg:col-start-1 lg:col-end-6" : "lg:col-start-8 lg:col-end-13"}`} key={key}>
                                 <p className="font-normal  text-[11px]">
                                     {convertToTitleCase(key)}
                                 </p>
@@ -31,7 +31,7 @@ function VcDisplayCard({vc}: {vc: any}) {
                 }
             </div>
             <div className="grid content-center justify-center">
-                <StyledButton className="mx-auto mt-6 mb-20 md:mb-6" onClick={() => {
+                <StyledButton className="mx-auto mt-6 mb-20 lg:mb-6" onClick={() => {
                     dispatch(goHomeScreen({}))
                 }}>
                     Verify Another QR code

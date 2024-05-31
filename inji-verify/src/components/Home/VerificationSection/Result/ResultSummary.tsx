@@ -22,7 +22,7 @@ const ResultSummary = ({status}: {
     const backgroundColor = backgroundColorMapping[status]
     return (
         <div className="grid">
-            <div className="xs:col-end-13 md:hidden text-center bg-white text-black pb-8">
+            <div className="xs:col-end-13 lg:hidden text-center bg-white text-black pb-8">
                 <p className="font-bold text-[16px]">
                     View Results
                 </p>
@@ -30,15 +30,15 @@ const ResultSummary = ({status}: {
                     View the verification result.
                 </p>
             </div>
-            <div className={`xs:col-end-13 h-[170px] md:h-[340px] ${backgroundColor}`}>
+            <div className={`xs:col-end-13 h-[170px] lg:h-[340px] ${backgroundColor}`}>
                 <div className="grid justify-items-center items-center justify-center content-center pt-[30px]">
-                    <div className={`col-end-13 hidden md:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${backgroundColor}`}>
+                    <div className={`col-end-13 hidden lg:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${backgroundColor}`}>
                         {status === "SUCCESS" ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
                     </div>
-                    <div className="col-end-13 block md:hidden mb-2.5">
+                    <div className="col-end-13 block lg:hidden mb-2.5">
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
                     </div>
-                    <div className="hidden md:block col-end-13">
+                    <div className="hidden lg:block col-end-13">
                         <p className="font-bold text-[20px]  mx-auto my-[7px]">
                             Results
                         </p>
