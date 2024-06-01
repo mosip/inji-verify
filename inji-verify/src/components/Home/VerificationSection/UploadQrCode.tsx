@@ -8,7 +8,7 @@ import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            className="bg-[#FFFFFF] bg-no-repeat rounded-[9999px] border-2 border-primary font-bold text-primary w-[350px] cursor-pointer text-center px-0 py-[18px]"
+            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[18px]"
             htmlFor={"upload-qr"}
             onClick={(event) => {
                 if (!window.navigator.onLine) {

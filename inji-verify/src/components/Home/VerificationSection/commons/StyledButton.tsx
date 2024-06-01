@@ -10,8 +10,8 @@ function StyledButton(props: StyledButtonProps) {
         <button
             {...props}
             className={`inline-flex content-center justify-center border-2 border-primary py-[18px] px-7 ` +
-                `rounded-[9999px] ${props.fill ? 'bg-primary' : 'bg-[#FFFFFF]'} ` +
-                `${props.fill ? 'text-[#FFFFFF]' : 'text-primary'} ${props.className}`}
+                `rounded-[9999px] hover:bg-primary bg-[#FFFFFF] ` +
+                `hover:text-[#FFFFFF] text-primary ${props.className}`}
         >
             {
                 props.icon && (
