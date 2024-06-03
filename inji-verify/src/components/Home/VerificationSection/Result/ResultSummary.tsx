@@ -21,8 +21,8 @@ const ResultSummary = ({status}: {
 }) => {
     const backgroundColor = backgroundColorMapping[status]
     return (
-        <div className="grid">
-            <div className="xs:col-end-13 lg:hidden text-center bg-white text-black pb-8">
+        <div className="grid grid-cols-12 w-full">
+            <div className="col-span-12 lg:hidden text-center bg-white text-black pb-8 w-full">
                 <p className="font-bold text-[16px]">
                     View Results
                 </p>
@@ -30,20 +30,20 @@ const ResultSummary = ({status}: {
                     View the verification result.
                 </p>
             </div>
-            <div className={`xs:col-end-13 h-[170px] lg:h-[340px] ${backgroundColor}`}>
-                <div className="grid justify-items-center items-center justify-center content-center pt-[30px]">
-                    <div className={`col-end-13 hidden lg:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${backgroundColor}`}>
+            <div className={`col-span-12 h-[170px] lg:h-[340px] w-full ${backgroundColor}`}>
+                <div className="grid grid-cols-12 justify-items-center items-center justify-center content-center pt-[30px]">
+                    <div className={`col-start-1 col-end-13 hidden lg:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${backgroundColor}`}>
                         {status === "SUCCESS" ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
                     </div>
-                    <div className="col-end-13 block lg:hidden mb-2.5">
+                    <div className="col-start-1 col-end-13 block lg:hidden mb-2.5">
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
                     </div>
-                    <div className="hidden lg:block col-end-13">
+                    <div className="hidden lg:block col-start-1 col-end-13">
                         <p className="font-bold text-[20px]  mx-auto my-[7px]">
                             Results
                         </p>
                     </div>
-                    <div className="col-end-13">
+                    <div className="col-start-1 col-end-13">
                         <p className="font-normal text-[16px] text-center">
                             {
                                 displayMessageMapping[status]

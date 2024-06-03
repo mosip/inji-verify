@@ -16,7 +16,7 @@ function Home(props: any) {
                         className="col-start-1 col-end-12 lg:col-start-1 lg:col-span-6 lg:bg-[#FAFBFD] xs:w-[100vw] lg:max-w-[50vw]">
                         <VerificationProgressTracker/>
                     </div>
-                    <div className="col-start-1 col-end-12 lg:col-start-7 lg:col-end-12 xs:[100vw] lg:max-w-[50vw]">
+                    <div className="col-start-1 col-end-12 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
                         <VerificationSection/>
                     </div>
                 </div>
