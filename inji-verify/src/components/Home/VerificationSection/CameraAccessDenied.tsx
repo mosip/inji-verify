@@ -22,7 +22,7 @@ const Modal = ({children}: any) => (
     <div className="fixed z-10 inset-0 overflow-y-auto">
         <div className="flex items-center justify-center min-h-screen">
             <div className="fixed inset-0 bg-black opacity-50"></div>
-            <div className="relative bg-white w-full max-w-md p-6 rounded-lg shadow-xl">
+            <div className="relative bg-white max-w-[95vw] md:max-w-md p-6 rounded-lg shadow-xl">
                 {children}
             </div>
         </div>
@@ -34,7 +34,7 @@ const Fade = ({children}: any) => (
         <div className="fixed inset-0 transition-opacity">
             <div className="absolute inset-0 bg-black opacity-30"></div>
         </div>
-        <div className="relative bg-white w-full max-w-md p-6 rounded-lg shadow-xl">
+        <div className="relative bg-white max-w-[95vw] md:max-w-md p-6 rounded-lg shadow-xl">
             {children}
         </div>
     </div>
@@ -44,7 +44,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
     return open ? (
         <Modal>
             <Fade>
-                <div className="grid justify-items-center items-center text-center shadow-lg" style={style}>
+                <div className="container grid justify-items-center items-center text-center max-w-[95vw] md:max-w-md shadow-lg" style={style}>
                     <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto"/>
                     <p className="font-bold  text-[20px] my-3 mx-auto">
                         Camera Access Denied
@@ -56,8 +56,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                     <StyledButton
                         onClick={handleClose}
                         className="w-[180px] mx-auto my-[18px]"
-                        fill={false}
-                        data-testid="camer-access-denied-okay"
+                        data-testid="camera-access-denied-okay"
                     >
                         Okay
                     </StyledButton>
