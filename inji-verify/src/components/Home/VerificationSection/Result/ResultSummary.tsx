@@ -32,16 +32,8 @@ const ResultSummary = ({status}: {
             </div>
             <div className={`col-span-12 h-[170px] lg:h-[340px] w-full ${backgroundColor}`}>
                 <div className="grid grid-cols-12 justify-items-center items-center justify-center content-center pt-[30px]">
-                    <div className={`col-start-1 col-end-13 hidden lg:grid rounded-[50%] bg-white h-[68px] w-[68px] content-center justify-center text-[24px] mx-auto my-[7px] ${backgroundColor}`}>
-                        {status === "SUCCESS" ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
-                    </div>
-                    <div className="col-start-1 col-end-13 block lg:hidden mb-2.5">
+                    <div className="col-start-1 col-end-13 block mb-2.5">
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
-                    </div>
-                    <div className="hidden lg:block col-start-1 col-end-13">
-                        <p className="font-bold text-[20px]  mx-auto my-[7px]">
-                            Results
-                        </p>
                     </div>
                     <div className="col-start-1 col-end-13">
                         <p className="font-normal text-[16px] text-center">
