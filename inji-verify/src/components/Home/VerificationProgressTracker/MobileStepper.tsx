@@ -23,8 +23,10 @@ function MobileStepper(props: any) {
     const stepCount = getVerificationStepsCount(method);
     const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`
     return (
-        <div className={`block lg:hidden container mx-auto my-7`} style={{maxWidth}}>
-            <div className="flex justify-between items-center w-full max-w-xl mx-auto" id="stepper">
+        <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
+            <div className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
+                 style={{maxWidth}}
+                 id="stepper">
                 {
                     getRangeOfNumbers(stepCount).map((value, index) => (
                         <>
@@ -33,6 +35,14 @@ function MobileStepper(props: any) {
                         </>
                     ))
                 }
+            </div>
+            <div className="col-start-1 col-end-13 text-center">
+                <p className="font-bold my-1">
+                    {VerificationStepsContent[method][activeScreen - 1].label}
+                </p>
+                <p className="text-[#535353] text-[14px]">
+                    {VerificationStepsContent[method][activeScreen - 1].description}
+                </p>
             </div>
         </div>
     );
