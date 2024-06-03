@@ -38,7 +38,7 @@ const ScanQrCode = () => {
                     {
                         method === "SCAN" ? (<StyledButton
                             icon={<TabScanFillIcon/>}
-                            className='mx-0 my-1.5 w-[205px] lg:w-[350px] py-3.5 text-center inline-flex lg:hidden absolute top-[160px] left-[33px]'
+                            className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]'
                             fill={false}
                             onClick={() => dispatch(qrReadInit({method}))}>
                             Scan
