@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
+import { MdArrowForwardIos } from "react-icons/md";
 
 const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
     const [showSubMenu, setShowSubMenu] = useState(false);
@@ -10,9 +11,9 @@ const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
             <a href="/" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
             <div className="relative">
                 <button id="submenuButton"
-                        className="w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                        className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowSubMenu(show => !show)}
-                >Help
+                >Help <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
                 </button>
                 {
                     showSubMenu && (<div id="submenu"
@@ -32,7 +33,7 @@ function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
     // Logo goes here
     return (
-        <nav className="bg-white border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded dark:bg-gray-900">
+        <nav className="bg-white border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded">
             <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
                         className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"

@@ -74,13 +74,11 @@ function QrScanner() {
                         display: "grid",
                         placeItems: "center",
                         borderRadius: "12px"
-                    },
-                    video: {
-                        zIndex: 1000
                     }
                 }}
             />
             <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
+                console.log("closing camera");
                 dispatch(goHomeScreen({}));
                 setIsCameraBlocked(false)
             }}/>
