@@ -9,7 +9,7 @@ import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[18px]"
+            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-[16px]"
             htmlFor={"upload-qr"}
             onClick={async (event) => {
                 let isOnline = await checkInternetStatus();
