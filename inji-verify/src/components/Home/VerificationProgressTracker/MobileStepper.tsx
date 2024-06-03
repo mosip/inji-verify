@@ -1,14 +1,7 @@
 import React from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
-
-const getRangeOfNumbers = (length: number): number[] => {
-    return Array.from(new Array(length), (x, i) => i + 1);
-}
-
-const methodToStepsCountMap: any = {
-    "UPLOAD": 3,
-    "SCAN": 4
-}
+import {VerificationStepsContent} from "../../../utils/config";
+import {getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
@@ -27,7 +20,7 @@ function MobileStepper(props: any) {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
     const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
 
-    const stepCount = methodToStepsCountMap[method];
+    const stepCount = getVerificationStepsCount(method);
     const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`
     return (
         <div className={`block lg:hidden container mx-auto my-7`} style={{maxWidth}}>

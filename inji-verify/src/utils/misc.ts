@@ -1,4 +1,7 @@
 // match fot the occurrence of an uppercase letter
+import {VcStatus, VerificationMethod} from "../types/data-types";
+import {VerificationStepsContent} from "./config";
+
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
 
 // match if the first char is lower case
@@ -22,6 +25,12 @@ export const getDisplayValue = (data: any): string => {
         return displayValue.slice(0, displayValue.length - 2);
     }
     return data?.toString();
+}
+
+export const getVerificationStepsCount = (method: VerificationMethod) => VerificationStepsContent[method].length;
+
+export const getRangeOfNumbers = (length: number): number[] => {
+    return Array.from(new Array(length), (x, i) => i + 1);
 }
 
 export const checkInternetStatus = async (): Promise<boolean> => {

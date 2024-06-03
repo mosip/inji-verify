@@ -32,7 +32,7 @@ const ScanQrCode = () => {
                     <div
                         className="grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
                     </div>
-                    <div className="absolute top-[58px] left-[98px] lg:top-[50%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
+                    <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
                         <img src={qrIcon} className="w-[78px] lg:w-[100px]"/>
                     </div>
                     {
@@ -44,37 +44,13 @@ const ScanQrCode = () => {
                             Scan
                         </StyledButton>) : (
                             <UploadQrCode
-                                className="w-[205px] lg:hidden absolute top-[160px] left-[33px]"
+                                className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
                                 displayMessage="Upload"
                             />
                         )
                     }
                 </div>
             </div>
-            <div className="col-end-13">
-                <StyledButton
-                    icon={<TabScanIcon/>}
-                    className='mx-0 my-1.5 w-[205px] lg:w-[350px] text-center hidden lg:inline-flex'
-                    fill
-                    onClick={() => dispatch(qrReadInit({method: "SCAN"}))}>
-                    Scan QR Code
-                </StyledButton>
-            </div>
-            <div className="col-end-13 hidden lg:inline-flex">
-                <UploadQrCode
-                    className="w-[350px]"
-                    displayMessage={scanStatus === "FAILED" ? "Upload Another QR Code" : "Upload QR Code"}
-                />
-            </div>
-            {
-                scanStatus !== "FAILED" && method === "UPLOAD" && (
-                    <div className="grid text-center content-center justify-center">
-                        <p className="font-normal text-[14px]  text-[#8E8E8E] w-[280px]">
-                            Allowed file formats: PNG/JPEG/JPG/PDF <br/>Min Size : 10KB | Max Size : 5MB
-                        </p>
-                    </div>
-                )
-            }
         </div>
     );
 }
