@@ -44,7 +44,7 @@ const ResultSummary = ({status}: {
                         </p>
                     </div>
                     <div className="col-end-13">
-                        <p className="font-normal text-[16px]">
+                        <p className="font-normal text-[16px] text-center">
                             {
                                 displayMessageMapping[status]
                             }
