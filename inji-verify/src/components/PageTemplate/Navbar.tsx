@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
+import { MdArrowForwardIos } from "react-icons/md";
 
 const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
     const [showSubMenu, setShowSubMenu] = useState(false);
@@ -10,9 +11,9 @@ const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
             <a href="/" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
             <div className="relative">
                 <button id="submenuButton"
-                        className="w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                        className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowSubMenu(show => !show)}
-                >Help
+                >Help <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
                 </button>
                 {
                     showSubMenu && (<div id="submenu"
