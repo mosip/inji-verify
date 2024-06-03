@@ -53,8 +53,8 @@ function VerificationMethodTabs(props: any) {
                         <MdArrowBackIos className="mx-auto"/>
                     </button>
                 </div>
-                <div className="w-[calc(100vw-96px)] md:w-full overflow-x-scroll md:overflow-x-auto" ref={carouselRef}>
-                    <div className="flex space-x-0.5 border-gray-200 font-bold items-end mx-auto md:justify-center">
+                <div className="flex w-[calc(100vw-96px)] md:w-full mx-auto overflow-x-scroll md:overflow-x-auto" ref={carouselRef}>
+                    <div className="flex space-x-0.5 border-gray-200 font-bold items-end mx-auto lg:justify-center">
                         <Tab active={method === "UPLOAD"} label="Upload QR Code"
                              onClick={() => switchToVerificationMethod("UPLOAD")}/>
                         <Tab active={method === "SCAN"} label="Scan the QR Code"
