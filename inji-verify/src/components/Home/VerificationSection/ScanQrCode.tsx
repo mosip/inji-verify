@@ -12,19 +12,10 @@ import {VerificationMethod} from "../../../types/data-types";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
-    const {scanStatus, method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
+    const {method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
 
     return (
         <div className="flex flex-col pt-0 pb-[100px] lg:py-[78px] px-0 lg:px-[104px] text-center content-center justify-center">
-            <div className="xs:col-end-13 mb-11 font-bold  text-[20px]">
-                <h4 className="font-bold text-[20px]  px-0 py-[3px]">
-                    {method as VerificationMethod === "UPLOAD" ? "Upload QR Code" : "Scan QR Code"}
-                </h4>
-                <p className="font-normal  text-[16px] text-[#717171] py-[3px] px-0">
-                    {method as VerificationMethod === "UPLOAD" ? "Upload a file that contains a QR code"
-                        : "Tap “Scan” to start scanning the document or card with a QR code"}
-                </p>
-            </div>
             <div className="xs:col-end-13">
                 <div
                     className={`relative grid content-center justify-center w-[275px] lg:w-[350px] aspect-square my-1.5 mx-auto bg-cover`}
