@@ -6,7 +6,7 @@ const MobileDropDownMenu = ({showMenu}: {showMenu: boolean}) => {
     const [showSubMenu, setShowSubMenu] = useState(false);
     return (<div>
         <div id="menu"
-             className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px]">
+             className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
             <a href="/" className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
             <a href="/" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
             <div className="relative">
