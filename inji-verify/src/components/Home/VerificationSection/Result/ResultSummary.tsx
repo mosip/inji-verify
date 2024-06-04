@@ -22,7 +22,7 @@ const ResultSummary = ({status}: {
     const backgroundColor = backgroundColorMapping[status]
     return (
         <div className="grid grid-cols-12 w-full">
-            <div className={`col-start-1 col-end-13 h-[170px] lg:h-[340px] w-full ${backgroundColor}`}>
+            <div className={`col-start-1 col-end-13 h-[170px] lg:h-[186px] w-full ${backgroundColor}`}>
                 <div className="grid grid-cols-12 justify-items-center items-center justify-center content-center pt-[30px]">
                     <div className="col-start-1 col-end-13 block mb-2.5">
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}

@@ -9,7 +9,7 @@ import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-[16px]"
+            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-[16px] fill-[#ff7f00] hover:fill-white"
             htmlFor={"upload-qr"}
             onClick={async (event) => {
                 let isOnline = await checkInternetStatus();
@@ -22,7 +22,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
         >
             <span className="flex m-auto content-center justify-center w-[100%]">
                 <span className="inline-grid mr-1.5">
-                    <UploadIcon/>
+                    <UploadIcon className="fill-inherit"/>
                 </span>
                 <span className="inline-grid">
                     {displayMessage}

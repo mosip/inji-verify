@@ -1,14 +1,12 @@
 import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qrIcon from "../../../assets/qr-code-icon.svg";
-import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
 import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
-import {VerificationMethod} from "../../../types/data-types";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
@@ -29,8 +27,8 @@ const ScanQrCode = () => {
                     </div>
                     {
                         method === "SCAN" ? (<StyledButton
-                            icon={<TabScanFillIcon/>}
-                            className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]'
+                            icon={<TabScanFillIcon className="fill-inherit"/>}
+                            className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#ff7f00] hover:fill-white'
                             fill={false}
                             onClick={() => dispatch(qrReadInit({method}))}>
                             Scan

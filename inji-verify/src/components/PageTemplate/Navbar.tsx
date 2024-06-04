@@ -1,7 +1,8 @@
-import React, {Dispatch, SetStateAction, useCallback, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
+import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
 
 const SubMenu = () => {
     return (
@@ -9,10 +10,10 @@ const SubMenu = () => {
              className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] lg:w-[250px] lg:top-[24px] lg:left-[-190px] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5 lg:py-5 lg:shadow-lg">
             <a href="https://community.mosip.io/"
                target="_blank"
-               className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Contact us</a>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Contact us <NewTabIcon className="mx-1.5"/></a>
             <a href="https://docs.mosip.io/inji/inji-verify/overview"
                target="_blank"
-               className="block px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Documentation</a>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Documentation <NewTabIcon className="mx-1.5" /></a>
             <a href="#" className="block px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4">FAQs</a>
         </div>
     );
