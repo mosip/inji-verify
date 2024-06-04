@@ -42,9 +42,14 @@ function QrScanner() {
 
     return (
         <div ref={scannerRef} className="relative">
-            <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
-                <div className="scanning-line"></div>
-            </div>
+            {
+                !isCameraBlocked && (
+                    <div
+                        className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
+                        <div className="scanning-line"></div>
+                    </div>
+                )
+            }
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
