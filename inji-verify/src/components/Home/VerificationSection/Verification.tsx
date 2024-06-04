@@ -14,7 +14,7 @@ const Verification = () => {
     console.log({activeScreen});
     return (
         <div
-            className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[78px] lg:px-[104px] text-center content-center justify-center">
+            className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[42px] lg:px-[104px] text-center content-center justify-center">
             <div
                 className="col-start-1 col-end-13 grid w-[100%] lg:w-[350px] aspect-square max-w-[280px] lg:max-w-none bg-cover content-center justify-center m-auto"
                 style={{
