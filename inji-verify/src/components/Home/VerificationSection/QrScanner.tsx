@@ -5,6 +5,7 @@ import {ScanSessionExpiryTime} from "../../../utils/config";
 import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen, verificationInit} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
+import "./ScanningLine.css";
 
 let timer: NodeJS.Timeout;
 
@@ -40,7 +41,10 @@ function QrScanner() {
     }, [scannerRef]);
 
     return (
-        <div ref={scannerRef}>
+        <div ref={scannerRef} className="relative">
+            <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
+                <div className="scanning-line"></div>
+            </div>
             <Scanner
                 onResult={(text, result) => {
                     console.log(text, result);
