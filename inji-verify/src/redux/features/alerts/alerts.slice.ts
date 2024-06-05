@@ -6,7 +6,7 @@ export const InitialState: AlertInfo = {}
 const alertsSlice = createSlice({
     reducers: {
         raiseAlert: (state, action) => {
-            state.open = action.payload.open;
+            state.open = true;
             state.severity = action.payload.severity;
             state.message = action.payload.message;
             state.autoHideDuration = action.payload.autoHideDuration ?? 5000;
