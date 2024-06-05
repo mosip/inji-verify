@@ -19,18 +19,41 @@ export const VerificationSteps: any = {
     }
 }
 
-export const ScanMethodSteps = {
-    ScanQrCodePrompt: 1,
-    ActivateCamera: 2,
-    Verifying: 3,
-    DisplayResult: 4
-}
+export const VerificationStepsContent: any = {
+    SCAN: [
+        {
+            label: 'Scan QR Code',
+            description: 'Tap "Scan" to start scanning the document or card with a QR code',
+        },
+        {
+            label: 'Activate your device camera',
+            description: 'A notification will be prompt to activate your device camera',
+        },
+        {
+            label: 'Position QR Code',
+            description: 'Hold up the document or card with the QR code in front of your camera and ensure the QR code is within the camera frame to initiate verification.'
+        },
+        {
+            label: 'View result',
+            description: 'View the verification result.'
+        }
+    ],
+    UPLOAD: [
+        {
+            label: 'Upload QR Code',
+            description: 'Upload a file that contains a QR code',
+        },
+        {
+            label: 'Verify document',
+            description: 'Verification for the document or card is in progress.',
+        },
+        {
+            label: 'View result',
+            description: 'View the verification result.'
+        }
+    ]
+};
 
-export const UploadMethodSteps = {
-    UploadQrCodePrompt: 1,
-    Verifying: 2,
-    DisplayResult: 3
-}
 
 export const AlertMessages = {
     qrUploadSuccess: {message: "QR code uploaded successfully!", severity: "success", autoHideDuration: 1200} as AlertInfo,
@@ -47,23 +70,3 @@ export const UploadFileSizeLimits = {
     min: 10000, // 10KB
     max: 5000000 // 5MB
 }
-
-
-export const VerificationStepsContent: VerificationStep[] = [
-    {
-        label: 'Select \'Scan QR Code\' or \'Upload QR Code\'',
-        description: ['Tap \'Scan QR Code\' and scan to capture the QR code shown on your digital credentials/card.', 'Tap ‘Upload QR Code’ to upload the preferred file.'],
-    },
-    {
-        label: 'Activate your device’s camera',
-        description: 'Activate your device camera for scanning: A notification will be prompt to activate your device camera (Valid for ‘Scan QR Code’ feature only)',
-    },
-    {
-        label: 'Verify document',
-        description: 'Allow Inji Verify to verify & validate the digital document / card'
-    },
-    {
-        label: 'View result',
-        description: 'Check the validation result'
-    }
-];

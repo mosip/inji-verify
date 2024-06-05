@@ -46,14 +46,15 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
             <Fade>
                 <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg" style={style}>
                     <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto"/>
-                    <p className="font-bold  text-[20px] my-3 mx-auto">
+                    <p id="camera-access-denied" className="font-bold  text-[20px] my-3 mx-auto">
                         Camera Access Denied
                     </p>
-                    <p className="font-normal text-[16px]  text-[#707070] my-3 mx-auto">
+                    <p id="camera-access-denied-description" className="font-normal text-[16px]  text-[#707070] my-3 mx-auto">
                         We need your camera to scan the code. Go to your browser settings and allow camera access for
                         this website.
                     </p>
                     <StyledButton
+                        id="camer-access-denied-okay-button"
                         onClick={handleClose}
                         className="w-[180px] mx-auto my-[18px]"
                         data-testid="camera-access-denied-okay"
