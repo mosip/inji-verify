@@ -20,7 +20,7 @@ const AlertMessage = () => {
         if (alertInfo.open) {
             const timer = setTimeout(() => {
                 dispatch(closeAlert({}))
-            }, alertInfo.autoHideDuration ?? 3500);
+            }, alertInfo.autoHideDuration ?? 5000);
             return () => clearTimeout(timer);
         }
     }, [alertInfo]);

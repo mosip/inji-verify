@@ -51,6 +51,8 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
                         console.log(`File size: `, file?.size);
                         dispatch(goHomeScreen({}));
                         dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
+                        if (e?.target)
+                            e.target.value = ""; // clear the target to be able to read same file again
                         return;
                     }
                     dispatch(qrReadInit({method: "UPLOAD"}));
