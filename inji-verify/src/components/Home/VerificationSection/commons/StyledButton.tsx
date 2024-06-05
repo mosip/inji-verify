@@ -9,7 +9,7 @@ function StyledButton(props: StyledButtonProps) {
     return (
         <button
             {...props}
-            className={`inline-flex content-center justify-center border-2 border-primary py-[18px] px-7 ` +
+            className={`inline-flex content-center justify-center border-2 border-primary py-[12px] px-7 ` +
                 `rounded-[9999px] hover:bg-primary bg-[#FFFFFF] ` +
                 `hover:text-[#FFFFFF] text-primary ${props.className}`}
         >
@@ -20,7 +20,7 @@ function StyledButton(props: StyledButtonProps) {
                     </span>
                 )
             }
-            <span className="font-bold text-[16px] normal-case">
+            <span id={props.id} className="font-bold text-[16px] normal-case">
                 {props.children}
             </span>
         </button>

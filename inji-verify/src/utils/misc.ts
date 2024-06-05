@@ -1,5 +1,6 @@
 // match fot the occurrence of an uppercase letter
-import {VcStatus} from "../types/data-types";
+import {VcStatus, VerificationMethod} from "../types/data-types";
+import {VerificationStepsContent} from "./config";
 
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
 
@@ -26,10 +27,16 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
+export const getVerificationStepsCount = (method: VerificationMethod) => VerificationStepsContent[method].length;
+
+export const getRangeOfNumbers = (length: number): number[] => {
+    return Array.from(new Array(length), (x, i) => i + 1);
+}
+
 export const checkInternetStatus = async (): Promise<boolean> => {
     if (!window.navigator.onLine) return false;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1000);
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
     try {
         // Try making an api call if the window.navigator.onLine is true
         await fetch("https://dns.google/", {
@@ -52,3 +59,5 @@ export const checkInternetStatus = async (): Promise<boolean> => {
 export const navigateToOffline = () => {
     window.location.assign("/offline");
 }
+
+export const convertToId = (content: string) => content.toLowerCase().replaceAll(" ", "-");
