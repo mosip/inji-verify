@@ -40,7 +40,7 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
             <br/>
             <input
                 type="file"
-                id="upload-qr-input"
+                id="upload-qr"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg, .pdf"
                 className="mx-auto my-2 hidden h-0"
