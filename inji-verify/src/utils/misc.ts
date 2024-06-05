@@ -59,3 +59,5 @@ export const checkInternetStatus = async (): Promise<boolean> => {
 export const navigateToOffline = () => {
     window.location.assign("/offline");
 }
+
+export const convertToId = (content: string) => content.toLowerCase().replaceAll(" ", "-");

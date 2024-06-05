@@ -30,7 +30,7 @@ const AlertMessage = () => {
             <div
                 className={`fixed top-[80px] lg:top-[44px] right-4 lg:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
                 <div className="flex items-center">
-                    <p>
+                    <p id="alert-message">
                         {alertInfo.message}
                     </p>
                     <div className="pl-4 cursor-pointer" onClick={handleClose}>
