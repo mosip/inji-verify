@@ -24,7 +24,7 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
                 <span className="inline-grid mr-1.5">
                     <UploadIcon className="fill-inherit"/>
                 </span>
-                <span className="inline-grid">
+                <span id="upload-qr-code-button" className="inline-grid">
                     {displayMessage}
                 </span>
             </span>
@@ -40,7 +40,7 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
             <br/>
             <input
                 type="file"
-                id="upload-qr"
+                id="upload-qr-input"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg, .pdf"
                 className="mx-auto my-2 hidden h-0"

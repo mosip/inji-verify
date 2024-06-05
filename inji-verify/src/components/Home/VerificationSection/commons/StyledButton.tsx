@@ -20,7 +20,7 @@ function StyledButton(props: StyledButtonProps) {
                     </span>
                 )
             }
-            <span className="font-bold text-[16px] normal-case">
+            <span id={props.id} className="font-bold text-[16px] normal-case">
                 {props.children}
             </span>
         </button>

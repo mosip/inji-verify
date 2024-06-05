@@ -28,7 +28,7 @@ const ResultSummary = ({status}: {
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
                     </div>
                     <div className="col-start-1 col-end-13">
-                        <p className="font-normal text-[16px] text-center">
+                        <p id="vc-result-display-message" className="font-normal text-[16px] text-center">
                             {
                                 displayMessageMapping[status]
                             }

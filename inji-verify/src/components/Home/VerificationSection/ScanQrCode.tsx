@@ -27,6 +27,7 @@ const ScanQrCode = () => {
                     </div>
                     {
                         method === "SCAN" ? (<StyledButton
+                            id="scan-button"
                             icon={<TabScanFillIcon className="fill-inherit"/>}
                             className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#ff7f00] hover:fill-white'
                             fill={false}
@@ -41,7 +42,7 @@ const ScanQrCode = () => {
                     }
                 </div>
                 {method === "UPLOAD" && (<div className="grid text-center content-center justify-center pt-2">
-                    <p className="font-normal text-[14px] text-[#8E8E8E] w-[280px]">
+                    <p id="file-format-constraints" className="font-normal text-[14px] text-[#8E8E8E] w-[280px]">
                         Allowed file formats: PNG/JPEG/JPG/PDF <br/>Min Size : 10KB | Max Size : 5MB
                     </p>
                 </div>)}

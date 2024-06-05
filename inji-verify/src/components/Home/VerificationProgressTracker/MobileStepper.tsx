@@ -1,7 +1,7 @@
 import React from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {VerificationStepsContent} from "../../../utils/config";
-import {getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
+import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
@@ -21,7 +21,11 @@ function MobileStepper(props: any) {
     const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
 
     const stepCount = getVerificationStepsCount(method);
-    const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`
+    const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
+
+    const heading = VerificationStepsContent[method][activeScreen - 1].label;
+    const description = VerificationStepsContent[method][activeScreen - 1].description;
+
     return (
         <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
             <div className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
@@ -37,11 +41,11 @@ function MobileStepper(props: any) {
                 }
             </div>
             <div className="col-start-1 col-end-13 text-center">
-                <p className="font-bold my-1">
-                    {VerificationStepsContent[method][activeScreen - 1].label}
+                <p id={convertToId(heading)} className="font-bold my-1">
+                    {heading}
                 </p>
-                <p className="text-[#535353] text-[14px]">
-                    {VerificationStepsContent[method][activeScreen - 1].description}
+                <p id={`${convertToId(heading)}-description`} className="text-[#535353] text-[14px]">
+                    {description}
                 </p>
             </div>
         </div>
