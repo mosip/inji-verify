@@ -1,4 +1,4 @@
-import {AlertInfo, VerificationStep} from "../types/data-types";
+import {AlertInfo} from "../types/data-types";
 
 export const SUPPORTED_DID_METHODS = ["web"];
 
@@ -26,12 +26,12 @@ export const VerificationStepsContent: any = {
             description: 'Tap "Scan" to start scanning the document or card with a QR code',
         },
         {
-            label: 'Activate your device camera',
-            description: 'A notification will be prompt to activate your device camera',
+            label: 'Activate Camera and Position QR Code',
+            description: 'Activate your device camera and hold the QR code within the frame to initiate verification.',
         },
         {
-            label: 'Position QR Code',
-            description: 'Hold up the document or card with the QR code in front of your camera and ensure the QR code is within the camera frame to initiate verification.'
+            label: 'Verification in Progress',
+            description: 'The QR code verification is in progress.'
         },
         {
             label: 'View result',
@@ -60,7 +60,7 @@ export const AlertMessages = {
     sessionExpired: {message: "The scan session has expired due to inactivity. Please initiate a new scan.", severity: "error"} as AlertInfo,
     qrNotDetected: {message: "No MultiFormat Readers were able to detect the QR code.", severity: "error"} as AlertInfo,
     qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
-    unsupportedFileSize: {message: "QR code size is not supported. Please use a QR code within the specified dimensions.", severity: "error"} as AlertInfo,
+    unsupportedFileSize: {message: "File size not supported. The file size should be between 10 KB and 5 MB.", severity: "error"} as AlertInfo,
     verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
 };
 

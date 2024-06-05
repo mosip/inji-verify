@@ -40,7 +40,7 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
             <br/>
             <input
                 type="file"
-                id="upload-qr-input"
+                id="upload-qr"
                 name="upload-qr"
                 accept=".png, .jpeg, .jpg, .pdf"
                 className="mx-auto my-2 hidden h-0"
@@ -51,6 +51,8 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
                         console.log(`File size: `, file?.size);
                         dispatch(goHomeScreen({}));
                         dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
+                        if (e?.target)
+                            e.target.value = ""; // clear the target to be able to read same file again
                         return;
                     }
                     dispatch(qrReadInit({method: "UPLOAD"}));

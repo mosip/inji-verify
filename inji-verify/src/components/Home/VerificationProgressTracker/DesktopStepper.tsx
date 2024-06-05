@@ -10,7 +10,7 @@ function DesktopStepper() {
     }));
     const steps = VerificationStepsContent[method];
     const isLastStep = (index: number) => steps.length -1 === index;
-    const isStepCompleted = (index: number) => activeScreen >= index;
+    const isStepCompleted = (index: number) => activeScreen > index;
 
     return (
         <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
