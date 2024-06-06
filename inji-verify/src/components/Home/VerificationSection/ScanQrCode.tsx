@@ -7,6 +7,7 @@ import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
+import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
 
 const ScanQrCode = () => {
     const dispatch = useAppDispatch();
@@ -31,7 +32,15 @@ const ScanQrCode = () => {
                             icon={<TabScanFillIcon className="fill-inherit"/>}
                             className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#ff7f00] hover:fill-white'
                             fill={false}
-                            onClick={() => dispatch(qrReadInit({method}))}>
+                            onClick={async (event) => {
+                                let isOnline = await checkInternetStatus();
+                                console.log({isOnline})
+                                if (!isOnline) {
+                                    event.preventDefault();
+                                    navigateToOffline();
+                                }
+                                dispatch(qrReadInit({method}))
+                            }}>
                             Scan
                         </StyledButton>) : (
                             <UploadQrCode
