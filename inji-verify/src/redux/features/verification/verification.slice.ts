@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {ApplicationState} from "../../../types/data-types";
+import {VerificationState} from "../../../types/data-types";
 import {VerificationSteps} from "../../../utils/config";
 
-export const PreloadedState: ApplicationState = {
+export const PreloadedState: VerificationState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
     method: "UPLOAD",
