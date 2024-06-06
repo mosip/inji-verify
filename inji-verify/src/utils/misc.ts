@@ -36,7 +36,10 @@ export const getRangeOfNumbers = (length: number): number[] => {
 export const checkInternetStatus = async (): Promise<boolean> => {
     if (!window.navigator.onLine) return false;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    const timeoutId = setTimeout(() => {
+        console.log("Timed out while checking for internet connectivity");
+        controller.abort()
+    }, 2500);
     try {
         // Try making an api call if the window.navigator.onLine is true
         await fetch("https://dns.google/", {
@@ -50,6 +53,7 @@ export const checkInternetStatus = async (): Promise<boolean> => {
         }); // Use a reliable external endpoint
         return true;
     } catch (error) {
+        console.log("Error occurred while checking for internet connectivity: ", error);
         return false; // Network request failed, assume offline
     } finally {
         clearTimeout(timeoutId);
