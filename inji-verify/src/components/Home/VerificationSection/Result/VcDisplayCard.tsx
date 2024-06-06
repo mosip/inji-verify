@@ -1,48 +1,43 @@
 import React from 'react';
-import {Box, Grid, Typography} from '@mui/material';
-import {convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
+import {convertToId, convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
-import {SAMPLE_VERIFIABLE_CREDENTIAL} from "../../../../utils/samples";
-import {SetActiveStepFunction} from "../../../../types/function-types";
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import {VerificationSteps} from "../../../../utils/config";
-import {VcDisplay, VcProperty, VcPropertyKey, VcPropertyValue, VcVerificationFailedContainer} from "./styles";
+import {ReactComponent as DocumentIcon} from '../../../../assets/document.svg';
+import {useAppDispatch} from "../../../../redux/hooks";
+import {goHomeScreen} from "../../../../redux/features/verification/verification.slice";
 
-function VcDisplayCard({vc, setActiveStep}: {vc: any, setActiveStep: SetActiveStepFunction}) {
+function VcDisplayCard({vc}: {vc: any}) {
+    const dispatch = useAppDispatch();
     return (
-        <Box style={{paddingBottom: 60}}>
-            <VcDisplay container>
+        <div>
+            <div className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}>
                 {
                     vc ? Object.keys(vc.credentialSubject)
                         .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
-                        .map(key => (
-                            <VcProperty item xs={12} lg={6} key={key}>
-                                <VcPropertyKey>
+                        .map((key, index) => (
+                            <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "lg:col-start-1 lg:col-end-6" : "lg:col-start-8 lg:col-end-13"}`} key={key}>
+                                <p id={convertToId(key)} className="font-normal  text-[11px]">
                                     {convertToTitleCase(key)}
-                                </VcPropertyKey>
-                                <VcPropertyValue>
+                                </p>
+                                <p id={`${convertToId(key)}-value`} className="font-bold text-[12px] ">
                                     {getDisplayValue(vc.credentialSubject[key])}
-                                </VcPropertyValue>
-                            </VcProperty>
+                                </p>
+                            </div>
                         ))
                         : (
-                            <VcVerificationFailedContainer>
-                                <DescriptionOutlinedIcon fontSize={"inherit"} color={"inherit"}/>
-                            </VcVerificationFailedContainer>
+                            <div className="grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10">
+                                <DocumentIcon/>
+                            </div>
                         )
                 }
-            </VcDisplay>
-            <Box style={{
-                display: 'grid',
-                placeContent: 'center'
-            }}>
-                <StyledButton style={{margin: "24px auto"}} onClick={() => {
-                    setActiveStep(VerificationSteps.ScanQrCodePrompt)
+            </div>
+            <div className="grid content-center justify-center">
+                <StyledButton id="verify-another-qr-code-button" className="mx-auto mt-6 mb-20 lg:mb-6" onClick={() => {
+                    dispatch(goHomeScreen({}))
                 }}>
-                    Verify QR Code
+                    Verify Another QR code
                 </StyledButton>
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 }
 

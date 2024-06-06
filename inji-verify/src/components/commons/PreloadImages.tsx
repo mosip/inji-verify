@@ -5,7 +5,7 @@ import React from 'react';
 const PreloadImages = ({ imageUrls }: {imageUrls: string[]}) => {
     return (
         <>
-            {imageUrls.map(url => (<img src={url} style={{display: "none"}} width={0}/>))}
+            {imageUrls.map(url => (<img src={url} className="hidden w-0"/>))}
         </>
     );
 };

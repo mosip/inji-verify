@@ -1,11 +1,9 @@
 import React from 'react';
-import {Box, CircularProgress} from "@mui/material";
 
 function Loader(props: any) {
     return (
-        <Box style={{color: "#FF7F00"}}>
-            <CircularProgress size={76} thickness={2} color={"inherit"}/>
-        </Box>
+        <div id="loader" className="w-[56px] lg:w-[76px] aspect-square rounded-[50%] border-[3px] border-l-primary border-t-primary animate-spin">
+        </div>
     );
 }
 

@@ -1,41 +1,42 @@
 import React from 'react';
-import {Box, Grid, Typography, useMediaQuery} from "@mui/material";
 import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
 import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
-import {SetActiveStepFunction} from "../../../../types/function-types";
-import {ResultIconContainer, ResultSummaryComponent} from "./styles";
+import {ReactComponent as VerificationSuccessMobileIcon} from "../../../../assets/verification-success-icon-mobile.svg";
+import {ReactComponent as VerificationFailedMobileIcon} from "../../../../assets/verification-failed-icon-mobile.svg";
 
-const ResultSummary = ({success, isMobile}: {
-    success: boolean,
-    isMobile: boolean
+const backgroundColorMapping: any = {
+    EXPIRED: "bg-[#BF7A1C]",
+    INVALID: "bg-[#D73E3E]",
+    SUCCESS: "bg-[#4B9D1F]"
+}
+
+const displayMessageMapping = {
+    EXPIRED: "Unfortunately, the given credential is expired!",
+    INVALID: "Unfortunately, the given credential is invalid!",
+    SUCCESS: "Congratulations, the given credential is valid!"
+}
+
+const ResultSummary = ({status}: {
+    status: "SUCCESS" | "EXPIRED" | "INVALID"
 }) => {
+    const backgroundColor = backgroundColorMapping[status]
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <ResultSummaryComponent container gap={1}>
-                    <Grid item xs={3} sm={2} md={12}>
-                        <ResultIconContainer style={{
-                            color: success ? "#4B9D1F": "#CB4242"
-                        }}>
-                            {success ? <VerificationSuccessIcon/> : <VerificationFailedIcon/>}
-                        </ResultIconContainer>
-                    </Grid>
-                    <Grid item xs={8} sm={9} md={12}>
-                        <Typography style={{
-                            font: "normal normal bold 20px/24px Inter",
-                            margin: "7px auto"
-                        }}>
-                            Results
-                        </Typography>
-                        <Typography style={{font: "normal normal normal 16px/20px Inter"}}>
-                            {success
-                                ? "Congratulations, the given credential is valid!"
-                                : "Unfortunately, the given credential is invalid!"}
-                        </Typography>
-                    </Grid>
-                </ResultSummaryComponent>
-            </Grid>
-        </Grid>
+        <div className="grid grid-cols-12 w-full">
+            <div className={`col-start-1 col-end-13 h-[170px] lg:h-[186px] w-full ${backgroundColor}`}>
+                <div className="grid grid-cols-12 justify-items-center items-center justify-center content-center pt-[30px]">
+                    <div className="col-start-1 col-end-13 block mb-2.5">
+                        {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
+                    </div>
+                    <div className="col-start-1 col-end-13">
+                        <p id="vc-result-display-message" className="font-normal text-[16px] text-center">
+                            {
+                                displayMessageMapping[status]
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
 

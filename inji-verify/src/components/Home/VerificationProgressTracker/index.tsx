@@ -1,16 +1,13 @@
 import React from 'react';
-import StepperContentHeader from "./StepperContentHeader";
-import InjiStepper from "./InjiStepper";
-import Navbar from "./Navbar";
-import {VerificationProgressTrackerContainer} from "./styles";
+import DesktopStepper from "./DesktopStepper";
+import MobileStepper from "./MobileStepper";
 
 function VerificationProgressTracker() {
     return (
-        <VerificationProgressTrackerContainer>
-            <Navbar/>
-            <StepperContentHeader/>
-            <InjiStepper/>
-        </VerificationProgressTrackerContainer>
+        <div className="bg-white lg:bg-[#FAFBFD] bg-no-repeat">
+            <DesktopStepper/>
+            <MobileStepper/>
+        </div>
     );
 }
 

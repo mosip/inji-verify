@@ -1,28 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {Box, useMediaQuery} from "@mui/material";
-import {CardPositioning, VcStatus} from "../../../../types/data-types";
-import {SetActiveStepFunction} from "../../../../types/function-types";
-import {ResultsSummaryContainer, VcDisplayCardContainer} from "./styles";
+import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
+import {VcStatus} from "../../../../types/data-types";
 
-const Result = ({vc, setActiveStep, vcStatus}: {
-    vc: any, setActiveStep: SetActiveStepFunction, vcStatus: VcStatus | null
-}) => {
-    const resultSectionRef = React.createRef<HTMLDivElement>();
-    const isMobile = useMediaQuery("@media (max-width: 900px)");
+const getVcStatusValue = (vcStatus?: VcStatus): "SUCCESS" | "INVALID" | "EXPIRED" => {
+    if (vcStatus?.status === "OK") {
+        return "SUCCESS";
+    }
+    if (vcStatus?.checks && vcStatus?.checks.length === 1) {
+        return vcStatus?.checks[0].expired === "OK" ? "INVALID" : "EXPIRED"
+    }
+    return "INVALID";
+}
 
-    let success = vcStatus?.status === "OK";
+const Result = () => {
+    const {vc, vcStatus} = useVerificationFlowSelector(state => state.verificationResult ?? {vc: null, vcStatus: null})
+    const status = getVcStatusValue(vcStatus);
+
     // validate vc and show success/failure component
     return (
-        <Box id="result-section" ref={resultSectionRef}>
-            <ResultsSummaryContainer success={success} isMobile={isMobile}>
-                <ResultSummary success={success} isMobile={isMobile}/>
-            </ResultsSummaryContainer>
-            <VcDisplayCardContainer style={{position: !isMobile ? "absolute" : "static"}}>
-                <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
-            </VcDisplayCardContainer>
-        </Box>
+        <div id="result-section" className="relative">
+            <div className={`text-white`}>
+                <ResultSummary status={status}/>
+            </div>
+            <div
+                className={`absolute m-auto`}
+                style={{
+                    top: `106px`,
+                    right: window.innerWidth >= 1024 ? `calc((50vw - 340px) / 2)` : `calc((100vw - 340px) / 2)`
+                }}>
+                <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
+            </div>
+        </div>
     );
 }
 

@@ -1,9 +1,10 @@
 export type QrScanResult = {
     data: string | null,
-    error: string | null
+    error: string | null,
+    status: QrReadStatus
 }
 
-export type ScanStatus = "Success" | "NotScanned" | "Failed";
+export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = {
     status: "OK" | "NOK" | "Verifying";
@@ -34,4 +35,36 @@ export type AlertInfo = {
     severity?: AlertSeverity,
     open?: boolean,
     autoHideDuration?: number
+}
+
+export type ApplicationActionType = 'TRIGGER_QR_READ' | 'QR_READ_COMPLETE' | 'TRIGGER_VERIFICATION' | 'VERIFICATION_COMPLETE' | 'GO_HOME_SCREEN' | 'RAISE_ALERT';
+
+export type VerificationMethod = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
+
+export type ApplicationAction = {
+    type: ApplicationActionType,
+    payload?: ApplicationState
+}
+
+export type ApplicationState = {
+    method: VerificationMethod,
+    activeScreen: number, // Verification steps
+    qrReadResult?: QrReadResult | undefined,
+    verificationResult?: VerificationResult,
+    alert?: AlertInfo
+}
+
+export type QrReadResult = {
+    alert?: AlertInfo,
+    qrData?: string,
+    status: QrReadStatus
+}
+
+export type VerificationTrigger = {
+
+}
+
+export type VerificationResult = {
+    vc?: any,
+    vcStatus?: VcStatus
 }

@@ -1,17 +1,12 @@
 import React from 'react';
-import {Box} from "@mui/material";
 import SomethingWentWrong from "../components/SomethingWentWrong";
 
 function Offline(props: any) {
     return (
-        <Box style={{
-            padding: '46px 80px',
-            background: '#FAFBFD 0% 0% no-repeat padding-box',
-            height: '100%'
-        }}>
-            <img src={'/assets/images/inji_verify.svg'}/>
+        <div className="py-[46px] px-[15px] lg:px-[80px] bg-[#FAFBFD] bg-no-repeat h-[100%]">
+            <img id="inji-verify-logo" src='/assets/images/inji_verify.svg' alt="inji-verify-logo"/>
             <SomethingWentWrong/>
-        </Box>
+        </div>
     );
 }
 

@@ -1,106 +1,53 @@
-import React, {useState} from 'react';
-import {Box, Grid, Typography, useMediaQuery} from "@mui/material";
+import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
-import qr from "../../../assets/qr-icon.png";
-import {ReactComponent as TabScanIcon} from "../../../assets/tab-scan.svg";
+import qrIcon from "../../../assets/qr-code-icon.svg";
+import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
-import {useActiveStepContext, useAlertMessages} from "../../../pages/Home";
-import {SetScanResultFunction} from "../../../types/function-types";
-import {QrScanResult, ScanStatus} from "../../../types/data-types";
-import {AlertMessages, VerificationSteps} from "../../../utils/config";
-import {useNavigate} from "react-router-dom";
-import {ScanQrCodeContainer} from "./styles";
+import {useAppDispatch} from "../../../redux/hooks";
+import {qrReadInit} from "../../../redux/features/verification/verification.slice";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 
-const ScanQrCode = ({setScanResult}: {
-    setScanResult: SetScanResultFunction
-}) => {
-    const {setActiveStep} = useActiveStepContext();
-    const {setAlertInfo} = useAlertMessages();
-    const [scanStatus, setScanStatus] = useState("NotScanned" as ScanStatus);
-
-    const navigate = useNavigate();
-    const isTabletOrAbove = useMediaQuery("@media (min-width: 768px)");
-
-    function checkScanResult(scanResult: QrScanResult) {
-        let alertInfo = !!scanResult.data ? AlertMessages.qrUploadSuccess: AlertMessages.qrNotDetected;
-        setAlertInfo({
-            ...alertInfo,
-            open: true
-        });
-        setScanResult(scanResult);
-    }
+const ScanQrCode = () => {
+    const dispatch = useAppDispatch();
+    const {method} = useVerificationFlowSelector(state => ({scanStatus: state.qrReadResult?.status, method: state.method}));
 
     return (
-        <ScanQrCodeContainer container>
-            <Grid item xs={12} style={{
-                font: 'normal normal 600 20px/24px Inter',
-                marginBottom: isTabletOrAbove ? "44px" : "10px"
-            }} order={0}>
-                <Typography style={{font: 'normal normal 600 20px/24px Inter', padding: '3px 0'}}>
-                    Scan QR Code or Upload an Image
-                </Typography>
-                <Typography style={{font: 'normal normal normal 16px/20px Inter', padding: '3px 0', color: '#717171'}}>
-                    Please keep the QR code in the centre & clearly visible.
-                </Typography>
-            </Grid>
-            <Grid item xs={12} order={1}>
-                <Box
-                    style={{
-                        backgroundImage: `url(${scanQr})`,
-                        backgroundSize: 'cover',
-                        display: 'grid',
-                        placeContent: 'center',
-                        width: 'calc(min(45vw, 350px))',
-                        height: 'calc(min(45vw, 350px))',
-                        margin: '16px auto'
-                    }}
-                >
-                    <div style={{
-                        background: 'rgb(255, 127, 0, 0.1)',
-                        borderRadius: '12px',
-                        width: 'calc(min(42vw, 320px))',
-                        height: 'calc(min(42vw, 320px))',
-                        display: 'grid',
-                        placeContent: 'center'
-                    }}>
-                        <img src={qr} style={{width: "100px"}}/>
+        <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
+            <div className="xs:col-end-13">
+                <div
+                    className={`relative grid content-center justify-center w-[275px] lg:w-[350px] aspect-square my-1.5 mx-auto bg-cover`}
+                    style={{backgroundImage: `url(${scanQr})`}}>
+                    <div
+                        className="grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
                     </div>
-                </Box>
-            </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 2 : 3}>
-                <UploadQrCode
-                    setScanResult={checkScanResult}
-                    setScanStatus={setScanStatus}
-                    displayMessage={scanStatus === "Failed" ? "Upload Another QR Code" : "Upload QR Code"}/>
-            </Grid>
-            <Grid item xs={12} order={scanStatus === "Failed" ? 3 : 2}>
-                <StyledButton
-                    icon={<TabScanIcon/>}
-                    style={{margin: "6px 0", width: "350px", textAlign: 'center'}}
-                    fill
-                    onClick={() => {
-                        if (!window.navigator.onLine) {
-                            navigate('/offline');
-                        }
-                        else {
-                            setActiveStep(VerificationSteps.ActivateCamera)
-                        }
-                    }}
-                >
-                    Scan QR Code
-                </StyledButton>
-            </Grid>
-            {
-                scanStatus !== "Failed" && (
-                    <Grid item xs={12} style={{textAlign: 'center', display: 'grid', placeContent: 'center'}} order={4}>
-                        <Typography style={{font: "normal normal normal 14px/17px Inter", color: "#8E8E8E", width: "280px"}}>
-                            Allowed file formats: PNG/JPEG/JPG <br/>Min Size : 10KB | Max Size : 5MB
-                        </Typography>
-                    </Grid>
-                )
-            }
-        </ScanQrCodeContainer>
+                    <div
+                        className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
+                        <img src={qrIcon} className="w-[78px] lg:w-[100px]"/>
+                    </div>
+                    {
+                        method === "SCAN" ? (<StyledButton
+                            id="scan-button"
+                            icon={<TabScanFillIcon className="fill-inherit"/>}
+                            className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#ff7f00] hover:fill-white'
+                            fill={false}
+                            onClick={() => dispatch(qrReadInit({method}))}>
+                            Scan
+                        </StyledButton>) : (
+                            <UploadQrCode
+                                className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
+                                displayMessage="Upload"
+                            />
+                        )
+                    }
+                </div>
+                {method === "UPLOAD" && (<div className="grid text-center content-center justify-center pt-2">
+                    <p id="file-format-constraints" className="font-normal text-[14px] text-[#8E8E8E] w-[280px]">
+                        Allowed file formats: PNG/JPEG/JPG/PDF <br/>Min Size : 10KB | Max Size : 5MB
+                    </p>
+                </div>)}
+            </div>
+        </div>
     );
 }
 
