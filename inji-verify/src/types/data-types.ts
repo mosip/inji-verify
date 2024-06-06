@@ -37,16 +37,15 @@ export type AlertInfo = {
     autoHideDuration?: number
 }
 
-export type ApplicationActionType = 'TRIGGER_QR_READ' | 'QR_READ_COMPLETE' | 'TRIGGER_VERIFICATION' | 'VERIFICATION_COMPLETE' | 'GO_HOME_SCREEN' | 'RAISE_ALERT';
-
 export type VerificationMethod = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
 
-export type ApplicationAction = {
-    type: ApplicationActionType,
-    payload?: ApplicationState
-}
+export type InternetConnectionStatus = "ONLINE" | "OFFLINE" | "LOADING";
 
 export type ApplicationState = {
+    internetConnectionStatus: InternetConnectionStatus
+}
+
+export type VerificationState = {
     method: VerificationMethod,
     activeScreen: number, // Verification steps
     qrReadResult?: QrReadResult | undefined,
