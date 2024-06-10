@@ -1,5 +1,5 @@
 // match fot the occurrence of an uppercase letter
-import {VcStatus, VerificationMethod} from "../types/data-types";
+import {VerificationMethod} from "../types/data-types";
 import {VerificationStepsContent} from "./config";
 
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
