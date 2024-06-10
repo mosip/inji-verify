@@ -1,6 +1,6 @@
 // match fot the occurrence of an uppercase letter
 import {VerificationMethod} from "../types/data-types";
-import {ReliableEndpoints, VerificationStepsContent} from "./config";
+import {InternetConnectivityCheckTimeout, ReliableEndpoints, VerificationStepsContent} from "./config";
 
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
 
@@ -39,7 +39,7 @@ export const checkInternetStatus = async (retry?: boolean): Promise<boolean> => 
     const timeoutId = setTimeout(() => {
         console.log("Timed out while checking for internet connectivity");
         controller.abort()
-    }, 3000);
+    }, InternetConnectivityCheckTimeout);
     try {
         const endpoint = retry ? ReliableEndpoints[1] : ReliableEndpoints[0];
         // Try making an api call if the window.navigator.onLine is true

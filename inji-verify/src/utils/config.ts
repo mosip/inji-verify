@@ -75,3 +75,5 @@ export const ReliableEndpoints = [
     "https://dns.google/",
     "https://www.cloudflare.com/"
 ]
+
+export const InternetConnectivityCheckTimeout = 5000; //milliseconds
