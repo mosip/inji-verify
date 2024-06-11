@@ -71,9 +71,6 @@ export const UploadFileSizeLimits = {
     max: 5000000 // 5MB
 }
 
-export const ReliableEndpoints = [
-    "https://dns.google/",
-    "https://www.cloudflare.com/"
-]
+export const InternetConnectivityCheckEndpoint = "https://dns.google/";
 
-export const InternetConnectivityCheckTimeout = 5000; //milliseconds
+export const InternetConnectivityCheckTimeout = 10000; //milliseconds
