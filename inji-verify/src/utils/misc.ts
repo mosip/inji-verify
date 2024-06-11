@@ -1,6 +1,10 @@
 // match fot the occurrence of an uppercase letter
 import {VerificationMethod} from "../types/data-types";
-import {InternetConnectivityCheckTimeout, ReliableEndpoints, VerificationStepsContent} from "./config";
+import {
+    InternetConnectivityCheckTimeout,
+    InternetConnectivityCheckEndpoint,
+    VerificationStepsContent
+} from "./config";
 
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
 
@@ -33,7 +37,7 @@ export const getRangeOfNumbers = (length: number): number[] => {
     return Array.from(new Array(length), (x, i) => i + 1);
 }
 
-export const checkInternetStatus = async (retry?: boolean): Promise<boolean> => {
+export const checkInternetStatus = async (): Promise<boolean> => {
     if (!window.navigator.onLine) return false;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
@@ -41,9 +45,8 @@ export const checkInternetStatus = async (retry?: boolean): Promise<boolean> => 
         controller.abort()
     }, InternetConnectivityCheckTimeout);
     try {
-        const endpoint = retry ? ReliableEndpoints[1] : ReliableEndpoints[0];
         // Try making an api call if the window.navigator.onLine is true
-        await fetch(endpoint, {
+        await fetch(InternetConnectivityCheckEndpoint, {
             method: 'HEAD',
             mode: 'no-cors',
             cache: 'no-cache',
@@ -55,7 +58,7 @@ export const checkInternetStatus = async (retry?: boolean): Promise<boolean> => 
         return true;
     } catch (error) {
         console.log("Error occurred while checking for internet connectivity: ", error);
-        return !retry ? checkInternetStatus(true) : false; // Network request failed, assume offline
+        return false; // Network request failed, assume offline
     } finally {
         clearTimeout(timeoutId);
     }
