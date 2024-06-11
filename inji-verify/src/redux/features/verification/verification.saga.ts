@@ -5,8 +5,8 @@ import { AlertMessages } from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
-import {navigateToOffline} from "../../../utils/misc";
 import {select} from "redux-saga-test-plan/matchers";
+import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
 
 function* handleVerification(qrData: string) {
     try {
@@ -25,14 +25,14 @@ function* verifyVC(vc: any) {
         const status: VcStatus = yield call(verify, vc);
         console.log("VC Status [logging in saga]: ", status);
         if (status?.checks?.length >= 0 && status?.checks[0].proof === "NOK" && !onLine) {
-            yield call(navigateToOffline);
+            yield put(updateInternetConnectionStatus({internetConnectionStatus: "OFFLINE"}));
         }
         yield put(verificationComplete({ verificationResult: { vc, vcStatus: status } }));
         yield put(closeAlert({}));
     } catch (error) {
         console.error("Error occurred while verifying the VC: ", error);
         if (!onLine) {
-            yield call(navigateToOffline);
+            yield put(updateInternetConnectionStatus({internetConnectionStatus: "OFFLINE"}));
             return;
         }
         yield put(verificationComplete({
