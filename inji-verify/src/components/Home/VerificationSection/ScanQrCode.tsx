@@ -7,7 +7,7 @@ import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
-import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
+import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
 
 const Scan = () => {
@@ -58,7 +58,7 @@ const ScanQrCode = () => {
                     </div>
                     <div
                         className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
-                        <img src={qrIcon} className="w-[78px] lg:w-[100px]"/>
+                        <img src={qrIcon} className="w-[78px] lg:w-[100px]" alt="qr-icon"/>
                     </div>
                     {
                         method === "SCAN"
