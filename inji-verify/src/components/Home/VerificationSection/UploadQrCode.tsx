@@ -4,7 +4,7 @@ import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
-import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
+import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
