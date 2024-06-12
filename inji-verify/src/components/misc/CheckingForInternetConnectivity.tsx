@@ -10,7 +10,7 @@ function CheckingForInternetConnectivity(props: any) {
         if (internetStatus === "OFFLINE") {
             navigate("/offline");
         }
-    }, [internetStatus]);
+    }, [internetStatus, navigate]);
     return internetStatus === "LOADING" ? (
         <LoaderWithBackdrop/>
     ) : <></>;
