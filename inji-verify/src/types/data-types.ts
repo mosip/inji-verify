@@ -39,7 +39,7 @@ export type AlertInfo = {
 
 export type VerificationMethod = 'SCAN' | 'UPLOAD' | "TO_BE_SELECTED";
 
-export type InternetConnectionStatus = "ONLINE" | "OFFLINE" | "LOADING";
+export type InternetConnectionStatus = "ONLINE" | "OFFLINE" | "LOADING" | "UNKNOWN";
 
 export type ApplicationState = {
     internetConnectionStatus: InternetConnectionStatus
