@@ -5,7 +5,8 @@ import { AlertMessages } from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
-import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
+import {navigateToOffline} from "../../../utils/misc";
+import {select} from "redux-saga-test-plan/matchers";
 
 function* handleVerification(qrData: string) {
     try {
@@ -19,7 +20,7 @@ function* handleVerification(qrData: string) {
 }
 
 function* verifyVC(vc: any) {
-    const onLine: boolean = yield call(checkInternetStatus);
+    const onLine: boolean = yield select((state: any) => state.appState.internetConnectionStatus);
     try {
         const status: VcStatus = yield call(verify, vc);
         console.log("VC Status [logging in saga]: ", status);

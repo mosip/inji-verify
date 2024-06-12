@@ -70,3 +70,7 @@ export const UploadFileSizeLimits = {
     min: 10000, // 10KB
     max: 5000000 // 5MB
 }
+
+export const InternetConnectivityCheckEndpoint = "https://dns.google/";
+
+export const InternetConnectivityCheckTimeout = 10000; //milliseconds
