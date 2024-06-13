@@ -13,6 +13,7 @@ on:
       - 1.*
       - develop
       - MOSIP*
+      - injiver-278-sonar-analysis-build-issues
 
 jobs:
   build-dockers-inji-verify:
@@ -35,13 +36,15 @@ jobs:
 
   sonar-analysis-inji-verify:
     if: "${{  github.event_name != 'pull_request' }}"
-    needs: build-dockers-inji-verify
-    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master
+#    needs: build-dockers-inji-verify
+#    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master
+    uses: shiva-beehyv/inji-verify/.github/workflows/npm-sonar-analysis.yml@injiver-278-sonar-analysis-build-issues
     with:
       SERVICE_LOCATION: ./inji-verify
       SONAR_URL: 'https://sonarcloud.io'
-      PROJECT_KEY: 'mosip_inji-verify'
+      PROJECT_KEY: 'shivakumar_inji-verify'
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       ORG_KEY: ${{ secrets.ORG_KEY }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
