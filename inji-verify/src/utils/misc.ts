@@ -37,6 +37,10 @@ export const getRangeOfNumbers = (length: number): number[] => {
     return Array.from(new Array(length), (x, i) => i + 1);
 }
 
+export const getFileExtension = (fileName: string) => fileName.slice(
+    ((fileName.lastIndexOf('.') - 1) >>> 0) + 2
+);
+
 export const checkInternetStatus = async (): Promise<boolean> => {
     if (!window.navigator.onLine) return false;
     const controller = new AbortController();

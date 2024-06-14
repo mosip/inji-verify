@@ -1,6 +1,4 @@
 import React from 'react';
-import {ReactComponent as VerificationSuccessIcon} from "../../../../assets/verification-success-icon.svg";
-import {ReactComponent as VerificationFailedIcon} from "../../../../assets/verification-failed-icon.svg";
 import {ReactComponent as VerificationSuccessMobileIcon} from "../../../../assets/verification-success-icon-mobile.svg";
 import {ReactComponent as VerificationFailedMobileIcon} from "../../../../assets/verification-failed-icon-mobile.svg";
 

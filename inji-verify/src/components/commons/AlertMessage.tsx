@@ -23,7 +23,7 @@ const AlertMessage = () => {
             }, alertInfo.autoHideDuration ?? 5000);
             return () => clearTimeout(timer);
         }
-    }, [alertInfo]);
+    }, [alertInfo, dispatch]);
 
     return (
         <>
