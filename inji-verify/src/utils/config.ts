@@ -74,6 +74,8 @@ export const UploadFileSizeLimits = {
     max: 5000000 // 5MB
 }
 
-export const InternetConnectivityCheckEndpoint = "https://dns.google/";
+export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIVITY_CHECK_ENDPOINT ?? "https://dns.google/";
 
-export const InternetConnectivityCheckTimeout = 10000; //milliseconds
+export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT))
+    ? 10000
+    : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds

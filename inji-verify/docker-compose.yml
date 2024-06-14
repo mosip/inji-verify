@@ -5,3 +5,6 @@ services:
     image: mosipid/inji-verify:latest
     ports:
       - "80:80"
+    environment:
+      - INTERNET_CONNECTIVITY_CHECK_ENDPOINT=https://dns.google/
+      - INTERNET_CONNECTIVITY_CHECK_TIMEOUT=10000
