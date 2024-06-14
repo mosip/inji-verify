@@ -25,7 +25,7 @@ $ nvm install 18
 
 # Running the application:
 
-* Run following commands to start the application:
+### Run following commands to start the application:
 
 ```
 $ cd ./inji-verify
@@ -34,10 +34,17 @@ $ npm start
 ```
   
 
-- Build and run Docker for a service:
+### Build and run Docker for a service:
 ```
 $ docker build -t <dockerImageName>:<tag> .
 $ docker run -it -d -p 3000:3000 <dockerImageName>:<tag>
 ```
 
-- Open URL http://localhost:3000
+Once any of the above two methods are followed, open http://localhost:3000 to start using the Inji Verify application
+
+### Using Docker compose:
+```
+$ cd ./inji-verify
+$ docker-compose up -d
+```
+Once the docker compose command is run, open http://localhost to start using the Inji Verify application
