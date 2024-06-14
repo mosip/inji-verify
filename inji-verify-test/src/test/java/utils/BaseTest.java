@@ -1,8 +1,7 @@
 package utils;
 
-import org.json.JSONObject;
-
 import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
@@ -10,16 +9,11 @@ import com.microsoft.playwright.Playwright;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
-public class BaseTest {
-
+public class BaseTest{
+	
 	public static Playwright playwright;
 	public static Browser browser;
-
-	protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
-			: System.getProperty("env");
-
-	BaseTestUtil baseTestUtil = new BaseTestUtil();
-
+	
 	DriverManager driver;
 
 	public BaseTest(DriverManager driver) {
@@ -30,13 +24,16 @@ public class BaseTest {
 	public void setup() {
 		playwright = Playwright.create();
 		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-		Page page = browser.newPage();
+		
+        Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
+                .setPermissions(java.util.List.of("camera"));
+        BrowserContext context = browser.newContext(contextOptions);
+        
+		Page page = context.newPage();
 		driver.setPage(page);
-		JSONObject config = baseTestUtil.readConfig(BaseTest.class, ENVIRONMENT);
-		String url = config.getString("url");
-		driver.getPage().navigate(url);
+		driver.getPage().navigate("https://injiverify.qa-inji.mosip.net/");
 	}
-
+	
 	@After
 	public void tearDown() {
 		driver.getPage().close();
