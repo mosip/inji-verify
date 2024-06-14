@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  inji-verify:
+    image: mosipid/inji-verify:latest
+    ports:
+      - "80:80"
