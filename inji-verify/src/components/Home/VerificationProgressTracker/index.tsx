@@ -6,7 +6,7 @@ import {VerificationProgressTrackerContainer} from "./styles";
 
 function VerificationProgressTracker() {
     return (
-        <VerificationProgressTrackerContainer>
+        <VerificationProgressTrackerContainer id="inji-verify-progres-bar">
             <Navbar/>
             <StepperContentHeader/>
             <InjiStepper/>
@@ -15,3 +15,5 @@ function VerificationProgressTracker() {
 }
 
 export default VerificationProgressTracker;
+
+
