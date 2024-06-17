@@ -42,10 +42,10 @@ function QrScanner({setActiveStep, setQrData}: {
     return (
         <div ref={scannerRef}>
             <Scanner
-                onResult={(text, result) => {
-                    console.log(text, result);
+                onScan={(text, result) => { 
+                    console.log(text,text);
                     setActiveStep(VerificationSteps.Verifying);
-                    setQrData(text);
+                    setQrData(text[0]['rawValue']);
                 }}
                 onError={(error) => {
                     console.log('Clearing timeout - camera blocked');
