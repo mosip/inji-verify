@@ -43,7 +43,7 @@ const Result = ({vc, setActiveStep, vcStatus}: {
             <VcDisplayCardContainer
                 style={{position: "absolute"}}
                 cardPositioning={{top: vcDisplayCardPositioning.top, right: vcDisplayCardPositioning.right}}>
-                    <div id='inji-verify-card-container'>
+                    <div className='inji-verify-card-container'>
                        <VcDisplayCard vc={vc} setActiveStep={setActiveStep}/>
                     </div>
                
