@@ -18,6 +18,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "@yudiel/react-qr-scanner": "^2.0.0-beta.3",
+    "qr-scanner": "^1.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-scanner": "^1.0.0-alpha.11",
