@@ -28,7 +28,7 @@
   color: #61dafb;
 }
 @media only screen and (max-width: 600px) {
-  .css-18nuztf {
+  .inji-verify-progres-bar {
     height: 50vh !important;
     padding: 0 30px 0 30px !important;
   }
@@ -40,7 +40,7 @@
     justify-content: center;
     width: 100vw;
   }
-  .css-jhyofv {
+  .inji-verify-footer-container {
     width: 100% !important;
   }
   .inji-verify-footer-hr {
