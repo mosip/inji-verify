@@ -3,7 +3,7 @@
   <groupId>io.mosip.uiautomation</groupId>
   <artifactId>inji-verify-test</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cucumber.version>7.17.0</cucumber.version>
@@ -36,8 +36,15 @@
 			<artifactId>cucumber-picocontainer</artifactId>
 			<version>${cucumber.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240303</version>
+		</dependency>
+
 	</dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
