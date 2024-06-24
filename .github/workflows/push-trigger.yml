@@ -1,4 +1,3 @@
-
 name: inji-verify build upon a push
 
 on:
@@ -14,36 +13,35 @@ on:
       - 1.*
       - develop
       - MOSIP*
-      - injiver-278-sonar-analysis-build-issues
 
 jobs:
-  #  build-dockers-inji-verify:
-  #    strategy:
-  #      matrix:
-  #        include:
-  #          - SERVICE_LOCATION: "inji-verify"
-  #            SERVICE_NAME: "inji-verify"
-  #      fail-fast: false
-  #    name: ${{ matrix.SERVICE_NAME }}
-  #    uses: mosip/kattu/.github/workflows/docker-build.yml@master
-  #    with:
-  #      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
-  #      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
-  #    secrets:
-  #      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
-  #      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
-  #      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
-  #      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-dockers-inji-verify:
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: "inji-verify"
+            SERVICE_NAME: "inji-verify"
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   sonar-analysis-inji-verify:
     if: "${{  github.event_name != 'pull_request' }}"
-    #    needs: build-dockers-inji-verify
-    uses: shiva-beehyv/inji-verify/.github/workflows/npm-sonar-analysis.yml@injiver-278-sonar-analysis-build-issues
+    needs: build-dockers-inji-verify
+    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
       SERVICE_LOCATION: ./inji-verify
       SONAR_URL: 'https://sonarcloud.io'
-      PROJECT_KEY: 'shivakumar_inji-verify'
+      PROJECT_KEY: 'mosip_inji-verify'
     secrets:
-      SONAR_TOKEN: '44a7a4f7834c297fb6d04bc9b827687abc157d21'
-      ORG_KEY: 'shivakumar'
-      SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      ORG_KEY: ${{ secrets.ORG_KEY }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
