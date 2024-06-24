@@ -58,7 +58,7 @@ const ScanQrCode = () => {
                     </div>
                     <div
                         className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
-                        <img src={qrIcon} className="w-[78px] lg:w-[100px]"/>
+                        <img src={qrIcon} className="w-[78px] lg:w-[100px]" alt="qr-icon"/>
                     </div>
                     {
                         method === "SCAN"

@@ -11,12 +11,14 @@ const SubMenu = () => {
             <a id="contact-us"
                 href="https://community.mosip.io/"
                target="_blank"
+               rel="noreferrer"
                className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Contact us <NewTabIcon className="mx-1.5"/></a>
             <a id="documentation"
                 href="https://docs.mosip.io/inji/inji-verify/overview"
                target="_blank"
+               rel="noreferrer"
                className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Documentation <NewTabIcon className="mx-1.5" /></a>
-            <a id="faq" href="#" className="block px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4">FAQs</a>
+            <button id="faq" disabled className="block text-left w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4">FAQs</button>
         </div>
     );
 }
@@ -67,11 +69,11 @@ const DesktopMenu = () => {
                     </a>
                 </li>
                 <li className="relative">
-                    <a id="help-button"
+                    <button id="help-button"
                        onClick={() => setShowHelp(show=>!show)}
                        className="inline-flex items-center cursor-pointer py-2 rounded text-black">
                         Help <MdExpandLess className={`mx-1.5 ${showHelp ? "" : "rotate-180"}`}/>
-                    </a>
+                    </button>
                     {showHelp && (<SubMenu/>)}
                 </li>
             </ul>
