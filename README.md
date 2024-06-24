@@ -7,12 +7,26 @@ Injiverify is a web interface to verify the validity of the QR / credential usin
 # Installations:
 
 Prerequisites:
-Node 18 - Can be installed using [nvm](https://github.com/nvm-sh/nvm). Run following commands to install node
 
-```
-$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-$ nvm install 18
-```
+- Node 18 - Can be installed using [nvm](https://github.com/nvm-sh/nvm). Run following commands to install node
+
+        $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        $ nvm install 18
+
+Optional (To run docker):
+
+- docker
+
+    - [Install on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+    
+    - [Other platforms](https://docs.docker.com/engine/install/)
+  
+- docker-compose
+    
+    - [Install as plugin to docker command](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin)
+    
+    - [Install the Compose standalone](https://docs.docker.com/compose/install/#scenario-three-install-the-compose-standalone)
+
 ---
 
 # Folder Structure:
