@@ -36,7 +36,7 @@ jobs:
   sonar-analysis-inji-verify:
     if: "${{  github.event_name != 'pull_request' }}"
     needs: build-dockers-inji-verify
-    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master
+    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
       SERVICE_LOCATION: ./inji-verify
       SONAR_URL: 'https://sonarcloud.io'
