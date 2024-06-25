@@ -32,7 +32,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "sh ./configure_start_local.sh && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --passWithNoTests --updateSnapshot --coverage",
     "eject": "react-scripts eject"
