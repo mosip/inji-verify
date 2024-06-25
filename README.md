@@ -37,6 +37,13 @@ Optional (To run docker):
 
 ---
 
+# Configuration:
+The configuration to the Inji Verify application can be passed using the .env file which is present inside the **inji-verify** folder.
+
+It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_TIMEOUT variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the .env file.
+
+---
+
 # Running the application:
 
 ### Run following commands to start the application:
@@ -51,7 +58,7 @@ $ npm start
 ### Build and run Docker for a service:
 ```
 $ docker build -t <dockerImageName>:<tag> .
-$ docker run -it -d -p 3000:3000 <dockerImageName>:<tag>
+$ docker run -it -d -p 3000:3000 --env-file ./env <dockerImageName>:<tag>
 ```
 
 Once any of the above two methods are followed, open http://localhost:3000 to start using the Inji Verify application
