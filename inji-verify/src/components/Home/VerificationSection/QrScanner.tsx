@@ -83,6 +83,10 @@ function QrScanner() {
                         display: "grid",
                         placeItems: "center",
                         borderRadius: "12px"
+                    },
+                    video: {
+                        objectFit: "cover",
+                        objectPosition: "center"
                     }
                 }}
             />
