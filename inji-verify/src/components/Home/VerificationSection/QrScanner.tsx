@@ -60,6 +60,9 @@ function QrScanner() {
                     clearTimeout(timer);
                     setIsCameraBlocked(true);
                 }}
+                components={{
+                    torch: false
+                }}
                 options={{
                     constraints: {
                         "width": {
