@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mosip/pixelpass": "0.1.5",
+    "@mosip/pixelpass": "0.1.6",
     "@openhealthnz-credentials/pdf-image-qr-scanner": "1.0.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/jest-dom": "^5.17.0",
