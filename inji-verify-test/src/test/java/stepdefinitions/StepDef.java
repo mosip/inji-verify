@@ -1,194 +1,196 @@
 
 package stepdefinitions;
 
-import org.junit.Assert;
 
-import com.microsoft.playwright.Page;
-
-import constants.UiConstants;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import constants.UiConstants;
 import pages.BLE;
 import pages.HomePage;
 import pages.ScanQRCodePage;
 import pages.UploadQRCode;
 import pages.VpVerification;
-import utils.DriverManager;
+import utils.BaseTest;
+
 
 public class StepDef {
 
-    private String pageTitle;
+    String pageTitle;
 
-    Page page;
-    DriverManager driver;
-    HomePage homePageNew;
-    ScanQRCodePage scanqrcode;
-    UploadQRCode uploadqrcode;
-    BLE ble;
-    VpVerification vpverification;
-
-
-    public StepDef(DriverManager driver) {
-        this.driver = driver;
-        page = driver.getPage();
-        homePageNew = new HomePage(page);
-        scanqrcode = new ScanQRCodePage(page);
-        uploadqrcode = new UploadQRCode(page);
-        vpverification = new VpVerification(page);
-        ble = new BLE(page);
+    public WebDriver driver;
+    BaseTest baseTest;
+    private HomePage homePage;
+    private BLE ble;
+    private VpVerification vpverification;
+    private  ScanQRCodePage scanqrcode;
+    private  UploadQRCode uploadqrcode;
+    
+    public StepDef(BaseTest baseTest) {
+        this.baseTest = baseTest;
+        this.homePage = new HomePage(baseTest.getDriver());
+        this.ble = new BLE(baseTest.getDriver());
+        this.vpverification = new VpVerification(baseTest.getDriver());    
+        this.scanqrcode = new ScanQRCodePage(baseTest.getDriver());
+        this.uploadqrcode = new UploadQRCode(baseTest.getDriver());
+        
     }
-
     @Given("User gets the title of the page")
     public void userGetsTheTitleOfThePage() {
-        pageTitle = page.title();
-    }
+        pageTitle = homePage.isPageTitleDisplayed();
+        
+         }
+
 
     @Then("Validate the title of the page")
     public void validateTheTitleOfThePage() {
-        Assert.assertEquals(pageTitle, UiConstants.PAGE_TITLE);
+        Assert.assertEquals(homePage.getPageTitle(), UiConstants.PAGE_TITLE);
     }
+
 
     @Then("Verify that inji verify logo is displayed")
     public void verifyThatInjiVerifyLogoIsDisplayed() {
-        Assert.assertTrue(homePageNew.isLogoDisplayed());
+        Assert.assertTrue(homePage.isLogoDisplayed());
     }
+
 
     @Then("Verify that header is displayed")
     public void verifyThatHeaderIsDisplayed() {
-        Assert.assertEquals(homePageNew.getHeader(), UiConstants.PAGE_HEADER);
+        Assert.assertEquals(homePage.getHeader(), UiConstants.PAGE_HEADER);
     }
 
     @Then("Verify that sub header is displayed")
     public void verifyThatSubHeaderIsDisplayed() {
-        Assert.assertEquals(homePageNew.getSubHeader(), UiConstants.PAGE_SUB_HEADER);
+        Assert.assertEquals(homePage.getSubHeader(), UiConstants.PAGE_SUB_HEADER);
     }
 
     @Then("Verify that home button is displayed")
     public void verifyThathomebuttonIsDisplayed() {
-        Assert.assertTrue(homePageNew.isHomeButtonDisplayed());
+        Assert.assertTrue(homePage.isHomeButtonDisplayed());
 
     }
 
     @Then("Verify that Credentials button is displayed")
     public void verifyThatCredentialsButtonIsDisplayed() {
-        Assert.assertTrue(homePageNew.isVerifyCredentialsbuttonDisplayed());
+        Assert.assertTrue(homePage.isVerifyCredentialsbuttonDisplayed());
 
     }
 
     @Then("Verify that Help button is displayed")
     public void verifyThatHelpButtonIsDisplayed() {
-        Assert.assertTrue(homePageNew.isHelpbuttonDisplayed());
+        Assert.assertTrue(homePage.isHelpbuttonDisplayed());
 
     }
 
     @Then("Verify that expansion button is displayed before expansion")
     public void verifyThatExpansionButtonIsDisplayedBeforeExpansion() {
-        Assert.assertTrue(homePageNew.isExpansionbuttonDisplayedBefore());
+        Assert.assertTrue(homePage.isExpansionbuttonDisplayedBefore());
     }
 
     @Then("Verify click on home button")
     public void verifyClickOnHomeButton() {
-        homePageNew.ClickonHomeButton();
+        homePage.ClickonHomeButton();
         Assert.assertTrue(true);
     }
 
     @Then("Verify that expansion button is displayed after expansion")
     public void verifyThatExpansionButtonIsDisplayedAfterExpansion() {
-        Assert.assertTrue(homePageNew.isExpansionbuttonDisplayedAfter());
+        Assert.assertTrue(homePage.isExpansionbuttonDisplayedAfter());
 
     }
 
     @Then("Verify that links are valid under help")
     public void VerifyThatLinksAreValidUnderHelp() {
-        homePageNew.verifyHelpOptionLinks();
+        homePage.verifyHelpOptionLinks();
         Assert.assertTrue(true);
     }
 
     @Then("Verify minimize help option")
     public void verifyMinimizeHelpOption() {
-        homePageNew.minimizeHelpButton();
-        Assert.assertTrue(homePageNew.isExpansionbuttonDisplayedBefore());
+        homePage.minimizeHelpButton();
+        Assert.assertTrue(homePage.isExpansionbuttonDisplayedBefore());
     }
 
     @Then("Verify that upload QR Code tab is visible")
     public void verify_that_upload_qr_code_tab_is_visible() {
-        Assert.assertTrue(homePageNew.isUploadQRButtonVisible());
+        Assert.assertTrue(homePage.isUploadQRButtonVisible());
     }
 
     @Then("Verify that scan QR Code tab is visible")
     public void verify_that_scan_qr_code_tab_is_visible() {
-        Assert.assertTrue(homePageNew.isScanQRCodeButtonVisible());
+        Assert.assertTrue(homePage.isScanQRCodeButtonVisible());
     }
 
     @Then("Verify that VP Verification tab is visible")
     public void verify_that_vp_verification_tab_is_visible() {
-        Assert.assertTrue(homePageNew.isVerifyCredentialsbuttonDisplayed());
+        Assert.assertTrue(homePage.isVerifyCredentialsbuttonDisplayed());
     }
 
     @Then("Verify that BLE tab is visible")
     public void verify_that_ble_tab_is_visible() {
-        Assert.assertTrue(homePageNew.isBLEButtonVisible());
+        Assert.assertTrue(homePage.isBLEButtonVisible());
     }
 
     @Then("Verify copyright text")
     public void verify_copyright_text() {
-        Assert.assertEquals(homePageNew.getVerifyCopyrightText(), UiConstants.COPYRIGHT_INFO);
+        Assert.assertEquals(homePage.getVerifyCopyrightText(), UiConstants.COPYRIGHT_INFO);
     }
 
     @Then("Verify upload QR code step1 label")
     public void verify_upload_qr_code_step1_label() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep1Label(), UiConstants.UPLOAD_QR_CODE_STEP1_LABEL);
+        Assert.assertEquals(homePage.getUploadQRCodeStep1Label(), UiConstants.UPLOAD_QR_CODE_STEP1_LABEL);
     }
 
     @Then("Verify upload QR code step1 description")
     public void verify_upload_qr_code_step1_description() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep1Description(), UiConstants.UPLOAD_QR_CODE_STEP1_DESCRIPTION);
+        Assert.assertEquals(homePage.getUploadQRCodeStep1Description(), UiConstants.UPLOAD_QR_CODE_STEP1_DESCRIPTION);
     }
 
     @Then("Verify upload QR code step2 label")
     public void verify_upload_qr_code_step2_label() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep2Label(), UiConstants.UPLOAD_QR_CODE_STEP2_LABEL);
+        Assert.assertEquals(homePage.getUploadQRCodeStep2Label(), UiConstants.UPLOAD_QR_CODE_STEP2_LABEL);
     }
 
     @Then("Verify upload QR code step2 description")
     public void verify_upload_qr_code_step2_description() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep2Description(), UiConstants.UPLOAD_QR_CODE_STEP2_DESCRIPTION);
+        Assert.assertEquals(homePage.getUploadQRCodeStep2Description(), UiConstants.UPLOAD_QR_CODE_STEP2_DESCRIPTION);
     }
 
     @Then("Verify upload QR code step3 label")
     public void verify_upload_qr_code_step3_label() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep3Label(), UiConstants.UPLOAD_QR_CODE_STEP3_LABEL);
+        Assert.assertEquals(homePage.getUploadQRCodeStep3Label(), UiConstants.UPLOAD_QR_CODE_STEP3_LABEL);
     }
 
     @Then("Verify upload QR code step3 description")
     public void verify_upload_qr_code_step3_description() {
-        Assert.assertEquals(homePageNew.getUploadQRCodeStep3Description(), UiConstants.UPLOAD_QR_CODE_STEP3_DESCRIPTION);
+        Assert.assertEquals(homePage.getUploadQRCodeStep3Description(), UiConstants.UPLOAD_QR_CODE_STEP3_DESCRIPTION);
     }
 
     @Then("Verify that scan element is visible")
     public void verify_that_scan_element_is_visible() {
-        Assert.assertTrue(homePageNew.isScanElementIsVisible());
+        Assert.assertTrue(homePage.isScanElementIsVisible());
     }
 
     @Then("Verify that Upload icon visible")
     public void verify_that_upload_icon_visible() {
-        Assert.assertTrue(homePageNew.isUploadIconIsVisible());
+        Assert.assertTrue(homePage.isUploadIconIsVisible());
     }
 
     @Then("Verify that Upload button visible")
     public void verify_that_upload_button_visible() {
-        Assert.assertTrue(homePageNew.isUploadButtonIsVisible());
+        Assert.assertTrue(homePage.isUploadButtonIsVisible());
     }
 
     @Then("Verify file format constraints text")
     public void verify_file_format_constraints_gettext() {
-        Assert.assertEquals(homePageNew.getFormatConstraintText().toString(), UiConstants.FILE_FORMAT_CONSTRAINTS_TEXT);
+        Assert.assertEquals(homePage.getFormatConstraintText().toString(), UiConstants.FILE_FORMAT_CONSTRAINTS_TEXT);
 
     }
 
     @Then("Click on Upload button")
     public void click_on_upload_button() {
-        homePageNew.ClickonQRUploadButton();
+        homePage.ClickonQRUploadButton();
         Assert.assertTrue(true);
     }
 
@@ -328,7 +330,7 @@ public class StepDef {
 
     @Then("Verify browser back button after verification")
     public void verify_browser_back_button_after_verification() {
-        uploadqrcode.browserBackButton();
+        uploadqrcode.browserBackButton(driver);
         Assert.assertTrue(true);
     }
 
@@ -473,8 +475,36 @@ public class StepDef {
     public void verify_click_on_close_button_on_timeout_message() {
         scanqrcode.clickOnCloseIconTimeoutMessage();
         Assert.assertTrue(true);
+    }    
+    
+    @Then("Upload QR code file Expired png")
+    public void upload_qr_code_file_expired_png() {
+    	uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
+    	Assert.assertTrue(true);   
+    }
+    
+    @Then("Upload QR code file Expired jpg")
+    public void upload_qr_code_file_expired_jpg() {
+    	uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
+    	Assert.assertTrue(true);   
+    }
+    
+    @Then("Upload QR code file Expired jpeg")
+    public void upload_qr_code_file_expired_jpeg() {
+    	uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
+    	Assert.assertTrue(true);   
+    }
+    @Then("Upload QR code file Expired pdf")
+    public void upload_qr_code_file_expired_pdf() {
+    	uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
+    	Assert.assertTrue(true);   
     }
 
+    @Then("Verify message for expired QR code")
+    public void verify_message_for_expired_qr_code() {
+        Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
+    	
+    }
 
 }
 	
