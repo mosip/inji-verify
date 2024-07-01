@@ -5,6 +5,8 @@ export const SUPPORTED_DID_METHODS = ["web"];
 export const SUPPORTED_QR_HEADERS = [''];
 export const HEADER_DELIMITER = '';
 
+export const SupportedFileTypes = ["png", "jpeg", "jpg", "pdf"]
+
 export const VerificationSteps: any = {
     "SCAN": {
         QrCodePrompt: 1,
@@ -62,6 +64,7 @@ export const AlertMessages = {
     qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
     unsupportedFileSize: {message: "File size not supported. The file size should be between 10 KB and 5 MB.", severity: "error"} as AlertInfo,
     verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
+    unsupportedFileType: {message: "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf", severity: "error"} as AlertInfo
 };
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
@@ -71,6 +74,8 @@ export const UploadFileSizeLimits = {
     max: 5000000 // 5MB
 }
 
-export const InternetConnectivityCheckEndpoint = "https://dns.google/";
+export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIVITY_CHECK_ENDPOINT ?? "https://dns.google/";
 
-export const InternetConnectivityCheckTimeout = 10000; //milliseconds
+export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT))
+    ? 10000
+    : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds

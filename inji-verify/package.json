@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mosip/pixelpass": "^0.1.4",
-    "@openhealthnz-credentials/pdf-image-qr-scanner": "^1.0.2",
+    "@mosip/pixelpass": "0.1.5",
+    "@openhealthnz-credentials/pdf-image-qr-scanner": "1.0.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -32,10 +32,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "sh ./configure_start_local.sh && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --passWithNoTests --updateSnapshot --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sonar": "sonar-scanner"
   },
   "eslintConfig": {
     "extends": [

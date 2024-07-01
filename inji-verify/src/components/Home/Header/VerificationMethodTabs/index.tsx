@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {useAppDispatch} from "../../../../redux/hooks";
 import {useVerificationFlowSelector} from "../../../../redux/features/verification/verification.selector";
-import {goHomeScreen, selectMethod} from "../../../../redux/features/verification/verification.slice";
+import {goHomeScreen} from "../../../../redux/features/verification/verification.slice";
 import {VerificationMethod} from "../../../../types/data-types";
 import {raiseAlert} from "../../../../redux/features/alerts/alerts.slice";
 import {AlertMessages} from "../../../../utils/config";
@@ -12,7 +12,7 @@ const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolea
     const activeTab = "bg-[#FF7F00] border-t-[6px] border-y-[#FF7F00] text-white";
     const inactiveTab = "bg-white text-black shadow-lg mt-[6px]";
     const disabledTab = "text-gray-600 bg-gray-200 ";
-    const toolTip = "absolute z-10 p-2 text-sm text-white bg-gray-800 rounded-lg opacity-0 transition-opacity duration-300";
+    // const toolTip = "absolute z-10 p-2 text-sm text-white bg-gray-800 rounded-lg opacity-0 transition-opacity duration-300";
     const enabledTab = active ? activeTab : inactiveTab;
     return (<div>
         <button

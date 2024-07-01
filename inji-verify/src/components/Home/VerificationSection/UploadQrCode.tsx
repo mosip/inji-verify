@@ -1,11 +1,29 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
+import {AlertMessages, SupportedFileTypes, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
-import {checkInternetStatus} from "../../../utils/misc";
+import {checkInternetStatus, getFileExtension} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
+import {AlertInfo} from "../../../types/data-types";
+
+const doFileChecks = (file: File): AlertInfo | null => {
+    // file format check
+    const fileExtension = getFileExtension(file.name);
+    if (!SupportedFileTypes.includes(fileExtension)) {
+        return AlertMessages.unsupportedFileType;
+    }
+
+    // file size check
+    if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
+        return AlertMessages.unsupportedFileSize;
+    }
+
+    return null;
+}
+
+const acceptedFileTypes = SupportedFileTypes.map(ext => `.${ext}`).join(', ')
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     const dispatch = useAppDispatch();
@@ -44,15 +62,15 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept=".png, .jpeg, .jpg, .pdf"
+                accept={acceptedFileTypes}
                 className="mx-auto my-2 hidden h-0"
                 onChange={e => {
                     const file = e?.target?.files && e?.target?.files[0];
                     if (!file) return;
-                    if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
-                        console.log(`File size: `, file?.size);
+                    const alert = doFileChecks(file);
+                    if (alert) {
                         dispatch(goHomeScreen({}));
-                        dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
+                        dispatch(raiseAlert({...alert, open: true}))
                         if (e?.target)
                             e.target.value = ""; // clear the target to be able to read same file again
                         return;

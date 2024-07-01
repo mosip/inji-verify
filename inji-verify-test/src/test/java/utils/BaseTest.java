@@ -12,35 +12,35 @@ import io.cucumber.java.Before;
 
 public class BaseTest {
 
-	public static Playwright playwright;
-	public static Browser browser;
+    public static Playwright playwright;
+    public static Browser browser;
 
-	protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
-			: System.getProperty("env");
+    protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
+            : System.getProperty("env");
 
-	BaseTestUtil baseTestUtil = new BaseTestUtil();
+    BaseTestUtil baseTestUtil = new BaseTestUtil();
 
-	DriverManager driver;
+    DriverManager driver;
 
-	public BaseTest(DriverManager driver) {
-		this.driver = driver;
-	}
+    public BaseTest(DriverManager driver) {
+        this.driver = driver;
+    }
 
-	@Before
-	public void setup() {
-		playwright = Playwright.create();
-		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-		Page page = browser.newPage();
-		driver.setPage(page);
-		JSONObject config = baseTestUtil.readConfig(BaseTest.class, ENVIRONMENT);
-		String url = config.getString("url");
-		driver.getPage().navigate(url);
-	}
+    @Before
+    public void setup() {
+        playwright = Playwright.create();
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        driver.setPage(page);
+        JSONObject config = baseTestUtil.readConfig(BaseTest.class, ENVIRONMENT);
+        String url = config.getString("url");
+        driver.getPage().navigate(url);
+    }
 
-	@After
-	public void tearDown() {
-		driver.getPage().close();
-		browser.close();
-		playwright.close();
-	}
+    @After
+    public void tearDown() {
+        driver.getPage().close();
+        browser.close();
+        playwright.close();
+    }
 }

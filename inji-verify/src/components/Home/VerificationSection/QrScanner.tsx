@@ -28,7 +28,7 @@ function QrScanner() {
             console.log('Clearing timeout');
             clearTimeout(timer)
         };
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         // Disable inbuilt border around the video
@@ -60,6 +60,9 @@ function QrScanner() {
                     clearTimeout(timer);
                     setIsCameraBlocked(true);
                 }}
+                components={{
+                    torch: false
+                }}
                 options={{
                     constraints: {
                         "width": {
@@ -83,6 +86,10 @@ function QrScanner() {
                         display: "grid",
                         placeItems: "center",
                         borderRadius: "12px"
+                    },
+                    video: {
+                        objectFit: "cover",
+                        objectPosition: "center"
                     }
                 }}
             />
