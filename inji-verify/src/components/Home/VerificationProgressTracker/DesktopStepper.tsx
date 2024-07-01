@@ -26,18 +26,20 @@ function DesktopStepper() {
                                 </div>
                                 <div id={convertToId(step.label)} className={`ml-[10px] text-[16px]  font-bold ${isStepCompleted(index) ? "text-black" : "text-[#868686]"}`}>{step.label}</div>
                             </div>
-                            <div className={"grid items-center m-0"}>
-                                <div className="w-6 h-[100%] col-end-2">
-                                    <div className={`${!isLastStep(index) ? "border-l-primary" : "border-none"} border-[1px] h-[100%] m-auto w-0`}/>
+                            <div className={"grid items-start"}>
+                                <div className={"grid items-center m-0"}>
+                                    <div className="w-6 h-[100%] col-end-2">
+                                        <div className={`${!isLastStep(index) ? "border-white border-l-primary" : "border-none"} border-[1px] w-[1px] h-[100%] m-auto`}/>
+                                    </div>
+                                    <div id={`${convertToId(step.label)}-description`} className="ml-[10px] text-[14px] text-[#535353] font-normal leading-5  col-end-13">
+                                        {step.description}
+                                    </div>
+                                    {!isLastStep(index) && (
+                                        <div className="col-end-2">
+                                            <div className="border-white border-l-primary border-[1px] w-[1px] h-8 m-auto"/>
+                                        </div>
+                                    )}
                                 </div>
-                                <div id={`${convertToId(step.label)}-description`} className="ml-[10px] text-[14px] text-[#535353] font-normal leading-5  col-end-13">
-                                    {step.description}
-                                </div>
-                                {
-                                    !isLastStep(index) && (
-                                        <div className="border-l-primary border-[1px] h-8 m-auto col-end-2"/>
-                                    )
-                                }
                             </div>
                         </>
                     ))
