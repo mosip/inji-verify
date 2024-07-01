@@ -1,135 +1,161 @@
 package pages;
 
-import com.microsoft.playwright.Page;
-
 import base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 
 public class UploadQRCode extends BasePage {
 	
-	public UploadQRCode(Page page) {
-		super(page);
-	}
+    private WebDriver driver;
+    public UploadQRCode(WebDriver driver) {
+        this.driver = driver;
+    }
 	
-	public void ClickonUploadQRCodePng() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "QRCode.png");
+  
+    public void ClickonUploadQRCodePng() {  	
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "QRCode.png");
 		
-	}
+	}  	
 	
 	public void ClickonUploadQRCodeJpg() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "QRCode.jpg");
-		
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "QRCode.jpg");		
+	
 	}
 	
 	public void ClickonUploadQRCodePdf() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "QRCode.pdf");
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "QRCode.pdf");		
 		
 	}
 	public void ClickonUploadQRCodeJpeg() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "QRCode.jpeg");
-		
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "QRCode.jpeg");		
 	}
 	
 	public void ClickonUploadQRCodeHtml() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "QRCode_UnsupportedHtml.html");
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "QRCode_UnsupportedHtml.html");	
 		
 	}
-	
-	
+		
 	public void ClickonUploadQRCodeInvalid() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "Invalid.png");
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "Invalid.png");			
 		
 	}
+	
+	public void ClickonUploadExpiredQRCodepngExpired() {
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "Expired_QRCode.png");	
+		
+	}
+	
+	
+	public void ClickonUploadExpiredQRCodeJpgExpired() {
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "Expired_QRCode.jpg");	
+		
+	}
+
+	public void ClickonUploadExpiredQRCodejpegExpired() {
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "Expired_QRCode.jpeg");	
+		
+	}
+	
+	public void ClickonUploadExpiredQRCodepdfExpired() {
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "Expired_QRCode.pdf");	
+		
+	}
+	
 	
 	public void ClickonUploadQRCodeLageFileSize() {
-		//Please place the QR code file in inji-verify-test and rename it to QRCode.jpg
-		uploadFile("//span[@id='upload-qr-code-button']", System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + "LargeFileSize.png");
+		uploadFile(driver ,By.xpath("//span[@id='upload-qr-code-button']"), "LargeFileSize.png");	
 		
 	}
 	
 	
 	public boolean isVisibleErrorIcon() {
-		return isElementIsVisible("//div[@class='col-start-1 col-end-13 block mb-2.5']");
+		return isElementIsVisible(driver, By.xpath("//div[@class='col-start-1 col-end-13 block mb-2.5']"));
 	
 	}
 	
 	public String getErrorTextInvalidQRCode() {
 		
-		return getText("//p[@id='vc-result-display-message']");
+		return getText(driver, By.xpath("//p[@id='vc-result-display-message']"));
 	}
 	
+	public String getErrorTextExpiredQRCode() {
+		
+		return getText(driver, By.xpath("//*[@id='vc-result-display-message']"));
+	}
+	
+	
 	public boolean isVisibleBlankImageQRArea() {
-		return isElementIsVisible("//div[@class='grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10']");
+		return isElementIsVisible(driver, By.xpath("//div[@class='grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10']"));
 	
 	}
 	
 	public boolean isVisibleUploadQRCodeStep2LabelAfter() {
-		return isElementIsVisible("(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[2]");
+		return isElementIsVisible(driver, By.xpath("(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[2]"));
 	
 	}
 	public boolean isVisibleUploadQRCodeStep3LabelAfter() {
-		return isElementIsVisible("(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[3]");
+		return isElementIsVisible(driver, By.xpath("(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[3]"));
 	
 	}
 	
 	public String getQRCodeUploadedSuccessToastMessage() {
 		
-		return getText("//*[contains(text(), 'QR code uploaded successfully!')]");	
+		return getText(driver, By.xpath("//*[contains(text(), 'QR code uploaded successfully!')]"));	
 	}	
 	
 	
 	public boolean isTickIconVisible()  {
-		return isElementIsVisible("#check_circle_FILL0_wght400_GRAD0_opsz48");
+		return isElementIsVisible(driver, By.xpath("#check_circle_FILL0_wght400_GRAD0_opsz48"));
 	
 	}
 	public String getCongratulationtext()  {
-		return getText("//p[@id='vc-result-display-message']");
+		return getText(driver, By.xpath("//p[@id='vc-result-display-message']"));
 	}
 	
 	public boolean isVisibleVerifyAnotherQRcodeButton() {
-		return isElementIsVisible("//span[@id='verify-another-qr-code-button']");
+		return isElementIsVisible(driver, By.xpath("//span[@id='verify-another-qr-code-button']"));
 	
 	}
 	
 	public void clickOnAnotherQRcodeButton() {
-		clickOnElement("//span[@id='verify-another-qr-code-button']");
+		clickOnElement(driver, By.xpath("//span[@id='verify-another-qr-code-button']"));
 		
 	}
 	
 	public void ClickonHomeButton() {
-		clickOnElement("//a[@id='home-button']");
+		clickOnElement(driver, By.xpath("//a[@id='home-button']"));
 	}
 	
 	public void clickVerifyCredentialsbutton() {
-		clickOnElement("//a[@id='verify-credentials-button']");
+		clickOnElement(driver, By.xpath("//a[@id='verify-credentials-button']"));
 	}
 	
 	public void refreshBrowserAfterVerification() {
-		refreshBrowser();
+		refreshBrowser(driver);
 	}
 	
 	public String getErromessageForUnSupportedFromat()  {
-		return getText("//*[@id='alert-message']");
+		return getText(driver, By.xpath("//*[@id='alert-message']"));
 	}
 	
 	public String getErrorMessageLargerFileSize() {
 		
-		return getText("//div[@class='fixed top-[80px] lg:top-[44px] right-4 lg:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg bg-[#D73E3E] ']");	
+		return getText(driver, By.xpath("//div[@class='fixed top-[80px] lg:top-[44px] right-4 lg:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg bg-[#D73E3E] ']"));	
 	}
 	
+
+	public String getErrorMessageForExpiredQRCode() {
+		
+		return getText(driver, By.xpath("//*[@id='vc-result-display-message']"));	
+	}	
 	
 	public void browserBackButtonAfterVerification() {
-		browserBackButton();
+		browserBackButton(driver);
 	}
 	
 	public void clickOnPleaseTryAgain() {
-		clickOnElement("//span[@id='please-try-again-button']");		
+		clickOnElement(driver, By.xpath("//span[@id='please-try-again-button']"));		
 	}
 
 }
