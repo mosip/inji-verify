@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:14 AS build
+FROM node:18 AS build
 
 # Set the working directory in the container
 WORKDIR /app
@@ -13,6 +13,9 @@ ENV INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$defaultLang
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
+
+# Cop the patch files required for the verification sdk
+COPY patches/* ./patches/
 
 # Install Node.js dependencies
 RUN npm install
