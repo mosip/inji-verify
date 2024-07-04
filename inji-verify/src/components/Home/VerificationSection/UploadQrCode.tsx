@@ -1,26 +1,50 @@
 import {scanFilesForQr} from "../../../utils/qr-utils";
-import {AlertMessages, UploadFileSizeLimits} from "../../../utils/config";
+import {AlertMessages, SupportedFileTypes, UploadFileSizeLimits} from "../../../utils/config";
 import {ReactComponent as UploadIcon} from "../../../assets/upload-icon.svg";
 import {useAppDispatch} from "../../../redux/hooks";
 import {goHomeScreen, qrReadInit, verificationInit} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
-import {checkInternetStatus, navigateToOffline} from "../../../utils/misc";
+import {checkInternetStatus, getFileExtension} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
+import {AlertInfo} from "../../../types/data-types";
+import {Dispatch} from "redux";
+
+const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
+    if (!file) return false;
+    let alert: AlertInfo | null = null;
+    // file format check
+    const fileExtension = getFileExtension(file.name);
+    if (!SupportedFileTypes.includes(fileExtension)) {
+        alert = AlertMessages.unsupportedFileType;
+    }
+
+    // file size check
+    if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
+        alert = AlertMessages.unsupportedFileSize;
+    }
+
+    if (alert) {
+        dispatch(goHomeScreen({}));
+        dispatch(raiseAlert({...alert, open: true}))
+        return false;
+    }
+    return true;
+}
+
+const doInternetCheck = async (dispatch: Dispatch) => {
+    dispatch(updateInternetConnectionStatus({internetConnectionStatus: "LOADING"}));
+    let isOnline = await checkInternetStatus();
+    dispatch(updateInternetConnectionStatus({internetConnectionStatus: isOnline ? "ONLINE" : "OFFLINE"}));
+    return isOnline;
+}
+
+const acceptedFileTypes = SupportedFileTypes.map(ext => `.${ext}`).join(', ')
 
 function UploadButton({ displayMessage }: {displayMessage: string}) {
-    const dispatch = useAppDispatch();
     return (
         <label
             className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-[16px] fill-[#ff7f00] hover:fill-white"
             htmlFor={"upload-qr"}
-            onClick={async (event) => {
-                dispatch(updateInternetConnectionStatus({internetConnectionStatus: "LOADING"}));
-                event.stopPropagation();
-                event.preventDefault();
-                let isOnline = await checkInternetStatus();
-                dispatch(updateInternetConnectionStatus({internetConnectionStatus: isOnline ? "ONLINE" : "OFFLINE"}));
-                if (isOnline) document.getElementById("upload-qr")?.click();
-            }}
         >
             <span className="flex m-auto content-center justify-center w-[100%]">
                 <span className="inline-grid mr-1.5">
@@ -44,19 +68,20 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
                 type="file"
                 id="upload-qr"
                 name="upload-qr"
-                accept=".png, .jpeg, .jpg, .pdf"
+                accept={acceptedFileTypes}
                 className="mx-auto my-2 hidden h-0"
-                onChange={e => {
+                onChange={async (e) => {
+                    const isOnline = await doInternetCheck(dispatch);
+                    if (!isOnline) return;
+
                     const file = e?.target?.files && e?.target?.files[0];
-                    if (!file) return;
-                    if (file.size < UploadFileSizeLimits.min || file.size > UploadFileSizeLimits.max) {
-                        console.log(`File size: `, file?.size);
-                        dispatch(goHomeScreen({}));
-                        dispatch(raiseAlert({...AlertMessages.unsupportedFileSize, open: true}))
+                    const fileChecksPassed = doFileChecks(dispatch, file);
+                    if (!fileChecksPassed) {
                         if (e?.target)
                             e.target.value = ""; // clear the target to be able to read same file again
                         return;
                     }
+
                     dispatch(qrReadInit({method: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
