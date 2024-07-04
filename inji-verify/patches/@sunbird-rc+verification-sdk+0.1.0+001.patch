@@ -1,0 +1,55 @@
+diff --git a/node_modules/@sunbird-rc/verification-sdk/lib/index..js b/node_modules/@sunbird-rc/verification-sdk/lib/index..js
+index 797fa32..311ba81 100644
+--- a/node_modules/@sunbird-rc/verification-sdk/lib/index..js
++++ b/node_modules/@sunbird-rc/verification-sdk/lib/index..js
+@@ -1,5 +1,5 @@
+-import * as IssuerService from "./services/issuer.service";
+-import * as VerificationService from "./services/verification.service";
++import * as IssuerService from "./services/issuer.service.js";
++import * as VerificationService from "./services/verification.service.js";
+ 
+ export const downloadRevocationList = async (issuerId, revocation_url) => {
+     return await IssuerService.fetchRevocationList(issuerId, revocation_url);
+diff --git a/node_modules/@sunbird-rc/verification-sdk/lib/services/issuer.service.js b/node_modules/@sunbird-rc/verification-sdk/lib/services/issuer.service.js
+index 6df24ce..24bd3f1 100644
+--- a/node_modules/@sunbird-rc/verification-sdk/lib/services/issuer.service.js
++++ b/node_modules/@sunbird-rc/verification-sdk/lib/services/issuer.service.js
+@@ -1,4 +1,4 @@
+-import {RevokedCredential} from "../models/revoked-credential";
++import {RevokedCredential} from "../models/revoked-credential.js";
+ 
+ export const fetchRevocationList = async (issuerId, revocation_url)=>{
+     try{
+diff --git a/node_modules/@sunbird-rc/verification-sdk/lib/services/verification.service.js b/node_modules/@sunbird-rc/verification-sdk/lib/services/verification.service.js
+index 8227761..83cde19 100644
+--- a/node_modules/@sunbird-rc/verification-sdk/lib/services/verification.service.js
++++ b/node_modules/@sunbird-rc/verification-sdk/lib/services/verification.service.js
+@@ -6,10 +6,8 @@ import {Ed25519Signature2018} from "@digitalbazaar/ed25519-signature-2018";
+ import {LDKeyPair as RSAKeyPair} from "crypto-ld";
+ import {Ed25519Signature2020} from "@digitalbazaar/ed25519-signature-2020";
+ import * as vc from "@digitalbazaar/vc";
+-import { createRequire } from 'module';
+-const require = createRequire(import.meta.url);
+-
+-const {extendContextLoader} = require("jsonld-signatures")
++import pkg from "jsonld-signatures/lib/documentLoader.js";
++const {extendContextLoader} = pkg;
+ 
+ const getDocumentLoader = (didDoc) => {
+     return extendContextLoader(async url => {
+@@ -23,7 +21,14 @@ const getDocumentLoader = (didDoc) => {
+                 contextUrl: null, documentUrl: url, document: DOCUMENTS[url]
+             }
+         }
+-        return await jsonld.documentLoaders.node()(url);
++        if (typeof window !== 'undefined' &&
++            !(typeof process !== 'undefined' && process.versions && process.versions.node)) {
++            // Running in a browser environment
++            return jsonld.documentLoaders.xhr()(url);
++        } else {
++            // Running in a Node.js environment
++            return jsonld.documentLoaders.node()(url);
++        }
+     });
+ }
+ 
