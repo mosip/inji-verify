@@ -66,27 +66,27 @@ Feature: Inji Verify upload qr code testing
     #And Verify upload QR code step3 label
     #And Verify that Upload button visible
     #And Upload QR code file PDF
-		And Upload QR code file Expired png
-		And Verify message for expired QR code	
+    And Upload QR code file Expired png
+    And Verify message for expired QR code
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file Expired jpg
-		And Verify message for expired QR code		
+    And Verify message for expired QR code
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file Expired jpeg
-		And Verify message for expired QR code		
+    And Verify message for expired QR code
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file Expired pdf
-		And Verify message for expired QR code	
+    And Verify message for expired QR code
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Verify QR code file LargeFileSize
     And Verify info message for QR code file LargeFileSize
     And Verify QR code file invalid
     And Verify Error logo for invalid QR code
-    And Verify Error message for invalid QR code    
+    And Verify Error message for invalid QR code
     And Verify click on another qr code button
     And Upload QR code unsupported file HTML
     And Verify Error message
