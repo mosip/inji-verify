@@ -8,16 +8,9 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(
-        features = {"src/test/resources/featurefiles"},
-        dryRun = !true,
-        glue = {"stepdefinitions", "utils"},
-        snippets = SnippetType.CAMELCASE,
-        monochrome = true,
-        plugin = {"pretty",
-                "html:reports",
-                "summary"}
-        //tags = "@smoke"
+@CucumberOptions(features = { "src/test/resources/featurefiles" }, dryRun = !true, glue = { "stepdefinitions",
+		"utils" }, snippets = SnippetType.CAMELCASE, monochrome = true, plugin = { "pretty", "html:reports", "summary" }
+// tags = "@smoke"
 )
 
 public class Runner extends AbstractTestNGCucumberTests {

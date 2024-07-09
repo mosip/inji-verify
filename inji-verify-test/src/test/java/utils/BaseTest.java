@@ -1,46 +1,55 @@
 package utils;
 
-import org.json.JSONObject;
-
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import java.util.HashMap;
+import java.util.Map;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import java.time.Duration;
 
 public class BaseTest {
 
-    public static Playwright playwright;
-    public static Browser browser;
+	protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
+			: System.getProperty("env");
 
-    protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
-            : System.getProperty("env");
+	public void setDriver(WebDriver driver) {
+		this.driver = driver;
+	}
 
-    BaseTestUtil baseTestUtil = new BaseTestUtil();
+	public WebDriver driver;
 
-    DriverManager driver;
+	@Before
+	public void beforeAll() {
+		String DriverPath = System.getProperty("user.dir") + "\\src\\test\\resources\\chromeDriver\\chromedriver.exe";
+		Map<String, Object> prefs = new HashMap<>();
+		Map<String, Object> profile = new HashMap<>();
+		Map<String, Object> contentSettings = new HashMap<>();
+		contentSettings.put("media_stream", 1); // 1: allow, 2: block
+		profile.put("managed_default_content_settings", contentSettings);
+		prefs.put("profile", profile);
+		System.setProperty("webdriver.chrome.driver", DriverPath);
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("start-maximized");
+		options.addArguments("--disable-infobars");
+		options.addArguments("--disable-extensions");
+		options.setExperimentalOption("prefs", prefs);
+		driver = new ChromeDriver(options);
+		driver.get("https://injiverify.qa-inji.mosip.net/");
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-    public BaseTest(DriverManager driver) {
-        this.driver = driver;
-    }
+	}
 
-    @Before
-    public void setup() {
-        playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-        Page page = browser.newPage();
-        driver.setPage(page);
-        JSONObject config = baseTestUtil.readConfig(BaseTest.class, ENVIRONMENT);
-        String url = config.getString("url");
-        driver.getPage().navigate(url);
-    }
+	@After
+	public void afterAll() {
+		if (driver != null) {
+			driver.quit();
+		}
+	}
 
-    @After
-    public void tearDown() {
-        driver.getPage().close();
-        browser.close();
-        playwright.close();
-    }
+	public WebDriver getDriver() {
+		return driver;
+	}
 }
