@@ -1,22 +1,32 @@
 package pages;
 
-import com.microsoft.playwright.Page;
-
 import base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class BLE extends BasePage {
-	
-	public BLE(Page page) {
-		super(page);
+
+	private WebDriver driver;
+
+	public BLE(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
 	}
-	
+
+	@FindBy(xpath = "//button[@id='ble-tab']")
+	WebElement bleTab;
+
+	@FindBy(xpath = "//p[@id='alert-message']")
+	WebElement bleAlertMsg;
+
 	public void ClickonBleTab() {
-		clickOnElement("//button[@id='ble-tab']");
+		clickOnElement(driver, bleTab);
 	}
-	
+
 	public String getInformationText() {
-		return getText("//p[@id='alert-message']");
+		return getText(driver, bleAlertMsg);
 	}
-	
-	
 }
