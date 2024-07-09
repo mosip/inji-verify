@@ -86,7 +86,7 @@ Feature: Inji Verify upload qr code testing
     And Verify info message for QR code file LargeFileSize
     And Verify QR code file invalid
     And Verify Error logo for invalid QR code
-    And Verify Error message for invalid QR code
+    And Verify Error message for invalid QR code    
     And Verify click on another qr code button
     And Upload QR code unsupported file HTML
-    And Verify Error message 
+    And Verify Error message

@@ -12,6 +12,7 @@
 		<cucumber.version>7.17.0</cucumber.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<selenium.version>4.11.0</selenium.version>
+		<cucumber.testing.version>7.2.3</cucumber.testing.version>
 		<surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
 	</properties>
 
@@ -21,7 +22,7 @@
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -69,7 +70,7 @@
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>7.2.3</version>
+			<version>${cucumber.testing.version}</version>
 		</dependency>
 
 		<dependency>
@@ -82,7 +83,7 @@
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-testng</artifactId>
-			<version>7.2.3</version>
+			<version>${cucumber.testing.version}</version>
 		</dependency>
 
 		<dependency>
