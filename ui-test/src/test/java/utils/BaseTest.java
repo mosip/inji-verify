@@ -26,7 +26,6 @@ public class BaseTest {
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
 	}
-
 	public WebDriver driver;
 	public JavascriptExecutor jse;
 	String accessKey = getKeyValueFromYaml("/browserstack.yml","accessKey");
