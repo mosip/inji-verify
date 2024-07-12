@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.uiautomation</groupId>
 	<artifactId>uitest-injiverify</artifactId>
@@ -6,9 +6,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.target>21</maven.compiler.target>
 		<cucumber.version>7.17.0</cucumber.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.source>21</maven.compiler.source>
 		<selenium.version>4.11.0</selenium.version>
 		<cucumber.testing.version>7.2.3</cucumber.testing.version>
 		<surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
