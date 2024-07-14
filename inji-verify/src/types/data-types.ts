@@ -51,7 +51,7 @@ export type VerificationState = {
     qrReadResult?: QrReadResult | undefined,
     verificationResult?: VerificationResult,
     alert?: AlertInfo,
-    ovp?: {}
+    ovp?: OvpFlowData
 }
 
 export type QrReadResult = {
@@ -61,7 +61,7 @@ export type QrReadResult = {
 }
 
 export type OvpFlowData = {
-    presentationSubmission?: object,
+    presentationSubmission?: any,
     vpToken?: any
 }
 

@@ -70,7 +70,6 @@ function* verifyVC(vc: any) {
 
 function* verificationSaga() {
     yield takeLatest(verificationInit, function* ({ payload }) {
-        console.log("[Verification Init - Saga] Payload: ", payload );
         yield call(handleVerification, payload.qrReadResult?.qrData ?? payload.ovp);
     });
 }

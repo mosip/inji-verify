@@ -31,7 +31,6 @@ function OvpRedirect(props: any) {
         finally {
             navigate("/");
             if (!!vpToken && !!presentationSubmission) {
-                console.log("Dispatching verification init. Vp token: ", vpToken, ", \nPresentation Submission: ", presentationSubmission);
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
             }
         }

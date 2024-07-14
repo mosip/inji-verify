@@ -23,7 +23,6 @@ const verificationSlice = createSlice({
         },
         // qrReadComplete and init verification
         verificationInit: (state, action) => {
-            console.log("[Verification Init - Slice] Payload: ", action.payload );
             state.activeScreen = VerificationSteps[state.method].Verifying;
             state.qrReadResult = action.payload.qrReadResult;
             state.ovp = action.payload;
