@@ -6,6 +6,7 @@ import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import AlertMessage from "./components/commons/AlertMessage";
 
 import PreloadImages from "./components/commons/PreloadImages";
+import OvpRedirect from "./pages/OvpRedirect";
 
 const router = createBrowserRouter([
     {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/redirect',
-        element: <Home/>
+        element: <OvpRedirect/>
     },
     {
         path: '/offline',

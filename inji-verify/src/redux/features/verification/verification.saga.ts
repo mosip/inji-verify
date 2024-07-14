@@ -9,15 +9,18 @@ import {select} from "redux-saga-test-plan/matchers";
 import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
 import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-utils";
 
-function* handleVerification(qrData: string) {
+function* handleVerification(data: string | object) {
     try {
-        console.log("QR Data: ", qrData);
-        if (qrData.startsWith("INJI_OVP://payload=")) {
-            yield call(handleOvpFlow, qrData);
-        } else {
-            const vc: object = yield call(JSON.parse, (decodeQrData(qrData)));
-            yield call(verifyVC, vc);
+        const dataType = typeof data;
+
+        if (dataType === "string" && (data as string).startsWith("INJI_OVP://payload=")) {
+            yield call(handleOvpFlow, data as string);
+            return;
         }
+        const vc: object = typeof data === "object"
+            ? (data as any).vpToken?.verifiableCredential[0] // ovp flow
+            : yield call(JSON.parse, (decodeQrData(data))); // normal flow - vc in qr
+        yield call(verifyVC, vc);
     } catch (error) {
         console.log(error)
         yield put(goHomeScreen({}));
@@ -67,7 +70,8 @@ function* verifyVC(vc: any) {
 
 function* verificationSaga() {
     yield takeLatest(verificationInit, function* ({ payload }) {
-        yield call(handleVerification, payload.qrReadResult?.qrData);
+        console.log("[Verification Init - Saga] Payload: ", payload );
+        yield call(handleVerification, payload.qrReadResult?.qrData ?? payload.ovp);
     });
 }
 
