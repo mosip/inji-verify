@@ -6,15 +6,5 @@ export const extractRedirectUrlFromQrData = (qrData: string) => {
 }
 
 export const initiateOvpFlow = (redirectUri: string) => {
-    console.log("Initiating the OVP Flow...");
-    fetch(redirectUri, {
-        method: "GET",
-        redirect: "follow"
-    })
-        .then(response => {
-            console.log("OVP Flow initiated successfully");
-        })
-        .catch(error => {
-            console.error("Error occurred while initiating the ovp flow: ", error);
-        });
+    window.location.href = redirectUri;
 }
