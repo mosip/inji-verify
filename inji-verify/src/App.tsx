@@ -13,6 +13,10 @@ const router = createBrowserRouter([
         element: <Home/>
     },
     {
+        path: '/redirect',
+        element: <Home/>
+    },
+    {
         path: '/offline',
         element: <Offline/>
     }

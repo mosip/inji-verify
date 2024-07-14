@@ -7,13 +7,30 @@ import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
 import {select} from "redux-saga-test-plan/matchers";
 import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
+import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-utils";
 
 function* handleVerification(qrData: string) {
     try {
-        const vc: object = yield call(JSON.parse, (decodeQrData(qrData)));
-        yield call(verifyVC, vc);
+        console.log("QR Data: ", qrData);
+        if (qrData.startsWith("INJI_OVP://payload=")) {
+            yield call(handleOvpFlow, qrData);
+        } else {
+            const vc: object = yield call(JSON.parse, (decodeQrData(qrData)));
+            yield call(verifyVC, vc);
+        }
     } catch (error) {
         console.log(error)
+        yield put(goHomeScreen({}));
+        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+    }
+}
+
+function* handleOvpFlow(qrData: string) {
+    const redirectUrl = extractRedirectUrlFromQrData(qrData);
+    if (redirectUrl) {
+        initiateOvpFlow(redirectUrl);
+    } else {
+        console.error("Failed to extract the redirect url from the qr data");
         yield put(goHomeScreen({}));
         yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
