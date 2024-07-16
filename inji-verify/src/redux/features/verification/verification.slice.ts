@@ -7,7 +7,8 @@ export const PreloadedState: VerificationState = {
     qrReadResult: {status: "NOT_READ"},
     method: "UPLOAD",
     activeScreen: VerificationSteps["UPLOAD"].QrCodePrompt,
-    verificationResult: {vc: undefined, vcStatus: undefined}
+    verificationResult: {vc: undefined, vcStatus: undefined},
+    ovp: {}
 };
 
 const verificationSlice = createSlice({
@@ -24,6 +25,7 @@ const verificationSlice = createSlice({
         verificationInit: (state, action) => {
             state.activeScreen = VerificationSteps[state.method].Verifying;
             state.qrReadResult = action.payload.qrReadResult;
+            state.ovp = action.payload;
         },
         verificationComplete: (state, action) => {
             state.activeScreen = VerificationSteps[state.method].DisplayResult;
@@ -34,6 +36,7 @@ const verificationSlice = createSlice({
             state.activeScreen = VerificationSteps[state.method].QrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
             state.method = action.payload.method ?? state.method;
+            state.ovp = {};
         }
     },
     name: "VcVerification",
