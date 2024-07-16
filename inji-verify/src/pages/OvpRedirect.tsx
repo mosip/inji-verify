@@ -34,7 +34,7 @@ function OvpRedirect(props: any) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
             }
         }
-    }, []);
+    }, [location, navigate, dispatch]);
     return (
         <PageTemplate/>
     );
