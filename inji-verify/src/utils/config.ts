@@ -81,3 +81,4 @@ export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._en
     : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds
 
 export const OvpClientId = window._env_.OVP_CLIENT_ID;
+export const OvpQrHeader = window._env_.OVP_QR_HEADER;
