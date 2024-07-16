@@ -1,8 +1,8 @@
-import {OvpClientId} from "./config";
+import {OvpClientId, OvpQrHeader} from "./config";
 
 export const extractRedirectUrlFromQrData = (qrData: string) => {
     // qr data format = OVP://payload:text-content
-    const regex = /^INJI_OVP:\/\/payload=(.*)$/;
+    const regex = new RegExp(`^${OvpQrHeader}(.*)$`);
     const match = qrData.match(regex);
     return match ? match[1] : null;
 }

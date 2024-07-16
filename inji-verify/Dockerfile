@@ -12,6 +12,7 @@ ARG ovpClientId
 ENV INTERNET_CONNECTIVITY_CHECK_ENDPOINT=$internetConnectivityCheckEndpoint
 ENV INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$internetConnectivityCheckTimeout
 ENV OVP_CLIENT_ID=$ovpClientId
+ENV OVP_QR_HEADER=$ovpQrHeader
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
