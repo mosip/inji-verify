@@ -3,6 +3,7 @@ import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.s
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
+import {Pages} from "../../utils/config";
 
 const SubMenu = () => {
     return (
@@ -30,8 +31,8 @@ const MobileDropDownMenu = ({showMenu}: { showMenu: boolean }) => {
             showMenu && (
                 <div id="menu"
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
-                    <a id="home-button" href="/" className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
-                    <a id="verify-credentials-button" href="/" className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
+                    <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+                    <a id="verify-credentials-button" href={Pages.Offline} className="block px-1 py-2 text-sm text-primary hover:bg-gray-100">Verify Credentials</a>
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
@@ -55,7 +56,7 @@ const DesktopMenu = () => {
             <ul className="hidden lg:flex mt-4 lg:flex-row lg:space-x-10 lg:mt-0 lg:text-sm lg:font-medium">
                 <li>
                     <a id="home-button"
-                       href="/"
+                       href={Pages.Offline}
                        className="block py-2 rounded text-black"
                        aria-current="page">
                         Home
@@ -63,7 +64,7 @@ const DesktopMenu = () => {
                 </li>
                 <li>
                     <a id="verify-credentials-button"
-                       href="/"
+                       href={Pages.Offline}
                        className="block py-2 rounded text-primary">
                         Verify Credentials
                     </a>
@@ -94,7 +95,7 @@ function Navbar(props: any) {
                 >
                     <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                 </button>
-                <a href="/" className="flex items-center">
+                <a href={Pages.Offline} className="flex items-center">
                     <img id="inji-verify-logo" className="h-[100%]" src='/assets/images/inji_verify.svg' alt="inji-verify-logo"/>
                 </a>
                 <DesktopMenu/>
