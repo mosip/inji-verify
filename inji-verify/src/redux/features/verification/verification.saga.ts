@@ -1,19 +1,39 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {goHomeScreen, verificationComplete, verificationInit} from './verification.slice';
 import {closeAlert, raiseAlert} from "../alerts/alerts.slice";
-import { AlertMessages } from '../../../utils/config';
+import {AlertMessages, OvpQrHeader} from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
 import {select} from "redux-saga-test-plan/matchers";
 import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
+import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-utils";
 
-function* handleVerification(qrData: string) {
+function* handleVerification(data: string | object) {
     try {
-        const vc: object = yield call(JSON.parse, (decodeQrData(qrData)));
+        const dataType = typeof data;
+
+        if (dataType === "string" && (data as string).startsWith(OvpQrHeader)) {
+            yield call(handleOvpFlow, data as string);
+            return;
+        }
+        const vc: object = typeof data === "object"
+            ? (data as any).vpToken?.verifiableCredential[0] // ovp flow
+            : yield call(JSON.parse, (decodeQrData(data))); // normal flow - vc in qr
         yield call(verifyVC, vc);
     } catch (error) {
         console.log(error)
+        yield put(goHomeScreen({}));
+        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+    }
+}
+
+function* handleOvpFlow(qrData: string) {
+    const redirectUrl = extractRedirectUrlFromQrData(qrData);
+    if (redirectUrl) {
+        initiateOvpFlow(redirectUrl);
+    } else {
+        console.error("Failed to extract the redirect url from the qr data");
         yield put(goHomeScreen({}));
         yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
@@ -50,7 +70,7 @@ function* verifyVC(vc: any) {
 
 function* verificationSaga() {
     yield takeLatest(verificationInit, function* ({ payload }) {
-        yield call(handleVerification, payload.qrReadResult?.qrData);
+        yield call(handleVerification, payload.qrReadResult?.qrData ?? payload.ovp);
     });
 }
 
