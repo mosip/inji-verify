@@ -25,20 +25,17 @@ Prerequisites:
     $ nvm install 18
     ```
 
-To getting started quickly with the local setup for a quick demo, install Docker and Docker compose:
-
 - **Docker**
 
     - [Install on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-    
+    - [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)    
     - [Other platforms](https://docs.docker.com/engine/install/)
   
 - **Docker Compose**
   
-  Note: Requires installation of Docker. Please install Docker using above links before proceeding for the installation of docker compose 
+  ```Note: Requires installation of Docker. This step can be skippped if Docker desktop(Windows) is installed as it comes along with docker compose. Please install Docker using above links before proceeding for the installation of docker compose```
     
     - [Install as plugin to docker command](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin)
-  
     - [Install the Compose standalone](https://docs.docker.com/compose/install/#scenario-three-install-the-compose-standalone)
 
   Once installed, use Docker compose option below to run the Inji Verify application for a quick demo.
