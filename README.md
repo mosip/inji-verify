@@ -2,6 +2,14 @@
 
 Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer.  A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
 
+# Contents:
+This document contains the following sections:
+* Installations
+* Folder Structure
+* Configuration
+* Developer Setup
+* Demo Setup
+* Troubleshoot
 ---
 
 # Installations:
@@ -41,6 +49,9 @@ Once the repo is cloned, following folders can be found under the inji-verify re
 
 * **helm:** folder contains helm charts required to deploy on K8S
 * **inji-verify:** contains the application source code, Dockerfile and docker-compose.yml files
+  * src (source code)
+  * Dockerfile
+  * docker-compose.yml
 * **ui-test:** contains the ui automation tests
 
 ---
@@ -68,7 +79,7 @@ npm install
 npm start
 ```
 
-### Docker setup:
+### Run Docker Image:
     (Note: Make sure that the following commands are run in the directory where Dockerfile is present)
 
 Run the following commands to build and test the application as docker images
@@ -83,10 +94,10 @@ docker stop inji-verify-dev
 docker rm inji-verify-dev
 ```
 
-### Docker compose setup:
+### Run Using Docker Compose:
     (Note: Make sure that the following commands are run in the directory where docker-compose.yml file is present)
 
-Use the above image in the docker-compose.yml file and run the following commands to run as docker compose:
+Use the above image `<dockerImageName>:<tag>` in the docker-compose.yml file and run the following commands to run as docker compose:
 ```shell
 $ docker-compose up -d # if docker compose is installed as a standalone command.
 $ docker compose up -d # if docker compose is installed as a plugin to docker command
@@ -97,7 +108,7 @@ $ docker-compose down # if docker compose is installed as a standalone command.
 $ docker compose down # if docker compose is installed as a plugin to docker command
 ```
 
-Now, access the application at http://localhost:3000.
+Once started, the application is accessible at http://localhost:3000.
 
 ---
 
@@ -121,7 +132,7 @@ $ cd ./inji-verify
 $ docker-compose up -d # if docker compose is installed as a standalone command.
 $ docker compose up -d # if docker compose is installed as a plugin to docker command
 ```
-Now, access the application at http://localhost:3000.
+The application is now accessible at http://localhost:3000.
 
 Once the demo is done, cleanup using the following command:
 ```shell
