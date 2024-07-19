@@ -18,7 +18,7 @@ on:
 
 
 jobs:
-  inji-web-test:
+  inji-verify-test:
     uses: Rakshithb1/kattu/.github/workflows/browserstack-web.yml@master
     with:
       SERVICE_LOCATION: ui-test
