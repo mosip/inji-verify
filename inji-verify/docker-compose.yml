@@ -4,7 +4,9 @@ services:
   inji-verify:
     image: mosipid/inji-verify:latest
     ports:
-      - "80:80"
+      - "3000:80"
     environment:
       - INTERNET_CONNECTIVITY_CHECK_ENDPOINT=${INTERNET_CONNECTIVITY_CHECK_ENDPOINT-https://dns.google/}
       - INTERNET_CONNECTIVITY_CHECK_TIMEOUT=${INTERNET_CONNECTIVITY_CHECK_TIMEOUT-10000}
+      - OVP_CLIENT_ID={OVP_CLIENT_ID-https://injiverify.dev1.mosip.net}
+      - OVP_QR_HEADER={OVP_QR_HEADER-INJI_OVP://payload=}

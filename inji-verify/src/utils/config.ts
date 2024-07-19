@@ -1,11 +1,19 @@
 import {AlertInfo} from "../types/data-types";
 
+export const Pages = {
+    Home: "/",
+    VerifyCredentials: "/",/*"/verify"*/
+    Offline: "/offline",
+    Redirect: "/redirect",
+    PageNotFound: "*"
+}
+
 export const SUPPORTED_DID_METHODS = ["web"];
 
 export const SUPPORTED_QR_HEADERS = [''];
 export const HEADER_DELIMITER = '';
 
-export const SupportedFileTypes = ["png", "jpeg", "jpg", "pdf"]
+export const SupportedFileTypes = ["png", "jpeg", "jpg", "pdf"];
 
 export const VerificationSteps: any = {
     "SCAN": {
@@ -64,8 +72,21 @@ export const AlertMessages = {
     qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
     unsupportedFileSize: {message: "File size not supported. The file size should be between 10 KB and 5 MB.", severity: "error"} as AlertInfo,
     verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
-    unsupportedFileType: {message: "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf", severity: "error"} as AlertInfo
+    unsupportedFileType: {message: "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf", severity: "error"} as AlertInfo,
+    pageNotFound: {message: "Page Not Found!!", severity: "error"} as AlertInfo
 };
+
+// TODO: Update the error messages for the following
+// maintain mapping between the error codes and
+export const OvpErrors: any = {
+    "invalid_scope": "Invalid Scope",
+    "invalid_request": "Invalid Request",
+    "invalid_client": "Invalid Client",
+    "vp_formats_not_supported": "VP Formats Not Supported",
+    "invalid_presentation_definition_uri": "Invalid Presentation Definition URI",
+    "invalid_presentation_definition_reference": "Invalid Presentation Definition Reference"
+
+}
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
 
@@ -79,3 +100,6 @@ export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIV
 export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT))
     ? 10000
     : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds
+
+export const OvpClientId = window._env_.OVP_CLIENT_ID;
+export const OvpQrHeader = window._env_.OVP_QR_HEADER;
