@@ -28,8 +28,8 @@ function OvpRedirect(props: any) {
             vpToken = extractParam(params, "vp_token");
             presentationSubmission = extractParam(params, "presentation_submission");
 
-            error = extractParam(queryParams, "error");
-            errorDescription = extractParam(queryParams, "error_description");
+            error = queryParams.get("error");
+            errorDescription = queryParams.get("error_description");
         }
         catch (error) {
             console.error("Error occurred while reading params in redirect url, Error: ", error);
@@ -38,7 +38,7 @@ function OvpRedirect(props: any) {
             navigate(Pages.Home);
             if (!!vpToken && !!presentationSubmission) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
-            } else {
+            } else if (!!error) {
                 dispatch(raiseAlert(
                     {
                         message: OvpErrors[error]
