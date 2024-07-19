@@ -123,12 +123,12 @@ Choose one of the release branches that are currently available for the demo:
 * master
 
 ```shell
-cd ./inji-verify
+cd ./inji-verify # repository folder
 git checkout release-0.9.0 # choose from any of the above branches
 ```
 To start the application, run the following commands:
 ```shell
-$ cd ./inji-verify
+$ cd ./inji-verify # source code folder
 $ docker-compose up -d # if docker compose is installed as a standalone command.
 $ docker compose up -d # if docker compose is installed as a plugin to docker command
 ```
@@ -139,3 +139,55 @@ Once the demo is done, cleanup using the following command:
 $ docker-compose down # if docker compose is installed as a standalone command.
 $ docker compose down # if docker compose is installed as a plugin to docker command
 ```
+
+# Troubleshoot:
+This section contains some common problems that could occur during the setup and steps to resolve then:
+
+## Issue with starting docker compose:
+
+```
+no configuration file provided: not found
+```
+or
+```
+Can't find a suitable configuration file in this directory or any
+parent. Are you in the right directory?
+
+Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml
+```
+### Solution:
+
+Make sure that you are in the right directory `inji-verify/inji-verify` and the docker-compose.yml file is present in this directory.
+
+Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
+
+## Issue with ports:
+```
+Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:3000 -> 0.0.0.0:0: listen tcp 0.0.0.0:80: bind: An attempt was made to access a socket in a way forbidden by its access permissions.
+```
+### Solution:
+
+Try updating the port in the docker-compose.yml file from 3000:80 to <other_port>:80 and try again
+## Issue with building docker image:
+```
+ERROR: failed to solve: failed to read dockerfile: no such file or directory
+```
+### Solution:
+
+Make sure that you are in the right directory `inji-verify/inji-verify` and the Dockerfile is present in this directory.
+
+Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
+
+## Issue with docker engine:
+```
+docker engine/socket not available
+```
+### Solution:
+
+In Windows: Start/Restart Docker desktop application
+
+In Ubuntu: Run the following command to make sure that the docker service is running
+```shell
+sudo systemctl restart docker.service
+```
+
