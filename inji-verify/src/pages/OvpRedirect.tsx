@@ -6,13 +6,6 @@ import {verificationInit} from "../redux/features/verification/verification.slic
 import {raiseAlert} from "../redux/features/alerts/alerts.slice";
 import {OvpErrors, Pages} from "../utils/config";
 
-const extractParam = (params: URLSearchParams, paramName: string) => {
-    const encodedValue = params.get(paramName);
-    return (!!encodedValue)
-        ? JSON.parse(atob(encodedValue))
-        : null;
-}
-
 function OvpRedirect(props: any) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -25,8 +18,12 @@ function OvpRedirect(props: any) {
             const params = new URLSearchParams(location.hash.substring(1));
             const queryParams = new URLSearchParams(location.search.substring(1));
 
-            vpToken = extractParam(params, "vp_token");
-            presentationSubmission = extractParam(params, "presentation_submission");
+            vpToken = !!params.get("vp_token")
+                ? JSON.parse(atob(params.get("vp_token") as string)) // base64 encoded
+                : undefined;
+            presentationSubmission = !!params.get("presentation_submission")
+                ? decodeURIComponent(params.get("presentation_submission") as string) // url encoded
+                : undefined;
 
             error = queryParams.get("error");
             errorDescription = queryParams.get("error_description");
@@ -46,6 +43,8 @@ function OvpRedirect(props: any) {
                             ?? "Something Went Wrong!!",
                         severity: "error"
                     }));
+            } else {
+                dispatch(raiseAlert({message: "Invalid Parameters!!", severity: "error"}))
             }
         }
     }, [location, navigate, dispatch]);
