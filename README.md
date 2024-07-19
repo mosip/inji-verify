@@ -37,10 +37,11 @@ To getting started quickly with the local setup for a quick demo, install Docker
 ---
 
 # Folder Structure:
+Once the repo is cloned, following folders can be found under the inji-verify repository folder:
 
 * **helm:** folder contains helm charts required to deploy on K8S
-
-* **inji-verify:** contains the source code and Dockerfile
+* **inji-verify:** contains the application source code, Dockerfile and docker-compose.yml files
+* **ui-test:** contains the ui automation tests
 
 ---
 
@@ -51,47 +52,79 @@ It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_
 
 ---
 
-# Running the application:
+# Developer Setup:
 
-### Run the following commands to start the application:
-
+Once the repo is cloned, move into the inji-verify repository folder and run the following command to check out to the develop branch:
 ```shell
-$ cd ./inji-verify
-$ npm install
-$ npm start
-```
-  
-
-### Build and Run Docker for a service:
-```shell
-$ docker build -t <dockerImageName>:<tag> .
-$ docker run -it -d -p 3000:3000 --env-file ./env <dockerImageName>:<tag>
+cd inji-verify # move into the repository folder
+git checkout develop
+cd inji-verify # contains source code, Dockerfile and docker-compose.yml
 ```
 
-Once any of the above two methods are followed, open http://localhost:3000 to start using the Inji Verify application
-
-#### Cleaning up:
-
-Run the following command to stop the application:
-
+### Development server:
+To get a development server up and running, run the following commands:
 ```shell
-docker kill $(docker ps -a | grep <dockerImageName>:<tag> | awk '{print $1}')
+npm install
+npm start
 ```
 
-### Using Docker Compose:
-    Note - This option is useful for quick demos
+### Docker setup:
+    (Note: Make sure that the following commands are run in the directory where Dockerfile is present)
+
+Run the following commands to build and test the application as docker images
+```shell
+docker build -t <dockerImageName>:<tag> .
+docker run -it -d -p 3000:80 --env-file ./.env --name inji-verify-dev <dockerImageName>:<tag>
+```
+
+Stop and delete the docker containers using the following commands:
+```shell
+docker stop inji-verify-dev
+docker rm inji-verify-dev
+```
+
+### Docker compose setup:
+    (Note: Make sure that the following commands are run in the directory where docker-compose.yml file is present)
+
+Use the above image in the docker-compose.yml file and run the following commands to run as docker compose:
+```shell
+$ docker-compose up -d # if docker compose is installed as a standalone command.
+$ docker compose up -d # if docker compose is installed as a plugin to docker command
+```
+To stop the application, run the following command:
+```shell
+$ docker-compose down # if docker compose is installed as a standalone command.
+$ docker compose down # if docker compose is installed as a plugin to docker command
+```
+
+Now, access the application at http://localhost:3000.
+
+---
+
+# Demo Setup:
+This section helps to quickly get started with a demo of the Inji Verify application
+
+Once the repository is cloned, move into the inji-verify repository directory.
+Choose one of the release branches that are currently available for the demo:
+* release-0.8.0
+* release-0.8.1
+* release-0.9.0
+* master
+
+```shell
+cd ./inji-verify
+git checkout release-0.9.0 # choose from any of the above branches
+```
+To start the application, run the following commands:
 ```shell
 $ cd ./inji-verify
 $ docker-compose up -d # if docker compose is installed as a standalone command.
 $ docker compose up -d # if docker compose is installed as a plugin to docker command
 ```
-Once the docker compose command is run, open http://localhost to start using the Inji Verify application
+Now, access the application at http://localhost:3000.
 
-#### Cleaning up:
-
-Run the following command to stop the application
-
+Once the demo is done, cleanup using the following command:
 ```shell
-$ docker-compose stop # if docker compose is installed as a standalone command.
-$ docker compose stop # if docker compose is installed as a plugin to docker command
+$ docker-compose down # if docker compose is installed as a standalone command.
+$ docker compose down # if docker compose is installed as a plugin to docker command
 ```
