@@ -23,7 +23,7 @@ jobs:
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-      JAVA_TOOL_OPTIONS: "--add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
+      
   
     steps:
     - name: Checkout repository
@@ -34,6 +34,11 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+
+    - name: Install Lombok
+      run: |
+        wget https://projectlombok.org/downloads/lombok.jar
+        java -jar lombok.jar install   
 
     - name: Run tests
       run: |
