@@ -50,13 +50,19 @@ export type VerificationState = {
     activeScreen: number, // Verification steps
     qrReadResult?: QrReadResult | undefined,
     verificationResult?: VerificationResult,
-    alert?: AlertInfo
+    alert?: AlertInfo,
+    ovp?: OvpFlowData
 }
 
 export type QrReadResult = {
     alert?: AlertInfo,
     qrData?: string,
     status: QrReadStatus
+}
+
+export type OvpFlowData = {
+    presentationSubmission?: any,
+    vpToken?: any
 }
 
 export type VerificationTrigger = {

@@ -7,9 +7,12 @@ WORKDIR /app
 # Set a build-time environment variable (replace YOUR_ENV_VARIABLE_NAME with the desired variable name)
 ARG internetConnectivityCheckEndpoint
 ARG internetConnectivityCheckTimeout
+ARG ovpClientId
 
-ENV INTERNET_CONNECTIVITY_CHECK_ENDPOINT=$defaultTheme
-ENV INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$defaultLang
+ENV INTERNET_CONNECTIVITY_CHECK_ENDPOINT=$internetConnectivityCheckEndpoint
+ENV INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$internetConnectivityCheckTimeout
+ENV OVP_CLIENT_ID=$ovpClientId
+ENV OVP_QR_HEADER=$ovpQrHeader
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -48,11 +51,9 @@ ENV nginx_dir=/usr/share/nginx
 ENV work_dir=${nginx_dir}/html
 
 ADD configure_start.sh configure_start.sh
+ADD .env /usr/share/nginx/html/.env
 
 RUN chmod +x configure_start.sh
-
-RUN echo "INTERNET_CONNECTIVITY_CHECK_ENDPOINT=$INTERNET_CONNECTIVITY_CHECK_ENDPOINT" >> ${work_dir}/env.env \
-    && echo "INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$INTERNET_CONNECTIVITY_CHECK_TIMEOUT" >> ${work_dir}/env.env
 
 # Copy the built React app from the build container to the Nginx container
 COPY --from=build /app/build /usr/share/nginx/html

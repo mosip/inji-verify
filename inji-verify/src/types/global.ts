@@ -5,7 +5,9 @@ declare global {
         encodeData: (data: string) => void;
         _env_: {
             INTERNET_CONNECTIVITY_CHECK_ENDPOINT: string,
-            INTERNET_CONNECTIVITY_CHECK_TIMEOUT: string
+            INTERNET_CONNECTIVITY_CHECK_TIMEOUT: string,
+            OVP_CLIENT_ID: string,
+            OVP_QR_HEADER: string
         }
     }
 }
