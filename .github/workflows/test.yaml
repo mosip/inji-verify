@@ -1,49 +1,47 @@
-  name: ttttttBrowserStack Web Tests
+name: tttyyBrowserStack Web Tests
 
-  on:
-   workflow_dispatch:
-     inputs:
-       message:
-         description: 'Message for manually triggering'
-         required: false
-         default: 'Triggered for Updates'
-         type: string
-   push:
-     branches:
-       - '!release-branch'
-       - release*
-       - master
-       - 1.*
-       - develop
-       - DSD*
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message for manually triggering'
+        required: false
+        default: 'Triggered for Updates'
+        type: string
+  push:
+    branches:
+      - '!release-branch'
+      - release*
+      - master
+      - 1.*
+      - develop
+      - DSD*
     
-  jobs:
-    inji-verify-test:
-      runs-on: ubuntu-latest
-      env:
-        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+jobs:
+  inji-verify-test:
+    runs-on: ubuntu-latest
+    env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
   
-      steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-         distribution: 'temurin'
-         java-version: '21'
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
 
-     
-    
-      - name: Run tests
-        run: |
-           cd ui-test
-           mvn clean test -DtestngXmlFile="TestNg.xml"
+    - name: Run tests
+      run: |
+         cd ui-test
+         mvn clean test -DtestngXmlFile="TestNg.xml"
 
-      - name: Save test reports
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: test-reports
-          path: ui-test/test-output          
+    - name: Save test reports
+      uses: actions/upload-artifact@v3
+      if: success() || failure()
+      with:
+        name: test-reports
+        path: ui-test/test-output
