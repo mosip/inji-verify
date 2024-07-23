@@ -1,4 +1,4 @@
-  name: BrowserStack Web Tests
+  name: ttttttBrowserStack Web Tests
 
   on:
    workflow_dispatch:
@@ -30,7 +30,7 @@
     
       - name: Run tests
         run: |
-           cd inji-verify-test
+           cd ui-test
            mvn clean test -DtestngXmlFile="TestNg.xml"
 
       - name: Save test reports
@@ -38,4 +38,4 @@
         if: success() || failure()
         with:
           name: test-reports
-          path: inji-web-test/test-output          
+          path: ui-test/test-output          
