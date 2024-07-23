@@ -38,7 +38,7 @@ jobs:
     - name: Install Lombok
       run: |
         wget https://projectlombok.org/downloads/lombok.jar
-        java -jar lombok.jar install   
+        java -jar lombok.jar install auto
 
     - name: Run tests
       run: |
