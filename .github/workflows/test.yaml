@@ -23,6 +23,7 @@ jobs:
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      JAVA_TOOL_OPTIONS: "--add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
   
     steps:
     - name: Checkout repository
@@ -37,10 +38,7 @@ jobs:
     - name: Run tests
       run: |
          cd ui-test
-         mvn clean test -DtestngXmlFile="TestNg.xml" \
-           -Dmaven.compiler.source=21 -Dmaven.compiler.target=21 \
-           --add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED \
-           --add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
+         mvn clean test -DtestngXmlFile="TestNg.xml"
 
     - name: Save test reports
       uses: actions/upload-artifact@v3
