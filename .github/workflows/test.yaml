@@ -37,7 +37,10 @@ jobs:
     - name: Run tests
       run: |
          cd ui-test
-         mvn clean test -DtestngXmlFile="TestNg.xml"
+         mvn clean test -DtestngXmlFile="TestNg.xml" \
+           -Dmaven.compiler.source=21 -Dmaven.compiler.target=21 \
+           --add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED \
+           --add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
 
     - name: Save test reports
       uses: actions/upload-artifact@v3
