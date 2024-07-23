@@ -6,9 +6,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.target>11</maven.compiler.target>
 		<cucumber.version>7.17.0</cucumber.version>
-		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.source>11</maven.compiler.source>
 		<selenium.version>4.11.0</selenium.version>
 		<cucumber.testing.version>7.2.3</cucumber.testing.version>
 		<surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
@@ -111,8 +111,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
 				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -126,6 +126,16 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>${testngXmlFile}</suiteXmlFile>
+					</suiteXmlFiles><argLine>-javaagent:"${com.browserstack:browserstack-java-sdk:jar}"</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
