@@ -7,19 +7,25 @@ import AlertMessage from "./components/commons/AlertMessage";
 
 import PreloadImages from "./components/commons/PreloadImages";
 import OvpRedirect from "./pages/OvpRedirect";
+import PageNotFound404 from "./pages/PageNotFound404";
+import {Pages} from "./utils/config";
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: Pages.Home,
         element: <Home/>
     },
     {
-        path: '/redirect',
+        path: Pages.Redirect,
         element: <OvpRedirect/>
     },
     {
-        path: '/offline',
+        path: Pages.Offline,
         element: <Offline/>
+    },
+    {
+        path: Pages.PageNotFound,
+        element: <PageNotFound404/>
     }
 ])
 
