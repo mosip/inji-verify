@@ -1,11 +1,14 @@
-import { scanFile } from "@openhealthnz-credentials/pdf-image-qr-scanner";
 import {decode, generateQRData} from '@mosip/pixelpass';
 import {HEADER_DELIMITER, SUPPORTED_QR_HEADERS} from "./config";
+import QrScanner from 'qr-scanner';
 
 export const scanFilesForQr = async (selectedFile) => {
     let scanResult = { data: null, error: null };
     try {
-        scanResult.data = await scanFile(selectedFile);
+        const data = await QrScanner.scanImage(selectedFile)
+        .then(result => result)
+        .catch(error => console.log(error || 'No QR code found.'));
+        scanResult.data = data;
     } catch (e) {
         // Example Error Handling
         if (e?.name === "InvalidPDFException") {
