@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import PageTemplate from "../components/PageTemplate";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../redux/hooks";
 import {raiseAlert} from "../redux/features/alerts/alerts.slice";
