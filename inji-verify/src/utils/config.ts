@@ -86,7 +86,7 @@ export const OvpErrors: any = {
   invalid_presentation_definition_uri: "Invalid Presentation Definition URI", // not being used, presentation definition being used
   invalid_presentation_definition_reference:
     "Invalid Presentation Definition Reference", // not being used, presentation definition being used.
-  resource_not_found: "The requested resource doesn’t exist.",
+  resource_not_found: "Something went wrong with your request. Please check and try again.",
   request_time_out: "The request took too long. Please try again later.",
   uri_too_long: "The URL is too long. Please use a shorter link.",
   internal_server_error:
