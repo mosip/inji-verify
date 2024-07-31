@@ -79,14 +79,24 @@ export const AlertMessages = {
 // TODO: Update the error messages for the following
 // maintain mapping between the error codes and
 export const OvpErrors: any = {
-    "invalid_scope": "Invalid Scope",
-    "invalid_request": "Invalid Request",
-    "invalid_client": "Invalid Client",
-    "vp_formats_not_supported": "VP Formats Not Supported",
-    "invalid_presentation_definition_uri": "Invalid Presentation Definition URI",
-    "invalid_presentation_definition_reference": "Invalid Presentation Definition Reference"
-
-}
+  invalid_scope: "Invalid Scope", //presently this won't be shown, as no scope is being passed
+  invalid_request: "Please check your input and try again",
+  invalid_client: "Invalid Client", //handled in inji web, no redirection
+  vp_formats_not_supported: "VP Formats Not Supported", // presently not handled specifically, bad request (invalid_request error is responded)
+  invalid_presentation_definition_uri: "Invalid Presentation Definition URI", // not being used, presentation definition being used
+  invalid_presentation_definition_reference:
+    "Invalid Presentation Definition Reference", // not being used, presentation definition being used.
+  resource_not_found: "The requested resource doesn’t exist.",
+  request_time_out: "The request took too long. Please try again later.",
+  uri_too_long: "The URL is too long. Please use a shorter link.",
+  internal_server_error:
+    "We're having trouble processing your request. Please try again later.",
+  server_unavailable:
+    "The service is currently unavailable. Please try again later",
+  invalid_vp_token:
+    "The credentials don't meet the requirements. Please check and try again.",
+  unsupported_format: "VP Formats Not Supported"
+};
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
 
