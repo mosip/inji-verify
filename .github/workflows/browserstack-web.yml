@@ -1,0 +1,29 @@
+name: BrowserStack Web Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message for manually triggering'
+        required: false
+        default: 'Triggered for Updates'
+        type: string
+  push:
+    branches:
+      - '!release-branch'
+      - release*
+      - master
+      - 1.*
+      - develop
+
+
+jobs:
+  inji-verify-test:
+    uses: Rakshithb1/kattu/.github/workflows/browserstack-web.yml@master-java21
+    with:
+      SERVICE_LOCATION: ui-test
+      BUILD_ARTIFACT: test-output
+    secrets:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+           
