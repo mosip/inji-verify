@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Scanner} from '@yudiel/react-qr-scanner';
 import CameraAccessDenied from "./CameraAccessDenied";
 import {ScanSessionExpiryTime} from "../../../utils/config";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, verificationInit} from "../../../redux/features/verification/verification.slice";
+import {goHomeScreen} from "../../../redux/features/verification/verification.slice";
 import {raiseAlert} from "../../../redux/features/alerts/alerts.slice";
 import "./ScanningLine.css";
+import { useQRScanner } from "../../../utils/qr-utils";
 
 let timer: NodeJS.Timeout;
 
@@ -14,6 +14,7 @@ function QrScanner() {
     const [isCameraBlocked, setIsCameraBlocked] = useState(false);
 
     const scannerRef = useRef<HTMLDivElement>(null);
+    const { initiateQrScanning } = useQRScanner();
 
     useEffect(() => {
         timer = setTimeout(() => {
@@ -24,6 +25,7 @@ function QrScanner() {
                 severity: "error"
             }))
         }, ScanSessionExpiryTime);
+        initiateQrScanning(timer);
         return () => {
             console.log('Clearing timeout');
             clearTimeout(timer)
@@ -50,49 +52,12 @@ function QrScanner() {
                     </div>
                 )
             }
-            <Scanner
-                onResult={(text, result) => {
-                    console.log(text, result);
-                    dispatch(verificationInit({qrReadResult: {qrData: text, status: "SUCCESS"}, flow: "SCAN"}));
-                }}
-                onError={(error) => {
-                    console.log('Clearing timeout - camera blocked');
-                    clearTimeout(timer);
-                    setIsCameraBlocked(true);
-                }}
-                components={{
-                    torch: false
-                }}
-                options={{
-                    constraints: {
-                        "width": {
-                            "min": 640,
-                            "ideal": 720,
-                            "max": 1920
-                        },
-                        "height": {
-                            "min": 640,
-                            "ideal": 720,
-                            "max": 1080
-                        },
-                        facingMode: "environment"
-                    },
-                    delayBetweenScanSuccess: 1000000 // Scan once
-                }}
-                styles={{
-                    container: {
-                        width: window.innerWidth < 1024 ? "250px" : "316px",
-                        placeContent: "center",
-                        display: "grid",
-                        placeItems: "center",
-                        borderRadius: "12px"
-                    },
-                    video: {
-                        objectFit: "cover",
-                        objectPosition: "center"
-                    }
-                }}
+
+           <div
+                className="none absolute h-[250px] w-[250px] lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center"
+                id="reader"
             />
+
             <CameraAccessDenied open={isCameraBlocked} handleClose={() => {
                 console.log("closing camera");
                 dispatch(goHomeScreen({}));
