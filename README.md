@@ -136,16 +136,24 @@ Once started, the application is accessible at http://localhost:3000.
 This section helps to quickly get started with a demo of the Inji Verify application
 
 Once the repository is cloned, move into the inji-verify repository directory.
-Choose one of the release branches that are currently available for the demo:
+Choose one of the branches that are currently available for the demo:
 
-- release-0.8.0
-- release-0.8.1
-- release-0.9.0
+release branches:
+- release-0.8.x
+- release-0.9.x
+
+tags : 
+- v0.9.0
+- v0.8.1
+- v0.8.0
+
+active branches:
 - master
+- develop
 
 ```shell
 cd ./inji-verify # repository folder
-git checkout release-0.9.0 # choose from any of the above branches
+git checkout branchName/tagname # choose from any of the above branches
 ```
 
 To start the application, run the following commands:
