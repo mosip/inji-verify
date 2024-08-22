@@ -18,32 +18,10 @@ on:
 
 jobs:
   inji-verify-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli   
-
-      - name: Run tests with BrowserStack 
-        uses: mosip/kattu/.github/workflows/browserstack-web.yml@master-java21
-        with:
-          SERVICE_LOCATION: ui-test
-          BUILD_ARTIFACT: test-output
-        env:
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-
-      - name: Upload to S3
-        if: success() || failure()
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }} 
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}  
-        run: |
-          S3_OBJECT_KEY=$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)
-          aws s3 cp test-output s3://$S3_BUCKET/$S3_OBJECT_KEY/ --recursive              
+    uses: mosip/kattu/.github/workflows/browserstack-web.yml@master-java21
+    with:
+      SERVICE_LOCATION: ui-test
+      BUILD_ARTIFACT: test-output
+    secrets:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}      
