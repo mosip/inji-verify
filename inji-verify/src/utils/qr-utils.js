@@ -2,8 +2,6 @@ import { decode, generateQRData } from "@mosip/pixelpass";
 import { HEADER_DELIMITER, SUPPORTED_QR_HEADERS } from "./config";
 import { Html5Qrcode } from "html5-qrcode";
 import { pdfToQrData } from "./pdfToQrData";
-import { useAppDispatch } from "../redux/hooks";
-import { verificationInit } from "../redux/features/verification/verification.slice";
 
 export const scanFilesForQr = async (selectedFile) => {
   let scanResult = { data: null, error: null };
@@ -45,41 +43,34 @@ export const decodeQrData = (qrData) => {
 
 export const encodeData = (data) => generateQRData(data);
 
-export const useQRScanner = () => {
-  const dispatch = useAppDispatch();
+let html5QrCode;
+
+export const initiateQrScanning = (timer, onSuccess) => {
   const config = {
     fps: 10,
     disableFlip: false,
-    aspectRatio: 1.0
+    aspectRatio: 1.0,
   };
+  if (!html5QrCode?.getState()) {
+    html5QrCode = new Html5Qrcode("reader");
+    const qrCodeSuccessCallback = (decodedText) => {
+      onSuccess(decodedText);
+      html5QrCode.stop();
+      html5QrCode = null;
+    };
 
-  let html5QrCode;
-
-  const initiateQrScanning = (timer) => {
-    if (!html5QrCode?.getState()) {
-      html5QrCode = new Html5Qrcode("reader");
-      const qrCodeSuccessCallback = (decodedText) => {
-        dispatch(
-          verificationInit({
-            qrReadResult: { qrData: decodedText, status: "SUCCESS" },
-            flow: "SCAN",
-          })
-        );
+    html5QrCode
+      .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+      .catch((e) => {
+        console.error("Error occurred:", e.message);
         clearTimeout(timer);
         html5QrCode.stop();
-      };
+        html5QrCode = null;
+      });
+  }
+};
 
-      html5QrCode
-        .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
-        .catch((e) => {
-          console.error("Error occurred:", e.message);
-          clearTimeout(timer);
-          html5QrCode.stop();
-        });
-    }
-  };
-
-  const terminateScanning = () => html5QrCode.stop();
-
-  return { initiateQrScanning, terminateScanning };
+export const terminateScanning = () => {
+  html5QrCode.stop();
+  html5QrCode = null;
 };

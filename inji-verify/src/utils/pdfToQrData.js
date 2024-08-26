@@ -1,5 +1,5 @@
 import * as pdfjsLib from "pdfjs-dist/webpack";
-import jsQR from "jsqr"; // Import jsQR for QR code decoding
+import jsQR from "jsqr";
 
 const decodeQrCode = (imageDataUrl) => {
   return new Promise((resolve, reject) => {
@@ -31,7 +31,7 @@ export const pdfToQrData = async (file) => {
 
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 2.0 }); // Increase scale for better quality
+      const viewport = page.getViewport({ scale: 2.0 });
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
       canvas.height = viewport.height;
