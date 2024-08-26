@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@mosip/pixelpass": "0.1.6",
-    "@openhealthnz-credentials/pdf-image-qr-scanner": "1.0.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@sunbird-rc/verification-sdk": "0.1.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -15,7 +14,6 @@
     "@types/react-dom": "^18.2.23",
     "@types/react-redux": "^7.1.33",
     "@types/redux-thunk": "^2.1.0",
-    "@yudiel/react-qr-scanner": "2.0.0-beta.3",
     "html5-qrcode": "^2.3.8",
     "jsqr": "^1.4.0",
     "patch-package": "^8.0.0",
