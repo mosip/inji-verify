@@ -44,7 +44,7 @@ export const encodeData = (data) => generateQRData(data);
 
 let html5QrCode;
 
-export const initiateQrScanning = (timer, onSuccess) => {
+export const initiateQrScanning = (onSuccess, onError) => {
   const config = {
     fps: 10,
     disableFlip: false,
@@ -61,9 +61,7 @@ export const initiateQrScanning = (timer, onSuccess) => {
     html5QrCode
       .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
       .catch((e) => {
-        console.error("Error occurred:", e.message);
-        clearTimeout(timer);
-        html5QrCode.stop();
+        onError(e);
         html5QrCode = null;
       });
   }
