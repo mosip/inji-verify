@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
 import { ScanSessionExpiryTime } from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -18,15 +18,18 @@ function QrScanner() {
 
   const scannerRef = useRef<HTMLDivElement>(null);
 
-  const onSuccess = (decodedText: any) => {
-    dispatch(
-      verificationInit({
-        qrReadResult: { qrData: decodedText, status: "SUCCESS" },
-        flow: "SCAN",
-      })
-    );
-    clearTimeout(timer);
-  };
+  const onSuccess = useCallback(
+    (decodedText: any) => {
+      dispatch(
+        verificationInit({
+          qrReadResult: { qrData: decodedText, status: "SUCCESS" },
+          flow: "SCAN",
+        })
+      );
+      clearTimeout(timer);
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -46,7 +49,7 @@ function QrScanner() {
       console.log("Clearing timeout");
       clearTimeout(timer);
     };
-  }, [dispatch]);
+  }, [dispatch, onSuccess]);
 
   useEffect(() => {
     // Disable inbuilt border around the video
