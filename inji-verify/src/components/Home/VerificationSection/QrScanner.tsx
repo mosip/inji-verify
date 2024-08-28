@@ -33,7 +33,7 @@ function QrScanner() {
 
   const onError = (e: any) => {
     console.error("Error occurred:", e);
-    if (e.includes("Permission denied")) {
+    if (e.includes("NotAllowedError")) {
       setIsCameraBlocked(true);
     }
     clearTimeout(timer);
