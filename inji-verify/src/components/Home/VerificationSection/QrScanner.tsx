@@ -56,25 +56,6 @@ function QrScanner() {
       clearTimeout(timer);
     };
   }, [dispatch, onSuccess]);
-  useEffect(() => {
-    timer = setTimeout(() => {
-      dispatch(goHomeScreen({}));
-      dispatch(
-        raiseAlert({
-          open: true,
-          message:
-            "The scan session has expired due to inactivity. Please initiate a new scan.",
-          severity: "error",
-        })
-      );
-      terminateScanning();
-    }, ScanSessionExpiryTime);
-    initiateQrScanning(onSuccess, onError);
-    return () => {
-      console.log("Clearing timeout");
-      clearTimeout(timer);
-    };
-  }, [dispatch, onSuccess]);
 
   useEffect(() => {
     // Disable inbuilt border around the video
@@ -85,6 +66,8 @@ function QrScanner() {
       }
     }
   }, [scannerRef]);
+
+  window.onpopstate = () => console.log("browser back===>>");
 
   return (
     <div ref={scannerRef} className="relative">
