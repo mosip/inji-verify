@@ -30,6 +30,28 @@ function QrScanner() {
     },
     [dispatch]
   );
+  const scannerRef = useRef<HTMLDivElement>(null);
+
+  const onSuccess = useCallback(
+    (decodedText: any) => {
+      dispatch(
+        verificationInit({
+          qrReadResult: { qrData: decodedText, status: "SUCCESS" },
+          flow: "SCAN",
+        })
+      );
+      clearTimeout(timer);
+    },
+    [dispatch]
+  );
+
+  const onError = (e: any) => {
+    console.error("Error occurred:", e);
+    if (e.includes("NotAllowedError")) {
+      setIsCameraBlocked(true);
+    }
+    clearTimeout(timer);
+  };
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -45,6 +67,25 @@ function QrScanner() {
       terminateScanning();
     }, ScanSessionExpiryTime);
     initiateQrScanning(timer, onSuccess);
+    return () => {
+      console.log("Clearing timeout");
+      clearTimeout(timer);
+    };
+  }, [dispatch, onSuccess]);
+  useEffect(() => {
+    timer = setTimeout(() => {
+      dispatch(goHomeScreen({}));
+      dispatch(
+        raiseAlert({
+          open: true,
+          message:
+            "The scan session has expired due to inactivity. Please initiate a new scan.",
+          severity: "error",
+        })
+      );
+      terminateScanning();
+    }, ScanSessionExpiryTime);
+    initiateQrScanning(onSuccess, onError);
     return () => {
       console.log("Clearing timeout");
       clearTimeout(timer);
