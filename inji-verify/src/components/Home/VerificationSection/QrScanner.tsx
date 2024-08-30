@@ -30,26 +30,10 @@ function QrScanner() {
     },
     [dispatch]
   );
-  const scannerRef = useRef<HTMLDivElement>(null);
-
-  const onSuccess = useCallback(
-    (decodedText: any) => {
-      dispatch(
-        verificationInit({
-          qrReadResult: { qrData: decodedText, status: "SUCCESS" },
-          flow: "SCAN",
-        })
-      );
-      clearTimeout(timer);
-    },
-    [dispatch]
-  );
 
   const onError = (e: any) => {
     console.error("Error occurred:", e);
-    if (e.includes("NotAllowedError")) {
-      setIsCameraBlocked(true);
-    }
+    setIsCameraBlocked(true);
     clearTimeout(timer);
   };
 
@@ -66,7 +50,7 @@ function QrScanner() {
       );
       terminateScanning();
     }, ScanSessionExpiryTime);
-    initiateQrScanning(timer, onSuccess);
+    initiateQrScanning(onSuccess, onError);
     return () => {
       console.log("Clearing timeout");
       clearTimeout(timer);
