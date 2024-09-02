@@ -50,9 +50,7 @@ const ScanQrCode = () => {
   
     useEffect(() => {
       const handlePopState = () => {
-        if( method === "SCAN"){
-            dispatch(goHomeScreen({ method: "UPLOAD" }));
-        }
+        dispatch(goHomeScreen({ method: "UPLOAD"}));
       };
   
       window.addEventListener("popstate", handlePopState);
