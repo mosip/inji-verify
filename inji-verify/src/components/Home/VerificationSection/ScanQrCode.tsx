@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import scanQr from "../../../assets/scanner-ouline.svg";
 import qrIcon from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
-import {goHomeScreen, qrReadInit} from "../../../redux/features/verification/verification.slice";
+import {qrReadInit} from "../../../redux/features/verification/verification.slice";
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
@@ -45,21 +45,7 @@ const Upload = () => (
 
 const ScanQrCode = () => {
     const method = useVerificationFlowSelector(state => state.method);
-    const dispatch = useAppDispatch();
     console.log({ method });
-  
-    useEffect(() => {
-      const handlePopState = () => {
-        dispatch(goHomeScreen({ method: "UPLOAD"}));
-      };
-  
-      window.addEventListener("popstate", handlePopState);
-  
-      return () => {
-        window.removeEventListener("popstate", handlePopState);
-      };
-    }, [dispatch, method]);
-    
     return (
         <div
             className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
