@@ -33,9 +33,7 @@ function QrScanner() {
 
   const onError = (e: any) => {
     console.error("Error occurred:", e);
-    if (e.includes("NotAllowedError")) {
-      setIsCameraBlocked(true);
-    }
+    setIsCameraBlocked(true);
     clearTimeout(timer);
   };
 
@@ -68,6 +66,8 @@ function QrScanner() {
       }
     }
   }, [scannerRef]);
+
+  window.onpopstate = () => console.log("browser back===>>");
 
   return (
     <div ref={scannerRef} className="relative">
