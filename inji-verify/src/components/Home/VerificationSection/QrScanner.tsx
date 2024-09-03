@@ -67,8 +67,6 @@ function QrScanner() {
     }
   }, [scannerRef]);
 
-  window.onpopstate = () => console.log("browser back===>>");
-
   return (
     <div ref={scannerRef} className="relative">
       {!isCameraBlocked && (
