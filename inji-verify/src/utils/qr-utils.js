@@ -6,7 +6,6 @@ import { pdfToQrData } from "./pdfToQrData";
 export const scanFilesForQr = async (selectedFile) => {
   let scanResult = { data: null, error: null };
   const html5QrCode = new Html5Qrcode("upload-qr");
-
   try {
     if (selectedFile.type === "application/pdf") {
       const qrResult = await pdfToQrData(selectedFile);
@@ -45,7 +44,7 @@ export const encodeData = (data) => generateQRData(data);
 
 let html5QrCode;
 
-export const initiateQrScanning = (timer, onSuccess) => {
+export const initiateQrScanning = (onSuccess, onError) => {
   const config = {
     fps: 10,
     disableFlip: false,
@@ -62,15 +61,15 @@ export const initiateQrScanning = (timer, onSuccess) => {
     html5QrCode
       .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
       .catch((e) => {
-        console.error("Error occurred:", e.message);
-        clearTimeout(timer);
-        html5QrCode.stop();
+        onError(e);
         html5QrCode = null;
       });
   }
 };
 
 export const terminateScanning = () => {
-  html5QrCode.stop();
-  html5QrCode = null;
+  if (html5QrCode) {
+    html5QrCode.stop();
+    html5QrCode = null;
+  }
 };

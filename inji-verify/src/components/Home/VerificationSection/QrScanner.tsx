@@ -31,6 +31,12 @@ function QrScanner() {
     [dispatch]
   );
 
+  const onError = (e: any) => {
+    console.error("Error occurred:", e);
+    setIsCameraBlocked(true);
+    clearTimeout(timer);
+  };
+
   useEffect(() => {
     timer = setTimeout(() => {
       dispatch(goHomeScreen({}));
@@ -44,7 +50,7 @@ function QrScanner() {
       );
       terminateScanning();
     }, ScanSessionExpiryTime);
-    initiateQrScanning(timer, onSuccess);
+    initiateQrScanning(onSuccess, onError);
     return () => {
       console.log("Clearing timeout");
       clearTimeout(timer);

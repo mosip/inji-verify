@@ -45,7 +45,7 @@ const Upload = () => (
 
 const ScanQrCode = () => {
     const method = useVerificationFlowSelector(state => state.method);
-    console.log({method})
+    console.log({ method });
     return (
         <div
             className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
