@@ -32,11 +32,11 @@ function OvpRedirect(props: any) {
             console.error("Error occurred while reading params in redirect url, Error: ", error);
         }
         finally {
+            navigate(Pages.Home, { replace: true });
             if (!!vpToken && !!presentationSubmission) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
                 params?.delete("vp_token");
                 params?.delete("presentation_submission");
-                navigate(Pages.Home, { replace: true });
             } else if (!!error) {
                 dispatch(raiseAlert(
                     {
