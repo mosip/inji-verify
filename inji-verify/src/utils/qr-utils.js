@@ -1,14 +1,20 @@
 import { decode, generateQRData } from "@mosip/pixelpass";
 import { HEADER_DELIMITER, SUPPORTED_QR_HEADERS } from "./config";
 import { Html5Qrcode } from "html5-qrcode";
+import { pdfToQrData } from "./pdfToQrData";
 
 export const scanFilesForQr = async (selectedFile) => {
   let scanResult = { data: null, error: null };
   const html5QrCode = new Html5Qrcode("upload-qr");
 
   try {
-    const qrData = await html5QrCode.scanFile(selectedFile);
-    scanResult.data = qrData;
+    if (selectedFile.type === "application/pdf") {
+      const qrResult = await pdfToQrData(selectedFile);
+      scanResult.data = qrResult;
+    } else {
+      const qrData = await html5QrCode.scanFile(selectedFile);
+      scanResult.data = qrData;
+    }
   } catch (e) {
     // Example Error Handling
     if (e?.name === "InvalidPDFException") {
@@ -36,3 +42,35 @@ export const decodeQrData = (qrData) => {
 };
 
 export const encodeData = (data) => generateQRData(data);
+
+let html5QrCode;
+
+export const initiateQrScanning = (timer, onSuccess) => {
+  const config = {
+    fps: 10,
+    disableFlip: false,
+    aspectRatio: 1.0,
+  };
+  if (!html5QrCode?.getState()) {
+    html5QrCode = new Html5Qrcode("reader");
+    const qrCodeSuccessCallback = (decodedText) => {
+      onSuccess(decodedText);
+      html5QrCode.stop();
+      html5QrCode = null;
+    };
+
+    html5QrCode
+      .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+      .catch((e) => {
+        console.error("Error occurred:", e.message);
+        clearTimeout(timer);
+        html5QrCode.stop();
+        html5QrCode = null;
+      });
+  }
+};
+
+export const terminateScanning = () => {
+  html5QrCode.stop();
+  html5QrCode = null;
+};
