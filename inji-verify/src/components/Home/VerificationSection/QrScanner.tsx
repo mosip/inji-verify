@@ -78,7 +78,7 @@ function QrScanner() {
       )}
 
       <div
-        className="none absolute h-[250px] w-[250px] lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center"
+        className="none relative h-[250px] w-[250px] lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center"
         id="reader"
       />
 
