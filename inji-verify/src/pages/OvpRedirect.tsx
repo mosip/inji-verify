@@ -13,9 +13,9 @@ function OvpRedirect(props: any) {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        let vpToken, presentationSubmission, params, error, errorDescription;
+        let vpToken, presentationSubmission, error, errorDescription;
         try {
-            params = new URLSearchParams(location.hash.substring(1));
+            const params = new URLSearchParams(location.hash.substring(1));
             const queryParams = new URLSearchParams(location.search.substring(1));
 
             vpToken = !!params.get("vp_token")
