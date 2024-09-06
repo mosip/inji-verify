@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mosip/pixelpass": "0.1.6",
+    "@mosip/pixelpass": "0.2.1",
     "@reduxjs/toolkit": "^2.2.3",
     "@sunbird-rc/verification-sdk": "0.1.0",
     "@testing-library/jest-dom": "^5.17.0",
