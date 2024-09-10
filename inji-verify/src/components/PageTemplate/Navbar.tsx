@@ -95,7 +95,7 @@ function Navbar(props: any) {
                 >
                     <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                 </button>
-                <a href={Pages.Offline} className="flex items-center">
+                <a href={Pages.Home} className="flex items-center">
                     <img id="inji-verify-logo" className="h-[100%]" src='/assets/images/inji_verify.svg' alt="inji-verify-logo"/>
                 </a>
                 <DesktopMenu/>
