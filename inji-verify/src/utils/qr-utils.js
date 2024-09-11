@@ -41,35 +41,3 @@ export const decodeQrData = (qrData) => {
 };
 
 export const encodeData = (data) => generateQRData(data);
-
-let html5QrCode;
-
-export const initiateQrScanning = (onSuccess, onError) => {
-  const config = {
-    fps: 10,
-    disableFlip: false,
-    aspectRatio: 1.0,
-  };
-  if (!html5QrCode?.getState()) {
-    html5QrCode = new Html5Qrcode("reader");
-    const qrCodeSuccessCallback = (decodedText) => {
-      onSuccess(decodedText);
-      html5QrCode.stop();
-      html5QrCode = null;
-    };
-
-    html5QrCode
-      .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
-      .catch((e) => {
-        onError(e);
-        html5QrCode = null;
-      });
-  }
-};
-
-export const terminateScanning = () => {
-  if (html5QrCode) {
-    html5QrCode.stop();
-    html5QrCode = null;
-  }
-};
