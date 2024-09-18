@@ -37,7 +37,7 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//*[contains(text(), 'QR code uploaded successfully!')]")
 	WebElement QRCodeUploadedSuccessToastMessage;
 
-	@FindBy(xpath = "#check_circle_FILL0_wght400_GRAD0_opsz48")
+	@FindBy(id = "success_message_icon")
 	WebElement TickIconVisible;
 
 	@FindBy(xpath = "//p[@id='vc-result-display-message']")
@@ -71,56 +71,51 @@ public class UploadQRCode extends BasePage {
 	WebElement UploadQRCodeButton;
 
 	public void ClickonUploadQRCodePng() {
-		uploadFile(driver, UploadQRCodeButton, "QRCode.png");
-
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
-		uploadFile(driver, UploadQRCodeButton, "QRCode.jpg");
-
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
-		uploadFile(driver, UploadQRCodeButton, "QRCode.pdf");
-
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
-		uploadFile(driver, UploadQRCodeButton, "QRCode.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
-		uploadFile(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
-
+		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
 	public void ClickonUploadQRCodeInvalid() {
-		uploadFile(driver, UploadQRCodeButton, "Invalid.png");
-
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Invalid.png");
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
-		uploadFile(driver, UploadQRCodeButton, "Expired_QRCode.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 
 	}
 
 	public void ClickonUploadExpiredQRCodeJpgExpired() {
-		uploadFile(driver, UploadQRCodeButton, "Expired_QRCode.jpg");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpg");
 
 	}
 
 	public void ClickonUploadExpiredQRCodejpegExpired() {
-		uploadFile(driver, UploadQRCodeButton, "Expired_QRCode.jpeg");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpeg");
 
 	}
 
 	public void ClickonUploadExpiredQRCodepdfExpired() {
-		uploadFile(driver, UploadQRCodeButton, "Expired_QRCode.pdf");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.pdf");
 
 	}
 
 	public void ClickonUploadQRCodeLageFileSize() {
-		uploadFile(driver, UploadQRCodeButton, "LargeFileSize.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "LargeFileSize.png");
 
 	}
 

@@ -1,10 +1,11 @@
 package pages;
 
 import base.BasePage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import java.util.List;
+import java.util.Set;
+
 import org.openqa.selenium.support.PageFactory;
 
 public class HomePage extends BasePage {
@@ -43,7 +44,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//div[@id='help-submenu']/a")
 	List<WebElement> HelpOptionLinks;
 
-	@FindBy(xpath = "(//*[@id='help-button']//*[@class='mx-1.5 ']//*)[2]")
+	@FindBy(xpath = "//*[@id='help-button']/*[@stroke='currentColor']")
 	WebElement minimizeHelpButton;
 
 	@FindBy(xpath = "//*[@id='upload-qr-code-tab']")
@@ -79,7 +80,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//span[@class='inline-grid mr-1.5']")
 	WebElement UploadIcon;
 
-	@FindBy(xpath = "//*[@id='upload-qr-code-button']")
+	@FindBy(id = "upload-qr-code-button")
 	WebElement UploadButton;
 
 	@FindBy(xpath = "//div[@class='grid text-center content-center justify-center pt-2']")
@@ -90,6 +91,43 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='ble-tab']")
 	WebElement bleTab;
+
+	@FindBy(xpath = "//input[@type='text']")
+	WebElement SearchBox;
+
+	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
+	WebElement IntroSubText;
+
+	@FindBy(xpath = "(//h3[@data-testid='ItemBox-Text'])[1]")
+	WebElement mosipCrdentials;
+
+	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text']")
+	WebElement isMosipNationalId;
+
+	@FindBy(xpath = "//input[@id='Otp_mosip-vid']")
+	WebElement vidTextBox;
+
+	@FindBy(xpath = "//button[@id='get_otp']")
+	WebElement getOtp;
+
+	@FindBy(xpath = "//button[@id='verify_otp']")
+	WebElement verifyOtp;
+
+	@FindBy(xpath = "//p[@data-testid='DownloadResult-Title']")
+	WebElement succsessMessage;
+
+	@FindBy(xpath = "//label[text() = 'Enter Full Name']")
+	WebElement enterFullnameTextBox;
+
+	@FindBy(xpath = "//button[@id='verify_form']")
+	WebElement verifyButton;
+
+	@FindBy(xpath = "//*[@data-testid='DownloadResult-Home-Button']")
+	WebElement HomeButton;
+
+	@FindBy(xpath = "//p[text() = 'Something went wrong with your request. Please check and try again.']")
+	WebElement errorMeassage;
+
 
 	public Boolean isLogoDisplayed() {
 		return injiVerifyLogo.isDisplayed();
@@ -206,6 +244,7 @@ public class HomePage extends BasePage {
 	}
 
 	public Boolean isUploadButtonIsVisible() {
+		driver.navigate().refresh();
 		return isElementIsVisible(driver, UploadButton);
 	}
 
@@ -219,4 +258,148 @@ public class HomePage extends BasePage {
 		clickOnElement(driver, QRUploadButton);
 	}
 
-}
+
+	public void enterIssuersInSearchBox(String string) {
+		enterText(driver, By.xpath("//input[@type='text']"), string);
+//		if(isElementIsVisible(driver, By.xpath("//p[@data-testid='IntroBox-SubText']"))) {
+//			clickOnElement(driver, By.xpath("//p[@data-testid='IntroBox-SubText']"));
+//		}
+	}
+
+	public void clickOnDownloadMosipCredentials() {
+		clickOnElement(driver,mosipCrdentials);
+	}
+
+	public Boolean isMosipNationalIdDisplayed() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return isElementIsVisible(driver, isMosipNationalId);
+	}
+
+	public void clickOnMosipNationalId() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		clickOnElement(driver, isMosipNationalId);
+	}
+
+	public void enterVid(String string) {
+		enterText(driver, By.xpath("//input[@id='Otp_mosip-vid']"), string);
+	}
+
+	public void clickOnGetOtpButton() {
+		clickOnElement(driver, getOtp);
+	}
+	public void enterOtp( String otpString) {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		for (int i = 0; i < otpString.length(); i++) {
+			String locator = "(//input[@class='pincode-input-text'])[" + (i + 1) + "]";
+			driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(otpString.charAt(i)));
+		}
+	}
+
+	public void clickOnVerify() {
+		clickOnElement(driver, verifyOtp);
+	}
+
+	public String isSuccessMessageDisplayed() {
+		try {
+			Thread.sleep(6000);
+			;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return getText(driver, succsessMessage);
+	}
+
+	public  void openNewTab(){
+		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji.mosip.net/')");
+		Set<String> allWindowHandles = driver.getWindowHandles();
+		System.out.println(allWindowHandles);
+		if (allWindowHandles.size() >= 2) {
+			String secondWindowHandle = allWindowHandles.toArray(new String[0])[1];
+			String firstWindowHandle = allWindowHandles.toArray(new String[0])[0];
+			// Switch to the second window
+			driver.switchTo().window(secondWindowHandle);
+		}
+	}
+
+	public  void SwitchToWebTab(){
+		Set<String> allWindowHandles = driver.getWindowHandles();
+		System.out.println(allWindowHandles);
+		if (allWindowHandles.size() >= 2) {
+			String secondWindowHandle = allWindowHandles.toArray(new String[0])[1];
+			String firstWindowHandle = allWindowHandles.toArray(new String[0])[0];
+			// Switch to the second window
+			driver.switchTo().window(secondWindowHandle);
+		}
+	}
+
+	public  void SwitchToVerifyTab(){
+		Set<String> allWindowHandles = driver.getWindowHandles();
+		System.out.println(allWindowHandles);
+		if (allWindowHandles.size() >= 2) {
+			String secondWindowHandle = allWindowHandles.toArray(new String[0])[1];
+			String firstWindowHandle = allWindowHandles.toArray(new String[0])[0];
+			// Switch to the second window
+			driver.switchTo().window(firstWindowHandle);
+		}
+	}
+	public void enterPolicyNumer(String string) {
+		enterText(driver, By.xpath("//input[@id='_form_policyNumber']"), string);
+	}
+
+	public void enterFullName(String string) {
+		enterText(driver, By.xpath("//input[@id='_form_fullName']"), string);
+	}
+	public void selectDateOfBirth() {
+		driver.findElement(By.xpath("//input[@id='_form_fullName']")).sendKeys(Keys.TAB);
+		driver.findElement(By.id("_form_dob")).sendKeys("01/01/2024");
+
+
+		driver.findElement(By.xpath("//input[@id='_form_dob']")).click();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//      System.out.println(driver.getPageSource());
+		System.out.println(driver.getWindowHandles());
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String xpath = "//*[contains(@text,'SET')]"; // Improved XPath (consider adding specificity)
+
+		try {
+			js.executeScript("document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()", xpath);
+		} catch (NoSuchElementException e) {
+			System.out.println("Element not found with XPath: " + xpath);
+		} catch (JavascriptException e) {
+			System.out.println("JavaScript error: " + e.getMessage());
+		}
+	}
+
+	public void clickOnLogin() {
+		clickOnElement(driver,verifyButton );
+	}
+
+	public void clickOnHomebutton() {
+		clickOnElement(driver,HomeButton );
+	}
+
+	public Boolean isErrorMessageVisible() {
+		return isElementIsVisible(driver, errorMeassage);
+	}
+
+	}
