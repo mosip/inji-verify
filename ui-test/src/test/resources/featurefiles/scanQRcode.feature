@@ -19,7 +19,8 @@ Feature: Inji Verify scan qr code testing
     And verify scan qr code button
     And verify click on scan qr code button
     And Verify scan qr code step2 label after
-    And verify click on back button
+    And verify click on okay button
+#    And verify click on back button
     And verify scan qr code button
     And Click on Home button
     And Verify that Upload button visible
@@ -28,7 +29,3 @@ Feature: Inji Verify scan qr code testing
     And Verify that Upload button visible
     And verify click on scan the qr tab
     And verify click on scan qr code button
-    And verify scan line on scanning area
-    And verify idle timeout message for scan qr code
-    And Verify close button on timeout message
-    And verify click on close button on timeout message

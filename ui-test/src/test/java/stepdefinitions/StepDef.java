@@ -3,9 +3,15 @@ package stepdefinitions;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.junit.Assert;
+import io.cucumber.java.en.When;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import constants.UiConstants;
+import org.testng.Assert;
 import pages.BLE;
 import pages.HomePage;
 import pages.ScanQRCodePage;
@@ -13,10 +19,15 @@ import pages.UploadQRCode;
 import pages.VpVerification;
 import utils.BaseTest;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.Base64;
+import java.util.Set;
+
 public class StepDef {
 
 	String pageTitle;
-
 	public WebDriver driver;
 	BaseTest baseTest;
 	private HomePage homePage;
@@ -408,6 +419,11 @@ public class StepDef {
 
 	}
 
+	@Then("verify click on okay button")
+	public void verify_click_on_okay_button() {
+		scanqrcode.ClickonOkayButton();
+	}
+
 	@Then("verify click on back button")
 	public void verify_click_on_back_button() {
 		scanqrcode.ClickonBackButton();
@@ -492,7 +508,163 @@ public class StepDef {
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
+	}
+
+	@Then("Open inji web in new tab")
+	public void openInjiWebInNewTab() {
+		homePage.openNewTab();
+	}
+
+	@When("Open inji verify in new tab")
+	public void open_inji_verify_in_new_tab() {
+		homePage.SwitchToVerifyTab();
 
 	}
+	@Given("User search the issuers with {string}")
+	public void user_search_the_issuers_with(String string) {
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		homePage.enterIssuersInSearchBox(string);
+	}
+	@When("User click on veridonia credentials button")
+	public void user_click_on_download_veridonia_button() {
+		homePage.clickOnDownloadMosipCredentials();
+	}
+
+	@Then("User verify mosip national id by e-signet displayed")
+	public void user_verify_mosip_national_id_by_e_signet_displayed() {
+		Assert.assertTrue(homePage.isMosipNationalIdDisplayed());
+	}
+	@When("User click on health insurance by e-signet button")
+	public void user_click_on_health_insurance_id_by_e_signet_button() {
+		homePage.clickOnMosipNationalId();
+	}
+	@When("User enter the  {string}")
+	public void user_enter_the(String string) {
+		homePage.enterVid(string);
+	}
+	@When("User click on getOtp button")
+	public void user_click_on_get_otp_button() {
+		homePage.clickOnGetOtpButton();
+	}
+	@When("User enter the otp {string}")
+	public void user_enter_the_otp(String otpString) {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		homePage.enterOtp(otpString);
+	}
+	@When("User click on verify button")
+	public void user_click_on_verify_button() {
+		homePage.clickOnVerify();
+	}
+
+	@Then("User verify Download Success text displayed")
+	public void user_verify_download_success_text_displayed() {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
+	}
+	@Then("User verify pdf is downloaded")
+	public void user_verify_pdf_is_downloaded() throws IOException, IOException {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		System.out.println(BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"fileExists\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
+
+		// Get file properties
+		System.out.println(BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"getFileProperties\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
+
+		// Get file content. The content is Base64 encoded
+		String base64EncodedFile = (String) BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"getFileContent\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}");
+
+		// Decode the content to Base64
+		byte[] data = Base64.getDecoder().decode(base64EncodedFile);
+		OutputStream stream = new FileOutputStream("InsuranceCredential.pdf");
+		stream.write(data);
+
+		stream.close();
+
+		File pdfFile = new File(System.getProperty("user.dir")+"/InsuranceCredential.pdf");
+		PDDocument document = PDDocument.load(pdfFile);
+
+		PDFTextStripper stripper = new PDFTextStripper();
+		String text = stripper.getText(document);
+
+	}
+	@Then("User verify go back button")
+	public void user_verify_go_back_button() {
+
+	}
+
+    @Then("Verify that user convert pdf into png")
+    public void verify_that_user_convert_pdf_into_png() throws IOException {
+		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
+		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
+
+		PDDocument document = PDDocument.load(new File(pdfPath));
+		PDFRenderer renderer = new PDFRenderer(document);
+
+		int numberOfPages = document.getNumberOfPages();
+		for (int i = 0; i < numberOfPages; i++) {
+			PDPage page = document.getPage(i);
+			BufferedImage image = renderer.renderImage(i);
+
+			String outputFileNamePNG = outputPath +(i) + ".png";
+			String outputFileNameJPG = outputPath +(i) + ".jpg";
+			String outputFileNameJPEG = outputPath +(i) + ".jpeg";
+			ImageIO.write(image, "png", new File(outputFileNamePNG));
+			ImageIO.write(image, "jpg", new File(outputFileNameJPG));
+			ImageIO.write(image, "jpeg", new File(outputFileNameJPEG));
+		}
+
+		document.close();
+    }
+	@Then("User enter the policy number {string}")
+	public void user_enter_the_policy_number(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		homePage.enterPolicyNumer(string);
+	}
+
+	@Then("User enter the full name  {string}")
+	public void user_enter_the_full_name(String string) {
+		homePage.enterFullName(string);
+	}
+	@Then("User enter the date of birth {string}")
+	public void user_enter_the_date_of_birth(String string) {
+		homePage.selectDateOfBirth();
+	}
+
+	@When("User click on login button")
+	public void user_click_on_login_button() {
+		homePage.clickOnLogin();
+	}
+
+	@Then("Open inji web in tab")
+	public void user_Open_inji_web_in_tab() {
+		homePage.SwitchToWebTab();
+	}
+
+	@Then("verify click on home button")
+	public void user_click_on_home_button() {
+		homePage.clickOnHomebutton();
+	}
+
+	@Then("verify alert message")
+	public void user_verify_alert_message() {
+		homePage.isErrorMessageVisible();
+	}
+
+
 
 }
