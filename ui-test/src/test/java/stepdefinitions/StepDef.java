@@ -527,12 +527,10 @@ public class StepDef {
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
-//		homePage.enterIssuersInSearchBox("National");
 		homePage.enterIssuersInSearchBox(string);
 	}
 	@When("User click on veridonia credentials button")
 	public void user_click_on_download_veridonia_button() {
-//		homePage.scrollDownByPage(baseTest.getDriver());
 		homePage.clickOnDownloadMosipCredentials();
 	}
 
@@ -543,16 +541,6 @@ public class StepDef {
 	@When("User click on health insurance by e-signet button")
 	public void user_click_on_health_insurance_id_by_e_signet_button() {
 		homePage.clickOnMosipNationalId();
-	}
-	@When("User verify login page lables")
-	public void user_verify_login_page_lables() {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
-	}
-	@When("User verify vid input box header")
-	public void user_verify_vid_input_box_header() {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
 	}
 	@When("User enter the  {string}")
 	public void user_enter_the(String string) {

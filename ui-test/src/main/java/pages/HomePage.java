@@ -261,9 +261,7 @@ public class HomePage extends BasePage {
 
 	public void enterIssuersInSearchBox(String string) {
 		enterText(driver, By.xpath("//input[@type='text']"), string);
-//		if(isElementIsVisible(driver, By.xpath("//p[@data-testid='IntroBox-SubText']"))) {
-//			clickOnElement(driver, By.xpath("//p[@data-testid='IntroBox-SubText']"));
-//		}
+
 	}
 
 	public void clickOnDownloadMosipCredentials() {
@@ -330,7 +328,6 @@ public class HomePage extends BasePage {
 		if (allWindowHandles.size() >= 2) {
 			String secondWindowHandle = allWindowHandles.toArray(new String[0])[1];
 			String firstWindowHandle = allWindowHandles.toArray(new String[0])[0];
-			// Switch to the second window
 			driver.switchTo().window(secondWindowHandle);
 		}
 	}
@@ -352,7 +349,6 @@ public class HomePage extends BasePage {
 		if (allWindowHandles.size() >= 2) {
 			String secondWindowHandle = allWindowHandles.toArray(new String[0])[1];
 			String firstWindowHandle = allWindowHandles.toArray(new String[0])[0];
-			// Switch to the second window
 			driver.switchTo().window(firstWindowHandle);
 		}
 	}
@@ -375,7 +371,6 @@ public class HomePage extends BasePage {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//      System.out.println(driver.getPageSource());
 		System.out.println(driver.getWindowHandles());
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
