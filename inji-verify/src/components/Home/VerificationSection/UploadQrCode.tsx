@@ -82,11 +82,11 @@ export const UploadQrCode = ({displayMessage, className}: { displayMessage: stri
                         return;
                     }
 
-                    dispatch(qrReadInit({method: "UPLOAD"}));
                     scanFilesForQr(file)
                         .then(scanResult => {
                             if (scanResult.error) console.error(scanResult.error);
                             if (!!scanResult.data) {
+                                dispatch(qrReadInit({method: "UPLOAD"}));
                                 dispatch(raiseAlert({...AlertMessages.qrUploadSuccess, open: true}));
                                 dispatch(verificationInit({qrReadResult: {qrData: scanResult.data, status: "SUCCESS"}}));
                             } else {

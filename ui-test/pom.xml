@@ -12,6 +12,8 @@
 		<selenium.version>4.11.0</selenium.version>
 		<cucumber.testing.version>7.2.3</cucumber.testing.version>
 		<surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
+		<!-- Lombok -->
+		<lombok.version>1.18.30</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -19,6 +21,13 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
