@@ -27,10 +27,11 @@ public class BaseTest {
 		this.driver = driver;
 	}
 	public WebDriver driver;
-	public JavascriptExecutor jse;
+	public static JavascriptExecutor jse;
 	String accessKey = getKeyValueFromYaml("/browserstack.yml","accessKey");
 	String userName = getKeyValueFromYaml("/browserstack.yml","userName");
 	public  final String URL = "https://" + userName + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+
 
 	@Before
 	public void beforeAll() throws MalformedURLException {
@@ -57,6 +58,10 @@ public class BaseTest {
 	}
 	public WebDriver getDriver() {
 		return driver;
+	}
+
+	public static JavascriptExecutor getJse() {
+		return jse;
 	}
 
 	public static String getKeyValueFromYaml(String filePath, String key) {

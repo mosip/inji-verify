@@ -11,12 +11,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import static java.time.Duration.ofSeconds;
+
 public class BasePage {
 
 	public WebDriver driver;
 
 	public void waitForElementVisible(WebDriver driver, WebElement element, long seconds) {
-		new WebDriverWait(driver, Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
+		new WebDriverWait(driver, ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public void clickOnElement(WebDriver driver, WebElement element) {
@@ -38,6 +40,11 @@ public class BasePage {
 		waitForElementVisible(driver, element, 10);
 		return element.isEnabled();
 	}
+	public void enterText(WebDriver driver, By locator, String text) {
+		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.presenceOfElementLocated(locator));
+		element.clear();
+		element.sendKeys(text);
+	}
 
 	public void refreshBrowser(WebDriver driver) {
 		driver.navigate().refresh();
@@ -48,8 +55,8 @@ public class BasePage {
 	}
 
 	public void uploadFile(WebDriver driver, WebElement element, String filename) {
-		String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + filename;
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		String filePath = System.getProperty("user.dir") + "/" + filename;
+		WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
 		WebElement spanElement = wait.until(ExpectedConditions.elementToBeClickable(element));
 		spanElement.click();
 		WebElement fileInput = wait
@@ -57,8 +64,17 @@ public class BasePage {
 		fileInput.sendKeys(filePath);
 	}
 
+	public void uploadFileForInvalid(WebDriver driver, WebElement element, String filename) {
+		String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + filename;
+		WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
+		WebElement spanElement = wait.until(ExpectedConditions.elementToBeClickable(element));
+		spanElement.click();
+		WebElement fileInput = wait
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='file']")));
+		fileInput.sendKeys(filePath);
+	}
 	public void waitForElementVisibleWithPolling(WebDriver driver, WebElement element) {
-		FluentWait<WebDriver> wait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(90))
+		FluentWait<WebDriver> wait = new FluentWait<>(driver).withTimeout(ofSeconds(90))
 				.pollingEvery(Duration.ofMillis(300)).ignoring(NoSuchElementException.class);
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
@@ -85,5 +101,17 @@ public class BasePage {
 			}
 		}
 
+	}
+	protected void sendKeysToTextBox(WebDriver driver ,WebElement element, String text) {
+		this.waitForElementToBeVisible(element);
+		element.sendKeys(text);
+	}
+	private void waitForElementToBeVisible(WebElement element) {
+		WebDriverWait wait = new WebDriverWait(driver, ofSeconds(30));
+		wait.until(ExpectedConditions.visibilityOf(element));
+	}
+	protected void sendKeysToTextBox(WebElement element, String text) {
+		this.waitForElementToBeVisible(element);
+		element.sendKeys(text);
 	}
 }
