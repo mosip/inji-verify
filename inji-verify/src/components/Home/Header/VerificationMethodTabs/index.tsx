@@ -8,6 +8,7 @@ import {AlertMessages} from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { terminateScanning } from '../../../../utils/qr-utils';
+import { useTranslation } from 'react-i18next';
 
 const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolean, label: string, disabled?: boolean, onClick?: () => void}) => {
     const activeTab = "bg-[#FF7F00] border-t-[6px] border-y-[#FF7F00] text-white";
@@ -29,6 +30,7 @@ const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolea
 function VerificationMethodTabs(props: any) {
     const dispatch = useAppDispatch();
     const method = useVerificationFlowSelector(state => state.method);
+    const {t} = useTranslation('Tab')
     
     function switchToVerificationMethod(method: VerificationMethod) {
         terminateScanning()
@@ -62,12 +64,12 @@ function VerificationMethodTabs(props: any) {
                 </div>
                 <div className="flex w-[calc(100vw-96px)] md:w-full mx-auto overflow-x-scroll md:overflow-x-auto" ref={carouselRef}>
                     <div className="flex space-x-0.5 border-gray-200 font-bold items-end mx-auto lg:justify-center">
-                        <Tab id="upload-qr-code-tab" active={method === "UPLOAD"} label="Upload QR Code"
+                        <Tab id="upload-qr-code-tab" active={method === "UPLOAD"} label={t('upload')}
                              onClick={() => switchToVerificationMethod("UPLOAD")}/>
-                        <Tab id="scan-qr-code-tab" active={method === "SCAN"} label="Scan the QR Code"
+                        <Tab id="scan-qr-code-tab" active={method === "SCAN"} label={t('scan')}
                              onClick={() => switchToVerificationMethod("SCAN")}/>
-                        <Tab id="vp-verification-tab" active={false} label="VP Verification" disabled onClick={showAlert}/>
-                        <Tab id="ble-tab" active={false} label="BLE" disabled onClick={showAlert}/>
+                        <Tab id="vp-verification-tab" active={false} label={t('VP_Verification')} disabled onClick={showAlert}/>
+                        <Tab id="ble-tab" active={false} label={t('ble')} disabled onClick={showAlert}/>
                     </div>
                 </div>
                 <div className="absolute right-0 h-full w-12 bg-[#F2FCFF] md:hidden grid items-center">

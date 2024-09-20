@@ -2,12 +2,14 @@ import React from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {VerificationStepsContent} from "../../../utils/config";
 import {convertToId} from "../../../utils/misc";
+import { useTranslation } from 'react-i18next';
 
 function DesktopStepper() {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({
         activeScreen: state.activeScreen,
         method: state.method
     }));
+    const {t} = useTranslation()
     const steps = VerificationStepsContent[method];
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen > index;

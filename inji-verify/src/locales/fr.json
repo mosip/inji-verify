@@ -1,0 +1,10 @@
+{
+  "Navbar": {
+    "home": "Heim",
+    "verifyCredentials": "Anmeldeinformationen überprüfen",
+    "help": "Helfen",
+    "contactUs": "Kontaktieren Sie uns",
+    "documentation": "Dokumentation",
+    "faqs": "FAQs"
+  }
+}

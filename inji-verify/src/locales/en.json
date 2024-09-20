@@ -1,0 +1,55 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "verifyCredentials": "Verify Credentials",
+    "help": "Help",
+    "contactUs": "Contact us",
+    "documentation": "Documentation",
+    "faqs": "FAQs"
+  },
+  "Header": {
+    "heading": "Verify credentials",
+    "headingHighlight": "with ease!",
+    "description": "Effortlessly verify credentials with Inji Verify! Just scan the QR code or upload it for instant validation, following the steps below."
+  },
+  "Tab": {
+    "upload": "Upload QR Code",
+    "scan": "Scan the QR Code",
+    "VP_Verification": "VP Verification",
+    "ble": "BLE"
+  },
+  "VerificationStepsContent": {
+    "SCAN": {
+      "QrCodePrompt": {
+        "label": "Scan QR Code",
+        "description": "Tap 'Scan' to start scanning the document or card with a QR code"
+      },
+      "ActivateCamera": {
+        "label": "Activate Camera and Position QR Code",
+        "description": "Activate your device camera and hold the QR code within the frame to initiate verification."
+      },
+      "Verifying": {
+        "label": "Verification in Progress",
+        "description": "The QR code verification is in progress."
+      },
+      "DisplayResult": {
+        "label": "View result",
+        "description": "View the verification result."
+      }
+    },
+    "UPLOAD": {
+      "QrCodePrompt": {
+        "label": "Upload QR Code",
+        "description": "Upload a file that contains a QR code"
+      },
+      "Verifying": {
+        "label": "Verify document",
+        "description": "Verification for the document or card is in progress."
+      },
+      "DisplayResult": {
+        "label": "View result",
+        "description": "View the verification result."
+      }
+    }
+  }
+}

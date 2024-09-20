@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import {encodeData} from "./utils/qr-utils";
 import {Provider} from "react-redux";
 import store from "./redux/store";
+import '../src/utils/i18n'; // Import the i18n configuration here
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

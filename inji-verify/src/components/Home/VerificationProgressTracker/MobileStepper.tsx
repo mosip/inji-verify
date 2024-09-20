@@ -2,6 +2,7 @@ import React from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {VerificationStepsContent} from "../../../utils/config";
 import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
+import { useTranslation } from 'react-i18next';
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
@@ -18,13 +19,14 @@ const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCo
 
 function MobileStepper(props: any) {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
+    const {t} = useTranslation();
     const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
 
     const stepCount = getVerificationStepsCount(method);
     const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
 
-    const heading = VerificationStepsContent[method][activeScreen - 1].label;
-    const description = VerificationStepsContent[method][activeScreen - 1].description;
+    const heading = t(`${VerificationStepsContent[method][activeScreen - 1].label}`);
+    const description = t(`${VerificationStepsContent[method][activeScreen - 1].description}`);
 
     return (
         <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
