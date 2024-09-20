@@ -207,7 +207,7 @@ function QrScanner() {
   return (
     <div
       ref={scannerRef}
-      className="flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
+      className="fixed inset-0 flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
     >
       {!isCameraBlocked && (
         <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
@@ -233,7 +233,7 @@ function QrScanner() {
         <div className="relative h-screen w-screen rounded-lg overflow-hidden flex items-center justify-center">
           <canvas
             ref={canvasRef}
-            className="h-60 w-full object-cover rounded-lg"
+            className="h-full w-full lg:h-60 object-cover rounded-lg"
           />
         </div>
       </div>
