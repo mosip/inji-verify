@@ -7,7 +7,6 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { goHomeScreen } from "../../../redux/features/verification/verification.slice";
 import { VerificationSteps } from "../../../utils/config";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
-import { terminateScanning } from "../../../utils/qr-utils";
 
 const Verification = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +34,6 @@ const Verification = () => {
           id="verification-back-button"
           className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px]"
           onClick={() => {
-            terminateScanning();
             dispatch(goHomeScreen({}));
           }}
         >

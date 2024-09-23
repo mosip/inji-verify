@@ -7,7 +7,6 @@ import {raiseAlert} from "../../../../redux/features/alerts/alerts.slice";
 import {AlertMessages} from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
-import { terminateScanning } from '../../../../utils/qr-utils';
 
 const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolean, label: string, disabled?: boolean, onClick?: () => void}) => {
     const activeTab = "bg-[#FF7F00] border-t-[6px] border-y-[#FF7F00] text-white";
@@ -31,7 +30,6 @@ function VerificationMethodTabs(props: any) {
     const method = useVerificationFlowSelector(state => state.method);
     
     function switchToVerificationMethod(method: VerificationMethod) {
-        terminateScanning()
         dispatch(goHomeScreen({method}))
     }
 

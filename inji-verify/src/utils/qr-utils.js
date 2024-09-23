@@ -1,17 +1,54 @@
 import { decode, generateQRData } from "@mosip/pixelpass";
 import { HEADER_DELIMITER, SUPPORTED_QR_HEADERS } from "./config";
-import { Html5Qrcode } from "html5-qrcode";
 import { pdfToQrData } from "./pdfToQrData";
+
+const zxing = await window.ZXing();
+
+const readBarcodes = async (file) => {
+  let format = "QRCode";
+
+  let arrayBuffer = await file.arrayBuffer();
+  let u8Buffer = new Uint8Array(arrayBuffer);
+
+  let zxingBuffer = zxing._malloc(u8Buffer.length);
+  zxing.HEAPU8.set(u8Buffer, zxingBuffer);
+  let results = zxing.readBarcodesFromImage(
+    zxingBuffer,
+    u8Buffer.length,
+    true,
+    format,
+    0xff
+  );
+  zxing._free(zxingBuffer);
+
+  if (results.size() === 0) {
+    throw new Error("No " + ({ format } || "barcode") + " found");
+  } else {
+    for (let i = 0; i < results.size(); i += 1) {
+      const { text } = results.get(i);
+      return escapeTags(text);
+    }
+  }
+};
+
+function escapeTags(htmlStr) {
+  return htmlStr
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 
 export const scanFilesForQr = async (selectedFile) => {
   let scanResult = { data: null, error: null };
-  const html5QrCode = new Html5Qrcode("upload-qr");
   try {
     if (selectedFile.type === "application/pdf") {
       const qrResult = await pdfToQrData(selectedFile);
       scanResult.data = qrResult;
     } else {
-      const qrData = await html5QrCode.scanFile(selectedFile);
+      const qrData = await readBarcodes(selectedFile);
       scanResult.data = qrData;
     }
   } catch (e) {
@@ -41,35 +78,3 @@ export const decodeQrData = (qrData) => {
 };
 
 export const encodeData = (data) => generateQRData(data);
-
-let html5QrCode;
-
-export const initiateQrScanning = (onSuccess, onError) => {
-  const config = {
-    fps: 10,
-    disableFlip: false,
-    aspectRatio: 1.0,
-  };
-  if (!html5QrCode?.getState()) {
-    html5QrCode = new Html5Qrcode("reader");
-    const qrCodeSuccessCallback = (decodedText) => {
-      onSuccess(decodedText);
-      html5QrCode.stop();
-      html5QrCode = null;
-    };
-
-    html5QrCode
-      .start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
-      .catch((e) => {
-        onError(e);
-        html5QrCode = null;
-      });
-  }
-};
-
-export const terminateScanning = () => {
-  if (html5QrCode) {
-    html5QrCode.stop();
-    html5QrCode = null;
-  }
-};
