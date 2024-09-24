@@ -22,7 +22,7 @@ function* handleVerification(data: string | object) {
             : yield call(JSON.parse, (decodeQrData(data))); // normal flow - vc in qr
         yield call(verifyVC, vc);
     } catch (error) {
-        console.log(error)
+        console.error(error)
         yield put(goHomeScreen({}));
         yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
@@ -43,7 +43,6 @@ function* verifyVC(vc: any) {
     const onLine: boolean = yield select((state: any) => state.appState.internetConnectionStatus);
     try {
         const status: VcStatus = yield call(verify, vc);
-        console.log("VC Status [logging in saga]: ", status);
         if (status?.checks?.length >= 0 && status?.checks[0].proof === "NOK" && !onLine) {
             yield put(updateInternetConnectionStatus({internetConnectionStatus: "OFFLINE"}));
         }

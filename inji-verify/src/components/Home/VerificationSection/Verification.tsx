@@ -14,7 +14,6 @@ const Verification = () => {
     activeScreen: state.activeScreen,
     method: state.method,
   }));
-  console.log({ activeScreen });
   return (
     <div className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[42px] lg:px-[104px] text-center content-center justify-center">
       <div

@@ -49,7 +49,6 @@ function QrScanner() {
     loadZxing();
 
     return () => {
-      console.log("Clearing timeout");
       clearTimeout(timer);
       stopVideoStream();
     };
@@ -166,7 +165,7 @@ function QrScanner() {
 
   const requestFullscreen = (element: HTMLDivElement | null) => {
     if (!document.fullscreenEnabled) {
-      console.log("Fullscreen API is not supported or not enabled.");
+      console.error("Fullscreen API is not supported or not enabled.");
     }
 
     if (element) {
@@ -241,7 +240,6 @@ function QrScanner() {
       <CameraAccessDenied
         open={isCameraBlocked}
         handleClose={() => {
-          console.log("closing camera");
           dispatch(goHomeScreen({}));
           setIsCameraBlocked(false);
         }}
