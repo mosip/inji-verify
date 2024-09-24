@@ -26,7 +26,7 @@ const readQRcodeFromImageFile = async (file, format, isPDF) => {
   } else {
     for (let i = 0; i < results.size(); i += 1) {
       const { text } = results.get(i);
-      return escapeTags(text);
+      return text;
     }
   }
 };
@@ -60,15 +60,6 @@ const readQRcodeFromPdf = async (file, format) => {
     throw new Error(`No ${format} found`);
   }
 };
-
-function escapeTags(htmlStr) {
-  return htmlStr
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 export const scanFilesForQr = async (selectedFile) => {
   let scanResult = { data: null, error: null };
