@@ -9,25 +9,18 @@ import {select} from "redux-saga-test-plan/matchers";
 import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
 import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-utils";
 
-function* handleVerification(data: object) {
+function* handleVerification(data: any) {
     try {
-        let stringData;
-        if (typeof data === "string") {
-          stringData = data;
-        } else {
-          stringData = new TextDecoder("utf-8").decode(data as Uint8Array);
+        if (data?.vpToken) {
+            yield call(verifyVC, data?.vpToken?.verifiableCredential[0]);
+            return;
         }
-    
+        const stringData = new TextDecoder("utf-8").decode(data as Uint8Array);
         if (stringData.startsWith(OvpQrHeader)) {
           yield call(handleOvpFlow, stringData);
           return;
         }
-        try {
-          const parsedData = JSON.parse(stringData);
-          yield call(verifyVC, parsedData.vpToken?.verifiableCredential[0]);
-          return;
-        } catch (_) {}
-        const vc: object = yield call(JSON.parse, yield call(decodeQrData, data));
+        const vc: object = yield call(JSON.parse, yield call(decodeQrData, data as Uint8Array));
         yield call(verifyVC, vc);
     } catch (error) {
         console.error(error)
