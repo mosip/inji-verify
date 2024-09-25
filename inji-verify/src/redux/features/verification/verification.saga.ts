@@ -11,19 +11,23 @@ import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-
 
 function* handleVerification(data: object) {
     try {
-        const stringData = new TextDecoder('utf-8').decode(data as Uint8Array)
-        if ((stringData).startsWith(OvpQrHeader)) {
-            yield call(handleOvpFlow, stringData);
-            return;
+        let stringData;
+        if (typeof data === "string") {
+          stringData = data;
+        } else {
+          stringData = new TextDecoder("utf-8").decode(data as Uint8Array);
+        }
+    
+        if (stringData.startsWith(OvpQrHeader)) {
+          yield call(handleOvpFlow, stringData);
+          return;
         }
         try {
-            const jsonString = Buffer.from(data as Uint8Array).toString('utf8')
-            const parsedData = JSON.parse(jsonString)
-            yield call(verifyVC, parsedData.vpToken?.verifiableCredential[0]);
-            return;
-        }catch (_){}
-
-        const vc: object =  yield call(JSON.parse, yield call(decodeQrData,data))
+          const parsedData = JSON.parse(stringData);
+          yield call(verifyVC, parsedData.vpToken?.verifiableCredential[0]);
+          return;
+        } catch (_) {}
+        const vc: object = yield call(JSON.parse, yield call(decodeQrData, data));
         yield call(verifyVC, vc);
     } catch (error) {
         console.error(error)
