@@ -25,8 +25,8 @@ const readQRcodeFromImageFile = async (file, format, isPDF) => {
     }
   } else {
     for (let i = 0; i < results.size(); i += 1) {
-      const { text } = results.get(i);
-      return text;
+      const { bytes } = results.get(i);
+      return bytes
     }
   }
 };
@@ -88,7 +88,7 @@ export const scanFilesForQr = async (selectedFile) => {
   return scanResult;
 };
 
-export const decodeQrData = (qrData) => {
+export const decodeQrData = async  (qrData) => {
   if (!!!qrData) return;
   let encodedData = qrData;
   if (!!HEADER_DELIMITER) {
@@ -98,7 +98,7 @@ export const decodeQrData = (qrData) => {
     if (splitQrData.length !== 2) return; // throw some error and handle it
     encodedData = splitQrData[1];
   }
-  return decode(encodedData);
+  return await decode(encodedData);
 };
 
 export const encodeData = (data) => generateQRData(data);
