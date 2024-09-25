@@ -48,7 +48,7 @@ function QrScanner() {
             stopVideoStream();
             dispatch(
               verificationInit({
-                qrReadResult: { qrData: result.text, status: "SUCCESS" },
+                qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
                 flow: "SCAN",
               })
             );
