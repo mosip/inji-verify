@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
 import { ScanSessionExpiryTime } from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -22,93 +22,44 @@ function QrScanner() {
 
   const scannerRef = useRef<HTMLDivElement>(null);
 
-  const startVideoStream = (camera: string, resolution: string) => {
-    const constraints: MediaStreamConstraints = {
-      video: { facingMode: camera },
-    };
+  const readBarcodeFromCanvas = useCallback(
+    (canvas: HTMLCanvasElement) => {
+      if (canvas && zxingRef.current) {
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+        const sourceBuffer = imageData?.data;
 
-    // Add constraints for specific resolution
-    if (resolution) {
-      const [width, height] =
-        resolution === "2160p"
-          ? [3840, 2160]
-          : resolution === "1440p"
-          ? [2560, 1440]
-          : resolution === "1080p"
-          ? [1920, 1080]
-          : resolution === "720p"
-          ? [1280, 720]
-          : resolution === "480p"
-          ? [640, 480]
-          : resolution === "360p"
-          ? [480, 360]
-          : [0, 0];
-      constraints.video = {
-        width: { ideal: width },
-        height: { ideal: height },
-        facingMode: camera,
-      };
-    }
-
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((stream) => {
-        videoRef.current.srcObject = stream;
-        videoRef.current.setAttribute("playsinline", "true");
-        videoRef.current.load();
-        videoRef.current.play().catch((error) => {
-          console.error("Error playing video:", error);
-        });
-        processFrame();
-      })
-      .catch((error) => {
-        setIsCameraBlocked(true);
-        console.error("Error accessing camera:", error);
-      });
-  };
-
-  const stopVideoStream = () => {
-    if (videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-    }
-  };
-
-  const readBarcodeFromCanvas = (canvas: HTMLCanvasElement) => {
-    if (canvas && zxingRef.current) {
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
-      const sourceBuffer = imageData?.data;
-
-      if (sourceBuffer) {
-        const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
-        zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
-        const result = zxingRef.current.readBarcodeFromPixmap(
-          buffer,
-          imgWidth,
-          imgHeight,
-          true,
-          ""
-        );
-        zxingRef.current._free(buffer);
-
-        if (result.format) {
-          clearTimeout(timer);
-          stopVideoStream();
-          dispatch(
-            verificationInit({
-              qrReadResult: { qrData: result.text, status: "SUCCESS" },
-              flow: "SCAN",
-            })
+        if (sourceBuffer) {
+          const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
+          zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
+          const result = zxingRef.current.readBarcodeFromPixmap(
+            buffer,
+            imgWidth,
+            imgHeight,
+            true,
+            ""
           );
+          zxingRef.current._free(buffer);
+
+          if (result.format) {
+            clearTimeout(timer);
+            stopVideoStream();
+            dispatch(
+              verificationInit({
+                qrReadResult: { qrData: result.text, status: "SUCCESS" },
+                flow: "SCAN",
+              })
+            );
+          }
         }
       }
-    }
-  };
+    },
+    [dispatch]
+  );
 
-  const processFrame = () => {
+  const processFrame = useCallback(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
     if (canvas && video) {
@@ -119,6 +70,61 @@ function QrScanner() {
       readBarcodeFromCanvas(canvas);
     }
     requestAnimationFrame(processFrame);
+  }, [readBarcodeFromCanvas]);
+
+  const startVideoStream = useCallback(
+    (camera: string, resolution: string) => {
+      const constraints: MediaStreamConstraints = {
+        video: { facingMode: camera },
+      };
+
+      // Add constraints for specific resolution
+      if (resolution) {
+        const [width, height] =
+          resolution === "2160p"
+            ? [3840, 2160]
+            : resolution === "1440p"
+            ? [2560, 1440]
+            : resolution === "1080p"
+            ? [1920, 1080]
+            : resolution === "720p"
+            ? [1280, 720]
+            : resolution === "480p"
+            ? [640, 480]
+            : resolution === "360p"
+            ? [480, 360]
+            : [0, 0];
+        constraints.video = {
+          width: { ideal: width },
+          height: { ideal: height },
+          facingMode: camera,
+        };
+      }
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          videoRef.current.srcObject = stream;
+          videoRef.current.setAttribute("playsinline", "true");
+          videoRef.current.load();
+          videoRef.current.play().catch((error) => {
+            console.error("Error playing video:", error);
+          });
+          processFrame();
+        })
+        .catch((error) => {
+          setIsCameraBlocked(true);
+          console.error("Error accessing camera:", error);
+        });
+    },
+    [processFrame]
+  );
+
+  const stopVideoStream = () => {
+    if (videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+    }
   };
 
   const requestFullscreen = (element: HTMLDivElement | null) => {
