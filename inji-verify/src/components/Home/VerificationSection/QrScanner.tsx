@@ -15,54 +15,12 @@ function QrScanner() {
   const dispatch = useAppDispatch();
   const [isCameraBlocked, setIsCameraBlocked] = useState(false);
   const cameraMode = "environment";
-  const [resolution, setResolution] = useState("1080p");
+  const resolution = "1080p";
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
   const zxingRef = useRef<any>(null);
 
   const scannerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    timer = setTimeout(() => {
-      dispatch(goHomeScreen({}));
-      dispatch(
-        raiseAlert({
-          open: true,
-          message:
-            "The scan session has expired due to inactivity. Please initiate a new scan.",
-          severity: "error",
-        })
-      );
-    }, ScanSessionExpiryTime);
-
-    // Dynamically load ZXing from window object
-    const loadZxing = async () => {
-      try {
-        const zxing = await window.ZXing();
-        zxingRef.current = zxing;
-        startVideoStream(cameraMode, resolution);
-      } catch (error) {
-        console.error("Error loading ZXing:", error);
-      }
-    };
-
-    loadZxing();
-
-    return () => {
-      clearTimeout(timer);
-      stopVideoStream();
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    // Disable inbuilt border around the video
-    if (scannerRef?.current) {
-      let svgElements = scannerRef?.current?.getElementsByTagName("svg");
-      if (svgElements.length === 1) {
-        svgElements[0].style.display = "none";
-      }
-    }
-  }, [scannerRef]);
 
   const startVideoStream = (camera: string, resolution: string) => {
     const constraints: MediaStreamConstraints = {
@@ -202,6 +160,48 @@ function QrScanner() {
       requestFullscreen(element);
     }
   }, []);
+
+  useEffect(() => {
+    timer = setTimeout(() => {
+      dispatch(goHomeScreen({}));
+      dispatch(
+        raiseAlert({
+          open: true,
+          message:
+            "The scan session has expired due to inactivity. Please initiate a new scan.",
+          severity: "error",
+        })
+      );
+    }, ScanSessionExpiryTime);
+
+    // Dynamically load ZXing from window object
+    const loadZxing = async () => {
+      try {
+        const zxing = await window.ZXing();
+        zxingRef.current = zxing;
+        startVideoStream(cameraMode, resolution);
+      } catch (error) {
+        console.error("Error loading ZXing:", error);
+      }
+    };
+
+    loadZxing();
+
+    return () => {
+      clearTimeout(timer);
+      stopVideoStream();
+    };
+  }, [dispatch, resolution, startVideoStream]);
+
+  useEffect(() => {
+    // Disable inbuilt border around the video
+    if (scannerRef?.current) {
+      let svgElements = scannerRef?.current?.getElementsByTagName("svg");
+      if (svgElements.length === 1) {
+        svgElements[0].style.display = "none";
+      }
+    }
+  }, [scannerRef]);
 
   return (
     <div
