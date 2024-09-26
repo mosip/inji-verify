@@ -8,34 +8,164 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import "./ScanningLine.css";
-import { initiateQrScanning, terminateScanning } from "../../../utils/qr-utils";
 
 let timer: NodeJS.Timeout;
 
 function QrScanner() {
   const dispatch = useAppDispatch();
   const [isCameraBlocked, setIsCameraBlocked] = useState(false);
+  const cameraMode = "environment";
+  const resolution = "1080p";
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
+  const zxingRef = useRef<any>(null);
 
   const scannerRef = useRef<HTMLDivElement>(null);
 
-  const onSuccess = useCallback(
-    (decodedText: any) => {
-      dispatch(
-        verificationInit({
-          qrReadResult: { qrData: decodedText, status: "SUCCESS" },
-          flow: "SCAN",
-        })
-      );
-      clearTimeout(timer);
+  const readBarcodeFromCanvas = useCallback(
+    (canvas: HTMLCanvasElement) => {
+      if (canvas && zxingRef.current) {
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+        const sourceBuffer = imageData?.data;
+
+        if (sourceBuffer) {
+          const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
+          zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
+          const result = zxingRef.current.readBarcodeFromPixmap(
+            buffer,
+            imgWidth,
+            imgHeight,
+            true,
+            ""
+          );
+          zxingRef.current._free(buffer);
+
+          if (result.format) {
+            clearTimeout(timer);
+            stopVideoStream();
+            dispatch(
+              verificationInit({
+                qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
+                flow: "SCAN",
+              })
+            );
+          }
+        }
+      }
     },
     [dispatch]
   );
 
-  const onError = (e: any) => {
-    console.error("Error occurred:", e);
-    setIsCameraBlocked(true);
-    clearTimeout(timer);
+  const processFrame = useCallback(() => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    if (canvas && video) {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      readBarcodeFromCanvas(canvas);
+    }
+    requestAnimationFrame(processFrame);
+  }, [readBarcodeFromCanvas]);
+
+  const startVideoStream = useCallback(
+    (camera: string, resolution: string) => {
+      const constraints: MediaStreamConstraints = {
+        video: { facingMode: camera },
+      };
+
+      // Add constraints for specific resolution
+      if (resolution) {
+        const [width, height] =
+          resolution === "2160p"
+            ? [3840, 2160]
+            : resolution === "1440p"
+            ? [2560, 1440]
+            : resolution === "1080p"
+            ? [1920, 1080]
+            : resolution === "720p"
+            ? [1280, 720]
+            : resolution === "480p"
+            ? [640, 480]
+            : resolution === "360p"
+            ? [480, 360]
+            : [0, 0];
+        constraints.video = {
+          width: { ideal: width },
+          height: { ideal: height },
+          facingMode: camera,
+        };
+      }
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          videoRef.current.srcObject = stream;
+          videoRef.current.setAttribute("playsinline", "true");
+          videoRef.current.load();
+          videoRef.current.play().catch((error) => {
+            console.error("Error playing video:", error);
+          });
+          processFrame();
+        })
+        .catch((error) => {
+          setIsCameraBlocked(true);
+          console.error("Error accessing camera:", error);
+        });
+    },
+    [processFrame]
+  );
+
+  const stopVideoStream = () => {
+    if (videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+    }
   };
+
+  const requestFullscreen = (element: HTMLDivElement | null) => {
+    if (!document.fullscreenEnabled) {
+      console.error("Fullscreen API is not supported or not enabled.");
+    }
+
+    if (element) {
+      // Check if element is focusable
+      if (!element.tabIndex) {
+        element.tabIndex = 0;
+      }
+
+      // Check if fullscreen already active
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+
+      // Request fullscreen
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if ((element as any).mozRequestFullScreen) {
+        // Firefox
+        (element as any).mozRequestFullScreen();
+      } else if ((element as any).webkitRequestFullscreen) {
+        // Chrome, Safari and Opera
+        (element as any).webkitRequestFullscreen();
+      } else if ((element as any).msRequestFullscreen) {
+        // IE/Edge
+        (element as any).msRequestFullscreen();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      // Check if the device is mobile
+      const element = scannerRef.current;
+      requestFullscreen(element);
+    }
+  }, []);
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -48,14 +178,26 @@ function QrScanner() {
           severity: "error",
         })
       );
-      terminateScanning();
     }, ScanSessionExpiryTime);
-    initiateQrScanning(onSuccess, onError);
-    return () => {
-      console.log("Clearing timeout");
-      clearTimeout(timer);
+
+    // Dynamically load ZXing from window object
+    const loadZxing = async () => {
+      try {
+        const zxing = await window.ZXing();
+        zxingRef.current = zxing;
+        startVideoStream(cameraMode, resolution);
+      } catch (error) {
+        console.error("Error loading ZXing:", error);
+      }
     };
-  }, [dispatch, onSuccess]);
+
+    loadZxing();
+
+    return () => {
+      clearTimeout(timer);
+      stopVideoStream();
+    };
+  }, [dispatch, resolution, startVideoStream]);
 
   useEffect(() => {
     // Disable inbuilt border around the video
@@ -68,22 +210,42 @@ function QrScanner() {
   }, [scannerRef]);
 
   return (
-    <div ref={scannerRef} className="relative">
+    <div
+      ref={scannerRef}
+      className="fixed inset-0 flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
+    >
       {!isCameraBlocked && (
         <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
-          <div id="scanning-line" className="scanning-line"></div>
+          <div
+            id="scanning-line"
+            className="hidden lg:block scanning-line"
+          ></div>
         </div>
       )}
 
-      <div
-        className="none absolute h-[250px] w-[250px] lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center"
-        id="reader"
-      />
+      <div className="relative h-screen w-screen lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center z-0">
+        <button
+          onClick={() => {
+            stopVideoStream();
+            dispatch(goHomeScreen({}));
+          }}
+          className="absolute top-4 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-20"
+          aria-label="Close Scanner"
+        >
+          ✕
+        </button>
+
+        <div className="relative h-screen w-screen rounded-lg overflow-hidden flex items-center justify-center">
+          <canvas
+            ref={canvasRef}
+            className="h-full w-full lg:h-60 object-cover rounded-lg"
+          />
+        </div>
+      </div>
 
       <CameraAccessDenied
         open={isCameraBlocked}
         handleClose={() => {
-          console.log("closing camera");
           dispatch(goHomeScreen({}));
           setIsCameraBlocked(false);
         }}

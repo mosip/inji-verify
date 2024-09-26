@@ -13,7 +13,7 @@ const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
     if (!file) return false;
     let alert: AlertInfo | null = null;
     // file format check
-    const fileExtension = getFileExtension(file.name);
+    const fileExtension = getFileExtension(file.name).toLowerCase();
     if (!SupportedFileTypes.includes(fileExtension)) {
         alert = AlertMessages.unsupportedFileType;
     }

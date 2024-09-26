@@ -8,6 +8,5 @@ export const extractRedirectUrlFromQrData = (qrData: string) => {
 }
 
 export const initiateOvpFlow = (redirectUri: string) => {
-    console.log("Initiating OVP Flow...");
     window.location.href = `${redirectUri}&client_id=${OvpClientId}&redirect_uri=${window.location.origin}/redirect`;
 }
