@@ -1,8 +1,9 @@
-import { decode, generateQRData } from "@mosip/pixelpass";
+import { decode, decodeBinary, generateQRData } from "@mosip/pixelpass";
 import { HEADER_DELIMITER, SUPPORTED_QR_HEADERS } from "./config";
 import * as pdfjsLib from "pdfjs-dist/webpack";
 
 const zxing = await window.ZXing();
+const ZIP_HEADER = "PK";
 
 const readQRcodeFromImageFile = async (file, format, isPDF) => {
   const arrayBuffer = await file.arrayBuffer();
@@ -98,7 +99,11 @@ export const decodeQrData = async  (qrData) => {
     if (splitQrData.length !== 2) return; // throw some error and handle it
     encodedData = splitQrData[1];
   }
-  return await decode(encodedData);
+  let decodedData = new TextDecoder("utf-8").decode(encodedData);
+  if (decodedData.startsWith(ZIP_HEADER)){
+    return await decodeBinary(encodedData)
+  }
+  return decode(decodedData);
 };
 
 export const encodeData = (data) => generateQRData(data);
