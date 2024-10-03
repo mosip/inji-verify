@@ -173,6 +173,9 @@ function QrScanner() {
       setZoomLevel(value);
 
       switch (value) {
+        case 0 || 2:
+          setResolution("720p");
+          break;
         case 4:
           setResolution("1080p");
           break;
