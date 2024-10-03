@@ -1,9 +1,15 @@
 {
   "name": "inji-verify",
   "version": "0.1.0",
+  "author": "MOSIP",
+  "license": "MPL-2.0",
   "private": true,
   "dependencies": {
-    "@mosip/pixelpass": "0.4.0",
+    "@ant-design/icons": "^5.5.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mosip/pixelpass": "0.5.0",
+    "@mui/material": "^6.1.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@sunbird-rc/verification-sdk": "0.1.0",
     "@testing-library/jest-dom": "^5.17.0",
