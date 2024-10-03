@@ -114,5 +114,4 @@ public class BasePage {
 		this.waitForElementToBeVisible(element);
 		element.sendKeys(text);
 	}
-
 }
