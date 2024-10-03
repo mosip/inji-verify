@@ -94,6 +94,10 @@ public class UploadQRCode extends BasePage {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Invalid.png");
 	}
 
+	public void ClickonUploadQRCodeDownloadedFromPhone() {
+		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.png");
+	}
+
 	public void ClickonUploadExpiredQRCodepngExpired() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 
@@ -206,5 +210,6 @@ public class UploadQRCode extends BasePage {
 	public void clickOnPleaseTryAgain() {
 		clickOnElement(driver, PleaseTryAgain);
 	}
+
 
 }

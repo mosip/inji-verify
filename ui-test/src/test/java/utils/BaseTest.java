@@ -32,6 +32,7 @@ public class BaseTest {
 	String userName = getKeyValueFromYaml("/browserstack.yml","userName");
 	public  final String URL = "https://" + userName + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
 
+
 	@Before
 	public void beforeAll() throws MalformedURLException {
 		DesiredCapabilities capabilities = new DesiredCapabilities();

@@ -176,4 +176,5 @@ public class ScanQRCodePage extends BasePage {
 		clickOnElement(driver, CloseIconTimeoutMessage);
 	}
 
+
 }
