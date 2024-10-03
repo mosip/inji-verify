@@ -19,33 +19,16 @@ function QrScanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
   const zxingRef = useRef<any>(null);
+  const [resolution, setResolution] = useState("720p");
   const [zoomLevel, setZoomLevel] = useState(0);
   const scannerRef = useRef<HTMLDivElement>(null);
 
   const readBarcodeFromCanvas = useCallback(
     (canvas: HTMLCanvasElement) => {
-      if (!canvas.width && !canvas.height) return;
-      else if (canvas && zxingRef.current) {
-        const zoom = zoomLevel === 0 ? 1 : zoomLevel;
-        const video = videoRef.current;
+      if (canvas && zxingRef.current) {
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        const zoomedWidth = imgWidth / zoom;
-        const zoomedHeight = imgHeight / zoom;
-        const offsetX = (imgWidth - zoomedWidth) / 2;
-        const offsetY = (imgHeight - zoomedHeight) / 2;
-        ctx?.drawImage(
-          video,
-          offsetX,
-          offsetY,
-          zoomedWidth,
-          zoomedHeight,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
         const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
         const sourceBuffer = imageData?.data;
 
@@ -74,30 +57,49 @@ function QrScanner() {
         }
       }
     },
-    [dispatch, zoomLevel]
+    [dispatch]
   );
 
   const processFrame = useCallback(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
+    const zoom = 1 + zoomLevel / 10;
+
     if (canvas && video) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx?.scale(zoom, zoom);
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
       readBarcodeFromCanvas(canvas);
     }
     requestAnimationFrame(processFrame);
-  }, [readBarcodeFromCanvas]);
+  }, [readBarcodeFromCanvas, zoomLevel]);
 
   const startVideoStream = useCallback(() => {
     const constraints: MediaStreamConstraints = {
       video: {
         facingMode: "environment",
-        width: { ideal: 3840 },
-        height: { ideal: 2160 },
+        frameRate: { ideal: 30 },
       },
     };
+    // Add constraints for specific resolution
+    if (resolution) {
+      const [width, height] =
+        resolution === "2160p"
+          ? [3840, 2160]
+          : resolution === "1440p"
+          ? [2560, 1440]
+          : resolution === "1080p"
+          ? [1920, 1080]
+          : resolution === "720p"
+          ? [1280, 720]
+          : [0, 0];
+      constraints.video = {
+        width: { ideal: width },
+        height: { ideal: height },
+      };
+    }
 
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -115,7 +117,7 @@ function QrScanner() {
         setIsCameraBlocked(true);
         console.error("Error accessing camera:", error);
       });
-  }, [processFrame]);
+  }, [processFrame, resolution]);
 
   const stopVideoStream = () => {
     if (videoRef.current.srcObject) {
@@ -159,6 +161,20 @@ function QrScanner() {
   const handleSliderChange = (value: number) => {
     if (value >= 0 && value <= 10) {
       setZoomLevel(value);
+
+      switch (value) {
+        case 4:
+          setResolution("1080p");
+          break;
+        case 6:
+          setResolution("1440p");
+          break;
+        case 8:
+          setResolution("2160p");
+          break;
+        default:
+          break;
+      }
     }
   };
 
