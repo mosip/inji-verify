@@ -25,11 +25,15 @@ function QrScanner() {
 
   const readBarcodeFromCanvas = useCallback(
     (canvas: HTMLCanvasElement) => {
-      if (canvas && zxingRef.current) {
+      let imageData;
+      if (!canvas.width && !canvas.height) return;
+      else if (canvas && zxingRef.current) {
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+        if (imgWidth > 0 && imgHeight > 0) {
+          imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+        }
         const sourceBuffer = imageData?.data;
 
         if (sourceBuffer) {
@@ -85,7 +89,6 @@ function QrScanner() {
   const startVideoStream = useCallback(() => {
     const constraints: MediaStreamConstraints = {
       video: {
-        facingMode: "environment",
         frameRate: { ideal: 30 },
       },
     };
@@ -104,6 +107,7 @@ function QrScanner() {
       constraints.video = {
         width: { ideal: width },
         height: { ideal: height },
+        facingMode: "environment",
       };
     }
 
