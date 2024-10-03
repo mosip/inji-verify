@@ -69,7 +69,13 @@ function QrScanner() {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      const canvasCenterX = canvas.width / 2;
+      const canvasCenterY = canvas.height / 2;
+      ctx?.save();
+      ctx?.translate(canvasCenterX, canvasCenterY);
       ctx?.scale(zoom, zoom);
+      ctx?.translate(-canvasCenterX, -canvasCenterY);
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
       readBarcodeFromCanvas(canvas);
     }
