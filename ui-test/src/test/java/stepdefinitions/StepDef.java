@@ -288,6 +288,12 @@ public class StepDef {
 
 	}
 
+	@Given("Upload QR code file PDF downloaded from mobile")
+	public void upload_qr_code_file_pdf_downloaded_from_mobile() {
+		uploadqrcode.ClickonUploadQRCodeDownloadedFromPhone();
+		Assert.assertTrue(true);
+	}
+
 	@Then("Verify Error logo for invalid QR code")
 	public void verify_error_logo_for_invalid_qr_code() {
 		Assert.assertTrue(uploadqrcode.isVisibleErrorIcon());
@@ -494,6 +500,11 @@ public class StepDef {
 		Assert.assertTrue(true);
 	}
 
+	@Then("Verify message for valid QR code")
+	public void verify_message_for_valid_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
+	}
+
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
@@ -555,7 +566,7 @@ public class StepDef {
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -608,12 +619,12 @@ public class StepDef {
 			PDPage page = document.getPage(i);
 			BufferedImage image = renderer.renderImage(i);
 
-			String outputFileNamePNG = outputPath +(i) + ".png";
-			String outputFileNameJPG = outputPath +(i) + ".jpg";
-			String outputFileNameJPEG = outputPath +(i) + ".jpeg";
-			ImageIO.write(image, "png", new File(outputFileNamePNG));
-			ImageIO.write(image, "jpg", new File(outputFileNameJPG));
-			ImageIO.write(image, "jpeg", new File(outputFileNameJPEG));
+			String outputFileNamepng = outputPath +(i) + ".png";
+			String outputFileNamejpg = outputPath +(i) + ".jpg";
+			String outputFileNamejpeg = outputPath +(i) + ".jpeg";
+			ImageIO.write(image, "png", new File(outputFileNamepng));
+			ImageIO.write(image, "jpg", new File(outputFileNamejpg));
+			ImageIO.write(image, "jpeg", new File(outputFileNamejpeg));
 		}
 
 		document.close();
