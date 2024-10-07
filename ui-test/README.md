@@ -19,7 +19,7 @@ Ensure the following software is installed on the machine from where the automat
 
 ## Configurations
 
-1. Update `featurefile>>UploadQRCodepage.feature` to modify data in examples section.
+1. Update `resources>>featurefile>>UploadQRCodepage.feature` to modify data in examples section.
 
 
 ## Reports
