@@ -23,7 +23,7 @@ function QrScanner() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const readBarcodeFromCanvas = useCallback(
+  const readBarcodeFromCanvas = useRef(
     (canvas: HTMLCanvasElement) => {
       let imageData;
       if (canvas && zxingRef.current) {
@@ -59,8 +59,7 @@ function QrScanner() {
           }
         }
       }
-    },
-    [dispatch]
+    }
   );
 
   const processFrame = useCallback(() => {
@@ -71,16 +70,19 @@ function QrScanner() {
       canvas.height = canvas.width * (video.videoHeight / video.videoWidth);
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      readBarcodeFromCanvas(canvas);
+      readBarcodeFromCanvas.current(canvas);
     }
-    requestAnimationFrame(processFrame);
-  }, [readBarcodeFromCanvas]);
+    // Throttle frame processing to every 500ms (~2 frames per second)
+    setTimeout(() => {
+      requestAnimationFrame(processFrame);
+    }, 500);
+  }, []);
 
   const startVideoStream = useCallback(() => {
     const constraints: MediaStreamConstraints = {
       video: {
-        width: { ideal: 5000 },
-        height: { ideal: 5000 },
+        width: { ideal: 2560 },
+        height: { ideal: 1440 },
         frameRate: { ideal: 30 },
         facingMode: "environment",
       },
@@ -89,18 +91,19 @@ function QrScanner() {
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
-        videoRef.current!!.srcObject = stream;
-        videoRef.current!!.disablePictureInPicture = true;
-        videoRef.current!!.playsInline = true;
-        videoRef.current!!.controls = false;
-
-        videoRef.current!!.onloadeddata = () => {
-          setIsLoading(false);
-        };
-        videoRef.current!!.play().catch((error) => {
-          console.error("Error playing video:", error);
-        });
-        setTimeout(processFrame, 30);
+        videoRef.current!.srcObject = stream;
+        videoRef.current!.disablePictureInPicture = true;
+        videoRef.current!.playsInline = true;
+        videoRef.current!.controls = false;
+        videoRef
+          .current!.play()
+          .then(() => {
+            setIsLoading(false);
+            setTimeout(processFrame, 100);
+          })
+          .catch((error) => {
+            console.error("Error playing video:", error);
+          });
       })
       .catch((error) => {
         setIsCameraBlocked(true);
@@ -191,7 +194,7 @@ function QrScanner() {
       )}
 
       <div
-        className={`relative h-screen w-screen lg:h-full lg:w-full bg-black rounded-lg overflow-hidden flex items-center justify-center z-0 ${
+        className={`relative h-screen w-screen lg:h-full lg:w-full bg-black lg:rounded-lg overflow-hidden flex items-center justify-center z-0 ${
           isLoading ? "hidden" : "block"
         }`}
       >
