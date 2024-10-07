@@ -56,7 +56,7 @@ export type VerificationState = {
 
 export type QrReadResult = {
     alert?: AlertInfo,
-    qrData?: string,
+    qrData?: object,
     status: QrReadStatus
 }
 

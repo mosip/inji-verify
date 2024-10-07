@@ -1,4 +1,4 @@
-import {OvpClientId, OvpQrHeader} from "./config";
+import {OvpQrHeader} from "./config";
 
 export const extractRedirectUrlFromQrData = (qrData: string) => {
     // qr data format = OVP://payload:text-content
@@ -8,6 +8,6 @@ export const extractRedirectUrlFromQrData = (qrData: string) => {
 }
 
 export const initiateOvpFlow = (redirectUri: string) => {
-    console.log("Initiating OVP Flow...");
-    window.location.href = `${redirectUri}&client_id=${OvpClientId}&redirect_uri=${window.location.origin}/redirect`;
+    const encodedOriginUrl = window.encodeURIComponent(window.location.origin);
+    window.location.href = `${redirectUri}&client_id=${encodedOriginUrl}&redirect_uri=${encodedOriginUrl}/redirect`;
 }
