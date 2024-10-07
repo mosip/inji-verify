@@ -1,4 +1,4 @@
-import {OvpClientId, OvpQrHeader} from "./config";
+import {OvpQrHeader} from "./config";
 
 export const extractRedirectUrlFromQrData = (qrData: string) => {
     // qr data format = OVP://payload:text-content
