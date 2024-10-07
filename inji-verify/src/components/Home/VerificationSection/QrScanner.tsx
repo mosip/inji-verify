@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
-import { ScanSessionExpiryTime } from "../../../utils/config";
+import { MARKS_COUNT, ScanSessionExpiryTime } from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
   goHomeScreen,
@@ -91,7 +91,7 @@ function QrScanner() {
       .then((stream) => {
         videoRef.current!!.srcObject = stream;
         videoRef.current!!.disablePictureInPicture = true;
-        videoRef.current!!.playsInline = false;
+        videoRef.current!!.playsInline = true;
         videoRef.current!!.controls = false;
 
         videoRef.current!!.onloadeddata = () => {
@@ -161,7 +161,8 @@ function QrScanner() {
     }
   }, [scannerRef]);
 
-  const marks = Array.from({ length: 11 }, (_, i) => ({
+  const sliderMarks = Array.from({ length: MARKS_COUNT }, (_, i) => ({
+    key: `mark-${i}`,
     value: i,
     label: i % 2 === 0 ? `${i}` : "|",
   }));
@@ -227,12 +228,13 @@ function QrScanner() {
             {/* Slider */}
             <div className="flex flex-col items-center space-y-2 w-60">
               <Slider
+                key={`${zoomLevel}`}
                 aria-label="Zoom Level"
                 min={0}
                 max={10}
                 step={1}
                 value={zoomLevel}
-                marks={marks}
+                marks={sliderMarks}
                 valueLabelDisplay="on"
                 sx={{
                   color: "#FF7F00",
