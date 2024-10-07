@@ -1,17 +1,19 @@
 package base;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.PageFactory;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.Duration;
+import static java.time.Duration.ofSeconds;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.io.IOException;
-import java.time.Duration;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-
-import static java.time.Duration.ofSeconds;
 
 public class BasePage {
 

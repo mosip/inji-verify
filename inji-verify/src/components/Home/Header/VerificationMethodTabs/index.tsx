@@ -28,7 +28,11 @@ const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolea
 function VerificationMethodTabs(props: any) {
     const dispatch = useAppDispatch();
     const method = useVerificationFlowSelector(state => state.method);
-    function switchToVerificationMethod(method: VerificationMethod) {dispatch(goHomeScreen({method}))}
+    
+    function switchToVerificationMethod(method: VerificationMethod) {
+        dispatch(goHomeScreen({method}))
+    }
+
     function showAlert() {dispatch(raiseAlert({...AlertMessages.verificationMethodComingSoon, open: true}))}
 
     const carouselRef:any = useRef<HTMLDivElement>();

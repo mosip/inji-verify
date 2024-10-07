@@ -1,29 +1,18 @@
 
 package stepdefinitions;
 
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import constants.UiConstants;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import constants.UiConstants;
-import org.testng.Assert;
 import pages.BLE;
 import pages.HomePage;
 import pages.ScanQRCodePage;
 import pages.UploadQRCode;
 import pages.VpVerification;
 import utils.BaseTest;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Base64;
-import java.util.Set;
 
 public class StepDef {
 
