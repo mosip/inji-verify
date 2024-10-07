@@ -214,6 +214,7 @@ function QrScanner() {
               style={{
                 transform: `scale(${1 + zoomLevel / 10})`,
                 willChange: "transform",
+                WebkitTransform: `scale(${1 + zoomLevel / 10}) translateZ(0)`,
               }}
             />
           </div>
