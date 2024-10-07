@@ -20,8 +20,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public class BaseTest {
 
-	protected static final String ENVIRONMENT = System.getProperty("env") == null ? "qa-inji"
-			: System.getProperty("env");
+	public String url ="https://injiverify.qa-inji.mosip.net/";
 
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
@@ -47,7 +46,7 @@ public class BaseTest {
 		driver = new RemoteWebDriver(new URL(URL), capabilities);
 		jse = (JavascriptExecutor) driver;
 		driver.manage().window().maximize();
-		driver.get("https://injiverify.qa-inji.mosip.net/");
+		driver.get(url);
 	}
 
 	@After
