@@ -72,7 +72,6 @@ function QrScanner() {
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
       readBarcodeFromCanvas.current(canvas);
     }
-    // Throttle frame processing to every 500ms (~2 frames per second)
     setTimeout(() => {
       requestAnimationFrame(processFrame);
     }, 500);
@@ -175,7 +174,6 @@ function QrScanner() {
       ref={scannerRef}
       className="fixed inset-0 lg:inset-auto flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
     >
-      {/* Loading Spinner */}
       {isLoading && (
         <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
           <CircularProgress color="warning" />
@@ -223,13 +221,11 @@ function QrScanner() {
           </div>
 
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
-            {/* Decrease Button */}
             <MinusOutlined
               onClick={() => handleSliderChange(zoomLevel - 2)}
               className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
             />
 
-            {/* Slider */}
             <div className="flex flex-col items-center space-y-2 w-60">
               <Slider
                 key={`${zoomLevel}`}
@@ -254,7 +250,6 @@ function QrScanner() {
               />
             </div>
 
-            {/* Increase Button */}
             <PlusOutlined
               className="bg-white text-orange-600 p-2 border border-orange-600 rounded-full ml-3"
               onClick={() => handleSliderChange(zoomLevel + 2)}
