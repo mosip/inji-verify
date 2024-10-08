@@ -178,12 +178,6 @@ function QrScanner() {
     }
   }, [scannerRef]);
 
-  const sliderMarks = Array.from({ length: MARKS_COUNT }, (_, i) => ({
-    key: `mark-${i}`,
-    value: i,
-    label: i % 2 === 0 ? `${i}` : "|",
-  }));
-
   return (
     <div
       ref={scannerRef}
@@ -241,7 +235,7 @@ function QrScanner() {
               className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
             />
 
-            <div className="flex flex-col items-center space-y-2 w-60">
+            <div className="w-60">
               <Slider
                 key={`${zoomLevel}`}
                 aria-label="Zoom Level"
@@ -251,14 +245,10 @@ function QrScanner() {
                 value={zoomLevel}
                 onChange={handleSliderChange}
                 onChangeCommitted={handleSliderChange}
-                marks={sliderMarks}
+                marks
                 valueLabelDisplay="on"
                 sx={{
                   color: "#FF7F00",
-                  ".MuiSlider-markLabel": {
-                    color: "gray",
-                    transition: "none",
-                  },
                   ".MuiSlider-valueLabel": {
                     backgroundColor: "#FF7F00",
                     color: "white",
