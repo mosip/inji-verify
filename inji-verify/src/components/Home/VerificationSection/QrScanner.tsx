@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
-import { MARKS_COUNT, ScanSessionExpiryTime } from "../../../utils/config";
+import {
+  CONSTRAINTS_IDEAL_FRAME_RATE,
+  CONSTRAINTS_IDEAL_HEIGHT,
+  CONSTRAINTS_IDEAL_WIDTH,
+  FRAME_PROCESS_INTERVAL_MS,
+  INITIAL_ZOOM_LEVEL,
+  MARKS_COUNT,
+  ScanSessionExpiryTime,
+  THROTTLE_FRAMES_PER_SEC,
+} from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
   goHomeScreen,
@@ -19,48 +28,46 @@ function QrScanner() {
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const videoRef = useRef<HTMLVideoElement>(null);
   const zxingRef = useRef<any>(null);
-  const [zoomLevel, setZoomLevel] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(INITIAL_ZOOM_LEVEL);
   const scannerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const readBarcodeFromCanvas = useRef(
-    (canvas: HTMLCanvasElement) => {
-      let imageData;
-      if (canvas && zxingRef.current) {
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        if (imgWidth > 0 && imgHeight > 0) {
-          imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
-        }
-        const sourceBuffer = imageData?.data;
+  const readBarcodeFromCanvas = useRef((canvas: HTMLCanvasElement) => {
+    let imageData;
+    if (canvas && zxingRef.current) {
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (imgWidth > 0 && imgHeight > 0) {
+        imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+      }
+      const sourceBuffer = imageData?.data;
 
-        if (sourceBuffer) {
-          const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
-          zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
-          const result = zxingRef.current.readBarcodeFromPixmap(
-            buffer,
-            imgWidth,
-            imgHeight,
-            true,
-            ""
+      if (sourceBuffer) {
+        const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
+        zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
+        const result = zxingRef.current.readBarcodeFromPixmap(
+          buffer,
+          imgWidth,
+          imgHeight,
+          true,
+          ""
+        );
+        zxingRef.current._free(buffer);
+
+        if (result.format) {
+          clearTimeout(timer);
+          stopVideoStream();
+          dispatch(
+            verificationInit({
+              qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
+              flow: "SCAN",
+            })
           );
-          zxingRef.current._free(buffer);
-
-          if (result.format) {
-            clearTimeout(timer);
-            stopVideoStream();
-            dispatch(
-              verificationInit({
-                qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
-                flow: "SCAN",
-              })
-            );
-          }
         }
       }
     }
-  );
+  });
 
   const processFrame = useCallback(() => {
     const canvas = canvasRef.current;
@@ -74,15 +81,15 @@ function QrScanner() {
     }
     setTimeout(() => {
       requestAnimationFrame(processFrame);
-    }, 500);
+    }, THROTTLE_FRAMES_PER_SEC);
   }, []);
 
   const startVideoStream = useCallback(() => {
     const constraints: MediaStreamConstraints = {
       video: {
-        width: { ideal: 2560 },
-        height: { ideal: 1440 },
-        frameRate: { ideal: 30 },
+        width: { ideal: CONSTRAINTS_IDEAL_WIDTH },
+        height: { ideal: CONSTRAINTS_IDEAL_HEIGHT },
+        frameRate: { ideal: CONSTRAINTS_IDEAL_FRAME_RATE },
         facingMode: "environment",
       },
     };
@@ -98,7 +105,7 @@ function QrScanner() {
           .current!.play()
           .then(() => {
             setIsLoading(false);
-            setTimeout(processFrame, 100);
+            setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
           })
           .catch((error) => {
             console.error("Error playing video:", error);
@@ -222,7 +229,7 @@ function QrScanner() {
 
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
             <MinusOutlined
-              onClick={() => handleSliderChange(zoomLevel - 2)}
+              onClick={() => handleSliderChange(zoomLevel - 1)}
               className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
             />
 
@@ -252,7 +259,7 @@ function QrScanner() {
 
             <PlusOutlined
               className="bg-white text-orange-600 p-2 border border-orange-600 rounded-full ml-3"
-              onClick={() => handleSliderChange(zoomLevel + 2)}
+              onClick={() => handleSliderChange(zoomLevel + 1)}
             />
           </div>
         </div>

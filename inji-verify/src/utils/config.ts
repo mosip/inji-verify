@@ -114,3 +114,9 @@ export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._en
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
 export const MARKS_COUNT = 11;
+export const INITIAL_ZOOM_LEVEL = 0;
+export const CONSTRAINTS_IDEAL_WIDTH = 2560;
+export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
+export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
+export const FRAME_PROCESS_INTERVAL_MS = 100;
+export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
