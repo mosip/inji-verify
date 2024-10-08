@@ -124,9 +124,17 @@ function QrScanner() {
     }
   };
 
-  const handleSliderChange = (value: number) => {
+  const handleZoomChange = (value: number) => {
     if (value >= 0 && value <= 10 && videoRef.current) {
       setZoomLevel(value);
+    }
+  };
+  
+  const handleSliderChange = (_: any, value: number | Number[]) => {
+    if (typeof value === "number") {
+      if (value >= 0 && value <= 10 && videoRef.current) {
+        setZoomLevel(value);
+      }
     }
   };
 
@@ -229,7 +237,7 @@ function QrScanner() {
 
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
             <MinusOutlined
-              onClick={() => handleSliderChange(zoomLevel - 1)}
+              onClick={() => handleZoomChange(zoomLevel - 1)}
               className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
             />
 
@@ -241,6 +249,8 @@ function QrScanner() {
                 max={10}
                 step={1}
                 value={zoomLevel}
+                onChange={handleSliderChange}
+                onChangeCommitted={handleSliderChange}
                 marks={sliderMarks}
                 valueLabelDisplay="on"
                 sx={{
@@ -259,7 +269,7 @@ function QrScanner() {
 
             <PlusOutlined
               className="bg-white text-orange-600 p-2 border border-orange-600 rounded-full ml-3"
-              onClick={() => handleSliderChange(zoomLevel + 1)}
+              onClick={() => handleZoomChange(zoomLevel + 1)}
             />
           </div>
         </div>
