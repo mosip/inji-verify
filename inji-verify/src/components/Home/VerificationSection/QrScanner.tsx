@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
-import { ScanSessionExpiryTime } from "../../../utils/config";
+import {
+  CONSTRAINTS_IDEAL_FRAME_RATE,
+  CONSTRAINTS_IDEAL_HEIGHT,
+  CONSTRAINTS_IDEAL_WIDTH,
+  FRAME_PROCESS_INTERVAL_MS,
+  INITIAL_ZOOM_LEVEL,
+  MARKS_COUNT,
+  ScanSessionExpiryTime,
+  THROTTLE_FRAMES_PER_SEC,
+} from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
   goHomeScreen,
@@ -8,164 +17,126 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import "./ScanningLine.css";
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { Slider, CircularProgress } from "@mui/material";
 
 let timer: NodeJS.Timeout;
 
 function QrScanner() {
   const dispatch = useAppDispatch();
   const [isCameraBlocked, setIsCameraBlocked] = useState(false);
-  const cameraMode = "environment";
-  const resolution = "1080p";
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
+  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
+  const videoRef = useRef<HTMLVideoElement>(null);
   const zxingRef = useRef<any>(null);
-
+  const [zoomLevel, setZoomLevel] = useState(INITIAL_ZOOM_LEVEL);
   const scannerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const readBarcodeFromCanvas = useCallback(
-    (canvas: HTMLCanvasElement) => {
-      if (canvas && zxingRef.current) {
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        const imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
-        const sourceBuffer = imageData?.data;
+  const readBarcodeFromCanvas = useRef((canvas: HTMLCanvasElement) => {
+    let imageData;
+    if (canvas && zxingRef.current) {
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (imgWidth > 0 && imgHeight > 0) {
+        imageData = ctx?.getImageData(0, 0, imgWidth, imgHeight);
+      }
+      const sourceBuffer = imageData?.data;
 
-        if (sourceBuffer) {
-          const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
-          zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
-          const result = zxingRef.current.readBarcodeFromPixmap(
-            buffer,
-            imgWidth,
-            imgHeight,
-            true,
-            ""
+      if (sourceBuffer) {
+        const buffer = zxingRef.current._malloc(sourceBuffer.byteLength);
+        zxingRef.current.HEAPU8.set(sourceBuffer, buffer);
+        const result = zxingRef.current.readBarcodeFromPixmap(
+          buffer,
+          imgWidth,
+          imgHeight,
+          true,
+          ""
+        );
+        zxingRef.current._free(buffer);
+
+        if (result.format) {
+          clearTimeout(timer);
+          stopVideoStream();
+          dispatch(
+            verificationInit({
+              qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
+              flow: "SCAN",
+            })
           );
-          zxingRef.current._free(buffer);
-
-          if (result.format) {
-            clearTimeout(timer);
-            stopVideoStream();
-            dispatch(
-              verificationInit({
-                qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
-                flow: "SCAN",
-              })
-            );
-          }
         }
       }
-    },
-    [dispatch]
-  );
+    }
+  });
 
   const processFrame = useCallback(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    if (canvas && video) {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-      const ctx = canvas.getContext("2d");
+    if (canvas && video && video.videoWidth && video.videoHeight) {
+      canvas.width = video.videoWidth;
+      canvas.height = canvas.width * (video.videoHeight / video.videoWidth);
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      readBarcodeFromCanvas(canvas);
+      readBarcodeFromCanvas.current(canvas);
     }
-    requestAnimationFrame(processFrame);
-  }, [readBarcodeFromCanvas]);
+    setTimeout(() => {
+      requestAnimationFrame(processFrame);
+    }, THROTTLE_FRAMES_PER_SEC);
+  }, []);
 
-  const startVideoStream = useCallback(
-    (camera: string, resolution: string) => {
-      const constraints: MediaStreamConstraints = {
-        video: { facingMode: camera },
-      };
+  const startVideoStream = useCallback(() => {
+    const constraints: MediaStreamConstraints = {
+      video: {
+        width: { ideal: CONSTRAINTS_IDEAL_WIDTH },
+        height: { ideal: CONSTRAINTS_IDEAL_HEIGHT },
+        frameRate: { ideal: CONSTRAINTS_IDEAL_FRAME_RATE },
+        facingMode: "environment",
+      },
+    };
 
-      // Add constraints for specific resolution
-      if (resolution) {
-        const [width, height] =
-          resolution === "2160p"
-            ? [3840, 2160]
-            : resolution === "1440p"
-            ? [2560, 1440]
-            : resolution === "1080p"
-            ? [1920, 1080]
-            : resolution === "720p"
-            ? [1280, 720]
-            : resolution === "480p"
-            ? [640, 480]
-            : resolution === "360p"
-            ? [480, 360]
-            : [0, 0];
-        constraints.video = {
-          width: { ideal: width },
-          height: { ideal: height },
-          facingMode: camera,
-        };
-      }
-
-      navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream) => {
-          videoRef.current.srcObject = stream;
-          videoRef.current.setAttribute("playsinline", "true");
-          videoRef.current.load();
-          videoRef.current.play().catch((error) => {
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        videoRef.current!.srcObject = stream;
+        videoRef.current!.disablePictureInPicture = true;
+        videoRef.current!.playsInline = true;
+        videoRef.current!.controls = false;
+        videoRef
+          .current!.play()
+          .then(() => {
+            setIsLoading(false);
+            setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
+          })
+          .catch((error) => {
             console.error("Error playing video:", error);
           });
-          processFrame();
-        })
-        .catch((error) => {
-          setIsCameraBlocked(true);
-          console.error("Error accessing camera:", error);
-        });
-    },
-    [processFrame]
-  );
+      })
+      .catch((error) => {
+        setIsCameraBlocked(true);
+        console.error("Error accessing camera:", error);
+      });
+  }, [processFrame]);
 
   const stopVideoStream = () => {
-    if (videoRef.current.srcObject) {
+    if (videoRef.current?.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach((track) => track.stop());
     }
   };
 
-  const requestFullscreen = (element: HTMLDivElement | null) => {
-    if (!document.fullscreenEnabled) {
-      console.error("Fullscreen API is not supported or not enabled.");
+  const handleZoomChange = (value: number) => {
+    if (value >= 0 && value <= 10 && videoRef.current) {
+      setZoomLevel(value);
     }
-
-    if (element) {
-      // Check if element is focusable
-      if (!element.tabIndex) {
-        element.tabIndex = 0;
-      }
-
-      // Check if fullscreen already active
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
-
-      // Request fullscreen
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if ((element as any).mozRequestFullScreen) {
-        // Firefox
-        (element as any).mozRequestFullScreen();
-      } else if ((element as any).webkitRequestFullscreen) {
-        // Chrome, Safari and Opera
-        (element as any).webkitRequestFullscreen();
-      } else if ((element as any).msRequestFullscreen) {
-        // IE/Edge
-        (element as any).msRequestFullscreen();
+  };
+  
+  const handleSliderChange = (_: any, value: number | Number[]) => {
+    if (typeof value === "number") {
+      if (value >= 0 && value <= 10 && videoRef.current) {
+        setZoomLevel(value);
       }
     }
   };
-
-  useEffect(() => {
-    if (window.innerWidth <= 768) {
-      // Check if the device is mobile
-      const element = scannerRef.current;
-      requestFullscreen(element);
-    }
-  }, []);
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -180,12 +151,11 @@ function QrScanner() {
       );
     }, ScanSessionExpiryTime);
 
-    // Dynamically load ZXing from window object
     const loadZxing = async () => {
       try {
         const zxing = await window.ZXing();
         zxingRef.current = zxing;
-        startVideoStream(cameraMode, resolution);
+        startVideoStream();
       } catch (error) {
         console.error("Error loading ZXing:", error);
       }
@@ -197,12 +167,11 @@ function QrScanner() {
       clearTimeout(timer);
       stopVideoStream();
     };
-  }, [dispatch, resolution, startVideoStream]);
+  }, [dispatch, startVideoStream]);
 
   useEffect(() => {
-    // Disable inbuilt border around the video
-    if (scannerRef?.current) {
-      let svgElements = scannerRef?.current?.getElementsByTagName("svg");
+    if (scannerRef.current) {
+      let svgElements = scannerRef.current.getElementsByTagName("svg");
       if (svgElements.length === 1) {
         svgElements[0].style.display = "none";
       }
@@ -212,44 +181,99 @@ function QrScanner() {
   return (
     <div
       ref={scannerRef}
-      className="fixed inset-0 flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
+      className="fixed inset-0 lg:inset-auto flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
     >
+      {isLoading && (
+        <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
+          <CircularProgress color="warning" />
+        </div>
+      )}
+
       {!isCameraBlocked && (
         <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
           <div
             id="scanning-line"
-            className="hidden lg:block scanning-line"
+            className={`hidden lg:${
+              isLoading ? "hidden" : "block"
+            } scanning-line`}
           ></div>
         </div>
       )}
 
-      <div className="relative h-screen w-screen lg:h-[316px] lg:w-[316px] rounded-lg overflow-hidden flex items-center justify-center z-0">
+      <div
+        className={`relative h-screen w-screen lg:h-full lg:w-full bg-black lg:rounded-lg overflow-hidden flex items-center justify-center z-0 ${
+          isLoading ? "hidden" : "block"
+        }`}
+      >
         <button
           onClick={() => {
             stopVideoStream();
             dispatch(goHomeScreen({}));
           }}
-          className="absolute top-4 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-20"
+          className="absolute top-10 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-20"
           aria-label="Close Scanner"
         >
           ✕
         </button>
 
-        <div className="relative h-screen w-screen rounded-lg overflow-hidden flex items-center justify-center">
-          <canvas
-            ref={canvasRef}
-            className="h-full w-full lg:h-60 object-cover rounded-lg"
-          />
+        <div className="h-screen lg:h-auto relative rounded-lg overflow-hidden flex items-center justify-center">
+          <div className="lg:h-auto overflow-hidden">
+            <video
+              ref={videoRef}
+              className="object-cover rounded-lg"
+              style={{
+                transform: `scale(${1 + zoomLevel / 10}) translateZ(0)`,
+                willChange: "transform",
+                WebkitTransform: `scale(${1 + zoomLevel / 10}) translateZ(0)`,
+              }}
+            />
+          </div>
+
+          <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
+            <MinusOutlined
+              onClick={() => handleZoomChange(zoomLevel - 1)}
+              className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
+            />
+
+            <div className="w-60">
+              <Slider
+                key={`${zoomLevel}`}
+                aria-label="Zoom Level"
+                min={0}
+                max={10}
+                step={1}
+                value={zoomLevel}
+                onChange={handleSliderChange}
+                onChangeCommitted={handleSliderChange}
+                marks
+                valueLabelDisplay="on"
+                sx={{
+                  color: "#FF7F00",
+                  ".MuiSlider-valueLabel": {
+                    backgroundColor: "#FF7F00",
+                    color: "white",
+                  },
+                }}
+              />
+            </div>
+
+            <PlusOutlined
+              className="bg-white text-orange-600 p-2 border border-orange-600 rounded-full ml-3"
+              onClick={() => handleZoomChange(zoomLevel + 1)}
+            />
+          </div>
         </div>
       </div>
 
-      <CameraAccessDenied
-        open={isCameraBlocked}
-        handleClose={() => {
-          dispatch(goHomeScreen({}));
-          setIsCameraBlocked(false);
-        }}
-      />
+      {isCameraBlocked && (
+        <CameraAccessDenied
+          open={isCameraBlocked}
+          handleClose={() => {
+            dispatch(goHomeScreen({}));
+            setIsCameraBlocked(false);
+          }}
+        />
+      )}
     </div>
   );
 }
