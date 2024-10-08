@@ -7,20 +7,21 @@ uitest-injiverify is a automation framework designed for inji verify web app. It
 ## Pre-requisites
 
 Ensure the following software is installed on the machine from where the automation tests will be executed:
-- Java 21
+- The project requires JDK 21
 - Maven 3.6.0 or higher
 
-## Build
-1. Clone the repository by git clone https://github.com/mosip/inji-verify.git 
-2. Change directory by using command 'cd ../uitest-injiverify'  & Build the JAR file: `mvn clean package -DskipTests=true`
-3. The JAR file will be generated in the `target` directory.
-4. For running tests on Device Farm, use the JAR file with dependencies (`zip-with-dependencies`).
+## BrowserStack
+1. Sign up for BrowserStack and retrieve your userName and accessKey from the homepage on BrowserStack.
+2. Update the userName and accessKey from browserstack.yml
+3. Update the device from tag `platforms` from `https://www.browserstack.com/list-of-browsers-and-platforms/automate` (Windows, Mac)
+4. Open command prompt and change directory by using command 'cd ../inji-verify'
+5. Hit the command `mvn clean test -DtestngXmlFile=TestNg.xml`, for running the UI automation test
 
 ## Configurations
 
-1. Update `featurefile>>UploadQRCodepage.feature` to modify data in examples section.
+1. Update `resources>>featurefile>>UploadQRCodepage.feature` to modify data in examples section.
 
 
 ## Reports
 
-Test reports will be available in the `test-output>>ExtentReports>>SparkReports` directory after test execution.
+After test execution, the test reports can be found in the `test-output/ExtentReports/SparkReports` directory.
