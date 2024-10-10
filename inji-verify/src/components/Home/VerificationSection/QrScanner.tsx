@@ -6,7 +6,7 @@ import {
   CONSTRAINTS_IDEAL_WIDTH,
   FRAME_PROCESS_INTERVAL_MS,
   INITIAL_ZOOM_LEVEL,
-  MARKS_COUNT,
+  ZOOM_STEP,
   ScanSessionExpiryTime,
   THROTTLE_FRAMES_PER_SEC,
 } from "../../../utils/config";
@@ -222,9 +222,9 @@ function QrScanner() {
               ref={videoRef}
               className="object-cover rounded-lg"
               style={{
-                transform: `scale(${1 + zoomLevel / 10}) translateZ(0)`,
+                transform: `scale(${1 + zoomLevel / ZOOM_STEP}) translateZ(0)`,
                 willChange: "transform",
-                WebkitTransform: `scale(${1 + zoomLevel / 10}) translateZ(0)`,
+                WebkitTransform: `scale(${1 + zoomLevel / ZOOM_STEP}) translateZ(0)`,
               }}
             />
           </div>
