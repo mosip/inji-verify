@@ -2,7 +2,7 @@ apiVersion: v2
 name: injiverify
 description: A Helm chart for MOSIP injiverify module
 type: application
-version: 0.10.0
+version: 0.10.0-develop
 appVersion: ""
 dependencies:
   - name: common
