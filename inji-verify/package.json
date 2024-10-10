@@ -66,6 +66,7 @@
     "add": "^2.0.6",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^29.7.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.38",
