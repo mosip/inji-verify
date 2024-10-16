@@ -15,16 +15,16 @@ function VcDisplayCard({vc}: {vc: any}) {
                         .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
                         .map((key, index) => (
                             <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "lg:col-start-1 lg:col-end-6" : "lg:col-start-8 lg:col-end-13"}`} key={key}>
-                                <p id={convertToId(key)} className="font-normal text-[11px] break-all">
+                                <p id={convertToId(key)} className="font-normal text-verySmallTextSize break-all">
                                     {convertToTitleCase(key)}
                                 </p>
-                                <p id={`${convertToId(key)}-value`} className="font-bold text-[12px] break-all">
+                                <p id={`${convertToId(key)}-value`} className="font-bold text-smallTextSize break-all">
                                     {getDisplayValue(vc.credentialSubject[key])}
                                 </p>
                             </div>
                         ))
                         : (
-                            <div className="grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10">
+                            <div className="grid content-center justify-center w-[100%] h-[320px] text-documentIcon opacity-10">
                                 <DocumentIcon/>
                             </div>
                         )

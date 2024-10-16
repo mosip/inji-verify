@@ -7,7 +7,73 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: #FF7F00;
+    --iv-primary-color: #ff7f00;
+    --iv-logo-start-color: #ffb600;
+    --iv-background-color: #ffffff;
+    --iv-white-text: #ffffff;
+    --iv-header-label-text: #000000;
+    --iv-header-description-text: #7b7b7b;
+    --iv-offline-label-text: #2c2c2c;
+    --iv-offline-description-text: #7b7b7b;
+    --iv-header-background-color: #f2fcff;
+    --iv-verificationMethodTabs-bg-color: #ffffff;
+    --iv-horizontal-line: #ff7f00;
+    --iv-page-background-color: #fafbfd;
+    --iv-success: #4b9d1f;
+    --iv-invalid: #d73e3e;
+    --iv-expired: #bf7a1c;
+    --iv-success-alert: #57a04b;
+    --iv-warning-alert: #bf7a1c;
+    --iv-error-alert: #d73e3e;
+    --iv-arrow-background: #f2fcff;
+    --iv-stepper-background: #fafbfd;
+    --iv-stepper-label: #868686;
+    --iv-stepper-description: #535353;
+    --iv-camera-denied-label-color: #000000;
+    --iv-camera-denied-description-color: #707070;
+    --iv-upload-description: #8e8e8e;
+    --iv-copyrights-text: #707070;
+    --iv-copyrights-border: #707070;
+    --iv-active-tab-text: #ffffff;
+    --iv-active-tab-background: #ff7f00;
+    --iv-inactive-tab-text: #000000;
+    --iv-inactive-tab-background: #ffffff;
+    --iv-document-icon: #000000;
+  }
+  [class="purple_theme"] {
+    --iv-font-base: "Gentium Plus", serif;
+    --iv-primary-color: #5a31ee;
+    --iv-logo-start-color: #8f69ec;
+    --iv-background-color: #ffffff;
+    --iv-white-text: #ffffff;
+    --iv-header-label-text: #000000;
+    --iv-header-description-text: #7b7b7b;
+    --iv-offline-label-text: #2c2c2c;
+    --iv-offline-description-text: #7b7b7b;
+    --iv-header-background-color: #f7f1ff;
+    --iv-verificationMethodTabs-bg-color: #f7f1ff;
+    --iv-horizontal-line: #bcaaf3;
+    --iv-page-background-color: #fafbfd;
+    --iv-success: #4b9d1f;
+    --iv-invalid: #d73e3e;
+    --iv-expired: #bf7a1c;
+    --iv-success-alert: #57a04b;
+    --iv-warning-alert: #bf7a1c;
+    --iv-error-alert: #d73e3e;
+    --iv-arrow-background: #f7f1ff;
+    --iv-stepper-background: ;
+    --iv-stepper-label: #000000;
+    --iv-stepper-description: #2c2c2c;
+    --iv-camera-denied-label-color: #000000;
+    --iv-camera-denied-description-color: #707070;
+    --iv-upload-description: #2c2c2c;
+    --iv-copyrights-text: #2c2c2c;
+    --iv-copyrights-border: #2c2c2c;
+    --iv-active-tab-text: #ffffff;
+    --iv-active-tab-background: #5a31ee;
+    --iv-inactive-tab-text: #000000;
+    --iv-inactive-tab-background: #ffffff;
+    --iv-document-icon: #000000;
   }
 }
 
@@ -23,4 +89,40 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@keyframes scan-mobile {
+  0% {
+    transform: translateY(-125px);
+  }
+  50% {
+    transform: translateY(125px);
+  }
+  100% {
+    transform: translateY(-125px);
+  }
+}
+
+@keyframes scan-desktop {
+  0% {
+    transform: translateY(-158px);
+  }
+  50% {
+    transform: translateY(158px);
+  }
+  100% {
+    transform: translateY(-158px);
+  }
+}
+
+.scanning-line {
+  width: 100%;
+  height: 2px;
+  background: var(--iv-primary-color);
+  z-index: 100000;
+  box-shadow: 1px 2px 8px 1px var(--iv-primary-color);
+  animation: scan-mobile 3s infinite;
+  @media (min-width: 1024px) {
+    animation: scan-desktop 3s infinite;
+  }
 }

@@ -1,5 +1,6 @@
 import React from "react";
-import scanQr from "../../../assets/scanner-ouline.svg";
+import orangeScanOutline from "../../../assets/scanner-ouline.svg";
+import purpleScanOutline from '../../../assets/purple-scanner-ouline.svg'
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
@@ -14,12 +15,14 @@ const Verification = () => {
     activeScreen: state.activeScreen,
     method: state.method,
   }));
+  const outline = window._env_.DEFAULT_THEME !=="purple_theme" ? orangeScanOutline : purpleScanOutline;
+
   return (
     <div className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[42px] lg:px-[104px] text-center content-center justify-center">
       <div
-        className="col-start-1 col-end-13 grid w-[100%] lg:w-[350px] aspect-square max-w-[280px] lg:max-w-none bg-cover content-center justify-center m-auto"
+        className="col-start-1 col-end-13 grid w-[110%] h-auto lg:w-[360px] aspect-square max-w-[280px] lg:max-w-none bg-cover content-center justify-center m-auto"
         style={{
-          backgroundImage: `url(${scanQr})`,
+          backgroundImage: `url(${outline})`,
         }}
       >
         {activeScreen === VerificationSteps[method].Verifying ? (

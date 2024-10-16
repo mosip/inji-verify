@@ -44,12 +44,12 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
     return open ? (
         <Modal>
             <Fade>
-                <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg" style={style}>
-                    <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto"/>
-                    <p id="camera-access-denied" className="font-bold  text-[20px] my-3 mx-auto">
+                <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg fill-primary" style={style}>
+                    <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto fill-inherit"/>
+                    <p id="camera-access-denied" className="font-bold  text-mediumTextSize text-cameraDeniedLabel my-3 mx-auto">
                         Camera Access Denied
                     </p>
-                    <p id="camera-access-denied-description" className="font-normal text-[16px]  text-[#707070] my-3 mx-auto">
+                    <p id="camera-access-denied-description" className="font-normal text-lgNormalTextSize  text-cameraDeniedDescription my-3 mx-auto">
                         We need your camera to scan the code. Go to your browser settings and allow camera access for
                         this website.
                     </p>

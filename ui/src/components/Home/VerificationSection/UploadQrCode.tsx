@@ -43,7 +43,7 @@ const acceptedFileTypes = SupportedFileTypes.map(ext => `.${ext}`).join(', ')
 function UploadButton({ displayMessage }: {displayMessage: string}) {
     return (
         <label
-            className="hover:bg-primary bg-[#FFFFFF] hover:text-[#FFFFFF] text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-[16px] fill-[#ff7f00] hover:fill-white"
+            className="hover:bg-primary bg-pageBackGroundColor hover:text-pageBackGroundColor text-primary bg-no-repeat rounded-[9999px] border-2 border-primary font-bold w-[350px] cursor-pointer text-center px-0 py-[12px] text-lgNormalTextSize fill-primary hover:fill-white"
             htmlFor={"upload-qr"}
         >
             <span className="flex m-auto content-center justify-center w-[100%]">

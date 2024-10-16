@@ -14,10 +14,10 @@ function SomethingWentWrong(props: any) {
             <UnderConstruction className="my-[30px] mx-auto w-[372px] max-w-[90%]" />
             </div>
             <div className="col-end-13">
-                <h6 id="no-internet-connection" className="font-medium text-2xl  text-[#2C2C2C] mx-auto my-[5px]">
+                <h6 id="no-internet-connection" className="font-medium text-offlineLabel text-lgMediumTextSize mx-auto my-[5px]">
                     No Internet Connection!
                 </h6>
-                <p id="no-internet-description" className="font-normal text-[14px]  text-[#7B7B7B] mx-auto my-[5px]">
+                <p id="no-internet-description" className="font-normal text-offlineDescription text-normalTextSize mx-auto my-[5px]">
                     Oops! We can’t seem to connect. Check your internet connection and try again.
                 </p>
                 <StyledButton
