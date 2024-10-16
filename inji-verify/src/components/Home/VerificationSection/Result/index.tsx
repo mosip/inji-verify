@@ -21,7 +21,7 @@ const Result = () => {
     // validate vc and show success/failure component
     return (
         <div id="result-section" className="relative">
-            <div className={`text-white`}>
+            <div className={`text-whiteText`}>
                 <ResultSummary status={status}/>
             </div>
             <div

@@ -5,9 +5,9 @@ import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
 import {useAlertsSelector} from "../../redux/features/alerts/alerts.selector";
 
 const backgroundColorMapping: any = {
-    warning: "bg-[#BF7A1C]",
-    error: "bg-[#D73E3E]",
-    success: "bg-[#57A04B]"
+    warning: "bg-warningAlert",
+    error: "bg-errorAlert",
+    success: "bg-successAlert"
 }
 
 const AlertMessage = () => {

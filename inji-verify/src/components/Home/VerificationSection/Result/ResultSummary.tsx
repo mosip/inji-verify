@@ -3,9 +3,9 @@ import {ReactComponent as VerificationSuccessMobileIcon} from "../../../../asset
 import {ReactComponent as VerificationFailedMobileIcon} from "../../../../assets/verification-failed-icon-mobile.svg";
 
 const backgroundColorMapping: any = {
-    EXPIRED: "bg-[#BF7A1C]",
-    INVALID: "bg-[#D73E3E]",
-    SUCCESS: "bg-[#4B9D1F]"
+    EXPIRED: "bg-expired",
+    INVALID: "bg-invalid",
+    SUCCESS: "bg-success"
 }
 
 const displayMessageMapping = {
@@ -26,7 +26,7 @@ const ResultSummary = ({status}: {
                         {status === "SUCCESS" ? <VerificationSuccessMobileIcon/> : <VerificationFailedMobileIcon/>}
                     </div>
                     <div className="col-start-1 col-end-13">
-                        <p id="vc-result-display-message" className="font-normal text-[16px] text-center">
+                        <p id="vc-result-display-message" className="font-normal text-lgNormalTextSize text-center">
                             {
                                 displayMessageMapping[status]
                             }

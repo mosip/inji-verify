@@ -9,8 +9,8 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 
 const Tab = ({id, active, label, disabled, onClick}: {id: string, active: boolean, label: string, disabled?: boolean, onClick?: () => void}) => {
-    const activeTab = "bg-[#FF7F00] border-t-[6px] border-y-[#FF7F00] text-white";
-    const inactiveTab = "bg-white text-black shadow-lg mt-[6px]";
+    const activeTab = "bg-activeTabBackground border-t-[6px] border-y-activeTabBackground text-activeTabText";
+    const inactiveTab = "bg-inactiveTabBackground text-inactiveTabText shadow-lg mt-[6px]";
     const disabledTab = "text-gray-600 bg-gray-200 ";
     // const toolTip = "absolute z-10 p-2 text-sm text-white bg-gray-800 rounded-lg opacity-0 transition-opacity duration-300";
     const enabledTab = active ? activeTab : inactiveTab;
@@ -51,9 +51,9 @@ function VerificationMethodTabs(props: any) {
 
     return (
         <div
-            className="container mx-auto w-[100%] bg-[#F2FCFF] border-b-2 border-b-[#FF7F00] max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
+            className="container mx-auto w-[100%] bg-tabsBackGround border-b-2 border-b-horizontalLine max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
             <div className="flex flex-row items-center mx-auto justify-center relative">
-                <div className="absolute left-0 h-full w-12 bg-[#F2FCFF] md:hidden grid items-center">
+                <div className="absolute left-0 h-full w-12 bg-arrowBackGround md:hidden grid items-center">
                     <button id="tabs-carousel-left-icon" onClick={handlePrev} className="focus:outline-none">
                         <MdArrowBackIos className="mx-auto"/>
                     </button>
@@ -68,7 +68,7 @@ function VerificationMethodTabs(props: any) {
                         <Tab id="ble-tab" active={false} label="BLE" disabled onClick={showAlert}/>
                     </div>
                 </div>
-                <div className="absolute right-0 h-full w-12 bg-[#F2FCFF] md:hidden grid items-center">
+                <div className="absolute right-0 h-full w-12 bg-arrowBackGround md:hidden grid items-center">
                     <button id="tabs-carousel-right-icon" onClick={handleNext} className="focus:outline-none">
                         <MdArrowForwardIos className="mx-auto"/>
                     </button>

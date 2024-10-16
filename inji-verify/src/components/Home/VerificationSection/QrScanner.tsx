@@ -16,7 +16,6 @@ import {
   verificationInit,
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import "./ScanningLine.css";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { Slider, CircularProgress } from "@mui/material";
 
@@ -129,7 +128,7 @@ function QrScanner() {
       setZoomLevel(value);
     }
   };
-  
+
   const handleSliderChange = (_: any, value: number | Number[]) => {
     if (typeof value === "number") {
       if (value >= 0 && value <= 10 && videoRef.current) {
@@ -185,12 +184,12 @@ function QrScanner() {
     >
       {isLoading && (
         <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
-          <CircularProgress color="warning" />
+          <CircularProgress color="primary" />
         </div>
       )}
 
       {!isCameraBlocked && (
-        <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
+        <div className="absolute top-[-70px] left-[4px] h-[340px] w-[351px] flex items-center justify-center">
           <div
             id="scanning-line"
             className={`hidden lg:${
@@ -222,9 +221,13 @@ function QrScanner() {
               ref={videoRef}
               className="object-cover rounded-lg"
               style={{
-                transform: `scale(${1 + zoomLevel / ZOOM_STEP_PERCENTAGE}) translateZ(0)`,
+                transform: `scale(${
+                  1 + zoomLevel / ZOOM_STEP_PERCENTAGE
+                }) translateZ(0)`,
                 willChange: "transform",
-                WebkitTransform: `scale(${1 + zoomLevel / ZOOM_STEP_PERCENTAGE}) translateZ(0)`,
+                WebkitTransform: `scale(${
+                  1 + zoomLevel / ZOOM_STEP_PERCENTAGE
+                }) translateZ(0)`,
               }}
             />
           </div>
@@ -232,7 +235,7 @@ function QrScanner() {
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
             <MinusOutlined
               onClick={() => handleZoomChange(zoomLevel - 1)}
-              className="bg-white text-orange-600 border border-orange-600 p-2 rounded-full mr-3"
+              className="bg-white text-primary border border-primary p-2 rounded-full mr-3"
             />
 
             <div className="w-60">
@@ -248,9 +251,9 @@ function QrScanner() {
                 marks
                 valueLabelDisplay="on"
                 sx={{
-                  color: "#FF7F00",
+                  color: "primary",
                   ".MuiSlider-valueLabel": {
-                    backgroundColor: "#FF7F00",
+                    backgroundColor: "primary",
                     color: "white",
                   },
                 }}
@@ -258,7 +261,7 @@ function QrScanner() {
             </div>
 
             <PlusOutlined
-              className="bg-white text-orange-600 p-2 border border-orange-600 rounded-full ml-3"
+              className="bg-white text-primary p-2 border border-primary rounded-full ml-3"
               onClick={() => handleZoomChange(zoomLevel + 1)}
             />
           </div>
