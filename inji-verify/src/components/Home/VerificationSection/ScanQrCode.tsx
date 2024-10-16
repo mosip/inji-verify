@@ -1,6 +1,4 @@
 import React from 'react';
-import orangeScanOutline from "../../../assets/scanner-ouline.svg";
-import purpleScanOutline from '../../../assets/purple-scanner-ouline.svg'
 import { ReactComponent as QrIcon }  from "../../../assets/qr-code-icon.svg";
 import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
@@ -10,6 +8,7 @@ import {qrReadInit} from "../../../redux/features/verification/verification.slic
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
+import { ScanOutline } from '../../../utils/theme-utils';
 
 const Scan = () => {
     const dispatch = useAppDispatch();
@@ -46,14 +45,13 @@ const Upload = () => (
 
 const ScanQrCode = () => {
     const method = useVerificationFlowSelector(state => state.method);
-    const outline = window._env_.DEFAULT_THEME !=="purple_theme" ? orangeScanOutline : purpleScanOutline;
     return (
         <div
             className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
             <div className="xs:col-end-13">
                 <div
                     className={`relative grid content-center justify-center w-[275px] lg:w-[350px] aspect-square my-1.5 mx-auto bg-cover`}
-                    style={{backgroundImage: `url(${outline})`}}>
+                    style={{backgroundImage: `url(${ScanOutline})`}}>
                     <div
                         className="grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
                     </div>
