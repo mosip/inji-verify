@@ -1,6 +1,6 @@
 import React from "react";
 import SomethingWentWrong from "../components/SomethingWentWrong";
-import { ReactComponent as Logo } from "../assets/images/inji-verify.svg";
+import { Logo } from "../utils/theme-utils";
 import { Pages } from "../utils/config";
 
 function Offline(props: any) {
