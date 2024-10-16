@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { ReactComponent as Logo } from "../../assets/images/inji-verify.svg";
+import { Logo } from '../../utils/theme-utils';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
