@@ -19,8 +19,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: "inji-verify"
-            SERVICE_NAME: "inji-verify"
+          - SERVICE_LOCATION: "ui"
+            SERVICE_NAME: "inji-verify-ui"
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master
@@ -38,7 +38,7 @@ jobs:
     needs: build-dockers-inji-verify
     uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
-      SERVICE_LOCATION: ./inji-verify
+      SERVICE_LOCATION: ./ui
       SONAR_URL: 'https://sonarcloud.io'
       PROJECT_KEY: 'mosip_inji-verify'
     secrets:
