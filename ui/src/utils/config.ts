@@ -113,7 +113,7 @@ export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._en
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
-export const ZOOM_STEP_PERCENTAGE = 50;
+export const ZOOM_STEP = 2.5;
 export const INITIAL_ZOOM_LEVEL = 0;
 export const CONSTRAINTS_IDEAL_WIDTH = 2560;
 export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
