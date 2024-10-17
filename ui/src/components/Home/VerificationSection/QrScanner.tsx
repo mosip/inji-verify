@@ -252,9 +252,9 @@ function QrScanner() {
                 marks
                 valueLabelDisplay="on"
                 sx={{
-                  color: "primary",
+                  color: "var(--iv-primary-color)",
                   ".MuiSlider-valueLabel": {
-                    backgroundColor: "primary",
+                    backgroundColor: "var(--iv-primary-color)",
                     color: "white",
                   },
                 }}
