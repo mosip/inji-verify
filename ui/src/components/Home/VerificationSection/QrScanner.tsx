@@ -181,7 +181,7 @@ function QrScanner() {
   return (
     <div
       ref={scannerRef}
-      className="fixed inset-0 lg:inset-auto flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
+      className="fixed inset-0 lg:inset-auto flex items-center justify-center h-full lg:w-[21rem] lg:h-auto lg:aspect-square lg:relative lg:overflow-visible"
     >
       {isLoading && (
         <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
@@ -190,14 +190,12 @@ function QrScanner() {
       )}
 
       {!isCameraBlocked && (
-        <div className="absolute top-[-70px] left-[4px] h-[340px] w-[351px] flex items-center justify-center">
-          <div
-            id="scanning-line"
-            className={`hidden lg:${
-              isLoading ? "hidden" : "block"
-            } scanning-line`}
-          ></div>
-        </div>
+        <div
+          id="scanning-line"
+          className={`hidden lg:${
+            isLoading ? "hidden" : "block"
+          } scanning-line absolute flex items-center justify-center`}
+        />
       )}
 
       <div
@@ -216,15 +214,13 @@ function QrScanner() {
           ✕
         </button>
 
-        <div className="h-screen lg:h-auto relative rounded-lg overflow-hidden flex items-center justify-center">
-          <div className="lg:h-auto overflow-hidden">
+        <div className="h-screen lg:h-auto flex items-center justify-center">
+          <div className="overflow-hidden">
             <video
               ref={videoRef}
-              className="object-cover rounded-lg"
+              className="object-cover rounded-lg lg:aspect-square"
               style={{
-                transform: `scale(${
-                  1 + zoomLevel / ZOOM_STEP
-                }) translateZ(0)`,
+                transform: `scale(${1 + zoomLevel / ZOOM_STEP}) translateZ(0)`,
                 willChange: "transform",
                 WebkitTransform: `scale(${
                   1 + zoomLevel / ZOOM_STEP
