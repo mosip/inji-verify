@@ -17,7 +17,8 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
-import { Slider, CircularProgress } from "@mui/material";
+import { Slider } from "@mui/material";
+import Loader from "../../commons/Loader";
 
 let timer: NodeJS.Timeout;
 
@@ -184,7 +185,7 @@ function QrScanner() {
     >
       {isLoading && (
         <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
-          <CircularProgress color="primary" />
+          <Loader />
         </div>
       )}
 
