@@ -105,13 +105,13 @@ code {
 
 @keyframes scan-desktop {
   0% {
-    transform: translateY(-158px);
+    transform: translateY(-168px);
   }
   50% {
-    transform: translateY(158px);
+    transform: translateY(168px);
   }
   100% {
-    transform: translateY(-158px);
+    transform: translateY(-168px);
   }
 }
 
