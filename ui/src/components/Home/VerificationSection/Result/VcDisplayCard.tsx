@@ -31,7 +31,7 @@ function VcDisplayCard({vc}: {vc: any}) {
                 }
             </div>
             <div className="grid content-center justify-center">
-                <StyledButton id="verify-another-qr-code-button" className="mx-auto mt-6 mb-20 lg:mb-6" onClick={() => {
+                <StyledButton id="verify-another-qr-code-button" className="w-[200px] lg:w-[350px] mt-6 mb-20 lg:mb-6 mx-0 my-1.5 text-lgNormalTextSize inline-flex" onClick={() => {
                     dispatch(goHomeScreen({}))
                 }}>
                     Verify Another QR code
