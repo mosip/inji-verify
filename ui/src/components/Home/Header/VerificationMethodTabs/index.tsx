@@ -26,7 +26,6 @@ const Tab = ({
   const inactiveTab =
     "bg-inactiveTabBackground text-inactiveTabText shadow-lg mt-[6px]";
   const disabledTab = "text-gray-600 bg-gray-200 ";
-  // const toolTip = "absolute z-10 p-2 text-sm text-white bg-gray-800 rounded-lg opacity-0 transition-opacity duration-300";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
     <div>
