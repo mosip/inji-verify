@@ -46,35 +46,8 @@ jobs:
       ORG_KEY: ${{ secrets.ORG_KEY }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-  trivy_scan:
-    needs: build-dockers-inji-verify
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.ACTOR_DOCKER_HUB }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-
-      - name: Scan Docker image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ matrix.SERVICE_NAME }}
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'HIGH,CRITICAL'
-
-      - name: Notify Slack
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_MESSAGE: "Trivy scan failed for ${{ matrix.SERVICE_NAME }}"
+  call-trivy-scan:
+   uses: rajapandi1234/kattu/.github/workflows/trivy.yml@master
+   with:
+       service_name: 'inji-verify'
+       version: 'latest'
