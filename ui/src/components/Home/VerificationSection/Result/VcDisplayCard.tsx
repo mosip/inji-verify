@@ -1,7 +1,7 @@
 import React from 'react';
 import {convertToId, convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
-import {ReactComponent as DocumentIcon} from '../../../../assets/document.svg';
+import { DocumentIcon } from '../../../../utils/theme-utils';
 import {useAppDispatch} from "../../../../redux/hooks";
 import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
 
@@ -24,7 +24,7 @@ function VcDisplayCard({vc}: {vc: any}) {
                             </div>
                         ))
                         : (
-                            <div className="grid content-center justify-center w-[100%] h-[320px] text-documentIcon opacity-10">
+                            <div className="grid content-center justify-center w-[100%] h-[320px] text-documentIcon">
                                 <DocumentIcon/>
                             </div>
                         )
