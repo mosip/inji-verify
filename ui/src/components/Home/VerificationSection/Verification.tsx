@@ -24,7 +24,7 @@ const Verification = () => {
         }}
       >
         {activeScreen === VerificationSteps[method].Verifying ? (
-          <Loader />
+          <Loader innerBg="bg-white"/>
         ) : (
           <QrScanner />
         )}

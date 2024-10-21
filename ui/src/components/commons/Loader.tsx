@@ -8,7 +8,7 @@ function Loader(props: any) {
         props.className ?? ""
       }`}
     >
-      <div className="bg-white rounded-full w-full h-full" />
+      <div className={`${props.innerBg??"bg-white"} rounded-full w-full h-full`} />
     </div>
   );
 }
