@@ -24,14 +24,14 @@ const Tab = ({
   const activeTab =
     "bg-gradient border-t-[6px] border-y-transparent text-activeTabText";
   const inactiveTab =
-    "bg-inactiveTabBackground text-inactiveTabText shadow-lg mt-[6px]";
+    "bg-inactiveTabBackground text-inactiveTabText";
   const disabledTab = "text-disableTabText bg-disableTabBackground";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
     <div>
       <button
         id={id}
-        className={`w-[172px] lg:w-[214px] py-4 focus:outline-none self-end rounded-t-xl ${
+        className={`w-[172px] lg:w-[214px] py-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
           disabled ? disabledTab : enabledTab
         }`}
         onClick={onClick}
@@ -71,7 +71,7 @@ function VerificationMethodTabs(props: any) {
   };
 
   return (
-    <div className="container mx-auto w-[100%] bg-tabsBackGround  max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
+    <div className="container mx-auto w-[100%] bg-lighter-gradient  max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
       <div className="flex flex-row items-center mx-auto justify-center relative">
         <div className="absolute left-0 h-full w-12 bg-arrowBackGround md:hidden grid items-center">
           <button
