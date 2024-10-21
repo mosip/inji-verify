@@ -48,7 +48,15 @@ module.exports = {
         activeTabBackground: "var(--iv-active-tab-background)",
         inactiveTabText: "var(--iv-inactive-tab-text)",
         inactiveTabBackground: "var(--iv-inactive-tab-background)",
+        disableTabBackground:"var(--iv-disabledTab-bg)",
+        disableTabText:"var(--iv-disabledTab-text)",
         documentIcon: "var(--iv-document-icon)",
+      },
+      backgroundImage: {
+        "gradient":
+          "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)",
+        "lighter-gradient":
+          "linear-gradient(90deg, rgba(255, 83, 0, 0.08) 0%, rgba(251, 81, 3, 0.08) 16%, rgba(240, 76, 15, 0.08) 31%, rgba(222, 67, 34, 0.08) 46%, rgba(197, 54, 60, 0.08) 61%, rgba(164, 38, 95, 0.08) 75%, rgba(124, 19, 137, 0.08) 90%, rgba(91, 3, 173, 0.08) 100%)",
       },
     },
   },

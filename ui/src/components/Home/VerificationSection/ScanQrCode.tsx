@@ -1,6 +1,5 @@
-import React from 'react';
-import { ReactComponent as QrIcon }  from "../../../assets/qr-code-icon.svg";
-import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
+import React, { useState } from 'react';
+import { GradientScanIcon, QrIcon, WhiteScanIcon } from '../../../utils/theme-utils';
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
@@ -12,12 +11,16 @@ import { ScanOutline } from '../../../utils/theme-utils';
 
 const Scan = () => {
     const dispatch = useAppDispatch();
+    const [isHover, setHover] = useState(false)
+    const ScanIcon = isHover? WhiteScanIcon :GradientScanIcon
     return (
         <>
             <StyledButton
                 id="scan-button"
-                icon={<TabScanFillIcon className="fill-inherit"/>}
-                className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-primary hover:fill-white'
+                icon={<ScanIcon /> }
+                onMouseEnter={()=> setHover(true)}
+                onMouseLeave={()=> setHover(false)}
+                className='mx-0 my-1.5 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]'
                 fill={false}
                 onClick={async (event) => {
                     dispatch(updateInternetConnectionStatus({internetConnectionStatus: "LOADING"}))
@@ -53,7 +56,7 @@ const ScanQrCode = () => {
                     className={`relative grid content-center justify-center w-[275px] h-auto lg:w-[360px] aspect-square my-1.5 mx-auto bg-cover`}
                     style={{backgroundImage: `url(${ScanOutline})`}}>
                     <div
-                        className="grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
+                        className="grid bg-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
                     </div>
                     <div
                         className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%] fill-primary">

@@ -12,7 +12,7 @@ import {
 } from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
-  goHomeScreen,
+  goToHomeScreen,
   verificationInit,
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
@@ -140,7 +140,7 @@ function QrScanner() {
 
   useEffect(() => {
     timer = setTimeout(() => {
-      dispatch(goHomeScreen({}));
+      dispatch(goToHomeScreen({}));
       dispatch(
         raiseAlert({
           open: true,
@@ -206,7 +206,7 @@ function QrScanner() {
         <button
           onClick={() => {
             stopVideoStream();
-            dispatch(goHomeScreen({}));
+            dispatch(goToHomeScreen({}));
           }}
           className="absolute top-10 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-20"
           aria-label="Close Scanner"
@@ -232,7 +232,7 @@ function QrScanner() {
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
             <MinusOutlined
               onClick={() => handleZoomChange(zoomLevel - 1)}
-              className="bg-white text-primary border border-primary p-2 rounded-full mr-3"
+              className="bg-gradient text-white border border-primary p-2 rounded-full mr-3"
             />
 
             <div className="w-60">
@@ -253,12 +253,18 @@ function QrScanner() {
                     backgroundColor: "var(--iv-primary-color)",
                     color: "white",
                   },
+                  '& .MuiSlider-track': {
+                    background: "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
+                  },
+                  '.MuiSlider-rail': {
+                    background: "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
+                  },
                 }}
               />
             </div>
 
             <PlusOutlined
-              className="bg-white text-primary p-2 border border-primary rounded-full ml-3"
+              className="bg-gradient text-white p-2 border border-primary rounded-full ml-3"
               onClick={() => handleZoomChange(zoomLevel + 1)}
             />
           </div>
@@ -269,7 +275,7 @@ function QrScanner() {
         <CameraAccessDenied
           open={isCameraBlocked}
           handleClose={() => {
-            dispatch(goHomeScreen({}));
+            dispatch(goToHomeScreen({}));
             setIsCameraBlocked(false);
           }}
         />

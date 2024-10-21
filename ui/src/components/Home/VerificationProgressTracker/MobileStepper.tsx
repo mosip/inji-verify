@@ -5,9 +5,9 @@ import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../.
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
-    const stepperActiveOrCompleted = "rounded-full bg-primary text-whiteText";
-    const stepperUpcomingStep = "bg-background text-primary";
-    const stepperCircle = "rounded-full border-[1px] border-primary";
+    const stepperActiveOrCompleted = `rounded-full bg-gradient text-white p-[1px]`;
+    const stepperUpcomingStep = "bg-gradient rounded-full text-primary p-[1px]";
+    const stepperCircle = `${activeOrCompleted ? "bg-gradient" : "bg-white"} rounded-[9998px] border-[1px] border-transparent`;
     return (
         <div className={`${stepperStep} ${activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep}`}
              data-step="1">
@@ -18,7 +18,7 @@ const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCo
 
 function MobileStepper(props: any) {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
-    const stepperLine = "flex-grow border-t-2 border-primary w-[44px]";
+    const stepperLine = "flex-grow border-t-2 border-transparent";
 
     const stepCount = getVerificationStepsCount(method);
     const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
@@ -35,7 +35,7 @@ function MobileStepper(props: any) {
                     getRangeOfNumbers(stepCount).map((value, index) => (
                         <>
                             <Step stepNumber={value} activeOrCompleted={value <= activeScreen}/>
-                            {(value < stepCount) && (<div className={stepperLine}></div>)}
+                            {(value < stepCount) && (<div className={`bg-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
                         </>
                     ))
                 }

@@ -3,7 +3,7 @@ import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
 import { useAppDispatch } from "../../../redux/hooks";
-import { goHomeScreen } from "../../../redux/features/verification/verification.slice";
+import { goToHomeScreen } from "../../../redux/features/verification/verification.slice";
 import { VerificationSteps } from "../../../utils/config";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
 import { ScanOutline } from "../../../utils/theme-utils";
@@ -32,9 +32,9 @@ const Verification = () => {
       <div className="col-span-12">
         <StyledButton
           id="verification-back-button"
-          className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px]"
+          className="w-[100px] lg:w-[350px] mt-[18px] mx-0 my-1.6 text-lgNormalTextSize inline-flex"
           onClick={() => {
-            dispatch(goHomeScreen({}));
+            dispatch(goToHomeScreen({}));
           }}
         >
           Back
