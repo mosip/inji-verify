@@ -9,13 +9,13 @@ function StyledButton(props: StyledButtonProps) {
   return (
     <div
       className={
-        `bg-gradient p-1 bg-no-repeat rounded-full` +
+        `bg-gradient p-px bg-no-repeat rounded-[5px]` +
         ` ${props.className}`
       }
     >
       <button
         {...props}
-        className={`group bg-white hover:bg-gradient h-[40px] w-full rounded-[9991px] flex items-center justify-center`}
+        className={`group bg-white hover:bg-gradient h-[40px] w-full rounded-[5px] flex items-center justify-center`}
       >
         {props.icon && <span className="mr-1.5">{props.icon}</span>}
         <span
