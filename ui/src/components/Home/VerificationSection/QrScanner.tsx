@@ -185,7 +185,7 @@ function QrScanner() {
     >
       {isLoading && (
         <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
-          <Loader />
+          <Loader innerBg="bg-white"/>
         </div>
       )}
 
