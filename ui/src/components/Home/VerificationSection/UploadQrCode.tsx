@@ -73,11 +73,11 @@ export const UploadQrCode = ({
   const UploadButton =({ displayMessage }: { displayMessage: string })=> {
     const UploadIcon = isHover ? WhiteUploadIcon : GradientUploadIcon;
     return (
-      <div className="bg-gradient hover:text-white p-1 bg-no-repeat rounded-[9999px] w-[350px]">
+      <div className="bg-gradient hover:text-white p-px bg-no-repeat rounded-[5px] w-[350px]">
         <label
           htmlFor={"upload-qr"}
           cursor-pointer
-          className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[9991px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
+          className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[5px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
         >
           <span className="mr-1.5">
             <UploadIcon />
