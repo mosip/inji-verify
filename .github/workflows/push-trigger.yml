@@ -49,7 +49,7 @@ jobs:
   build-inji-verify-service:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
-      SERVICE_LOCATION: .
+      SERVICE_LOCATION: ./
       BUILD_ARTIFACT: inji-verify-service
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
