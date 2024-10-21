@@ -36,7 +36,7 @@ function DesktopStepper() {
                                         <div className={`${!isLastStep(index) ? "border-transparent border-l-transparent" : "border-none"} border-[1px]`}/>
                                         </div>
                                     </div>}
-                                    <div id={`${convertToId(step.label)}-description`} className={`${isLastStep(index)?"ml-9":''} ml-[10px] text-normalTextSize text-stepperDescription font-normal leading-5  col-end-13`}>
+                                    <div id={`${convertToId(step.label)}-description`} className={`${isLastStep(index)?"ml-9":'ml-[10px]'}  text-normalTextSize text-stepperDescription font-normal col-end-13`}>
                                         {step.description}
                                     </div>
                                     {!isLastStep(index) && (

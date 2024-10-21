@@ -7,6 +7,9 @@ import { ReactComponent as GradientTabUploadIcon } from "../assets/gradient-uplo
 import { ReactComponent as WhiteTabUploadIcon } from "../assets/white-upload-icon.svg";
 import { ReactComponent as QrCodeIcon }  from "../assets/qr-code-icon.svg";
 import {ReactComponent as CameraDeniedIcon} from "../assets/camera-access-denied-icon.svg";
+import {ReactComponent as DocumentFileIcon} from '../assets/document.svg';
+import {ReactComponent as VerificationSuccess} from "../assets/verification-success-icon.svg";
+import {ReactComponent as VerificationFailed} from "../assets/verification-failed-icon.svg";
 
 export const Logo = InjiLogo;
 export const QrIcon = QrCodeIcon;
@@ -15,4 +18,7 @@ export const WhiteScanIcon = WhiteScanFillIcon;
 export const GradientUploadIcon = GradientTabUploadIcon;
 export const WhiteUploadIcon = WhiteTabUploadIcon;
 export const CameraAccessDeniedIcon  = CameraDeniedIcon;
+export const DocumentIcon = DocumentFileIcon;
+export const VerificationSuccessIcon = VerificationSuccess;
+export const VerificationFailedIcon = VerificationFailed;
 export const ScanOutline = window._env_.DEFAULT_THEME !== "purple_theme" ? orangeScanOutline : purpleScanOutline;
