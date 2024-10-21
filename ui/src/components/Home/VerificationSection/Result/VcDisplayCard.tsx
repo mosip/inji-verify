@@ -3,7 +3,7 @@ import {convertToId, convertToTitleCase, getDisplayValue} from "../../../../util
 import StyledButton from "../commons/StyledButton";
 import {ReactComponent as DocumentIcon} from '../../../../assets/document.svg';
 import {useAppDispatch} from "../../../../redux/hooks";
-import {goHomeScreen} from "../../../../redux/features/verification/verification.slice";
+import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
 
 function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ function VcDisplayCard({vc}: {vc: any}) {
             </div>
             <div className="grid content-center justify-center">
                 <StyledButton id="verify-another-qr-code-button" className="w-[200px] lg:w-[350px] mt-6 mb-20 lg:mb-6 mx-0 my-1.5 text-lgNormalTextSize inline-flex" onClick={() => {
-                    dispatch(goHomeScreen({}))
+                    dispatch(goToHomeScreen({}))
                 }}>
                     Verify Another QR code
                 </StyledButton>

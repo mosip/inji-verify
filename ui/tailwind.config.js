@@ -48,6 +48,8 @@ module.exports = {
         activeTabBackground: "var(--iv-active-tab-background)",
         inactiveTabText: "var(--iv-inactive-tab-text)",
         inactiveTabBackground: "var(--iv-inactive-tab-background)",
+        disableTabBackground:"var(--iv-disabledTab-bg)",
+        disableTabText:"var(--iv-disabledTab-text)",
         documentIcon: "var(--iv-document-icon)",
       },
       backgroundImage: {

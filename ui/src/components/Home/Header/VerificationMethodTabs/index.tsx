@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { useVerificationFlowSelector } from "../../../../redux/features/verification/verification.selector";
-import { goHomeScreen } from "../../../../redux/features/verification/verification.slice";
+import { goToHomeScreen } from "../../../../redux/features/verification/verification.slice";
 import { VerificationMethod } from "../../../../types/data-types";
 import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../../utils/config";
@@ -25,7 +25,7 @@ const Tab = ({
     "bg-gradient border-t-[6px] border-y-transparent text-activeTabText";
   const inactiveTab =
     "bg-inactiveTabBackground text-inactiveTabText shadow-lg mt-[6px]";
-  const disabledTab = "text-gray-600 bg-gray-200 ";
+  const disabledTab = "text-disableTabText bg-disableTabBackground";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
     <div>
@@ -47,7 +47,7 @@ function VerificationMethodTabs(props: any) {
   const method = useVerificationFlowSelector((state) => state.method);
 
   function switchToVerificationMethod(method: VerificationMethod) {
-    dispatch(goHomeScreen({ method }));
+    dispatch(goToHomeScreen({ method }));
   }
 
   function showAlert() {
@@ -58,7 +58,7 @@ function VerificationMethodTabs(props: any) {
 
   const carouselRef: any = useRef<HTMLDivElement>();
 
-  const handlePrev = () => {
+  const handlePrevious = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({ left: -200, behavior: "smooth" });
     }
@@ -76,7 +76,7 @@ function VerificationMethodTabs(props: any) {
         <div className="absolute left-0 h-full w-12 bg-arrowBackGround md:hidden grid items-center">
           <button
             id="tabs-carousel-left-icon"
-            onClick={handlePrev}
+            onClick={handlePrevious}
             className="focus:outline-none"
           >
             <MdArrowBackIos className="mx-auto" />

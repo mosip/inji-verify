@@ -35,7 +35,7 @@ function MobileStepper(props: any) {
                     getRangeOfNumbers(stepCount).map((value, index) => (
                         <>
                             <Step stepNumber={value} activeOrCompleted={value <= activeScreen}/>
-                            {(value < stepCount) && (<div className='bg-gradient p-[1px] w-[44px]'><div className={stepperLine}/></div>)}
+                            {(value < stepCount) && (<div className={`bg-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
                         </>
                     ))
                 }

@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import {goHomeScreen, verificationComplete, verificationInit} from './verification.slice';
+import {goToHomeScreen, verificationComplete, verificationInit} from './verification.slice';
 import {closeAlert, raiseAlert} from "../alerts/alerts.slice";
 import {AlertMessages, OvpQrHeader} from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
@@ -24,7 +24,7 @@ function* handleVerification(data: any) {
         yield call(verifyVC, vc);
     } catch (error) {
         console.error(error)
-        yield put(goHomeScreen({}));
+        yield put(goToHomeScreen({}));
         yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
 }
@@ -35,7 +35,7 @@ function* handleOvpFlow(qrData: string) {
         initiateOvpFlow(redirectUrl);
     } else {
         console.error("Failed to extract the redirect url from the qr data");
-        yield put(goHomeScreen({}));
+        yield put(goToHomeScreen({}));
         yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
     }
 }

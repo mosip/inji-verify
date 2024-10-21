@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: #ff7f00;
+    --iv-primary-color: #951F6F;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -21,9 +21,9 @@
     --iv-page-background-color: #fafbfd;
     --iv-success: #4b9d1f;
     --iv-invalid: #d73e3e;
-    --iv-expired: #bf7a1c;
+    --iv-expired: #d98c00;
     --iv-success-alert: #57a04b;
-    --iv-warning-alert: #bf7a1c;
+    --iv-warning-alert: #d98c00;
     --iv-error-alert: #d73e3e;
     --iv-arrow-background: #f2fcff;
     --iv-stepper-background: #fafbfd;
@@ -38,6 +38,8 @@
     --iv-active-tab-background: #ff7f00;
     --iv-inactive-tab-text: #000000;
     --iv-inactive-tab-background: #ffffff;
+    --iv-disabledTab-bg: #e5e7eb;
+    --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
   }
   [class="purple_theme"] {
@@ -56,9 +58,9 @@
     --iv-page-background-color: #fafbfd;
     --iv-success: #4b9d1f;
     --iv-invalid: #d73e3e;
-    --iv-expired: #bf7a1c;
+    --iv-expired: #d98c00;
     --iv-success-alert: #57a04b;
-    --iv-warning-alert: #bf7a1c;
+    --iv-warning-alert: #d98c00;
     --iv-error-alert: #d73e3e;
     --iv-arrow-background: #f7f1ff;
     --iv-stepper-background: ;
@@ -73,6 +75,8 @@
     --iv-active-tab-background: #5a31ee;
     --iv-inactive-tab-text: #000000;
     --iv-inactive-tab-background: #ffffff;
+    --iv-disabledTab-bg: #e5e7eb;
+    --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
   }
 }

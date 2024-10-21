@@ -4,10 +4,10 @@ import {
   SupportedFileTypes,
   UploadFileSizeLimits,
 } from "../../../utils/config";
-import { UploadIcon } from "../../../utils/theme-utils";
+import { GradientUploadIcon, WhiteUploadIcon } from "../../../utils/theme-utils";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
-  goHomeScreen,
+  goToHomeScreen,
   qrReadInit,
   verificationInit,
 } from "../../../redux/features/verification/verification.slice";
@@ -16,6 +16,7 @@ import { checkInternetStatus, getFileExtension } from "../../../utils/misc";
 import { updateInternetConnectionStatus } from "../../../redux/features/application-state/application-state.slice";
 import { AlertInfo } from "../../../types/data-types";
 import { Dispatch } from "redux";
+import { useState } from "react";
 
 const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
   if (!file) return false;
@@ -35,7 +36,7 @@ const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
   }
 
   if (alert) {
-    dispatch(goHomeScreen({}));
+    dispatch(goToHomeScreen({}));
     dispatch(raiseAlert({ ...alert, open: true }));
     return false;
   }
@@ -57,22 +58,6 @@ const doInternetCheck = async (dispatch: Dispatch) => {
 
 const acceptedFileTypes = SupportedFileTypes.map((ext) => `.${ext}`).join(", ");
 
-function UploadButton({ displayMessage }: { displayMessage: string }) {
-  return (
-    <div className="bg-gradient hover:text-white p-1 bg-no-repeat rounded-[9999px] w-[350px]">
-      <label
-        htmlFor={"upload-qr"}
-        cursor-pointer
-        className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[9991px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
-      >
-        <span className="mr-1.5">
-          <UploadIcon />
-        </span>
-        <span id="upload-qr-code-button" className="bg-gradient bg-clip-text text-transparent group-hover:text-white">{displayMessage}</span>
-      </label>
-    </div>
-  );
-}
 
 export const UploadQrCode = ({
   displayMessage,
@@ -82,8 +67,31 @@ export const UploadQrCode = ({
   className?: string;
 }) => {
   const dispatch = useAppDispatch();
+  
+  const [isHover, setHover] = useState(false)
+
+  const UploadButton =({ displayMessage }: { displayMessage: string })=> {
+    const UploadIcon = isHover ? WhiteUploadIcon : GradientUploadIcon;
+    return (
+      <div className="bg-gradient hover:text-white p-1 bg-no-repeat rounded-[9999px] w-[350px]">
+        <label
+          htmlFor={"upload-qr"}
+          cursor-pointer
+          className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[9991px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
+        >
+          <span className="mr-1.5">
+            <UploadIcon />
+          </span>
+          <span id="upload-qr-code-button" className="bg-gradient bg-clip-text text-transparent group-hover:text-white">{displayMessage}</span>
+        </label>
+      </div>
+    );
+  }
+
   return (
     <div
+      onMouseEnter={()=>setHover(true)}
+      onMouseLeave={()=>setHover(false)}
       className={`mx-auto my-1.5 flex content-center justify-center ${className}`}
     >
       <UploadButton displayMessage={displayMessage} />
@@ -121,7 +129,7 @@ export const UploadQrCode = ({
               dispatch(
                 raiseAlert({ ...AlertMessages.qrNotDetected, open: true })
               );
-              dispatch(goHomeScreen({}));
+              dispatch(goToHomeScreen({}));
             }
           });
         }}

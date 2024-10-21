@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NoPhotographyIcon } from '../../../utils/theme-utils';
+import { CameraAccessDeniedIcon } from '../../../utils/theme-utils';
 import StyledButton from "./commons/StyledButton";
 import {CSSProperties} from "react";
 
@@ -45,7 +45,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
         <Modal>
             <Fade>
                 <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg fill-primary" style={style}>
-                    <NoPhotographyIcon />
+                    <CameraAccessDeniedIcon  />
                     <p id="camera-access-denied" className="font-bold  text-mediumTextSize text-cameraDeniedLabel my-3 mx-auto">
                         Camera Access Denied
                     </p>

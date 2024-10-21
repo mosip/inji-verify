@@ -31,7 +31,7 @@ const verificationSlice = createSlice({
             state.activeScreen = VerificationSteps[state.method].DisplayResult;
             state.verificationResult = action.payload.verificationResult;
         },
-        goHomeScreen: (state, action) => {
+        goToHomeScreen: (state, action) => {
             state.qrReadResult = {status: "NOT_READ"};
             state.activeScreen = VerificationSteps[state.method].QrCodePrompt;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
@@ -45,7 +45,7 @@ const verificationSlice = createSlice({
 
 export const {
     qrReadInit, verificationInit,
-    verificationComplete, goHomeScreen, selectMethod
+    verificationComplete, goToHomeScreen, selectMethod
 } = verificationSlice.actions;
 
 export default verificationSlice.reducer;
