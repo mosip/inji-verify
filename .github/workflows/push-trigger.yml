@@ -50,6 +50,5 @@ jobs:
     uses: rajapandi1234/kattu/.github/workflows/trivy.yml@master
     with:
             service_name: 'inji-verify-ui'
-            description: 'Name of the service'
             required: true
             type: string
