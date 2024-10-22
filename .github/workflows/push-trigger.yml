@@ -47,7 +47,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   call-trivy-scan:
-    uses: mosip/kattu/.github/workflows/trivy.yml@develop
+    uses: rajapandi1234/kattu/.github/workflows/trivy.yml@master
     with:
             service_name: 'inji-verify-ui'
-            version: 'develop'
+            
