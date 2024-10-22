@@ -51,4 +51,4 @@ jobs:
     uses: mosip/kattu/.github/workflows/trivy.yml@develop
     with:
             service_name: 'inji-verify'
-            version: 'latest'
+            version: 'develop'
