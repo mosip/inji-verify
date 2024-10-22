@@ -50,5 +50,5 @@ jobs:
   call-trivy-scan:
     uses: mosip/kattu/.github/workflows/trivy.yml@develop
     with:
-            service_name: 'inji-verify'
-            version: 'develop'
+            service_name: 'inji-verify-ui'
+            
