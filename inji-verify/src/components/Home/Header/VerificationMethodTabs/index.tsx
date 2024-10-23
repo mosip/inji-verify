@@ -83,3 +83,4 @@ function VerificationMethodTabs(props: any) {
 }
 
 export default VerificationMethodTabs;
+
