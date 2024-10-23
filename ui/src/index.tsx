@@ -1,4 +1,5 @@
 import './setupEnvironment'; // Ensure this is the first import
+import '../src/utils/i18n'; // Ensure the i18n configuration loads
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -7,7 +8,6 @@ import reportWebVitals from './reportWebVitals';
 import {encodeData} from "./utils/qr-utils";
 import {Provider} from "react-redux";
 import store from "./redux/store";
-import '../src/utils/i18n'; // Import the i18n configuration here
 
 
 const root = ReactDOM.createRoot(

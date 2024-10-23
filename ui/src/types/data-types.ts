@@ -73,3 +73,8 @@ export type VerificationResult = {
     vc?: any,
     vcStatus?: VcStatus
 }
+
+export type LanguageObject = {
+    label: string;
+    value: string;
+}

@@ -1,0 +1,94 @@
+{
+  "Navbar": {
+    "home": "घर",
+    "verifyCredentials": "क्रेडेंशियल सत्यापित करें",
+    "help": "मदद",
+    "contactUs": "हमसे संपर्क करें",
+    "documentation": "प्रलेखन",
+    "faqs": "पूछे जाने वाले प्रश्न"
+  },
+  "Header": {
+    "heading": "क्रेडेंशियल सत्यापित करें ",
+    "headingHighlight": "सुगमता से!",
+    "description": "इंजी वेरिफाई के साथ आसानी से क्रेडेंशियल सत्यापित करें! "
+  },
+  "Tab": {
+    "upload": "QR कोड अपलोड करें",
+    "scan": "QR कोड को स्कैन करें",
+    "VP_Verification": "वीपी सत्यापन",
+    "ble": "बीएलई"
+  },
+  "Upload": {
+    "format": "அனுமதிக்கப்பட்ட கோப்பு வடிவங்கள்: PNG/JPEG/JPG/PDF \nகுறைந்தபட்ச அளவு: 10KB | அதிகபட்ச அளவு: 5MB"
+  },
+  "VerificationStepsContent": {
+    "SCAN": {
+      "QrCodePrompt": {
+        "label": "स्कैन क्यू आर कोड",
+        "description": "QR कोड के साथ दस्तावेज़ या कार्ड को स्कैन करना शुरू करने के लिए 'स्कैन' पर टैप करें"
+      },
+      "ActivateCamera": {
+        "label": "कैमरा और स्थिति क्यूआर कोड सक्रिय करें",
+        "description": "अपने डिवाइस के कैमरे को सक्रिय करें और सत्यापन शुरू करने के लिए क्यूआर कोड को फ्रेम के भीतर रखें।"
+      },
+      "Verifying": {
+        "label": "सत्यापन प्रगति पर है",
+        "description": "क्यूआर कोड सत्यापन जारी है।"
+      },
+      "DisplayResult": {
+        "label": "परिणाम देखें",
+        "description": "सत्यापन परिणाम देखें."
+      }
+    },
+    "UPLOAD": {
+      "QrCodePrompt": {
+        "label": "QR कोड अपलोड करें",
+        "description": "एक फ़ाइल अपलोड करें जिसमें एक QR कोड हो"
+      },
+      "Verifying": {
+        "label": "दस्तावेज़ सत्यापित करें",
+        "description": "दस्तावेज़ या कार्ड का सत्यापन चल रहा है."
+      },
+      "DisplayResult": {
+        "label": "परिणाम देखें",
+        "description": "सत्यापन परिणाम देखें."
+      }
+    }
+  },
+  "AlertMessages": {
+    "qrUploadSuccess": "क्यूआर कोड सफलतापूर्वक अपलोड हो गया!",
+    "sessionExpired": "निष्क्रियता के कारण स्कैन सत्र समाप्त हो गया है। ",
+    "qrNotDetected": "कोई भी मल्टीफ़ॉर्मेट रीडर क्यूआर कोड का पता लगाने में सक्षम नहीं था।",
+    "qrNotSupported": "QR कोड प्रारूप समर्थित नहीं है.",
+    "unsupportedFileSize": "फ़ाइल का आकार समर्थित नहीं है. ",
+    "verificationMethodComingSoon": "जल्द आ रहा है",
+    "unsupportedFileType": "असमर्थित फ़ाइल स्वरूप। ",
+    "pageNotFound": "पृष्ठ नहीं मिला!!"
+  },
+  "OvpErrors": {
+    "invalidScope": "अमान्य दायरा",
+    "invalidRequest": "कृपया अपना इनपुट जांचें और पुनः प्रयास करें",
+    "invalidClient": "अमान्य ग्राहक",
+    "vpFormatsNotSupported": "वीपी प्रारूप समर्थित नहीं हैं",
+    "invalidPresentationDefinitionUri": "अमान्य प्रस्तुति परिभाषा यूआरआई",
+    "invalidPresentationDefinitionReference": "अमान्य प्रस्तुति परिभाषा संदर्भ",
+    "resourceNotFound": "आपके अनुरोध में कुछ गलत हो गया. ",
+    "requestTimeOut": "अनुरोध में बहुत लंबा समय लगा. ",
+    "uriTooLong": "यूआरएल बहुत लंबा है. ",
+    "internalServerError": "हमें आपका अनुरोध संसाधित करने में परेशानी हो रही है. ",
+    "serverUnavailable": "सेवा वर्तमान में अनुपलब्ध है. ",
+    "invalidVpToken": "क्रेडेंशियल आवश्यकताओं को पूरा नहीं करते. ",
+    "unsupportedFormat": "वीपी प्रारूप समर्थित नहीं हैं"
+  },
+  "CopyRight": {
+    "content": "2024 © MOSIP - सर्वाधिकार सुरक्षित।"
+  },
+  "Common": {
+    "Button": {
+      "upload": "अपलोड करें",
+      "scan": "स्कैन",
+      "back": "पीछे",
+      "verifyAnotherQrCode": "अन्य QR कोड सत्यापित करें"
+    }
+  }
+}

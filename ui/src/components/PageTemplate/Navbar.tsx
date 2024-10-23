@@ -5,8 +5,12 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
 import {Pages} from "../../utils/config";
+import { LanguageSelector } from '../commons/LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 const SubMenu = () => {
+    const {t} = useTranslation("Navbar");
+
     return (
         <div id="help-submenu"
              className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] lg:w-[250px] lg:top-[24px] lg:left-[-190px] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5 lg:py-5 lg:shadow-lg">
@@ -14,35 +18,40 @@ const SubMenu = () => {
                 href="https://community.mosip.io/"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Contact us <NewTabIcon className="mx-1.5"/></a>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("contactUs")} <NewTabIcon className="mx-1.5"/></a>
             <a id="documentation"
                 href="https://docs.mosip.io/inji/inji-verify/overview"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4">Documentation <NewTabIcon className="mx-1.5" /></a>
-            <button id="faq" disabled className="block text-left w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4">FAQs</button>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
+            <button id="faq" disabled className="block text-left w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4"> {t("faqs")} </button>
         </div>
     );
 }
 
 const MobileDropDownMenu = ({showMenu}: { showMenu: boolean }) => {
     const [showSubMenu, setShowSubMenu] = useState(false);
+    const {t} = useTranslation('Navbar');
+
     return (<div className="lg:hidden">
         {
             showMenu && (
                 <div id="menu"
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
-                    <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
-                    <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient bg-clip-text text-transparent">Verify Credentials</a>
+                    <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">{t("home")}</a>
+                    <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient bg-clip-text text-transparent">{t('verifyCredentials')}</a>
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
                                 onClick={(e) => {
                                     setShowSubMenu(show => !show)
                                 }}
-                        >Help <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
+                        >{t('help')} <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
                         </button>
                         {showSubMenu && (<SubMenu/>)}
+                    </div>
+                    <div id="language-selector" className="relative">
+                        <LanguageSelector />
                     </div>
                 </div>
             )
@@ -52,6 +61,8 @@ const MobileDropDownMenu = ({showMenu}: { showMenu: boolean }) => {
 
 const DesktopMenu = () => {
     const [showHelp, setShowHelp] = useState(false);
+    const {t} = useTranslation('Navbar');
+
     return (
         <div className="hidden lg:block w-full lg:w-auto" id="navbar-default">
             <ul className="hidden lg:flex mt-4 lg:flex-row lg:space-x-10 lg:mt-0 lg:text-sm lg:font-medium">
@@ -60,24 +71,27 @@ const DesktopMenu = () => {
                        href={Pages.Home}
                        className="block py-2 rounded text-black"
                        aria-current="page">
-                        Home
+                        {t("home")}
                     </a>
                 </li>
                 <li>
                     <a id="verify-credentials-button"
                        href={Pages.Home}
                        className="block py-2 font-bold rounded bg-gradient bg-clip-text text-transparent">
-                        Verify Credentials
+                        {t("verifyCredentials")}
                     </a>
                 </li>
                 <li className="relative">
                     <button id="help-button"
                        onClick={() => setShowHelp(show=>!show)}
                        className="inline-flex items-center cursor-pointer py-2 rounded text-black">
-                        Help <MdExpandLess className={`mx-1.5 ${showHelp ? "" : "rotate-180"}`}/>
+                        {t("help")} <MdExpandLess className={`mx-1.5 ${showHelp ? "" : "rotate-180"}`}/>
                     </button>
                     {showHelp && (<SubMenu/>)}
                 </li>
+                <li>
+                <LanguageSelector />
+              </li>
             </ul>
         </div>
     );
