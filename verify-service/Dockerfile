@@ -59,7 +59,7 @@ WORKDIR /home/${container_user}
 
 ENV work_dir=/home/${container_user}
 
-ADD ./verify-service/target/verify-service-*.jar ./verify-service.jar
+ADD ./target/verify-service-*.jar ./verify-service.jar
 #COPY ./target/mimoto-*.jar mimoto.jar
 
 # change permissions of file inside working dir
