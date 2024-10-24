@@ -248,12 +248,12 @@ extraEnvVarsCM:
   - global
   - config-server-share
   - artifactory-share
-  #- softhsm-esignet-share
-  #- oidc-ui
+# - softhsm-esignet-share
+# - oidc-ui
 
 ## Secret with extra environment variables
 ##
-extraEnvVarsSecret:
+extraEnvVarsSecret: []
 
 ## Extra volumes to add to the deployment
 ##
