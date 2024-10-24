@@ -67,7 +67,8 @@ const DesktopMenu = () => {
                 </li>
                 <li>
                     <a id="verify-credentials-button"
-                       href={Pages.Home}
+                       href={Pages.VerifyCredentials}
+                       onClick={()=> storage.setItem(SELECTED_METHOD, "VERIFY")}
                        className="block py-2 font-bold rounded bg-gradient bg-clip-text text-transparent">
                         Verify Credentials
                     </a>
@@ -87,6 +88,7 @@ const DesktopMenu = () => {
 
 function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
+
 
     return (
         <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
