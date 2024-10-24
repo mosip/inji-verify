@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: #951F6F;
+    --iv-primary-color: #951f6f;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -41,6 +41,7 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-disabled-button-bg: #c7c7c7;
   }
   [class="purple_theme"] {
     --iv-font-base: "Gentium Plus", serif;
@@ -78,20 +79,21 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-disabled-button-bg: #c7c7c7;
   }
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 

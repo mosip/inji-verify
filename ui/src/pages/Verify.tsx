@@ -1,11 +1,9 @@
 import React from "react";
 import PageTemplate from "../components/PageTemplate";
-import VerificationSection from "../components/Home/VerificationSection";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
+import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
 
-
-function Home() {
-
+export function Verify() {
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
@@ -13,11 +11,9 @@ function Home() {
           <VerificationProgressTracker />
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
-          <VerificationSection />
+          <VpVerification />
         </div>
       </div>
     </PageTemplate>
   );
 }
-
-export default Home;

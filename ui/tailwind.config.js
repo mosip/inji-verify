@@ -51,6 +51,7 @@ module.exports = {
         disableTabBackground:"var(--iv-disabledTab-bg)",
         disableTabText:"var(--iv-disabledTab-text)",
         documentIcon: "var(--iv-document-icon)",
+        disabledButtonBg: "var(--iv-disabled-button-bg)"
       },
       backgroundImage: {
         "gradient":

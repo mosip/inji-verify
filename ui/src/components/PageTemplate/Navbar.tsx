@@ -4,7 +4,8 @@ import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.s
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
-import {Pages} from "../../utils/config";
+import {Pages, SELECTED_METHOD} from "../../utils/config";
+import { storage } from '../../utils/storage';
 
 const SubMenu = () => {
     return (
@@ -32,7 +33,7 @@ const MobileDropDownMenu = ({showMenu}: { showMenu: boolean }) => {
             showMenu && (
                 <div id="menu"
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
-                    <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+                    <a id="home-button" href={Pages.Home} onClick={()=> storage.setItem(SELECTED_METHOD, "UPLOAD")} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
                     <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient bg-clip-text text-transparent">Verify Credentials</a>
                     <div className="relative">
                         <button id="submenu-button"
@@ -58,6 +59,7 @@ const DesktopMenu = () => {
                 <li>
                     <a id="home-button"
                        href={Pages.Home}
+                       onClick={()=> storage.setItem(SELECTED_METHOD, "UPLOAD")}
                        className="block py-2 rounded text-black"
                        aria-current="page">
                         Home
@@ -96,7 +98,7 @@ function Navbar(props: any) {
                 >
                     <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                 </button>
-                <a href={Pages.Home} className="flex items-center">
+                <a href={Pages.Home} className="flex items-center" onClick={()=> storage.setItem(SELECTED_METHOD, "UPLOAD")}>
                     <Logo />
                 </a>
                 <DesktopMenu/>

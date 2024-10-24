@@ -1,8 +1,10 @@
-import {AlertInfo} from "../types/data-types";
+import {AlertInfo, VerificationMethod} from "../types/data-types";
+import { storage } from "./storage";
 
 export const Pages = {
     Home: "/",
-    VerifyCredentials: "/",/*"/verify"*/
+    Scan:"/scan",
+    VerifyCredentials: "/verify",/*"/verify"*/
     Offline: "/offline",
     Redirect: "/redirect",
     PageNotFound: "*"
@@ -23,6 +25,11 @@ export const VerificationSteps: any = {
         DisplayResult: 4
     },
     "UPLOAD": {
+        QrCodePrompt: 1,
+        Verifying: 2,
+        DisplayResult: 3
+    },
+    "VERIFY": {
         QrCodePrompt: 1,
         Verifying: 2,
         DisplayResult: 3
@@ -52,6 +59,20 @@ export const VerificationStepsContent: any = {
         {
             label: 'Upload QR Code',
             description: 'Upload a file that contains a QR code',
+        },
+        {
+            label: 'Verify document',
+            description: 'Verification for the document or card is in progress.',
+        },
+        {
+            label: 'View result',
+            description: 'View the verification result.'
+        }
+    ],
+    VERIFY: [
+        {
+            label: 'Select claim',
+            description: 'Select the claim to verify',
         },
         {
             label: 'Verify document',
@@ -120,3 +141,5 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
+export const SELECTED_METHOD = "method"
+export const METHOD: VerificationMethod = (storage.getItem(SELECTED_METHOD) as VerificationMethod) || "UPLOAD";

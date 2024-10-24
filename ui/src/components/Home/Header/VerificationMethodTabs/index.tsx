@@ -4,9 +4,11 @@ import { useVerificationFlowSelector } from "../../../../redux/features/verifica
 import { goToHomeScreen } from "../../../../redux/features/verification/verification.slice";
 import { VerificationMethod } from "../../../../types/data-types";
 import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
-import { AlertMessages } from "../../../../utils/config";
+import { AlertMessages, Pages, SELECTED_METHOD } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { storage } from "../../../../utils/storage";
 
 const Tab = ({
   id,
@@ -23,8 +25,7 @@ const Tab = ({
 }) => {
   const activeTab =
     "bg-gradient border-t-[6px] border-y-transparent text-activeTabText";
-  const inactiveTab =
-    "bg-inactiveTabBackground text-inactiveTabText";
+  const inactiveTab = "bg-inactiveTabBackground text-inactiveTabText";
   const disabledTab = "text-disableTabText bg-disableTabBackground";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
@@ -44,10 +45,12 @@ const Tab = ({
 
 function VerificationMethodTabs(props: any) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const method = useVerificationFlowSelector((state) => state.method);
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
+    storage.setItem(SELECTED_METHOD,method)
   }
 
   function showAlert() {
@@ -91,20 +94,28 @@ function VerificationMethodTabs(props: any) {
               id="upload-qr-code-tab"
               active={method === "UPLOAD"}
               label="Upload QR Code"
-              onClick={() => switchToVerificationMethod("UPLOAD")}
+              onClick={() => {
+                switchToVerificationMethod("UPLOAD");
+                navigate(Pages.Home);
+              }}
             />
             <Tab
               id="scan-qr-code-tab"
               active={method === "SCAN"}
               label="Scan the QR Code"
-              onClick={() => switchToVerificationMethod("SCAN")}
+              onClick={() => {
+                switchToVerificationMethod("SCAN");
+                navigate(Pages.Scan);
+              }}
             />
             <Tab
               id="vp-verification-tab"
-              active={false}
+              active={method === "VERIFY"}
               label="VP Verification"
-              disabled
-              onClick={showAlert}
+              onClick={() => {
+                switchToVerificationMethod("VERIFY");
+                navigate(Pages.VerifyCredentials);
+              }}
             />
             <Tab
               id="ble-tab"
@@ -125,7 +136,10 @@ function VerificationMethodTabs(props: any) {
           </button>
         </div>
       </div>
-      <div id="horizontalLine" className="bg-gradient h-[3px] border-b-2 border-b-transparent" />
+      <div
+        id="horizontalLine"
+        className="bg-gradient h-[3px] border-b-2 border-b-transparent"
+      />
     </div>
   );
 }
