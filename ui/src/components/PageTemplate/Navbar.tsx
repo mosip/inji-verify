@@ -9,7 +9,7 @@ import {Pages} from "../../utils/config";
 const SubMenu = () => {
     return (
         <div id="help-submenu"
-             className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] lg:w-[250px] lg:top-[24px] lg:left-[-190px] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5 lg:py-5 lg:shadow-lg">
+             className="absolute top-[36px] left-[-12px] mt-2 w-[100vw] lg:w-[250px] lg:top-[24px] lg:left-[-190px] bg-white rounded-md py-1 ring-1 ring-black ring-opacity-5 lg:py-5 lg:shadow-lg z-60">
             <a id="contact-us"
                 href="https://community.mosip.io/"
                target="_blank"
@@ -31,9 +31,9 @@ const MobileDropDownMenu = ({showMenu}: { showMenu: boolean }) => {
         {
             showMenu && (
                 <div id="menu"
-                     className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
+                     className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-60">
                     <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
-                    <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient bg-clip-text text-transparent">Verify Credentials</a>
+                    <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient-sm bg-clip-text text-transparent">Verify Credentials</a>
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
@@ -85,12 +85,12 @@ const DesktopMenu = () => {
 
 function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
-    // Logo goes here
+
     return (
-        <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md">
+        <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
             <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gradient focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
                         onClick={() => setShowMenu(show => !show)}
                 >
