@@ -76,7 +76,9 @@ export const UploadQrCode = ({
       <div className="bg-gradient hover:text-white p-px bg-no-repeat rounded-[5px] w-[350px]">
         <label
           htmlFor={"upload-qr"}
-          cursor-pointer
+          onMouseEnter={()=>setHover(true)}
+          onMouseLeave={()=>setHover(false)}
+          onBlur={()=>setHover(false)} 
           className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[5px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
         >
           <span className="mr-1.5">
@@ -90,8 +92,6 @@ export const UploadQrCode = ({
 
   return (
     <div
-      onMouseEnter={()=>setHover(true)}
-      onMouseLeave={()=>setHover(false)}
       className={`mx-auto my-1.5 flex content-center justify-center ${className}`}
     >
       <UploadButton displayMessage={displayMessage} />
