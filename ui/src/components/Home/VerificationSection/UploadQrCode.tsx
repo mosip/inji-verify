@@ -78,7 +78,7 @@ export const UploadQrCode = ({
           htmlFor={"upload-qr"}
           onMouseEnter={()=>setHover(true)}
           onMouseLeave={()=>setHover(false)}
-          onBlur={()=>setHover(false)} 
+          onTouchStart={()=>setHover(true)}
           className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[5px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
         >
           <span className="mr-1.5">
