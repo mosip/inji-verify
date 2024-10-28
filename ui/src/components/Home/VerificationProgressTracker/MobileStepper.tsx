@@ -5,13 +5,13 @@ import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../.
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
-    const stepperActiveOrCompleted = `rounded-full bg-gradient text-white p-[1px]`;
-    const stepperUpcomingStep = "bg-gradient rounded-full text-primary p-[1px]";
-    const stepperCircle = `${activeOrCompleted ? "bg-gradient" : "bg-white"} rounded-[9998px] border-[1px] border-transparent`;
+    const stepperActiveOrCompleted = "rounded-full bg-gradient bg-no-repeat text-white"; // Keep only gradient here
+    const stepperUpcomingStep = "bg-gradient bg-no-repeat rounded-full text-primary p-[2px]";
+    const stepperCircle = `${activeOrCompleted ? "bg-gradient" : "bg-white"} bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
     return (
         <div className={`${stepperStep} ${activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep}`}
              data-step="1">
-            <div className={`flex items-center justify-center w-9 h-9 ${stepperCircle}`}>{stepNumber}</div>
+            <div className={stepperCircle}>{stepNumber}</div>
         </div>
     );
 }
