@@ -1,12 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {VerificationState} from "../../../types/data-types";
-import {METHOD, VerificationSteps} from "../../../utils/config";
+import {VerificationSteps} from "../../../utils/config";
 
 export const PreloadedState: VerificationState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
-    method: METHOD,
-    activeScreen: VerificationSteps[METHOD].QrCodePrompt,
+    method: 'UPLOAD',
+    activeScreen: VerificationSteps["UPLOAD"].QrCodePrompt,
     verificationResult: {vc: undefined, vcStatus: undefined},
     ovp: {}
 };

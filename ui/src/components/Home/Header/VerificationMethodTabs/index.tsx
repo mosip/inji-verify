@@ -4,11 +4,10 @@ import { useVerificationFlowSelector } from "../../../../redux/features/verifica
 import { goToHomeScreen } from "../../../../redux/features/verification/verification.slice";
 import { VerificationMethod } from "../../../../types/data-types";
 import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
-import { AlertMessages, Pages, SELECTED_METHOD } from "../../../../utils/config";
+import { AlertMessages, Pages } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { storage } from "../../../../utils/storage";
 
 const Tab = ({
   id,
@@ -50,7 +49,6 @@ function VerificationMethodTabs(props: any) {
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
-    storage.setItem(SELECTED_METHOD,method)
   }
 
   function showAlert() {
