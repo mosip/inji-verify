@@ -90,9 +90,9 @@ function Navbar(props: any) {
         <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
             <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gradient focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        className={`${showMenu?"bg-lighter-gradient":"bg-background"} inline-flex items-center p-3 ml-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
-                        onClick={() => setShowMenu(show => !show)}
+                        onClick={() => setShowMenu(!showMenu)}
                 >
                     <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                 </button>
