@@ -1,3 +1,5 @@
+import { MethodType } from "../utils/api";
+
 export type QrScanResult = {
     data: string | null,
     error: string | null,
@@ -72,4 +74,15 @@ export type VerificationTrigger = {
 export type VerificationResult = {
     vc?: any,
     vcStatus?: VcStatus
+}
+
+export type ApiRequest = {
+    url: (...args: string[]) => string;
+    methodType: MethodType;
+    headers: (...args: string[]) => any;
+}
+
+export type VerifyState = {
+   isLoading:boolean,
+   requestUri:string
 }

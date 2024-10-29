@@ -30,9 +30,7 @@ function StyledButton(props: StyledButtonProps) {
     </div>
   ) : (
     <div
-      className={
-        `bg-gradient p-px bg-no-repeat rounded-[5px]` + ` ${props.className}`
-      }
+      className={`bg-gradient p-px bg-no-repeat rounded-[5px] ${props.className}`}
     >
       <button
         {...props}

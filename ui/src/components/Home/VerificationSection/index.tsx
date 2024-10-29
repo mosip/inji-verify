@@ -8,7 +8,6 @@ import { Upload } from '../../../pages/Upload';
 
 const DisplayActiveStep = () => {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, qrData: state.qrReadResult?.qrData, method: state.method}));
-    console.log(method);
     
     switch (activeScreen) {
         case VerificationSteps[method].QrCodePrompt:
