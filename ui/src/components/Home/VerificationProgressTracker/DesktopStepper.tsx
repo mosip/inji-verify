@@ -19,9 +19,9 @@ function DesktopStepper() {
                     steps.map((step: any, index: number) => (
                         <>
                             <div className="flex items-center">
-                                <div className='bg-gradient rounded-full p-[1px]'>
+                                <div className='bg-gradient rounded-full bg-no-repeat p-[2px] flex items-center justify-center'>
                                 <div
-                                    className={`text-center rounded-[9998px] w-6 h-6 flex items-center justify-center font-normal text-normal text-smallTextSize leading-5  ${isStepCompleted(index) ? "bg-gradient text-white border-1 border-transparent" : "bg-white text-primary border-[1px] border-transparent"}`}
+                                    className={`text-center rounded-full w-6 h-6 flex items-center justify-center font-normal text-normal text-smallTextSize leading-5 bg-no-repeat  ${isStepCompleted(index) ? "bg-gradient text-white border-1 border-transparent" : "bg-white text-primary border-[1px] border-transparent"}`}
                                 >
                                     {index + 1}
                                 </div>
