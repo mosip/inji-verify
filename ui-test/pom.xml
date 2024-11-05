@@ -9,7 +9,7 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<cucumber.version>7.17.0</cucumber.version>
 		<maven.compiler.source>21</maven.compiler.source>
-		<selenium.version>4.11.0</selenium.version>
+		<selenium.version>4.14.1</selenium.version>
 		<cucumber.testing.version>7.2.3</cucumber.testing.version>
 		<surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
 		<!-- Lombok -->
@@ -53,13 +53,13 @@
 		<dependency>
 			<groupId>tech.grasshopper</groupId>
 			<artifactId>extentreports-cucumber7-adapter</artifactId>
-			<version>1.2.0</version>
+			<version>1.13.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
-			<version>5.0.9</version>
+			<version>5.1.0</version>
 		</dependency>
 
 		<dependency>
