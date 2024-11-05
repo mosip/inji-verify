@@ -88,6 +88,16 @@
   "CopyRight": {
     "content": "2024 © MOSIP - Tous droits réservés."
   },
+  "CameraAccessDenied": {
+    "header": "Accès à la caméra refusé",
+    "description": "Nous avons besoin de votre caméra pour scanner le code. Accédez aux paramètres de votre navigateur et autorisez l'accès de la caméra à ce site Web.",
+    "okay": "D'accord"
+  },
+  "Offline": {
+    "header": "Pas de connexion Internet !",
+    "description": "Oups ! Nous n'arrivons pas à nous connecter. Vérifiez votre connexion Internet et réessayez.",
+    "retry": "Veuillez réessayer"
+  },
   "Common": {
     "Button": {
       "upload": "Télécharger",
