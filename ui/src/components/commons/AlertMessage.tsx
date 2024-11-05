@@ -28,7 +28,7 @@ const AlertMessage = () => {
     return (
         <>
             <div
-                className={`fixed top-[80px] lg:top-[44px] right-4 lg:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
+                className={`fixed top-[80px] lg:top-[84px] right-4 lg:right-2] py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
                 <div className="flex items-center">
                     <p id="alert-message">
                         {alertInfo.message}

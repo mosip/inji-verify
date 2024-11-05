@@ -1,0 +1,106 @@
+import React, { useState } from "react";
+import { VscGlobe } from "react-icons/vsc";
+import { LanguagesSupported, switchLanguage } from "../../utils/i18n";
+import { FaCheck } from "react-icons/fa6";
+import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
+import { storeLanguage } from "../../redux/features/common/commonSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { RootState } from "../../redux/store";
+import { GradientWrapper } from "../../redux/features/common/GradientWrapper";
+import { renderGradientText } from "../../utils/builder";
+
+interface DropdownItem {
+  label: string;
+  value: string;
+}
+
+export const LanguageSelector: React.FC = () => {
+  const dispatch = useAppDispatch();
+  let language = useAppSelector((state: RootState) => state.common.language);
+  language = language ?? window._env_.DEFAULT_LANG;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (item: DropdownItem) => {
+    setIsOpen(false);
+    switchLanguage(item.value);
+    dispatch(storeLanguage({language:item.value}));
+  };
+
+  return (
+    <div
+      className="flex flex-row justify-center items-center"
+      data-testid="LanguageSelector-Outer-Div"
+      onBlur={() => setIsOpen(false)}
+      tabIndex={0}
+      role="button"
+    >
+      <GradientWrapper>
+        <VscGlobe
+          data-testid="Language-Selector-Icon"
+          size={30}
+          color={"var(--iv-color-languageGlobeIcon)"}
+        />
+      </GradientWrapper>
+
+      <div className="relative inline-block ms-1">
+        <button
+          type="button"
+          className="inline-flex items-center"
+          data-testid="Language-Selector-Button"
+          onMouseDown={() => setIsOpen(!isOpen)}
+        >
+          <p data-testid={`Language-Selector-Selected-DropDown-${language}`} className="text-md font-bold">
+            {LanguagesSupported.find((lang) => lang.value === language)?.label}
+          </p>
+          {isOpen ? (
+            <GradientWrapper>
+              <RiArrowUpSFill
+                size={20}
+                color={"var(--iv-color-languageArrowIcon)"}
+              />
+            </GradientWrapper>
+          ) : (
+            <GradientWrapper>
+              <RiArrowDownSFill
+                size={20}
+                color={"var(--iv-color-languageArrowIcon)"}
+              />
+            </GradientWrapper>
+          )}
+        </button>
+
+        {isOpen && (
+          <div className="absolute w-60 z-40 right-2 lg:right-0 mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal">
+            <ul className="py-1 divide-y divide-gray-200">
+              {LanguagesSupported.map((item) => (
+                <li
+                  key={item.value}
+                  data-testid={`Language-Selector-DropDown-Item-${item.value}`}
+                  className={language === item.value ? "text-iw-primary" : ""}
+                >
+                  <button
+                    type="button"
+                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center justify-between flex-row"
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                      handleChange(item);
+                    }}
+                  >
+                    {language === item.value
+                      ? renderGradientText(item.label)
+                      : item.label}
+                    {language === item.value && (
+                      <GradientWrapper>
+                        <FaCheck color={"var(--iv-color-languageCheckIcon)"} />
+                      </GradientWrapper>
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
-import {VerificationStepsContent} from "../../../utils/config";
 import {convertToId} from "../../../utils/misc";
+import { VerificationMethod, VerificationStep, VerificationStepsContentType } from '../../../types/data-types';
+import i18n from "i18next";
+import { getVerificationStepsContent } from '../../../utils/config';
 
-function DesktopStepper() {
+const DesktopStepper: React.FC = () => {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({
         activeScreen: state.activeScreen,
         method: state.method
     }));
-    const steps = VerificationStepsContent[method];
-    const isLastStep = (index: number) => steps.length -1 === index;
-    const isStepCompleted = (index: number) => activeScreen > index;
+  const [steps, setSteps] = useState<VerificationStep[]>([])
+  const isLastStep = (index: number) => steps.length -1 === index;
+  const isStepCompleted = (index: number) => activeScreen > index;
+
+  useEffect(() => {
+    // Fetch verification steps content on mount and when language changes
+    const fetchSteps = () => {
+        const VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
+        setSteps(VerificationStepsContent[method as VerificationMethod]);
+    };
+
+    fetchSteps();
+
+    // Listen for language changes
+    const handleLanguageChange = () => {
+        fetchSteps();
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    
+    // Cleanup listener on unmount
+    return () => {
+        i18n.off('languageChanged', handleLanguageChange);
+    };
+}, [method]);
 
     return (
         <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">

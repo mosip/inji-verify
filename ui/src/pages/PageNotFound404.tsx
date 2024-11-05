@@ -10,7 +10,7 @@ function PageNotFound404(props: any) {
 
     useEffect(() => {
         navigate(Pages.Home);
-        dispatch(raiseAlert({...AlertMessages.pageNotFound}));
+        dispatch(raiseAlert({...AlertMessages().pageNotFound}));
     }, [navigate, dispatch]);
 
     return (

@@ -25,7 +25,7 @@ function* handleVerification(data: any) {
     } catch (error) {
         console.error(error)
         yield put(goToHomeScreen({}));
-        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+        yield put(raiseAlert({...AlertMessages().qrNotSupported, open: true}));
     }
 }
 
@@ -36,7 +36,7 @@ function* handleOvpFlow(qrData: string) {
     } else {
         console.error("Failed to extract the redirect url from the qr data");
         yield put(goToHomeScreen({}));
-        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+        yield put(raiseAlert({...AlertMessages().qrNotSupported, open: true}));
     }
 }
 

@@ -24,7 +24,7 @@ const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
   // file format check
   const fileExtension = getFileExtension(file.name).toLowerCase();
   if (!SupportedFileTypes.includes(fileExtension)) {
-    alert = AlertMessages.unsupportedFileType;
+    alert = AlertMessages().unsupportedFileType;
   }
 
   // file size check
@@ -32,7 +32,7 @@ const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
     file.size < UploadFileSizeLimits.min ||
     file.size > UploadFileSizeLimits.max
   ) {
-    alert = AlertMessages.unsupportedFileSize;
+    alert = AlertMessages().unsupportedFileSize;
   }
 
   if (alert) {
@@ -118,7 +118,7 @@ export const UploadQrCode = ({
             if (!!scanResult.data) {
               dispatch(qrReadInit({ method: "UPLOAD" }));
               dispatch(
-                raiseAlert({ ...AlertMessages.qrUploadSuccess, open: true })
+                raiseAlert({ ...AlertMessages().qrUploadSuccess, open: true })
               );
               dispatch(
                 verificationInit({
@@ -127,7 +127,7 @@ export const UploadQrCode = ({
               );
             } else {
               dispatch(
-                raiseAlert({ ...AlertMessages.qrNotDetected, open: true })
+                raiseAlert({ ...AlertMessages().qrNotDetected, open: true })
               );
               dispatch(goToHomeScreen({}));
             }
