@@ -181,10 +181,10 @@ function QrScanner() {
   return (
     <div
       ref={scannerRef}
-      className="fixed inset-0 lg:inset-auto flex items-center justify-center h-full lg:w-[21rem] lg:h-auto lg:aspect-square lg:relative lg:overflow-visible"
+      className="fixed inset-0 lg:inset-auto flex items-center justify-center h-full lg:w-[21rem] lg:h-auto lg:aspect-square lg:relative lg:overflow-visible z-[100000]"
     >
       {isLoading && (
-        <div className="absolute flex items-center justify-center bg-white z-10 inset-0 lg:inset-auto">
+        <div className="absolute flex items-center justify-center bg-white inset-0 lg:inset-auto">
           <Loader innerBg="bg-white"/>
         </div>
       )}
@@ -199,7 +199,7 @@ function QrScanner() {
       )}
 
       <div
-        className={`relative h-screen w-screen lg:h-full lg:w-full bg-black lg:rounded-lg overflow-hidden flex items-center justify-center z-0 ${
+        className={`relative h-screen w-screen lg:h-full lg:w-full bg-black lg:rounded-lg overflow-hidden flex items-center justify-center ${
           isLoading ? "hidden" : "block"
         }`}
       >
@@ -208,7 +208,7 @@ function QrScanner() {
             stopVideoStream();
             dispatch(goToHomeScreen({}));
           }}
-          className="absolute top-10 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-20"
+          className="absolute top-7 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none"
           aria-label="Close Scanner"
         >
           ✕

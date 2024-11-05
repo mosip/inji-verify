@@ -1,0 +1,94 @@
+{
+    "Navbar": {
+      "home": "Lar",
+      "verifyCredentials": "Verifique as credenciais",
+      "help": "Ajuda",
+      "contactUs": "Contate-nos",
+      "documentation": "Documentação",
+      "faqs": "Perguntas frequentes"
+    },
+    "Header": {
+      "heading": "Verifique as credenciais ",
+      "headingHighlight": "com facilidade!",
+      "description": "Verifique credenciais sem esforço com o Inji Verify! "
+    },
+    "Tab": {
+      "upload": "Carregar código QR",
+      "scan": "Digitalize o código QR",
+      "VP_Verification": "Verificação de vice-presidente",
+      "ble": "BLE"
+    },
+    "Upload": {
+      "format": "Formatos de arquivo permitidos: PNG/JPEG/JPG/PDF \n"
+    },
+    "VerificationStepsContent": {
+      "SCAN": {
+        "QrCodePrompt": {
+          "label": "Digitalize o código QR",
+          "description": "Toque em ‘Scan’ para começar a digitalizar o documento ou cartão com um código QR"
+        },
+        "ActivateCamera": {
+          "label": "Ative a câmera e posicione o código QR",
+          "description": "Ative a câmera do seu dispositivo e segure o código QR dentro do quadro para iniciar a verificação."
+        },
+        "Verifying": {
+          "label": "Verificação em andamento",
+          "description": "A verificação do código QR está em andamento."
+        },
+        "DisplayResult": {
+          "label": "Ver resultado",
+          "description": "Veja o resultado da verificação."
+        }
+      },
+      "UPLOAD": {
+        "QrCodePrompt": {
+          "label": "Carregar código QR",
+          "description": "Carregar um arquivo que contenha um código QR"
+        },
+        "Verifying": {
+          "label": "Verificar documento",
+          "description": "A verificação do documento ou cartão está em andamento."
+        },
+        "DisplayResult": {
+          "label": "Ver resultado",
+          "description": "Veja o resultado da verificação."
+        }
+      }
+    },
+    "AlertMessages": {
+      "qrUploadSuccess": "Código QR carregado com sucesso!",
+      "sessionExpired": "A sessão de verificação expirou devido à inatividade. ",
+      "qrNotDetected": "Nenhum leitor MultiFormat conseguiu detectar o código QR.",
+      "qrNotSupported": "O formato do código QR não é compatível.",
+      "unsupportedFileSize": "Tamanho do arquivo não suportado. ",
+      "verificationMethodComingSoon": "Em breve",
+      "unsupportedFileType": "Formato de arquivo não suportado. ",
+      "pageNotFound": "Página não encontrada!!"
+    },
+    "OvpErrors": {
+      "invalidScope": "Escopo inválido",
+      "invalidRequest": "Verifique sua entrada e tente novamente",
+      "invalidClient": "Cliente inválido",
+      "vpFormatsNotSupported": "Formatos VP não suportados",
+      "invalidPresentationDefinitionUri": "URI de definição de apresentação inválido",
+      "invalidPresentationDefinitionReference": "Referência de definição de apresentação inválida",
+      "resourceNotFound": "Algo deu errado com sua solicitação. ",
+      "requestTimeOut": "A solicitação demorou muito. ",
+      "uriTooLong": "O URL é muito longo. ",
+      "internalServerError": "Estamos com problemas para processar sua solicitação. ",
+      "serverUnavailable": "O serviço está indisponível no momento. ",
+      "invalidVpToken": "As credenciais não atendem aos requisitos. ",
+      "unsupportedFormat": "Formatos VP não suportados"
+    },
+    "CopyRight": {
+      "content": "2024 © MOSIP – Todos os direitos reservados."
+    },
+    "Common": {
+      "Button": {
+        "upload": "Carregar",
+        "scan": "Digitalizar",
+        "back": "Voltar",
+        "verifyAnotherQrCode": "Verifique outro código QR"
+      }
+    }
+  }

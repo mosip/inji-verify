@@ -1,4 +1,4 @@
-import {AlertInfo} from "../types/data-types";
+import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
 
 export const Pages = {
@@ -30,39 +30,42 @@ export const VerificationSteps: any = {
     }
 }
 
-export const VerificationStepsContent: any = {
-    SCAN: [
-        {
-            label: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.label'),
-            description: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.description'),
-        },
-        {
-            label: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.label'),
-            description: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.description'),
-        },
-        {
-            label: i18next.t('VerificationStepsContent:SCAN.Verifying.label'),
-            description: i18next.t('VerificationStepsContent:SCAN.Verifying.description'),
-        },
-        {
-            label: i18next.t('VerificationStepsContent:SCAN.DisplayResult.label'),
-            description: i18next.t('VerificationStepsContent:SCAN.DisplayResult.description'),
-        }
-    ],
-    UPLOAD: [
-        {
-            label: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.label'),
-            description: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.description'),
-        },
-        {
-            label: i18next.t('VerificationStepsContent:UPLOAD.Verifying.label'),
-            description: i18next.t('VerificationStepsContent:UPLOAD.Verifying.description'),
-        },
-        {
-            label: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.label'),
-            description: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.description'),
-        }
-    ]
+export const getVerificationStepsContent = (): VerificationStepsContentType => {
+    return {
+        SCAN: [
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.Verifying.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.Verifying.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.DisplayResult.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.DisplayResult.description'),
+            }
+        ],
+        UPLOAD: [
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.Verifying.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.Verifying.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.description'),
+            }
+        ],
+        TO_BE_SELECTED: []
+    };
 };
 
 

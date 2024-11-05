@@ -7,7 +7,9 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: #951F6F;
+    --iv-primary-color: #951f6f;
+    --iv-color-primary: #ff5300;
+    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -41,10 +43,24 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-gradient-scanning-line: linear-gradient(
+      90deg,
+      #ff5300 0%,
+      #fb5103 16%,
+      #f04c0f 31%,
+      #de4322 46%,
+      #c5363c 61%,
+      #a4265f 75%,
+      #7c1389 90%,
+      #5b03ad 100%
+    );
+    --iw-color-languageArrowIcon: #951f6f;
   }
   [class="purple_theme"] {
     --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
+    --iv-color-primary: #ff5300;
+    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -78,6 +94,18 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-gradient-scanning-line: linear-gradient(
+      90deg,
+      #ff5300 0%,
+      #fb5103 16%,
+      #f04c0f 31%,
+      #de4322 46%,
+      #c5363c 61%,
+      #a4265f 75%,
+      #7c1389 90%,
+      #5b03ad 100%
+    );
+    --iw-color-languageArrowIcon: #0fac8b;
   }
 }
 
@@ -95,17 +123,7 @@ code {
     monospace;
 }
 
-@keyframes scan-mobile {
-  0% {
-    transform: translateY(-125px);
-  }
-  50% {
-    transform: translateY(125px);
-  }
-  100% {
-    transform: translateY(-125px);
-  }
-}
+/* scanning line */
 
 @keyframes scan-desktop {
   0% {
@@ -122,11 +140,31 @@ code {
 .scanning-line {
   width: 100%;
   height: 2px;
-  background: var(--iv-primary-color);
+  background: var(--iv-gradient-scanning-line);
   z-index: 100000;
-  box-shadow: 1px 2px 8px 1px var(--iv-primary-color);
+  box-shadow: 1px 2px 8px 1px var(--iv-gradient-scanning-line);
   animation: scan-mobile 3s infinite;
   @media (min-width: 1024px) {
     animation: scan-desktop 3s infinite;
   }
+}
+
+/* loader */
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+  -webkit-animation: spin 1s linear infinite; /* For Safari */
+}
+
+#loader {
+  will-change: transform;
 }
