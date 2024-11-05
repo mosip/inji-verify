@@ -69,34 +69,38 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
 };
 
 
-export const AlertMessages = {
-    qrUploadSuccess: {message: i18next.t("AlertMessages:qrUploadSuccess"), severity: "success", autoHideDuration: 1200} as AlertInfo,
-    sessionExpired: {message: i18next.t("AlertMessages:sessionExpired"), severity: "error"} as AlertInfo,
-    qrNotDetected: {message: i18next.t("AlertMessages:qrNotDetected"), severity: "error"} as AlertInfo,
-    qrNotSupported: {message: i18next.t("AlertMessages:qrNotSupported"), severity: "error"} as AlertInfo,
-    unsupportedFileSize: {message: i18next.t("AlertMessages:unsupportedFileSize"), severity: "error"} as AlertInfo,
-    verificationMethodComingSoon: {message: i18next.t("AlertMessages:verificationMethodComingSoon"), severity: "warning"} as AlertInfo,
-    unsupportedFileType: {message: i18next.t("AlertMessages:unsupportedFileType"), severity: "error"} as AlertInfo,
-    pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo
+export const AlertMessages =()=> {
+    return {
+        qrUploadSuccess: {message: i18next.t("AlertMessages:qrUploadSuccess"), severity: "success", autoHideDuration: 1200} as AlertInfo,
+        sessionExpired: {message: i18next.t("AlertMessages:sessionExpired"), severity: "error"} as AlertInfo,
+        qrNotDetected: {message: i18next.t("AlertMessages:qrNotDetected"), severity: "error"} as AlertInfo,
+        qrNotSupported: {message: i18next.t("AlertMessages:qrNotSupported"), severity: "error"} as AlertInfo,
+        unsupportedFileSize: {message: i18next.t("AlertMessages:unsupportedFileSize"), severity: "error"} as AlertInfo,
+        verificationMethodComingSoon: {message: i18next.t("AlertMessages:verificationMethodComingSoon"), severity: "warning"} as AlertInfo,
+        unsupportedFileType: {message: i18next.t("AlertMessages:unsupportedFileType"), severity: "error"} as AlertInfo,
+        pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo
+    }
 };
 
 // TODO: Update the error messages for the following
 // maintain mapping between the error codes and
-export const OvpErrors: any = {
-  invalid_scope: i18next.t("OvpErrors:invalidScope"), //presently this won't be shown, as no scope is being passed
-  invalid_request: i18next.t("OvpErrors:invalidRequest"),
-  invalid_client: i18next.t("OvpErrors:invalidClient"), //handled in inji web, no redirection
-  vp_formats_not_supported: i18next.t("OvpErrors:vpFormatsNotSupported"), // presently not handled specifically, bad request (invalid_request error is responded)
-  invalid_presentation_definition_uri: i18next.t("OvpErrors:invalidPresentationDefinitionUri"), // not being used, presentation definition being used
-  invalid_presentation_definition_reference: i18next.t("OvpErrors:invalidPresentationDefinitionReference"), // not being used, presentation definition being used.
-  resource_not_found: i18next.t("OvpErrors:resourceNotFound"),
-  request_time_out: i18next.t("OvpErrors:requestTimeOut"),
-  uri_too_long: i18next.t("OvpErrors:uriTooLong"),
-  internal_server_error: i18next.t("OvpErrors:internalServerError"),
-  server_unavailable: i18next.t("OvpErrors:serverUnavailable"),
-  invalid_vp_token: i18next.t("OvpErrors:invalidVpToken"),
-  unsupported_format: i18next.t("OvpErrors:unsupportedFormat")
-};
+export const OvpErrors: any = () => {
+    return {
+      invalid_scope: i18next.t("OvpErrors:invalidScope"), //presently this won't be shown, as no scope is being passed
+      invalid_request: i18next.t("OvpErrors:invalidRequest"),
+      invalid_client: i18next.t("OvpErrors:invalidClient"), //handled in inji web, no redirection
+      vp_formats_not_supported: i18next.t("OvpErrors:vpFormatsNotSupported"), // presently not handled specifically, bad request (invalid_request error is responded)
+      invalid_presentation_definition_uri: i18next.t("OvpErrors:invalidPresentationDefinitionUri"), // not being used, presentation definition being used
+      invalid_presentation_definition_reference: i18next.t("OvpErrors:invalidPresentationDefinitionReference"), // not being used, presentation definition being used.
+      resource_not_found: i18next.t("OvpErrors:resourceNotFound"),
+      request_time_out: i18next.t("OvpErrors:requestTimeOut"),
+      uri_too_long: i18next.t("OvpErrors:uriTooLong"),
+      internal_server_error: i18next.t("OvpErrors:internalServerError"),
+      server_unavailable: i18next.t("OvpErrors:serverUnavailable"),
+      invalid_vp_token: i18next.t("OvpErrors:invalidVpToken"),
+      unsupported_format: i18next.t("OvpErrors:unsupportedFormat")
+    };
+  };
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
 

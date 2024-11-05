@@ -54,7 +54,7 @@ function VerificationMethodTabs(props: any) {
 
   function showAlert() {
     dispatch(
-      raiseAlert({ ...AlertMessages.verificationMethodComingSoon, open: true })
+      raiseAlert({ ...AlertMessages().verificationMethodComingSoon, open: true })
     );
   }
 
