@@ -55,6 +55,11 @@
       }
     }
   },
+  "ResultSummary": {
+    "SUCCESS": "Congratulations, the given credential is valid!",
+    "INVALID": "Unfortunately, the given credential is invalid!",
+    "EXPIRED": "Unfortunately, the given credential is expired!"
+  },
   "AlertMessages": {
     "qrUploadSuccess": "QR code uploaded successfully!",
     "sessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan.",

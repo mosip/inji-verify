@@ -55,6 +55,11 @@
       }
     }
   },
+  "ResultSummary": {
+    "SUCCESS": "Félicitations, le titre donné est valide !",
+    "INVALID": "Malheureusement, les informations d'identification fournies ne sont pas valides !",
+    "EXPIRED": "Malheureusement, l'identifiant donné est expiré !"
+  },
   "AlertMessages": {
     "qrUploadSuccess": "Code QR téléchargé avec succès !",
     "sessionExpired": "La session d'analyse a expiré pour cause d'inactivité. ",
