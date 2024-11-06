@@ -32,7 +32,7 @@ const Tab = ({
     <div>
       <button
         id={id}
-        className={`w-[172px] lg:w-[214px] py-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
+        className={`min-w-[214px] py-4 px-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
           disabled ? disabledTab : enabledTab
         }`}
         onClick={onClick}
