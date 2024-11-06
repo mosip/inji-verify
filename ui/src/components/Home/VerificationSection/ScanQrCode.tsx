@@ -76,7 +76,7 @@ const ScanQrCode = () => {
                 {
                     method === "UPLOAD" && (
                         <div className="grid text-center content-center justify-center pt-2">
-                            <p id="file-format-constraints" className="font-normal text-normalTextSize text-uploadDescription w-[280px]">
+                            <p id="file-format-constraints" className="font-normal text-normalTextSize text-uploadDescription w-[280px]" style={{ whiteSpace: 'pre-line' }}>
                                {t("Upload:format")}
                             </p>
                         </div>
