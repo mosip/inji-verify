@@ -1,6 +1,6 @@
 apiVersion: v2
 name: inji-verify-service
-description: A Helm chart for MOSIP inji-verify-service module
+description: A Helm chart for MOSIP inji verify service module
 type: application
 version: 0.0.1-develop
 appVersion: ""
