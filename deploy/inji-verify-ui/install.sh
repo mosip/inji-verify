@@ -1,5 +1,5 @@
 #!/bin/bash
-## Installs inji-verify helm charts
+## Installs inji-verify-ui helm charts
 ## Usage: ./install.sh [kubeconfig]
 
 if [ $# -ge 1 ] ; then
@@ -15,7 +15,7 @@ if echo "$DEFAULT_MOSIP_INJIVERIFY_HOST" | grep -q "MOSIP_INJIVERIFY_HOST"; then
     echo "MOSIP_INJIVERIFY_HOST is already present in configmap/global of configserver"
     MOSIP_INJIVERIFY_HOST=DEFAULT_MOSIP_INJIVERIFY_HOST
 else
-    read -p "Please provide injiverifyhost (eg: injiVERIFY.sandbox.xyz.net ) : " MOSIP_INJIVERIFY_HOST
+    read -p "Please provide injiverifyhost (eg: injiverify.sandbox.xyz.net ) : " MOSIP_INJIVERIFY_HOST
 
     if [ -z "MOSIP_INJIVERIFY_HOST" ]; then
     echo "INJIVERIFY Host not provided; EXITING;"
@@ -23,11 +23,11 @@ else
     fi    
 fi   
 
-CHK_MOSIP_INJIVERIFY_HOST=$( nslookup "$MOSIP_INJIVERIFY_HOST" )
-if [ $? -gt 0 ]; then
-    echo "InjiVERIFY Host does not exists; EXITING;"
-    exit 0;
-fi
+  CHK_MOSIP_INJIVERIFY_HOST=$( nslookup "$MOSIP_INJIVERIFY_HOST" )
+  if [ $? -gt 0 ]; then
+      echo "InjiVERIFY Host does not exists; EXITING;"
+      exit 0;
+  fi
 
 echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
     # Add injiverify host to global
@@ -41,7 +41,7 @@ echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
 echo Create $NS namespace
 kubectl create ns $NS
 
-function installing_inji-verify() {
+function installing_inji-verify-ui() {
   echo Istio label
   kubectl label ns $NS istio-injection=enabled --overwrite
 
@@ -53,14 +53,14 @@ function installing_inji-verify() {
 
   INJIVERIFY_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIVERIFY
-  helm -n $NS install inji-verify mosip/injiverify \
-  -f values.yaml \
+ # helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
+  helm -n $NS install inji-verify-ui /d/inji-verify/helm/inji-verify-ui \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
   --version $CHART_VERSION
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
-  echo Installed inji-verify
+  echo Installed inji-verify-ui
   return 0
 }
 
@@ -70,4 +70,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errtrace  # trace ERR through 'time command' and other functions
 set -o pipefail  # trace ERR through pipes
-installing_inji-verify   # calling function
+installing_inji-verify-ui   # calling function
