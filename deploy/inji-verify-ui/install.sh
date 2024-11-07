@@ -23,11 +23,11 @@ else
     fi    
 fi   
 
-  CHK_MOSIP_INJIVERIFY_HOST=$( nslookup "$MOSIP_INJIVERIFY_HOST" )
-  if [ $? -gt 0 ]; then
-      echo "InjiVERIFY Host does not exists; EXITING;"
-      exit 0;
-  fi
+CHK_MOSIP_INJIVERIFY_HOST=$( nslookup "$MOSIP_INJIVERIFY_HOST" )
+if [ $? -gt 0 ]; then
+    echo "InjiVERIFY Host does not exists; EXITING;"
+    exit 0;
+fi
 
 echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
     # Add injiverify host to global
