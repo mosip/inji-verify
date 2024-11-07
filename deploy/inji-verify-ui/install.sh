@@ -53,8 +53,7 @@ function installing_inji-verify-ui() {
 
   INJIVERIFY_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIVERIFY
- # helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
-  helm -n $NS install inji-verify-ui /d/inji-verify/helm/inji-verify-ui \
+  helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
   --version $CHART_VERSION
 

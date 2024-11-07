@@ -16,8 +16,8 @@ function installing_inji-verify-service() {
 
   echo Istio label
   kubectl label ns $NS istio-injection=enabled --overwrite
-  #helm repo add mosip https://mosip.github.io/mosip-helm
-  #helm repo update
+  helm repo add mosip https://mosip.github.io/mosip-helm
+  helm repo update
 
   echo Copy configmaps
   ./copy_cm.sh
@@ -37,8 +37,7 @@ function installing_inji-verify-service() {
   fi
 
   echo Installing inji-verify-service
-  helm -n $NS install inji-verify-service /d/inji-verify/helm/inji-verify-service --version $CHART_VERSION $ENABLE_INSECURE
-  #helm -n $NS install inji-verify-service mosip/inji-verify-service --version $CHART_VERSION $ENABLE_INSECURE
+  helm -n $NS install inji-verify-service mosip/inji-verify-service --version $CHART_VERSION $ENABLE_INSECURE
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
