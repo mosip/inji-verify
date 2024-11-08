@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import { Logo } from '../../utils/theme-utils';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -24,14 +24,28 @@ const SubMenu = () => {
                target="_blank"
                rel="noreferrer"
                className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
-            <button id="faq" disabled className="block text-left w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4"> {t("faqs")} </button>
+            <button id="faq" disabled className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4"> {t("faqs")} </button>
         </div>
     );
 }
 
-const MobileDropDownMenu = ({ showMenu }: { showMenu: boolean }) => {
+const MobileDropDownMenu = ({ showMenu, setShowMenu }: { showMenu: boolean; setShowMenu: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   const { t } = useTranslation("Navbar");
+  
+  // Close the menu if the user clicks outside of it
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (showMenu && target.closest('#menu') === null && target.closest('#hamburger') === null) {
+      setShowMenu(false);
+      setShowSubMenu(false)
+    }
+  }, [showMenu, setShowMenu]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [handleClickOutside]);
 
     return (<div className="lg:hidden">
         {
@@ -43,9 +57,7 @@ const MobileDropDownMenu = ({ showMenu }: { showMenu: boolean }) => {
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
-                                onClick={(e) => {
-                                    setShowSubMenu(show => !show)
-                                }}
+                                onClick={() => setShowSubMenu(show => !show)}
                         >{t('help')} <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
                         </button>
                         {showSubMenu && (<SubMenu/>)}
@@ -96,7 +108,7 @@ function Navbar(props: any) {
 
     return (
         <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
-            <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
+            <div className="container flex flex-wrap justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
                         className={`${showMenu?"bg-lighter-gradient":"bg-background"} inline-flex items-center p-3 ml-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
@@ -108,7 +120,7 @@ function Navbar(props: any) {
                     <Logo className="w-20 lg:w-[184px] scale-150 cursor-pointer"/>
                 </a>
                 <DesktopMenu/>
-                <MobileDropDownMenu showMenu={showMenu}/>
+                <MobileDropDownMenu showMenu={showMenu} setShowMenu={setShowMenu}/>
                 <div id="language-selector" className="relative">
                 <LanguageSelector />
                 </div>

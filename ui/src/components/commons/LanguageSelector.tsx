@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { VscGlobe } from "react-icons/vsc";
-import { LanguagesSupported, switchLanguage } from "../../utils/i18n";
+import { isRTL, LanguagesSupported, switchLanguage } from "../../utils/i18n";
 import { FaCheck } from "react-icons/fa6";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import { storeLanguage } from "../../redux/features/common/commonSlice";
@@ -18,6 +18,7 @@ export const LanguageSelector: React.FC = () => {
   const dispatch = useAppDispatch();
   let language = useAppSelector((state: RootState) => state.common.language);
   language = language ?? window._env_.DEFAULT_LANG;
+  const rtl = isRTL(language)
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (item: DropdownItem) => {
@@ -70,7 +71,7 @@ export const LanguageSelector: React.FC = () => {
         </button>
 
         {isOpen && (
-          <div className="absolute w-60 z-40 right-2 lg:right-0 mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal">
+          <div className={`absolute top-8 w-60 z-40 ${rtl ? "left-2 lg:left-0" : "right-2 lg:right-0"} mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}>
             <ul className="py-1 divide-y divide-gray-200">
               {LanguagesSupported.map((item) => (
                 <li

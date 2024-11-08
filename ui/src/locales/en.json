@@ -88,6 +88,16 @@
   "CopyRight": {
     "content": "2024 © MOSIP - All rights reserved."
   },
+  "CameraAccessDenied": {
+    "header": "Camera Access Denied",
+    "description": "We need your camera to scan the code. Go to your browser settings and allow camera access for this website.",
+    "okay": "Okay"
+  },
+  "Offline": {
+    "header": "No Internet Connection!",
+    "description": "Oops! We cant seem to connect. Check your internet connection and try again.",
+    "retry": "Please try again"
+  },
   "Common": {
     "Button": {
       "upload": "Upload",

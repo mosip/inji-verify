@@ -4,6 +4,9 @@ import {convertToId} from "../../../utils/misc";
 import { VerificationMethod, VerificationStep, VerificationStepsContentType } from '../../../types/data-types';
 import i18n from "i18next";
 import { getVerificationStepsContent } from '../../../utils/config';
+import { useAppSelector } from '../../../redux/hooks';
+import { RootState } from '../../../redux/store';
+import { isRTL } from '../../../utils/i18n';
 
 const DesktopStepper: React.FC = () => {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({
@@ -13,6 +16,8 @@ const DesktopStepper: React.FC = () => {
   const [steps, setSteps] = useState<VerificationStep[]>([])
   const isLastStep = (index: number) => steps.length -1 === index;
   const isStepCompleted = (index: number) => activeScreen > index;
+  const language = useAppSelector((state: RootState) => state.common.language);
+  const rtl = isRTL(language)
 
   useEffect(() => {
     // Fetch verification steps content on mount and when language changes
@@ -51,7 +56,7 @@ const DesktopStepper: React.FC = () => {
                                 </div>
                                 </div>
                                 
-                                <div id={convertToId(step.label)} className={`ml-[10px] text-lgNormalTextSize font-bold ${isStepCompleted(index) ? "text-black" : "text-stepperLabel"}`}>{step.label}</div>
+                                <div id={convertToId(step.label)} className={`${rtl ? "mr-[10px]" : "ml-[10px]"} text-lgNormalTextSize font-bold ${isStepCompleted(index) ? "text-black" : "text-stepperLabel"}`}>{step.label}</div>
                             </div>
                             <div className={"grid items-start"}>
                                 <div className={"grid items-center m-0"}>
@@ -60,7 +65,7 @@ const DesktopStepper: React.FC = () => {
                                         <div className={`${!isLastStep(index) ? "border-transparent border-l-transparent" : "border-none"} border-[1px]`}/>
                                         </div>
                                     </div>}
-                                    <div id={`${convertToId(step.label)}-description`} className={`${isLastStep(index)?"ml-9":'ml-[10px]'}  text-normalTextSize text-stepperDescription font-normal col-end-13`}>
+                                    <div id={`${convertToId(step.label)}-description`} className={`${isLastStep(index) ? (rtl ? "mr-9":"ml-9") : rtl ? 'mr-[10px]' : 'ml-[10px]'}  text-normalTextSize text-stepperDescription font-normal col-end-13`}>
                                         {step.description}
                                     </div>
                                     {!isLastStep(index) && (
