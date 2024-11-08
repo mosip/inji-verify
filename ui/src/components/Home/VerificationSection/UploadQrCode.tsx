@@ -5,7 +5,7 @@ import {
   UploadFileSizeLimits,
 } from "../../../utils/config";
 import { GradientUploadIcon, WhiteUploadIcon } from "../../../utils/theme-utils";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   goToHomeScreen,
   qrReadInit,
@@ -17,6 +17,8 @@ import { updateInternetConnectionStatus } from "../../../redux/features/applicat
 import { AlertInfo } from "../../../types/data-types";
 import { Dispatch } from "redux";
 import { useState } from "react";
+import { RootState } from "../../../redux/store";
+import { isRTL } from "../../../utils/i18n";
 
 const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
   if (!file) return false;
@@ -72,6 +74,9 @@ export const UploadQrCode = ({
 
   const UploadButton =({ displayMessage }: { displayMessage: string })=> {
     const UploadIcon = isHover ? WhiteUploadIcon : GradientUploadIcon;
+    const language = useAppSelector((state: RootState) => state.common.language);
+    const rtl = isRTL(language);
+    
     return (
       <div className="bg-gradient hover:text-white p-px bg-no-repeat rounded-[5px] w-[350px]">
         <label
@@ -81,7 +86,7 @@ export const UploadQrCode = ({
           onTouchStart={()=>setHover(true)}
           className="group bg-white hover:bg-gradient font-bold h-[40px] rounded-[5px] flex content-center justify-center text-lgNormalTextSize pt-2 cursor-pointer"
         >
-          <span className="mr-1.5">
+          <span className={`${rtl ? "ml-1.5" : "mr-1.5"}`}>
             <UploadIcon />
           </span>
           <span id="upload-qr-code-button" className="bg-gradient bg-clip-text text-transparent group-hover:text-white">{displayMessage}</span>

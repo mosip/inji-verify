@@ -1,0 +1,109 @@
+{
+  "Navbar": {
+    "home": "Hogar",
+    "verifyCredentials": "Verificar credenciales",
+    "help": "Ayuda",
+    "contactUs": "Contáctenos",
+    "documentation": "Documentación",
+    "faqs": "Preguntas frecuentes"
+  },
+  "Header": {
+    "heading": "Verificar credenciales ",
+    "headingHighlight": "¡con facilidad!",
+    "description": "¡Verifique las credenciales sin esfuerzo con Inji Verify! Simplemente escanee el código QR o cárguelo para una validación instantánea, siguiendo los pasos a continuación"
+  },
+  "Tab": {
+    "upload": "Subir código QR",
+    "scan": "Escanea el código QR",
+    "VP_Verification": "Verificación de vicepresidente",
+    "ble": "BLE"
+  },
+  "Upload": {
+    "format": "Formatos de archivo permitidos: PNG/JPEG/JPG/PDF \nTamaño mínimo: 10 KB | Tamaño máximo: 5 MB"
+  },
+  "VerificationStepsContent": {
+    "SCAN": {
+      "QrCodePrompt": {
+        "label": "Escanear código QR",
+        "description": "Toca 'Escanear' para comenzar a escanear el documento o tarjeta con un código QR"
+      },
+      "ActivateCamera": {
+        "label": "Activar cámara y posicionar código QR",
+        "description": "Active la cámara de su dispositivo y mantenga presionado el código QR dentro del marco para iniciar la verificación."
+      },
+      "Verifying": {
+        "label": "Verificación en progreso",
+        "description": "La verificación del código QR está en curso."
+      },
+      "DisplayResult": {
+        "label": "Ver resultado",
+        "description": "Ver el resultado de la verificación."
+      }
+    },
+    "UPLOAD": {
+      "QrCodePrompt": {
+        "label": "Subir código QR",
+        "description": "Sube un archivo que contenga un código QR"
+      },
+      "Verifying": {
+        "label": "Verificar documento",
+        "description": "La verificación del documento o tarjeta está en curso."
+      },
+      "DisplayResult": {
+        "label": "Ver resultado",
+        "description": "Ver el resultado de la verificación."
+      }
+    }
+  },
+  "ResultSummary": {
+    "SUCCESS": "¡Felicitaciones, la credencial proporcionada es válida!",
+    "INVALID": "Lamentablemente, la credencial proporcionada no es válida!",
+    "EXPIRED": "Desafortunadamente, ¡la credencial proporcionada ha caducado!"
+  },
+  "AlertMessages": {
+    "qrUploadSuccess": "¡El código QR se cargó exitosamente!",
+    "sessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis.",
+    "qrNotDetected": "Ningún lector multiformato pudo detectar el código QR.",
+    "qrNotSupported": "El formato de código QR no es compatible.",
+    "unsupportedFileSize": "El tamaño del archivo no es compatible. El tamaño del archivo debe estar entre 10 KB y 5 MB",
+    "verificationMethodComingSoon": "Muy pronto",
+    "unsupportedFileType": "Formato de archivo no compatible. Los formatos de archivo permitidos son: png, jpeg, jpg, pdf",
+    "pageNotFound": "¡¡Página no encontrada!!"
+  },
+  "OvpErrors": {
+    "invalidScope": "Alcance no válido",
+    "invalidRequest": "Por favor revisa tu entrada y vuelve a intentarlo.",
+    "invalidClient": "Cliente no válido",
+    "vpFormatsNotSupported": "Formatos VP no admitidos",
+    "invalidPresentationDefinitionUri": "URI de definición de presentación no válida",
+    "invalidPresentationDefinitionReference": "Referencia de definición de presentación no válida",
+    "resourceNotFound": "Algo salió mal con tu solicitud. ",
+    "requestTimeOut": "La solicitud tardó demasiado. ",
+    "uriTooLong": "La URL es demasiado larga. Utilice un enlace más corto",
+    "internalServerError": "Estamos teniendo problemas para procesar su solicitud. Vuelva a intentarlo más tarde",
+    "serverUnavailable": "El servicio no está disponible actualmente. Vuelva a intentarlo más tarde",
+    "invalidVpToken": "Las credenciales no cumplen con los requisitos. Verifique e inténtelo nuevamente",
+    "unsupportedFormat": "Formatos VP no admitidos"
+  },
+  "CopyRight": {
+    "content": "2024 © MOSIP - Todos los derechos reservados."
+  },
+  "CameraAccessDenied": {
+    "header": "Acceso a la cámara denegado",
+    "description": "Necesitamos su cámara para escanear el código. Vaya a la configuración de su navegador y permita el acceso a la cámara para este sitio web.",
+    "okay": "Bueno"
+  },
+  "Offline": {
+    "header": "¡Sin conexión a Internet!",
+    "description": "¡Ups! Parece que no podemos conectarnos. Verifique su conexión a Internet e inténtelo de nuevo",
+    "retry": "Por favor inténtalo de nuevo"
+  },
+  "Common": {
+    "Button": {
+      "upload": "Subir",
+      "scan": "Escanear",
+      "back": "Atrás",
+      "verifyAnotherQrCode": "Verificar otro código QR"
+    }
+  }
+}

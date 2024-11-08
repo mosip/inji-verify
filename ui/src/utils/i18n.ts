@@ -7,10 +7,12 @@ import hi from "../locales/hi.json";
 import kn from "../locales/kn.json";
 import ar from "../locales/ar.json";
 import pt from "../locales/pt.json";
+import es from "../locales/es.json";
+import km from "../locales/km.json";
 import { storage } from "./storage";
 import { LanguageObject } from "../types/data-types";
 
-const resources = { en, ta, kn, hi, fr, ar, pt };
+const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
 
 export const LanguagesSupported: LanguageObject[] = [
   { label: "English", value: "en" },
@@ -20,6 +22,8 @@ export const LanguagesSupported: LanguageObject[] = [
   { label: "Français", value: "fr" },
   { label: "عربي", value: "ar" },
   { label: "Português", value: "pt" },
+  { label: "español", value: "es" },
+  { label: "ខ្មែរ", value: "km" },
 ];
 
 export const defaultLanguage = window._env_.DEFAULT_LANG;
