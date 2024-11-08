@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Logo } from '../../utils/theme-utils';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -7,6 +7,9 @@ import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
 import {Pages} from "../../utils/config";
 import { LanguageSelector } from '../commons/LanguageSelector';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../redux/hooks';
+import { RootState } from '../../redux/store';
+import { isRTL } from '../../utils/i18n';
 
 const SubMenu = () => {
     const {t} = useTranslation("Navbar");
@@ -71,10 +74,11 @@ const MobileDropDownMenu = ({ showMenu, setShowMenu }: { showMenu: boolean; setS
 const DesktopMenu = () => {
     const [showHelp, setShowHelp] = useState(false);
     const {t} = useTranslation('Navbar');
-
+    const language = useAppSelector((state:RootState)=>state.common.language)
+    const rtl = isRTL(language)
     return (
         <div className="hidden lg:block w-full lg:w-auto" id="navbar-default">
-            <ul className="hidden lg:flex mt-4 lg:flex-row lg:space-x-10 lg:mt-0 lg:text-sm lg:font-medium">
+            <ul className={`hidden mt-4 lg:flex ${rtl ? "lg:space-x-reverse lg:space-x-10" : "lg:space-x-10"} lg:mt-0 lg:text-sm lg:font-medium`}>
                 <li>
                     <a id="home-button"
                        href={Pages.Home}
