@@ -7,13 +7,9 @@ export type QrScanResult = {
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = {
-    status: "OK" | "NOK" | "Verifying";
-    checks: {
-        active: string | null;
-        revoked: "OK" | "NOK";
-        expired: "OK" | "NOK";
-        proof: "OK" | "NOK";
-    }[];
+    verificationStatus: Boolean;
+    verificationMessage: string;
+    verificationErrorCode: string;
 }
 
 export type VerificationStep = {

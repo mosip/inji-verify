@@ -5,11 +5,15 @@ import {useVerificationFlowSelector} from "../../../../redux/features/verificati
 import {VcStatus} from "../../../../types/data-types";
 
 const getVcStatusValue = (vcStatus?: VcStatus): "SUCCESS" | "INVALID" | "EXPIRED" => {
-    if (vcStatus?.status === "OK") {
+    console.log(vcStatus?.verificationStatus);
+    if (vcStatus?.verificationStatus && vcStatus.verificationErrorCode === "") {
         return "SUCCESS";
     }
-    if (vcStatus?.checks && vcStatus?.checks.length === 1) {
-        return vcStatus?.checks[0].expired === "OK" ? "INVALID" : "EXPIRED"
+    if (vcStatus?.verificationStatus && vcStatus.verificationErrorCode === "ERR_VC_EXPIRED") {
+        return "EXPIRED";
+    }
+    if (!vcStatus?.verificationStatus) {
+        return "INVALID";
     }
     return "INVALID";
 }
