@@ -1,28 +1,28 @@
 {{/*
 Return the proper  image name
 */}}
-{{- define "inji-verify.image" -}}
+{{- define "inji-verify-service.image" -}}
 {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
 
 {{/*
 Return the proper image name (for the init container volume-permissions image)
 */}}
-{{- define "inji-verify.volumePermissions.image" -}}
+{{- define "inji-verify-service.volumePermissions.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.volumePermissions.image "global" .Values.global ) -}}
 {{- end -}}
 
 {{/*
 Return the proper Docker Image Registry Secret Names
 */}}
-{{- define "inji-verify.imagePullSecrets" -}}
+{{- define "inji-verify-service.imagePullSecrets" -}}
 {{- include "common.images.pullSecrets" (dict "images" (list .Values.image .Values.volumePermissions.image) "global" .Values.global) -}}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "inji-verify.serviceAccountName" -}}
+{{- define "inji-verify-service.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
     {{ default (printf "%s" (include "common.names.fullname" .)) .Values.serviceAccount.name }}
 {{- else -}}
@@ -33,10 +33,10 @@ Create the name of the service account to use
 {{/*
 Compile all warnings into a single message.
 */}}
-{{- define "inji-verify.validateValues" -}}
+{{- define "inji-verify-service.validateValues" -}}
 {{- $messages := list -}}
-{{- $messages := append $messages (include "inji-verify.validateValues.foo" .) -}}
-{{- $messages := append $messages (include "inji-verify.validateValues.bar" .) -}}
+{{- $messages := append $messages (include "inji-verify-service.validateValues.foo" .) -}}
+{{- $messages := append $messages (include "inji-verify-service.validateValues.bar" .) -}}
 {{- $messages := without $messages "" -}}
 {{- $message := join "\n" $messages -}}
 
@@ -48,7 +48,7 @@ Compile all warnings into a single message.
 {{/*
 Return podAnnotations
 */}}
-{{- define "inji-verify.podAnnotations" -}}
+{{- define "inji-verify-service.podAnnotations" -}}
 {{- if .Values.podAnnotations }}
 {{ include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) }}
 {{- end }}
@@ -56,3 +56,5 @@ Return podAnnotations
 {{ include "common.tplvalues.render" (dict "value" .Values.metrics.podAnnotations "context" $) }}
 {{- end }}
 {{- end -}}
+
+

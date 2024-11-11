@@ -41,6 +41,7 @@ service:
   ##   http: <to set explicitly, choose port between 30000-32767>
   ##   https: <to set explicitly, choose port between 30000-32767>
   ##
+
   nodePorts:
     http: ""
     https: ""
@@ -51,9 +52,8 @@ service:
 
 image:
   registry: docker.io
-  repository: mosipdev/inji-verify
+  repository: mosipqa/inji-verify-service
   tag: develop
-
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -66,15 +66,17 @@ image:
   # pullSecrets:
   #   - myRegistryKeySecretName
 
+## Port on which this particular spring service module is running.
+springServicePort: 8080
+
 ## Configure extra options for liveness and readiness probes
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
 ##
-## TODO: health probes don't exist. Check.
 startupProbe:
   enabled: true
   httpGet:
     path: /
-    port: 3004
+    port: 8080
   initialDelaySeconds: 0
   periodSeconds: 10
   timeoutSeconds: 5
@@ -85,7 +87,7 @@ livenessProbe:
   enabled: true
   httpGet:
     path: /
-    port: 3004
+    port: 8080
   initialDelaySeconds: 20
   periodSeconds: 10
   timeoutSeconds: 5
@@ -96,7 +98,7 @@ readinessProbe:
   enabled: true
   httpGet:
     path: /
-    port: 3004
+    port: 8080
   initialDelaySeconds: 0
   periodSeconds: 10
   timeoutSeconds: 5
@@ -124,25 +126,23 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 300m
-    memory: 1500Mi
+    cpu: 500m
+    memory: 2250Mi
   requests:
     cpu: 100m
-    memory: 50Mi
+    memory: 1500Mi
 
 additionalResources:
   ## Specify any JAVA_OPTS string here. These typically will be specified in conjunction with above resources
   ## Example: java_opts: "-Xms500M -Xmx500M"
-  javaOpts: "-Xms750M -Xmx750M"
+  javaOpts: "-Xms1500M -Xmx1500M"
 
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
 ## Clamav container already runs as 'mosip' user, so we may not need to enable this
-container_user: 'mosip'
 containerSecurityContext:
-  enabled: true
-  runAsUser: 0
-  allowPrivilegeEscalation: false
-  # runAsNonRoot: true
+  enabled: false
+  runAsUser: mosip
+  runAsNonRoot: true
 
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
 ##
@@ -242,18 +242,16 @@ updateStrategy:
 ##
 extraEnvVars: []
 
-## ConfigMap with extra environment variables
+## ConfigMap with extra environment variables that used
 ##
 extraEnvVarsCM:
   - global
   - config-server-share
   - artifactory-share
-# - softhsm-esignet-share
-# - oidc-ui
 
 ## Secret with extra environment variables
 ##
-extraEnvVarsSecret: []
+extraEnvVarsSecret:
 
 ## Extra volumes to add to the deployment
 ##
@@ -273,7 +271,38 @@ extraVolumeMounts: []
 ##       - name: portname
 ##         containerPort: 1234
 ##
-initContainers: {}
+initContainers:
+  - command:
+      - /bin/bash
+      - -c
+      - if [ "$ENABLE_INSECURE" = "true" ]; then HOST=$( env | grep "mosip-api-internal-host"
+        |sed "s/mosip-api-internal-host=//g"); if [ -z "$HOST" ]; then echo "HOST
+        $HOST is empty; EXITING"; exit 1; fi; openssl s_client -servername "$HOST"
+        -connect "$HOST":443  > "$HOST.cer" 2>/dev/null & sleep 2 ; sed -i -ne '/-BEGIN
+        CERTIFICATE-/,/-END CERTIFICATE-/p' "$HOST.cer"; cat "$HOST.cer"; /usr/local/openjdk-11/bin/keytool
+        -delete -alias "$HOST" -keystore $JAVA_HOME/lib/security/cacerts  -storepass
+        changeit; /usr/local/openjdk-11/bin/keytool -trustcacerts -keystore "$JAVA_HOME/lib/security/cacerts"
+        -storepass changeit -noprompt -importcert -alias "$HOST" -file "$HOST.cer"
+        ; if [ $? -gt 0 ]; then echo "Failed to add SSL certificate for host $host;
+        EXITING"; exit 1; fi; cp /usr/local/openjdk-11/lib/security/cacerts /cacerts;
+        fi
+    env:
+      - name: ENABLE_INSECURE
+        value: "true"
+    envFrom:
+      - configMapRef:
+          name: global
+    image: docker.io/openjdk:11-jre
+    imagePullPolicy: Always
+    name: cacerts
+    resources: {}
+    securityContext:
+      runAsUser: 0
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+      - mountPath: /cacerts
+        name: cacerts
 
 ## Add sidecars to the  pods.
 ## Example:
@@ -360,14 +389,14 @@ serviceAccount:
 ## Prometheus Metrics
 ##
 metrics:
-  enabled: false
+  enabled: true
   ## Prometheus pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
   podAnnotations:
     prometheus.io/scrape: "true"
 
-  endpointPath:
+  endpointPath: /v1/inji-verify-service/actuator/prometheus
 
   ## Prometheus Service Monitor
   ## ref: https://github.com/coreos/prometheus-operator
@@ -414,22 +443,11 @@ metrics:
     #       severity: error
     rules: []
 
-## The url below is to access esignet API services.
-## CAUTION: Domain name to access injiverify UI must be secure/internal/over vpn.
-## Slash is important!
-inji_verify:
-  port: '3004'
-  host: 'mimoto.mimoto'
-esignet_redirect_url: 'esignet.sandbox.xyz.net'
+## Only internal access
 istio:
   enabled: true
-  ingressController:
-    name: ingressgateway
   gateways:
-    - name: inji-verify-gateway
-      protocol: HTTP
-      portName: http
-      port: 80
-  hosts:
-    - injiverify.sandbox.xyz.net
+    - istio-system/internal
   prefix: /
+
+enable_insecure: false
