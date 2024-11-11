@@ -60,8 +60,8 @@ export const LanguageSelector: React.FC = () => {
 
         {isOpen && (
           <div
-            className={`absolute top-8 w-60 z-40 ${
-              rtl ? "left-2 lg:left-0" : "right-2 lg:right-0"
+            className={`absolute top-8 w-[167px] lg:w-60 z-40 ${
+              rtl ? "left-1 lg:left-0" : "right-1 lg:right-0"
             } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
           >
             <ul className="py-1 divide-y divide-gray-200">
@@ -69,7 +69,6 @@ export const LanguageSelector: React.FC = () => {
                 <li
                   key={item.value}
                   data-testid={`Language-Selector-DropDown-Item-${item.value}`}
-                  className={language === item.value ? "text-iw-primary" : ""}
                 >
                   <button
                     type="button"
