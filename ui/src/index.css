@@ -8,6 +8,8 @@
   :root {
     --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #951f6f;
+    --iv-color-primary: #ff5300;
+    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -52,10 +54,13 @@
       #7c1389 90%,
       #5b03ad 100%
     );
+    --iw-color-languageArrowIcon: #951f6f;
   }
   [class="purple_theme"] {
     --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
+    --iv-color-primary: #ff5300;
+    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -100,6 +105,7 @@
       #7c1389 90%,
       #5b03ad 100%
     );
+    --iw-color-languageArrowIcon: #0fac8b;
   }
 }
 

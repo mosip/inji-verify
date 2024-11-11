@@ -36,9 +36,10 @@ function OvpRedirect(props: any) {
             if (!!vpToken && !!presentationSubmission) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
             } else if (!!error) {
+                const OvpErrorMessages = OvpErrors();
                 dispatch(raiseAlert(
                     {
-                        message: OvpErrors[error]
+                        message: OvpErrorMessages[error]
                             ?? errorDescription
                             ?? "Something Went Wrong!!",
                         severity: "error"

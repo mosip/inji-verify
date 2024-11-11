@@ -4,13 +4,15 @@ import alertsReducer from "./features/alerts/alerts.slice";
 import applicationStateReducer from "./features/application-state/application-state.slice";
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
+import commonReducer from './features/common/commonSlice'
 
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
     verification: verificationFlowReducer,
     alert: alertsReducer,
-    appState: applicationStateReducer
+    appState: applicationStateReducer,
+    common:commonReducer
 });
 
 const store = configureStore({

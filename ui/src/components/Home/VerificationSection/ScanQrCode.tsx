@@ -8,11 +8,13 @@ import {useVerificationFlowSelector} from "../../../redux/features/verification/
 import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
 import { ScanOutline } from '../../../utils/theme-utils';
+import { useTranslation } from 'react-i18next';
 
 const Scan = () => {
     const dispatch = useAppDispatch();
     const [isHover, setHover] = useState(false)
     const ScanIcon = isHover? WhiteScanIcon :GradientScanIcon
+    const {t} = useTranslation()
     return (
         <>
             <StyledButton
@@ -30,24 +32,27 @@ const Scan = () => {
                         document.getElementById("trigger-scan")?.click();
                     }
                 }}>
-                Scan
+                {t("Common:Button.scan")}
             </StyledButton>
             <button id="trigger-scan" className="hidden" onClick={() => {dispatch(qrReadInit({method: "SCAN"}))}}/>
         </>
     )
 }
 
-const Upload = () => (
-    <>
+const Upload = () => {
+  const {t} = useTranslation();
+  
+   return (
         <UploadQrCode
             className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
-            displayMessage="Upload"
+            displayMessage={t("Common:Button.upload")}
         />
-    </>
-)
+   )
+  }
 
 const ScanQrCode = () => {
     const method = useVerificationFlowSelector(state => state.method);
+    const {t} = useTranslation();
     return (
         <div
             className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
@@ -71,8 +76,8 @@ const ScanQrCode = () => {
                 {
                     method === "UPLOAD" && (
                         <div className="grid text-center content-center justify-center pt-2">
-                            <p id="file-format-constraints" className="font-normal text-normalTextSize text-uploadDescription w-[280px]">
-                                Allowed file formats: PNG/JPEG/JPG/PDF <br/>Min Size : 10KB | Max Size : 5MB
+                            <p id="file-format-constraints" className="font-normal text-normalTextSize text-uploadDescription w-[280px]" style={{ whiteSpace: 'pre-line' }}>
+                               {t("Upload:format")}
                             </p>
                         </div>
                     )

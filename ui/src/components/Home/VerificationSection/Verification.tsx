@@ -7,6 +7,7 @@ import { goToHomeScreen } from "../../../redux/features/verification/verificatio
 import { VerificationSteps } from "../../../utils/config";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
 import { ScanOutline } from "../../../utils/theme-utils";
+import { useTranslation } from "react-i18next";
 
 const Verification = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ const Verification = () => {
     activeScreen: state.activeScreen,
     method: state.method,
   }));
+  const {t} = useTranslation()
 
   return (
     <div className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[42px] lg:px-[104px] text-center content-center justify-center">
@@ -37,7 +39,7 @@ const Verification = () => {
             dispatch(goToHomeScreen({}));
           }}
         >
-          Back
+          {t("Common:Button.back")}
         </StyledButton>
       </div>
     </div>
