@@ -7,7 +7,7 @@ import {PreloadedState} from "../../../redux/features/verification/verification.
 import {AlertMessages} from "../../../utils/config";
 
 const mockStore = configureMockStore();
-const store = mockStore({...PreloadedState, alert: AlertMessages.qrUploadSuccess});
+const store = mockStore({...PreloadedState, alert: AlertMessages().qrUploadSuccess});
 
 describe("AlertMessage", () => {
     test("Rendering", () => {
@@ -16,6 +16,6 @@ describe("AlertMessage", () => {
                 <AlertMessage/>
             </Provider>
         )
-        expect(screen.getByText(AlertMessages.qrUploadSuccess.message ?? "")).toBeInTheDocument()
+        expect(screen.getByText(AlertMessages().qrUploadSuccess.message ?? "")).toBeInTheDocument()
     })
 })

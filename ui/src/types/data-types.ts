@@ -73,3 +73,14 @@ export type VerificationResult = {
     vc?: any,
     vcStatus?: VcStatus
 }
+
+export type LanguageObject = {
+    label: string;
+    value: string;
+}
+
+export interface VerificationStepsContentType {
+    SCAN: VerificationStep[];
+    UPLOAD: VerificationStep[];
+    TO_BE_SELECTED: VerificationStep[];
+}

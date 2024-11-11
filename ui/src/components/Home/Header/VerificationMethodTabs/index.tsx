@@ -7,6 +7,7 @@ import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
+import { useTranslation } from 'react-i18next';
 
 const Tab = ({
   id,
@@ -31,7 +32,7 @@ const Tab = ({
     <div>
       <button
         id={id}
-        className={`w-[172px] lg:w-[214px] py-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
+        className={`min-w-[214px] py-4 px-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
           disabled ? disabledTab : enabledTab
         }`}
         onClick={onClick}
@@ -45,6 +46,7 @@ const Tab = ({
 function VerificationMethodTabs(props: any) {
   const dispatch = useAppDispatch();
   const method = useVerificationFlowSelector((state) => state.method);
+  const {t} = useTranslation('Tab')
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
@@ -52,7 +54,7 @@ function VerificationMethodTabs(props: any) {
 
   function showAlert() {
     dispatch(
-      raiseAlert({ ...AlertMessages.verificationMethodComingSoon, open: true })
+      raiseAlert({ ...AlertMessages().verificationMethodComingSoon, open: true })
     );
   }
 
@@ -90,26 +92,26 @@ function VerificationMethodTabs(props: any) {
             <Tab
               id="upload-qr-code-tab"
               active={method === "UPLOAD"}
-              label="Upload QR Code"
+              label={t('upload')}
               onClick={() => switchToVerificationMethod("UPLOAD")}
             />
             <Tab
               id="scan-qr-code-tab"
               active={method === "SCAN"}
-              label="Scan the QR Code"
+              label={t('scan')}
               onClick={() => switchToVerificationMethod("SCAN")}
             />
             <Tab
               id="vp-verification-tab"
               active={false}
-              label="VP Verification"
+              label={t('VP_Verification')}
               disabled
               onClick={showAlert}
             />
             <Tab
               id="ble-tab"
               active={false}
-              label="BLE"
+              label={t('ble')}
               disabled
               onClick={showAlert}
             />

@@ -1,4 +1,5 @@
-import {AlertInfo} from "../types/data-types";
+import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
+import i18next from 'i18next';
 
 export const Pages = {
     Home: "/",
@@ -29,74 +30,77 @@ export const VerificationSteps: any = {
     }
 }
 
-export const VerificationStepsContent: any = {
-    SCAN: [
-        {
-            label: 'Scan QR Code',
-            description: 'Tap "Scan" to start scanning the document or card with a QR code',
-        },
-        {
-            label: 'Activate Camera and Position QR Code',
-            description: 'Activate your device camera and hold the QR code within the frame to initiate verification.',
-        },
-        {
-            label: 'Verification in Progress',
-            description: 'The QR code verification is in progress.'
-        },
-        {
-            label: 'View result',
-            description: 'View the verification result.'
-        }
-    ],
-    UPLOAD: [
-        {
-            label: 'Upload QR Code',
-            description: 'Upload a file that contains a QR code',
-        },
-        {
-            label: 'Verify document',
-            description: 'Verification for the document or card is in progress.',
-        },
-        {
-            label: 'View result',
-            description: 'View the verification result.'
-        }
-    ]
+export const getVerificationStepsContent = (): VerificationStepsContentType => {
+    return {
+        SCAN: [
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.QrCodePrompt.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.ActivateCamera.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.Verifying.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.Verifying.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:SCAN.DisplayResult.label'),
+                description: i18next.t('VerificationStepsContent:SCAN.DisplayResult.description'),
+            }
+        ],
+        UPLOAD: [
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.QrCodePrompt.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.Verifying.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.Verifying.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.label'),
+                description: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.description'),
+            }
+        ],
+        TO_BE_SELECTED: []
+    };
 };
 
 
-export const AlertMessages = {
-    qrUploadSuccess: {message: "QR code uploaded successfully!", severity: "success", autoHideDuration: 1200} as AlertInfo,
-    sessionExpired: {message: "The scan session has expired due to inactivity. Please initiate a new scan.", severity: "error"} as AlertInfo,
-    qrNotDetected: {message: "No MultiFormat Readers were able to detect the QR code.", severity: "error"} as AlertInfo,
-    qrNotSupported: {message: "QR code format is not supported.", severity: "error"} as AlertInfo,
-    unsupportedFileSize: {message: "File size not supported. The file size should be between 10 KB and 5 MB.", severity: "error"} as AlertInfo,
-    verificationMethodComingSoon: {message: "Coming soon", severity: "warning"} as AlertInfo,
-    unsupportedFileType: {message: "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf", severity: "error"} as AlertInfo,
-    pageNotFound: {message: "Page Not Found!!", severity: "error"} as AlertInfo
+export const AlertMessages =()=> {
+    return {
+        qrUploadSuccess: {message: i18next.t("AlertMessages:qrUploadSuccess"), severity: "success", autoHideDuration: 1200} as AlertInfo,
+        sessionExpired: {message: i18next.t("AlertMessages:sessionExpired"), severity: "error"} as AlertInfo,
+        qrNotDetected: {message: i18next.t("AlertMessages:qrNotDetected"), severity: "error"} as AlertInfo,
+        qrNotSupported: {message: i18next.t("AlertMessages:qrNotSupported"), severity: "error"} as AlertInfo,
+        unsupportedFileSize: {message: i18next.t("AlertMessages:unsupportedFileSize"), severity: "error"} as AlertInfo,
+        verificationMethodComingSoon: {message: i18next.t("AlertMessages:verificationMethodComingSoon"), severity: "warning"} as AlertInfo,
+        unsupportedFileType: {message: i18next.t("AlertMessages:unsupportedFileType"), severity: "error"} as AlertInfo,
+        pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo
+    }
 };
 
 // TODO: Update the error messages for the following
 // maintain mapping between the error codes and
-export const OvpErrors: any = {
-  invalid_scope: "Invalid Scope", //presently this won't be shown, as no scope is being passed
-  invalid_request: "Please check your input and try again",
-  invalid_client: "Invalid Client", //handled in inji web, no redirection
-  vp_formats_not_supported: "VP Formats Not Supported", // presently not handled specifically, bad request (invalid_request error is responded)
-  invalid_presentation_definition_uri: "Invalid Presentation Definition URI", // not being used, presentation definition being used
-  invalid_presentation_definition_reference:
-    "Invalid Presentation Definition Reference", // not being used, presentation definition being used.
-  resource_not_found: "Something went wrong with your request. Please check and try again.",
-  request_time_out: "The request took too long. Please try again later.",
-  uri_too_long: "The URL is too long. Please use a shorter link.",
-  internal_server_error:
-    "We're having trouble processing your request. Please try again later.",
-  server_unavailable:
-    "The service is currently unavailable. Please try again later",
-  invalid_vp_token:
-    "The credentials don't meet the requirements. Please check and try again.",
-  unsupported_format: "VP Formats Not Supported"
-};
+export const OvpErrors: any = () => {
+    return {
+      invalid_scope: i18next.t("OvpErrors:invalidScope"), //presently this won't be shown, as no scope is being passed
+      invalid_request: i18next.t("OvpErrors:invalidRequest"),
+      invalid_client: i18next.t("OvpErrors:invalidClient"), //handled in inji web, no redirection
+      vp_formats_not_supported: i18next.t("OvpErrors:vpFormatsNotSupported"), // presently not handled specifically, bad request (invalid_request error is responded)
+      invalid_presentation_definition_uri: i18next.t("OvpErrors:invalidPresentationDefinitionUri"), // not being used, presentation definition being used
+      invalid_presentation_definition_reference: i18next.t("OvpErrors:invalidPresentationDefinitionReference"), // not being used, presentation definition being used.
+      resource_not_found: i18next.t("OvpErrors:resourceNotFound"),
+      request_time_out: i18next.t("OvpErrors:requestTimeOut"),
+      uri_too_long: i18next.t("OvpErrors:uriTooLong"),
+      internal_server_error: i18next.t("OvpErrors:internalServerError"),
+      server_unavailable: i18next.t("OvpErrors:serverUnavailable"),
+      invalid_vp_token: i18next.t("OvpErrors:invalidVpToken"),
+      unsupported_format: i18next.t("OvpErrors:unsupportedFormat")
+    };
+  };
 
 export const ScanSessionExpiryTime = 60000; // in milliseconds
 
