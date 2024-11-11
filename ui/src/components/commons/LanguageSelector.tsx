@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { VscGlobe } from "react-icons/vsc";
 import { isRTL, LanguagesSupported, switchLanguage } from "../../utils/i18n";
-import { FaCheck } from "react-icons/fa6";
-import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import { storeLanguage } from "../../redux/features/common/commonSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { RootState } from "../../redux/store";
-import { GradientWrapper } from "../../redux/features/common/GradientWrapper";
 import { renderGradientText } from "../../utils/builder";
+import { ArrowDown, ArrowUp, Check, GlobeIcon } from "../../utils/theme-utils";
 
 interface DropdownItem {
   label: string;
@@ -18,13 +15,13 @@ export const LanguageSelector: React.FC = () => {
   const dispatch = useAppDispatch();
   let language = useAppSelector((state: RootState) => state.common.language);
   language = language ?? window._env_.DEFAULT_LANG;
-  const rtl = isRTL(language)
+  const rtl = isRTL(language);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (item: DropdownItem) => {
     setIsOpen(false);
     switchLanguage(item.value);
-    dispatch(storeLanguage({language:item.value}));
+    dispatch(storeLanguage({ language: item.value }));
   };
 
   return (
@@ -35,13 +32,7 @@ export const LanguageSelector: React.FC = () => {
       tabIndex={0}
       role="button"
     >
-      <GradientWrapper>
-        <VscGlobe
-          data-testid="Language-Selector-Icon"
-          size={30}
-          color={"var(--iv-color-languageGlobeIcon)"}
-        />
-      </GradientWrapper>
+      <GlobeIcon />
 
       <div className="relative inline-block ms-1">
         <button
@@ -50,28 +41,29 @@ export const LanguageSelector: React.FC = () => {
           data-testid="Language-Selector-Button"
           onMouseDown={() => setIsOpen(!isOpen)}
         >
-          <p data-testid={`Language-Selector-Selected-DropDown-${language}`} className="text-md font-bold">
+          <p
+            data-testid={`Language-Selector-Selected-DropDown-${language}`}
+            className="text-md font-bold"
+          >
             {LanguagesSupported.find((lang) => lang.value === language)?.label}
           </p>
           {isOpen ? (
-            <GradientWrapper>
-              <RiArrowUpSFill
-                size={20}
-                color={"var(--iv-color-languageArrowIcon)"}
-              />
-            </GradientWrapper>
+            <div className="px-1">
+              <ArrowUp />
+            </div>
           ) : (
-            <GradientWrapper>
-              <RiArrowDownSFill
-                size={20}
-                color={"var(--iv-color-languageArrowIcon)"}
-              />
-            </GradientWrapper>
+            <div className="px-1">
+              <ArrowDown />
+            </div>
           )}
         </button>
 
         {isOpen && (
-          <div className={`absolute top-8 w-60 z-40 ${rtl ? "left-2 lg:left-0" : "right-2 lg:right-0"} mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}>
+          <div
+            className={`absolute top-8 w-60 z-40 ${
+              rtl ? "left-2 lg:left-0" : "right-2 lg:right-0"
+            } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
+          >
             <ul className="py-1 divide-y divide-gray-200">
               {LanguagesSupported.map((item) => (
                 <li
@@ -90,11 +82,7 @@ export const LanguageSelector: React.FC = () => {
                     {language === item.value
                       ? renderGradientText(item.label)
                       : item.label}
-                    {language === item.value && (
-                      <GradientWrapper>
-                        <FaCheck color={"var(--iv-color-languageCheckIcon)"} />
-                      </GradientWrapper>
-                    )}
+                    {language === item.value && <Check />}
                   </button>
                 </li>
               ))}
