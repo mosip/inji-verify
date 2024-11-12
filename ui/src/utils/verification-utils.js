@@ -5,7 +5,7 @@ const verify = async (credential) => {
 const verifyCredentialOnline = (credential) => {
   return new Promise(function (resolve, reject) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", `${window._env_.VERIFY_SERVICE_API_URL}/verify-vc`, true);
+    xhttp.open("POST", `${window._env_.VERIFY_SERVICE_API_URL}/credential`, true);
     xhttp.onload = function () {
       var status = xhttp.status;
       if (status == 200) {
