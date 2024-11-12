@@ -25,7 +25,7 @@ export const defaultLanguage = window._env_.DEFAULT_LANG;
 export const selected_language = storage.getItem(storage.SELECTED_LANGUAGE);
 
 i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(initReactI18next)
   .init({
     resources,
     lng: selected_language ? selected_language : defaultLanguage,

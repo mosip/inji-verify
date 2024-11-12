@@ -69,7 +69,6 @@ export const LanguageSelector: React.FC = () => {
                 <li
                   key={item.value}
                   data-testid={`Language-Selector-DropDown-Item-${item.value}`}
-                  className={language === item.value ? "text-iw-primary" : ""}
                 >
                   <button
                     type="button"
