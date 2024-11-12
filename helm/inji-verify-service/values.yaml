@@ -75,7 +75,7 @@ springServicePort: 8080
 startupProbe:
   enabled: true
   httpGet:
-    path: /v1/verify//actuator/health
+    path: /v1/verify/actuator/health
     port: 8080
   initialDelaySeconds: 0
   periodSeconds: 10
@@ -86,7 +86,7 @@ startupProbe:
 livenessProbe:
   enabled: true
   httpGet:
-    path: /v1/verify//actuator/health
+    path: /v1/verify/actuator/health
     port: 8080
   initialDelaySeconds: 20
   periodSeconds: 10
@@ -97,7 +97,7 @@ livenessProbe:
 readinessProbe:
   enabled: true
   httpGet:
-    path: /v1/verify//actuator/health
+    path: /v1/verify/actuator/health
     port: 8080
   initialDelaySeconds: 0
   periodSeconds: 10
