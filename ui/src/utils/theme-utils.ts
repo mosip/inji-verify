@@ -1,4 +1,4 @@
-import { ReactComponent as InjiLogo } from "../assets/images/inji-verify.svg";
+import { ReactComponent as NavLogo } from "../assets/logo.svg";
 import orangeScanOutline from "../assets/scanner-outline.svg";
 import purpleScanOutline from "../assets/purple-scanner-outline.svg";
 import { ReactComponent as GradientScanFillIcon } from "../assets/gradient-scan-icon.svg";
@@ -14,9 +14,11 @@ import { ReactComponent as GlobeSvgIcon } from "../assets/globe.svg";
 import { ReactComponent as ArrowDownSvgIcon } from "../assets/arrow-down.svg";
 import { ReactComponent as ArrowUpSvgIcon } from "../assets/arrow-up.svg";
 import { ReactComponent as CheckSvgIcon } from "../assets/check.svg";
+import { ReactComponent as InjiVerLogo } from "../assets/inji-verify.svg";
+import { ReactComponent as UnderConstructionLogo } from "../assets/under-construction.svg";
 
-
-export const Logo = InjiLogo;
+export const Logo = NavLogo;
+export const InjiLogo = InjiVerLogo;
 export const QrIcon = QrCodeIcon;
 export const GradientScanIcon = GradientScanFillIcon;
 export const WhiteScanIcon = WhiteScanFillIcon;
@@ -31,3 +33,4 @@ export const GlobeIcon = GlobeSvgIcon;
 export const ArrowDown = ArrowDownSvgIcon;
 export const ArrowUp = ArrowUpSvgIcon;
 export const Check = CheckSvgIcon;
+export const UnderConstruction = UnderConstructionLogo;

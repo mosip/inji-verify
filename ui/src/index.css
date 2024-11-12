@@ -7,9 +7,7 @@
 @layer base {
   :root {
     --iv-font-base: "Inter", sans-serif;
-    --iv-primary-color: #951f6f;
-    --iv-color-primary: #ff5300;
-    --iv-color-secondary: #5b03ad;
+    --iv-primary-color: #278834;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -21,8 +19,8 @@
     --iv-verificationMethodTabs-bg-color: #ffffff;
     --iv-horizontal-line: #ff7f00;
     --iv-page-background-color: #fafbfd;
-    --iv-success: #4b9d1f;
-    --iv-invalid: #d73e3e;
+    --iv-success: #1f9f60;
+    --iv-invalid: #cb4241;
     --iv-expired: #d98c00;
     --iv-success-alert: #57a04b;
     --iv-warning-alert: #d98c00;
@@ -40,27 +38,18 @@
     --iv-active-tab-background: #ff7f00;
     --iv-inactive-tab-text: #000000;
     --iv-inactive-tab-background: #ffffff;
-    --iv-disabledTab-bg: #e5e7eb;
-    --iv-disabledTab-text: #4b5563;
+    --iv-disabledTab-bg: #e8e8e8;
+    --iv-disabledTab-text: #4d4d4d;
     --iv-document-icon: #000000;
     --iv-gradient-scanning-line: linear-gradient(
       90deg,
-      #ff5300 0%,
-      #fb5103 16%,
-      #f04c0f 31%,
-      #de4322 46%,
-      #c5363c 61%,
-      #a4265f 75%,
-      #7c1389 90%,
-      #5b03ad 100%
+      #52ae32 0%,
+      #006535 100%
     );
-    --iw-color-languageArrowIcon: #951f6f;
   }
   [class="purple_theme"] {
     --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
-    --iv-color-primary: #ff5300;
-    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -105,7 +94,6 @@
       #7c1389 90%,
       #5b03ad 100%
     );
-    --iw-color-languageArrowIcon: #0fac8b;
   }
 }
 
