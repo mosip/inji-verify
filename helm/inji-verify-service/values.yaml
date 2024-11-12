@@ -448,6 +448,6 @@ istio:
   enabled: true
   gateways:
     - istio-system/internal
-  prefix: /
+  prefix: /v1/verify
 
 enable_insecure: false
