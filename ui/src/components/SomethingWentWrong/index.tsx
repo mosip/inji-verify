@@ -3,7 +3,7 @@ import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../redux/hooks";
 import {updateInternetConnectionStatus} from "../../redux/features/application-state/application-state.slice";
-import { ReactComponent as UnderConstruction } from "../../assets/images/under-construction.svg";
+import { UnderConstruction } from '../../utils/theme-utils';
 import { useTranslation } from 'react-i18next';
 
 function SomethingWentWrong(props: any) {
