@@ -19,7 +19,7 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \nMin Size : 10KB | Max Size : 5MB"
+    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \n File Size - 10KB to 5MB"
   },
   "VerificationStepsContent": {
     "SCAN": {
