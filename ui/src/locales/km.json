@@ -19,7 +19,7 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "ទម្រង់ឯកសារដែលបានអនុញ្ញាត៖ PNG/JPEG/JPG/PDF \nទំហំអប្បបរមា៖ 10KB | ទំហំអតិបរមា៖ 5MB"
+    "format": "ទម្រង់ឯកសារដែលបានអនុញ្ញាត៖ PNG/JPEG/JPG/PDF \n ទំហំឯកសារ - 10KB ដល់ 5MB"
   },
   "VerificationStepsContent": {
     "SCAN": {

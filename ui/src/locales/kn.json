@@ -19,7 +19,7 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "ಅನುಮತಿಸಲಾದ ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್‌ಗಳು: PNG/JPEG/JPG/PDF \n ಕನಿಷ್ಠ ಗಾತ್ರ: 10KB | ಗರಿಷ್ಠ ಗಾತ್ರ: 5MB"
+    "format": "ಅನುಮತಿಸಲಾದ ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್‌ಗಳು: PNG/JPEG/JPG/PDF \n ಫೈಲ್ ಗಾತ್ರ - 10KB ನಿಂದ 5MB"
   },
   "VerificationStepsContent": {
     "SCAN": {
