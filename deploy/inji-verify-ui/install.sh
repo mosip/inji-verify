@@ -55,7 +55,8 @@ function installing_inji-verify-ui() {
   echo Installing INJIVERIFY
   helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
-  --version $CHART_VERSION
+  --set inji_verify_service.host="inji-verify-service.$NS" \
+  --version $CHART_VERSION 
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 

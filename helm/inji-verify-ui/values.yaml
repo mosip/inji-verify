@@ -419,6 +419,8 @@ metrics:
 inji_verify:
   port: '8000'
   host: 'mimoto.mimoto'
+inji_verify_service:
+  host: 'inji-verify-service.injiverify'
 esignet_redirect_url: 'esignet.sandbox.xyz.net'
 istio:
   enabled: true
