@@ -4,10 +4,11 @@ import { useVerificationFlowSelector } from "../../../../redux/features/verifica
 import { goToHomeScreen } from "../../../../redux/features/verification/verification.slice";
 import { VerificationMethod } from "../../../../types/data-types";
 import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
-import { AlertMessages } from "../../../../utils/config";
+import { AlertMessages, Pages } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 const Tab = ({
   id,
@@ -45,6 +46,7 @@ const Tab = ({
 
 function VerificationMethodTabs(props: any) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const method = useVerificationFlowSelector((state) => state.method);
   const {t} = useTranslation('Tab')
 
@@ -93,13 +95,20 @@ function VerificationMethodTabs(props: any) {
               id="upload-qr-code-tab"
               active={method === "UPLOAD"}
               label={t('upload')}
-              onClick={() => switchToVerificationMethod("UPLOAD")}
+              onClick={() => {
+                switchToVerificationMethod("UPLOAD");
+                navigate(Pages.Home);
+              }
+              }
             />
             <Tab
               id="scan-qr-code-tab"
               active={method === "SCAN"}
               label={t('scan')}
-              onClick={() => switchToVerificationMethod("SCAN")}
+              onClick={() => {
+                switchToVerificationMethod("SCAN");
+                navigate(Pages.Scan);
+              }}
             />
             <Tab
               id="vp-verification-tab"

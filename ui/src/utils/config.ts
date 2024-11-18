@@ -3,6 +3,7 @@ import i18next from 'i18next';
 
 export const Pages = {
     Home: "/",
+    Scan:"/scan",
     VerifyCredentials: "/",/*"/verify"*/
     Offline: "/offline",
     Redirect: "/redirect",
