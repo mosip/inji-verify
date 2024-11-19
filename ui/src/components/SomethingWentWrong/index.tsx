@@ -1,9 +1,9 @@
 import React from 'react';
-import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../redux/hooks";
 import {updateInternetConnectionStatus} from "../../redux/features/application-state/application-state.slice";
 import { ReactComponent as UnderConstruction } from "../../assets/images/under-construction.svg";
+import { Button } from '../Home/VerificationSection/commons/Button';
 
 function SomethingWentWrong(props: any) {
     const navigate = useNavigate();
@@ -20,16 +20,15 @@ function SomethingWentWrong(props: any) {
                 <p id="no-internet-description" className="font-normal text-offlineDescription text-normalTextSize mx-auto my-[5px]">
                     Oops! We can’t seem to connect. Check your internet connection and try again.
                 </p>
-                <StyledButton
+                <Button
                     id="please-try-again-button"
+                    title="Please try again"
                     className="my-[30px] mx-auto"
                     onClick={() => {
                         dispatch(updateInternetConnectionStatus({internetConnectionStatus: "UNKNOWN"}));
                         navigate('/');
                     }}
-                >
-                    Please try again
-                </StyledButton>
+                />
             </div>
         </div>
     );

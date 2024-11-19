@@ -1,6 +1,6 @@
 import React from 'react';
 import {convertToId, convertToTitleCase, getDisplayValue} from "../../../../utils/misc";
-import StyledButton from "../commons/StyledButton";
+import {Button} from "../commons/Button";
 import { DocumentIcon } from '../../../../utils/theme-utils';
 import {useAppDispatch} from "../../../../redux/hooks";
 import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
@@ -31,11 +31,13 @@ function VcDisplayCard({vc}: {vc: any}) {
                 }
             </div>
             <div className="grid content-center justify-center">
-                <StyledButton id="verify-another-qr-code-button" className="w-[200px] lg:w-[350px] mt-6 mb-20 lg:mb-6 mx-0 my-1.5 text-lgNormalTextSize inline-flex" onClick={() => {
+                <Button 
+                id="verify-another-qr-code-button"
+                title="Verify Another QR code"
+                className="w-[200px] lg:w-[350px] mt-6 mb-20 lg:mb-6 mx-0 my-1.5 text-lgNormalTextSize inline-flex" 
+                onClick={() => {
                     dispatch(goToHomeScreen({}))
-                }}>
-                    Verify Another QR code
-                </StyledButton>
+                }}/>
             </div>
         </div>
     );

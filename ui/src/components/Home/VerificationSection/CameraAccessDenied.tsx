@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CameraAccessDeniedIcon } from '../../../utils/theme-utils';
-import StyledButton from "./commons/StyledButton";
 import {CSSProperties} from "react";
+import { Button } from './commons/Button';
 
 const style: CSSProperties = {
     position: 'absolute',
@@ -53,14 +53,13 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                         We need your camera to scan the code. Go to your browser settings and allow camera access for
                         this website.
                     </p>
-                    <StyledButton
+                    <Button
                         id="camer-access-denied-okay-button"
+                        title="Okay"
                         onClick={handleClose}
                         className="w-[180px] mx-0 my-1.5 text-lgNormalTextSize inline-flex"
                         data-testid="camera-access-denied-okay"
-                    >
-                        Okay
-                    </StyledButton>
+                    />
                 </div>
             </Fade>
         </Modal>

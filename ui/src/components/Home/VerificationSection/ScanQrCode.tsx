@@ -4,7 +4,7 @@ import {
   QrIcon,
   WhiteScanIcon,
 } from "../../../utils/theme-utils";
-import StyledButton from "./commons/StyledButton";
+import { Button } from "./commons/Button";
 import { useAppDispatch } from "../../../redux/hooks";
 import { qrReadInit } from "../../../redux/features/verification/verification.slice";
 import { checkInternetStatus } from "../../../utils/misc";
@@ -17,14 +17,14 @@ const Scan = () => {
   const ScanIcon = isHover ? WhiteScanIcon : GradientScanIcon;
   return (
     <>
-      <StyledButton
+      <Button
         id="scan-button"
+        title="Scan"
         icon={<ScanIcon />}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         className="mx-0 my-1.5 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
-        fill={false}
-        onClick={async (event) => {
+        onClick={async () => {
           dispatch(
             updateInternetConnectionStatus({
               internetConnectionStatus: "LOADING",
@@ -40,9 +40,8 @@ const Scan = () => {
             document.getElementById("trigger-scan")?.click();
           }
         }}
-      >
-        Scan
-      </StyledButton>
+      />
+
       <button
         id="trigger-scan"
         className="hidden"
