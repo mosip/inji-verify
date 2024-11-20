@@ -1,9 +1,11 @@
 package io.mosip.verifycore.dto.authorizationRequest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.mosip.verifycore.models.PresentationDefinition;
 import io.mosip.verifycore.utils.SecurityUtils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -15,16 +17,9 @@ import java.time.Instant;
 @NoArgsConstructor(force = true)
 public class AuthorizationRequestDto implements Serializable {
 
-    @JsonProperty("response_type")
     private final String responseType = "vp_token";
-
-    @JsonProperty("client_id")
     private final String clientId;
-
-    @JsonProperty("presentation_definition_uri")
     private final URI presentationDefinitionUri;
-
-    @JsonProperty("response_uri")
     private URI responseUri;
     private String nonce;
     private final long iat;

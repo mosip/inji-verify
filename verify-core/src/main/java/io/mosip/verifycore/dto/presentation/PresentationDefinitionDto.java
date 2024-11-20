@@ -15,10 +15,6 @@ import lombok.NoArgsConstructor;
 public class PresentationDefinitionDto {
     String id;
 
-
-    @JsonProperty("input_descriptors")
     List<InputDescriptorDto> inputDescriptors;
-
-    @JsonProperty("submission_requirements")
     List<SubmissionRequirementDto> submissionRequirements;
 }

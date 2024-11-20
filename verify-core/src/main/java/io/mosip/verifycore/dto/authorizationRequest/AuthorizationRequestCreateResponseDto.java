@@ -10,7 +10,7 @@ public class AuthorizationRequestCreateResponseDto {
     String transactionId;
     String requestId;
     AuthorizationRequestDto authorizationDetails;
-    String expiresAt;
+    long expiresAt;
 
     public AuthorizationRequestCreateResponseDto(AuthorizationRequestCreateResponse authorizationRequestCreateResponse) {
         this.transactionId = authorizationRequestCreateResponse.getTransactionId();
