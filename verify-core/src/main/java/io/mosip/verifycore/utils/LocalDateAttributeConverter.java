@@ -10,7 +10,7 @@ import jakarta.persistence.Converter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Converter(autoApply = true)
+//@Converter(autoApply = true)
 public class LocalDateAttributeConverter implements AttributeConverter<List<InputDescriptorDto>, String> {
 
     @Override
