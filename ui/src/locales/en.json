@@ -56,16 +56,16 @@
     },
     "VERIFY": {
       "InitiateVpRequest": {
-        "label": "Scan QR Code",
-        "description": "Tap 'Scan' to start scanning the document or card with a QR code"
+        "label": "Initiate VP Request Process",
+        "description": "Click “Request Credentials” to start VP verification process."
       },
       "SelectCredential": {
-        "label": "Activate Camera and Position QR Code",
-        "description": "Activate your device camera and hold the QR code within the frame to initiate verification."
+        "label": "Select Credentials & Generate QR Code",
+        "description": "Select the required credentials and click ‘Generate QR Code"
       },
       "ScanQrCode": {
-        "label": "Verification in Progress",
-        "description": "The QR code verification is in progress."
+        "label": "Scan QR Code",
+        "description": "Please use a separate device with QR scanning capabilities to scan the code with your camera. Support for using the same device is coming soon!"
       },
       "DisplayResult": {
         "label": "View result",

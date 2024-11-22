@@ -8,6 +8,7 @@ type ButtonProps = HTMLAttributes<HTMLButtonElement> &
   ButtonHTMLAttributes<HTMLButtonElement> & {
     title:String;
     icon?: ReactElement;
+    disabled?:boolean;
   };
 
 export const Button = (props: ButtonProps) => {

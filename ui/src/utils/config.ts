@@ -1,10 +1,12 @@
 import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
+import certImage from '../assets/cert.png';
+import certImage2 from '../assets/cert2.png';
 
 export const Pages = {
     Home: "/",
     Scan:"/scan",
-    VerifyCredentials: "/verify",/*"/verify"*/
+    VerifyCredentials: "/verify",
     Offline: "/offline",
     Redirect: "/redirect",
     PageNotFound: "*"
@@ -149,4 +151,8 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
-export const verifiableClaims = ["Name", "Age", "Date of Birth"];
+export const verifiableClaims = [
+    {"logo":certImage,"type":"Pollution Certification"}, 
+    {"logo":certImage2,"type":"Health Insurance"}, 
+    {"logo":certImage,"type":"Life insurance"}
+];

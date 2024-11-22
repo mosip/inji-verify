@@ -53,6 +53,24 @@
         "label": "Afficher le résultat",
         "description": "Afficher le résultat de la vérification."
       }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Lancer le processus de demande de vice-président",
+        "description": "Cliquez sur « Demander des informations d'identification » pour démarrer le processus de vérification VP."
+      },
+      "SelectCredential": {
+        "label": "Sélectionnez les informations d'identification et générez un code QR",
+        "description": "Sélectionnez les informations d'identification requises et cliquez sur « Générer un code QR »."
+      },
+      "ScanQrCode": {
+        "label": "Scanner le code QR",
+        "description": "Veuillez utiliser un appareil distinct doté de capacités de numérisation QR pour scanner le code avec votre appareil photo. La prise en charge de l'utilisation du même appareil sera bientôt disponible !"
+      },
+      "DisplayResult": {
+        "label": "Afficher le résultat",
+        "description": "Afficher le résultat de la vérification."
+      }
     }
   },
   "ResultSummary": {

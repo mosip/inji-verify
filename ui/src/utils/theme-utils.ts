@@ -14,7 +14,8 @@ import { ReactComponent as GlobeSvgIcon } from "../assets/globe.svg";
 import { ReactComponent as ArrowDownSvgIcon } from "../assets/arrow-down.svg";
 import { ReactComponent as ArrowUpSvgIcon } from "../assets/arrow-up.svg";
 import { ReactComponent as CheckSvgIcon } from "../assets/check.svg";
-
+import { ReactComponent as Search } from "../assets/search.svg";
+import { ReactComponent as QrOutline } from "../assets/qr-code-outline.svg"
 
 export const Logo = InjiLogo;
 export const QrIcon = QrCodeIcon;
@@ -31,3 +32,5 @@ export const GlobeIcon = GlobeSvgIcon;
 export const ArrowDown = ArrowDownSvgIcon;
 export const ArrowUp = ArrowUpSvgIcon;
 export const Check = CheckSvgIcon;
+export const SearchIcon = Search;
+export const QrCodeOutLine = QrOutline;

@@ -43,6 +43,10 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-search-border: #d5d8e2;
+    --iv-searAll-text: #535353;
+    --iv-disabled-button-bg: #c1c1c1;
     --iv-gradient-scanning-line: linear-gradient(
       90deg,
       #ff5300 0%,
@@ -93,6 +97,10 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-search-border: #d5d8e2;
+    --iv-searAll-text: #535353;
+    --iv-disabled-button-bg: #c1c1c1;
     --iv-gradient-scanning-line: linear-gradient(
       90deg,
       #ff5300 0%,
@@ -165,4 +173,35 @@ code {
 
 #loader {
   will-change: transform;
+}
+
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background: linear-gradient(
+    90deg,
+    #ff5300 0%,
+    #fb5103 16%,
+    #f04c0f 31%,
+    #de4322 46%,
+    #c5363c 61%,
+    #a4265f 75%,
+    #7c1389 90%,
+    #5b03ad 100%
+  );
+}
+
+.checkbox:checked::after {
+  content: "✔";
+  color: #ffffff; 
 }

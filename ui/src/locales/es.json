@@ -53,6 +53,24 @@
         "label": "Ver resultado",
         "description": "Ver el resultado de la verificación."
       }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Iniciar proceso de solicitud de vicepresidente",
+        "description": "Haga clic en \"Solicitar credenciales\" para iniciar el proceso de verificación de vicepresidente."
+      },
+      "SelectCredential": {
+        "label": "Seleccione Credenciales y Generar Código QR",
+        "description": "Seleccione las credenciales requeridas y haga clic en \"Generar código QR\"."
+      },
+      "ScanQrCode": {
+        "label": "Escanear código QR",
+        "description": "Utilice un dispositivo independiente con capacidad de escaneo QR para escanear el código con su cámara. Pronto habrá soporte para usar el mismo dispositivo!"
+      },
+      "DisplayResult": {
+        "label": "Ver resultado",
+        "description": "Ver el resultado de la verificación."
+      }
     }
   },
   "ResultSummary": {

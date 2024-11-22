@@ -42,7 +42,7 @@ const DesktopStepper: React.FC = () => {
 }, [method]);
 
     return (
-        <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
+        <div className="hidden pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
             <div className="flex flex-col items-start space-y-2">
                 {
                     steps.map((step: any, index: number) => (

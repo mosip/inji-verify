@@ -10,12 +10,12 @@ export function Verify() {
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
-        <div className="col-start-1 col-end-13 lg:col-start-1 lg:col-span-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw]">
+        <div className="col-start-1 col-end-13 lg:col-span-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] pb-[100px]">
           <VerificationProgressTracker />
           <Button
             id="request-credentials-button"
-            title="Request Credentials"
-            className="text-center inline-flex absolute top-[720px] left-[80px] w-[300px]"
+            title="Request Verifiable Credentials"
+            className="w-[300px] mt-10 mx-auto lg:ml-[76px]"
             onClick={()=>setSelection(!openSelection)}
           />
           {
