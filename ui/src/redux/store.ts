@@ -5,6 +5,7 @@ import applicationStateReducer from "./features/application-state/application-st
 import vpVerificationState from "./features/verify/verifyState"
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
+import commonReducer from './features/common/commonSlice'
 import verifySaga from "./features/verify/verifySaga";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     verification: verificationFlowReducer,
     alert: alertsReducer,
     appState: applicationStateReducer,
+    common:commonReducer,
     verify: vpVerificationState
 });
 

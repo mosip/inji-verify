@@ -2,6 +2,7 @@ import * as React from 'react';
 import { CameraAccessDeniedIcon } from '../../../utils/theme-utils';
 import {CSSProperties} from "react";
 import { Button } from './commons/Button';
+import { useTranslation } from 'react-i18next';
 
 const style: CSSProperties = {
     position: 'absolute',
@@ -41,21 +42,21 @@ const Fade = ({children}: any) => (
 )
 
 const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: () => void }) => {
+    const {t} = useTranslation('CameraAccessDenied')
     return open ? (
         <Modal>
             <Fade>
                 <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg fill-primary" style={style}>
                     <CameraAccessDeniedIcon  />
                     <p id="camera-access-denied" className="font-bold  text-mediumTextSize text-cameraDeniedLabel my-3 mx-auto">
-                        Camera Access Denied
+                        {t('header')}
                     </p>
                     <p id="camera-access-denied-description" className="font-normal text-lgNormalTextSize  text-cameraDeniedDescription my-3 mx-auto">
-                        We need your camera to scan the code. Go to your browser settings and allow camera access for
-                        this website.
+                        {t('description')}
                     </p>
                     <Button
                         id="camer-access-denied-okay-button"
-                        title="Okay"
+                        title={t('okay')}
                         onClick={handleClose}
                         className="w-[180px] mx-0 my-1.5 text-lgNormalTextSize inline-flex"
                         data-testid="camera-access-denied-okay"

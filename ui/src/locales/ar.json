@@ -1,0 +1,109 @@
+{
+  "Navbar": {
+    "home": "بيت",
+    "verifyCredentials": "التحقق من بيانات الاعتماد",
+    "help": "يساعد",
+    "contactUs": "اتصل بنا",
+    "documentation": "التوثيق",
+    "faqs": "الأسئلة الشائعة"
+  },
+  "Header": {
+    "heading": "التحقق من بيانات الاعتماد ",
+    "headingHighlight": "بكل سهولة!",
+    "description": "تحقق من بيانات الاعتماد بسهولة باستخدام Inji Verify! "
+  },
+  "Tab": {
+    "upload": "تحميل رمز الاستجابة السريعة",
+    "scan": "مسح رمز الاستجابة السريعة",
+    "VP_Verification": "التحقق من نائب الرئيس",
+    "ble": "بليه"
+  },
+  "Upload": {
+    "format": "تنسيقات الملفات المسموح بها: PNG/JPEG/JPG/PDF \n الحد الأدنى للحجم : 10 كيلو بايت |  \n الحد الأقصى للحجم : 5 ميجابايت"
+  },
+  "VerificationStepsContent": {
+    "SCAN": {
+      "QrCodePrompt": {
+        "label": "مسح رمز الاستجابة السريعة",
+        "description": "انقر فوق \"مسح ضوئي\" لبدء مسح المستند أو البطاقة ضوئيًا باستخدام رمز الاستجابة السريعة"
+      },
+      "ActivateCamera": {
+        "label": "تنشيط الكاميرا ووضع رمز الاستجابة السريعة",
+        "description": "قم بتنشيط كاميرا جهازك واحتفظ برمز الاستجابة السريعة داخل الإطار لبدء عملية التحقق."
+      },
+      "Verifying": {
+        "label": "جارٍ التحقق",
+        "description": "التحقق من رمز الاستجابة السريعة قيد التقدم."
+      },
+      "DisplayResult": {
+        "label": "عرض النتيجة",
+        "description": "عرض نتيجة التحقق."
+      }
+    },
+    "UPLOAD": {
+      "QrCodePrompt": {
+        "label": "تحميل رمز الاستجابة السريعة",
+        "description": "قم بتحميل ملف يحتوي على رمز QR"
+      },
+      "Verifying": {
+        "label": "التحقق من الوثيقة",
+        "description": "جارٍ التحقق من المستند أو البطاقة."
+      },
+      "DisplayResult": {
+        "label": "عرض النتيجة",
+        "description": "عرض نتيجة التحقق."
+      }
+    }
+  },
+  "ResultSummary": {
+    "SUCCESS": "تهانينا، بيانات الاعتماد المقدمة صالحة!",
+    "INVALID": "لسوء الحظ، بيانات الاعتماد المقدمة غير صالحة!",
+    "EXPIRED": "لسوء الحظ، انتهت صلاحية بيانات الاعتماد المقدمة!"
+  },
+  "AlertMessages": {
+    "qrUploadSuccess": "تم تحميل رمز الاستجابة السريعة بنجاح!",
+    "sessionExpired": "انتهت صلاحية جلسة الفحص بسبب عدم النشاط. ",
+    "qrNotDetected": "لم يتمكن أي قارئ MultiFormat من اكتشاف رمز الاستجابة السريعة.",
+    "qrNotSupported": "تنسيق رمز الاستجابة السريعة غير مدعوم.",
+    "unsupportedFileSize": "حجم الملف غير مدعوم. ",
+    "verificationMethodComingSoon": "قريباً",
+    "unsupportedFileType": "تنسيق الملف غير معتمد. ",
+    "pageNotFound": "الصفحة غير موجودة!!"
+  },
+  "OvpErrors": {
+    "invalidScope": "النطاق غير صالح",
+    "invalidRequest": "يرجى التحقق من المدخلات الخاصة بك وحاول مرة أخرى",
+    "invalidClient": "عميل غير صالح",
+    "vpFormatsNotSupported": "تنسيقات VP غير مدعومة",
+    "invalidPresentationDefinitionUri": "معرف URI لتعريف العرض التقديمي غير صالح",
+    "invalidPresentationDefinitionReference": "مرجع تعريف العرض التقديمي غير صالح",
+    "resourceNotFound": "حدث خطأ ما في طلبك. ",
+    "requestTimeOut": "استغرق الطلب وقتا طويلا. ",
+    "uriTooLong": "عنوان URL طويل جدًا. ",
+    "internalServerError": "نواجه مشكلة في معالجة طلبك. ",
+    "serverUnavailable": "الخدمة غير متوفرة حاليا. ",
+    "invalidVpToken": "أوراق الاعتماد لا تفي بالمتطلبات. ",
+    "unsupportedFormat": "تنسيقات VP غير مدعومة"
+  },
+  "CopyRight": {
+    "content": "2024 © موسيب - جميع الحقوق محفوظة."
+  },
+  "CameraAccessDenied": {
+    "header": "تم رفض الوصول إلى الكاميرا",
+    "description": "نحتاج إلى كاميرتك لمسح الرمز ضوئيًا. انتقل إلى إعدادات المتصفح الخاص بك واسمح بالوصول إلى الكاميرا لهذا الموقع.",
+    "okay": "تمام"
+  },
+  "Offline": {
+    "header": "لا يوجد اتصال بالإنترنت!",
+    "description": "يبدو أننا لا نستطيع الاتصال. تحقق من اتصالك بالإنترنت وحاول مرة أخرى.أُووبس!",
+    "retry": "يرجى المحاولة مرة أخرى"
+  },
+  "Common": {
+    "Button": {
+      "upload": "رفع",
+      "scan": "مسح",
+      "back": "خلف",
+      "verifyAnotherQrCode": "التحقق من رمز QR آخر"
+    }
+  }
+}

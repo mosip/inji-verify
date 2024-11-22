@@ -9,13 +9,9 @@ export type QrScanResult = {
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = {
-    status: "OK" | "NOK" | "Verifying";
-    checks: {
-        active: string | null;
-        revoked: "OK" | "NOK";
-        expired: "OK" | "NOK";
-        proof: "OK" | "NOK";
-    }[];
+    verificationStatus: Boolean;
+    verificationMessage: string;
+    verificationErrorCode: string;
 }
 
 export type VerificationStep = {
@@ -76,6 +72,17 @@ export type VerificationResult = {
     vcStatus?: VcStatus
 }
 
+export type LanguageObject = {
+    label: string;
+    value: string;
+}
+
+export interface VerificationStepsContentType {
+    SCAN: VerificationStep[];
+    UPLOAD: VerificationStep[];
+    VERIFY: VerificationStep[];
+    TO_BE_SELECTED: VerificationStep[];
+}
 export type ApiRequest = {
     url: (...args: string[]) => string;
     methodType: MethodType;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Pages } from "./utils/config";
 import Home from "./pages/Home";
@@ -13,6 +13,9 @@ import { Verify } from "./pages/Verify";
 import { goToHomeScreen } from "./redux/features/verification/verification.slice";
 import { VerificationMethod } from "./types/data-types";
 import store from "./redux/store";
+import { useAppSelector } from './redux/hooks';
+import { RootState } from './redux/store';
+import { isRTL } from './utils/i18n';
 
 function switchToVerificationMethod(method: VerificationMethod) {
   store.dispatch(goToHomeScreen({ method }));
@@ -55,10 +58,17 @@ const preloadImages = [
 ];
 
 function App() {
+    const language = useAppSelector((state: RootState) => state.common.language);
+    const rtl = isRTL(language)
+
+    useEffect(() => {
+        document.body.classList.toggle('rtl', rtl);
+    }, [rtl]);
+    
   return (
     <div className="font-base">
       <RouterProvider router={router} />
-      <AlertMessage />
+      <AlertMessage isRtl={rtl}  />
       <PreloadImages imageUrls={preloadImages} />
     </div>
   );

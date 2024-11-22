@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import {
-  GradientScanIcon,
-  QrIcon,
-  WhiteScanIcon,
-} from "../../../utils/theme-utils";
+import React, { useState } from 'react';
+import { GradientScanIcon, QrIcon, WhiteScanIcon } from '../../../utils/theme-utils';
 import { Button } from "./commons/Button";
-import { useAppDispatch } from "../../../redux/hooks";
-import { qrReadInit } from "../../../redux/features/verification/verification.slice";
-import { checkInternetStatus } from "../../../utils/misc";
-import { updateInternetConnectionStatus } from "../../../redux/features/application-state/application-state.slice";
-import { ScanOutline } from "../../../utils/theme-utils";
+import {UploadQrCode} from "./UploadQrCode";
+import {useAppDispatch} from "../../../redux/hooks";
+import {qrReadInit} from "../../../redux/features/verification/verification.slice";
+import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
+import {checkInternetStatus} from "../../../utils/misc";
+import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
+import { ScanOutline } from '../../../utils/theme-utils';
+import { useTranslation } from 'react-i18next';
 
 const Scan = () => {
   const dispatch = useAppDispatch();
   const [isHover, setHover] = useState(false);
   const ScanIcon = isHover ? WhiteScanIcon : GradientScanIcon;
+  const {t} = useTranslation()
   return (
     <>
       <Button
         id="scan-button"
-        title="Scan"
+        title={t("Common:Button.scan")}
         icon={<ScanIcon />}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}

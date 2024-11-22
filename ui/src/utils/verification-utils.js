@@ -1,22 +1,21 @@
-import {
-  verifyCredential /*, downloadRevocationList*/,
-} from "@sunbird-rc/verification-sdk";
-import { resolveDid } from "./did-utils";
-
-let revocationList = [];
-
 const verify = async (credential) => {
-  let resolutionResult = await resolveDid(
-    credential?.proof?.verificationMethod
-  );
-  if (resolutionResult.didResolutionMetadata.error) {
-    throw new Error(resolutionResult.didResolutionMetadata.error);
-  }
-  let issuerDID = resolutionResult.didDocument; /*
-    let revocationUrl = "http://localhost:3000/credentials/revocation-list";*/
-  revocationList =
-    /*await downloadRevocationList(issuerDID.id, revocationUrl)*/ [];
-  return await verifyCredential(issuerDID, credential, revocationList);
+  return await verifyCredentialOnline(credential);
 };
+
+const verifyCredentialOnline = (credential) => {
+  return new Promise(function (resolve, reject) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", `${window._env_.VERIFY_SERVICE_API_URL}/credential`, true);
+    xhttp.onload = function () {
+      var status = xhttp.status;
+      if (status == 200) {
+        resolve(JSON.parse(xhttp.response));
+      } else {
+        reject(status);
+      }
+    };
+    xhttp.send(JSON.stringify(credential));
+  });
+}
 
 export { verify };

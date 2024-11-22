@@ -25,7 +25,7 @@ function* handleVerification(data: any) {
     } catch (error) {
         console.error(error)
         yield put(goToHomeScreen({}));
-        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+        yield put(raiseAlert({...AlertMessages().qrNotSupported, open: true}));
     }
 }
 
@@ -36,7 +36,7 @@ function* handleOvpFlow(qrData: string) {
     } else {
         console.error("Failed to extract the redirect url from the qr data");
         yield put(goToHomeScreen({}));
-        yield put(raiseAlert({...AlertMessages.qrNotSupported, open: true}));
+        yield put(raiseAlert({...AlertMessages().qrNotSupported, open: true}));
     }
 }
 
@@ -44,9 +44,6 @@ function* verifyVC(vc: any) {
     const onLine: boolean = yield select((state: any) => state.appState.internetConnectionStatus);
     try {
         const status: VcStatus = yield call(verify, vc);
-        if (status?.checks?.length >= 0 && status?.checks[0].proof === "NOK" && !onLine) {
-            yield put(updateInternetConnectionStatus({internetConnectionStatus: "OFFLINE"}));
-        }
         yield put(verificationComplete({ verificationResult: { vc, vcStatus: status } }));
         yield put(closeAlert({}));
     } catch (error) {
@@ -58,8 +55,7 @@ function* verifyVC(vc: any) {
         yield put(verificationComplete({
             verificationResult: {
                 vcStatus: {
-                    status: "NOK",
-                    checks: []
+                    verificationStatus: false,
                 },
                 vc: null
             }

@@ -57,6 +57,25 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>danubetech</id>
+            <name>danubetech</name>
+            <layout>default</layout>
+            <url>https://repo.danubetech.com/repository/maven-public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>google</id>
+            <name>GoogleMaven</name>
+            <layout>default</layout>
+            <url>https://maven.google.com</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
     </repositories>
 
     <distributionManagement>
@@ -68,6 +87,7 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+
     </distributionManagement>
 
     <properties>
@@ -88,16 +108,50 @@
         <module>verify-service</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Hoxton.SR8</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.identity</groupId>
+            <artifactId>identity-credential</artifactId>
+            <version>20231002</version>
+        </dependency>
+        <dependency>
+            <groupId>info.weboftrust</groupId>
+            <artifactId>ld-signatures-java</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>decentralized-identity</groupId>
+            <artifactId>jsonld-common-java</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.mosip</groupId>
+            <artifactId>vcverifier-jar</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
 

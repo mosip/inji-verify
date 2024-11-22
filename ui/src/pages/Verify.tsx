@@ -15,7 +15,7 @@ export function Verify() {
           <Button
             id="request-credentials-button"
             title="Request Credentials"
-            className="text-center inline-flex absolute top-[650px] left-[80px] w-[300px]"
+            className="text-center inline-flex absolute top-[720px] left-[80px] w-[300px]"
             onClick={()=>setSelection(!openSelection)}
           />
           {

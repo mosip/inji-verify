@@ -4,9 +4,12 @@ import {Button} from "../commons/Button";
 import { DocumentIcon } from '../../../../utils/theme-utils';
 import {useAppDispatch} from "../../../../redux/hooks";
 import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
+import { useTranslation } from 'react-i18next';
 
 function VcDisplayCard({vc}: {vc: any}) {
     const dispatch = useAppDispatch();
+    const {t} = useTranslation();
+
     return (
         <div>
             <div className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}>
@@ -33,7 +36,7 @@ function VcDisplayCard({vc}: {vc: any}) {
             <div className="grid content-center justify-center">
                 <Button 
                 id="verify-another-qr-code-button"
-                title="Verify Another QR code"
+                title={t("Common:Button.verifyAnotherQrCode")}
                 className="w-[200px] lg:w-[350px] mt-6 mb-20 lg:mb-6 mx-0 my-1.5 text-lgNormalTextSize inline-flex" 
                 onClick={() => {
                     dispatch(goToHomeScreen({}))
