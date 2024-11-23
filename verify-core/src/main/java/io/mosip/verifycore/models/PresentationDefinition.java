@@ -34,7 +34,7 @@ public class PresentationDefinition {
     private final List<SubmissionRequirementDto> submissionRequirements;
 
 
-    public URI getURL(String serverURL){
-        return URI.create(serverURL+"/vp-definition/"+this.id);
+    public String getURL(){
+        return "/vp-definition/"+this.id;
     }
 }

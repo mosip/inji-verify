@@ -35,7 +35,7 @@ public class SecurityUtils {
      }
 
      public static String getFormattedJws(String jws){
-        return jws.replace("\\n","").replace("==","");
+        return jws.replace("\\n","").replace("\n","").replace("==","");
      }
 
 }

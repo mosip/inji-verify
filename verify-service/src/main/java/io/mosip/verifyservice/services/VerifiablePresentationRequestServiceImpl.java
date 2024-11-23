@@ -38,7 +38,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         PresentationDefinitionDto presentationDefinitionDto = vpRequestCreate.getPresentationDefinition();
         PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
 
-        AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition,serverURL,requestId);
+        AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestDto, expiresAt,Status.PENDING);
 
         presentationDefinitionRepository.save(presentationDefinition);
