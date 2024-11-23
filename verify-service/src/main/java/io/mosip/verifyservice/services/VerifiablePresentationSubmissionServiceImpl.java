@@ -50,14 +50,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray("verifiableCredential");
             boolean combinedVcVerificationStatus = true;
             for (Object verifiableCredential : verifiableCredentials) {
-                JSONObject next = (JSONObject) verifiableCredential;
-                JSONObject credential = next.getJSONObject("verifiableCredential").getJSONObject("credential");
+                JSONObject credential =  new JSONObject((String) verifiableCredential).getJSONObject("verifiableCredential").getJSONObject("credential");
                 VerificationResult singleVcVerification = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
                 combinedVcVerificationStatus = combinedVcVerificationStatus && singleVcVerification.getVerificationStatus();
             }
             if (!combinedVcVerificationStatus) {
-
-                //TODO: Uncomment
                 throw new Exception("Verification Failed");
             }
             //set valid
@@ -81,6 +78,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             });
             // update DB
 
+            e.printStackTrace();
             // return failed
             return new VpSubmissionResponseDto(SubmissionStatus.REJECTED,"",e.getMessage(),e.getMessage());
         }

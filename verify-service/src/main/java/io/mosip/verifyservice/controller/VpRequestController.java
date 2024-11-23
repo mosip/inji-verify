@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/vp-request")
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@CrossOrigin(origins = "*")
 public class VpRequestController {
 
     @Autowired
