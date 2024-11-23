@@ -3,7 +3,7 @@ import { ApiRequest } from "../types/data-types";
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
 export class api {
-  static Host = "http://localhost:8080";
+  static Host = "https://8065-2409-4073-2ebd-fe49-7d37-2889-9710-ad09.ngrok-free.app";
 
   static fetchRequestUri: ApiRequest = {
     url: () => api.Host + "/v1/verify/vp-request",
@@ -17,53 +17,20 @@ export class api {
       clientId: window.location.origin,
       presentationDefinition: {
         id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
-        submissionRequirements: [
-          {
-            name: "Citizenship Information",
-            rule: "pick",
-            count: 1,
-            from: "A",
+        purpose:
+          "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+        format: {
+          ldp_vc: {
+            proof_type: ["RsaSignature2018"],
           },
-        ],
-        inputDescriptors: [
+        },
+        input_descriptors: [
           {
             id: "id card credential",
-            group: ["A"],
             format: {
               ldp_vc: {
-                proof_type: ["Ed25519Signature2018"],
+                proof_type: ["Ed25519Signature2020"],
               },
-            },
-            constraints: {
-              fields: [
-                {
-                  path: ["$.type"],
-                  filter: {
-                    type: "string",
-                    pattern: "farmer",
-                  },
-                },
-              ],
-            },
-          },
-          {
-            id: "passport credential",
-            format: {
-              jwt_vc_json: {
-                alg: ["RS256"],
-              },
-            },
-            group: ["A"],
-            constraints: {
-              fields: [
-                {
-                  path: ["$.vc.type"],
-                  filter: {
-                    type: "string",
-                    pattern: "PassportCredential",
-                  },
-                },
-              ],
             },
           },
         ],

@@ -8,7 +8,7 @@ const verifyCredentialOnline = (credential) => {
     xhttp.open("POST", `${window._env_.VERIFY_SERVICE_API_URL}/credential`, true);
     xhttp.onload = function () {
       var status = xhttp.status;
-      if (status == 200) {
+      if (status === 200) {
         resolve(JSON.parse(xhttp.response));
       } else {
         reject(status);

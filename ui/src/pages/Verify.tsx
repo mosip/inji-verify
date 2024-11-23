@@ -16,6 +16,7 @@ export function Verify() {
             id="request-credentials-button"
             title="Request Verifiable Credentials"
             className="w-[300px] mt-10 mx-auto lg:ml-[76px]"
+            fill
             onClick={()=>setSelection(!openSelection)}
           />
           {

@@ -6,9 +6,10 @@ import React, {
 
 type ButtonProps = HTMLAttributes<HTMLButtonElement> &
   ButtonHTMLAttributes<HTMLButtonElement> & {
-    title:String;
+    title: String;
     icon?: ReactElement;
-    disabled?:boolean;
+    fill?: boolean;
+    disabled?: boolean;
   };
 
 export const Button = (props: ButtonProps) => {
@@ -21,7 +22,11 @@ export const Button = (props: ButtonProps) => {
       <button
         {...props}
         className={`group ${
-          props.disabled ? "bg-disabledButtonBg" : "bg-white hover:bg-gradient"
+          props.disabled
+            ? "bg-disabledButtonBg"
+            : props.fill
+            ? "bg-gradient"
+            : "bg-white hover:bg-gradient"
         } h-[40px] w-full rounded-[5px] flex items-center justify-center`}
       >
         {props.icon && <span className="mr-1.5">{props.icon}</span>}
@@ -29,6 +34,8 @@ export const Button = (props: ButtonProps) => {
           id={props.id}
           className={`font-bold ${
             props.disabled
+              ? "text-white"
+              : props.fill
               ? "text-white"
               : "bg-gradient bg-clip-text text-transparent group-hover:text-white"
           } normal-case`}
