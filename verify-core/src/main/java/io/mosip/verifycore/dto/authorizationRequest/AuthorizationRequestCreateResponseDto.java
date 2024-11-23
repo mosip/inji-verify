@@ -19,25 +19,3 @@ public class AuthorizationRequestCreateResponseDto {
         this.expiresAt = authorizationRequestCreateResponse.getExpiresAt();
     }
 }
-
-//@Data
-//public class AuthorizationRequestResponse()  {
-//    String transactionId;
-//    @id
-//    private String requestId;
-//    AuthorizationRequest authorizationDetails;
-//    String expiresAt;
-//    PresentationDefinition presentationDefinition;
-//
-//
-//    public AuthorizationRequestResponse(AuthorizationRequestResponseDTO dto) {
-//        this.requestId = dto.requestId();
-//    }
-//}
-//
-//
-//@Repository
-//public interface AuthorizationRequestResponseRepository extends JPA<AuthorizationRequestResponse> {
-//
-//         findByTSortDECgetone()
-//}

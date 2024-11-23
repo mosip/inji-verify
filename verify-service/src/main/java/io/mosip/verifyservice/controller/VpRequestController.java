@@ -1,8 +1,7 @@
 package io.mosip.verifyservice.controller;
 
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDto;
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestResultDto;
+import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.StatusResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/vp-request")
 @RestController
