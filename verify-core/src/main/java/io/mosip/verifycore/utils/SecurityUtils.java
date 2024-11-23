@@ -1,9 +1,6 @@
 package io.mosip.verifycore.utils;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.json.JSONObject;
-
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -41,18 +38,4 @@ public class SecurityUtils {
         return jws.replace("\\n","").replace("==","");
      }
 
-//     public static Algorithm getJwsAlgorithm(String jws, String publicKeyPem){
-//         RSAPublicKey publicKey = getPublicKeyFromString(publicKeyPem);
-//         String header = jws.split("\\.")[0];
-//
-//         String alg = new JSONObject(new String(java.util.Base64.getDecoder().decode(header))).getString("alg");
-//         System.out.println(alg);
-//         switch (alg){
-//             case "RS256":
-//                 return Algorithm.RSA256(publicKey,null);
-//             case "PS256":
-//                 return Algorithm.
-//         }
-//         return null;
-//     }
 }
