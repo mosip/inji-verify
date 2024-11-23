@@ -19,15 +19,15 @@ public class AuthorizationRequestDto implements Serializable {
 
     private final String responseType = "vp_token";
     private final String clientId;
-    private final URI presentationDefinitionUri;
-    private URI responseUri;
+    private final String presentationDefinitionUri;
+    private String responseUri;
     private String nonce;
     private final long iat;
 
-    public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition, String serverURL, String requestId) {
+    public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition) {
         this.clientId = clientId;
-        this.responseUri = URI.create(serverURL+"/vp-direct-post/"+requestId);
-        this.presentationDefinitionUri = presentationDefinition.getURL(serverURL);
+        this.responseUri = "/v1/verify/vp-direct-post";
+        this.presentationDefinitionUri = presentationDefinition.getURL();
         this.iat = Instant.now().toEpochMilli();
         this.nonce  = SecurityUtils.generateNonce();
     }
