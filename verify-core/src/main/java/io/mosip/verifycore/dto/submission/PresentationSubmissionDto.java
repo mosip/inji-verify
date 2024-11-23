@@ -1,7 +1,6 @@
 package io.mosip.verifycore.dto.submission;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.mosip.verifycore.dto.submission.DescriptorMapDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

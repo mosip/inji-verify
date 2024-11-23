@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PresentationDefinitionRepository extends JpaRepository<PresentationDefinition, String> {
-    Optional<PresentationDefinition> findById(String id);
-}
+public interface PresentationDefinitionRepository extends JpaRepository<PresentationDefinition, String> { }
