@@ -1,24 +1,20 @@
 package io.mosip.verifyservice.services;
 
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDto;
+import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
 import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
 import io.mosip.verifycore.models.PresentationDefinition;
+import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
+import io.mosip.verifycore.utils.Utils;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.PresentationDefinitionRepository;
-import io.mosip.verifycore.utils.Utils;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static io.mosip.verifycore.shared.Constants.DEFAULT_EXPIRY;
 
@@ -56,7 +52,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
        return authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
             Status currentStatus = authorizationRequestCreateResponse.getStatus();
             System.out.println(currentStatus);
-            if (currentStatus == Status.PENDING && authorizationRequestCreateResponse.getExpiresAt() > Instant.now().toEpochMilli()){
+            if (currentStatus == Status.PENDING && authorizationRequestCreateResponse.getExpiresAt() < Instant.now().toEpochMilli()){
                 authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
                 authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
                 return Status.EXPIRED;
