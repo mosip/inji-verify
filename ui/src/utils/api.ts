@@ -3,7 +3,7 @@ import { ApiRequest } from "../types/data-types";
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
 export class api {
-  static Host = "https://8065-2409-4073-2ebd-fe49-7d37-2889-9710-ad09.ngrok-free.app";
+  static Host = "http://localhost:8080";
 
   static fetchRequestUri: ApiRequest = {
     url: () => api.Host + "/v1/verify/vp-request",

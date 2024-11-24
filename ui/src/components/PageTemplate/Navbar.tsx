@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { Logo } from '../../utils/theme-utils';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
@@ -10,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../redux/hooks';
 import { RootState } from '../../redux/store';
 import { isRTL } from '../../utils/i18n';
+import { Logo } from '../../utils/theme-utils';
 
 const SubMenu = () => {
     const {t} = useTranslation("Navbar");
@@ -21,13 +21,13 @@ const SubMenu = () => {
                 href="https://community.mosip.io/"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("contactUs")} <NewTabIcon className="mx-1.5"/></a>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("contactUs")} <NewTabIcon className="mx-1.5"/></a>
             <a id="documentation"
                 href="https://docs.mosip.io/inji/inji-verify/overview"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
-            <button id="faq" disabled className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4"> {t("faqs")} </button>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
+            <button id="faq" disabled className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("faqs")} </button>
         </div>
     );
 }
@@ -115,7 +115,7 @@ function Navbar(props: any) {
         <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
             <div className="container flex flex-wrap justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className={`${showMenu?"bg-lighter-gradient":"bg-background"} inline-flex items-center p-3 ml-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
+                        className={`${showMenu?"bg-lighter-gradient":"bg-background"} inline-flex items-center p-3 mr-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
                         onClick={() => setShowMenu(!showMenu)}
                 >

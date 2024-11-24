@@ -19,7 +19,7 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "அனுமதிக்கப்பட்ட கோப்பு வடிவங்கள்: PNG/JPEG/JPG/PDF \nகுறைந்தபட்ச அளவு: 10KB | அதிகபட்ச அளவு: 5MB"
+    "format": "அனுமதிக்கப்பட்ட கோப்பு வடிவங்கள்: PNG/JPEG/JPG/PDF \n கோப்பு அளவு - 10KB முதல் 5MB வரை"
   },
   "VerificationStepsContent": {
     "SCAN": {

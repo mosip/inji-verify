@@ -60,7 +60,7 @@ export const LanguageSelector: React.FC = () => {
 
         {isOpen && (
           <div
-            className={`absolute top-8 w-[167px] lg:w-60 z-40 ${
+            className={`absolute top-10 w-[167px] lg:w-60 z-40 ${
               rtl ? "left-1 lg:left-0" : "right-1 lg:right-0"
             } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
           >

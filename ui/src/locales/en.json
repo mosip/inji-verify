@@ -19,7 +19,7 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \nMin Size : 10KB | Max Size : 5MB"
+    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \n File Size - 10KB to 5MB"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -104,7 +104,7 @@
     "unsupportedFormat": "VP Formats Not Supported"
   },
   "CopyRight": {
-    "content": "2024 © MOSIP - All rights reserved."
+    "content": "Powered by Inji, a MOSIP product"
   },
   "CameraAccessDenied": {
     "header": "Camera Access Denied",
