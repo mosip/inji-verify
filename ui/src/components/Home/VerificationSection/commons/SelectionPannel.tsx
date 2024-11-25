@@ -2,9 +2,12 @@ import * as React from "react";
 import { useState } from "react";
 import { Button } from "./Button";
 import { verifiableClaims } from "../../../../utils/config";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { SearchIcon } from "../../../../utils/theme-utils";
-import { getRequestUri } from "../../../../redux/features/verify/verifyState";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { FilterLinesIcon, SearchIcon } from "../../../../utils/theme-utils";
+import { getVpRequest } from "../../../../redux/features/verify/verifyState";
+import { isRTL } from "../../../../utils/i18n";
+import { RootState } from "../../../../redux/store";
+import { useTranslation } from "react-i18next";
 
 const Modal = ({ children }: any) => (
   <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -38,25 +41,31 @@ const SelectionPannel = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  const { t } = useTranslation("Verify");
   const [search, setSearch] = useState("");
+  const [showMenu, setshowMenu] = useState(false);
+  const [isAscending, setIsAscending] = useState(true);
   const [selectedClaims, setSelectedClaims] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-
+  let language = useAppSelector((state: RootState) => state.common.language);
+  language = language ?? window._env_.DEFAULT_LANG;
+  const rtl = isRTL(language);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
-  const filteredClaims = verifiableClaims.filter((claim) =>
-    claim.type.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredClaims = verifiableClaims
+  .filter((claim) => claim.type.toLowerCase().includes(search.toLowerCase()))
+  .sort((a, b) => {
+    // Prioritize essential claims
+    if (a.essential && !b.essential) return -1;
+    if (!a.essential && b.essential) return 1;
+    // Sort alphabetically by 'type'
+    return isAscending
+      ? a.type.localeCompare(b.type)
+      : b.type.localeCompare(a.type);
+  });
 
-  const toggleSelectAll = (isChecked: boolean) => {
-    if (isChecked) {
-      setSelectedClaims(filteredClaims.map((claim) => claim.type));
-    } else {
-      setSelectedClaims([]);
-    }
-  };
 
   const toggleClaimSelection = (type: string) => {
     setSelectedClaims((prev) =>
@@ -76,19 +85,18 @@ const SelectionPannel = ({
     handleClose();
     setSearch("");
     setSelectedClaims([]);
-    dispatch(getRequestUri());
+    dispatch(getVpRequest());
   };
 
   return open ? (
     <Modal>
       <Fade>
         <div className="fill-primary">
-          <h1 className="font-bold text-lg sm:text-xl text-center sm:text-left">
-            Credential Selection Panel
+          <h1 className="font-bold text-lg sm:text-xl text-center sm:text-left text-selectorPannelTitle">
+            {t("selectorTitle")}
           </h1>
-          <p className="text-sm sm:text-base text-center sm:text-left">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          <p className="text-sm sm:text-base text-center sm:text-left text-selectorPannelSubTitle">
+            {t("selectorSubTitle")}
           </p>
 
           <div className="flex flex-col sm:flex-row justify-between items-center border-t-[1px] border-b-[1px] border-selectorBorder my-2 p-2">
@@ -97,27 +105,43 @@ const SelectionPannel = ({
               <input
                 type="text"
                 className="ml-3 outline-none w-full"
-                placeholder="Find..."
+                placeholder={t("searchPlaceholder")}
                 id="searchInput"
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="flex items-center mt-2 sm:mt-0">
-              <label htmlFor="SelectAll" className="text-searchAllText text-sm">
-                Select all
-              </label>
-              <input
-                type="checkbox"
-                className="ml-3 checkbox"
-                id="SelectAll"
-                onChange={(e) => toggleSelectAll(e.target.checked)}
-                checked={selectedClaims.length === filteredClaims.length}
-              />
+            <div
+              onClick={() => setshowMenu(!showMenu)}
+              className="flex items-center w-[106px] p-2 border-[2px] border-sortByBorder rounded-md"
+            >
+              <FilterLinesIcon />
+              <span className="text-sortByText text-sm ml-2">Sort By</span>
+              {showMenu && (
+                <div
+                  className={`absolute w-[106px] z-40 flex flex-col ${
+                    rtl ? "left-1 lg:left-0" : "lg:top-[150px] lg:right-[30px]"
+                  } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
+                >
+                  <button
+                    onClick={() => setIsAscending(true)}
+                    className="text-sortByText text-sm pt-1 pb-1 space-x-1"
+                  >
+                    {t("sortAtoZ")}
+                  </button>
+                  <div className="w-full border-t-[2px] border-sortByBorder" />
+                  <button
+                    onClick={() => setIsAscending(false)}
+                    className="text-sortByText text-sm pt-1 pb-1 space-x-1"
+                  >
+                    {t("sortZtoA")}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className="border-b-[1px] border-selectorBorder pb-3">
             <h1 className="font-bold text-base sm:text-lg">
-              Select the credentials you need
+              {t("listHeader")}
             </h1>
             {filteredClaims.length > 0 ? (
               <ul className="w-full min-h-[300px] max-h-[300px] overflow-y-auto">
@@ -163,11 +187,11 @@ const SelectionPannel = ({
               id="verification-back-button"
               className="w-full sm:w-[180px] text-lgNormalTextSize inline-flex sm:mr-2"
               onClick={HandelBack}
-              title={"Go Back"}
+              title={t("goBack")}
             />
             <Button
               id="camera-access-denied-okay-button"
-              title="Generate QR Code"
+              title={t("generateQrCodeBtn")}
               onClick={HandelGenerateQr}
               className="w-full sm:w-[180px] text-lgNormalTextSize inline-flex"
               data-testid="camera-access-denied-okay"

@@ -4,9 +4,17 @@ import VerificationProgressTracker from "../components/Home/VerificationProgress
 import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
 import SelectionPannel from "../components/Home/VerificationSection/commons/SelectionPannel";
 import { Button } from "../components/Home/VerificationSection/commons/Button";
+import { useTranslation } from "react-i18next";
+import { useVerifyFlowSelector } from "../redux/features/verification/verification.selector";
+import { setSelectCredential } from "../redux/features/verify/verifyState";
+import { useAppDispatch } from "../redux/hooks";
 
 export function Verify() {
-  const [openSelection,setSelection] = useState(false)
+  const [openSelection, setSelection] = useState(false);
+  const { t } = useTranslation("Verify");
+  const txnId = useVerifyFlowSelector((state) => state.txnId);
+  const dispatch = useAppDispatch();
+  
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
@@ -14,15 +22,19 @@ export function Verify() {
           <VerificationProgressTracker />
           <Button
             id="request-credentials-button"
-            title="Request Verifiable Credentials"
+            title={t("rqstButton")}
             className="w-[300px] mt-10 mx-auto lg:ml-[76px]"
             fill
-            onClick={()=>setSelection(!openSelection)}
+            onClick={() => {
+              setSelection(!openSelection);
+              dispatch(setSelectCredential());
+            }}
+            disabled={txnId !== ""}
           />
           {
             <SelectionPannel
               open={openSelection}
-              handleClose={()=>setSelection(!openSelection)}
+              handleClose={() => setSelection(!openSelection)}
             />
           }
         </div>

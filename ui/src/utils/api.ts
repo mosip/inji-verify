@@ -1,12 +1,10 @@
 import { ApiRequest } from "../types/data-types";
 
-export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
-
 export class api {
-  static Host = "http://localhost:8080";
+  static Host = window._env_.VERIFY_SERVICE_API_URL ;
 
-  static fetchRequestUri: ApiRequest = {
-    url: () => api.Host + "/v1/verify/vp-request",
+  static fetchVpRequest: ApiRequest = {
+    url: () => api.Host + "/vp-request",
     methodType: "POST",
     headers: () => {
       return {
@@ -36,5 +34,27 @@ export class api {
         ],
       },
     }),
+  };
+
+  static fetchStatus: ApiRequest = {
+    url: (reqId: string) => api.Host + `/vp-request/${reqId}/status`,
+    methodType: "GET",
+    headers: () => {
+      return {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "dtyujhgf",
+      };
+    },
+  };
+
+  static fetchVpResult: ApiRequest = {
+    url: (txnId: string) => api.Host + `/vp-result/${txnId}`,
+    methodType: "GET",
+    headers: () => {
+      return {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "dtyujhgf",
+      };
+    },
   };
 }

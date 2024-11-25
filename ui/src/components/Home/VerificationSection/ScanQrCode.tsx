@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { GradientScanIcon, QrIcon, WhiteScanIcon } from '../../../utils/theme-utils';
 import { Button } from "./commons/Button";
-import {UploadQrCode} from "./UploadQrCode";
 import {useAppDispatch} from "../../../redux/hooks";
 import {qrReadInit} from "../../../redux/features/verification/verification.slice";
-import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {checkInternetStatus} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
 import { ScanOutline } from '../../../utils/theme-utils';

@@ -21,6 +21,19 @@
   "Upload": {
     "format": "Formatos de archivo permitidos: PNG/JPEG/JPG/PDF \n Tamaño de archivo: 10 KB a 5 MB"
   },
+  "Verify": {
+    "selectorTitle": "Panel de selección de credenciales verificables",
+    "selectorSubTitle": "Seleccione las Credenciales Verificables que desea recibir de la billetera del usuario",
+    "searchPlaceholder": "Busque el tipo de credencial verificable",
+    "listHeader": "Seleccione las credenciales verificables requeridas",
+    "sortAtoZ": "Ordenar (A-Z)",
+    "sortZtoA": "Ordenar (Z-A)",
+    "rqstButton": "Solicitar credenciales verificables",
+    "goBack": "Volver",
+    "generateQrCodeBtn": "Generar código QR",
+    "qrCodeInfo": "Escanee el siguiente código QR con su billetera digital para compartir las credenciales solicitadas",
+    "qrCodeExpired": "Código QR caducado"
+  },
   "VerificationStepsContent": {
     "SCAN": {
       "QrCodePrompt": {

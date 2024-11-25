@@ -18,6 +18,7 @@ import { ReactComponent as InjiVerLogo } from "../assets/inji-verify.svg";
 import { ReactComponent as UnderConstructionLogo } from "../assets/under-construction.svg";
 import { ReactComponent as Search } from "../assets/search.svg";
 import QrOutline from "../assets/qr-code-outline.svg"
+import { ReactComponent as FilterLines } from "../assets/filter-lines.svg";
 
 export const Logo = NavLogo;
 export const InjiLogo = InjiVerLogo;
@@ -39,3 +40,4 @@ export const UnderConstruction = UnderConstructionLogo;
 
 export const SearchIcon = Search;
 export const QrCodeOutLine = QrOutline;
+export const FilterLinesIcon = FilterLines

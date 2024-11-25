@@ -9,6 +9,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
 
 const Tab = ({
   id,
@@ -51,6 +52,7 @@ function VerificationMethodTabs(props: any) {
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
+    dispatch(resetVpRequest());
   }
 
   function showAlert() {

@@ -21,6 +21,19 @@
   "Upload": {
     "format": "Formatos de arquivo permitidos: PNG/JPEG/JPG/PDF \n Tamanho do arquivo – 10 KB a 5 MB"
   },
+  "Verify": {
+    "selectorTitle": "Painel de seleção de credenciais verificáveis",
+    "selectorSubTitle": "Selecione as credenciais verificáveis ​​que você deseja receber da carteira do usuário",
+    "searchPlaceholder": "Procure o tipo de credencial verificável",
+    "listHeader": "Selecione as credenciais verificáveis ​​necessárias",
+    "sortAtoZ": "Classificar (A-Z)",
+    "sortZtoA": "Classificar (Z-A)",
+    "rqstButton": "Solicite credenciais verificáveis",
+    "goBack": "Volte",
+    "generateQrCodeBtn": "Gerar código QR",
+    "qrCodeInfo": "Leia o código QR abaixo com sua carteira digital para compartilhar as credenciais solicitadas",
+    "qrCodeExpired": "Código QR expirado"
+  },
   "VerificationStepsContent": {
     "SCAN": {
       "QrCodePrompt": {
@@ -54,7 +67,7 @@
         "description": "Veja o resultado da verificação."
       }
     },
-    "VERIFY":{
+    "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar processo de solicitação de VP",
         "description": "Clique em “Solicitar credenciais” para iniciar o processo de verificação de VP."

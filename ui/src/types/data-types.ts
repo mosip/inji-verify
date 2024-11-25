@@ -1,5 +1,3 @@
-import { MethodType } from "../utils/api";
-
 export type QrScanResult = {
   data: string | null;
   error: string | null;
@@ -9,9 +7,7 @@ export type QrScanResult = {
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = {
-  verificationStatus: Boolean;
-  verificationMessage: string;
-  verificationErrorCode: string;
+  verificationStatus: "SUCCESS" | "INVALID" | "EXPIRED";
 };
 
 export type VerificationStep = {
@@ -94,6 +90,9 @@ export interface VerificationStepsContentType {
   VERIFY: VerificationStep[];
   TO_BE_SELECTED: VerificationStep[];
 }
+
+export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
+
 export type ApiRequest = {
   url: (...args: string[]) => string;
   methodType: MethodType;
@@ -101,9 +100,19 @@ export type ApiRequest = {
   body?: string;
 };
 
+export type VerificationSubmissionResult = {
+  vc?: any;
+  vcStatus?: string;
+};
+
 export type VerifyState = {
   isLoading: boolean;
-  requestUri: string;
+  status:string,
+  qrData: string;
+  txnId: string;
+  reqId: string;
+  activeScreen: number; 
+  verificationSubmissionResult?: VerificationSubmissionResult;
 };
 
 export type QrData = {
@@ -118,4 +127,11 @@ export type QrData = {
     iat: number;
   };
   expiresAt: number;
+};
+
+export type QrCodeProps = {
+  title: string;
+  data: string;
+  size: number;
+  footer: string;
 };

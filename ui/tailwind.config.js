@@ -53,8 +53,11 @@ module.exports = {
         documentIcon: "var(--iv-document-icon)",
         disabledButtonBg: "var(--iv-disabled-button-bg)",
         selectorBorder: "var(--iv-selector-border)",
-        searchBorder: "var(--iv-search-border)",
-        searchAllText: "var(--iv-searAll-text)"
+        sortByBorder: "var(--iv-sortBy-border)",
+        sortByText: "var(--iv-sortBy-text)",
+        selectorPannelTitle: "var(--iv-selector-pannel-title)",
+        selectorPannelSubTitle: "var(--iv-selector-pannel-sub-title)",
+        qrCodeTimer: "var(--iv-qr-code-timer)"
       },
       backgroundImage: {
         "gradient": "linear-gradient(90deg, #52AE32 0%, #006535 100%)",

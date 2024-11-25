@@ -21,6 +21,19 @@
   "Upload": {
     "format": "Allowed file formats: PNG/JPEG/JPG/PDF \n File Size - 10KB to 5MB"
   },
+  "Verify": {
+    "selectorTitle": "Verifiable Credential Selection Panel",
+    "selectorSubTitle": "Please select the Verifiable Credentials that you wish to receive from the user’s wallet",
+    "searchPlaceholder": "Search for the Verifiable Credential type",
+    "listHeader": "Select the required Verifiable Credentials",
+    "sortAtoZ": "Sort (A-Z)",
+    "sortZtoA": "Sort (Z-A)",
+    "rqstButton": "Request Verifiable Credentials",
+    "goBack": "Go Back",
+    "generateQrCodeBtn": "Generate QR Code",
+    "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credentials",
+    "qrCodeExpired": "QR Code Expired"
+  },
   "VerificationStepsContent": {
     "SCAN": {
       "QrCodePrompt": {

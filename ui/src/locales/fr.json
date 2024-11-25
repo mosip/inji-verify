@@ -21,6 +21,19 @@
   "Upload": {
     "format": "Formats de fichiers autorisés : PNG/JPEG/JPG/PDF \n Taille du fichier : 10 Ko à 5 Mo"
   },
+  "Verify": {
+    "selectorTitle": "Panel de sélection des titres de compétences vérifiables",
+    "selectorSubTitle": "Veuillez sélectionner les informations d'identification vérifiables que vous souhaitez recevoir du portefeuille de l'utilisateur.",
+    "searchPlaceholder": "Recherchez le type d'informations d'identification vérifiables",
+    "listHeader": "Sélectionnez les informations d'identification vérifiables requises",
+    "sortAtoZ": "Trier (A-Z)",
+    "sortZtoA": "Trier (Z-A)",
+    "rqstButton": "Demander des informations d'identification vérifiables",
+    "goBack": "Retourner",
+    "generateQrCodeBtn": "Générer un code QR",
+    "qrCodeInfo": "Veuillez scanner le code QR ci-dessous avec votre portefeuille numérique pour partager les informations d'identification demandées",
+    "qrCodeExpired": "Code QR expiré"
+  },
   "VerificationStepsContent": {
     "SCAN": {
       "QrCodePrompt": {

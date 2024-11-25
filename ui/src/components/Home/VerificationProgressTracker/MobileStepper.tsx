@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
+import {useVerificationFlowSelector, useVerifyFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
 import { VerificationMethod, VerificationStepsContentType } from '../../../types/data-types';
 import { getVerificationStepsContent } from '../../../utils/config';
@@ -19,7 +19,20 @@ const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCo
 }
 
 function MobileStepper(props: any) {
-    const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
+    let activeScreen: number;
+    const { mainActiveScreen, method } = useVerificationFlowSelector((state) => ({
+        mainActiveScreen: state.activeScreen,
+        method: state.method,
+    }));
+    const VerifyActiveScreen = useVerifyFlowSelector(
+        (state) => state.activeScreen
+    );
+
+    if (method === "VERIFY") {
+        activeScreen = VerifyActiveScreen;
+    } else {
+        activeScreen = mainActiveScreen;
+    }
     const stepperLine = "flex-grow border-t-2 border-transparent";
     const [VerificationStepsContent, SetVerificationStepsContent] = useState<VerificationStepsContentType>(getVerificationStepsContent());
     const stepCount = getVerificationStepsCount(method);
@@ -53,10 +66,10 @@ function MobileStepper(props: any) {
                  id="stepper">
                 {
                     getRangeOfNumbers(stepCount).map((value, index) => (
-                        <>
-                            <Step stepNumber={value} activeOrCompleted={value <= activeScreen}/>
+                        <div key={index}>
+                            <Step stepNumber={value} activeOrCompleted={value <= activeScreen} />
                             {(value < stepCount) && (<div className={`bg-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
-                        </>
+                        </div>
                     ))
                 }
             </div>

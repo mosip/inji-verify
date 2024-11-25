@@ -152,7 +152,8 @@ export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
 export const verifiableClaims = [
-    {"logo":certImage,"type":"Pollution Certification"}, 
+    {"logo":certImage,"type":"Pollution Certification","essential":true}, 
     {"logo":certImage2,"type":"Health Insurance"}, 
     {"logo":certImage,"type":"Life insurance"}
 ];
+export const QrCodeExpiry = 300 //5*60 seconds
