@@ -8,4 +8,5 @@ public interface VerifiablePresentationRequestService {
     AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate, String serverURL);
     Status getStatusFor(String requestId);
     String getTransactionIdFor(String requestId);
+    String getStatusForRequestIdFor(String transactionId);
 }

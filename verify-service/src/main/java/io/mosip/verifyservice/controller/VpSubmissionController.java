@@ -7,7 +7,6 @@ import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.enums.SubmissionStatus;
-import io.mosip.verifycore.enums.VerificationStatus;
 import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
@@ -27,22 +26,18 @@ public class VpSubmissionController {
     @Autowired
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
-    @GetMapping(path = "/vp-result/{requestId}")
-    public ResponseEntity<SubmissionResultDto> getVpResult(@PathVariable String requestId) {
-
-
-        String transactionId = verifiablePresentationRequestService.getTransactionIdFor(requestId);
+    @GetMapping(path = "/vp-result/{transactionId}")
+    public ResponseEntity<SubmissionResultDto> getVpResult(@PathVariable String transactionId) {
+        String requestId = verifiablePresentationRequestService.getStatusForRequestIdFor(transactionId);
         Status authRequestStatus = verifiablePresentationRequestService.getStatusFor(requestId);
-        //check expiry
-        // check pending
-        //check failed
+
         if (transactionId.isEmpty() || authRequestStatus != Status.COMPLETED) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         VpSubmission submissionResult = verifiablePresentationSubmissionService.getSubmissionResult(requestId);
         if (submissionResult != null) {
-            return new ResponseEntity<>(new SubmissionResultDto(transactionId, submissionResult.getVpToken(), SubmissionStatus.ACCEPTED, VerificationStatus.SUCCESS), HttpStatus.OK);
+            return new ResponseEntity<>(new SubmissionResultDto(transactionId, submissionResult.getVpToken(), SubmissionStatus.ACCEPTED, submissionResult.getVerificationStatus()), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -52,17 +47,17 @@ public class VpSubmissionController {
         PresentationSubmissionDto presentationSubmissionDto = new Gson().fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VpSubmissionDto vpSubmissionDto = new VpSubmissionDto(vpToken, presentationSubmissionDto, state);
         System.out.println(vpSubmissionDto);
-        //check state
+
         Status authRequestStatus = verifiablePresentationRequestService.getStatusFor(vpSubmissionDto.getState());
         if (authRequestStatus == null) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        //check expiry
+
         if (authRequestStatus == Status.EXPIRED) {
             VpSubmissionResponseDto expiredVpSubmissionResponseDto = new VpSubmissionResponseDto(SubmissionStatus.REJECTED, "", "ERR_SESSION_EXPIRED", "VP submission request expired already");
             new ResponseEntity<>(expiredVpSubmissionResponseDto, HttpStatus.NOT_ACCEPTABLE);
         }
-        //process
+
         VpSubmissionResponseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
         System.out.println(submissionResponseDto);
         if (submissionResponseDto.getStatus() == SubmissionStatus.REJECTED) {

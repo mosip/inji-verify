@@ -1,6 +1,7 @@
 package io.mosip.verifycore.models;
 
 import io.mosip.verifycore.dto.submission.PresentationSubmissionDto;
+import io.mosip.verifycore.enums.VerificationStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,4 +29,6 @@ public class VpSubmission {
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     PresentationSubmissionDto presentationSubmission;
+
+    VerificationStatus verificationStatus;
 }
