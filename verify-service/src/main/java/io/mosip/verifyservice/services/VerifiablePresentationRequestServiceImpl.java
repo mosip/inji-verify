@@ -13,7 +13,6 @@ import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepos
 import io.mosip.verifyservice.repository.PresentationDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 
 import static io.mosip.verifycore.shared.Constants.DEFAULT_EXPIRY;
@@ -64,5 +63,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public String getTransactionIdFor(String requestId) {
         return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getTransactionId).orElse(null);
+    }
+
+    @Override
+    public String getStatusForRequestIdFor(String transactionId) {
+        return authorizationRequestCreateResponseRepository.findFirstByTransactionIdOrderByExpiresAtDesc(transactionId).map(AuthorizationRequestCreateResponse::getRequestId).orElse(null);
     }
 }
