@@ -4,7 +4,6 @@ package io.mosip.verifyservice.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
@@ -12,6 +11,7 @@ import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.enums.SubmissionStatus;
+import io.mosip.verifycore.enums.VerificationStatus;
 import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.mosip.verifycore.utils.SecurityUtils.getFormattedJws;
 import static io.mosip.verifycore.utils.SecurityUtils.getPublicKeyFromString;
@@ -43,18 +46,24 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 //            getJwsAlgorithm(jws,publicKeyPem);
             Algorithm algorithm = Algorithm.RSA256(getPublicKeyFromString(publicKeyPem), null);
             JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(jws);
 
-            DecodedJWT decodedJWT = verifier.verify(jws);
-            System.out.println(decodedJWT);
             //verify vc
             JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray("verifiableCredential");
-            boolean combinedVcVerificationStatus = true;
+            List<VerificationResult> verificationResults = new ArrayList<>();
             for (Object verifiableCredential : verifiableCredentials) {
                 JSONObject credential =  new JSONObject((String) verifiableCredential).getJSONObject("verifiableCredential").getJSONObject("credential");
                 VerificationResult singleVcVerification = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
-                combinedVcVerificationStatus = combinedVcVerificationStatus && singleVcVerification.getVerificationStatus();
+                System.out.println(singleVcVerification);
+                verificationResults.add(singleVcVerification);
             }
-            if (!combinedVcVerificationStatus) {
+            boolean combinedVerificationStatus = true;
+            boolean anyVcExpired = false;
+            for (VerificationResult verificationResult : verificationResults) {
+                combinedVerificationStatus = combinedVerificationStatus && verificationResult.getVerificationStatus();
+                anyVcExpired = anyVcExpired || verificationResult.getVerificationErrorCode().equals("ERR_VC_EXPIRED");
+            }
+            if (!combinedVerificationStatus) {
                 throw new Exception("Verification Failed");
             }
             //set valid
@@ -64,7 +73,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 return null;
             });
             // update DB
-            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(),vpSubmissionDto.getVpToken(),vpSubmissionDto.getPresentationSubmission()));
+            if (anyVcExpired) {
+                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.EXPIRED ));
+            }else {
+                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.SUCCESS ));
+            }
             // return success
             return new VpSubmissionResponseDto(SubmissionStatus.ACCEPTED,"","","");
 
@@ -77,7 +90,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 return null;
             });
             // update DB
-
+            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(),vpSubmissionDto.getVpToken(),vpSubmissionDto.getPresentationSubmission(),VerificationStatus.INVALID));
             e.printStackTrace();
             // return failed
             return new VpSubmissionResponseDto(SubmissionStatus.REJECTED,"",e.getMessage(),e.getMessage());
@@ -86,7 +99,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     @Override
     public VpSubmission getSubmissionResult(String requestId) {
-        return vpSubmissionRepository.findById(requestId).map(vpSubmission -> new VpSubmission(vpSubmission.getState(), vpSubmission.getVpToken(), vpSubmission.getPresentationSubmission())).orElse(null);
+        return vpSubmissionRepository.findById(requestId).map(vpSubmission -> new VpSubmission(vpSubmission.getState(), vpSubmission.getVpToken(), vpSubmission.getPresentationSubmission(),vpSubmission.getVerificationStatus())).orElse(null);
     }
 }
 
