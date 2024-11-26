@@ -10,7 +10,6 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
 import io.mosip.verifycore.enums.Status;
-import io.mosip.verifycore.enums.SubmissionStatus;
 import io.mosip.verifycore.enums.VerificationStatus;
 import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
@@ -66,35 +65,24 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new Exception("Verification Failed");
             }
-            //set valid
-            authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
-                authorizationRequestCreateResponse.setStatus(Status.COMPLETED);
-                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-                return null;
-            });
-            // update DB
             if (anyVcExpired) {
                 vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.EXPIRED ));
             }else {
                 vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.SUCCESS ));
             }
-            // return success
-            return new VpSubmissionResponseDto(SubmissionStatus.ACCEPTED,"","","");
-
 
         } catch (Exception e) {
-            //set invalid
-            authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
-                authorizationRequestCreateResponse.setStatus(Status.FAILED);
-                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-                return null;
-            });
-            // update DB
-            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(),vpSubmissionDto.getVpToken(),vpSubmissionDto.getPresentationSubmission(),VerificationStatus.INVALID));
             e.printStackTrace();
-            // return failed
-            return new VpSubmissionResponseDto(SubmissionStatus.REJECTED,"",e.getMessage(),e.getMessage());
+            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(),vpSubmissionDto.getVpToken(),vpSubmissionDto.getPresentationSubmission(),VerificationStatus.INVALID));
         }
+
+        authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
+            authorizationRequestCreateResponse.setStatus(Status.COMPLETED);
+            authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+            return null;
+        });
+        return new VpSubmissionResponseDto("","","");
+
     }
 
     @Override
