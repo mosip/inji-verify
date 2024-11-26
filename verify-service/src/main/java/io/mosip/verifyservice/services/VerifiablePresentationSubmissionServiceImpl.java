@@ -11,7 +11,9 @@ import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.enums.VerificationStatus;
+import io.mosip.verifycore.exception.VerificationFailedException;
 import io.mosip.verifycore.models.VpSubmission;
+import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.VpSubmissionRepository;
@@ -36,22 +38,20 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     @Override
     public VpSubmissionResponseDto submit(VpSubmissionDto vpSubmissionDto) {
-        String jws = getFormattedJws(new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject("proof").getString("jws"));
-        String publicKeyPem = new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject("proof").getString("verificationMethod");
+        JSONObject vpProof = new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject(Constants.KEY_PROOF);
+        String jws = getFormattedJws(vpProof.getString(Constants.KEY_JWS));
+        String publicKeyPem = vpProof.getString(Constants.KEY_VERIFICATION_METHOD);
 
         //TODO: Dynamic algo type
-        //TODO: try catch for key exceptions and failure scenario
         try {
-//            getJwsAlgorithm(jws,publicKeyPem);
             Algorithm algorithm = Algorithm.RSA256(getPublicKeyFromString(publicKeyPem), null);
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(jws);
 
-            //verify vc
-            JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray("verifiableCredential");
+            JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
             List<VerificationResult> verificationResults = new ArrayList<>();
             for (Object verifiableCredential : verifiableCredentials) {
-                JSONObject credential =  new JSONObject((String) verifiableCredential).getJSONObject("verifiableCredential").getJSONObject("credential");
+                JSONObject credential =  new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
                 VerificationResult singleVcVerification = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
                 System.out.println(singleVcVerification);
                 verificationResults.add(singleVcVerification);
@@ -60,15 +60,15 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             boolean anyVcExpired = false;
             for (VerificationResult verificationResult : verificationResults) {
                 combinedVerificationStatus = combinedVerificationStatus && verificationResult.getVerificationStatus();
-                anyVcExpired = anyVcExpired || verificationResult.getVerificationErrorCode().equals("ERR_VC_EXPIRED");
+                anyVcExpired = anyVcExpired || verificationResult.getVerificationErrorCode().equals(Constants.VC_EXPIRED_ERROR_CODE);
             }
             if (!combinedVerificationStatus) {
-                throw new Exception("Verification Failed");
+                throw new VerificationFailedException();
             }
             if (anyVcExpired) {
-                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.EXPIRED ));
+                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.EXPIRED));
             }else {
-                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.SUCCESS ));
+                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.SUCCESS));
             }
 
         } catch (Exception e) {

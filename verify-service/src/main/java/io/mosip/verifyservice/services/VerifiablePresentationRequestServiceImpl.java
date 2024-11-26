@@ -7,6 +7,7 @@ import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
 import io.mosip.verifycore.models.PresentationDefinition;
+import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.utils.SecurityUtils;
 import io.mosip.verifycore.utils.Utils;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 
-import static io.mosip.verifycore.shared.Constants.DEFAULT_EXPIRY;
+import static io.mosip.verifycore.shared.Config.DEFAULT_EXPIRY;
 
 @Service
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
@@ -28,11 +29,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public VerifiablePresentationRequestServiceImpl() {}
 
     @Override
-    public AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate, String serverURL) {
+    public AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate) {
 
-        //TODO : constants
-        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID("txn");
-        String requestId = Utils.createID("req");
+        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID(Constants.TRANSACTION_ID_PREFIX);
+        String requestId = Utils.createID(Constants.REQUEST_ID_PREFIX);
         long  expiresAt  = Instant.now().plusSeconds(DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 

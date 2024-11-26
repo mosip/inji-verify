@@ -5,8 +5,6 @@ import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateRe
 import io.mosip.verifycore.dto.authorizationRequest.StatusResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
-import io.mosip.verifycore.utils.Utils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,16 +21,11 @@ public class VpRequestController {
     VerifiablePresentationRequestService verifiablePresentationRequestService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorizationRequestCreateResponseDto> createVpRequest(@Valid @RequestBody AuthorizationRequestCreateDto vpRequestCreate, HttpServletRequest request) {
+    public ResponseEntity<AuthorizationRequestCreateResponseDto> createVpRequest(@Valid @RequestBody AuthorizationRequestCreateDto vpRequestCreate) {
         if (vpRequestCreate.getPresentationDefinition() == null && vpRequestCreate.getVerificationType() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        if (vpRequestCreate.verificationType()!=null)
-//            // create a definition
-//            PresentationDefinition presentationDefinition = presentationDefinitionService.getPresentationDefinition(vpRequestCreate.verificationType());
-//            //create auth REQ
-        //else
         if (vpRequestCreate.getPresentationDefinition() != null) {
-            AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate, Utils.getServerAddress(request));
+            AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
             return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);

@@ -1,5 +1,6 @@
 package io.mosip.verifycore.utils;
 
+import io.mosip.verifycore.shared.Constants;
 import org.apache.tomcat.util.codec.binary.Base64;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +20,12 @@ public class SecurityUtils {
 
      public static RSAPublicKey getPublicKeyFromString(String pem)  {
          String publicKeyPEM = pem;
-         publicKeyPEM = publicKeyPEM.replace("\n", "").replace("\\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
+
+         publicKeyPEM = publicKeyPEM
+                 .replace("\n", "")
+                 .replace("\\n", "")
+                 .replace(Constants.PUBLIC_KEY_HEADER, "")
+                 .replace(Constants.PUBLIC_KEY_FOOTER, "");
          byte[] encoded = java.util.Base64.getDecoder().decode(publicKeyPEM);
          KeyFactory kf = null;
          try {
@@ -35,7 +41,10 @@ public class SecurityUtils {
      }
 
      public static String getFormattedJws(String jws){
-        return jws.replace("\\n","").replace("\n","").replace("==","");
+        return jws
+                .replace("\\n","")
+                .replace("\n","")
+                .replace("==","");
      }
 
 }
