@@ -7,14 +7,19 @@ import {
   setVpRequestStatus,
   verificationSubmissionComplete,
 } from "./verifyState";
-import { verificationComplete } from "../verification/verification.slice";
+import { verifiableClaims } from "../../../utils/config";
+import { v4 as uuidv4 } from "uuid";
 
-function* fetchRequestUri() {
+function* fetchRequestUri(claims: string[]) {
   let qrData;
   let txnId;
   let reqId;
   const apiRequest: ApiRequest = api.fetchVpRequest;
-
+  const selectedType = claims[0];
+  const pdef = verifiableClaims.filter((claim) => {
+    return claim.type === selectedType && claim.definition;
+  })[0].definition;
+  pdef["id"] = uuidv4();
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
@@ -26,30 +31,22 @@ function* fetchRequestUri() {
       .then((response) => response.text())
       .then((res) => {
         const Data = JSON.parse(res) as QrData;
-        const pDef = JSON.stringify({
-          id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
-          purpose:
-            "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-          format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
-          input_descriptors: [
-            {
-              id: "id card credential",
-              format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-              constraints: {
-                fields: [
-                  {
-                    path: ["$.credentialSubject.email"],
-                    filter: { type: "string", pattern: "@gmail.com" },
-                  },
-                ],
-              },
-            },
-          ],
-        });
         qrData =
           `openid4vp://authorize?` +
           btoa(
-            `client_id=${Data.authorizationDetails.clientId}&response_type=${Data.authorizationDetails.responseType}&response_mode=direct_post&nonce=${Data.authorizationDetails.nonce}&state=${Data.requestId}&response_uri=https://3eda-117-242-205-81.ngrok-free.app${Data.authorizationDetails.responseUri}&client_metadata={"name":"${window.location}"}&presentation_definition=${pDef}`
+            `client_id=${Data.authorizationDetails.clientId}&response_type=${
+              Data.authorizationDetails.responseType
+            }&response_mode=direct_post&nonce=${
+              Data.authorizationDetails.nonce
+            }&state=${Data.requestId}&response_uri=${
+              window._env_.VERIFY_SERVICE_API_URL +
+              Data.authorizationDetails.responseUri
+            }&presentation_definition_uri=${
+              window._env_.VERIFY_SERVICE_API_URL +
+              Data.authorizationDetails.presentationDefinitionUri
+            }&client_metadata={"name":"${
+              window.location
+            }"}&presentation_definition=${JSON.stringify(pdef)}`
           );
         txnId = Data.transactionId;
         reqId = Data.requestId;
@@ -65,7 +62,6 @@ function* fetchRequestUri() {
 }
 
 function* getVpStatus(reqId: string, txnId: string) {
-  console.log(reqId);
   const apiRequest: ApiRequest = api.fetchStatus;
   const requestOptions = {
     method: apiRequest.methodType,
@@ -82,9 +78,7 @@ function* getVpStatus(reqId: string, txnId: string) {
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
       const status = parsedData.status;
-      console.log(status);
       if (status !== "PENDING") {
-        console.log("Polling stopped.");
         yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
         return;
       } else {
@@ -94,7 +88,6 @@ function* getVpStatus(reqId: string, txnId: string) {
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      console.log("Polling stopped.");
       return;
     }
   };
@@ -103,7 +96,6 @@ function* getVpStatus(reqId: string, txnId: string) {
 }
 
 function* getVpResult(status: string, txnId: string) {
-  console.log(status, txnId);
   if (status === "COMPLETED") {
     const apiRequest: ApiRequest = api.fetchVpResult;
     const requestOptions = {
@@ -121,7 +113,7 @@ function* getVpResult(status: string, txnId: string) {
       const verifiablePresentations = JSON.parse(
         parsedData.vpToken
       ).verifiableCredential;
-      const verificationStatus = parsedData.verificationStatus
+      const verificationStatus = parsedData.verificationStatus;
       const vc1 = JSON.parse(verifiablePresentations[0]);
       yield put(
         verificationSubmissionComplete({
@@ -135,18 +127,14 @@ function* getVpResult(status: string, txnId: string) {
     } catch (error) {
       console.error("Error occurred:", error);
     }
-  } else if (status === "FAILED") {
-    yield put(
-      verificationComplete({
-        verificationResult: { vc: null, vcStatus: status },
-      })
-    );
   }
 }
 
 function* verifySaga() {
   yield all([
-    takeLatest(getVpRequest, fetchRequestUri),
+    takeLatest(getVpRequest, function* ({ payload }) {
+      yield call(fetchRequestUri, payload.selectedClaims);
+    }),
     takeLatest(setVpRequestResponse, function* ({ payload }) {
       yield call(getVpStatus, payload.reqId, payload.txnId);
     }),

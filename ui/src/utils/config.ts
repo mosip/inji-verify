@@ -151,9 +151,88 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
-export const verifiableClaims = [
-    {"logo":certImage,"type":"Pollution Certification","essential":true}, 
-    {"logo":certImage2,"type":"Health Insurance"}, 
-    {"logo":certImage,"type":"Life insurance"}
+export const verifiableClaims: any[] = [
+  {
+    logo: certImage,
+    type: "CAR Statement",
+    essential: true,
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: { type: "string", pattern: "StatementCredential" },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage2,
+    type: "CAR Registration Receipt",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: {
+                  type: "string",
+                  pattern: "RegistrationReceiptCredential",
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage,
+    type: "Farmer Registry Certificate",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {},
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage,
+    type: "Health Insurance",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {},
+        },
+      ],
+    },
+  },
 ];
-export const QrCodeExpiry = 300 //5*60 seconds
+export const QrCodeExpiry = 300; //5*60 seconds

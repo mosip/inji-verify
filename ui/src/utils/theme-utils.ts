@@ -19,6 +19,10 @@ import { ReactComponent as UnderConstructionLogo } from "../assets/under-constru
 import { ReactComponent as Search } from "../assets/search.svg";
 import QrOutline from "../assets/qr-code-outline.svg"
 import { ReactComponent as FilterLines } from "../assets/filter-lines.svg";
+import { ReactComponent as Download } from "../assets/download.svg";
+import { ReactComponent as WhiteDownload } from "../assets/white-download.svg";
+import { ReactComponent as ReGenerate } from "../assets/re-generate.svg";
+import { ReactComponent as WhiteReGenerate } from "../assets/white-regenerate.svg";
 
 export const Logo = NavLogo;
 export const InjiLogo = InjiVerLogo;
@@ -37,7 +41,10 @@ export const ArrowDown = ArrowDownSvgIcon;
 export const ArrowUp = ArrowUpSvgIcon;
 export const Check = CheckSvgIcon;
 export const UnderConstruction = UnderConstructionLogo;
-
+export const DownloadIcon = Download;
+export const WhiteDownloadIcon = WhiteDownload;
 export const SearchIcon = Search;
 export const QrCodeOutLine = QrOutline;
-export const FilterLinesIcon = FilterLines
+export const FilterLinesIcon = FilterLines;
+export const ReGenerateIcon = ReGenerate;
+export const WhiteReGenerateIcon = WhiteReGenerate;

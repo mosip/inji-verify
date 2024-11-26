@@ -89,7 +89,8 @@
   "ResultSummary": {
     "SUCCESS": "Félicitations, le titre donné est valide !",
     "INVALID": "Malheureusement, les informations d'identification fournies ne sont pas valides !",
-    "EXPIRED": "Malheureusement, l'identifiant donné est expiré !"
+    "EXPIRED": "Malheureusement, l'identifiant donné est expiré !",
+    "TIMEOUT": "La session d'analyse a expiré en raison d'une inactivité. Veuillez lancer une nouvelle analyse."
   },
   "AlertMessages": {
     "qrUploadSuccess": "Code QR téléchargé avec succès !",

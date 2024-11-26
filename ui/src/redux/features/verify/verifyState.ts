@@ -16,7 +16,7 @@ const verifyState = createSlice({
   name: "vpVerification",
   initialState: PreloadedState,
   reducers: {
-    getVpRequest: (state) => {
+    getVpRequest: (state,actions) => {
       state.isLoading = true;
     },
     setSelectCredential:(state)=>{
@@ -31,7 +31,6 @@ const verifyState = createSlice({
     },
     setVpRequestStatus: (state, action) => {
       state.status = action.payload.status;
-      state.qrData = action.payload.qrData;
       state.txnId = action.payload.txnId;
       state.reqId = action.payload.reqId;
       state.activeScreen = VerificationSteps[state.method].DisplayResult;

@@ -31,12 +31,9 @@ export function Verify() {
             }}
             disabled={txnId !== ""}
           />
-          {
-            <SelectionPannel
-              open={openSelection}
-              handleClose={() => setSelection(!openSelection)}
-            />
-          }
+          {openSelection && (
+            <SelectionPannel handleClose={() => setSelection(!openSelection)} />
+          )}
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
           <VpVerification />

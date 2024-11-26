@@ -1,10 +1,12 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
 import { verifiableClaims } from "../../../../utils/config";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { FilterLinesIcon, SearchIcon } from "../../../../utils/theme-utils";
-import { getVpRequest } from "../../../../redux/features/verify/verifyState";
+import {
+  getVpRequest,
+  resetVpRequest,
+} from "../../../../redux/features/verify/verifyState";
 import { isRTL } from "../../../../utils/i18n";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
@@ -34,13 +36,7 @@ const Fade = ({ children }: any) => (
   </div>
 );
 
-const SelectionPannel = ({
-  open,
-  handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
-}) => {
+const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
   const { t } = useTranslation("Verify");
   const [search, setSearch] = useState("");
   const [showMenu, setshowMenu] = useState(false);
@@ -55,40 +51,43 @@ const SelectionPannel = ({
   };
 
   const filteredClaims = verifiableClaims
-  .filter((claim) => claim.type.toLowerCase().includes(search.toLowerCase()))
-  .sort((a, b) => {
-    // Prioritize essential claims
-    if (a.essential && !b.essential) return -1;
-    if (!a.essential && b.essential) return 1;
-    // Sort alphabetically by 'type'
-    return isAscending
-      ? a.type.localeCompare(b.type)
-      : b.type.localeCompare(a.type);
-  });
-
+    .filter((claim) => claim.type.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      // Prioritize essential claims
+      if (a.essential && !b.essential) return -1;
+      if (!a.essential && b.essential) return 1;
+      // Sort alphabetically by 'type'
+      return isAscending
+        ? a.type.localeCompare(b.type)
+        : b.type.localeCompare(a.type);
+    });
 
   const toggleClaimSelection = (type: string) => {
-    setSelectedClaims((prev) =>
-      prev.includes(type)
-        ? prev.filter((item) => item !== type)
-        : [...prev, type]
-    );
+    setSelectedClaims([type]);
   };
 
   const HandelBack = () => {
     handleClose();
     setSearch("");
     setSelectedClaims([]);
+    dispatch(resetVpRequest());
   };
 
   const HandelGenerateQr = () => {
     handleClose();
     setSearch("");
     setSelectedClaims([]);
-    dispatch(getVpRequest());
+    dispatch(getVpRequest({ selectedClaims }));
   };
 
-  return open ? (
+  useEffect(() => {
+    const essentialClaims = verifiableClaims
+      .filter((claim) => claim.essential)
+      .map((claim) => claim.type);
+    setSelectedClaims([essentialClaims[0]]);
+  }, []);
+
+  return (
     <Modal>
       <Fade>
         <div className="fill-primary">
@@ -165,13 +164,20 @@ const SelectionPannel = ({
                         {claim.type}
                       </label>
                     </div>
-                    <input
-                      type="checkbox"
-                      className="checkbox"
-                      id={claim.type}
-                      checked={selectedClaims.includes(claim.type)}
-                      onChange={() => toggleClaimSelection(claim.type)}
-                    />
+                    <label
+                      htmlFor={claim.type}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        id={claim.type}
+                        name="claims"
+                        className="hidden peer"
+                        checked={selectedClaims.includes(claim.type)}
+                        onChange={() => toggleClaimSelection(claim.type)}
+                      />
+                      <div className="w-3 h-3 rounded-full bg-gradient peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[#52AE32]"></div>
+                    </label>
                   </li>
                 ))}
               </ul>
@@ -196,12 +202,13 @@ const SelectionPannel = ({
               className="w-full sm:w-[180px] text-lgNormalTextSize inline-flex"
               data-testid="camera-access-denied-okay"
               disabled={selectedClaims.length <= 0}
+              fill
             />
           </div>
         </div>
       </Fade>
     </Modal>
-  ) : null;
+  );
 };
 
 export default SelectionPannel;

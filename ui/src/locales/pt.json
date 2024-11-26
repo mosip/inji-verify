@@ -89,7 +89,8 @@
   "ResultSummary": {
     "SUCCESS": "Parabéns, a credencial fornecida é válida!",
     "INVALID": "Infelizmente, a credencial fornecida é inválida!",
-    "EXPIRED": "Infelizmente, a credencial fornecida expirou!"
+    "EXPIRED": "Infelizmente, a credencial fornecida expirou!",
+    "TIMEOUT": "A sessão de verificação expirou devido à inatividade. Inicie uma nova verificação."
   },
   "AlertMessages": {
     "qrUploadSuccess": "Código QR carregado com sucesso!",

@@ -1,7 +1,14 @@
 import { ApiRequest } from "../types/data-types";
 
+const generateNonce = (): string => {
+  const dateTimeString = Date.now().toString();
+  const nonceByte = new TextEncoder().encode(dateTimeString);
+  const byteArray = Array.from(nonceByte);
+  return window.btoa(String.fromCharCode(...byteArray));
+};
+
 export class api {
-  static Host = window._env_.VERIFY_SERVICE_API_URL ;
+  static Host = window._env_.VERIFY_SERVICE_API_URL;
 
   static fetchVpRequest: ApiRequest = {
     url: () => api.Host + "/vp-request",
@@ -12,6 +19,7 @@ export class api {
       };
     },
     body: JSON.stringify({
+      transactionId: `txn_${crypto.randomUUID()}`,
       clientId: window.location.origin,
       presentationDefinition: {
         id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
@@ -33,6 +41,7 @@ export class api {
           },
         ],
       },
+      nonce: generateNonce(),
     }),
   };
 
@@ -41,8 +50,7 @@ export class api {
     methodType: "GET",
     headers: () => {
       return {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "dtyujhgf",
+        "Content-Type": "application/json"
       };
     },
   };
@@ -52,8 +60,7 @@ export class api {
     methodType: "GET",
     headers: () => {
       return {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "dtyujhgf",
+        "Content-Type": "application/json"
       };
     },
   };

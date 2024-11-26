@@ -134,4 +134,5 @@ export type QrCodeProps = {
   data: string;
   size: number;
   footer: string;
+  status:"SUCCESS" | "EXPIRED" | "INVALID";
 };
