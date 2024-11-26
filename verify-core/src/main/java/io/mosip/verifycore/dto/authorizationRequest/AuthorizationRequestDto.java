@@ -1,14 +1,12 @@
 package io.mosip.verifycore.dto.authorizationRequest;
 
 import io.mosip.verifycore.models.PresentationDefinition;
-import io.mosip.verifycore.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.time.Instant;
 
 @Getter
@@ -24,11 +22,11 @@ public class AuthorizationRequestDto implements Serializable {
     private String nonce;
     private final long iat;
 
-    public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition) {
+    public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition,String nonce) {
         this.clientId = clientId;
-        this.responseUri = "/v1/verify/vp-direct-post";
+        this.responseUri = "/vp-direct-post";
         this.presentationDefinitionUri = presentationDefinition.getURL();
         this.iat = Instant.now().toEpochMilli();
-        this.nonce  = SecurityUtils.generateNonce();
+        this.nonce  = nonce;
     }
 }

@@ -8,6 +8,7 @@ import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
 import io.mosip.verifycore.models.PresentationDefinition;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
+import io.mosip.verifycore.utils.SecurityUtils;
 import io.mosip.verifycore.utils.Utils;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.PresentationDefinitionRepository;
@@ -33,11 +34,12 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID("txn");
         String requestId = Utils.createID("req");
         long  expiresAt  = Instant.now().plusSeconds(DEFAULT_EXPIRY).toEpochMilli();
+        String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
         PresentationDefinitionDto presentationDefinitionDto = vpRequestCreate.getPresentationDefinition();
         PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
 
-        AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition);
+        AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestDto, expiresAt,Status.PENDING);
 
         presentationDefinitionRepository.save(presentationDefinition);
