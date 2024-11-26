@@ -6,7 +6,6 @@ import io.mosip.verifycore.dto.submission.SubmissionResultDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
 import io.mosip.verifycore.enums.Status;
-import io.mosip.verifycore.enums.SubmissionStatus;
 import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
@@ -37,7 +36,7 @@ public class VpSubmissionController {
 
         VpSubmission submissionResult = verifiablePresentationSubmissionService.getSubmissionResult(requestId);
         if (submissionResult != null) {
-            return new ResponseEntity<>(new SubmissionResultDto(transactionId, submissionResult.getVpToken(), SubmissionStatus.ACCEPTED, submissionResult.getVerificationStatus()), HttpStatus.OK);
+            return new ResponseEntity<>(new SubmissionResultDto(transactionId, submissionResult.getVpToken(), submissionResult.getVerificationStatus()), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -50,19 +49,10 @@ public class VpSubmissionController {
 
         Status authRequestStatus = verifiablePresentationRequestService.getStatusFor(vpSubmissionDto.getState());
         if (authRequestStatus == null) {
-            new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (authRequestStatus == Status.EXPIRED) {
-            VpSubmissionResponseDto expiredVpSubmissionResponseDto = new VpSubmissionResponseDto(SubmissionStatus.REJECTED, "", "ERR_SESSION_EXPIRED", "VP submission request expired already");
-            new ResponseEntity<>(expiredVpSubmissionResponseDto, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         VpSubmissionResponseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
-        System.out.println(submissionResponseDto);
-        if (submissionResponseDto.getStatus() == SubmissionStatus.REJECTED) {
-            return new ResponseEntity<>(submissionResponseDto, HttpStatus.NOT_ACCEPTABLE);
-        }
         return new ResponseEntity<>(submissionResponseDto, HttpStatus.OK);
     }
 }
