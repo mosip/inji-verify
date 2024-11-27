@@ -32,7 +32,8 @@
     "goBack": "वापस जाओ",
     "generateQrCodeBtn": "QR कोड जनरेट करें",
     "qrCodeInfo": "अनुरोधित क्रेडेंशियल साझा करने के लिए कृपया अपने डिजिटल वॉलेट से नीचे दिए गए क्यूआर कोड को स्कैन करें",
-    "qrCodeExpired": "QR कोड समाप्त हो गया"
+    "qrCodeExpired": "QR कोड समाप्त हो गया",
+    "noClaims": "कोई दावा नहीं मिला."
   },
   "VerificationStepsContent": {
     "SCAN": {

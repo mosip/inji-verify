@@ -24,30 +24,30 @@ function switchToVerificationMethod(method: VerificationMethod) {
 
 const router = createBrowserRouter([
   {
-    path: Pages.Home, // e.g., "/"
+    path: Pages.Home,
     element: <Home />,
     loader: () => switchToVerificationMethod("UPLOAD"),
   },
   {
-    path: Pages.Scan, // e.g., "/scan"
+    path: Pages.Scan,
     element: <Scan />,
     loader: () => switchToVerificationMethod("SCAN"),
   },
   {
-    path: Pages.VerifyCredentials, // e.g., "/verify"
+    path: Pages.VerifyCredentials,
     element: <Verify />,
     loader: () => switchToVerificationMethod("VERIFY"),
   },
   {
-    path: Pages.Redirect, // e.g., "/ovp-redirect"
+    path: Pages.Redirect,
     element: <OvpRedirect />,
   },
   {
-    path: Pages.Offline, // e.g., "/offline"
+    path: Pages.Offline,
     element: <Offline />,
   },
   {
-    path: Pages.PageNotFound, // e.g., "*"
+    path: Pages.PageNotFound,
     element: <PageNotFound404 />,
   },
 ]);

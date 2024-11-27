@@ -7,7 +7,11 @@ import {
   setVpRequestStatus,
   verificationSubmissionComplete,
 } from "./verifyState";
-import { verifiableClaims } from "../../../utils/config";
+import {
+  OPENID4VP_PROTOCOL,
+  PollStatusDelay,
+  verifiableClaims,
+} from "../../../utils/config";
 import { v4 as uuidv4 } from "uuid";
 
 function* fetchRequestUri(claims: string[]) {
@@ -32,7 +36,7 @@ function* fetchRequestUri(claims: string[]) {
       .then((res) => {
         const Data = JSON.parse(res) as QrData;
         qrData =
-          `openid4vp://authorize?` +
+          OPENID4VP_PROTOCOL +
           btoa(
             `client_id=${Data.authorizationDetails.clientId}&response_type=${
               Data.authorizationDetails.responseType
@@ -82,8 +86,7 @@ function* getVpStatus(reqId: string, txnId: string) {
         yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
         return;
       } else {
-        // Continue polling after 5 seconds
-        yield delay(5000);
+        yield delay(PollStatusDelay);
         yield call(pollStatus);
       }
     } catch (error) {

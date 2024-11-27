@@ -32,7 +32,8 @@
     "goBack": "Go Back",
     "generateQrCodeBtn": "Generate QR Code",
     "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credentials",
-    "qrCodeExpired": "QR Code Expired"
+    "qrCodeExpired": "QR Code Expired",
+    "noClaims": "No Claims found."
   },
   "VerificationStepsContent": {
     "SCAN": {

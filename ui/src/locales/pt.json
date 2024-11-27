@@ -32,7 +32,8 @@
     "goBack": "Volte",
     "generateQrCodeBtn": "Gerar código QR",
     "qrCodeInfo": "Leia o código QR abaixo com sua carteira digital para compartilhar as credenciais solicitadas",
-    "qrCodeExpired": "Código QR expirado"
+    "qrCodeExpired": "Código QR expirado",
+    "noClaims": "Nenhuma reivindicação encontrada."
   },
   "VerificationStepsContent": {
     "SCAN": {

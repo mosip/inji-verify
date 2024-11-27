@@ -32,7 +32,8 @@
     "goBack": "Volver",
     "generateQrCodeBtn": "Generar código QR",
     "qrCodeInfo": "Escanee el siguiente código QR con su billetera digital para compartir las credenciales solicitadas",
-    "qrCodeExpired": "Código QR caducado"
+    "qrCodeExpired": "Código QR caducado",
+    "noClaims": "No se encontraron reclamos."
   },
   "VerificationStepsContent": {
     "SCAN": {

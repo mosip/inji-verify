@@ -183,7 +183,7 @@ const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
               </ul>
             ) : (
               <div className="text-gray-500 text-sm mt-4 min-h-[284px] flex items-center justify-center">
-                No Claims found.
+                {t('noClaims')}
               </div>
             )}
           </div>

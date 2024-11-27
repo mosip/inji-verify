@@ -32,7 +32,8 @@
     "goBack": "ಹಿಂತಿರುಗಿ",
     "generateQrCodeBtn": "QR ಕೋಡ್ ಅನ್ನು ರಚಿಸಿ",
     "qrCodeInfo": "ವಿನಂತಿಸಿದ ರುಜುವಾತುಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ದಯವಿಟ್ಟು ಕೆಳಗಿನ QR ಕೋಡ್ ಅನ್ನು ನಿಮ್ಮ ಡಿಜಿಟಲ್ ವ್ಯಾಲೆಟ್‌ನೊಂದಿಗೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    "qrCodeExpired": "QR ಕೋಡ್ ಅವಧಿ ಮೀರಿದೆ"
+    "qrCodeExpired": "QR ಕೋಡ್ ಅವಧಿ ಮೀರಿದೆ",
+    "noClaims": "ಯಾವುದೇ ಕ್ಲೈಮ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ."
   },
   "VerificationStepsContent": {
     "SCAN": {
