@@ -208,7 +208,7 @@ function QrScanner() {
             stopVideoStream();
             dispatch(goToHomeScreen({}));
           }}
-          className="absolute top-7 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none"
+          className="absolute top-7 right-4 lg:hidden bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-[60]"
           aria-label="Close Scanner"
         >
           ✕
