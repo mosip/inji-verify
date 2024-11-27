@@ -33,7 +33,7 @@ public class VpRequestController {
     public ResponseEntity<StatusResponseDto> getStatus(@PathVariable String requestId) {
 
         String transactionId = verifiablePresentationRequestService.getTransactionIdFor(requestId);
-        Status currentstatus = verifiablePresentationRequestService.getStatusFor(requestId);
+        Status currentstatus = verifiablePresentationRequestService.getCurrentStatusFor(requestId);
         if (currentstatus == null || transactionId == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 

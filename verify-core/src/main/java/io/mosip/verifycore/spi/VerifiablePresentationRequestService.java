@@ -6,7 +6,7 @@ import io.mosip.verifycore.enums.Status;
 
 public interface VerifiablePresentationRequestService {
     AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate);
-    Status getStatusFor(String requestId);
+    Status getCurrentStatusFor(String requestId);
     String getTransactionIdFor(String requestId);
     String getStatusForRequestIdFor(String transactionId);
 }

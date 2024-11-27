@@ -16,6 +16,8 @@ import io.mosip.verifyservice.repository.PresentationDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static io.mosip.verifycore.shared.Config.DEFAULT_EXPIRY;
 
@@ -44,22 +46,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         presentationDefinitionRepository.save(presentationDefinition);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+        startStatusAutoTimer(requestId);
 
         return new AuthorizationRequestCreateResponseDto(authorizationRequestCreateResponse);
     }
 
     @Override
-    public Status getStatusFor(String requestId) {
-       return authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
-            Status currentStatus = authorizationRequestCreateResponse.getStatus();
-            System.out.println(currentStatus);
-            if (currentStatus == Status.PENDING && authorizationRequestCreateResponse.getExpiresAt() < Instant.now().toEpochMilli()){
-                authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
-                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-                return Status.EXPIRED;
-            }
-            return currentStatus;
-        }).orElse(null);
+    public Status getCurrentStatusFor(String requestId) {
+       return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getStatus).orElse(null);
     }
 
     @Override
@@ -70,5 +64,24 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public String getStatusForRequestIdFor(String transactionId) {
         return authorizationRequestCreateResponseRepository.findFirstByTransactionIdOrderByExpiresAtDesc(transactionId).map(AuthorizationRequestCreateResponse::getRequestId).orElse(null);
+    }
+
+    private void updateStatusToExpired(String requestId){
+        authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
+            if (authorizationRequestCreateResponse.getStatus() == Status.PENDING){
+                authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
+                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+            }
+            return null;
+        });
+    }
+
+    private void startStatusAutoTimer(String requestId) {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateStatusToExpired(requestId);
+            }
+        }, DEFAULT_EXPIRY);
     }
 }
