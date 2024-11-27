@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import StyledButton from "../Home/VerificationSection/commons/StyledButton";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../redux/hooks";
 import {updateInternetConnectionStatus} from "../../redux/features/application-state/application-state.slice";
 import { ReactComponent as UnderConstruction } from "../../assets/images/under-construction.svg";
 import { useTranslation } from 'react-i18next';
+import { checkInternetStatus } from '../../utils/misc';
 
 function SomethingWentWrong(props: any) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const {t} = useTranslation('Offline')
+    useEffect(() => {
+        async function fetchIsOnline() {
+          let isOnline = await checkInternetStatus();
+          dispatch(
+            updateInternetConnectionStatus({
+              internetConnectionStatus: isOnline ? "ONLINE" : "OFFLINE",
+            })
+          );
+          if (isOnline) {
+            navigate("/");
+          }
+        }
+        fetchIsOnline();
+       
+      }, [dispatch, navigate]);
     return (
         <div className="grid content-center justify-center rounded-[10px] h-[540px] mx-auto my-7 shadow-lg text-center w-[90%] bg-white bg-no-repeat bg-clip-padding px-6">
             <div className="col-end-13">
