@@ -3,9 +3,7 @@ import PageTemplate from "../components/PageTemplate";
 import VerificationSection from "../components/Home/VerificationSection";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 
-
-function Home() {
-
+export const Scan = () => {
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
@@ -18,6 +16,4 @@ function Home() {
       </div>
     </PageTemplate>
   );
-}
-
-export default Home;
+};
