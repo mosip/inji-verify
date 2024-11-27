@@ -22,13 +22,11 @@ public class VpRequestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorizationRequestCreateResponseDto> createVpRequest(@Valid @RequestBody AuthorizationRequestCreateDto vpRequestCreate) {
-        if (vpRequestCreate.getPresentationDefinition() == null && vpRequestCreate.getVerificationType() == null)
+        if (vpRequestCreate.getPresentationDefinition() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        if (vpRequestCreate.getPresentationDefinition() != null) {
-            AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
-            return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
+        return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{requestId}/status")
