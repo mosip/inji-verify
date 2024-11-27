@@ -10,6 +10,7 @@ import {
 import { isRTL } from "../../../../utils/i18n";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
+import { storage } from "../../../../utils/storage";
 
 const Modal = ({ children }: any) => (
   <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -36,7 +37,7 @@ const Fade = ({ children }: any) => (
   </div>
 );
 
-const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
+const SelectionPannel = () => {
   const { t } = useTranslation("Verify");
   const [search, setSearch] = useState("");
   const [showMenu, setshowMenu] = useState(false);
@@ -67,14 +68,12 @@ const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
   };
 
   const HandelBack = () => {
-    handleClose();
     setSearch("");
     setSelectedClaims([]);
     dispatch(resetVpRequest());
   };
 
   const HandelGenerateQr = () => {
-    handleClose();
     setSearch("");
     setSelectedClaims([]);
     dispatch(getVpRequest({ selectedClaims }));
@@ -82,7 +81,12 @@ const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
 
   useEffect(() => {
     const essentialClaims = verifiableClaims
-      .filter((claim) => claim.essential)
+      .filter((claim) => {
+        if (claim.essential) {
+          storage.setItem(storage.ESSENTIAL_CLAIM, claim);
+        }
+        return claim;
+      })
       .map((claim) => claim.type);
     setSelectedClaims([essentialClaims[0]]);
   }, []);
@@ -183,7 +187,7 @@ const SelectionPannel = ({ handleClose }: { handleClose: () => void }) => {
               </ul>
             ) : (
               <div className="text-gray-500 text-sm mt-4 min-h-[284px] flex items-center justify-center">
-                {t('noClaims')}
+                {t("noClaims")}
               </div>
             )}
           </div>

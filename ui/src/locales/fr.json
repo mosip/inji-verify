@@ -71,26 +71,26 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Lancer le processus de demande de vice-président",
-        "description": "Cliquez sur « Demander des informations d'identification » pour démarrer le processus de vérification VP."
+        "description": "Cliquez sur Demander des informations d'identification vérifiables pour commencer le processus de vérification."
       },
       "SelectCredential": {
         "label": "Sélectionnez les informations d'identification et générez un code QR",
-        "description": "Sélectionnez les informations d'identification requises et cliquez sur « Générer un code QR »."
+        "description": "Choisissez les informations d'identification vérifiables requises et cliquez sur Générer un code QR."
       },
       "ScanQrCode": {
-        "label": "Scanner le code QR",
-        "description": "Veuillez utiliser un appareil distinct doté de capacités de numérisation QR pour scanner le code avec votre appareil photo. La prise en charge de l'utilisation du même appareil sera bientôt disponible !"
+        "label": "Scannez le code QR (utilisez un autre appareil)",
+        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR (la prise en charge de la numérisation sur le même appareil sera bientôt disponible !)"
       },
       "DisplayResult": {
-        "label": "Afficher le résultat",
-        "description": "Afficher le résultat de la vérification."
+        "label": "Afficher les résultats de la vérification",
+        "description": "Vérifiez les résultats de la vérification des informations d'identification vérifiables partagées à partir du portefeuille."
       }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Félicitations, le titre donné est valide !",
     "INVALID": "Malheureusement, les informations d'identification fournies ne sont pas valides !",
-    "EXPIRED": "Malheureusement, l'identifiant donné est expiré !",
+    "EXPIRED": "L'identifiant donné est valide mais expiré !",
     "TIMEOUT": "La session d'analyse a expiré en raison d'une inactivité. Veuillez lancer une nouvelle analyse."
   },
   "AlertMessages": {
@@ -101,7 +101,9 @@
     "unsupportedFileSize": "Taille de fichier non prise en charge. ",
     "verificationMethodComingSoon": "À venir",
     "unsupportedFileType": "Format de fichier non pris en charge. ",
-    "pageNotFound": "Page introuvable !!"
+    "pageNotFound": "Page introuvable !!",
+    "failToGenerateQrCode": "Oups ! Nous ne parvenons pas à générer la demande de vérification. Veuillez réessayer plus tard.",
+    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard ou contacter l'assistance si le problème persiste."
   },
   "OvpErrors": {
     "invalidScope": "Portée invalide",

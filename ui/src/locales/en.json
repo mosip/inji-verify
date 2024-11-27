@@ -31,7 +31,7 @@
     "rqstButton": "Request Verifiable Credentials",
     "goBack": "Go Back",
     "generateQrCodeBtn": "Generate QR Code",
-    "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credentials",
+    "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credential",
     "qrCodeExpired": "QR Code Expired",
     "noClaims": "No Claims found."
   },
@@ -71,26 +71,26 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Initiate VP Request Process",
-        "description": "Click “Request Credentials” to start VP verification process."
+        "description": "Click Request Verifiable Credentials to begin the verification process."
       },
       "SelectCredential": {
         "label": "Select Credentials & Generate QR Code",
-        "description": "Select the required credentials and click ‘Generate QR Code"
+        "description": "Choose the required verifiable credentials and click Generate QR Code."
       },
       "ScanQrCode": {
-        "label": "Scan QR Code",
-        "description": "Please use a separate device with QR scanning capabilities to scan the code with your camera. Support for using the same device is coming soon!"
+        "label": "Scan QR Code (Use a Different Device)",
+        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
       },
       "DisplayResult": {
-        "label": "View result",
-        "description": "View the verification result."
+        "label": "View Verification Results",
+        "description": "Check the verification results for the verifiable credentials shared from the wallet."
       }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Congratulations, the given credential is valid!",
     "INVALID": "Unfortunately, the given credential is invalid!",
-    "EXPIRED": "Unfortunately, the given credential is expired!",
+    "EXPIRED": "The given credential is valid but expired!",
     "TIMEOUT": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "AlertMessages": {
@@ -101,7 +101,9 @@
     "unsupportedFileSize": "File size not supported. The file size should be between 10 KB and 5 MB.",
     "verificationMethodComingSoon": "Coming soon",
     "unsupportedFileType": "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf",
-    "pageNotFound": "Page Not Found!!"
+    "pageNotFound": "Page Not Found!!",
+    "failToGenerateQrCode": "Oops! We’re having trouble generating the verification request. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists."
   },
   "OvpErrors": {
     "invalidScope": "Invalid Scope",

@@ -31,7 +31,7 @@
     "rqstButton": "Solicite credenciais verificáveis",
     "goBack": "Volte",
     "generateQrCodeBtn": "Gerar código QR",
-    "qrCodeInfo": "Leia o código QR abaixo com sua carteira digital para compartilhar as credenciais solicitadas",
+    "qrCodeInfo": "Por favor, leia o código QR abaixo com sua carteira digital para compartilhar a credencial solicitada",
     "qrCodeExpired": "Código QR expirado",
     "noClaims": "Nenhuma reivindicação encontrada."
   },
@@ -71,26 +71,26 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar processo de solicitação de VP",
-        "description": "Clique em “Solicitar credenciais” para iniciar o processo de verificação de VP."
+        "description": "Clique em Solicitar credenciais verificáveis ​​para iniciar o processo de verificação."
       },
       "SelectCredential": {
         "label": "Selecione credenciais e gere código QR",
-        "description": "Selecione as credenciais necessárias e clique em ‘Gerar código QR"
+        "description": "Escolha as credenciais verificáveis ​​necessárias e clique em Gerar código QR."
       },
       "ScanQrCode": {
-        "label": "Digitalize o código QR",
-        "description": "Use um dispositivo separado com recursos de leitura QR para escanear o código com sua câmera. O suporte para usar o mesmo dispositivo estará disponível em breve!"
+        "label": "Digitalize o código QR (use um dispositivo diferente)",
+        "description": "Use uma carteira contendo credenciais verificáveis ​​em um dispositivo diferente com recursos de leitura de código QR para ler o código QR (o suporte para leitura no mesmo dispositivo estará disponível em breve!)"
       },
       "DisplayResult": {
-        "label": "Ver resultado",
-        "description": "Veja o resultado da verificação."
+        "label": "Ver resultados da verificação",
+        "description": "Verifique os resultados da verificação das credenciais verificáveis ​​compartilhadas da carteira."
       }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Parabéns, a credencial fornecida é válida!",
     "INVALID": "Infelizmente, a credencial fornecida é inválida!",
-    "EXPIRED": "Infelizmente, a credencial fornecida expirou!",
+    "EXPIRED": "A credencial fornecida é válida, mas expirou!",
     "TIMEOUT": "A sessão de verificação expirou devido à inatividade. Inicie uma nova verificação."
   },
   "AlertMessages": {
@@ -101,7 +101,9 @@
     "unsupportedFileSize": "Tamanho do arquivo não suportado. O tamanho do arquivo deve estar entre 10 KB e 5 MB.",
     "verificationMethodComingSoon": "Em breve",
     "unsupportedFileType": "Formato de arquivo não suportado. Os formatos de arquivo permitidos são: png, jpeg, jpg, pdf",
-    "pageNotFound": "Página não encontrada!!"
+    "pageNotFound": "Página não encontrada!!",
+    "failToGenerateQrCode": "Opa! Estamos com problemas para gerar a solicitação de verificação. Tente novamente mais tarde.",
+  "unexpectedError": "Ocorreu um erro inesperado. Tente novamente mais tarde ou entre em contato com o suporte se o problema persistir."
   },
   "OvpErrors": {
     "invalidScope": "Escopo inválido",

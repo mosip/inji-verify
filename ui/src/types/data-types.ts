@@ -109,6 +109,7 @@ export type VerifyState = {
   reqId: string;
   activeScreen: number; 
   verificationSubmissionResult?: VerificationSubmissionResult;
+  SelectionPannel:boolean;
 };
 
 export type QrData = {

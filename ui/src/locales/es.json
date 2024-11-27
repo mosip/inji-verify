@@ -31,7 +31,7 @@
     "rqstButton": "Solicitar credenciales verificables",
     "goBack": "Volver",
     "generateQrCodeBtn": "Generar código QR",
-    "qrCodeInfo": "Escanee el siguiente código QR con su billetera digital para compartir las credenciales solicitadas",
+    "qrCodeInfo": "Escanee el siguiente código QR con su billetera digital para compartir la credencial solicitada",
     "qrCodeExpired": "Código QR caducado",
     "noClaims": "No se encontraron reclamos."
   },
@@ -71,26 +71,26 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar proceso de solicitud de vicepresidente",
-        "description": "Haga clic en \"Solicitar credenciales\" para iniciar el proceso de verificación de vicepresidente."
+        "description": "Haga clic en Solicitar credenciales verificables para comenzar el proceso de verificación."
       },
       "SelectCredential": {
         "label": "Seleccione Credenciales y Generar Código QR",
-        "description": "Seleccione las credenciales requeridas y haga clic en \"Generar código QR\"."
+        "description": "Elija las credenciales verificables requeridas y haga clic en Generar código QR."
       },
       "ScanQrCode": {
-        "label": "Escanear código QR",
-        "description": "Utilice un dispositivo independiente con capacidad de escaneo QR para escanear el código con su cámara. Pronto habrá soporte para usar el mismo dispositivo!"
+        "label": "Escanear código QR (use un dispositivo diferente)",
+        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR (¡pronto se admitirá el escaneo en el mismo dispositivo!)"
       },
       "DisplayResult": {
-        "label": "Ver resultado",
-        "description": "Ver el resultado de la verificación."
+        "label": "Ver resultados de verificación",
+        "description": "Verifique los resultados de la verificación de las credenciales verificables compartidas desde la billetera."
       }
     }
   },
   "ResultSummary": {
     "SUCCESS": "¡Felicitaciones, la credencial proporcionada es válida!",
     "INVALID": "Lamentablemente, la credencial proporcionada no es válida!",
-    "EXPIRED": "Desafortunadamente, ¡la credencial proporcionada ha caducado!",
+    "EXPIRED": "¡La credencial proporcionada es válida pero caducada!",
     "TIMEOUT": "La sesión de escaneo ha expirado debido a inactividad. Inicie un nuevo escaneo."
   },
   "AlertMessages": {
@@ -101,7 +101,9 @@
     "unsupportedFileSize": "El tamaño del archivo no es compatible. El tamaño del archivo debe estar entre 10 KB y 5 MB",
     "verificationMethodComingSoon": "Muy pronto",
     "unsupportedFileType": "Formato de archivo no compatible. Los formatos de archivo permitidos son: png, jpeg, jpg, pdf",
-    "pageNotFound": "¡¡Página no encontrada!!"
+    "pageNotFound": "¡¡Página no encontrada!!",
+    "failToGenerateQrCode": "¡Ups! Estamos teniendo problemas para generar la solicitud de verificación. Vuelve a intentarlo más tarde",
+    "unexpectedError": "Se produjo un error inesperado. Vuelva a intentarlo más tarde o comuníquese con el soporte técnico si el problema persiste."
   },
   "OvpErrors": {
     "invalidScope": "Alcance no válido",

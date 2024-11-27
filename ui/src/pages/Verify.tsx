@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PageTemplate from "../components/PageTemplate";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
@@ -10,11 +10,11 @@ import { setSelectCredential } from "../redux/features/verify/verifyState";
 import { useAppDispatch } from "../redux/hooks";
 
 export function Verify() {
-  const [openSelection, setSelection] = useState(false);
   const { t } = useTranslation("Verify");
   const txnId = useVerifyFlowSelector((state) => state.txnId);
+  const openSelection = useVerifyFlowSelector((state) => state.SelectionPannel);
   const dispatch = useAppDispatch();
-  
+
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
@@ -26,14 +26,11 @@ export function Verify() {
             className="w-[300px] mt-10 mx-auto lg:ml-[76px]"
             fill
             onClick={() => {
-              setSelection(!openSelection);
               dispatch(setSelectCredential());
             }}
             disabled={txnId !== ""}
           />
-          {openSelection && (
-            <SelectionPannel handleClose={() => setSelection(!openSelection)} />
-          )}
+          {openSelection && <SelectionPannel />}
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
           <VpVerification />

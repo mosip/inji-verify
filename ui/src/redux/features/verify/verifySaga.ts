@@ -3,16 +3,19 @@ import { api } from "../../../utils/api";
 import { ApiRequest, QrData } from "../../../types/data-types";
 import {
   getVpRequest,
+  resetVpRequest,
   setVpRequestResponse,
   setVpRequestStatus,
   verificationSubmissionComplete,
 } from "./verifyState";
 import {
+  AlertMessages,
   OPENID4VP_PROTOCOL,
   PollStatusDelay,
   verifiableClaims,
 } from "../../../utils/config";
 import { v4 as uuidv4 } from "uuid";
+import { raiseAlert } from "../alerts/alerts.slice";
 
 function* fetchRequestUri(claims: string[]) {
   let qrData;
@@ -30,39 +33,38 @@ function* fetchRequestUri(claims: string[]) {
     body: apiRequest.body,
   };
 
-  yield call(() =>
-    fetch(apiRequest.url(), requestOptions)
-      .then((response) => response.text())
-      .then((res) => {
-        const Data = JSON.parse(res) as QrData;
-        qrData =
-          OPENID4VP_PROTOCOL +
-          btoa(
-            `client_id=${Data.authorizationDetails.clientId}&response_type=${
-              Data.authorizationDetails.responseType
-            }&response_mode=direct_post&nonce=${
-              Data.authorizationDetails.nonce
-            }&state=${Data.requestId}&response_uri=${
-              window._env_.VERIFY_SERVICE_API_URL +
-              Data.authorizationDetails.responseUri
-            }&presentation_definition_uri=${
-              window._env_.VERIFY_SERVICE_API_URL +
-              Data.authorizationDetails.presentationDefinitionUri
-            }&client_metadata={"name":"${
-              window.location
-            }"}&presentation_definition=${JSON.stringify(pdef)}`
-          );
-        txnId = Data.transactionId;
-        reqId = Data.requestId;
-      })
-      .catch((e) => {
-        console.error("Failed to fetch request URI:", e);
-      })
-  );
+  try {
+    const response: Response = yield call(
+      fetch,
+      apiRequest.url(),
+      requestOptions
+    );
+    const data: string = yield response.text();
+    const parsedData = JSON.parse(data) as QrData;
+    qrData =
+      OPENID4VP_PROTOCOL +
+      btoa(
+        `client_id=${parsedData.authorizationDetails.clientId}
+        &response_type=${parsedData.authorizationDetails.responseType}
+        &response_mode=direct_post
+        &nonce=${parsedData.authorizationDetails.nonce}
+        &state=${parsedData.requestId}
+        &response_uri=${window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.responseUri}
+        &presentation_definition_uri=${window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.presentationDefinitionUri}
+        &client_metadata={"name":"${window.location}"}
+        &presentation_definition=${JSON.stringify(pdef)}`
+      );
+    txnId = parsedData.transactionId;
+    reqId = parsedData.requestId;
+  } catch (error) {
+    console.error("Failed to fetch request URI:", error);
+    yield put(resetVpRequest());
+    yield put(raiseAlert({ ...AlertMessages().failToGenerateQrCode, open: true }));
+    return;
+  }
 
-  yield put(
-    setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId })
-  );
+  yield put(setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId }));
+  return;
 }
 
 function* getVpStatus(reqId: string, txnId: string) {
@@ -91,6 +93,8 @@ function* getVpStatus(reqId: string, txnId: string) {
       }
     } catch (error) {
       console.error("Error occurred:", error);
+      yield put(resetVpRequest());
+      yield put(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
       return;
     }
   };
@@ -129,6 +133,9 @@ function* getVpResult(status: string, txnId: string) {
       return;
     } catch (error) {
       console.error("Error occurred:", error);
+      yield put(resetVpRequest());
+      yield put(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
+      return;
     }
   }
 }
