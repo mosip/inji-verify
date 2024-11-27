@@ -36,11 +36,7 @@ export type AlertInfo = {
   autoHideDuration?: number;
 };
 
-export type VerificationMethod =
-  | "SCAN"
-  | "UPLOAD"
-  | "VERIFY"
-  | "TO_BE_SELECTED";
+export type VerificationMethod = "SCAN" | "UPLOAD" | "VERIFY" | "TO_BE_SELECTED";
 
 export type InternetConnectionStatus =
   | "ONLINE"

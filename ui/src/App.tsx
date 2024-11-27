@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Pages } from "./utils/config";
 import Home from "./pages/Home";
 import Offline from "./pages/Offline";
-import Scan from "./pages/Scan";
+import { Scan } from "./pages/Scan";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AlertMessage from "./components/commons/AlertMessage";
 import PreloadImages from "./components/commons/PreloadImages";
 import OvpRedirect from "./pages/OvpRedirect";
 import PageNotFound404 from "./pages/PageNotFound404";
-import { Verify } from "./pages/Verify";
-import { goToHomeScreen } from "./redux/features/verification/verification.slice";
+import { Pages } from "./utils/config";
+import { useAppSelector } from "./redux/hooks";
+import store, { RootState } from "./redux/store";
+import { isRTL } from "./utils/i18n";
 import { VerificationMethod } from "./types/data-types";
-import store from "./redux/store";
-import { useAppSelector } from './redux/hooks';
-import { RootState } from './redux/store';
-import { isRTL } from './utils/i18n';
+import { goToHomeScreen } from "./redux/features/verification/verification.slice";
+import { Verify } from "./pages/Verify";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   store.dispatch(goToHomeScreen({ method }));
@@ -52,10 +51,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const preloadImages = [
-  "/assets/images/under_construction.svg",
-  "/assets/images/inji-logo.svg",
-];
+const preloadImages = ['/assets/images/under_construction.svg', '/assets/images/inji-logo.svg'];
 
 function App() {
     const language = useAppSelector((state: RootState) => state.common.language);
