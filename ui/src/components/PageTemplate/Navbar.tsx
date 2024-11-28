@@ -1,15 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
-import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
 import {Pages} from "../../utils/config";
 import { LanguageSelector } from '../commons/LanguageSelector';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../redux/hooks';
 import { RootState } from '../../redux/store';
 import { isRTL } from '../../utils/i18n';
-import { Logo } from '../../utils/theme-utils';
+import { Logo, MenuIcon, NewTabIcon } from '../../utils/theme-utils';
 
 const SubMenu = () => {
     const {t} = useTranslation("Navbar");

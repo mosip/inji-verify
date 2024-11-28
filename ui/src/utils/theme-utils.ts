@@ -1,50 +1,49 @@
-import { ReactComponent as NavLogo } from "../assets/logo.svg";
-import orangeScanOutline from "../assets/scanner-outline.svg";
-import purpleScanOutline from "../assets/purple-scanner-outline.svg";
-import { ReactComponent as GradientScanFillIcon } from "../assets/gradient-scan-icon.svg";
-import { ReactComponent as WhiteScanFillIcon } from "../assets/white-scan-icon.svg";
-import { ReactComponent as GradientTabUploadIcon } from "../assets/gradient-upload-icon.svg";
-import { ReactComponent as WhiteTabUploadIcon } from "../assets/white-upload-icon.svg";
-import { ReactComponent as QrCodeIcon } from "../assets/qr-code-icon.svg";
-import { ReactComponent as CameraDeniedIcon } from "../assets/camera-access-denied-icon.svg";
-import { ReactComponent as DocumentFileIcon } from "../assets/document.svg";
-import { ReactComponent as VerificationSuccess } from "../assets/verification-success-icon.svg";
-import { ReactComponent as VerificationFailed } from "../assets/verification-failed-icon.svg";
-import { ReactComponent as GlobeSvgIcon } from "../assets/globe.svg";
-import { ReactComponent as ArrowDownSvgIcon } from "../assets/arrow-down.svg";
-import { ReactComponent as ArrowUpSvgIcon } from "../assets/arrow-up.svg";
-import { ReactComponent as CheckSvgIcon } from "../assets/check.svg";
-import { ReactComponent as InjiVerLogo } from "../assets/inji-verify.svg";
-import { ReactComponent as UnderConstructionLogo } from "../assets/under-construction.svg";
-import { ReactComponent as Search } from "../assets/search.svg";
-import QrOutline from "../assets/qr-code-outline.svg"
-import { ReactComponent as FilterLines } from "../assets/filter-lines.svg";
-import { ReactComponent as Download } from "../assets/download.svg";
-import { ReactComponent as WhiteDownload } from "../assets/white-download.svg";
-import { ReactComponent as ReGenerate } from "../assets/re-generate.svg";
-import { ReactComponent as WhiteReGenerate } from "../assets/white-regenerate.svg";
+import defaultTheme from "../themes/default-theme";
+import purpleTheme from "../themes/purple-theme";
+import carTheme from "../themes/car-theme";
 
-export const Logo = NavLogo;
-export const InjiLogo = InjiVerLogo;
-export const QrIcon = QrCodeIcon;
-export const GradientScanIcon = GradientScanFillIcon;
-export const WhiteScanIcon = WhiteScanFillIcon;
-export const GradientUploadIcon = GradientTabUploadIcon;
-export const WhiteUploadIcon = WhiteTabUploadIcon;
-export const CameraAccessDeniedIcon = CameraDeniedIcon;
-export const DocumentIcon = DocumentFileIcon;
-export const VerificationSuccessIcon = VerificationSuccess;
-export const VerificationFailedIcon = VerificationFailed;
-export const ScanOutline = window._env_.DEFAULT_THEME !== "purple_theme" ? orangeScanOutline : purpleScanOutline;
-export const GlobeIcon = GlobeSvgIcon;
-export const ArrowDown = ArrowDownSvgIcon;
-export const ArrowUp = ArrowUpSvgIcon;
-export const Check = CheckSvgIcon;
-export const UnderConstruction = UnderConstructionLogo;
-export const DownloadIcon = Download;
-export const WhiteDownloadIcon = WhiteDownload;
-export const SearchIcon = Search;
-export const QrCodeOutLine = QrOutline;
-export const FilterLinesIcon = FilterLines;
-export const ReGenerateIcon = ReGenerate;
-export const WhiteReGenerateIcon = WhiteReGenerate;
+let Theme;
+const ActiveTheme = window._env_.DEFAULT_THEME;
+
+switch (ActiveTheme) {
+  case "default_theme":
+    Theme = defaultTheme;
+    break;
+  case "purple_theme":
+    Theme = purpleTheme;
+    break;
+  case "car_theme":
+    Theme = carTheme;
+    break;
+  default:
+    Theme = defaultTheme;
+    break;
+}
+
+export const Logo = Theme.Logo;
+export const InjiLogo = Theme.InjiLogo;
+export const QrIcon = Theme.QrIcon;
+export const GradientScanIcon = Theme.GradientScanIcon;
+export const WhiteScanIcon = Theme.WhiteScanIcon;
+export const GradientUploadIcon = Theme.GradientUploadIcon;
+export const WhiteUploadIcon = Theme.WhiteUploadIcon;
+export const CameraAccessDeniedIcon = Theme.CameraAccessDeniedIcon;
+export const DocumentIcon = Theme.DocumentIcon;
+export const VerificationSuccessIcon = Theme.VerificationSuccessIcon;
+export const VerificationFailedIcon = Theme.VerificationFailedIcon;
+export const ScanOutline = Theme.ScanOutline;
+export const GlobeIcon = Theme.GlobeIcon;
+export const ArrowDown = Theme.ArrowDown;
+export const ArrowUp = Theme.ArrowUp;
+export const Check = Theme.Check;
+export const UnderConstruction = Theme.UnderConstruction;
+export const DownloadIcon = Theme.DownloadIcon;
+export const WhiteDownloadIcon = Theme.WhiteDownloadIcon;
+export const SearchIcon = Theme.SearchIcon;
+export const QrCodeOutLine = Theme.QrCodeOutLine;
+export const FilterLinesIcon = Theme.FilterLinesIcon;
+export const ReGenerateIcon = Theme.ReGenerateIcon;
+export const WhiteReGenerateIcon = Theme.WhiteReGenerateIcon;
+export const CloseIcon = Theme.CloseIcon;
+export const MenuIcon = Theme.MenuIcon;
+export const NewTabIcon = Theme.NewTabIcon;

@@ -5,7 +5,111 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root :root {
+    --iv-font-base: "Inter", sans-serif;
+    --iv-primary-color: #951f6f;
+    --iv-logo-start-color: #ffb600;
+    --iv-background-color: #ffffff;
+    --iv-white-text: #ffffff;
+    --iv-header-label-text: #000000;
+    --iv-header-description-text: #000000;
+    --iv-offline-label-text: #2c2c2c;
+    --iv-offline-description-text: #7b7b7b;
+    --iv-header-background-color: #f2fcff;
+    --iv-verificationMethodTabs-bg-color: #ffffff;
+    --iv-horizontal-line: #ff7f00;
+    --iv-page-background-color: #fafbfd;
+    --iv-success: #4b9d1f;
+    --iv-invalid: #d73e3e;
+    --iv-expired: #d98c00;
+    --iv-success-alert: #57a04b;
+    --iv-warning-alert: #d98c00;
+    --iv-error-alert: #d73e3e;
+    --iv-arrow-background: #f2fcff;
+    --iv-stepper-background: #fafbfd;
+    --iv-stepper-label: #868686;
+    --iv-stepper-description: #535353;
+    --iv-camera-denied-label-color: #000000;
+    --iv-camera-denied-description-color: #707070;
+    --iv-upload-description: #8e8e8e;
+    --iv-copyrights-text: #707070;
+    --iv-copyrights-border: #707070;
+    --iv-active-tab-text: #ffffff;
+    --iv-active-tab-background: #ff7f00;
+    --iv-inactive-tab-text: #000000;
+    --iv-inactive-tab-background: #ffffff;
+    --iv-disabledTab-bg: #e5e7eb;
+    --iv-disabledTab-text: #4b5563;
+    --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-sortBy-border: #d0d5dd;
+    --iv-sortBy-text: #344054;
+    --iv-disabled-button-bg: #c1c1c1;
+    --iv-gradient-scanning-line: linear-gradient(
+      90deg,
+      #ff5300 0%,
+      #fb5103 16%,
+      #f04c0f 31%,
+      #de4322 46%,
+      #c5363c 61%,
+      #a4265f 75%,
+      #7c1389 90%,
+      #5b03ad 100%
+    );
+    --iv-selector-pannel-title: #101828;
+    --iv-selector-pannel-sub-title: #475467;
+    --iv-qr-code-timer: #8e8e8e;
+  }
+  [class="purple_theme"] {
+    --iv-font-base: "Gentium Plus", serif;
+    --iv-primary-color: #5a31ee;
+    --iv-logo-start-color: #8f69ec;
+    --iv-background-color: #ffffff;
+    --iv-white-text: #ffffff;
+    --iv-header-label-text: #000000;
+    --iv-header-description-text: #7b7b7b;
+    --iv-offline-label-text: #2c2c2c;
+    --iv-offline-description-text: #7b7b7b;
+    --iv-header-background-color: #f7f1ff;
+    --iv-verificationMethodTabs-bg-color: #f7f1ff;
+    --iv-horizontal-line: #bcaaf3;
+    --iv-page-background-color: #fafbfd;
+    --iv-success: #4b9d1f;
+    --iv-invalid: #d73e3e;
+    --iv-expired: #d98c00;
+    --iv-success-alert: #57a04b;
+    --iv-warning-alert: #d98c00;
+    --iv-error-alert: #d73e3e;
+    --iv-arrow-background: #f7f1ff;
+    --iv-stepper-background: ;
+    --iv-stepper-label: #000000;
+    --iv-stepper-description: #2c2c2c;
+    --iv-camera-denied-label-color: #000000;
+    --iv-camera-denied-description-color: #707070;
+    --iv-upload-description: #2c2c2c;
+    --iv-copyrights-text: #2c2c2c;
+    --iv-copyrights-border: #2c2c2c;
+    --iv-active-tab-text: #ffffff;
+    --iv-active-tab-background: #5a31ee;
+    --iv-inactive-tab-text: #000000;
+    --iv-inactive-tab-background: #ffffff;
+    --iv-disabledTab-bg: #e5e7eb;
+    --iv-disabledTab-text: #4b5563;
+    --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-search-border: #d5d8e2;
+    --iv-searAll-text: #535353;
+    --iv-disabled-button-bg: #c1c1c1;
+    --iv-gradient-scanning-line: linear-gradient(
+      90deg,
+      #8f69ec 0%,
+      #5a31ee 100%
+    );
+    --iv-selector-pannel-title: #101828;
+    --iv-selector-pannel-sub-title: #475467;
+    --iv-qr-code-timer: #8e8e8e;
+  }
+  [class="car_theme"] {
     --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #278834;
     --iv-logo-start-color: #ffb600;
@@ -54,74 +158,19 @@
     --iv-selector-pannel-sub-title: #475467;
     --iv-qr-code-timer: #8e8e8e;
   }
-  [class="purple_theme"] {
-    --iv-font-base: "Gentium Plus", serif;
-    --iv-primary-color: #5a31ee;
-    --iv-logo-start-color: #8f69ec;
-    --iv-background-color: #ffffff;
-    --iv-white-text: #ffffff;
-    --iv-header-label-text: #000000;
-    --iv-header-description-text: #7b7b7b;
-    --iv-offline-label-text: #2c2c2c;
-    --iv-offline-description-text: #7b7b7b;
-    --iv-header-background-color: #f7f1ff;
-    --iv-verificationMethodTabs-bg-color: #f7f1ff;
-    --iv-horizontal-line: #bcaaf3;
-    --iv-page-background-color: #fafbfd;
-    --iv-success: #4b9d1f;
-    --iv-invalid: #d73e3e;
-    --iv-expired: #d98c00;
-    --iv-success-alert: #57a04b;
-    --iv-warning-alert: #d98c00;
-    --iv-error-alert: #d73e3e;
-    --iv-arrow-background: #f7f1ff;
-    --iv-stepper-background: ;
-    --iv-stepper-label: #000000;
-    --iv-stepper-description: #2c2c2c;
-    --iv-camera-denied-label-color: #000000;
-    --iv-camera-denied-description-color: #707070;
-    --iv-upload-description: #2c2c2c;
-    --iv-copyrights-text: #2c2c2c;
-    --iv-copyrights-border: #2c2c2c;
-    --iv-active-tab-text: #ffffff;
-    --iv-active-tab-background: #5a31ee;
-    --iv-inactive-tab-text: #000000;
-    --iv-inactive-tab-background: #ffffff;
-    --iv-disabledTab-bg: #e5e7eb;
-    --iv-disabledTab-text: #4b5563;
-    --iv-document-icon: #000000;
-    --iv-selector-border: #e4e7ec;
-    --iv-search-border: #d5d8e2;
-    --iv-searAll-text: #535353;
-    --iv-disabled-button-bg: #c1c1c1;
-    --iv-gradient-scanning-line: linear-gradient(
-      90deg,
-      #ff5300 0%,
-      #fb5103 16%,
-      #f04c0f 31%,
-      #de4322 46%,
-      #c5363c 61%,
-      #a4265f 75%,
-      #7c1389 90%,
-      #5b03ad 100%
-    );
-    --iv-selector-pannel-title: #101828;
-    --iv-selector-pannel-sub-title: #475467;
-    --iv-qr-code-timer: #8e8e8e;
-  }
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -169,25 +218,4 @@ code {
 
 #loader {
   will-change: transform;
-}
-
-.checkbox {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  transition: background-color 0.3s, border-color 0.3s;
-  cursor: pointer;
-}
-
-.checkbox:checked {
-  background: linear-gradient(90deg, #52ae32 0%, #006535 100%);
-}
-
-.checkbox:checked::after {
-  content: "✔";
-  color: #ffffff;
 }

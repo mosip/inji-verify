@@ -1,7 +1,7 @@
 import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
-import certImage from '../assets/cert.png';
-import certImage2 from '../assets/cert2.png';
+import certImage from '../assets/defaultTheme/cert.png';
+import certImage2 from '../assets/defaultTheme/cert2.png';
 
 export const Pages = {
     Home: "/",

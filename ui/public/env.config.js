@@ -1,6 +1,6 @@
 window._env_ = {
-DEFAULT_TITLE: "Inji Verify",
-DEFAULT_THEME: "default_theme",
+DEFAULT_TITLE: "Inji Verify CAR",
+DEFAULT_THEME: "car_theme",
 DEFAULT_LANG: "pt",
 DEFAULT_FONT_URL: "https://fonts.googleapis.com/css?family=Inter",
 OVP_QR_HEADER: "INJI_OVP://",
