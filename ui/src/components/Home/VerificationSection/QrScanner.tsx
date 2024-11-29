@@ -9,6 +9,7 @@ import {
   ZOOM_STEP,
   ScanSessionExpiryTime,
   THROTTLE_FRAMES_PER_SEC,
+  AlertMessages,
 } from "../../../utils/config";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
@@ -142,12 +143,7 @@ function QrScanner() {
     timer = setTimeout(() => {
       dispatch(goToHomeScreen({}));
       dispatch(
-        raiseAlert({
-          open: true,
-          message:
-            "The scan session has expired due to inactivity. Please initiate a new scan.",
-          severity: "error",
-        })
+        raiseAlert({ ...AlertMessages().scanSessionExpired, open: true })
       );
     }, ScanSessionExpiryTime);
 

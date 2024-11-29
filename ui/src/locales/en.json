@@ -68,7 +68,8 @@
     "unsupportedFileSize": "File size not supported. The file size should be between 10 KB and 5 MB.",
     "verificationMethodComingSoon": "Coming soon",
     "unsupportedFileType": "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf",
-    "pageNotFound": "Page Not Found!!"
+    "pageNotFound": "Page Not Found!!",
+    "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "OvpErrors": {
     "invalidScope": "Invalid Scope",
@@ -83,7 +84,9 @@
     "internalServerError": "We're having trouble processing your request. Please try again later.",
     "serverUnavailable": "The service is currently unavailable. Please try again later",
     "invalidVpToken": "The credentials don't meet the requirements. Please check and try again.",
-    "unsupportedFormat": "VP Formats Not Supported"
+    "unsupportedFormat": "VP Formats Not Supported",
+    "invalidResources": "The requested resource is invalid.",
+    "invalidParams": "Invalid Parameters!!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP - All rights reserved."

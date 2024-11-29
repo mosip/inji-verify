@@ -68,7 +68,8 @@
     "unsupportedFileSize": "फ़ाइल का आकार समर्थित नहीं है. ",
     "verificationMethodComingSoon": "जल्द आ रहा है",
     "unsupportedFileType": "असमर्थित फ़ाइल स्वरूप। ",
-    "pageNotFound": "पृष्ठ नहीं मिला!!"
+    "pageNotFound": "पृष्ठ नहीं मिला!!",
+    "scanSessionExpired": "निष्क्रियता के कारण स्कैन सत्र समाप्त हो गया है। कृपया एक नया स्कैन आरंभ करें."
   },
   "OvpErrors": {
     "invalidScope": "अमान्य दायरा",
@@ -83,7 +84,9 @@
     "internalServerError": "हमें आपका अनुरोध संसाधित करने में परेशानी हो रही है. ",
     "serverUnavailable": "सेवा वर्तमान में अनुपलब्ध है. ",
     "invalidVpToken": "क्रेडेंशियल आवश्यकताओं को पूरा नहीं करते. ",
-    "unsupportedFormat": "वीपी प्रारूप समर्थित नहीं हैं"
+    "unsupportedFormat": "वीपी प्रारूप समर्थित नहीं हैं",
+    "invalidResources": "अनुरोधित संसाधन अमान्य है.",
+    "invalidParams": "अमान्य मापदण्ड!!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP - सर्वाधिकार सुरक्षित।"
