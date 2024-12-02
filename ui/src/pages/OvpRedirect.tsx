@@ -36,10 +36,10 @@ function OvpRedirect(props: any) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
             } else if (!!error) {
                 const OvpErrorMessages = OvpErrors();
-                dispatch(raiseAlert({message: OvpErrorMessages.error ?? OvpErrorMessages.error ?? OvpErrorMessages.resourceNotFound, severity: "error"}));
+                dispatch(raiseAlert({message: OvpErrorMessages[error] ?? OvpErrorMessages[error] ?? OvpErrorMessages["resource_not_found"], severity: "error"}));
             } else {
                 const OvpErrorMessages = OvpErrors();
-                dispatch(raiseAlert({message: OvpErrorMessages.invalid_params, severity: "error"}))
+                dispatch(raiseAlert({message: OvpErrorMessages["invalid_params"], severity: "error"}))
             }
         }
     }, [location, navigate, dispatch]);
