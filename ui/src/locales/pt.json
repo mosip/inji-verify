@@ -68,7 +68,8 @@
     "unsupportedFileSize": "Tamanho do arquivo não suportado. O tamanho do arquivo deve estar entre 10 KB e 5 MB.",
     "verificationMethodComingSoon": "Em breve",
     "unsupportedFileType": "Formato de arquivo não suportado. Os formatos de arquivo permitidos são: png, jpeg, jpg, pdf",
-    "pageNotFound": "Página não encontrada!!"
+    "pageNotFound": "Página não encontrada!!",
+    "scanSessionExpired": "A sessão de verificação expirou devido à inatividade. Por favor, inicie uma nova verificação."
   },
   "OvpErrors": {
     "invalidScope": "Escopo inválido",
@@ -83,7 +84,9 @@
     "internalServerError": "Estamos com problemas para processar sua solicitação. Por favor, tente novamente mais tarde.",
     "serverUnavailable": "O serviço não está disponível no momento. Tente novamente mais tarde.",
     "invalidVpToken": "O serviço está indisponível no momento. Por favor, tente novamente mais tarde.",
-    "unsupportedFormat": "Formatos VP não suportados"
+    "unsupportedFormat": "Formatos VP não suportados",
+    "invalidResources": "O recurso solicitado é inválido.",
+    "invalidParams": "Parâmetros inválidos!!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP – Todos os direitos reservados."

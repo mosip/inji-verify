@@ -68,7 +68,8 @@
     "unsupportedFileSize": "கோப்பு அளவு ஆதரிக்கப்படவில்லை. ",
     "verificationMethodComingSoon": "விரைவில் வரும்",
     "unsupportedFileType": "ஆதரிக்கப்படாத கோப்பு வடிவம். ",
-    "pageNotFound": "பக்கம் கிடைக்கவில்லை!!"
+    "pageNotFound": "பக்கம் கிடைக்கவில்லை!!",
+    "scanSessionExpired": "செயலற்ற தன்மை காரணமாக ஸ்கேன் அமர்வு காலாவதியானது. தயவுசெய்து புதிய ஸ்கேனைத் தொடங்கவும்."
   },
   "OvpErrors": {
     "invalidScope": "தவறான நோக்கம்",
@@ -83,7 +84,9 @@
     "internalServerError": "உங்கள் கோரிக்கையைச் செயல்படுத்துவதில் சிக்கல் உள்ளது. ",
     "serverUnavailable": "சேவை தற்போது கிடைக்கவில்லை. ",
     "invalidVpToken": "நற்சான்றிதழ்கள் தேவைகளைப் பூர்த்தி செய்யவில்லை. ",
-    "unsupportedFormat": "VP வடிவங்கள் ஆதரிக்கப்படவில்லை"
+    "unsupportedFormat": "VP வடிவங்கள் ஆதரிக்கப்படவில்லை",
+    "invalidResources": "கோரப்பட்ட ஆதாரம் தவறானது.",
+    "invalidParams": "தவறான அளவுருக்கள்!!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP - அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
