@@ -38,6 +38,14 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     @Override
     public VpSubmissionResponseDto submit(VpSubmissionDto vpSubmissionDto) {
+        new Thread(() -> {
+            processSubmission(vpSubmissionDto);
+        }).start();
+        return new VpSubmissionResponseDto("", "", "");
+
+    }
+
+    private void processSubmission(VpSubmissionDto vpSubmissionDto) {
         JSONObject vpProof = new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject(Constants.KEY_PROOF);
         String jws = getFormattedJws(vpProof.getString(Constants.KEY_JWS));
         String publicKeyPem = vpProof.getString(Constants.KEY_VERIFICATION_METHOD);
@@ -51,29 +59,22 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
             List<VerificationResult> verificationResults = new ArrayList<>();
             for (Object verifiableCredential : verifiableCredentials) {
-                JSONObject credential =  new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
+                JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
                 VerificationResult singleVcVerification = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
                 System.out.println(singleVcVerification);
                 verificationResults.add(singleVcVerification);
             }
             boolean combinedVerificationStatus = true;
-            boolean anyVcExpired = false;
             for (VerificationResult verificationResult : verificationResults) {
                 combinedVerificationStatus = combinedVerificationStatus && verificationResult.getVerificationStatus();
-                anyVcExpired = anyVcExpired || verificationResult.getVerificationErrorCode().equals(Constants.VC_EXPIRED_ERROR_CODE);
             }
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            if (anyVcExpired) {
-                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.EXPIRED));
-            }else {
-                vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(),VerificationStatus.SUCCESS));
-            }
-
+            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), VerificationStatus.SUCCESS));
         } catch (Exception e) {
             e.printStackTrace();
-            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(),vpSubmissionDto.getVpToken(),vpSubmissionDto.getPresentationSubmission(),VerificationStatus.INVALID));
+            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), VerificationStatus.INVALID));
         }
 
         authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
@@ -81,13 +82,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
             return null;
         });
-        return new VpSubmissionResponseDto("","","");
-
     }
 
     @Override
     public VpSubmission getSubmissionResult(String requestId) {
-        return vpSubmissionRepository.findById(requestId).map(vpSubmission -> new VpSubmission(vpSubmission.getState(), vpSubmission.getVpToken(), vpSubmission.getPresentationSubmission(),vpSubmission.getVerificationStatus())).orElse(null);
+        return vpSubmissionRepository.findById(requestId).map(vpSubmission -> new VpSubmission(vpSubmission.getState(), vpSubmission.getVpToken(), vpSubmission.getPresentationSubmission(), vpSubmission.getVerificationStatus())).orElse(null);
     }
 }
 
