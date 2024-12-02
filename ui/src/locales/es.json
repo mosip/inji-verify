@@ -103,7 +103,8 @@
     "unsupportedFileType": "Formato de archivo no compatible. Los formatos de archivo permitidos son: png, jpeg, jpg, pdf",
     "pageNotFound": "¡¡Página no encontrada!!",
     "failToGenerateQrCode": "¡Ups! Estamos teniendo problemas para generar la solicitud de verificación. Vuelve a intentarlo más tarde",
-    "unexpectedError": "Se produjo un error inesperado. Vuelva a intentarlo más tarde o comuníquese con el soporte técnico si el problema persiste."
+    "unexpectedError": "Se produjo un error inesperado. Vuelva a intentarlo más tarde o comuníquese con el soporte técnico si el problema persiste.",
+    "scanSessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis."
   },
   "OvpErrors": {
     "invalidScope": "Alcance no válido",
@@ -118,7 +119,9 @@
     "internalServerError": "Estamos teniendo problemas para procesar su solicitud. Vuelva a intentarlo más tarde",
     "serverUnavailable": "El servicio no está disponible actualmente. Vuelva a intentarlo más tarde",
     "invalidVpToken": "Las credenciales no cumplen con los requisitos. Verifique e inténtelo nuevamente",
-    "unsupportedFormat": "Formatos VP no admitidos"
+    "unsupportedFormat": "Formatos VP no admitidos",
+    "invalidResources": "El recurso solicitado no es válido.",
+    "invalidParams": "¡¡Parámetros no válidos!!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP - Todos los derechos reservados."

@@ -103,7 +103,8 @@
     "unsupportedFileType": "Format de fichier non pris en charge. ",
     "pageNotFound": "Page introuvable !!",
     "failToGenerateQrCode": "Oups ! Nous ne parvenons pas à générer la demande de vérification. Veuillez réessayer plus tard.",
-    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard ou contacter l'assistance si le problème persiste."
+    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard ou contacter l'assistance si le problème persiste.",
+    "scanSessionExpired": "La session d'analyse a expiré pour cause d'inactivité. Veuillez lancer une nouvelle analyse."
   },
   "OvpErrors": {
     "invalidScope": "Portée invalide",
@@ -118,7 +119,9 @@
     "internalServerError": "Nous rencontrons des difficultés pour traiter votre demande. ",
     "serverUnavailable": "Le service est actuellement indisponible. ",
     "invalidVpToken": "Les informations d'identification ne répondent pas aux exigences. ",
-    "unsupportedFormat": "Formats VP non pris en charge"
+    "unsupportedFormat": "Formats VP non pris en charge",
+    "invalidResources": "La ressource demandée n'est pas valide.",
+    "invalidParams": "Paramètres invalides !!"
   },
   "CopyRight": {
     "content": "2024 © MOSIP - Tous droits réservés."

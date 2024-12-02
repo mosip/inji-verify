@@ -108,6 +108,7 @@ export const AlertMessages =()=> {
         pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo,
         failToGenerateQrCode: {message:i18next.t("AlertMessages:failToGenerateQrCode"), severity: "error"} as AlertInfo,
         unexpectedError: {message:i18next.t("AlertMessages:unexpectedError"), severity: "error"} as AlertInfo,
+        scanSessionExpired: {message: i18next.t("AlertMessages:scanSessionExpired"), severity: "error"} as AlertInfo
     }
 };
 
@@ -127,7 +128,9 @@ export const OvpErrors: any = () => {
       internal_server_error: i18next.t("OvpErrors:internalServerError"),
       server_unavailable: i18next.t("OvpErrors:serverUnavailable"),
       invalid_vp_token: i18next.t("OvpErrors:invalidVpToken"),
-      unsupported_format: i18next.t("OvpErrors:unsupportedFormat")
+      unsupported_format: i18next.t("OvpErrors:unsupportedFormat"),
+      invalid_resource:i18next.t("OvpErrors:invalidResources"),
+      invalid_params:i18next.t("OvpErrors:invalidParams"),
     };
   };
 

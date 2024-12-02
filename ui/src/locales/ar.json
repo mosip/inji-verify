@@ -101,7 +101,10 @@
     "unsupportedFileSize": "حجم الملف غير مدعوم. ",
     "verificationMethodComingSoon": "قريباً",
     "unsupportedFileType": "تنسيق الملف غير معتمد. ",
-    "pageNotFound": "الصفحة غير موجودة!!"
+    "pageNotFound": "الصفحة غير موجودة!!",
+    "failToGenerateQrCode":"عفوًا! نواجه مشكلة في إنشاء طلب التحقق. يُرجى إعادة المحاولة لاحقًا.",
+    "unexpectedError": "حدث خطأ غير متوقع. يرجى إعادة المحاولة لاحقًا أو الاتصال بالدعم إذا استمرت المشكلة.",
+    "scanSessionExpired": "انتهت صلاحية جلسة الفحص بسبب عدم النشاط. يرجى بدء فحص جديد."
   },
   "OvpErrors": {
     "invalidScope": "النطاق غير صالح",
@@ -116,7 +119,9 @@
     "internalServerError": "نواجه مشكلة في معالجة طلبك. ",
     "serverUnavailable": "الخدمة غير متوفرة حاليا. ",
     "invalidVpToken": "أوراق الاعتماد لا تفي بالمتطلبات. ",
-    "unsupportedFormat": "تنسيقات VP غير مدعومة"
+    "unsupportedFormat": "تنسيقات VP غير مدعومة",
+    "invalidResources": "المورد المطلوب غير صالح.",
+    "invalidParams": "معلمات غير صالحة!!"
   },
   "CopyRight": {
     "content": "2024 © موسيب - جميع الحقوق محفوظة."

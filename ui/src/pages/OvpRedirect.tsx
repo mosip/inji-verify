@@ -13,7 +13,7 @@ function OvpRedirect(props: any) {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        let vpToken, presentationSubmission, error, errorDescription;
+        let vpToken, presentationSubmission, error;
         try {
             const params = new URLSearchParams(location.hash.substring(1));
             const queryParams = new URLSearchParams(location.search.substring(1));
@@ -26,7 +26,6 @@ function OvpRedirect(props: any) {
                 : undefined;
 
             error = queryParams.get("error");
-            errorDescription = queryParams.get("error_description");
         }
         catch (error) {
             console.error("Error occurred while reading params in redirect url, Error: ", error);
@@ -37,15 +36,10 @@ function OvpRedirect(props: any) {
                 dispatch(verificationInit({ovp: {vpToken, presentationSubmission}}));
             } else if (!!error) {
                 const OvpErrorMessages = OvpErrors();
-                dispatch(raiseAlert(
-                    {
-                        message: OvpErrorMessages[error]
-                            ?? errorDescription
-                            ?? "Something Went Wrong!!",
-                        severity: "error"
-                    }));
+                dispatch(raiseAlert({message: OvpErrorMessages.error ?? OvpErrorMessages[error] ?? OvpErrorMessages.resource_not_found, severity: "error"}));
             } else {
-                dispatch(raiseAlert({message: "Invalid Parameters!!", severity: "error"}))
+                const OvpErrorMessages = OvpErrors();
+                dispatch(raiseAlert({message: OvpErrorMessages.invalid_params, severity: "error"}))
             }
         }
     }, [location, navigate, dispatch]);

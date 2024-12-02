@@ -103,7 +103,8 @@
     "unsupportedFileType": "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf",
     "pageNotFound": "Page Not Found!!",
     "failToGenerateQrCode": "Oops! We’re having trouble generating the verification request. Please try again later.",
-    "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists."
+    "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+    "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "OvpErrors": {
     "invalidScope": "Invalid Scope",
@@ -118,7 +119,9 @@
     "internalServerError": "We're having trouble processing your request. Please try again later.",
     "serverUnavailable": "The service is currently unavailable. Please try again later",
     "invalidVpToken": "The credentials don't meet the requirements. Please check and try again.",
-    "unsupportedFormat": "VP Formats Not Supported"
+    "unsupportedFormat": "VP Formats Not Supported",
+    "invalidResources": "The requested resource is invalid.",
+    "invalidParams": "Invalid Parameters!!"
   },
   "CopyRight": {
     "content": "Powered by Inji, a MOSIP product"
