@@ -180,7 +180,7 @@ export const verifiableClaims: any[] = [
             input_descriptors: [
                 {
                     id: "id card credential",
-                    format: {ldp_vc: {proof_type: ["Ed25519Signature2020"]}},
+                    format: {ldp_vc: {proof_type: ["RsaSignature2018"]}},
                     constraints: {},
                 },
             ],

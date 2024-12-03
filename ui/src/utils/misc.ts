@@ -22,11 +22,19 @@ export const convertToTitleCase = (text: string): string => {
 
 export const getDisplayValue = (data: any): string => {
     if (data instanceof Array && data?.length > 0) {
+        console.log(data.length)
+
         let displayValue = "";
         data.forEach(value => {
-            displayValue += `${value}, `;
+            console.log(value)
+            if (value.value){
+                displayValue += `${value.value}`;
+            }
+            else {
+                displayValue += `${value}, `;
+            }
         });
-        return displayValue.slice(0, displayValue.length - 2);
+        return displayValue;
     }
     return data?.toString();
 }

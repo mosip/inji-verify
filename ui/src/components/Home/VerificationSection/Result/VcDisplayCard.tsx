@@ -45,7 +45,7 @@ function VcDisplayCard(props: displayProps) {
           Object.keys(props.vc.credentialSubject)
             .filter(
               (key) =>
-                key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type"
+                key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type" && key?.toLowerCase() != "face"
             )
             .map((key, index) => (
               <div
