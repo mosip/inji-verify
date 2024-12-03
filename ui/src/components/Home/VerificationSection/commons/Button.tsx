@@ -16,7 +16,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <div
       className={`${
-        props.disabled ? "bg-disabledButtonBg" : "bg-gradient"
+        props.disabled ? "bg-disabledButtonBg" : `bg-${window._env_.DEFAULT_THEME}-gradient`
       } p-px bg-no-repeat rounded-[5px] ${props.className}`}
     >
       <button
@@ -25,8 +25,8 @@ export const Button = (props: ButtonProps) => {
           props.disabled
             ? "bg-disabledButtonBg"
             : props.fill
-            ? "bg-gradient"
-            : "bg-white hover:bg-gradient"
+            ? `bg-${window._env_.DEFAULT_THEME}-gradient`
+            : `bg-white hover:bg-${window._env_.DEFAULT_THEME}-gradient`
         } h-[40px] w-full rounded-[5px] flex items-center justify-center`}
       >
         {props.icon && <span className="mr-1.5">{props.icon}</span>}
@@ -37,7 +37,7 @@ export const Button = (props: ButtonProps) => {
               ? "text-white"
               : props.fill
               ? "text-white"
-              : "bg-gradient bg-clip-text text-transparent group-hover:text-white"
+              : `bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent group-hover:text-white`
           } normal-case`}
         >
           {props.title}

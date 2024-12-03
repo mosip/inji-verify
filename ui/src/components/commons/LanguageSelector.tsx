@@ -64,7 +64,7 @@ export const LanguageSelector: React.FC = () => {
               rtl ? "left-1 lg:left-0" : "right-1 lg:right-0"
             } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
           >
-            <ul className="py-1 divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200">
               {LanguagesSupported.map((item) => (
                 <li
                   key={item.value}
@@ -72,7 +72,7 @@ export const LanguageSelector: React.FC = () => {
                 >
                   <button
                     type="button"
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center justify-between flex-row"
+                    className="w-full px-4 py-2 bg-white text-left text-sm hover:bg-gray-100 flex items-center justify-between flex-row"
                     onMouseDown={(event) => {
                       event.stopPropagation();
                       handleChange(item);

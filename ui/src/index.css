@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root :root {
+  [class="default_theme"] {
     --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #951f6f;
     --iv-logo-start-color: #ffb600;

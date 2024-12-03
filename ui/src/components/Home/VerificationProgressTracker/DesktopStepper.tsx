@@ -66,11 +66,11 @@ const DesktopStepper: React.FC = () => {
         {steps.map((step: any, index: number) => (
           <div key={index}>
             <div className="flex items-center">
-              <div className="bg-gradient rounded-full bg-no-repeat p-[2px] flex items-center justify-center">
+              <div className={`bg-${window._env_.DEFAULT_THEME}-gradient rounded-full bg-no-repeat p-[2px] flex items-center justify-center`}>
                 <div
                   className={`text-center rounded-full w-6 h-6 flex items-center justify-center font-normal text-normal text-smallTextSize leading-5 bg-no-repeat  ${
                     isStepCompleted(index)
-                      ? "bg-gradient text-white border-1 border-transparent"
+                      ? `bg-${window._env_.DEFAULT_THEME}-gradient text-white border-1 border-transparent`
                       : "bg-white text-primary border-[1px] border-transparent"
                   }`}
                 >
@@ -97,7 +97,7 @@ const DesktopStepper: React.FC = () => {
                       isStepCompleted(index + 1) ? "" : "opacity-20"
                     }`}
                   >
-                    <div className="bg-gradient w-[1px] h-full m-auto">
+                    <div className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-full m-auto`}>
                       <div
                         className={`${
                           !isLastStep(index)
@@ -128,7 +128,7 @@ const DesktopStepper: React.FC = () => {
                       isStepCompleted(index + 1) ? "" : "opacity-20"
                     }`}
                   >
-                    <div className="bg-gradient w-[1px] h-8 m-auto">
+                    <div className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-8 m-auto`}>
                       <div className="border-transparent border-l-primary border-[1px]" />
                     </div>
                   </div>

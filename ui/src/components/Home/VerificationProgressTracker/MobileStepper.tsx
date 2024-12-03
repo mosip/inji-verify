@@ -7,9 +7,9 @@ import i18n from "i18next";
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
-    const stepperActiveOrCompleted = "rounded-full bg-gradient bg-no-repeat text-white"; // Keep only gradient here
-    const stepperUpcomingStep = "bg-gradient bg-no-repeat rounded-full text-primary p-[2px]";
-    const stepperCircle = `${activeOrCompleted ? "bg-gradient" : "bg-white"} bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
+    const stepperActiveOrCompleted = `rounded-full bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat text-white`; // Keep only gradient here
+    const stepperUpcomingStep = `bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat rounded-full text-primary p-[2px]`;
+    const stepperCircle = `${activeOrCompleted ? `bg-${window._env_.DEFAULT_THEME}-gradient` : "bg-white"} bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
     return (
         <div className={`${stepperStep} ${activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep}`}
              data-step="1">
@@ -68,7 +68,7 @@ function MobileStepper(props: any) {
                     getRangeOfNumbers(stepCount).map((value, index) => (
                         <div key={index}>
                             <Step stepNumber={value} activeOrCompleted={value <= activeScreen} />
-                            {(value < stepCount) && (<div className={`bg-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
+                            {(value < stepCount) && (<div className={`bg-${window._env_.DEFAULT_THEME}-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
                         </div>
                     ))
                 }

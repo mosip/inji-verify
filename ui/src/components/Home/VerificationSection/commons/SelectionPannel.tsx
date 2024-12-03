@@ -180,7 +180,7 @@ const SelectionPannel = () => {
                         checked={selectedClaims.includes(claim.type)}
                         onChange={() => toggleClaimSelection(claim.type)}
                       />
-                      <div className="w-3 h-3 rounded-full bg-gradient peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[#52AE32]"></div>
+                      <div className={`w-3 h-3 rounded-full bg-${window._env_.DEFAULT_THEME}-gradient peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[#52AE32]`}></div>
                     </label>
                   </li>
                 ))}
