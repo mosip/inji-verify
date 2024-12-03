@@ -17,39 +17,30 @@ import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateRe
 import io.mosip.verifycore.dto.authorizationRequest.StatusResponseDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
-import io.mosip.verifycore.utils.Utils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RequestMapping("/vp-request")
-@CrossOrigin(origins = "*")
 @RestController
+@CrossOrigin(origins = "*")
 public class VpRequestController {
 
     @Autowired
     VerifiablePresentationRequestService verifiablePresentationRequestService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorizationRequestCreateResponseDto> createVpRequest(@Valid @RequestBody AuthorizationRequestCreateDto vpRequestCreate, HttpServletRequest request) {
-        if (vpRequestCreate.getPresentationDefinition() == null && vpRequestCreate.getVerificationType() == null)
+    public ResponseEntity<AuthorizationRequestCreateResponseDto> createVpRequest(@Valid @RequestBody AuthorizationRequestCreateDto vpRequestCreate) {
+        if (vpRequestCreate.getPresentationDefinition() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        if (vpRequestCreate.verificationType()!=null)
-//            // create a definition
-//            PresentationDefinition presentationDefinition = presentationDefinitionService.getPresentationDefinition(vpRequestCreate.verificationType());
-//            //create auth REQ
-        //else
-        if (vpRequestCreate.getPresentationDefinition() != null) {
-            AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate, Utils.getServerAddress(request));
-            return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        AuthorizationRequestCreateResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
+        return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{requestId}/status")
     public ResponseEntity<StatusResponseDto> getStatus(@PathVariable String requestId) {
 
         String transactionId = verifiablePresentationRequestService.getTransactionIdFor(requestId);
-        Status currentstatus = verifiablePresentationRequestService.getStatusFor(requestId);
+        Status currentstatus = verifiablePresentationRequestService.getCurrentStatusFor(requestId);
         if (currentstatus == null || transactionId == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 

@@ -1,6 +1,7 @@
 package io.mosip.verifycore.dto.authorizationRequest;
 
 import io.mosip.verifycore.models.PresentationDefinition;
+import io.mosip.verifycore.shared.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.Instant;
 @NoArgsConstructor(force = true)
 public class AuthorizationRequestDto implements Serializable {
 
-    private final String responseType = "vp_token";
+    private final String responseType = Constants.RESPONSE_TYPE;
     private final String clientId;
     private final String presentationDefinitionUri;
     private String responseUri;
@@ -24,7 +25,7 @@ public class AuthorizationRequestDto implements Serializable {
 
     public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition,String nonce) {
         this.clientId = clientId;
-        this.responseUri = "/vp-direct-post";
+        this.responseUri = Constants.RESPONSE_SUBMISSION_URI;
         this.presentationDefinitionUri = presentationDefinition.getURL();
         this.iat = Instant.now().toEpochMilli();
         this.nonce  = nonce;

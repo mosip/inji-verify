@@ -5,8 +5,8 @@ import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateRe
 import io.mosip.verifycore.enums.Status;
 
 public interface VerifiablePresentationRequestService {
-    AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate, String serverURL);
-    Status getStatusFor(String requestId);
+    AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate);
+    Status getCurrentStatusFor(String requestId);
     String getTransactionIdFor(String requestId);
     String getStatusForRequestIdFor(String transactionId);
 }

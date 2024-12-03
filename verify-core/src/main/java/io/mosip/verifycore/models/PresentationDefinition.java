@@ -2,6 +2,7 @@ package io.mosip.verifycore.models;
 
 import io.mosip.verifycore.dto.presentation.InputDescriptorDto;
 import io.mosip.verifycore.dto.presentation.SubmissionRequirementDto;
+import io.mosip.verifycore.shared.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import java.net.URI;
 import java.util.List;
 
 @Table(name = "presentations")
@@ -35,6 +35,6 @@ public class PresentationDefinition {
 
 
     public String getURL(){
-        return "/vp-definition/"+this.id;
+        return Constants.VP_DEFINITION_URI +this.id;
     }
 }

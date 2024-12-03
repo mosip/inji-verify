@@ -1,5 +1,12 @@
 package io.mosip.verifyservice.services;
 
+import java.time.Instant;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
@@ -7,16 +14,13 @@ import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
 import io.mosip.verifycore.enums.Status;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
 import io.mosip.verifycore.models.PresentationDefinition;
+import static io.mosip.verifycore.shared.Config.DEFAULT_EXPIRY;
+import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.utils.SecurityUtils;
 import io.mosip.verifycore.utils.Utils;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.PresentationDefinitionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.time.Instant;
-
-import static io.mosip.verifycore.shared.Constants.DEFAULT_EXPIRY;
 
 @Service
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
@@ -28,11 +32,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public VerifiablePresentationRequestServiceImpl() {}
 
     @Override
-    public AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate, String serverURL) {
+    public AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate) {
 
-        //TODO : constants
-        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID("txn");
-        String requestId = Utils.createID("req");
+        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID(Constants.TRANSACTION_ID_PREFIX);
+        String requestId = Utils.createID(Constants.REQUEST_ID_PREFIX);
         long  expiresAt  = Instant.now().plusSeconds(DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
@@ -44,22 +47,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         presentationDefinitionRepository.save(presentationDefinition);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+        startStatusAutoTimer(requestId);
 
         return new AuthorizationRequestCreateResponseDto(authorizationRequestCreateResponse);
     }
 
     @Override
-    public Status getStatusFor(String requestId) {
-       return authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
-            Status currentStatus = authorizationRequestCreateResponse.getStatus();
-            System.out.println(currentStatus);
-            if (currentStatus == Status.PENDING && authorizationRequestCreateResponse.getExpiresAt() < Instant.now().toEpochMilli()){
-                authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
-                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-                return Status.EXPIRED;
-            }
-            return currentStatus;
-        }).orElse(null);
+    public Status getCurrentStatusFor(String requestId) {
+       return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getStatus).orElse(null);
     }
 
     @Override
@@ -70,5 +65,24 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public String getStatusForRequestIdFor(String transactionId) {
         return authorizationRequestCreateResponseRepository.findFirstByTransactionIdOrderByExpiresAtDesc(transactionId).map(AuthorizationRequestCreateResponse::getRequestId).orElse(null);
+    }
+
+    private void updateStatusToExpired(String requestId){
+        authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
+            if (authorizationRequestCreateResponse.getStatus() == Status.PENDING){
+                authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
+                authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+            }
+            return null;
+        });
+    }
+
+    private void startStatusAutoTimer(String requestId) {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateStatusToExpired(requestId);
+            }
+        }, DEFAULT_EXPIRY);
     }
 }
