@@ -88,15 +88,24 @@ function VcDisplayCard({ vc }: { vc: any }) {
         />
       </div>
       <div className="grid">
-        <Button
-          id="verify-another-qr-code-button"
-          title={t("Common:Button.verifyAnotherQrCode")}
-          className="w-[200px] lg:w-[350px] mt-2 mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
-          onClick={() => {
-            dispatch(goToHomeScreen({}));
-            dispatch(resetVpRequest());
-          }}
-        />
+          <Button
+              id="verify-another-qr-code-button"
+              title={t("Common:Button.verifyAnotherQrCode")}
+              className="w-[200px] lg:w-[350px] mt-2 mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
+              onClick={() => {
+                  dispatch(goToHomeScreen({}));
+                  dispatch(resetVpRequest());
+              }}
+          />
+          <Button
+              id="verify-another-qr-code-button"
+              title="Proceed"
+              className="w-[200px] lg:w-[350px] mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
+              onClick={() => {
+                  const loc = vc?.type?.includes("MOSIPVerifiableCredential") ? "MOSIPVerifiableCredential" : "FarmerCredential"
+                  window.location.href = `/${loc}`
+              }}
+          />
       </div>
     </div>
   );
