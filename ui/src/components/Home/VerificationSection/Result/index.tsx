@@ -22,7 +22,7 @@ const Result = () => {
                     top: `106px`,
                     right: window.innerWidth >= 1024 ? `calc((50vw - 340px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
-                <VcDisplayCard vc={vcStatus?.verificationStatus !== "INVALID" ? vc : null} />
+                <VcDisplayCard vc={vcStatus?.verificationStatus !== "INVALID" ? vc : null} loc={window.location.href}/>
             </div>
         </div>
     );

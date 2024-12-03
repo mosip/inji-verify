@@ -8,7 +8,6 @@ import AlertMessage from "./components/commons/AlertMessage";
 import PreloadImages from "./components/commons/PreloadImages";
 import OvpRedirect from "./pages/OvpRedirect";
 import FarmerCredential from "./pages/FarmerCredential";
-import MOSIPVerifiableCredential from "./pages/MOSIPVerifiableCredential";
 import PageNotFound404 from "./pages/PageNotFound404";
 import { Pages } from "./utils/config";
 import { useAppSelector } from "./redux/hooks";
@@ -17,6 +16,8 @@ import { isRTL } from "./utils/i18n";
 import { VerificationMethod } from "./types/data-types";
 import { goToHomeScreen } from "./redux/features/verification/verification.slice";
 import { Verify } from "./pages/Verify";
+import BlankApplication from "./pages/BlankApplication";
+import MosipC from "./pages/MosipC";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   store.dispatch(goToHomeScreen({ method }));
@@ -43,18 +44,22 @@ const router = createBrowserRouter([
     path: Pages.Redirect,
     element: <OvpRedirect />,
   },
-    {
-        path: Pages.MOSIPVerifiableCredential,
-        element: <MOSIPVerifiableCredential />,
-    },
-    {
-        path: Pages.FarmerCredential,
-        element: <FarmerCredential />,
-    },
   {
     path: Pages.Offline,
     element: <Offline />,
   },
+    {
+        path: Pages.BlankApplication,
+        element: <BlankApplication />,
+    },
+    {
+        path: Pages.MosipC,
+        element: <MosipC/>,
+    },
+    {
+        path: Pages.FarmerC,
+        element: <FarmerCredential />,
+    },
   {
     path: Pages.PageNotFound,
     element: <PageNotFound404 />,

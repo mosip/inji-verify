@@ -15,15 +15,15 @@ import { goToHomeScreen } from "../../../../redux/features/verification/verifica
 import { useTranslation } from "react-i18next";
 import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
 
-function VcDisplayCard({ vc }: { vc: any }) {
+function VcDisplayCard(props: displayProps) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isHover, setHover] = useState(false);
   const Download = isHover ? WhiteDownloadIcon : DownloadIcon;
 
   const saveData = async () => {
-    const myData = vc;
-    const fileName = `${vc.credentialSubject.fullName}`;
+    const myData = props.vc;
+    const fileName = `${props.vc.credentialSubject.fullName}`;
     const json = JSON.stringify(myData);
     const blob = new Blob([json], { type: "application/json" });
     const href = URL.createObjectURL(blob);
@@ -41,8 +41,8 @@ function VcDisplayCard({ vc }: { vc: any }) {
       <div
         className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}
       >
-        {vc ? (
-          Object.keys(vc.credentialSubject)
+        {props.vc ? (
+          Object.keys(props.vc.credentialSubject)
             .filter(
               (key) =>
                 key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type"
@@ -66,7 +66,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
                   id={`${convertToId(key)}-value`}
                   className="font-bold text-smallTextSize break-all"
                 >
-                  {getDisplayValue(vc.credentialSubject[key])}
+                  {getDisplayValue(props.vc.credentialSubject[key])}
                 </p>
               </div>
             ))
@@ -82,7 +82,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
           icon={<Download />}
           className="w-[125px] mt-2"
           onClick={saveData}
-          disabled={!vc}
+          disabled={!props.vc}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         />
@@ -102,13 +102,17 @@ function VcDisplayCard({ vc }: { vc: any }) {
               title="Proceed"
               className="w-[200px] lg:w-[350px] mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
               onClick={() => {
-                  const loc = vc?.type?.includes("MOSIPVerifiableCredential") ? "MOSIPVerifiableCredential" : "FarmerCredential"
-                  window.location.href = `/${loc}`
+                  window.location.href = (decodeURIComponent(`${props.loc.split("?")[1].split('=')[1]}`));
               }}
           />
       </div>
     </div>
   );
 }
+
+export type displayProps = {
+    vc: any;
+    loc: string;
+};
 
 export default VcDisplayCard;

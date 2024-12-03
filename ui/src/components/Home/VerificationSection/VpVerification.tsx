@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 
-const DisplayActiveStep = () => {
+const DisplayActiveStep = (loc: string) => {
   const { t } = useTranslation("Verify");
   const [timeLeft, setTimeLeft] = useState(QrCodeExpiry);
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
@@ -42,7 +42,7 @@ const DisplayActiveStep = () => {
   } else if (status === "COMPLETED") {
     return (
       <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
-        <VpSubmissionResult />
+        <VpSubmissionResult loc={loc}/>
       </div>
     );
   } else if (!qrData) {
@@ -79,6 +79,10 @@ const DisplayActiveStep = () => {
   }
 };
 
-export const VpVerification = () => {
-  return <div>{DisplayActiveStep()}</div>;
+export type displayProps = {
+  loc: string;
+};
+
+export const VpVerification = (props: displayProps) => {
+  return <div>{DisplayActiveStep(props.loc)}</div>;
 };

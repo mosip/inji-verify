@@ -9,8 +9,9 @@ export const Pages = {
     VerifyCredentials: "/verify",
     Offline: "/offline",
     Redirect: "/redirect",
-    MOSIPVerifiableCredential: "/MOSIPVerifiableCredential",
-    FarmerCredential: "/FarmerCredential",
+    BlankApplication: "/blank",
+    MosipC: "/mosipc",
+    FarmerC: "/farmerc",
     PageNotFound: "*"
 }
 
