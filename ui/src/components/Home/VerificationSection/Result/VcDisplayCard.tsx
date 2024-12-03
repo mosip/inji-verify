@@ -102,6 +102,7 @@ function VcDisplayCard(props: displayProps) {
               title="Proceed"
               className="w-[200px] lg:w-[350px] mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
               onClick={() => {
+                  console.log(props.loc);
                   window.location.href = (decodeURIComponent(`${props.loc.split("?")[1].split('=')[1]}`));
               }}
           />
