@@ -43,7 +43,7 @@ function* fetchRequestUri(claims: string[]) {
     const parsedData = JSON.parse(data) as QrData;
     qrData =
       OPENID4VP_PROTOCOL +
-      btoa(`client_id=${parsedData.authorizationDetails.clientId}&response_type=${parsedData.authorizationDetails.responseType}&response_mode=direct_post&nonce=${parsedData.authorizationDetails.nonce}&state=${parsedData.requestId}&response_uri=${window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.responseUri}&presentation_definition_uri=${ window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.presentationDefinitionUri}&client_metadata={"name":"${window.location}"}&presentation_definition=${JSON.stringify(pdef)}`);
+      btoa(`client_id=${parsedData.authorizationDetails.clientId}&response_type=${parsedData.authorizationDetails.responseType}&response_mode=direct_post&nonce=${parsedData.authorizationDetails.nonce}&state=${parsedData.requestId}&response_uri=${window.location + window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.responseUri}&presentation_definition_uri=${ window.location + window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.presentationDefinitionUri}&client_metadata={"name":"${window.location}"}&presentation_definition=${JSON.stringify(pdef)}`);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
   } catch (error) {
