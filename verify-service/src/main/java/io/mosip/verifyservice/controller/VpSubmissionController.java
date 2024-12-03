@@ -1,12 +1,9 @@
 package io.mosip.verifyservice.controller;
 
 import com.nimbusds.jose.shaded.gson.Gson;
-import io.mosip.verifycore.dto.submission.PresentationSubmissionDto;
-import io.mosip.verifycore.dto.submission.SubmissionResultDto;
-import io.mosip.verifycore.dto.submission.VpSubmissionDto;
-import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
-import io.mosip.verifycore.enums.Status;
-import io.mosip.verifycore.models.VpSubmission;
+import io.mosip.verifycore.dto.submission.*;
+import io.mosip.verifycore.enums.SubmissionState;
+import io.mosip.verifycore.models.VpTokenResult;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
@@ -27,17 +24,17 @@ public class VpSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @GetMapping(path = "/vp-result/{transactionId}")
-    public ResponseEntity<SubmissionResultDto> getVpResult(@PathVariable String transactionId) {
+    public ResponseEntity<VpTokenResultDto> getVpResult(@PathVariable String transactionId) {
         String requestId = verifiablePresentationRequestService.getStatusForRequestIdFor(transactionId);
-        Status authRequestStatus = verifiablePresentationRequestService.getCurrentStatusFor(requestId);
+        SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(requestId);
 
-        if (transactionId.isEmpty() || authRequestStatus != Status.COMPLETED) {
+        if (transactionId.isEmpty() || authRequestState != SubmissionState.COMPLETED) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VpSubmission submissionResult = verifiablePresentationSubmissionService.getSubmissionResult(requestId);
-        if (submissionResult != null) {
-            return new ResponseEntity<>(new SubmissionResultDto(transactionId, submissionResult.getVpToken(), submissionResult.getVerificationStatus()), HttpStatus.OK);
+        VpTokenResultDto result = verifiablePresentationSubmissionService.getSubmissionResult(requestId,transactionId);
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -48,8 +45,8 @@ public class VpSubmissionController {
         VpSubmissionDto vpSubmissionDto = new VpSubmissionDto(vpToken, presentationSubmissionDto, state);
         System.out.println(vpSubmissionDto);
 
-        Status authRequestStatus = verifiablePresentationRequestService.getCurrentStatusFor(vpSubmissionDto.getState());
-        if (authRequestStatus == null) {
+        SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(vpSubmissionDto.getState());
+        if (authRequestState == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

@@ -2,10 +2,10 @@ package io.mosip.verifycore.spi;
 
 import io.mosip.verifycore.dto.submission.VpSubmissionDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
-import io.mosip.verifycore.models.VpSubmission;
+import io.mosip.verifycore.dto.submission.VpTokenResultDto;
 
 public interface VerifiablePresentationSubmissionService {
     VpSubmissionResponseDto submit(VpSubmissionDto vpSubmissionDto);
 
-    VpSubmission getSubmissionResult(String requestId);
+    VpTokenResultDto getSubmissionResult(String requestId, String transactionId);
 }

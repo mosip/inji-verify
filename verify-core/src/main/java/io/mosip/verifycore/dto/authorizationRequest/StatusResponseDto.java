@@ -1,6 +1,6 @@
 package io.mosip.verifycore.dto.authorizationRequest;
 
-import io.mosip.verifycore.enums.Status;
+import io.mosip.verifycore.enums.SubmissionState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class StatusResponseDto {
     String transactionId;
     String requestId;
-    Status status;
+    SubmissionState submissionState;
 }

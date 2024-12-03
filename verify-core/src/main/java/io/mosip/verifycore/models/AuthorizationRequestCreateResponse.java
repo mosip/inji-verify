@@ -1,7 +1,7 @@
 package io.mosip.verifycore.models;
 
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
-import io.mosip.verifycore.enums.Status;
+import io.mosip.verifycore.enums.SubmissionState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -36,5 +36,5 @@ public class AuthorizationRequestCreateResponse implements Serializable {
     long expiresAt;
 
     @NotNull
-    Status status = Status.PENDING;
+    SubmissionState  submissionState = SubmissionState.PENDING;
 }

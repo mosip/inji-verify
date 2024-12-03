@@ -4,7 +4,7 @@ import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDt
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
 import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
-import io.mosip.verifycore.enums.Status;
+import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
 import io.mosip.verifycore.models.PresentationDefinition;
 import io.mosip.verifycore.shared.Constants;
@@ -42,7 +42,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
 
         AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
-        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestDto, expiresAt,Status.PENDING);
+        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestDto, expiresAt, SubmissionState.PENDING);
 
         presentationDefinitionRepository.save(presentationDefinition);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
@@ -52,8 +52,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public Status getCurrentStatusFor(String requestId) {
-       return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getStatus).orElse(null);
+    public SubmissionState getCurrentSubmissionStateFor(String requestId) {
+       return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getSubmissionState).orElse(null);
     }
 
     @Override
@@ -68,8 +68,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     private void updateStatusToExpired(String requestId){
         authorizationRequestCreateResponseRepository.findById(requestId).map(authorizationRequestCreateResponse -> {
-            if (authorizationRequestCreateResponse.getStatus() == Status.PENDING){
-                authorizationRequestCreateResponse.setStatus(Status.EXPIRED);
+            if (authorizationRequestCreateResponse.getSubmissionState() == SubmissionState.PENDING){
+                authorizationRequestCreateResponse.setSubmissionState(SubmissionState.EXPIRED);
                 authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
             }
             return null;

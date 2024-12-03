@@ -3,7 +3,7 @@ package io.mosip.verifyservice.controller;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDto;
 import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
 import io.mosip.verifycore.dto.authorizationRequest.StatusResponseDto;
-import io.mosip.verifycore.enums.Status;
+import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,10 @@ public class VpRequestController {
     public ResponseEntity<StatusResponseDto> getStatus(@PathVariable String requestId) {
 
         String transactionId = verifiablePresentationRequestService.getTransactionIdFor(requestId);
-        Status currentstatus = verifiablePresentationRequestService.getCurrentStatusFor(requestId);
-        if (currentstatus == null || transactionId == null)
+        SubmissionState currentSubmissionState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(requestId);
+        if (currentSubmissionState == null || transactionId == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new StatusResponseDto(transactionId, requestId, currentstatus), HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponseDto(transactionId, requestId, currentSubmissionState), HttpStatus.OK);
     }
 }

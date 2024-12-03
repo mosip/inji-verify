@@ -1,7 +1,8 @@
 package io.mosip.verifycore.enums;
 
-public enum Status {
+public enum SubmissionState {
     PENDING,
     COMPLETED,
+    PARTIALLY_COMPLETED,
     EXPIRED
 }
