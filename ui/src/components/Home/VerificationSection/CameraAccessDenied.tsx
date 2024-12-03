@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CameraAccessDeniedIcon } from '../../../utils/theme-utils';
-import StyledButton from "./commons/StyledButton";
 import {CSSProperties} from "react";
+import { Button } from './commons/Button';
 import { useTranslation } from 'react-i18next';
 
 const style: CSSProperties = {
@@ -54,14 +54,13 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                     <p id="camera-access-denied-description" className="font-normal text-lgNormalTextSize  text-cameraDeniedDescription my-3 mx-auto">
                         {t('description')}
                     </p>
-                    <StyledButton
+                    <Button
                         id="camer-access-denied-okay-button"
+                        title={t('okay')}
                         onClick={handleClose}
                         className="w-[180px] mx-0 my-1.5 text-lgNormalTextSize inline-flex"
                         data-testid="camera-access-denied-okay"
-                    >
-                       {t('okay')}
-                    </StyledButton>
+                    />
                 </div>
             </Fade>
         </Modal>

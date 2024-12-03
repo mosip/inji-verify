@@ -1,6 +1,18 @@
 package io.mosip.verifyservice.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nimbusds.jose.shaded.gson.Gson;
+
 import io.mosip.verifycore.dto.submission.PresentationSubmissionDto;
 import io.mosip.verifycore.dto.submission.SubmissionResultDto;
 import io.mosip.verifycore.dto.submission.VpSubmissionDto;
@@ -10,11 +22,6 @@ import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")

@@ -1,9 +1,18 @@
 package io.mosip.verifyservice.services;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
@@ -15,18 +24,10 @@ import io.mosip.verifycore.exception.VerificationFailedException;
 import io.mosip.verifycore.models.VpSubmission;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
-import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
-import io.mosip.verifyservice.repository.VpSubmissionRepository;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static io.mosip.verifycore.utils.SecurityUtils.getFormattedJws;
 import static io.mosip.verifycore.utils.SecurityUtils.getPublicKeyFromString;
+import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
+import io.mosip.verifyservice.repository.VpSubmissionRepository;
 
 @Service
 public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePresentationSubmissionService {

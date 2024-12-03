@@ -1,7 +1,7 @@
 import React from "react";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
-import StyledButton from "./commons/StyledButton";
+import {Button} from "./commons/Button";
 import { useAppDispatch } from "../../../redux/hooks";
 import { goToHomeScreen } from "../../../redux/features/verification/verification.slice";
 import { VerificationSteps } from "../../../utils/config";
@@ -32,15 +32,14 @@ const Verification = () => {
         )}
       </div>
       <div className="col-span-12">
-        <StyledButton
+        <Button
           id="verification-back-button"
+          title={t("Common:Button.back")}
           className="w-[100px] lg:w-[350px] mt-[18px] mx-0 my-1.6 text-lgNormalTextSize inline-flex"
           onClick={() => {
             dispatch(goToHomeScreen({}));
           }}
-        >
-          {t("Common:Button.back")}
-        </StyledButton>
+        />
       </div>
     </div>
   );

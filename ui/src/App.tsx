@@ -14,6 +14,7 @@ import store, { RootState } from "./redux/store";
 import { isRTL } from "./utils/i18n";
 import { VerificationMethod } from "./types/data-types";
 import { goToHomeScreen } from "./redux/features/verification/verification.slice";
+import { Verify } from "./pages/Verify";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   store.dispatch(goToHomeScreen({ method }));
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
     path: Pages.Scan,
     element: <Scan />,
     loader: () => switchToVerificationMethod("SCAN"),
+  },
+  {
+    path: Pages.VerifyCredentials,
+    element: <Verify />,
+    loader: () => switchToVerificationMethod("VERIFY"),
   },
   {
     path: Pages.Redirect,
@@ -55,13 +61,13 @@ function App() {
         document.body.classList.toggle('rtl', rtl);
     }, [rtl]);
     
-    return (
-        <div className="font-base">
-            <RouterProvider router={router}/>
-            <AlertMessage isRtl={rtl} />
-            <PreloadImages imageUrls={preloadImages}/>
-        </div>
-    );
+  return (
+    <div className="font-base">
+      <RouterProvider router={router} />
+      <AlertMessage isRtl={rtl}  />
+      <PreloadImages imageUrls={preloadImages} />
+    </div>
+  );
 }
 
 export default App;

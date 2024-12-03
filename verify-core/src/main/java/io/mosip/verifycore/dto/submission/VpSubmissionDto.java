@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class VpSubmissionDto {
+
     @NotNull
     String vpToken;
     @NotNull

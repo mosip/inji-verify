@@ -1,10 +1,12 @@
 import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
+import certImage from '../assets/defaultTheme/cert.png';
+import certImage2 from '../assets/defaultTheme/cert2.png';
 
 export const Pages = {
     Home: "/",
     Scan:"/scan",
-    VerifyCredentials: "/",/*"/verify"*/
+    VerifyCredentials: "/verify",
     Offline: "/offline",
     Redirect: "/redirect",
     PageNotFound: "*"
@@ -28,6 +30,12 @@ export const VerificationSteps: any = {
         QrCodePrompt: 1,
         Verifying: 2,
         DisplayResult: 3
+    },
+    "VERIFY": {
+        InitiateVpRequest: 1,
+        SelectCredential: 2,
+        ScanQrCode: 3,
+        DisplayResult: 4
     }
 }
 
@@ -65,6 +73,24 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
                 description: i18next.t('VerificationStepsContent:UPLOAD.DisplayResult.description'),
             }
         ],
+        VERIFY: [
+            {
+                label: i18next.t('VerificationStepsContent:VERIFY.InitiateVpRequest.label'),
+                description: i18next.t('VerificationStepsContent:VERIFY.InitiateVpRequest.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.label'),
+                description: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.label'),
+                description: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:VERIFY.DisplayResult.label'),
+                description: i18next.t('VerificationStepsContent:VERIFY.DisplayResult.description'),
+            }
+        ],
         TO_BE_SELECTED: []
     };
 };
@@ -80,6 +106,8 @@ export const AlertMessages =()=> {
         verificationMethodComingSoon: {message: i18next.t("AlertMessages:verificationMethodComingSoon"), severity: "warning"} as AlertInfo,
         unsupportedFileType: {message: i18next.t("AlertMessages:unsupportedFileType"), severity: "error"} as AlertInfo,
         pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo,
+        failToGenerateQrCode: {message:i18next.t("AlertMessages:failToGenerateQrCode"), severity: "error"} as AlertInfo,
+        unexpectedError: {message:i18next.t("AlertMessages:unexpectedError"), severity: "error"} as AlertInfo,
         scanSessionExpired: {message: i18next.t("AlertMessages:scanSessionExpired"), severity: "error"} as AlertInfo
     }
 };
@@ -128,3 +156,90 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
+export const verifiableClaims: any[] = [
+  {
+    logo: certImage,
+    type: "CAR Statement",
+    essential: true,
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: { type: "string", pattern: "StatementCredential" },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage2,
+    type: "CAR Registration Receipt",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: {
+                  type: "string",
+                  pattern: "RegistrationReceiptCredential",
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage,
+    type: "Farmer Registry Certificate",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {},
+        },
+      ],
+    },
+  },
+  {
+    logo: certImage,
+    type: "Health Insurance",
+    definition: {
+      purpose:
+        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      input_descriptors: [
+        {
+          id: "id card credential",
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {},
+        },
+      ],
+    },
+  },
+];
+export const OPENID4VP_PROTOCOL = "openid4vp://authorize?"
+export const QrCodeExpiry = 300; //5*60 seconds
+export const PollStatusDelay = 5000; // Continue polling after 5 seconds untill status is changes

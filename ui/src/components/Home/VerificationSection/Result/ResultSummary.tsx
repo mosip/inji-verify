@@ -4,19 +4,23 @@ import { useTranslation } from 'react-i18next';
 
 
 const backgroundColorMapping: any = {
-    EXPIRED: "bg-expired",
-    INVALID: "bg-invalid",
-    SUCCESS: "bg-success"
-}
+  EXPIRED: "bg-expired",
+  INVALID: "bg-invalid",
+  SUCCESS: "bg-success",
+  TIMEOUT: "bg-expired",
+};
 
 const textColorMapping: any = {
-    SUCCESS: "text-success",
-    INVALID: "text-invalid",
-    EXPIRED: "text-expired"
-}
+  SUCCESS: "text-success",
+  INVALID: "text-invalid",
+  EXPIRED: "text-expired",
+  TIMEOUT: "text-expired",
+};
 
-const ResultSummary = ({status}: {
-    status: "SUCCESS" | "EXPIRED" | "INVALID"
+const ResultSummary = ({
+  status,
+}: {
+  status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT";
 }) => {
     const backgroundColor = backgroundColorMapping[status]
     const textColor = textColorMapping[status]

@@ -1,15 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { Logo } from '../../utils/theme-utils';
-import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
-import {ReactComponent as NewTabIcon} from "../../assets/new-tab.svg";
 import {Pages} from "../../utils/config";
 import { LanguageSelector } from '../commons/LanguageSelector';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../redux/hooks';
 import { RootState } from '../../redux/store';
 import { isRTL } from '../../utils/i18n';
+import { Logo, MenuIcon, NewTabIcon } from '../../utils/theme-utils';
 
 const SubMenu = () => {
     const {t} = useTranslation("Navbar");
@@ -21,13 +19,13 @@ const SubMenu = () => {
                 href="https://community.mosip.io/"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("contactUs")} <NewTabIcon className="mx-1.5"/></a>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("contactUs")} <NewTabIcon className="mx-1.5"/></a>
             <a id="documentation"
                 href="https://docs.mosip.io/inji/inji-verify/overview"
                target="_blank"
                rel="noreferrer"
-               className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-700 hover:bg-gray-100 lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
-            <button id="faq" disabled className="inline-flex items-center w-full px-[26px] py-2 text-sm text-gray-400 hover:bg-gray-100 lg:px-4"> {t("faqs")} </button>
+               className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("documentation")} <NewTabIcon className="mx-1.5" /></a>
+            <button id="faq" disabled className="inline-flex items-center w-full px-[26px] py-2 text-sm lg:px-4"> {t("faqs")} </button>
         </div>
     );
 }
@@ -56,7 +54,7 @@ const MobileDropDownMenu = ({ showMenu, setShowMenu }: { showMenu: boolean; setS
                 <div id="menu"
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
                     <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">{t("home")}</a>
-                    <a id="verify-credentials-button" href={Pages.Home} className="block px-1 py-2 font-bold text-sm bg-gradient-sm bg-clip-text text-transparent">{t('verifyCredentials')}</a>
+                    <a id="verify-credentials-button" href={Pages.Home} className={`block px-1 py-2 font-bold text-sm bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>{t('verifyCredentials')}</a>
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
@@ -89,8 +87,8 @@ const DesktopMenu = () => {
                 </li>
                 <li>
                     <a id="verify-credentials-button"
-                       href={Pages.Home}
-                       className="block py-2 font-bold rounded bg-gradient bg-clip-text text-transparent">
+                       href={Pages.VerifyCredentials}
+                       className={`block py-2 font-bold rounded bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>
                         {t("verifyCredentials")}
                     </a>
                 </li>
@@ -110,11 +108,12 @@ const DesktopMenu = () => {
 function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
 
+
     return (
         <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
             <div className="container flex flex-wrap justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
-                        className={`${showMenu?"bg-lighter-gradient":"bg-background"} inline-flex items-center p-3 ml-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
+                        className={`${showMenu?`bg-${window._env_.DEFAULT_THEME}-lighter-gradient`:"bg-background"} inline-flex items-center p-3 mr-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}
                         aria-controls="navbar-default" aria-expanded="false" id="hamburger"
                         onClick={() => setShowMenu(!showMenu)}
                 >
