@@ -77,21 +77,12 @@ function VcDisplayCard(props: displayProps) {
         )}
       </div>
       <div>
-        <Button
-          title={"Download"}
-          icon={<Download />}
-          className="w-[125px] mt-2"
-          onClick={saveData}
-          disabled={!props.vc}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-        />
       </div>
       <div className="grid">
           <Button
               id="verify-another-qr-code-button"
               title="Proceed"
-              className="w-[200px] lg:w-[350px] mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
+              className="w-[200px] lg:w-[350px] mt-10 mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
               onClick={() => {
                   console.log(props.loc);
                   window.location.href = (decodeURIComponent(`${props.loc.split("?")[1].split('=')[1]}`));

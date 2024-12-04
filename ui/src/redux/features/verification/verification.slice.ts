@@ -34,7 +34,7 @@ const verificationSlice = createSlice({
             const method = action.payload.method ?? state.method;
             state.method = method;
             state.qrReadResult = {status: "NOT_READ"};
-            state.activeScreen =  method === "VERIFY" ? VerificationSteps[state.method].InitiateVpRequest : VerificationSteps[state.method].QrCodePrompt ;
+            state.activeScreen =  method === "VERIFY" ? VerificationSteps[state.method].ScanQrCode : VerificationSteps[state.method].QrCodePrompt ;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
             state.ovp = {};
         }

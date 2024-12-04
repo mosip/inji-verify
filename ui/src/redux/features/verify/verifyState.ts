@@ -8,7 +8,7 @@ const PreloadedState = {
   txnId: "",
   reqId: "",
   method: "VERIFY",
-  activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
+  activeScreen: VerificationSteps["VERIFY"].ScanQrCode,
   SelectionPannel: false,
   verificationSubmissionResult: { vc: undefined, vcStatus: undefined },
 };
@@ -21,7 +21,7 @@ const verifyState = createSlice({
       state.isLoading = true;
     },
     setSelectCredential: (state) => {
-      state.activeScreen = VerificationSteps[state.method].SelectCredential;
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
       state.SelectionPannel = true;
     },
     setVpRequestResponse: (state, action) => {
@@ -42,7 +42,7 @@ const verifyState = createSlice({
       state.verificationSubmissionResult = action.payload.verificationResult;
     },
     resetVpRequest: (state) => {
-      state.activeScreen = VerificationSteps[state.method].InitiateVpRequest;
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
       state.verificationSubmissionResult = {
         vc: undefined,
         vcStatus: undefined,
@@ -52,7 +52,7 @@ const verifyState = createSlice({
       state.qrData = "";
       state.txnId = "";
       state.reqId = "";
-      state.activeScreen = VerificationSteps["VERIFY"].InitiateVpRequest;
+      state.activeScreen = VerificationSteps["VERIFY"].ScanQrCode;
       state.verificationSubmissionResult = {
         vc: undefined,
         vcStatus: undefined,

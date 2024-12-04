@@ -69,14 +69,6 @@
       }
     },
     "VERIFY": {
-      "InitiateVpRequest": {
-        "label": "Initiate VP Request Process",
-        "description": "Click Request Verifiable Credentials to begin the verification process."
-      },
-      "SelectCredential": {
-        "label": "Select Credentials & Generate QR Code",
-        "description": "Choose the required verifiable credentials and click Generate QR Code."
-      },
       "ScanQrCode": {
         "label": "Scan QR Code (Use a Different Device)",
         "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"

@@ -35,10 +35,8 @@ export const VerificationSteps: any = {
         DisplayResult: 3
     },
     "VERIFY": {
-        InitiateVpRequest: 1,
-        SelectCredential: 2,
-        ScanQrCode: 3,
-        DisplayResult: 4
+        ScanQrCode: 1,
+        DisplayResult: 2
     }
 }
 
@@ -77,14 +75,6 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
             }
         ],
         VERIFY: [
-            {
-                label: i18next.t('VerificationStepsContent:VERIFY.InitiateVpRequest.label'),
-                description: i18next.t('VerificationStepsContent:VERIFY.InitiateVpRequest.description'),
-            },
-            {
-                label: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.label'),
-                description: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.description'),
-            },
             {
                 label: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.label'),
                 description: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.description'),
