@@ -1,11 +1,14 @@
 package io.mosip.verifyservice.controller;
 
-import com.nimbusds.jose.shaded.gson.Gson;
-import io.mosip.verifycore.dto.submission.*;
+import io.mosip.verifycore.dto.submission.PresentationSubmissionDto;
+import io.mosip.verifycore.dto.submission.ResponseAcknowledgementDto;
+import io.mosip.verifycore.dto.submission.VPSubmissionDto;
+import io.mosip.verifycore.dto.submission.VPTokenResultDto;
 import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
+import io.mosip.verifyservice.singletons.GsonSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +23,9 @@ public class VPSubmissionController {
 
     @Autowired
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
+
+    @Autowired
+    GsonSingleton gsonSingleton;
 
     @GetMapping(path = "/vp-result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
@@ -39,7 +45,7 @@ public class VPSubmissionController {
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<ResponseAcknowledgementDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
-        PresentationSubmissionDto presentationSubmissionDto = new Gson().fromJson(presentationSubmission, PresentationSubmissionDto.class);
+        PresentationSubmissionDto presentationSubmissionDto = gsonSingleton.getInstance().fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 

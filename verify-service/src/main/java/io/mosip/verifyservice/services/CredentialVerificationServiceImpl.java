@@ -6,7 +6,7 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.verifycore.dto.verification.VerificationStatusDto;
 import io.mosip.verifycore.enums.VerificationStatus;
 import io.mosip.verifycore.spi.CredentialVerificationService;
-import io.mosip.verifyservice.beans.CredentialsVerifierSingleton;
+import io.mosip.verifyservice.singletons.CredentialsVerifierSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class CredentialVerificationServiceImpl implements CredentialVerification
     CredentialsVerifierSingleton credentialsVerifierSingleton;
     @Override
     public VerificationStatusDto verify(String vc) {
-        VerificationResult verificationResult = credentialsVerifierSingleton.verify(vc, CredentialFormat.LDP_VC);
+        VerificationResult verificationResult = credentialsVerifierSingleton.getInstance().verify(vc, CredentialFormat.LDP_VC);
         if (verificationResult.getVerificationStatus()) {
             if (verificationResult.getVerificationErrorCode().equals(CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED))
                 return new VerificationStatusDto(VerificationStatus.EXPIRED);
