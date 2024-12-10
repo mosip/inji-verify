@@ -8,5 +8,5 @@ public interface VerifiablePresentationRequestService {
     VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate);
     SubmissionState getCurrentSubmissionStateFor(String requestId);
     String getTransactionIdFor(String requestId);
-    String getStatusForRequestIdFor(String transactionId);
+    String getLatestRequestIdFor(String transactionId);
 }

@@ -23,7 +23,7 @@ public class VPSubmissionController {
 
     @GetMapping(path = "/vp-result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
-        String requestId = verifiablePresentationRequestService.getStatusForRequestIdFor(transactionId);
+        String requestId = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
         SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(requestId);
 
         if (transactionId.isEmpty() || authRequestState != SubmissionState.COMPLETED) {

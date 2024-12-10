@@ -62,7 +62,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public String getStatusForRequestIdFor(String transactionId) {
+    public String getLatestRequestIdFor(String transactionId) {
         return authorizationRequestCreateResponseRepository.findFirstByTransactionIdOrderByExpiresAtDesc(transactionId).map(AuthorizationRequestCreateResponse::getRequestId).orElse(null);
     }
 
