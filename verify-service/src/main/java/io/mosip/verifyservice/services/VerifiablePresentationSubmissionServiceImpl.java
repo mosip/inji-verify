@@ -20,6 +20,7 @@ import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.VPSubmissionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import static io.mosip.verifycore.utils.SecurityUtils.*;
 import static io.mosip.verifycore.utils.Utils.getVerificationStatus;
 
 @Service
+@Slf4j
 public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePresentationSubmissionService {
 
     @Autowired
@@ -70,7 +72,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
             vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.SUCCESS));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Failed to verify",e);
             vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.FAILED));
         }
 
