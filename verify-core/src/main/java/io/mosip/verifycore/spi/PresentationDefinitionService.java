@@ -1,8 +1,8 @@
 package io.mosip.verifycore.spi;
 
-import io.mosip.verifycore.models.PresentationDefinition;
+import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
 
 public interface PresentationDefinitionService {
 
-    PresentationDefinition getPresentationDefinition(String id);
+    PresentationDefinitionDto getPresentationDefinition(String id);
 }
