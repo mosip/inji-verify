@@ -1,6 +1,8 @@
 package io.mosip.verifycore.shared;
 
 public class Constants {
+
+    public static int DEFAULT_EXPIRY = 300 * 1000;
     public static final String RESPONSE_SUBMISSION_URI = "/vp-direct-post";
     public static final String VP_DEFINITION_URI = "/vp-definition/";
     public static final String RESPONSE_TYPE =  "vp_token";

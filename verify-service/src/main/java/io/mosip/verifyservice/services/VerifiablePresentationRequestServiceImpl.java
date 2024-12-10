@@ -19,7 +19,7 @@ import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static io.mosip.verifycore.shared.Config.DEFAULT_EXPIRY;
+import static io.mosip.verifycore.shared.Constants.DEFAULT_EXPIRY;
 
 @Service
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
