@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/vp-definition")
 @RestController
-@CrossOrigin(origins = "*")
 public class PresentationDefinitionController {
     @Autowired
     PresentationDefinitionService presentationDefinitionService;

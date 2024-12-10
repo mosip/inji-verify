@@ -10,7 +10,6 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 
 @RequestMapping(path = "/vc-verification")
 @RestController
-@CrossOrigin(origins = "*")
 public class CredentialVerificationController {
     @PostMapping()
     public VerificationStatusDto verify(@RequestBody String vc) {

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/vp-request")
 @RestController
-@CrossOrigin(origins = "*")
 public class VPRequestController {
 
     @Autowired
