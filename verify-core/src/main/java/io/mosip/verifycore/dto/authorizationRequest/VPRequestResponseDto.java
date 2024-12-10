@@ -7,9 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class AuthorizationRequestCreateResponseDto {
+public class VPRequestResponseDto {
     String transactionId;
     String requestId;
-    AuthorizationRequestDto authorizationDetails;
+    AuthorizationRequestResponseDto authorizationDetails;
     long expiresAt;
 }

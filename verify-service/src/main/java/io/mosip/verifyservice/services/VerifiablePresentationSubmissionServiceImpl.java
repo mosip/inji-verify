@@ -8,7 +8,7 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.verifycore.dto.submission.VpSubmissionDto;
-import io.mosip.verifycore.dto.submission.VpSubmissionResponseDto;
+import io.mosip.verifycore.dto.submission.ResponseAcknowledgementDto;
 import io.mosip.verifycore.dto.submission.VpTokenResultDto;
 import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.enums.SubmissionStatus;
@@ -40,11 +40,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     VpSubmissionRepository vpSubmissionRepository;
 
     @Override
-    public VpSubmissionResponseDto submit(VpSubmissionDto vpSubmissionDto) {
+    public ResponseAcknowledgementDto submit(VpSubmissionDto vpSubmissionDto) {
         new Thread(() -> {
             processSubmission(vpSubmissionDto);
         }).start();
-        return new VpSubmissionResponseDto("", "", "");
+        return new ResponseAcknowledgementDto("", "", "");
 
     }
 

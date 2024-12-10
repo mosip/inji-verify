@@ -3,7 +3,6 @@ package io.mosip.verifyservice.controller;
 import com.nimbusds.jose.shaded.gson.Gson;
 import io.mosip.verifycore.dto.submission.*;
 import io.mosip.verifycore.enums.SubmissionState;
-import io.mosip.verifycore.models.VpTokenResult;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationRequestService;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
@@ -40,7 +39,7 @@ public class VpSubmissionController {
     }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<VpSubmissionResponseDto> submitVp(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
+    public ResponseEntity<ResponseAcknowledgementDto> submitVp(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
         PresentationSubmissionDto presentationSubmissionDto = new Gson().fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VpSubmissionDto vpSubmissionDto = new VpSubmissionDto(vpToken, presentationSubmissionDto, state);
         System.out.println(vpSubmissionDto);
@@ -50,7 +49,7 @@ public class VpSubmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VpSubmissionResponseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+        ResponseAcknowledgementDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
         return new ResponseEntity<>(submissionResponseDto, HttpStatus.OK);
     }
 }

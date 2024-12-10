@@ -14,7 +14,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(force = true)
-public class AuthorizationRequestDto implements Serializable {
+public class AuthorizationRequestResponseDto implements Serializable {
 
     private final String responseType = Constants.RESPONSE_TYPE;
     private final String clientId;
@@ -23,7 +23,7 @@ public class AuthorizationRequestDto implements Serializable {
     private String nonce;
     private final long iat;
 
-    public AuthorizationRequestDto(String clientId, PresentationDefinition presentationDefinition,String nonce) {
+    public AuthorizationRequestResponseDto(String clientId, PresentationDefinition presentationDefinition, String nonce) {
         this.clientId = clientId;
         this.responseUri = Constants.RESPONSE_SUBMISSION_URI;
         this.presentationDefinitionUri = presentationDefinition.getURL();

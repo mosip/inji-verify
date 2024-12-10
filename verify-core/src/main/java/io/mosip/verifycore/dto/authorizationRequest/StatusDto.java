@@ -1,17 +1,17 @@
 package io.mosip.verifycore.dto.authorizationRequest;
 
+import io.mosip.verifycore.enums.SubmissionState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.json.JSONObject;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorizationRequestResultDto {
+public class StatusDto {
     String transactionId;
-    boolean verified;
-    JSONObject claims;
+    String requestId;
+    SubmissionState submissionState;
 }

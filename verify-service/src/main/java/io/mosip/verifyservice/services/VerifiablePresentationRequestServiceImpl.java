@@ -1,8 +1,8 @@
 package io.mosip.verifyservice.services;
 
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateDto;
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestCreateResponseDto;
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
+import io.mosip.verifycore.dto.authorizationRequest.VPRequestCreateDto;
+import io.mosip.verifycore.dto.authorizationRequest.VPRequestResponseDto;
+import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestResponseDto;
 import io.mosip.verifycore.dto.presentation.PresentationDefinitionDto;
 import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.models.AuthorizationRequestCreateResponse;
@@ -31,7 +31,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public VerifiablePresentationRequestServiceImpl() {}
 
     @Override
-    public AuthorizationRequestCreateResponseDto createAuthorizationRequest(AuthorizationRequestCreateDto vpRequestCreate) {
+    public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) {
 
         String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID(Constants.TRANSACTION_ID_PREFIX);
         String requestId = Utils.createID(Constants.REQUEST_ID_PREFIX);
@@ -41,14 +41,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         PresentationDefinitionDto presentationDefinitionDto = vpRequestCreate.getPresentationDefinition();
         PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
 
-        AuthorizationRequestDto authorizationRequestDto = new AuthorizationRequestDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
-        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestDto, expiresAt, SubmissionState.PENDING);
+        AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
+        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt, SubmissionState.PENDING);
 
         presentationDefinitionRepository.save(presentationDefinition);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         startStatusAutoTimer(requestId);
 
-        return new AuthorizationRequestCreateResponseDto(authorizationRequestCreateResponse.getTransactionId(),authorizationRequestCreateResponse.getRequestId(),authorizationRequestCreateResponse.getAuthorizationDetails(),authorizationRequestCreateResponse.getExpiresAt());
+        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(),authorizationRequestCreateResponse.getRequestId(),authorizationRequestCreateResponse.getAuthorizationDetails(),authorizationRequestCreateResponse.getExpiresAt());
     }
 
     @Override

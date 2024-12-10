@@ -1,6 +1,6 @@
 package io.mosip.verifycore.models;
 
-import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestDto;
+import io.mosip.verifycore.dto.authorizationRequest.AuthorizationRequestResponseDto;
 import io.mosip.verifycore.enums.SubmissionState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +29,7 @@ public class AuthorizationRequestCreateResponse implements Serializable {
     @NotNull
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
-    AuthorizationRequestDto authorizationDetails;
+    AuthorizationRequestResponseDto authorizationDetails;
 
     @NotNull
     @Column
