@@ -1,21 +1,30 @@
 package io.mosip.verifycore.utils;
 
 import io.mosip.verifycore.shared.Constants;
-import org.apache.tomcat.util.codec.binary.Base64;
+
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.time.Instant;
 
 public class SecurityUtils {
 
     public static String generateNonce()
     {
-        String dateTimeString = Long.toString(Instant.now().toEpochMilli());
-        byte[] nonceByte = dateTimeString.getBytes();
-        return Base64.encodeBase64String(nonceByte);
+        SecureRandom random = new SecureRandom();
+        byte[] randomBytes = new byte[16];
+        random.nextBytes(randomBytes);
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : randomBytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 
      public static RSAPublicKey getPublicKeyFromString(String pem)  {
