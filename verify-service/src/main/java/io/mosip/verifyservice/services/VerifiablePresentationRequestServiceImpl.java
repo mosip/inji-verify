@@ -52,7 +52,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public SubmissionState getCurrentSubmissionStateFor(String requestId) {
+    public SubmissionState getCurrentAuthorizationRequestStateFor(String requestId) {
        return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getSubmissionState).orElse(null);
     }
 

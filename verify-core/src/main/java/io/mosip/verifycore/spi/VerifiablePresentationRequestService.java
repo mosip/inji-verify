@@ -6,7 +6,7 @@ import io.mosip.verifycore.enums.SubmissionState;
 
 public interface VerifiablePresentationRequestService {
     VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate);
-    SubmissionState getCurrentSubmissionStateFor(String requestId);
+    SubmissionState getCurrentAuthorizationRequestStateFor(String requestId);
     String getTransactionIdFor(String requestId);
     String getLatestRequestIdFor(String transactionId);
 }

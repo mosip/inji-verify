@@ -32,7 +32,7 @@ public class VPRequestController {
     public ResponseEntity<StatusDto> getStatus(@PathVariable String requestId) {
 
         String transactionId = verifiablePresentationRequestService.getTransactionIdFor(requestId);
-        SubmissionState currentSubmissionState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(requestId);
+        SubmissionState currentSubmissionState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
         if (currentSubmissionState == null || transactionId == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
