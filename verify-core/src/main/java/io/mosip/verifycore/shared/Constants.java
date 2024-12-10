@@ -7,11 +7,8 @@ public class Constants {
     public static final String VP_DEFINITION_URI = "/vp-definition/";
     public static final String RESPONSE_TYPE =  "vp_token";
 
-    public static final String PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----";
-    public static final String PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----";
     public static final String TRANSACTION_ID_PREFIX = "txn";
     public static final String REQUEST_ID_PREFIX = "req";
-    public static final String VC_EXPIRED_ERROR_CODE = "ERR_VC_EXPIRED";
 
     //JSON KEYS
     public static final String KEY_PROOF = "proof";
