@@ -94,7 +94,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return new VPTokenResultDto(transactionId,SubmissionStatus.SUCCESS,vcVerificationResults);
     }
 
-    private static List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {
+    private List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {
         List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
