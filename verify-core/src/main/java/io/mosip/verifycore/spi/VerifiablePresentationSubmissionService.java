@@ -7,5 +7,5 @@ import io.mosip.verifycore.dto.submission.VPTokenResultDto;
 public interface VerifiablePresentationSubmissionService {
     ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto);
 
-    VPTokenResultDto getSubmissionResult(String requestId, String transactionId);
+    VPTokenResultDto getVPResult(String requestId, String transactionId);
 }

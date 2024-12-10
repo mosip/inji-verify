@@ -30,7 +30,7 @@ public class VPSubmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VPTokenResultDto result = verifiablePresentationSubmissionService.getSubmissionResult(requestId,transactionId);
+        VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestId,transactionId);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
