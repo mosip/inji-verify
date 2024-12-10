@@ -4,7 +4,6 @@ package io.mosip.verifyservice.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.verifycore.dto.submission.VPSubmissionDto;
@@ -18,6 +17,7 @@ import io.mosip.verifycore.models.VCResult;
 import io.mosip.verifycore.models.VPSubmission;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
+import io.mosip.verifyservice.beans.CredentialsVerifierSingleton;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
 import io.mosip.verifyservice.repository.VPSubmissionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
+
+    @Autowired
+    CredentialsVerifierSingleton credentialsVerifierSingleton;
 
     @Override
     public ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto) {
@@ -99,7 +102,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
-            VerificationResult verificationResult = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
+            VerificationResult verificationResult = credentialsVerifierSingleton.verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = getVerificationStatus(verificationResult);
             verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
         }

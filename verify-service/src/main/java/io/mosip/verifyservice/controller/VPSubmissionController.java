@@ -41,6 +41,7 @@ public class VPSubmissionController {
     public ResponseEntity<ResponseAcknowledgementDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
         PresentationSubmissionDto presentationSubmissionDto = new Gson().fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
+        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
         SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(vpSubmissionDto.getState());
         if (authRequestState == null) {
