@@ -48,7 +48,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         startStatusAutoTimer(requestId);
 
-        return new AuthorizationRequestCreateResponseDto(authorizationRequestCreateResponse);
+        return new AuthorizationRequestCreateResponseDto(authorizationRequestCreateResponse.getTransactionId(),authorizationRequestCreateResponse.getRequestId(),authorizationRequestCreateResponse.getAuthorizationDetails(),authorizationRequestCreateResponse.getExpiresAt());
     }
 
     @Override
