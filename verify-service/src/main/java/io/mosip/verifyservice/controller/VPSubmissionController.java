@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-public class VpSubmissionController {
+public class VPSubmissionController {
 
     @Autowired
     VerifiablePresentationRequestService verifiablePresentationRequestService;
@@ -23,7 +23,7 @@ public class VpSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @GetMapping(path = "/vp-result/{transactionId}")
-    public ResponseEntity<VpTokenResultDto> getVpResult(@PathVariable String transactionId) {
+    public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
         String requestId = verifiablePresentationRequestService.getStatusForRequestIdFor(transactionId);
         SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(requestId);
 
@@ -31,7 +31,7 @@ public class VpSubmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VpTokenResultDto result = verifiablePresentationSubmissionService.getSubmissionResult(requestId,transactionId);
+        VPTokenResultDto result = verifiablePresentationSubmissionService.getSubmissionResult(requestId,transactionId);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
@@ -39,9 +39,9 @@ public class VpSubmissionController {
     }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<ResponseAcknowledgementDto> submitVp(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
+    public ResponseEntity<ResponseAcknowledgementDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
         PresentationSubmissionDto presentationSubmissionDto = new Gson().fromJson(presentationSubmission, PresentationSubmissionDto.class);
-        VpSubmissionDto vpSubmissionDto = new VpSubmissionDto(vpToken, presentationSubmissionDto, state);
+        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         System.out.println(vpSubmissionDto);
 
         SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentSubmissionStateFor(vpSubmissionDto.getState());

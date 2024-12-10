@@ -7,19 +7,19 @@ import com.auth0.jwt.algorithms.Algorithm;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
-import io.mosip.verifycore.dto.submission.VpSubmissionDto;
+import io.mosip.verifycore.dto.submission.VPSubmissionDto;
 import io.mosip.verifycore.dto.submission.ResponseAcknowledgementDto;
-import io.mosip.verifycore.dto.submission.VpTokenResultDto;
+import io.mosip.verifycore.dto.submission.VPTokenResultDto;
 import io.mosip.verifycore.enums.SubmissionState;
 import io.mosip.verifycore.enums.SubmissionStatus;
 import io.mosip.verifycore.enums.VerificationStatus;
 import io.mosip.verifycore.exception.VerificationFailedException;
-import io.mosip.verifycore.models.VcResult;
-import io.mosip.verifycore.models.VpSubmission;
+import io.mosip.verifycore.models.VCResult;
+import io.mosip.verifycore.models.VPSubmission;
 import io.mosip.verifycore.shared.Constants;
 import io.mosip.verifycore.spi.VerifiablePresentationSubmissionService;
 import io.mosip.verifyservice.repository.AuthorizationRequestCreateResponseRepository;
-import io.mosip.verifyservice.repository.VpSubmissionRepository;
+import io.mosip.verifyservice.repository.VPSubmissionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +37,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     @Autowired
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
-    VpSubmissionRepository vpSubmissionRepository;
+    VPSubmissionRepository vpSubmissionRepository;
 
     @Override
-    public ResponseAcknowledgementDto submit(VpSubmissionDto vpSubmissionDto) {
+    public ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto) {
         new Thread(() -> {
             processSubmission(vpSubmissionDto);
         }).start();
@@ -48,7 +48,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     }
 
-    private void processSubmission(VpSubmissionDto vpSubmissionDto) {
+    private void processSubmission(VPSubmissionDto vpSubmissionDto) {
         JSONObject vpProof = new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject(Constants.KEY_PROOF);
         String jws = getFormattedJws(vpProof.getString(Constants.KEY_JWS));
         String publicKeyPem = vpProof.getString(Constants.KEY_VERIFICATION_METHOD);
@@ -60,18 +60,18 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             verifier.verify(jws);
 
             JSONArray verifiableCredentials = new JSONObject(vpSubmissionDto.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
-            List<VcResult> verificationResults = getVcVerificationResults(verifiableCredentials);
+            List<VCResult> verificationResults = getVCVerificationResults(verifiableCredentials);
             boolean combinedVerificationStatus = true;
-            for (VcResult verificationResult : verificationResults) {
+            for (VCResult verificationResult : verificationResults) {
                 combinedVerificationStatus = combinedVerificationStatus && (verificationResult.getVerificationStatus() == VerificationStatus.SUCCESS);
             }
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.SUCCESS));
+            vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.SUCCESS));
         } catch (Exception e) {
             e.printStackTrace();
-            vpSubmissionRepository.save(new VpSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.FAILED));
+            vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), SubmissionStatus.FAILED));
         }
 
         authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
@@ -82,24 +82,24 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     @Override
-    public VpTokenResultDto getSubmissionResult(String requestId, String transactionId) {
-        VpSubmission vpSubmissionResult = vpSubmissionRepository.findById(requestId).orElse(null);
-        if (vpSubmissionResult == null || vpSubmissionResult.getSubmissionStatus() == SubmissionStatus.FAILED){
-            return new VpTokenResultDto(transactionId,SubmissionStatus.FAILED,null);
+    public VPTokenResultDto getSubmissionResult(String requestId, String transactionId) {
+        VPSubmission VPSubmissionResult = vpSubmissionRepository.findById(requestId).orElse(null);
+        if (VPSubmissionResult == null || VPSubmissionResult.getSubmissionStatus() == SubmissionStatus.FAILED){
+            return new VPTokenResultDto(transactionId,SubmissionStatus.FAILED,null);
         }
-        JSONArray verifiableCredentials = new JSONObject(vpSubmissionResult.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
-        List<VcResult> vcVerificationResults = getVcVerificationResults(verifiableCredentials);
-        return new VpTokenResultDto(transactionId,SubmissionStatus.SUCCESS,vcVerificationResults);
+        JSONArray verifiableCredentials = new JSONObject(VPSubmissionResult.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
+        List<VCResult> vcVerificationResults = getVCVerificationResults(verifiableCredentials);
+        return new VPTokenResultDto(transactionId,SubmissionStatus.SUCCESS,vcVerificationResults);
     }
 
-    private static List<VcResult> getVcVerificationResults(JSONArray verifiableCredentials) {
-        List<VcResult> verificationResults = new ArrayList<>();
+    private static List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {
+        List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
             VerificationResult verificationResult = new CredentialsVerifier().verify(credential.toString(), CredentialFormat.LDP_VC);
-            VerificationStatus singleVcVerification = getVerificationStatus(verificationResult);
-            System.out.println(singleVcVerification);
-            verificationResults.add(new VcResult(credential.toString(),singleVcVerification));
+            VerificationStatus singleVCVerification = getVerificationStatus(verificationResult);
+            System.out.println(singleVCVerification);
+            verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
         }
         return verificationResults;
     }

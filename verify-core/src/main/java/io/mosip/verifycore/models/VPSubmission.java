@@ -2,7 +2,6 @@ package io.mosip.verifycore.models;
 
 import io.mosip.verifycore.dto.submission.PresentationSubmissionDto;
 import io.mosip.verifycore.enums.SubmissionStatus;
-import io.mosip.verifycore.enums.VerificationStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,13 +13,13 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-@Table(name = "VpSubmissions")
+@Table(name = "VPSubmissions")
 @Getter
 @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class VpSubmission {
+public class VPSubmission {
     @Id
     String state;
 

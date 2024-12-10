@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/vp-request")
 @RestController
 @CrossOrigin(origins = "*")
-public class VpRequestController {
+public class VPRequestController {
 
     @Autowired
     VerifiablePresentationRequestService verifiablePresentationRequestService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VPRequestResponseDto> createVpRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
+    public ResponseEntity<VPRequestResponseDto> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
         if (vpRequestCreate.getPresentationDefinition() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

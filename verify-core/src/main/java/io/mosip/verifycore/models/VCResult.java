@@ -6,13 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.json.JSONObject;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VcResult {
+public class VCResult {
     String vc;
     VerificationStatus verificationStatus;
 }
