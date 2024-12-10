@@ -15,7 +15,6 @@ public class CredentialVerificationController {
     @PostMapping()
     public VerificationStatusDto verify(@RequestBody String vc) {
         VerificationResult verificationResult = new CredentialsVerifier().verify(vc, CredentialFormat.LDP_VC);
-        System.out.println(verificationResult);
         if (verificationResult.getVerificationStatus()) {
             if (verificationResult.getVerificationErrorCode().equals(CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED))
                 return new VerificationStatusDto(VerificationStatus.EXPIRED);
