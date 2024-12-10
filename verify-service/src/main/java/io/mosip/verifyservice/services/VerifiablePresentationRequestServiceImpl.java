@@ -33,8 +33,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) {
 
-        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.createID(Constants.TRANSACTION_ID_PREFIX);
-        String requestId = Utils.createID(Constants.REQUEST_ID_PREFIX);
+        String transactionId = vpRequestCreate.getTransactionId()!=null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
+        String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long  expiresAt  = Instant.now().plusSeconds(DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
