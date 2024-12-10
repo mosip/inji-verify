@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 public class AuthorizationRequestCreateDto {
     String clientId;
-    String verificationType;
     String transactionId;
     String nonce;
     PresentationDefinitionDto presentationDefinition;
