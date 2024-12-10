@@ -21,13 +21,13 @@ public class AuthorizationRequestResponseDto implements Serializable {
     private final String presentationDefinitionUri;
     private String responseUri;
     private String nonce;
-    private final long iat;
+    private final long issuedAt;
 
     public AuthorizationRequestResponseDto(String clientId, PresentationDefinition presentationDefinition, String nonce) {
         this.clientId = clientId;
         this.responseUri = Constants.RESPONSE_SUBMISSION_URI;
         this.presentationDefinitionUri = presentationDefinition.getURL();
-        this.iat = Instant.now().toEpochMilli();
+        this.issuedAt = Instant.now().toEpochMilli();
         this.nonce  = nonce;
     }
 }
