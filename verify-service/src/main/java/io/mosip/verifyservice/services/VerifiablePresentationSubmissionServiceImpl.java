@@ -55,7 +55,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     private void processSubmission(VPSubmissionDto vpSubmissionDto) {
         JSONObject vpProof = new JSONObject(vpSubmissionDto.getVpToken()).getJSONObject(Constants.KEY_PROOF);
-        String jws = getFormattedJws(vpProof.getString(Constants.KEY_JWS));
+        String jws = vpProof.getString(Constants.KEY_JWS);
         String publicKeyPem = vpProof.getString(Constants.KEY_VERIFICATION_METHOD);
 
         //TODO: Dynamic algo type

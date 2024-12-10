@@ -36,13 +36,4 @@ public class SecurityUtils {
         return (RSAPublicKey) factory.generatePublic(pubKeySpec);
 
     }
-
-
-     public static String getFormattedJws(String jws){
-        return jws
-                .replace("\\n","")
-                .replace("\n","")
-                .replace("==","");
-     }
-
 }
