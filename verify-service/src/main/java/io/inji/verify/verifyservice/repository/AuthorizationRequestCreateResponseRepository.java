@@ -1,0 +1,12 @@
+package io.inji.verify.verifyservice.repository;
+
+import io.inji.verify.verifyservice.models.AuthorizationRequestCreateResponse;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface AuthorizationRequestCreateResponseRepository extends JpaRepository<AuthorizationRequestCreateResponse, String> {
+    Optional<AuthorizationRequestCreateResponse> findFirstByTransactionIdOrderByExpiresAtDesc(@NotNull String transactionId);
+}
+
