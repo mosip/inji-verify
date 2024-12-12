@@ -1,5 +1,7 @@
 package io.inji.verify.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.enums.SubmissionStatus;
 import jakarta.persistence.Column;
@@ -21,7 +23,9 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 public class VPSubmission {
     @Id
-    String state;
+    @JsonProperty("state")
+    @SerializedName("state")
+    String requestId;
 
     @JdbcTypeCode(SqlTypes.CLOB)
     String vpToken;

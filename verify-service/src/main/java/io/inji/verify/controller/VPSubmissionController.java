@@ -1,5 +1,6 @@
 package io.inji.verify.controller;
 
+import io.inji.verify.dto.authorizationRequest.StatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
@@ -30,9 +31,9 @@ public class VPSubmissionController {
     @GetMapping(path = "/vp-result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
         String requestId = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
-        SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
+        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
 
-        if (transactionId.isEmpty() || authRequestState != SubmissionState.COMPLETED) {
+        if (transactionId.isEmpty() || authRequestState.getSubmissionState() != SubmissionState.COMPLETED) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -49,7 +50,7 @@ public class VPSubmissionController {
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
-        SubmissionState authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(vpSubmissionDto.getState());
+        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(vpSubmissionDto.getState());
         if (authRequestState == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

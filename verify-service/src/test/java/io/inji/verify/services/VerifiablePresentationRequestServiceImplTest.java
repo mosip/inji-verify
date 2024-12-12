@@ -1,5 +1,6 @@
 package io.inji.verify.services;
 
+import io.inji.verify.dto.authorizationRequest.StatusDto;
 import io.inji.verify.dto.authorizationRequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
@@ -10,12 +11,14 @@ import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.enums.SubmissionState;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
+import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,23 +29,22 @@ class VerifiablePresentationRequestServiceImplTest {
     static VerifiablePresentationRequestServiceImpl service;
     static AuthorizationRequestCreateResponseRepository mockAuthorizationRequestCreateResponseRepository;
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
+    static VPSubmissionRepository mockVPSubmissionRepository;
     @BeforeAll
     public static void beforeAll(){
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
+        mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
         service = new VerifiablePresentationRequestServiceImpl();
         service.presentationDefinitionRepository = mockPresentationDefinitionRepository;
         service.authorizationRequestCreateResponseRepository = mockAuthorizationRequestCreateResponseRepository;
+        service.vpSubmissionRepository = mockVPSubmissionRepository;
 
     }
     @Test
     public void shouldCreateNewAuthorizationRequest() {
-
         when(mockPresentationDefinitionRepository.save(any(PresentationDefinition.class))).thenReturn(null);
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class))).thenReturn(null);
-
-        service.presentationDefinitionRepository = mockPresentationDefinitionRepository;
-        service.authorizationRequestCreateResponseRepository = mockAuthorizationRequestCreateResponseRepository;
 
         VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto();
         vpRequestCreateDto.setTransactionId("test_transaction_id");
@@ -76,19 +78,23 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     public void shouldGetCurrentAuthorizationRequestStateForExistingRequest() {
-        AuthorizationRequestCreateResponse mockResponse = new AuthorizationRequestCreateResponse("req_id", "tx_id", null, 0, SubmissionState.PENDING);
+        AuthorizationRequestCreateResponse mockResponse = new AuthorizationRequestCreateResponse("req_id", "tx_id", null, Instant.now().toEpochMilli()+10000);
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
+        when(mockVPSubmissionRepository.findById("req_id")).thenReturn(Optional.empty());
 
-        SubmissionState state = service.getCurrentAuthorizationRequestStateFor("req_id");
+        StatusDto state = service.getCurrentAuthorizationRequestStateFor("req_id");
 
-        assertEquals(SubmissionState.PENDING, state);
+        assertEquals(SubmissionState.PENDING, state.getSubmissionState());
     }
 
     @Test
     public void shouldGetCurrentAuthorizationRequestStateForNonexistentRequest() {
-        when(mockAuthorizationRequestCreateResponseRepository.findById("nonexistent_id")).thenReturn(java.util.Optional.empty());
+        when(mockVPSubmissionRepository.findById("req_id")).thenReturn(Optional.empty());
+        AuthorizationRequestCreateResponse mockResponse = new AuthorizationRequestCreateResponse("req_id", "tx_id", null, Instant.now().toEpochMilli()+10000);
+        when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
 
-        SubmissionState state = service.getCurrentAuthorizationRequestStateFor("nonexistent_id");
+
+        StatusDto state = service.getCurrentAuthorizationRequestStateFor("nonexistent_id");
 
         assertNull(state);
     }

@@ -34,7 +34,4 @@ public class AuthorizationRequestCreateResponse implements Serializable {
     @NotNull
     @Column
     long expiresAt;
-
-    @NotNull
-    SubmissionState  submissionState = SubmissionState.PENDING;
 }

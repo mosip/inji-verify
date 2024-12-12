@@ -6,8 +6,11 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
+import io.inji.verify.dto.submission.VPTokenResultDto;
+import io.inji.verify.enums.SubmissionStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.VerificationFailedException;
+import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -18,10 +21,6 @@ import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
-import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.SubmissionState;
-import io.inji.verify.enums.SubmissionStatus;
-import io.inji.verify.models.VCResult;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,7 +79,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
 
         authorizationRequestCreateResponseRepository.findById(vpSubmissionDto.getState()).map(authorizationRequestCreateResponse -> {
-            authorizationRequestCreateResponse.setSubmissionState(SubmissionState.COMPLETED);
             authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
             return null;
         });
