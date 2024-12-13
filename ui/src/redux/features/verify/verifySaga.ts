@@ -12,9 +12,7 @@ import {
   AlertMessages,
   OPENID4VP_PROTOCOL,
   PollStatusDelay,
-  verifiableClaims,
 } from "../../../utils/config";
-import { v4 as uuidv4 } from "uuid";
 import { raiseAlert } from "../alerts/alerts.slice";
 
 function* fetchRequestUri(claims: string[]) {
@@ -22,11 +20,6 @@ function* fetchRequestUri(claims: string[]) {
   let txnId;
   let reqId;
   const apiRequest: ApiRequest = api.fetchVpRequest;
-  const selectedType = claims[0];
-  const pdef = verifiableClaims.filter((claim) => {
-    return claim.type === selectedType && claim.definition;
-  })[0].definition;
-  pdef["id"] = uuidv4();
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
@@ -44,15 +37,22 @@ function* fetchRequestUri(claims: string[]) {
     qrData =
       OPENID4VP_PROTOCOL +
       btoa(
-        `client_id=${parsedData.authorizationDetails.clientId}
-        &response_type=${parsedData.authorizationDetails.responseType}
-        &response_mode=direct_post
-        &nonce=${parsedData.authorizationDetails.nonce}
-        &state=${parsedData.requestId}
-        &response_uri=${window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.responseUri}
-        &presentation_definition_uri=${window._env_.VERIFY_SERVICE_API_URL + parsedData.authorizationDetails.presentationDefinitionUri}
-        &client_metadata={"name":"${window.location}"}
-        &presentation_definition=${JSON.stringify(pdef)}`
+        `client_id=${parsedData.authorizationDetails.clientId}` +
+          `&response_type=${parsedData.authorizationDetails.responseType}` +
+          `&response_mode=direct_post` +
+          `&nonce=${parsedData.authorizationDetails.nonce}` +
+          `&state=${parsedData.requestId}` +
+          `&response_uri=${
+            window.location.origin +
+            window._env_.VERIFY_SERVICE_API_URL +
+            parsedData.authorizationDetails.responseUri
+          }` +
+          `&presentation_definition_uri=${
+            window.location.origin +
+            window._env_.VERIFY_SERVICE_API_URL +
+            parsedData.authorizationDetails.presentationDefinitionUri
+          }` +
+          `&client_metadata={"client_name":"${window.location.origin}"}`
       );
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
