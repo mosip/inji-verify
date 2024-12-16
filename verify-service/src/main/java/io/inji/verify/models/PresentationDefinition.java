@@ -15,7 +15,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.util.List;
 
-@Table(name = "presentations")
+@Table(name = "PresentationDefinition")
 @Getter
 @Setter
 @Entity

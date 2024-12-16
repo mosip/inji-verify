@@ -15,7 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-@Table(name = "VPSubmissions")
+@Table(name = "VPSubmission")
 @Getter
 @Setter
 @Entity
