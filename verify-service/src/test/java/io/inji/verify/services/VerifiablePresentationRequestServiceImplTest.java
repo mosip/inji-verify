@@ -84,7 +84,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         StatusDto state = service.getCurrentAuthorizationRequestStateFor("req_id");
 
-        assertEquals(SubmissionState.PENDING, state.getSubmissionState());
+        assertEquals(SubmissionState.PENDING, state.getStatus());
     }
 
     @Test
