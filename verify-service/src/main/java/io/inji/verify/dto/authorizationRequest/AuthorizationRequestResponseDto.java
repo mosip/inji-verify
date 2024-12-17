@@ -1,5 +1,6 @@
 package io.inji.verify.dto.authorizationRequest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.shared.Constants;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(force = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthorizationRequestResponseDto implements Serializable {
 
     private final String responseType = Constants.RESPONSE_TYPE;

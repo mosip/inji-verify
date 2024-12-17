@@ -58,7 +58,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
         //TODO: Dynamic algo type
         try {
-            SecurityUtils.readX509PublicKey(publicKeyPem);
             Algorithm algorithm = Algorithm.RSA256(SecurityUtils.readX509PublicKey(publicKeyPem), null);
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(jws);

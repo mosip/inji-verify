@@ -33,7 +33,7 @@ public class VPSubmissionController {
         String requestId = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
         StatusDto authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
 
-        if (transactionId.isEmpty() || authRequestState.getSubmissionState() != SubmissionState.COMPLETED) {
+        if (transactionId.isEmpty() || authRequestState.getStatus() != SubmissionState.COMPLETED) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

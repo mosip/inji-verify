@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatusDto {
-    SubmissionState submissionState;
+    SubmissionState status;
 }
