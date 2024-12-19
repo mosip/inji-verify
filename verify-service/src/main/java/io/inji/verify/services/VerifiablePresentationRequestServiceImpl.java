@@ -42,9 +42,20 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long  expiresAt  = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
+        PresentationDefinition presentationDefinition;
+        if (vpRequestCreate.getPresentationDefinitionId() != null){
+            presentationDefinition = presentationDefinitionRepository.findById(vpRequestCreate.getPresentationDefinitionId()).orElse(null);
+            if (presentationDefinition == null){
+                //todo ::  is this what u have to do?
+                //Todo:: Examples of PD
+                return null;
+            }
 
-        VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
-        PresentationDefinition presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
+        }else {
+            VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
+            PresentationDefinition presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
+
+        }
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);

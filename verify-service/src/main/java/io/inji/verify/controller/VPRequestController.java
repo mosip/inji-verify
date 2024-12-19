@@ -22,10 +22,13 @@ public class VPRequestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VPRequestResponseDto> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
-        if (vpRequestCreate.getPresentationDefinition() == null) {
+        if (vpRequestCreate.getPresentationDefinitionId() == null && vpRequestCreate.getPresentationDefinition() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
+        if (authorizationRequestResponse == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
     }
 
