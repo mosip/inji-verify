@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.inji.verify.dto.submission.VPSubmissionResponseDto;
+import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.VPResultStatus;
@@ -16,9 +17,9 @@ import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
-import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
+import io.inji.verify.utils.VerificationUtils;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -56,9 +57,13 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         List<VCResult> verificationResults = null;
         //TODO: Dynamic algo type
         try {
-            Algorithm algorithm = Algorithm.RSA256(SecurityUtils.readX509PublicKey(publicKeyPem), null);
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            verifier.verify(jws);
+            switch (keyType) {
+                case Constants.RSA_SIGNATURE_2018:
+                    VerificationUtils.verifyRsaSignature2018(vpProof);
+                case Constants.ED25519_SIGNATURE_2018:
+                case Constants.ED25519_SIGNATURE_2020:
+                    VerificationUtils.verifyEd25519Signature(vpProof);
+            }
 
             JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
             verificationResults = getVCVerificationResults(verifiableCredentials);
