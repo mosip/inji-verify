@@ -15,6 +15,7 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
+import io.inji.verify.singletons.CredentialsVerifierSingleton;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
@@ -81,7 +82,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
 
         if (vpSubmission == null){
-            return null;
+            return new VPTokenResultDto(transactionId,SubmissionStatus.NOT_SUBMITTED,null);
         }
         return processSubmission(vpSubmission,transactionId);
     }
