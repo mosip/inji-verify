@@ -3,7 +3,6 @@ package io.inji.verify.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
-import io.inji.verify.enums.SubmissionStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -33,6 +32,4 @@ public class VPSubmission {
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     PresentationSubmissionDto presentationSubmission;
-
-    SubmissionStatus submissionStatus;
 }

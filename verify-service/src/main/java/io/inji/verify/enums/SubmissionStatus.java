@@ -2,5 +2,6 @@ package io.inji.verify.enums;
 
 public enum SubmissionStatus {
     SUCCESS,
-    FAILED
+    FAILED,
+    NOT_SUBMITTED
 }
