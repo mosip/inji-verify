@@ -4,10 +4,10 @@ package io.inji.verify.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.inji.verify.dto.submission.VPSubmissionResponseDto;
+import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.VPResultStatus;
+import io.inji.verify.enums.SubmissionStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.VCResult;
@@ -15,10 +15,10 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
+import io.inji.verify.singletons.CredentialsVerifierSingleton;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
-import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +40,12 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     VPSubmissionRepository vpSubmissionRepository;
 
     @Autowired
-    CredentialsVerifier credentialsVerifier;
+    CredentialsVerifierSingleton credentialsVerifierSingleton;
 
     @Override
-    public VPSubmissionResponseDto submit(VPSubmissionDto vpSubmissionDto) {
+    public ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto) {
         vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
-        return new VPSubmissionResponseDto("", "", "");
+        return new ResponseAcknowledgementDto("", "", "");
 
     }
 
@@ -69,19 +69,18 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults,null,null);
+            return new VPTokenResultDto(transactionId,SubmissionStatus.SUCCESS, verificationResults);
         } catch (Exception e) {
             log.error("Failed to verify",e);
-            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults,null,null);
+            return new VPTokenResultDto(transactionId,SubmissionStatus.FAILED, verificationResults);
         }
     }
 
     @Override
-    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) {
-        VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
-
+    public VPTokenResultDto getVPResult(String requestId, String transactionId) {
+        VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
         if (vpSubmission == null){
-            return null;
+            return new VPTokenResultDto(transactionId,SubmissionStatus.NOT_SUBMITTED,null);
         }
         return processSubmission(vpSubmission,transactionId);
     }
@@ -90,10 +89,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
-            VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
+            VerificationResult verificationResult = credentialsVerifierSingleton.getInstance().verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
             verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
         }
         return verificationResults;
     }
 }
+
