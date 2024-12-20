@@ -52,17 +52,17 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
         JSONObject vpProof = new JSONObject(vpSubmission.getVpToken()).getJSONObject(Constants.KEY_PROOF);
-        String jws = vpProof.getString(Constants.KEY_JWS);
-        String publicKeyPem = vpProof.getString(Constants.KEY_VERIFICATION_METHOD);
+        String keyType = vpProof.getString(Constants.KEY_TYPE);
         List<VCResult> verificationResults = null;
-        //TODO: Dynamic algo type
         try {
             switch (keyType) {
                 case Constants.RSA_SIGNATURE_2018:
                     VerificationUtils.verifyRsaSignature2018(vpProof);
+                    break;
                 case Constants.ED25519_SIGNATURE_2018:
                 case Constants.ED25519_SIGNATURE_2020:
                     VerificationUtils.verifyEd25519Signature(vpProof);
+                    break;
             }
 
             JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
