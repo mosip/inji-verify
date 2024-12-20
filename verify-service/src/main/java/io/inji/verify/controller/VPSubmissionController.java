@@ -5,20 +5,15 @@ import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionResponseDto;
-import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
-import io.inji.verify.singletons.GsonSingleton;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/vp-submission")

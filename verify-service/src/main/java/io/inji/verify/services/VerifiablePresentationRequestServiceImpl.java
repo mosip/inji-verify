@@ -6,7 +6,6 @@ import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.VPRequestStatus;
-import io.inji.verify.enums.SubmissionState;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
@@ -53,8 +52,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         }else {
             VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
-            PresentationDefinition presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
-
+            presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
         }
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);

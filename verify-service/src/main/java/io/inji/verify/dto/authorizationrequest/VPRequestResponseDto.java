@@ -1,10 +1,8 @@
 package io.inji.verify.dto.authorizationrequest;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class VPRequestResponseDto {
