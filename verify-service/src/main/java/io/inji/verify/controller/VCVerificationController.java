@@ -1,7 +1,5 @@
 package io.inji.verify.controller;
 
-import io.inji.verify.dto.verification.VerificationStatusDto;
-import io.inji.verify.spi.CredentialVerificationService;
 import lombok.extern.slf4j.Slf4j;
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.inji.verify.spi.VCVerificationService;

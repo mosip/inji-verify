@@ -1,12 +1,8 @@
 package io.inji.verify.services;
 
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import io.inji.verify.dto.submission.VPSubmissionResponseDto;
-import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
+import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
@@ -18,8 +14,8 @@ import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.Utils;
-import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.inji.verify.utils.VerificationUtils;
+import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
