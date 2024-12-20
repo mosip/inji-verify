@@ -1,15 +1,11 @@
 package io.inji.verify.dto.presentation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
-@NoArgsConstructor
+
 @AllArgsConstructor
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConstraintsDTO {
     FieldDTO[] fields;
