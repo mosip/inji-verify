@@ -8,6 +8,7 @@ import java.security.KeyFactory;
 import java.security.SecureRandom;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 public class SecurityUtils {
 
@@ -28,8 +29,9 @@ public class SecurityUtils {
     }
 
     public static RSAPublicKey readX509PublicKey(String pem) throws Exception {
+        String decodedPem = new String(Base64.getDecoder().decode(pem));
         KeyFactory factory = KeyFactory.getInstance("RSA");
-         PemReader pemReader = new PemReader(new StringReader(pem));
+         PemReader pemReader = new PemReader(new StringReader(decodedPem));
         PemObject pemObject = pemReader.readPemObject();
         byte[] content = pemObject.getContent();
         X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(content);
