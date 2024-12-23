@@ -2,8 +2,7 @@ package io.inji.verify.controller;
 
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
-import io.inji.verify.enums.Status;
-import io.inji.verify.enums.SubmissionStatus;
+import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,12 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public ResponseEntity<Status> getStatus(@PathVariable String requestId) {
+    public ResponseEntity<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
 
-        Status status = verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
-        if (status == null)
+        VPRequestStatusDto vpRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
+        if (vpRequestStatusDto == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return new ResponseEntity<>(vpRequestStatusDto, HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package io.inji.verify.dto.submission;
 
-import io.inji.verify.enums.SubmissionStatus;
+import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.models.VCResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +15,6 @@ import java.util.List;
 @Builder
 public class VPTokenResultDto {
     String transactionId;
-    SubmissionStatus submissionStatus;
+    VPResultStatus VPResultStatus;
     List<VCResult> VCResults;
 }

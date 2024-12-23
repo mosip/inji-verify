@@ -7,7 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.SubmissionStatus;
+import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.VCResult;
@@ -69,10 +69,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            return new VPTokenResultDto(transactionId,SubmissionStatus.SUCCESS, verificationResults);
+            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults);
         } catch (Exception e) {
             log.error("Failed to verify",e);
-            return new VPTokenResultDto(transactionId,SubmissionStatus.FAILED, verificationResults);
+            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
         }
     }
 
@@ -80,7 +80,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     public VPTokenResultDto getVPResult(String requestId, String transactionId) {
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
         if (vpSubmission == null){
-            return new VPTokenResultDto(transactionId,SubmissionStatus.NOT_SUBMITTED,null);
+            return new VPTokenResultDto(transactionId, VPResultStatus.NOT_SUBMITTED,null);
         }
         return processSubmission(vpSubmission,transactionId);
     }

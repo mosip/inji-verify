@@ -1,6 +1,6 @@
 package io.inji.verify.enums;
 
-public enum SubmissionStatus {
+public enum VPResultStatus {
     SUCCESS,
     FAILED,
     NOT_SUBMITTED

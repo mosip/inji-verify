@@ -1,8 +1,7 @@
 package io.inji.verify.enums;
 
-public enum Status {
-    PENDING,
+public enum VPRequestStatus {
+    ACTIVE,
     COMPLETED,
-    PARTIALLY_COMPLETED,
     EXPIRED
 }

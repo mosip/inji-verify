@@ -2,12 +2,13 @@ package io.inji.verify.services;
 
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.PresentationDefinitionDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
-import io.inji.verify.enums.Status;
+import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -81,9 +82,9 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
         when(mockVPSubmissionRepository.findById("req_id")).thenReturn(Optional.empty());
 
-        Status status = service.getCurrentRequestStatus("req_id");
+        VPRequestStatusDto vpRequestStatusDto = service.getCurrentRequestStatus("req_id");
 
-        assertEquals(Status.PENDING, status);
+        assertEquals(VPRequestStatus.ACTIVE, vpRequestStatusDto.getStatus());
     }
 
     @Test
@@ -93,8 +94,8 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
 
 
-        Status status = service.getCurrentRequestStatus("nonexistent_id");
+        VPRequestStatusDto vpRequestStatusDto = service.getCurrentRequestStatus("nonexistent_id");
 
-        assertNull(status);
+        assertNull(vpRequestStatusDto);
     }
 }

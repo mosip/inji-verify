@@ -3,8 +3,9 @@ package io.inji.verify.services;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.PresentationDefinitionDto;
-import io.inji.verify.enums.Status;
+import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
@@ -52,20 +53,20 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public Status getCurrentRequestStatus(String requestId) {
+    public VPRequestStatusDto getCurrentRequestStatus(String requestId) {
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
         if (vpSubmission != null) {
-            return Status.COMPLETED;
+            return new VPRequestStatusDto(VPRequestStatus.COMPLETED);
         }
         Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
         if (expiresAt == null){
             return null;
         }
         if(Instant.now().toEpochMilli() > expiresAt){
-            return Status.EXPIRED;
+            return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
         }
-        return Status.PENDING;
+        return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
     }
 
     @Override
