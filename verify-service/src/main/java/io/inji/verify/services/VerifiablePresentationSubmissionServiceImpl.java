@@ -15,10 +15,10 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.singletons.CredentialsVerifierSingleton;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
+import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     VPSubmissionRepository vpSubmissionRepository;
 
     @Autowired
-    CredentialsVerifierSingleton credentialsVerifierSingleton;
+    CredentialsVerifier credentialsVerifier;
 
     @Override
     public ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto) {
@@ -90,7 +90,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
-            VerificationResult verificationResult = credentialsVerifierSingleton.getInstance().verify(credential.toString(), CredentialFormat.LDP_VC);
+            VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
             verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
         }

@@ -1,15 +1,14 @@
 package io.inji.verify.controller;
 
+import com.nimbusds.jose.shaded.gson.Gson;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
-import io.inji.verify.singletons.GsonSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +28,7 @@ public class VPSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @Autowired
-    GsonSingleton gsonSingleton;
+    Gson gson;
 
     @GetMapping(path = "/result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
@@ -48,7 +47,7 @@ public class VPSubmissionController {
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<ResponseAcknowledgementDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
-        PresentationSubmissionDto presentationSubmissionDto = gsonSingleton.getInstance().fromJson(presentationSubmission, PresentationSubmissionDto.class);
+        PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
