@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class VPSubmissionController {
 
@@ -30,14 +32,13 @@ public class VPSubmissionController {
 
     @GetMapping(path = "/vp-result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
-        String requestId = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
-        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
+        List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
 
-        if (transactionId.isEmpty() || currentVPRequestStatusDto.getStatus() != VPRequestStatus.COMPLETED) {
+        if (requestIds.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestId,transactionId);
+        VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }

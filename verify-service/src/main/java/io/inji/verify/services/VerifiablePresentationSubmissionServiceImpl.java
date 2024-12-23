@@ -77,8 +77,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     @Override
-    public VPTokenResultDto getVPResult(String requestId, String transactionId) {
-        VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
+    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) {
+        VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
+
         if (vpSubmission == null){
             return new VPTokenResultDto(transactionId, VPResultStatus.NOT_SUBMITTED,null);
         }
