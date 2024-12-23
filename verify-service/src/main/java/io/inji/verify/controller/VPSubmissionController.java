@@ -1,6 +1,6 @@
 package io.inji.verify.controller;
 
-import io.inji.verify.dto.authorizationRequest.StatusDto;
+import io.inji.verify.dto.authorizationrequest.StatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;

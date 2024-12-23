@@ -1,4 +1,4 @@
-package io.inji.verify.dto.authorizationRequest;
+package io.inji.verify.dto.authorizationrequest;
 
 import lombok.*;
 
