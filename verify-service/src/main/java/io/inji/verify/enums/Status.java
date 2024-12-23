@@ -1,6 +1,6 @@
 package io.inji.verify.enums;
 
-public enum SubmissionState {
+public enum Status {
     PENDING,
     COMPLETED,
     PARTIALLY_COMPLETED,
