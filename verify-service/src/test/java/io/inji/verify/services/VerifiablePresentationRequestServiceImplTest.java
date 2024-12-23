@@ -4,7 +4,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
@@ -51,7 +51,7 @@ class VerifiablePresentationRequestServiceImplTest {
         vpRequestCreateDto.setClientId("test_client_id");
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        vpRequestCreateDto.setPresentationDefinition(new PresentationDefinitionDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
+        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
 
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
@@ -68,7 +68,7 @@ class VerifiablePresentationRequestServiceImplTest {
         vpRequestCreateDto.setClientId("test_client_id");
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        vpRequestCreateDto.setPresentationDefinition(new PresentationDefinitionDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
+        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
 

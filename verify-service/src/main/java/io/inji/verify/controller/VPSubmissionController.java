@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/vp-submission")
 public class VPSubmissionController {
 
     @Autowired
@@ -30,7 +31,7 @@ public class VPSubmissionController {
     @Autowired
     GsonSingleton gsonSingleton;
 
-    @GetMapping(path = "/vp-result/{transactionId}")
+    @GetMapping(path = "/result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
         List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
 

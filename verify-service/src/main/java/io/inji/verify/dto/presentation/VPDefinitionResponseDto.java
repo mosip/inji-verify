@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PresentationDefinitionDto {
+public class VPDefinitionResponseDto {
     String id;
     @JsonProperty("input_descriptors")
     @SerializedName("input_descriptors")

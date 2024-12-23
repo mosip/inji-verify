@@ -1,6 +1,6 @@
 package io.inji.verify.services;
 
-import io.inji.verify.dto.verification.VerificationStatusDto;
+import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.inji.verify.singletons.CredentialsVerifierSingleton;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
-public class CredentialVerificationServiceImplTest {
+public class VCVerificationServiceImplTest {
     static CredentialsVerifierSingleton mockSingleton;
-    static CredentialVerificationServiceImpl service;
+    static VCVerificationServiceImpl service;
     static CredentialsVerifier mockCredentialsVerifier;
 
     @BeforeAll
@@ -24,7 +24,7 @@ public class CredentialVerificationServiceImplTest {
         mockSingleton = mock(CredentialsVerifierSingleton.class);
         mockCredentialsVerifier = mock(CredentialsVerifier.class);
         when(mockSingleton.getInstance()).thenReturn(mockCredentialsVerifier);
-        service = new CredentialVerificationServiceImpl();
+        service = new VCVerificationServiceImpl();
     }
 
     @Test
@@ -33,10 +33,10 @@ public class CredentialVerificationServiceImplTest {
         VerificationResult mockResult = new VerificationResult(true, "","");
         when(mockCredentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(mockResult);
 
-        CredentialVerificationServiceImpl service = new CredentialVerificationServiceImpl();
+        VCVerificationServiceImpl service = new VCVerificationServiceImpl();
         service.credentialsVerifierSingleton = mockSingleton;
 
-        VerificationStatusDto statusDto = service.verify("some_vc");
+        VCVerificationStatusDto statusDto = service.verify("some_vc");
 
         assertEquals(VerificationStatus.SUCCESS, statusDto.getVerificationStatus());
     }
@@ -48,7 +48,7 @@ public class CredentialVerificationServiceImplTest {
 
         service.credentialsVerifierSingleton = mockSingleton;
 
-        VerificationStatusDto statusDto = service.verify("some_vc");
+        VCVerificationStatusDto statusDto = service.verify("some_vc");
         assertEquals(VerificationStatus.EXPIRED, statusDto.getVerificationStatus());
     }
 
@@ -60,7 +60,7 @@ public class CredentialVerificationServiceImplTest {
 
         service.credentialsVerifierSingleton = mockSingleton;
 
-        VerificationStatusDto statusDto = service.verify("some_vc");
+        VCVerificationStatusDto statusDto = service.verify("some_vc");
         // ...
         assertEquals(VerificationStatus.INVALID, statusDto.getVerificationStatus());
     }

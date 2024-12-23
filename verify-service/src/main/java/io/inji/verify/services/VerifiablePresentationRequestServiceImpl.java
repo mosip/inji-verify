@@ -4,7 +4,7 @@ import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
@@ -41,8 +41,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         long  expiresAt  = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
-        PresentationDefinitionDto presentationDefinitionDto = vpRequestCreate.getPresentationDefinition();
-        PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
+        VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
+        PresentationDefinition presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
