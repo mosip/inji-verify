@@ -15,7 +15,6 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.singletons.CredentialsVerifierSingleton;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
