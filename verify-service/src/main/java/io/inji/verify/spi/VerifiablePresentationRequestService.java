@@ -7,7 +7,7 @@ import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
 public interface VerifiablePresentationRequestService {
     VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate);
 
-    StatusDto getCurrentAuthorizationRequestStateFor(String requestId);
+    StatusDto getCurrentRequestState(String requestId);
     String getTransactionIdFor(String requestId);
     String getLatestRequestIdFor(String transactionId);
 }

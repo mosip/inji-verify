@@ -31,7 +31,7 @@ public class VPSubmissionController {
     @GetMapping(path = "/vp-result/{transactionId}")
     public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
         String requestId = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
-        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
+        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentRequestState(requestId);
 
         if (transactionId.isEmpty() || authRequestState.getStatus() != SubmissionState.COMPLETED) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -50,7 +50,7 @@ public class VPSubmissionController {
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
-        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(vpSubmissionDto.getState());
+        StatusDto authRequestState = verifiablePresentationRequestService.getCurrentRequestState(vpSubmissionDto.getState());
         if (authRequestState == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

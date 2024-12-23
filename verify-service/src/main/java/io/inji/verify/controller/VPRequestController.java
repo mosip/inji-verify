@@ -30,7 +30,7 @@ public class VPRequestController {
     @GetMapping(path = "/{requestId}/status")
     public ResponseEntity<StatusDto> getStatus(@PathVariable String requestId) {
 
-        StatusDto statusDto = verifiablePresentationRequestService.getCurrentAuthorizationRequestStateFor(requestId);
+        StatusDto statusDto = verifiablePresentationRequestService.getCurrentRequestState(requestId);
         if (statusDto == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 

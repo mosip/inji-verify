@@ -5,22 +5,21 @@ import io.inji.verify.dto.authorizationRequest.StatusDto;
 import io.inji.verify.dto.authorizationRequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
 import io.inji.verify.dto.presentation.PresentationDefinitionDto;
+import io.inji.verify.enums.SubmissionState;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
+import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
+import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
-import io.inji.verify.enums.SubmissionState;
-import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
-import io.inji.verify.repository.PresentationDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.Instant;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Service
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
@@ -54,7 +53,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public StatusDto getCurrentAuthorizationRequestStateFor(String requestId) {
+    public StatusDto getCurrentRequestState(String requestId) {
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
         if (vpSubmission != null) {

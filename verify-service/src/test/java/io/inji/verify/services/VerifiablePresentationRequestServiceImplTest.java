@@ -82,7 +82,7 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
         when(mockVPSubmissionRepository.findById("req_id")).thenReturn(Optional.empty());
 
-        StatusDto state = service.getCurrentAuthorizationRequestStateFor("req_id");
+        StatusDto state = service.getCurrentRequestState("req_id");
 
         assertEquals(SubmissionState.PENDING, state.getStatus());
     }
@@ -94,7 +94,7 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(java.util.Optional.of(mockResponse));
 
 
-        StatusDto state = service.getCurrentAuthorizationRequestStateFor("nonexistent_id");
+        StatusDto state = service.getCurrentRequestState("nonexistent_id");
 
         assertNull(state);
     }
