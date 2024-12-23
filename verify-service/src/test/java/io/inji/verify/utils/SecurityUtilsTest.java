@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 
 public class SecurityUtilsTest {
 
@@ -27,8 +28,9 @@ public class SecurityUtilsTest {
                 "Q8tqKn8P0B00vto8bEhadIpj53efNTTMmP6fnLhFEX+xOWVp4lJi8qM4Y0UMbbnx\n"+
                 "ewIDAQAB\n"+
                 "-----END PUBLIC KEY-----";
+        byte[] encoded = Base64.getEncoder().encode(pemString.getBytes());
 
-        RSAPublicKey publicKey = SecurityUtils.readX509PublicKey(pemString);
+        RSAPublicKey publicKey = SecurityUtils.readX509PublicKey(new String(encoded));
 
         assertNotNull(publicKey);
     }
