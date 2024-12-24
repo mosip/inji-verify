@@ -69,10 +69,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults);
+            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults,null,null);
         } catch (Exception e) {
             log.error("Failed to verify",e);
-            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
+            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults,null,null);
         }
     }
 
@@ -81,7 +81,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
 
         if (vpSubmission == null){
-            return new VPTokenResultDto(transactionId, VPResultStatus.NOT_SUBMITTED,null);
+            return null;
         }
         return processSubmission(vpSubmission,transactionId);
     }

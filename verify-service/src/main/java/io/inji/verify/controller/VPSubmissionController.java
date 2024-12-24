@@ -6,6 +6,7 @@ import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
+import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
@@ -35,14 +36,14 @@ public class VPSubmissionController {
         List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
 
         if (requestIds.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_100, Constants.ERR_100),HttpStatus.OK);
         }
 
         VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_101, Constants.ERR_101),HttpStatus.OK);
     }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

@@ -17,5 +17,11 @@ public class Constants {
     public static final String KEY_VERIFIABLE_CREDENTIAL = "verifiableCredential";
     public static final String KEY_CREDENTIAL = "credential";
 
+    //ERROR MESSAGES
+    public static final String ERR_100 = "Invalid transaction ID, No requests found for given transaction ID.";
+    public static final String ERR_101 = "No VP submission found for given transaction ID.";
+
+
+
 
 }
