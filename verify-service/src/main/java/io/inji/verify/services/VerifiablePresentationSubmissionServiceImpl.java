@@ -4,7 +4,7 @@ package io.inji.verify.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
+import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.VPResultStatus;
@@ -43,9 +43,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     CredentialsVerifier credentialsVerifier;
 
     @Override
-    public ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto) {
+    public VPSubmissionResponseDto submit(VPSubmissionDto vpSubmissionDto) {
         vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
-        return new ResponseAcknowledgementDto("", "", "");
+        return new VPSubmissionResponseDto("", "", "");
 
     }
 

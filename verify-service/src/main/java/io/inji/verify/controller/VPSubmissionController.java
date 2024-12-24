@@ -3,8 +3,8 @@ package io.inji.verify.controller;
 import com.nimbusds.jose.shaded.gson.Gson;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
-import io.inji.verify.dto.submission.VPSubmissionResonseDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
+import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
@@ -46,7 +46,7 @@ public class VPSubmissionController {
     }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<VPSubmissionResonseDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
+    public ResponseEntity<VPSubmissionResponseDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
         PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
@@ -56,7 +56,7 @@ public class VPSubmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VPSubmissionResonseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+        VPSubmissionResponseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
         return new ResponseEntity<>(submissionResponseDto, HttpStatus.OK);
     }
 }

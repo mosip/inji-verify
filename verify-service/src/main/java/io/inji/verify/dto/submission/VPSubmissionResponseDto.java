@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseAcknowledgementDto {
+public class VPSubmissionResponseDto {
     String redirectUri;
     String error;
     String errorDescription;
