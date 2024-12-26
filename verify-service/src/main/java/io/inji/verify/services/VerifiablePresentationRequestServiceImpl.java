@@ -58,7 +58,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
         if (vpSubmission != null) {
-            return new VPRequestStatusDto(VPRequestStatus.COMPLETED);
+            return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
         }
         Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
         if (expiresAt == null){
