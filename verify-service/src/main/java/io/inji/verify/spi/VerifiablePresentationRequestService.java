@@ -10,6 +10,6 @@ public interface VerifiablePresentationRequestService {
     VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate);
 
     VPRequestStatusDto getCurrentRequestStatus(String requestId);
-    String getTransactionIdFor(String requestId);
+
     List<String> getLatestRequestIdFor(String transactionId);
 }

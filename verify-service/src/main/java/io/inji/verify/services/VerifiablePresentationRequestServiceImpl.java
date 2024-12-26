@@ -46,8 +46,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
-
-        presentationDefinitionRepository.save(presentationDefinition);
+        
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
 
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(),authorizationRequestCreateResponse.getRequestId(),authorizationRequestCreateResponse.getAuthorizationDetails(),authorizationRequestCreateResponse.getExpiresAt());
@@ -68,11 +67,6 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
         }
         return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
-    }
-
-    @Override
-    public String getTransactionIdFor(String requestId) {
-        return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getTransactionId).orElse(null);
     }
 
     @Override
