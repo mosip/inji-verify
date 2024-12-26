@@ -5,14 +5,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class PresentationDefinitionDtoTest {
+public class VPDefinitionResponseDtoTest {
 
     @Test
     public void testSerializationAndDeserialization() {
         InputDescriptorDto inputDescriptorDto = new InputDescriptorDto("id1", "name1", "purpose1", List.of("group1"), null, null);
         SubmissionRequirementDto submissionRequirementDto = mock();
 
-        PresentationDefinitionDto presentationDefinitionDto = new PresentationDefinitionDto(
+        VPDefinitionResponseDto presentationDefinitionDto = new VPDefinitionResponseDto(
                 "pd1",
                 List.of(inputDescriptorDto),
                 List.of(submissionRequirementDto)

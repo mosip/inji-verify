@@ -13,7 +13,7 @@ public class AppConfig {
     }
 
     @Bean
-    public Gson gson() {
+    public Gson Gson() {
         return new Gson();
     }
 }

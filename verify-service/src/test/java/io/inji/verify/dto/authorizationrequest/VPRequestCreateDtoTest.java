@@ -1,8 +1,8 @@
 package io.inji.verify.dto.authorizationrequest;
 
 import io.inji.verify.dto.presentation.InputDescriptorDto;
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class VPRequestCreateDtoTest {
         String nonce = "nonce123";
         List<InputDescriptorDto> mockInputDescriptors = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirements = mock();
-        PresentationDefinitionDto presentationDefinition = new PresentationDefinitionDto("pd123",mockInputDescriptors , mockSubmissionRequirements);
+        VPDefinitionResponseDto presentationDefinition = new VPDefinitionResponseDto("pd123",mockInputDescriptors , mockSubmissionRequirements);
 
         VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto(clientId, transactionId, presentationDefinitionId, nonce, presentationDefinition);
 
