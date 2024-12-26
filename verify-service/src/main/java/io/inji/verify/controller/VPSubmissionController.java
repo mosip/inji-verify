@@ -27,11 +27,11 @@ public class VPSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @Autowired
-    Gson gson;
+    Gson Gson;
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<VPSubmissionResponseDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
-        PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+        PresentationSubmissionDto presentationSubmissionDto = Gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 

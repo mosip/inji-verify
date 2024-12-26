@@ -48,7 +48,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        PresentationDefinitionDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
+        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
         VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id","test_transaction_id",null,"",mockPresentationDefinitionDto);
 
 
@@ -65,7 +65,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        PresentationDefinitionDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
+        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
         VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id",null,null,"",mockPresentationDefinitionDto);
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
