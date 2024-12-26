@@ -31,21 +31,6 @@ public class VPSubmissionController {
     @Autowired
     Gson gson;
 
-    @GetMapping(path = "/result/{transactionId}")
-    public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
-        List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
-
-        if (requestIds.isEmpty()) {
-            return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_100, Constants.ERR_100),HttpStatus.OK);
-        }
-
-        VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_101, Constants.ERR_101),HttpStatus.OK);
-    }
-
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<VPSubmissionResponseDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
         PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
