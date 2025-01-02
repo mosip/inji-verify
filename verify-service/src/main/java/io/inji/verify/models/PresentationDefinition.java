@@ -1,5 +1,6 @@
 package io.inji.verify.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.shared.Constants;
@@ -34,6 +35,7 @@ public class PresentationDefinition {
     private final List<SubmissionRequirementDto> submissionRequirements;
 
 
+    @JsonIgnore
     public String getURL(){
         return Constants.VP_DEFINITION_URI +this.id;
     }
