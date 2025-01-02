@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 
 @RequestMapping("/vp-request")
 @RestController
@@ -33,12 +34,11 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public ResponseEntity<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
+    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>((long)300000, "Request timedout"); // 30-second timeout
+        verifiablePresentationRequestService.getCurrentRequestStatusPeriodic(requestId,result,null);
 
-        VPRequestStatusDto vpRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
-        if (vpRequestStatusDto == null)
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(vpRequestStatusDto, HttpStatus.OK);
+        return result;
     }
+
 }

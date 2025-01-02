@@ -8,7 +8,7 @@ public class ConstantsTest {
     @Test
     public void shouldTestConstants() {
         // Test integer constants
-        assertEquals(300000, Constants.DEFAULT_EXPIRY);
+        assertEquals(300, Constants.DEFAULT_EXPIRY);
 
         // Test String constants
         assertEquals("/direct-post", Constants.RESPONSE_SUBMISSION_URI);
