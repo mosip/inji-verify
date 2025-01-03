@@ -5,12 +5,14 @@ import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.shared.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.time.Instant;
 
 @Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Cacheable
 public class AuthorizationRequestResponseDto {
 
     private final String responseType = Constants.RESPONSE_TYPE;
