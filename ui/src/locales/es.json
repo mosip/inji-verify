@@ -14,7 +14,7 @@
   },
   "Tab": {
     "upload": "Subir código QR",
-    "scan": "Escanea el código QR",
+    "scan": "Escanear código QR",
     "VP_Verification": "Verificación de vicepresidente",
     "ble": "BLE"
   },
@@ -33,9 +33,18 @@
     "generateQrCodeBtn": "Generar código QR",
     "qrCodeInfo": "Escanee el siguiente código QR con su billetera digital para compartir la credencial solicitada",
     "qrCodeExpired": "Código QR caducado",
-    "noClaims": "No se encontraron reclamos.",
+    "noVcsFound": "No se encontraron credenciales verificables.",
+    "sortBy": "Ordenar por",
+    "expand": "Abierto en su totalidad",
+    "collapse": "Cerrar pantalla completa",
     "download": "Descargar",
-    "timer": "Válido para {{time}}"
+    "missingCredentials": "Solicitar credenciales faltantes",
+    "restartProcess": "Reiniciar el proceso",
+    "notShared": "No compartido",
+    "SUCCESS": "Válido",
+    "EXPIRED": "Válido pero caducado",
+    "INVALID": "Inválido",
+    "credentialsRequested": "Se solicitaron credenciales"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -73,15 +82,19 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar proceso de solicitud de vicepresidente",
-        "description": "Haga clic en Solicitar credenciales verificables para comenzar el proceso de verificación."
+        "description": "Hacer clic <span> Solicitar credenciales verificables <span> para comenzar el proceso de verificación."
       },
       "SelectCredential": {
         "label": "Seleccione Credenciales y Generar Código QR",
-        "description": "Elija las credenciales verificables requeridas y haga clic en Generar código QR."
+        "description": "Elija las credenciales verificables requeridas y haga clic <span>Generar código QR<span>."
+      },
+      "RequestMissingCredential": {
+        "label": "Solicitar credenciales faltantes y generar código QR",
+        "description": "Hacer clic en <span>Solicitar credenciales faltantes<span> para continuar con la verificación del VC que falta, o haga clic en <span>Reiniciar el proceso<span> para comenzar todo el proceso nuevamente."
       },
       "ScanQrCode": {
         "label": "Escanear código QR (use un dispositivo diferente)",
-        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR (¡pronto se admitirá el escaneo en el mismo dispositivo!)"
+        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR <span>(¡Próximamente se admitirá el escaneo en el mismo dispositivo!)<span>"
       },
       "DisplayResult": {
         "label": "Ver resultados de verificación",

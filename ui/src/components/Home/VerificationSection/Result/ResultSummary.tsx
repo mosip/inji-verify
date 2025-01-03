@@ -1,46 +1,45 @@
-import React from 'react';
-import { VerificationSuccessIcon, VerificationFailedIcon } from '../../../../utils/theme-utils';
-import { useTranslation } from 'react-i18next';
-
-
-const backgroundColorMapping: any = {
-  EXPIRED: "bg-expired",
-  INVALID: "bg-invalid",
-  SUCCESS: "bg-success",
-  TIMEOUT: "bg-expired",
-};
-
-const textColorMapping: any = {
-  SUCCESS: "text-success",
-  INVALID: "text-invalid",
-  EXPIRED: "text-expired",
-  TIMEOUT: "text-expired",
-};
+import React from "react";
+import {
+  VerificationSuccessIcon,
+  VerificationFailedIcon,
+} from "../../../../utils/theme-utils";
+import { useTranslation } from "react-i18next";
+import {
+  backgroundColorMapping,
+  borderColorMapping,
+  textColorMapping,
+} from "../../../../utils/config";
 
 const ResultSummary = ({
   status,
 }: {
   status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT";
 }) => {
-    const backgroundColor = backgroundColorMapping[status]
-    const textColor = textColorMapping[status]
-    const {t} = useTranslation('ResultSummary')
-    return (
-        <div className="grid grid-cols-12 w-full">
-            <div className={`col-start-1 col-end-13 h-[170px] lg:h-[186px] w-full ${backgroundColor}`}>
-                <div className="grid grid-cols-12 justify-items-center items-center justify-center content-center pt-[30px]">
-                    <div className={`col-start-1 col-end-13 block mb-2.5 ${textColor}`}>
-                        {status === "SUCCESS" ? <VerificationSuccessIcon/> : <VerificationFailedIcon />}
-                    </div>
-                    <div className="col-start-1 col-end-13">
-                        <p id="vc-result-display-message" className="font-normal text-lgNormalTextSize text-center">
-                            {t(`${status}`)}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
+  const bgColor = backgroundColorMapping[status];
+  const textColor = textColorMapping[status];
+  const borderColor = borderColorMapping[status];
+  const { t } = useTranslation("ResultSummary");
+  return (
+    <div
+      className={`flex flex-col items-center justify-center h-[170px] lg:h-[186px] ${bgColor}`}
+    >
+      <div className={`block mb-2.5 ${textColor}`}>
+        {status === "SUCCESS" ? (
+          <VerificationSuccessIcon />
+        ) : (
+          <VerificationFailedIcon />
+        )}
+      </div>
+      <div className={`rounded-xl p-1 ${bgColor} border ${borderColor}`}>
+        <p
+          id="vc-result-display-message"
+          className={`font-normal text-normalTextSize lg:text-lgNormalTextSize text-center ${textColor}`}
+        >
+          {t(`${status}`)}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default ResultSummary;

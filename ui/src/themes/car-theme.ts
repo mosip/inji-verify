@@ -23,8 +23,14 @@ import { ReactComponent as WhiteReGenerate } from "../assets/carTheme/white-rege
 import { ReactComponent as CrossIcon } from "../assets/carTheme/close_icon.svg";
 import { ReactComponent as HamburgerIcon } from "../assets/carTheme/hamburger-menu.svg";
 import { ReactComponent as TabIcon } from "../assets/carTheme/new-tab.svg";
+import { ReactComponent as VectorDownArrow } from "../assets/carTheme/vector-arrow-down.svg";
+import { ReactComponent as VectorUpArrow } from "../assets/carTheme/vector-arrow-up.svg";
+import { ReactComponent as VectorExpandIcon } from "../assets/carTheme/vector-expand.svg";
+import { ReactComponent as VectorCollapseIcon } from "../assets/carTheme/vector-collapse.svg";
+import { ReactComponent as VectorDownloadIcon } from "../assets/carTheme/vector-download.svg";
 import ScannerOutline from "../assets/carTheme/scanner-outline.svg";
 import QrOutline from "../assets/carTheme/qr-code-outline.svg";
+import VectorOutline from "../assets/carTheme/vector-icon-outline.svg";
 
 const carTheme = {
   Logo: NavLogo,
@@ -54,6 +60,12 @@ const carTheme = {
   CloseIcon: CrossIcon,
   MenuIcon: HamburgerIcon,
   NewTabIcon: TabIcon,
+  VectorDown: VectorDownArrow,
+  VectorUp: VectorUpArrow,
+  VectorOutline: VectorOutline,
+  VectorExpand: VectorExpandIcon,
+  VectorCollapse: VectorCollapseIcon,
+  VectorDownload: VectorDownloadIcon,
 };
 
 export default carTheme;

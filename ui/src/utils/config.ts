@@ -1,4 +1,4 @@
-import {AlertInfo, VerificationStepsContentType} from "../types/data-types";
+import {AlertInfo, claims, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
 import certImage from '../assets/defaultTheme/cert.png';
 import certImage2 from '../assets/defaultTheme/cert2.png';
@@ -34,6 +34,7 @@ export const VerificationSteps: any = {
     "VERIFY": {
         InitiateVpRequest: 1,
         SelectCredential: 2,
+        RequestMissingCredential: 2,
         ScanQrCode: 3,
         DisplayResult: 4
     }
@@ -81,6 +82,10 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
             {
                 label: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.label'),
                 description: i18next.t('VerificationStepsContent:VERIFY.SelectCredential.description'),
+            },
+            {
+              label: i18next.t("VerificationStepsContent:VERIFY.RequestMissingCredential.label"),
+              description: i18next.t("VerificationStepsContent:VERIFY.RequestMissingCredential.description"),
             },
             {
                 label: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.label'),
@@ -157,10 +162,11 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
-export const verifiableClaims: any[] = [
+export const verifiableClaims: claims[] = [
   {
     logo: certImage,
-    type: "CAR Statement",
+    name: "CAR Statement",
+    type: "Statement",
     essential: true,
     definition: {
       purpose:
@@ -184,7 +190,8 @@ export const verifiableClaims: any[] = [
   },
   {
     logo: certImage2,
-    type: "CAR Registration Receipt",
+    name: "CAR Registration Receipt",
+    type: "RegistrationReceiptCredential",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -210,7 +217,8 @@ export const verifiableClaims: any[] = [
   },
   {
     logo: certImage,
-    type: "Farmer Registry Certificate",
+    name: "Farmer Registry Certificate",
+    type: "FarmerRegistryCertificate",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -226,20 +234,47 @@ export const verifiableClaims: any[] = [
   },
   {
     logo: certImage,
-    type: "Health Insurance",
+    name: "Health Insurance",
+    type: "InsuranceCredential",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
       input_descriptors: [
         {
           id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-          constraints: {},
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: {
+                  type: "object",
+                  pattern: "InsuranceCredential",
+                },
+              },
+            ],
+          },
         },
       ],
     },
   },
 ];
-export const OPENID4VP_PROTOCOL = "openid4vp://authorize?"
+export const OPENID4VP_PROTOCOL = "openid4vp://authorize?";
+export const QrCodeExpiry = 300; //5*60 seconds
 export const PollStatusDelay = 5000; // Continue polling after 5 seconds untill status is changes
+
+export const backgroundColorMapping: any = {
+  SUCCESS: "bg-success",
+  EXPIRED: "bg-expired",
+  INVALID: "bg-invalid",
+};
+export const textColorMapping: any = {
+  SUCCESS: "text-successText",
+  EXPIRED: "text-expiredText",
+  INVALID: "text-invalidText",
+};
+
+export const borderColorMapping: any = {
+  SUCCESS: "border-successBorder",
+  EXPIRED: "border-expiredBorder",
+  INVALID: "border-invalidBorder",
+};

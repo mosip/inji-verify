@@ -10,7 +10,7 @@ import { Button } from "../Home/VerificationSection/commons/Button";
 import {
   resetVpRequest,
   setSelectCredential,
-} from "../../redux/features/verify/verifyState";
+} from "../../redux/features/verify/vpVerificationState";
 import { useAppDispatch } from "../../redux/hooks";
 import ResultSummary from "../Home/VerificationSection/Result/ResultSummary";
 
@@ -46,9 +46,9 @@ export const QrCode = (props: QrCodeProps) => {
             bgColor="#ffffff"
             fgColor="#000000"
             level="L"
-            opacity={props.status === "EXPIRED" ? 0.4 : 1}
+            // opacity={props.status === "EXPIRED" ? 0.4 : 1}
           />
-          {props.status === "EXPIRED" && (
+          {/* {props.status === "EXPIRED" && (
             <Button
               title={"Generate New QR Code"}
               className="absolute lg:bottom-[70px] lg:left-[30px] w-[300px]"
@@ -57,7 +57,7 @@ export const QrCode = (props: QrCodeProps) => {
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
             />
-          )}
+          )} */}
         </div>
         <p
           className={`text-lg text-qrCodeTimer text-center ${

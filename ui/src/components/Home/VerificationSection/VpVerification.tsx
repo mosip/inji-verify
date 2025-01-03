@@ -5,21 +5,54 @@ import Loader from "../../commons/Loader";
 import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
+import { useAppDispatch } from "../../../redux/hooks";
+import { getVpRequest, resetVpRequest, setSelectCredential } from "../../../redux/features/verify/vpVerificationState";
+import { claims, VpSubmissionResultInt } from "../../../types/data-types";
+import { Button } from "./commons/Button";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
   const qrData = useVerifyFlowSelector((state) => state.qrData);
   const status = useVerifyFlowSelector((state) => state.status);
+  const txnId = useVerifyFlowSelector((state) => state.txnId);
+  const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims);
+  const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
+  const verifiedVcs: VpSubmissionResultInt[] = useVerifyFlowSelector((state) => state.verificationSubmissionResult);
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
-  const { vc, vcStatus } = useVerifyFlowSelector(state => state.verificationSubmissionResult ?? { vc: null, vcStatus: null })
+
+  const dispatch = useAppDispatch();
+
+  const handleRequestCredentials = () => {
+    dispatch(setSelectCredential());
+  };
+
+  const HandelGenerateQr = () => {
+    dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
+  };
+  
+  const HandelRestartProcess = () => {
+    dispatch(resetVpRequest());
+  };
 
   if (isLoading) {
-    return <Loader className="relative lg:top-[200px]" />;
-  } else if (vc) {
+    return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
+  } else if (verifiedVcs.length > 0) {
+    const isSingleVc = selectedClaims.length === 1;
+    const unverifiedClaims = selectedClaims.filter((claim: claims) =>
+      verifiedVcs.some(({ vc }) => vc.credentialConfigurationId !== claim.type)
+    );
     return (
-      <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
-        <VpSubmissionResult vc={vc} vcStatus={vcStatus} />
+      <div className="w-[100vw] lg:w-[50vw]">
+        <VpSubmissionResult
+          verifiedVcs={verifiedVcs}
+          unverifiedClaims={unverifiedClaims}
+          txnId={txnId}
+          requestCredentials={handleRequestCredentials}
+          reGenerateQr={HandelGenerateQr}
+          restart={HandelRestartProcess}
+          isSingleVc={isSingleVc}
+        />
       </div>
     );
   } else if (!qrData) {
@@ -33,15 +66,23 @@ const DisplayActiveStep = () => {
               <div
                 className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}
               ></div>
-              <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
+              <div className="absolute top-[88px] left-[98px] lg:top-[185px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
                 <QrIcon className="w-[78px] lg:w-[100px]" />
               </div>
+              <Button
+                id="request-credentials-button"
+                title={t("rqstButton")}
+                className={`w-[300px] mx-auto lg:ml-[76px] mt-10 lg:hidden`}
+                fill
+                onClick={handleRequestCredentials}
+                disabled={txnId !== ""}
+              />
             </div>
           </div>
         </div>
       </div>
     );
-  } else if (qrData)
+  } else if (qrData) {
     return (
       <QrCode
         title={t("qrCodeInfo")}
@@ -50,6 +91,7 @@ const DisplayActiveStep = () => {
         status={status}
       />
     );
+  }
 };
 
 export const VpVerification = () => {
