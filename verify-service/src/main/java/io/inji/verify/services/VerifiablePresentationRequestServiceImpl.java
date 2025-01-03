@@ -91,7 +91,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public void getCurrentRequestStatusPeriodic(String requestId, DeferredResult<VPRequestStatusDto> result, ThreadSafeDelayedMethodCall executor) {
-        executor.shutdown();
+        if (executor != null )executor.shutdown();
         VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
         if (currentRequestStatus.getStatus() == null) {
             result.setErrorResult("NOT_FOUND");
@@ -100,7 +100,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             result.setResult(currentRequestStatus);
         } else {
             ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
-            executor.scheduleMethod(() -> {
+            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> {
                 getCurrentRequestStatusPeriodic(requestId, result,threadSafeDelayedMethodCallExecutor);
             }, 5, TimeUnit.SECONDS);
 
