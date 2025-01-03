@@ -19,9 +19,15 @@
     --iv-verificationMethodTabs-bg-color: #ffffff;
     --iv-horizontal-line: #ff7f00;
     --iv-page-background-color: #fafbfd;
-    --iv-success: #4b9d1f;
-    --iv-invalid: #d73e3e;
-    --iv-expired: #d98c00;
+    --iv-success: #ecfff6;
+    --iv-invalid: #ffdedd;
+    --iv-expired: #fff5e3;
+    --iv-successText: #1f9f60;
+    --iv-invalidText: #cb4241;
+    --iv-expiredText: #d98c00;
+    --iv-successBorder: #abefc6;
+    --iv-invalidBorder: #d68e8d;
+    --iv-expiredBorder: #e2ca9f;
     --iv-success-alert: #57a04b;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #d73e3e;
@@ -77,6 +83,12 @@
     --iv-success: #4b9d1f;
     --iv-invalid: #d73e3e;
     --iv-expired: #d98c00;
+    --iv-successText: #1f9f60;
+    --iv-invalidText: #cb4241;
+    --iv-expiredText: #d98c00;
+    --iv-successBorder: #abefc6;
+    --iv-invalidBorder: #d68e8d;
+    --iv-expiredBorder: #e2ca9f;
     --iv-success-alert: #57a04b;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #d73e3e;
@@ -126,6 +138,12 @@
     --iv-success: #1f9f60;
     --iv-invalid: #cb4241;
     --iv-expired: #d98c00;
+    --iv-successText: #1f9f60;
+    --iv-invalidText: #cb4241;
+    --iv-expiredText: #d98c00;
+    --iv-successBorder: #abefc6;
+    --iv-invalidBorder: #d68e8d;
+    --iv-expiredBorder: #e2ca9f;
     --iv-success-alert: #1f9f60;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #cb4241;
@@ -218,4 +236,22 @@ code {
 
 #loader {
   will-change: transform;
+}
+
+/* Reduce scrollbar width */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; /* For vertical scrollbar */
+  height: 4px; /* For horizontal scrollbar */
+}
+
+/* Scrollbar track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+/* Scrollbar thumb */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
 }

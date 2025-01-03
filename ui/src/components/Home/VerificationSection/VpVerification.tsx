@@ -6,6 +6,9 @@ import { QrCodeExpiry } from "../../../utils/config";
 import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setSelectCredential } from "../../../redux/features/verify/vpVerificationState";
+import { claims, VpSubmissionResultInt } from "../../../types/data-types";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -14,6 +17,12 @@ const DisplayActiveStep = () => {
   const qrData = useVerifyFlowSelector((state) => state.qrData);
   const status = useVerifyFlowSelector((state) => state.status);
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
+  const txnId = useVerifyFlowSelector((state) => state.txnId);
+  const dispatch = useAppDispatch();
+  const handleRequestCredentials = () => {
+    dispatch(setSelectCredential());
+  };
+  const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
 
   useEffect(() => {
     if (qrData) {
@@ -37,12 +46,30 @@ const DisplayActiveStep = () => {
     )}`;
   };
 
+  const verifiedVcs: VpSubmissionResultInt[] = useVerifyFlowSelector(
+    (state) => state.verificationSubmissionResult
+  );
+
   if (isLoading) {
-    return <Loader className="relative lg:top-[200px]" />;
-  } else if (status === "COMPLETED") {
+    return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
+  } else if (verifiedVcs.length > 0) {
+    const isSingleVc = selectedClaims.length === 1;
+    const unverifiedClaims = selectedClaims.filter(
+      (claim: claims) =>
+        verifiedVcs.some(
+          ({ vc }) =>
+            vc.verifiableCredential.credentialConfigurationId !== claim.type
+        )
+    );
     return (
-      <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
-        <VpSubmissionResult />
+      <div className="w-[100vw] lg:w-[50vw]">
+        {VpSubmissionResult(
+          verifiedVcs,
+          unverifiedClaims,
+          txnId,
+          handleRequestCredentials,
+          isSingleVc
+        )}
       </div>
     );
   } else if (!qrData) {
@@ -53,7 +80,9 @@ const DisplayActiveStep = () => {
             className={`relative grid content-center justify-center w-[275px] h-auto lg:w-[360px] aspect-square my-1.5 mx-auto`}
           >
             <div className="flex flex-col items-center">
-              <div className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}></div>
+              <div
+                className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}
+              ></div>
               <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
                 <QrIcon className="w-[78px] lg:w-[100px]" />
               </div>
@@ -63,17 +92,16 @@ const DisplayActiveStep = () => {
       </div>
     );
   } else if (qrData) {
-    const qrFooter =
-      status === "EXPIRED"
-        ? "QR Code Expired"
-        : `Valid for ${formatTime(timeLeft)}`;
+    // const qrFooter =
+    //   status === "EXPIRED"
+    //     ? "QR Code Expired"
+    //     : `Valid for ${formatTime(timeLeft)}`;
     return (
       <QrCode
         title={t("qrCodeInfo")}
         data={qrData}
         size={qrSize}
         status={status}
-        footer={qrFooter}
       />
     );
   }

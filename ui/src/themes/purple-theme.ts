@@ -23,8 +23,14 @@ import { ReactComponent as WhiteReGenerate } from "../assets/purpleTheme/white-r
 import { ReactComponent as CrossIcon } from "../assets/purpleTheme/close_icon.svg";
 import { ReactComponent as HamburgerIcon } from "../assets/purpleTheme/hamburger-menu.svg";
 import { ReactComponent as TabIcon } from "../assets/purpleTheme/new-tab.svg";
+import { ReactComponent as VectorDownArrow } from "../assets/purpleTheme/vector-arrow-down.svg";
+import { ReactComponent as VectorUpArrow } from "../assets/purpleTheme/vector-arrow-up.svg";
+import { ReactComponent as VectorExpandIcon } from "../assets/purpleTheme/vector-expand.svg";
+import { ReactComponent as VectorCollapseIcon } from "../assets/purpleTheme/vector-collapse.svg";
+import { ReactComponent as VectorDownloadIcon } from "../assets/purpleTheme/vector-download.svg";
 import ScannerOutline from "../assets/purpleTheme/scanner-outline.svg";
 import QrOutline from "../assets/purpleTheme/qr-code-outline.svg";
+import VectorOutline from "../assets/purpleTheme/vector-icon-outline.svg";
 
 const purpleTheme = {
   Logo: NavLogo,
@@ -54,6 +60,12 @@ const purpleTheme = {
   CloseIcon: CrossIcon,
   MenuIcon: HamburgerIcon,
   NewTabIcon: TabIcon,
+  VectorDown: VectorDownArrow,
+  VectorUp: VectorUpArrow,
+  VectorOutline: VectorOutline,
+  VectorExpand: VectorExpandIcon,
+  VectorCollapse: VectorCollapseIcon,
+  VectorDownload: VectorDownloadIcon,
 };
 
 export default purpleTheme;

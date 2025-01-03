@@ -9,10 +9,19 @@ import {
   DocumentIcon,
   VectorDownload,
   VectorExpand,
-  VectorOutline,
 } from "../../../../utils/theme-utils";
+import ActionButton from "../commons/ActionButton";
+import { useTranslation } from "react-i18next";
 
-function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
+function DisplayVcDetailView({
+  vc,
+  onExpand,
+  className,
+}: {
+  vc: any;
+  onExpand: any;
+  className?: string;
+}) {
   const desiredOrder = [
     "fullName",
     "gender",
@@ -38,10 +47,12 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
     return { key: value, value: "N/A" };
   });
 
+  const { t } = useTranslation("Verify");
+
   return (
     <div>
       <div
-        className={`w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4`}
+        className={`w-[339px] lg:w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4 ${className}`}
       >
         {vc ? (
           <div className="grid">
@@ -68,17 +79,19 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
                 </p>
               </div>
             ))}
-            <div
-              className="flex items-center justify-center relative left-[331px] bottom-[100px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
-              style={{ backgroundImage: `url(${VectorOutline})` }}
-            >
-              <VectorExpand onClick={onExpand} />
-            </div>
-            <div
-              className="flex items-center justify-center relative left-[290px] bottom-[40px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
-              style={{ backgroundImage: `url(${VectorOutline})` }}
-            >
-              <VectorDownload onClick={() => saveData(vc)} />
+            <div className="relative">
+              <ActionButton
+                label={t("expand")}
+                onClick={onExpand}
+                icon={<VectorExpand />}
+                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[70px]"
+              />
+              <ActionButton
+                label={t("download")}
+                onClick={() => saveData(vc)}
+                icon={<VectorDownload />}
+                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[20px]"
+              />
             </div>
           </div>
         ) : (
@@ -91,4 +104,4 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
   );
 }
 
-export default VcDisplayCard;
+export default DisplayVcDetailView;

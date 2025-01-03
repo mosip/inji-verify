@@ -86,3 +86,18 @@ export const generateRandomString = (
   }
   return randomString;
 };
+
+export const saveData = async (vc: any) => {
+  const myData = vc;
+  const fileName = `${vc.credentialSubject.fullName}`;
+  const json = JSON.stringify(myData);
+  const blob = new Blob([json], { type: "application/json" });
+  const href = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = fileName + ".json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
+};

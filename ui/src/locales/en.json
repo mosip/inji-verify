@@ -14,7 +14,7 @@
   },
   "Tab": {
     "upload": "Upload QR Code",
-    "scan": "Scan the QR Code",
+    "scan": "Scan QR Code",
     "VP_Verification": "VP Verification",
     "ble": "BLE"
   },
@@ -33,7 +33,18 @@
     "generateQrCodeBtn": "Generate QR Code",
     "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credential",
     "qrCodeExpired": "QR Code Expired",
-    "noClaims": "No Claims found."
+    "noVcsFound": "No Verifiable Credentials found.",
+    "sortBy": "Sort by",
+    "expand": "Open In Full",
+    "collapse": "Close Fullscreen",
+    "download": "Download",
+    "missingCredentials": "Request Missing credentials",
+    "restartProcess": "Restart Process",
+    "notShared": "Not Shared",
+    "SUCCESS": "Valid",
+    "EXPIRED": "Valid But Expired",
+    "INVALID": "Invalid",
+    "credentialsRequested": "Credentials were requested"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -71,15 +82,19 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Initiate VP Request Process",
-        "description": "Click Request Verifiable Credentials to begin the verification process."
+        "description": "Click <span> Request Verifiable Credentials <span> to begin the verification process."
       },
       "SelectCredential": {
         "label": "Select Credentials & Generate QR Code",
-        "description": "Choose the required verifiable credentials and click Generate QR Code."
+        "description": "Choose the required verifiable credentials and click <span>Generate QR Code<span>."
+      },
+      "RequestMissingCredential": {
+        "label": "Request Missing Credentials & Generate QR Code",
+        "description": "Click on <span>Request Missing Credentials<span> to proceed with verifying the missing VC, or click on <span>Restart Process<span> to start the entire process again."
       },
       "ScanQrCode": {
         "label": "Scan QR Code (Use a Different Device)",
-        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
+        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code <span>(Support for same-device scanning is coming soon!)<span>"
       },
       "DisplayResult": {
         "label": "View Verification Results",
@@ -124,7 +139,7 @@
     "invalidParams": "Invalid Parameters!!"
   },
   "CopyRight": {
-    "content": "Powered by Inji, a MOSIP product"
+    "content": "2024 © MOSIP - All rights reserved."
   },
   "CameraAccessDenied": {
     "header": "Camera Access Denied",

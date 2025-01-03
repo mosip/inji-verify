@@ -71,7 +71,7 @@ export type OvpFlowData = {
 export type VerificationTrigger = {};
 
 export type VerificationResult = {
-  vc?: any;
+  vc?: VC;
   vcStatus?: VcStatus;
 };
 
@@ -89,27 +89,67 @@ export interface VerificationStepsContentType {
 
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
+export interface claims {
+  name:string;
+  type: string;
+  logo: string;
+  essential?: boolean;
+  definition: PresentationDefinition;
+}
+
+interface InputDescriptor {
+  id: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  constraints?: {};
+}
+
+interface PresentationDefinition {
+  id?: string;
+  purpose: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  input_descriptors: InputDescriptor[];
+}
+
+interface BodyType {
+  transactionId: string;
+  clientId: string;
+  presentationDefinition: PresentationDefinition;
+  nonce: string;
+}
+
 export type ApiRequest = {
   url: (...args: string[]) => string;
   methodType: MethodType;
   headers: (...args: string[]) => Record<string, string>;
-  body?: string;
+  body?: BodyType;
 };
 
-export type VerificationSubmissionResult = {
-  vc?: any;
-  vcStatus?: string;
+export type VpSubmissionResultInt = {
+  vc: VC;
+  vcStatus: "SUCCESS" | "EXPIRED" | "INVALID";
+  view?: boolean;
 };
 
 export type VerifyState = {
   isLoading: boolean;
-  status:string,
+  status: string;
   qrData: string;
   txnId: string;
   reqId: string;
-  activeScreen: number; 
-  verificationSubmissionResult?: VerificationSubmissionResult;
-  SelectionPannel:boolean;
+  method: string;
+  activeScreen: number;
+  verificationSubmissionResult: VpSubmissionResultInt[];
+  SelectionPannel: boolean;
+  selectedClaims: claims[];
+  unVerifiedClaims:claims[];
 };
 
 export type QrData = {
@@ -130,6 +170,62 @@ export type QrCodeProps = {
   title: string;
   data: string;
   size: number;
-  footer: string;
-  status:"SUCCESS" | "EXPIRED" | "INVALID";
+  footer?: string;
+  status: "SUCCESS" | "EXPIRED" | "INVALID";
+};
+
+export type VC = {
+  format: string;
+  generatedOn: string;
+  identifier: string;
+  vcMetadata: {
+    downloadKeyType: string;
+    format: string;
+    id: string;
+    idType: string;
+    isExpired: boolean;
+    isPinned: boolean;
+    isVerified: boolean;
+    issuer: string;
+    mosipIndividualId: string;
+    protocol: string;
+    requestId: string;
+    timestamp: string;
+  };
+  verifiableCredential: {
+    credential: {
+      "@context": string[];
+      credentialSubject: {
+        benefits: string[];
+        gender: string;
+        policyName: string;
+        dob: string;
+        mobile: string;
+        policyNumber: string;
+        fullName: string;
+        policyIssuedOn: string;
+        id: string;
+        email: string;
+        policyExpiresOn: string;
+      };
+      expirationDate: string;
+      id: string;
+      issuanceDate: string;
+      issuer: string;
+      proof: {
+        proofValue: string;
+        created: string;
+        proofPurpose: string;
+        type: string;
+        verificationMethod: string;
+      };
+      type: string[];
+    };
+    credentialConfigurationId: string;
+    issuerLogo: {
+      url: string;
+      alt_text: string;
+    };
+    wellKnown: string;
+  };
 };

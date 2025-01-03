@@ -18,7 +18,7 @@ export class api {
         "Content-Type": "application/json",
       };
     },
-    body: JSON.stringify({
+    body: {
       transactionId: `txn_${crypto.randomUUID()}`,
       clientId: window.location.origin,
       presentationDefinition: {
@@ -30,20 +30,10 @@ export class api {
             proof_type: ["RsaSignature2018"],
           },
         },
-        input_descriptors: [
-          {
-            id: "id card credential",
-            format: {
-              ldp_vc: {
-                proof_type: ["Ed25519Signature2020"],
-              },
-            },
-            constraints: {}
-          },
-        ],
+        input_descriptors: [],
       },
       nonce: generateNonce(),
-    }),
+    },
   };
 
   static fetchStatus: ApiRequest = {

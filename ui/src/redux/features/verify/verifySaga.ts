@@ -1,13 +1,13 @@
 import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, QrData } from "../../../types/data-types";
+import { ApiRequest, claims, QrData, VC } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
   setVpRequestResponse,
   setVpRequestStatus,
   verificationSubmissionComplete,
-} from "./verifyState";
+} from "./vpVerificationState";
 import {
   AlertMessages,
   OPENID4VP_PROTOCOL,
@@ -15,15 +15,17 @@ import {
 } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
 
-function* fetchRequestUri(claims: string[]) {
+function* fetchRequestUri(claims: claims[]) {
   let qrData;
   let txnId;
   let reqId;
   const apiRequest: ApiRequest = api.fetchVpRequest;
+  const def = claims.flatMap((claim) => claim.definition.input_descriptors);
+  apiRequest.body!.presentationDefinition.input_descriptors = [...def];
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
-    body: apiRequest.body,
+    body: JSON.stringify(apiRequest.body),
   };
 
   try {
@@ -59,11 +61,15 @@ function* fetchRequestUri(claims: string[]) {
   } catch (error) {
     console.error("Failed to fetch request URI:", error);
     yield put(resetVpRequest());
-    yield put(raiseAlert({ ...AlertMessages().failToGenerateQrCode, open: true }));
+    yield put(
+      raiseAlert({ ...AlertMessages().failToGenerateQrCode, open: true })
+    );
     return;
   }
 
-  yield put(setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId }));
+  yield put(
+    setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId })
+  );
   return;
 }
 
@@ -115,17 +121,23 @@ function* getVpResult(status: string, txnId: string) {
         apiRequest.url(txnId),
         requestOptions
       );
-      const data:string = yield response.text();
+      const data: string = yield response.text();
       const parsedData = JSON.parse(data);
-      const vcResult = parsedData.vcresults[0]
-      const verificationStatus = vcResult.verificationStatus;
-      const vc1 = JSON.parse(vcResult.vc);
+      const vcResults: { vc: VC; vcStatus: string }[] = [];
+      parsedData.vcresults.forEach(
+        (vcResult: { vc: string; verificationStatus: string }) => {
+          const verificationStatus = vcResult.verificationStatus;
+          const vc: VC = JSON.parse(vcResult.vc);
+          vcResults.push({
+            vc: vc,
+            vcStatus: verificationStatus,
+          });
+        }
+      );
+
       yield put(
         verificationSubmissionComplete({
-          verificationResult: {
-            vc: vc1,
-            vcStatus: verificationStatus,
-          },
+          verificationResult: [...vcResults],
         })
       );
       return;

@@ -19,70 +19,123 @@ const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCo
 }
 
 function MobileStepper(props: any) {
-    let activeScreen: number;
-    const { mainActiveScreen, method } = useVerificationFlowSelector((state) => ({
-        mainActiveScreen: state.activeScreen,
-        method: state.method,
-    }));
-    const VerifyActiveScreen = useVerifyFlowSelector(
-        (state) => state.activeScreen
-    );
+  let activeScreen: number;
+  const { mainActiveScreen, method } = useVerificationFlowSelector((state) => ({
+    mainActiveScreen: state.activeScreen,
+    method: state.method,
+  }));
+  const VerifyActiveScreen = useVerifyFlowSelector(
+    (state) => state.activeScreen
+  );
 
-    if (method === "VERIFY") {
-        activeScreen = VerifyActiveScreen;
-    } else {
-        activeScreen = mainActiveScreen;
-    }
-    const stepperLine = "flex-grow border-t-2 border-transparent";
-    const [VerificationStepsContent, SetVerificationStepsContent] = useState<VerificationStepsContentType>(getVerificationStepsContent());
-    const stepCount = getVerificationStepsCount(method);
-    const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
+  const unverifiedClaims = useVerifyFlowSelector(
+    (state) => state.unVerifiedClaims
+  );
+  const isPartiallyShared = unverifiedClaims.length > 0;
 
-    const label = VerificationStepsContent[method as VerificationMethod][activeScreen - 1].label;
-    const description = VerificationStepsContent[method as VerificationMethod][activeScreen - 1].description;
+  if (method === "VERIFY") {
+    activeScreen = VerifyActiveScreen;
+  } else {
+    activeScreen = mainActiveScreen;
+  }
+  const stepperLine = "flex-grow border-t-2 border-transparent";
+  const [VerificationStepsContent, SetVerificationStepsContent] =
+    useState<VerificationStepsContentType>(getVerificationStepsContent());
+  const stepCount = getVerificationStepsCount(method);
+  const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
+  const label =
+    VerificationStepsContent[method as VerificationMethod][activeScreen - 1]
+      .label;
+  const description: string = VerificationStepsContent[
+    method as VerificationMethod
+  ][activeScreen - 1].description as string;
 
-    useEffect(() => {
-        const fetchVerificationSteps = () => {
-            SetVerificationStepsContent(getVerificationStepsContent());
+  useEffect(() => {
+    const fetchVerificationSteps = () => {
+      let stepsContent: VerificationStepsContentType =
+        getVerificationStepsContent();
+
+      if (method === "VERIFY") {
+        stepsContent = {
+          ...stepsContent,
+          [method]: stepsContent[method as VerificationMethod].filter(
+            (_, index: number) => {
+              if (isPartiallyShared && index === 1) {
+                return false;
+              }
+              if (!isPartiallyShared && index === 2) {
+                return false;
+              }
+              return true;
+            }
+          ),
         };
+      }
 
-        fetchVerificationSteps();
+      SetVerificationStepsContent(stepsContent);
+    };
 
-        const handleLanguageChange = () => {
-            fetchVerificationSteps();
-        };
+    fetchVerificationSteps();
 
-        i18n.on('languageChanged', handleLanguageChange);
-        
-        return () => {
-            i18n.off('languageChanged', handleLanguageChange);
-        };
-    }, [method]);
+    const handleLanguageChange = () => {
+      fetchVerificationSteps();
+    };
 
-    return (
-        <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
-            <div className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
-                 style={{maxWidth}}
-                 id="stepper">
-                {
-                    getRangeOfNumbers(stepCount).map((value, index) => (
-                        <div key={index} className='flex flex-column items-center'>
-                            <Step stepNumber={value} activeOrCompleted={value <= activeScreen} />
-                            {(value < stepCount) && (<div className={`bg-${window._env_.DEFAULT_THEME}-gradient p-[1px] w-[44px] h-[1px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
-                        </div>
-                    ))
-                }
-            </div>
-            <div className="col-start-1 col-end-13 text-center">
-                <p id={convertToId(label)} className="font-bold text-stepperLabel my-1">
-                    {label}
-                </p>
-                <p id={`${convertToId(label)}-description`} className="text-stepperDescription text-normalTextSize">
-                    {description}
-                </p>
-            </div>
-        </div>
-    );
+    i18n.on("languageChanged", handleLanguageChange);
+
+    return () => {
+      i18n.off("languageChanged", handleLanguageChange);
+    };
+  }, [method, isPartiallyShared]);
+
+  return (
+    <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
+      <div
+        className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
+        style={{ maxWidth }}
+        id="stepper"
+      >
+        {getRangeOfNumbers(stepCount).map((value, index) => (
+          <div key={index} className="flex flex-column items-center">
+            <Step
+              stepNumber={value}
+              activeOrCompleted={value <= activeScreen}
+            />
+            {value < stepCount && (
+              <div
+                className={`bg-${
+                  window._env_.DEFAULT_THEME
+                }-gradient p-[1px] w-[44px] h-[1px] ${
+                  value >= activeScreen ? "opacity-20" : ""
+                }`}
+              >
+                <div className={stepperLine} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="col-start-1 col-end-13 text-center">
+        <p id={convertToId(label)} className="font-bold text-stepperLabel my-1">
+          {label}
+        </p>
+        <p
+          id={`${convertToId(label)}-description`}
+          className="text-stepperDescription text-normalTextSize"
+        >
+          {description
+            .split("<span>")
+            .map((text: string, index: number) =>
+              index % 2 === 1 ? (
+                <span style={{ fontStyle: "italic" }}>"{text.trim()}"</span>
+              ) : (
+                text
+              )
+            )}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default MobileStepper;

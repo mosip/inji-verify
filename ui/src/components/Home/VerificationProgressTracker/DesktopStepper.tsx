@@ -24,7 +24,10 @@ const DesktopStepper: React.FC = () => {
   const VerifyActiveScreen = useVerifyFlowSelector(
     (state) => state.activeScreen
   );
-
+  const unverifiedClaims = useVerifyFlowSelector(
+    (state) => state.unVerifiedClaims
+  );
+  const isPartiallyShared = unverifiedClaims.length > 0;
   if (method === "VERIFY") {
     activeScreen = VerifyActiveScreen;
   } else {
@@ -38,35 +41,44 @@ const DesktopStepper: React.FC = () => {
   const rtl = isRTL(language);
 
   useEffect(() => {
-    // Fetch verification steps content on mount and when language changes
     const fetchSteps = () => {
       const VerificationStepsContent: VerificationStepsContentType =
         getVerificationStepsContent();
-      setSteps(VerificationStepsContent[method as VerificationMethod]);
+      const filteredSteps = VerificationStepsContent[
+        method as VerificationMethod
+      ].filter((_, index: number) => {
+        if (method === "VERIFY") {
+          if (isPartiallyShared && index === 1) {
+            return false;
+          }
+          if (!isPartiallyShared && index === 2) {
+            return false;
+          }
+          return true;
+        }
+        return true;
+      });
+      setSteps(filteredSteps);
     };
-
     fetchSteps();
-
-    // Listen for language changes
     const handleLanguageChange = () => {
       fetchSteps();
     };
-
     i18n.on("languageChanged", handleLanguageChange);
-
-    // Cleanup listener on unmount
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
     };
-  }, [method]);
+  }, [isPartiallyShared, method]);
 
   return (
-    <div className="hidden pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
+    <div className="hidden pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9 max-h-[100%]">
       <div className="flex flex-col items-start space-y-2">
         {steps.map((step: any, index: number) => (
           <div key={index}>
             <div className="flex items-center">
-              <div className={`bg-${window._env_.DEFAULT_THEME}-gradient rounded-full bg-no-repeat p-[2px] flex items-center justify-center`}>
+              <div
+                className={`bg-${window._env_.DEFAULT_THEME}-gradient rounded-full bg-no-repeat p-[2px] flex items-center justify-center`}
+              >
                 <div
                   className={`text-center rounded-full w-6 h-6 flex items-center justify-center font-normal text-normal text-smallTextSize leading-5 bg-no-repeat  ${
                     isStepCompleted(index)
@@ -97,7 +109,9 @@ const DesktopStepper: React.FC = () => {
                       isStepCompleted(index + 1) ? "" : "opacity-20"
                     }`}
                   >
-                    <div className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-full m-auto`}>
+                    <div
+                      className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-full m-auto`}
+                    >
                       <div
                         className={`${
                           !isLastStep(index)
@@ -120,7 +134,17 @@ const DesktopStepper: React.FC = () => {
                       : "ml-[10px]"
                   }  text-normalTextSize text-stepperDescription font-normal col-end-13`}
                 >
-                  {step.description}
+                  {step.description
+                    .split("<span>")
+                    .map((text: string, index: number) =>
+                      index % 2 === 1 ? (
+                        <span style={{ fontStyle: "italic" }}>
+                          "{text.trim()}"
+                        </span>
+                      ) : (
+                        text
+                      )
+                    )}
                 </div>
                 {!isLastStep(index) && (
                   <div
@@ -128,7 +152,9 @@ const DesktopStepper: React.FC = () => {
                       isStepCompleted(index + 1) ? "" : "opacity-20"
                     }`}
                   >
-                    <div className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-8 m-auto`}>
+                    <div
+                      className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-8 m-auto`}
+                    >
                       <div className="border-transparent border-l-primary border-[1px]" />
                     </div>
                   </div>

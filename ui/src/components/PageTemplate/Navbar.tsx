@@ -110,7 +110,7 @@ function Navbar(props: any) {
 
 
     return (
-        <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-50 relative">
+        <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded drop-shadow-md z-25 relative">
             <div className="container flex flex-wrap justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
                         className={`${showMenu?`bg-${window._env_.DEFAULT_THEME}-lighter-gradient`:"bg-background"} inline-flex items-center p-3 mr-1 text-sm text-gray-500 rounded-md lg:hidden dark:text-gray-400`}

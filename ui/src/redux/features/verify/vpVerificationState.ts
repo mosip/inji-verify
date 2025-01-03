@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { VerificationSteps } from "../../../utils/config";
+import { VerifyState } from "../../../types/data-types";
 
-const PreloadedState = {
+const PreloadedState: VerifyState = {
   isLoading: false,
   status: "PENDING",
   qrData: "",
@@ -10,19 +11,26 @@ const PreloadedState = {
   method: "VERIFY",
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
   SelectionPannel: false,
-  verificationSubmissionResult: { vc: undefined, vcStatus: undefined },
+  verificationSubmissionResult: [],
+  selectedClaims: [],
+  unVerifiedClaims: [],
 };
 
-const verifyState = createSlice({
+const vpVerificationState = createSlice({
   name: "vpVerification",
   initialState: PreloadedState,
   reducers: {
     getVpRequest: (state, actions) => {
       state.isLoading = true;
+      state.selectedClaims = actions.payload.selectedClaims;
+      state.verificationSubmissionResult = [];
+      state.unVerifiedClaims = [];
     },
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
       state.SelectionPannel = true;
+      state.verificationSubmissionResult = [];
+      state.unVerifiedClaims = [];
     },
     setVpRequestResponse: (state, action) => {
       state.qrData = action.payload.qrData;
@@ -36,28 +44,37 @@ const verifyState = createSlice({
       state.status = action.payload.status;
       state.txnId = action.payload.txnId;
       state.reqId = action.payload.reqId;
-      state.activeScreen = VerificationSteps[state.method].DisplayResult;
     },
     verificationSubmissionComplete: (state, action) => {
-      state.verificationSubmissionResult = action.payload.verificationResult;
+      state.verificationSubmissionResult.push(
+        ...action.payload.verificationResult
+      );
+      state.unVerifiedClaims = state.selectedClaims.filter((claim) =>
+        state.verificationSubmissionResult.some(
+          (vc) =>
+            vc.vc.verifiableCredential.credentialConfigurationId !== claim.type
+        )
+      );
+      const isPartiallyShared = state.unVerifiedClaims.length > 0;
+      state.activeScreen = isPartiallyShared
+        ? VerificationSteps[state.method].RequestMissingCredential
+        : VerificationSteps[state.method].DisplayResult;
+      state.txnId = "";
+      state.qrData = "";
+      state.reqId = "";
+      state.status = "PENDING";
     },
     resetVpRequest: (state) => {
       state.activeScreen = VerificationSteps[state.method].InitiateVpRequest;
-      state.verificationSubmissionResult = {
-        vc: undefined,
-        vcStatus: undefined,
-      };
+      state.verificationSubmissionResult = [];
       state.isLoading = false;
-      state.status = "PENDING";
-      state.qrData = "";
-      state.txnId = "";
-      state.reqId = "";
       state.activeScreen = VerificationSteps["VERIFY"].InitiateVpRequest;
-      state.verificationSubmissionResult = {
-        vc: undefined,
-        vcStatus: undefined,
-      };
       state.SelectionPannel = false;
+      state.unVerifiedClaims = [];
+      state.txnId = "";
+      state.qrData = "";
+      state.reqId = "";
+      state.status = "PENDING";
     },
   },
 });
@@ -69,6 +86,6 @@ export const {
   setVpRequestStatus,
   resetVpRequest,
   verificationSubmissionComplete,
-} = verifyState.actions;
+} = vpVerificationState.actions;
 
-export default verifyState.reducer;
+export default vpVerificationState.reducer;
