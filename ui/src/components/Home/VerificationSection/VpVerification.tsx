@@ -54,18 +54,15 @@ const DisplayActiveStep = () => {
     return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
   } else if (verifiedVcs.length > 0) {
     const isSingleVc = selectedClaims.length === 1;
-    const unverifiedClaims = selectedClaims.filter(
-      (claim: claims) =>
-        verifiedVcs.some(
-          ({ vc }) =>
-            vc.verifiableCredential.credentialConfigurationId !== claim.type
-        )
+    const unverifiedClaims = selectedClaims.filter((claim: claims) =>
+      verifiedVcs.some(({ vc }) => vc.credentialConfigurationId !== claim.type)
     );
     return (
       <div className="w-[100vw] lg:w-[50vw]">
         {VpSubmissionResult(
           verifiedVcs,
           unverifiedClaims,
+          selectedClaims,
           txnId,
           handleRequestCredentials,
           isSingleVc

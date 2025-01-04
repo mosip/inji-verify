@@ -28,10 +28,10 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const [showDetailView, setShowDetailView] = useState(view);
   const [isModalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("Verify");
-  const imgUrl = vc.verifiableCredential.issuerLogo.url;
-  const imgAlt = vc.verifiableCredential.issuerLogo.alt_text;
-  const credential = vc.verifiableCredential.credential;
-  const credentialType: string = vc.verifiableCredential.credentialConfigurationId;
+  const imgUrl = vc.issuerLogo.url;
+  const imgAlt = vc.issuerLogo.alt_text;
+  const credential = vc.credential;
+  const credentialType: string = vc.credentialConfigurationId;
 
   return (
     <div>
@@ -72,7 +72,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         <div>
           <div className={`h-[3px] border-b-2 border-b-transparent`} />
           <DisplayVcDetailView
-            vc={vc?.verifiableCredential.credential}
+            vc={vc?.credential}
             onExpand={() => setModalOpen(true)}
             className={`${
               view ? "h-auto" : "h-[257px]"

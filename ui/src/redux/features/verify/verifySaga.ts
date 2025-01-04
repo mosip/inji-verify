@@ -1,6 +1,6 @@
-import { all, call, delay, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claims, QrData, VC } from "../../../types/data-types";
+import { ApiRequest, claims, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -11,7 +11,6 @@ import {
 import {
   AlertMessages,
   OPENID4VP_PROTOCOL,
-  PollStatusDelay,
 } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
 
@@ -36,26 +35,28 @@ function* fetchRequestUri(claims: claims[]) {
     );
     const data: string = yield response.text();
     const parsedData = JSON.parse(data) as QrData;
-    qrData =
-      OPENID4VP_PROTOCOL +
-      btoa(
-        `client_id=${parsedData.authorizationDetails.clientId}` +
-          `&response_type=${parsedData.authorizationDetails.responseType}` +
-          `&response_mode=direct_post` +
-          `&nonce=${parsedData.authorizationDetails.nonce}` +
-          `&state=${parsedData.requestId}` +
-          `&response_uri=${
-            window.location.origin +
-            window._env_.VERIFY_SERVICE_API_URL +
-            parsedData.authorizationDetails.responseUri
-          }` +
-          `&presentation_definition_uri=${
-            window.location.origin +
-            window._env_.VERIFY_SERVICE_API_URL +
-            parsedData.authorizationDetails.presentationDefinitionUri
-          }` +
-          `&client_metadata={"client_name":"${window.location.origin}"}`
-      );
+    const pdef =
+      `client_id=${parsedData.authorizationDetails.clientId}` +
+      `&response_type=${parsedData.authorizationDetails.responseType}` +
+      `&response_mode=direct_post` +
+      `&nonce=${parsedData.authorizationDetails.nonce}` +
+      `&state=${parsedData.requestId}` +
+      `&response_uri=${
+        window._env_.VERIFY_SERVICE_API_URL +
+        parsedData.authorizationDetails.responseUri
+      }` +
+      `${
+        parsedData.authorizationDetails.presentationDefinitionUri
+          ? `&presentation_definition_uri=${
+              window._env_.VERIFY_SERVICE_API_URL +
+              parsedData.authorizationDetails.presentationDefinitionUri
+            }`
+          : `&presentation_definition=${JSON.stringify(
+              parsedData.authorizationDetails.presentationDefinition
+            )}`
+      }` +
+      `&client_metadata={"client_name":"${window.location.origin}"}`;
+    qrData = OPENID4VP_PROTOCOL + btoa(pdef);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
   } catch (error) {
@@ -80,22 +81,15 @@ function* getVpStatus(reqId: string, txnId: string) {
     headers: apiRequest.headers(),
   };
 
-  const pollStatus: any = function* () {
+  const fetchStatus: any = function* () {
     try {
-      const response: Response = yield call(
-        fetch,
-        apiRequest.url(reqId),
-        requestOptions
-      );
-      const data: string = yield response.text();
-      const parsedData = JSON.parse(data);
-      const status = parsedData.status;
-      if (status !== "PENDING") {
+      let status;
+      yield fetch(apiRequest.url(reqId), requestOptions)
+        .then((res) => res.json() as unknown as fetchStatusResponse)
+        .then((data) => (status = data.status));
+      if (status === "VP_SUBMITTED") {
         yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
         return;
-      } else {
-        yield delay(PollStatusDelay);
-        yield call(pollStatus);
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -104,12 +98,11 @@ function* getVpStatus(reqId: string, txnId: string) {
       return;
     }
   };
-
-  yield call(pollStatus);
+  yield call(fetchStatus);
 }
 
 function* getVpResult(status: string, txnId: string) {
-  if (status === "COMPLETED") {
+  if (status === "VP_SUBMITTED") {
     const apiRequest: ApiRequest = api.fetchVpResult;
     const requestOptions = {
       method: apiRequest.methodType,

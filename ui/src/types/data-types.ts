@@ -90,7 +90,7 @@ export interface VerificationStepsContentType {
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface claims {
-  name:string;
+  name: string;
   type: string;
   logo: string;
   essential?: boolean;
@@ -149,7 +149,7 @@ export type VerifyState = {
   verificationSubmissionResult: VpSubmissionResultInt[];
   SelectionPannel: boolean;
   selectedClaims: claims[];
-  unVerifiedClaims:claims[];
+  unVerifiedClaims: claims[];
 };
 
 export type QrData = {
@@ -158,7 +158,8 @@ export type QrData = {
   authorizationDetails: {
     responseType: string;
     clientId: string;
-    presentationDefinitionUri: string;
+    presentationDefinition: object;
+    presentationDefinitionUri?: string;
     responseUri: string;
     nonce: string;
     iat: number;
@@ -175,57 +176,42 @@ export type QrCodeProps = {
 };
 
 export type VC = {
-  format: string;
-  generatedOn: string;
-  identifier: string;
-  vcMetadata: {
-    downloadKeyType: string;
-    format: string;
-    id: string;
-    idType: string;
-    isExpired: boolean;
-    isPinned: boolean;
-    isVerified: boolean;
-    issuer: string;
-    mosipIndividualId: string;
-    protocol: string;
-    requestId: string;
-    timestamp: string;
-  };
-  verifiableCredential: {
-    credential: {
-      "@context": string[];
-      credentialSubject: {
-        benefits: string[];
-        gender: string;
-        policyName: string;
-        dob: string;
-        mobile: string;
-        policyNumber: string;
-        fullName: string;
-        policyIssuedOn: string;
-        id: string;
-        email: string;
-        policyExpiresOn: string;
-      };
-      expirationDate: string;
+  credential: {
+    "@context": string[];
+    credentialSubject: {
+      benefits: string[];
+      gender: string;
+      policyName: string;
+      dob: string;
+      mobile: string;
+      policyNumber: string;
+      fullName: string;
+      policyIssuedOn: string;
       id: string;
-      issuanceDate: string;
-      issuer: string;
-      proof: {
-        proofValue: string;
-        created: string;
-        proofPurpose: string;
-        type: string;
-        verificationMethod: string;
-      };
-      type: string[];
+      email: string;
+      policyExpiresOn: string;
     };
-    credentialConfigurationId: string;
-    issuerLogo: {
-      url: string;
-      alt_text: string;
+    expirationDate: string;
+    id: string;
+    issuanceDate: string;
+    issuer: string;
+    proof: {
+      proofValue: string;
+      created: string;
+      proofPurpose: string;
+      type: string;
+      verificationMethod: string;
     };
-    wellKnown: string;
+    type: string[];
   };
+  credentialConfigurationId: string;
+  issuerLogo: {
+    url: string;
+    alt_text: string;
+  };
+  wellKnown: string;
 };
+
+export interface fetchStatusResponse {
+  status: string;
+}
