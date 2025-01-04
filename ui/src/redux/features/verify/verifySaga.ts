@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claims, QrData, VC } from "../../../types/data-types";
+import { ApiRequest, claims, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,

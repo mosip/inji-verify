@@ -75,7 +75,7 @@ export function Verify() {
       <div className="grid grid-cols-13">
         <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] lg:pb-[100px]">
           <VerificationProgressTracker />
-          {(isLargeScreen || verifiedVcs.length === 0) && isPartiallyShared
+          {isLargeScreen && isPartiallyShared
             ? renderMissingAndResetButton()
             : renderRequestCredentialsButton()}
           {openSelection && <SelectionPannel />}
