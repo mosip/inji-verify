@@ -90,10 +90,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     private List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {
         List<VCResult> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
-            JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
+            JSONObject fullVerifiableCredential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL);
+            JSONObject credential = fullVerifiableCredential.getJSONObject(Constants.KEY_CREDENTIAL);
             VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
-            verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
+            verificationResults.add(new VCResult(fullVerifiableCredential.toString(),singleVCVerification));
         }
         return verificationResults;
     }

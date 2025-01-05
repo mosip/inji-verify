@@ -44,21 +44,21 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce() != null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
-        PresentationDefinition presentationDefinition;
         AuthorizationRequestResponseDto authorizationRequestResponseDto;
         if (vpRequestCreate.getPresentationDefinitionId() != null) {
-            presentationDefinition = presentationDefinitionRepository.findById(vpRequestCreate.getPresentationDefinitionId()).orElse(null);
+            PresentationDefinition presentationDefinition = presentationDefinitionRepository.findById(vpRequestCreate.getPresentationDefinitionId()).orElse(null);
             if (presentationDefinition == null) {
                 //todo ::  is this what u have to do?
                 //Todo:: Examples of PD
                 return null;
             }
-            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), presentationDefinition, nonce);
+
+            VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getSubmissionRequirements());
+            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
 
         } else {
-            VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
-            presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
-            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, presentationDefinition, nonce);
+            VPDefinitionResponseDto vpDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
+            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpDefinitionResponseDto, nonce);
         }
 
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
