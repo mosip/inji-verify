@@ -60,6 +60,9 @@ function QrScanner() {
           clearTimeout(timer);
           stopVideoStream();
           dispatch(
+            raiseAlert({ ...AlertMessages().qrScanSuccess, open: true })
+          );
+          dispatch(
             verificationInit({
               qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
               flow: "SCAN",

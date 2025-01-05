@@ -62,6 +62,7 @@
   },
   "AlertMessages": {
     "qrUploadSuccess": "QR code uploaded successfully!",
+    "qrScanSuccess":"QR code scanned successfully!",
     "sessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan.",
     "qrNotDetected": "No MultiFormat Readers were able to detect the QR code.",
     "qrNotSupported": "QR code format is not supported.",
