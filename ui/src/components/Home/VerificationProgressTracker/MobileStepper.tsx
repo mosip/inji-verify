@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import {useVerificationFlowSelector, useVerifyFlowSelector} from "../../../redux/features/verification/verification.selector";
-import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../../utils/misc";
-import { VerificationMethod, VerificationStepsContentType } from '../../../types/data-types';
-import { getVerificationStepsContent } from '../../../utils/config';
+import React, { useEffect } from "react";
+import { useVerificationFlowSelector, useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
+import { convertToId, fetchVerificationSteps, getRangeOfNumbers } from "../../../utils/misc";
+import { VerificationMethod } from "../../../types/data-types";
 import i18n from "i18next";
 
-const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
-    const stepperStep = "flex items-center";
-    const stepperActiveOrCompleted = `rounded-full bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat text-white`; // Keep only gradient here
-    const stepperUpcomingStep = `bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat rounded-full text-primary p-[2px]`;
-    const stepperCircle = `${activeOrCompleted ? `bg-${window._env_.DEFAULT_THEME}-gradient` : "bg-white"} bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
-    return (
-        <div className={`${stepperStep} ${activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep}`}
-             data-step="1">
-            <div className={stepperCircle}>{stepNumber}</div>
-        </div>
-    );
-}
+const Step = ({ stepNumber, activeOrCompleted }: { stepNumber: number; activeOrCompleted: boolean; }) => {
+  const stepperStep = "flex items-center";
+  const stepperActiveOrCompleted = `rounded-full bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat text-white`; // Keep only gradient here
+  const stepperUpcomingStep = `bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat rounded-full text-primary p-[2px]`;
+  const stepperCircle = `${activeOrCompleted ? `bg-${window._env_.DEFAULT_THEME}-gradient` : "bg-white"
+  } bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
+  return (
+    <div className={`${stepperStep} ${ activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep }`} data-step="1" >
+      <div className={stepperCircle}>{stepNumber}</div>
+    </div>
+  );
+};
 
-function MobileStepper(props: any) {
+function MobileStepper() {
   let activeScreen: number;
   const { mainActiveScreen, method } = useVerificationFlowSelector((state) => ({
     mainActiveScreen: state.activeScreen,
     method: state.method,
   }));
-  const VerifyActiveScreen = useVerifyFlowSelector(
-    (state) => state.activeScreen
-  );
-
-  const unverifiedClaims = useVerifyFlowSelector(
-    (state) => state.unVerifiedClaims
-  );
+  const VerifyActiveScreen = useVerifyFlowSelector((state) => state.activeScreen );
+  const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
   const isPartiallyShared = unverifiedClaims.length > 0;
 
   if (method === "VERIFY") {
@@ -38,47 +32,18 @@ function MobileStepper(props: any) {
   } else {
     activeScreen = mainActiveScreen;
   }
+
   const stepperLine = "flex-grow border-t-2 border-transparent";
-  const [VerificationStepsContent, SetVerificationStepsContent] =
-    useState<VerificationStepsContentType>(getVerificationStepsContent());
-  const stepCount = getVerificationStepsCount(method);
-  const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
-  const label =
-    VerificationStepsContent[method as VerificationMethod][activeScreen - 1]
-      .label;
-  const description: string = VerificationStepsContent[
-    method as VerificationMethod
-  ][activeScreen - 1].description as string;
+  const VerificationStepsContent = fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
+  const stepCount = VerificationStepsContent.length;
+  const label = VerificationStepsContent[activeScreen - 1].label;
+  const description: string = VerificationStepsContent[activeScreen - 1].description as string;
 
   useEffect(() => {
-    const fetchVerificationSteps = () => {
-      let stepsContent: VerificationStepsContentType =
-        getVerificationStepsContent();
-
-      if (method === "VERIFY") {
-        stepsContent = {
-          ...stepsContent,
-          [method]: stepsContent[method as VerificationMethod].filter(
-            (_, index: number) => {
-              if (isPartiallyShared && index === 1) {
-                return false;
-              }
-              if (!isPartiallyShared && index === 2) {
-                return false;
-              }
-              return true;
-            }
-          ),
-        };
-      }
-
-      SetVerificationStepsContent(stepsContent);
-    };
-
-    fetchVerificationSteps();
+    fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
 
     const handleLanguageChange = () => {
-      fetchVerificationSteps();
+      fetchVerificationSteps(method, isPartiallyShared);
     };
 
     i18n.on("languageChanged", handleLanguageChange);
@@ -89,10 +54,9 @@ function MobileStepper(props: any) {
   }, [method, isPartiallyShared]);
 
   return (
-    <div className={`grid grid-cols-12 lg:hidden container mx-auto my-7`}>
+    <div className={`grid grid-cols-13 lg:hidden flex flex-column mx-auto items-center my-7`}>
       <div
-        className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
-        style={{ maxWidth }}
+        className="col-start-1 col-end-13 flex items-center mx-auto mb-7"
         id="stepper"
       >
         {getRangeOfNumbers(stepCount).map((value, index) => (
@@ -102,13 +66,7 @@ function MobileStepper(props: any) {
               activeOrCompleted={value <= activeScreen}
             />
             {value < stepCount && (
-              <div
-                className={`bg-${
-                  window._env_.DEFAULT_THEME
-                }-gradient p-[1px] w-[44px] h-[1px] ${
-                  value >= activeScreen ? "opacity-20" : ""
-                }`}
-              >
+              <div className={`bg-${ window._env_.DEFAULT_THEME }-gradient p-[1px] w-[44px] h-[1px] ${ value >= activeScreen ? "opacity-20" : "" }`} >
                 <div className={stepperLine} />
               </div>
             )}
@@ -123,15 +81,9 @@ function MobileStepper(props: any) {
           id={`${convertToId(label)}-description`}
           className="text-stepperDescription text-normalTextSize"
         >
-          {description
-            .split("<span>")
-            .map((text: string, index: number) =>
-              index % 2 === 1 ? (
-                <span style={{ fontStyle: "italic" }}>"{text.trim()}"</span>
-              ) : (
-                text
-              )
-            )}
+          {description.split("<span>").map((text: string, index: number) =>
+              index % 2 === 1 ? <span style={{ fontStyle: "italic" }}>"{text.trim()}"</span> : text
+          )}
         </p>
       </div>
     </div>

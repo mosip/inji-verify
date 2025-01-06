@@ -110,7 +110,7 @@ const SelectionPannel = () => {
             </div>
             <div
               onClick={() => setShowMenu(!showMenu)}
-              className="w-[106px] h-[44px] relative flex items-center border rounded-lg p-2 cursor-pointer border-sortByBorder"
+              className="w-[106px] lg:h-[44px] relative flex items-center border rounded-lg p-2 cursor-pointer border-sortByBorder mt-1 lg:m-0"
             >
               <FilterLinesIcon />
               <span className="text-sortByText font-semibold text-smallTextSize ml-2">

@@ -15,8 +15,8 @@ import { LanguageObject } from "../types/data-types";
 const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
 
 export const LanguagesSupported: LanguageObject[] = [
-  { label: "Português", value: "pt" },
   { label: "English", value: "en" },
+  { label: "Português", value: "pt" },
   { label: "தமிழ்", value: "ta" },
   { label: "ಕನ್ನಡ", value: "kn" },
   { label: "हिंदी", value: "hi" },

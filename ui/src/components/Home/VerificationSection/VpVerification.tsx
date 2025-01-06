@@ -62,7 +62,6 @@ const DisplayActiveStep = () => {
         {VpSubmissionResult(
           verifiedVcs,
           unverifiedClaims,
-          selectedClaims,
           txnId,
           handleRequestCredentials,
           isSingleVc
@@ -80,7 +79,7 @@ const DisplayActiveStep = () => {
               <div
                 className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}
               ></div>
-              <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
+              <div className="absolute top-[88px] left-[98px] lg:top-[185px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
                 <QrIcon className="w-[78px] lg:w-[100px]" />
               </div>
             </div>
