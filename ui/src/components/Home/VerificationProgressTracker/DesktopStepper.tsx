@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   useVerificationFlowSelector,
   useVerifyFlowSelector,
 } from "../../../redux/features/verification/verification.selector";
-import { convertToId } from "../../../utils/misc";
-import {
-  VerificationMethod,
-  VerificationStep,
-  VerificationStepsContentType,
-} from "../../../types/data-types";
+import { convertToId, fetchVerificationSteps } from "../../../utils/misc";
 import i18n from "i18next";
-import { getVerificationStepsContent } from "../../../utils/config";
 import { useAppSelector } from "../../../redux/hooks";
 import { RootState } from "../../../redux/store";
 import { isRTL } from "../../../utils/i18n";
@@ -21,50 +15,31 @@ const DesktopStepper: React.FC = () => {
     mainActiveScreen: state.activeScreen,
     method: state.method,
   }));
-  const VerifyActiveScreen = useVerifyFlowSelector(
-    (state) => state.activeScreen
-  );
-  const unverifiedClaims = useVerifyFlowSelector(
-    (state) => state.unVerifiedClaims
-  );
+  const VerifyActiveScreen = useVerifyFlowSelector((state) => state.activeScreen );
+  const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
   const isPartiallyShared = unverifiedClaims.length > 0;
+
   if (method === "VERIFY") {
     activeScreen = VerifyActiveScreen;
   } else {
     activeScreen = mainActiveScreen;
   }
 
-  const [steps, setSteps] = useState<VerificationStep[]>([]);
+  const steps = fetchVerificationSteps(method, isPartiallyShared);
   const isLastStep = (index: number) => steps.length - 1 === index;
   const isStepCompleted = (index: number) => activeScreen > index;
   const language = useAppSelector((state: RootState) => state.common.language);
   const rtl = isRTL(language);
 
   useEffect(() => {
-    const fetchSteps = () => {
-      const VerificationStepsContent: VerificationStepsContentType =
-        getVerificationStepsContent();
-      const filteredSteps = VerificationStepsContent[
-        method as VerificationMethod
-      ].filter((_, index: number) => {
-        if (method === "VERIFY") {
-          if (isPartiallyShared && index === 1) {
-            return false;
-          }
-          if (!isPartiallyShared && index === 2) {
-            return false;
-          }
-          return true;
-        }
-        return true;
-      });
-      setSteps(filteredSteps);
-    };
-    fetchSteps();
+    fetchVerificationSteps(method,isPartiallyShared);
+
     const handleLanguageChange = () => {
-      fetchSteps();
+      fetchVerificationSteps(method,isPartiallyShared);
     };
+
     i18n.on("languageChanged", handleLanguageChange);
+
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
     };

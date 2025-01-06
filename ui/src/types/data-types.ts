@@ -16,7 +16,7 @@ export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
 
 export type VerificationStep = {
   label: string;
-  description: string | string[];
+  description: string;
 };
 
 export type CardPositioning = {

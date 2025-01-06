@@ -31,9 +31,25 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
-export const getVerificationStepsCount = (method: VerificationMethod) => {
-  const VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
-  return VerificationStepsContent[method].length;
+export const fetchVerificationSteps = (method: VerificationMethod,isPartiallyShared:boolean) => {
+  let VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
+  if (method === "VERIFY") {
+    VerificationStepsContent = {
+            ...VerificationStepsContent,
+            [method]: VerificationStepsContent[method as VerificationMethod].filter(
+              (_, index: number) => {
+                if (isPartiallyShared && index === 1) {
+                  return false;
+                }
+                if (!isPartiallyShared && index === 2) {
+                  return false;
+                }
+                return true;
+              }
+            ),
+          };
+  }
+  return VerificationStepsContent[method];
 };
 
 export const getRangeOfNumbers = (length: number): number[] => {
