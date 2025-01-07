@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class VCVerificationServiceImpl implements VCVerificationService {
+
     @Autowired
     CredentialsVerifier credentialsVerifier;
 
@@ -22,8 +23,9 @@ public class VCVerificationServiceImpl implements VCVerificationService {
         VerificationResult verificationResult = credentialsVerifier.verify(vc, CredentialFormat.LDP_VC);
         log.info("VC verification result:: " + verificationResult);
         if (verificationResult.getVerificationStatus()) {
-            if (verificationResult.getVerificationErrorCode().equals(CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED))
+            if (verificationResult.getVerificationErrorCode().equals(CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED)) {
                 return new VCVerificationStatusDto(VerificationStatus.EXPIRED);
+            }
             return new VCVerificationStatusDto(VerificationStatus.SUCCESS);
         }
         return new VCVerificationStatusDto(VerificationStatus.INVALID);

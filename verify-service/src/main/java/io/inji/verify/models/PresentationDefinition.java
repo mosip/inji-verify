@@ -23,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class PresentationDefinition {
+
     @Id
     private final String id;
 
@@ -34,9 +35,8 @@ public class PresentationDefinition {
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
 
-
     @JsonIgnore
-    public String getURL(){
-        return Constants.VP_DEFINITION_URI +this.id;
+    public String getURL() {
+        return Constants.VP_DEFINITION_URI + this.id;
     }
 }

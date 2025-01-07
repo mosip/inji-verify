@@ -1,12 +1,13 @@
 package io.inji.verify.services;
 
-import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
-import io.inji.verify.models.PresentationDefinition;
-import io.inji.verify.spi.VPDefinitionService;
-import io.inji.verify.repository.PresentationDefinitionRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.models.PresentationDefinition;
+import io.inji.verify.repository.PresentationDefinitionRepository;
+import io.inji.verify.spi.VPDefinitionService;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

@@ -1,9 +1,11 @@
 package io.inji.verify.dto.authorizationrequest;
 
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.json.JSONObject;
 
 @AllArgsConstructor
 @Getter

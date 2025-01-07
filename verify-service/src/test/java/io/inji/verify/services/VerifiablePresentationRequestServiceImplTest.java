@@ -46,10 +46,12 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockPresentationDefinitionRepository.save(any(PresentationDefinition.class))).thenReturn(null);
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class))).thenReturn(null);
 
+        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto();
+        vpRequestCreateDto.setTransactionId("test_transaction_id");
+        vpRequestCreateDto.setClientId("test_client_id");
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
-        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id","test_transaction_id",null,"",mockPresentationDefinitionDto);
+        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
 
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
@@ -62,11 +64,11 @@ class VerifiablePresentationRequestServiceImplTest {
     }
     @Test
     public void shouldCreateAuthorizationRequestWithMissingTransactionId() {
-
+        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto();
+        vpRequestCreateDto.setClientId("test_client_id");
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
-        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id",null,null,"",mockPresentationDefinitionDto);
+        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
 
