@@ -54,9 +54,9 @@ function MobileStepper() {
   }, [method, isPartiallyShared]);
 
   return (
-    <div className={`grid grid-cols-13 lg:hidden flex flex-column mx-auto items-center my-7`}>
+    <div className={`grid grid-cols-13 lg:hidden flex flex-column mx-auto items-center`}>
       <div
-        className="col-start-1 col-end-13 flex items-center mx-auto mb-7"
+        className="col-start-1 col-end-13 flex items-center mx-auto p-4"
         id="stepper"
       >
         {getRangeOfNumbers(stepCount).map((value, index) => (

@@ -2,7 +2,7 @@ import React from "react";
 import PageTemplate from "../components/PageTemplate";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
-import SelectionPannel from "../components/Home/VerificationSection/commons/SelectionPannel";
+import SelectionPanel from "../components/Home/VerificationSection/commons/SelectionPanel";
 import { Button } from "../components/Home/VerificationSection/commons/Button";
 import { useTranslation } from "react-i18next";
 import { useVerifyFlowSelector } from "../redux/features/verification/verification.selector";
@@ -12,7 +12,7 @@ import { useAppDispatch } from "../redux/hooks";
 export function Verify() {
   const { t } = useTranslation("Verify");
   const txnId = useVerifyFlowSelector((state) => state.txnId);
-  const openSelection = useVerifyFlowSelector((state) => state.SelectionPannel);
+  const openSelection = useVerifyFlowSelector((state) => state.SelectionPanel);
   const dispatch = useAppDispatch();
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
   const isPartiallyShared = unverifiedClaims.length > 0;
@@ -33,7 +33,7 @@ export function Verify() {
     <Button
       id="request-credentials-button"
       title={t("rqstButton")}
-      className={`w-[300px] mx-auto lg:ml-[76px] mt-10`}
+      className={`w-[300px] mx-auto lg:ml-[76px] mt-10 hidden lg:block`}
       fill
       onClick={handleRequestCredentials}
       disabled={txnId !== ""}
@@ -41,7 +41,7 @@ export function Verify() {
   );
 
   const renderMissingAndResetButton = () => (
-    <div className="flex items-center justify-around mt-10">
+    <div className="flex items-center justify-around mt-10 hidden lg:block">
       <Button
         id="missing-credentials-button"
         title={t("missingCredentials")}
@@ -58,15 +58,14 @@ export function Verify() {
     </div>
   );
 
-  const isLargeScreen = window.innerWidth >= 1024;
 
   return (
     <PageTemplate>
       <div className="grid grid-cols-13">
         <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] lg:pb-[100px]">
           <VerificationProgressTracker />
-          {isLargeScreen && isPartiallyShared ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
-          {openSelection && <SelectionPannel />}
+          {isPartiallyShared ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
+          {openSelection && <SelectionPanel />}
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 xs:w-[100vw] lg:max-w-[50vw]">
           <VpVerification />
