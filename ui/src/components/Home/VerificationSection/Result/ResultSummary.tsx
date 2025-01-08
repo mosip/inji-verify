@@ -1,14 +1,12 @@
 import React from "react";
-import {
-  VerificationSuccessIcon,
-  VerificationFailedIcon,
-} from "../../../../utils/theme-utils";
+import { VerificationSuccessIcon, VerificationFailedIcon } from "../../../../utils/theme-utils";
 import { useTranslation } from "react-i18next";
-import {
-  backgroundColorMapping,
-  borderColorMapping,
-  textColorMapping,
-} from "../../../../utils/config";
+
+const backgroundColorMapping: any = {
+  SUCCESS: "bg-successText",
+  EXPIRED: "bg-expiredText",
+  INVALID: "bg-invalidText",
+};
 
 const ResultSummary = ({
   status,
@@ -16,24 +14,22 @@ const ResultSummary = ({
   status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT";
 }) => {
   const bgColor = backgroundColorMapping[status];
-  const textColor = textColorMapping[status];
-  const borderColor = borderColorMapping[status];
   const { t } = useTranslation("ResultSummary");
   return (
     <div
       className={`flex flex-col items-center justify-center h-[170px] lg:h-[186px] ${bgColor}`}
     >
-      <div className={`block mb-2.5 ${textColor}`}>
+      <div className={`block mb-2.5 text-white`}>
         {status === "SUCCESS" ? (
           <VerificationSuccessIcon />
         ) : (
           <VerificationFailedIcon />
         )}
       </div>
-      <div className={`rounded-xl p-1 ${bgColor} border ${borderColor}`}>
+      <div className={`rounded-xl p-1`}>
         <p
           id="vc-result-display-message"
-          className={`font-normal text-normalTextSize lg:text-lgNormalTextSize text-center ${textColor}`}
+          className={`font-normal text-normalTextSize lg:text-lgNormalTextSize text-center text-white`}
         >
           {t(`${status}`)}
         </p>

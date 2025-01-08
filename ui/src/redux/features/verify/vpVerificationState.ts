@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { VerificationSteps } from "../../../utils/config";
+import { verifiableClaims, VerificationSteps } from "../../../utils/config";
 import { claims, VerifyState, VpSubmissionResultInt } from "../../../types/data-types";
 
 const calculateUnverifiedClaims = (
@@ -22,9 +22,9 @@ const PreloadedState: VerifyState = {
   reqId: "",
   method: "VERIFY",
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
-  SelectionPannel: false,
+  SelectionPanel: false,
   verificationSubmissionResult: [],
-  selectedClaims: [],
+  selectedClaims: verifiableClaims.filter((claim) => claim.essential),
   unVerifiedClaims: [],
 };
 
@@ -32,17 +32,20 @@ const vpVerificationState = createSlice({
   name: "vpVerification",
   initialState: PreloadedState,
   reducers: {
+    setSelectedClaims: (state, actions) => {
+      state.selectedClaims = actions.payload.selectedClaims;
+    },
     getVpRequest: (state, actions) => {
       state.isLoading = true;
-      state.selectedClaims = actions.payload.selectedClaims;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
     },
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
-      state.SelectionPannel = true;
+      state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
+      state.selectedClaims =  verifiableClaims.filter((claim) => claim.essential);
     },
     setVpRequestResponse: (state, action) => {
       state.qrData = action.payload.qrData;
@@ -50,7 +53,7 @@ const vpVerificationState = createSlice({
       state.reqId = action.payload.reqId;
       state.isLoading = false;
       state.activeScreen = VerificationSteps[state.method].ScanQrCode;
-      state.SelectionPannel = false;
+      state.SelectionPanel = false;
     },
     setVpRequestStatus: (state, action) => {
       state.status = action.payload.status;
@@ -78,8 +81,9 @@ const vpVerificationState = createSlice({
       state.verificationSubmissionResult = [];
       state.isLoading = false;
       state.activeScreen = VerificationSteps["VERIFY"].InitiateVpRequest;
-      state.SelectionPannel = false;
+      state.SelectionPanel = false;
       state.unVerifiedClaims = [];
+      state.selectedClaims =  verifiableClaims.filter((claim) => claim.essential);
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";
@@ -95,6 +99,7 @@ export const {
   setVpRequestStatus,
   resetVpRequest,
   verificationSubmissionComplete,
+  setSelectedClaims
 } = vpVerificationState.actions;
 
 export default vpVerificationState.reducer;

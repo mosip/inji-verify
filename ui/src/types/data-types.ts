@@ -147,7 +147,7 @@ export type VerifyState = {
   method: string;
   activeScreen: number;
   verificationSubmissionResult: VpSubmissionResultInt[];
-  SelectionPannel: boolean;
+  SelectionPanel: boolean;
   selectedClaims: claims[];
   unVerifiedClaims: claims[];
 };

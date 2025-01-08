@@ -7,26 +7,55 @@ import { Button } from "../commons/Button";
 import { t } from "i18next";
 import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
 
-const VpSubmissionResult = (
-  verifiedVcs: VpSubmissionResultInt[],
-  unverifiedClaims: claims[],
-  txnId: string,
-  requestCred: () => void,
-  isSingleVc: boolean
-) => {
+type VpSubmissionResultProps = {
+  verifiedVcs: VpSubmissionResultInt[];
+  unverifiedClaims: claims[];
+  txnId: string;
+  requestCredentials: () => void;
+  reGenerateQr: () => void;
+  restart: () => void;
+  isSingleVc: boolean;
+};
+
+const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
+  verifiedVcs,
+  unverifiedClaims,
+  txnId,
+  requestCredentials,
+  reGenerateQr,
+  restart,
+  isSingleVc,
+}) => {
   const { vcStatus } = verifiedVcs[0];
   const renderRequestCredentialsButton = (propClasses = "") => (
     <Button
       id="request-credentials-button"
       title={t("Verify:rqstButton")}
-      className={`w-[300px] mt-4 mb-[100px] lg:ml-[76px] ${propClasses}`}
+      className={`w-[300px] mt-4 mb-[100px] lg:ml-[76px] lg:hidden ${propClasses}`}
       fill
-      onClick={requestCred}
+      onClick={requestCredentials}
       disabled={txnId !== ""}
     />
   );
 
-  const isLargeScreen = window.innerWidth >= 1024;
+  const renderMissingAndResetButton = () => (
+    <div className="flex items-center justify-around mt-10 lg:hidden">
+      <Button
+        id="missing-credentials-button"
+        title={t("missingCredentials")}
+        className={`w-[250px]`}
+        fill
+        onClick={reGenerateQr}
+      />
+      <Button
+        id="restart-process-button"
+        title={t("restartProcess")}
+        className={`w-[200px]`}
+        onClick={restart}
+      />
+    </div>
+  );
+  const isPartiallyShared = unverifiedClaims.length > 0;
 
   return (
     <div className="space-y-6">
@@ -49,16 +78,15 @@ const VpSubmissionResult = (
             />
           ))}
           {!isSingleVc &&
-            unverifiedClaims.map((vc) => (
-              <DisplayUnVerifiedVc vc={vc} />
-            ))}
+            unverifiedClaims.map((vc) => <DisplayUnVerifiedVc vc={vc} />)}
         </div>
       </div>
-      {!isLargeScreen && (
-        <div className="flex justify-center">
-          {renderRequestCredentialsButton()}
-        </div>
-      )}
+
+      <div className="flex justify-center">
+        {isPartiallyShared
+          ? renderMissingAndResetButton()
+          : renderRequestCredentialsButton()}
+      </div>
     </div>
   );
 };

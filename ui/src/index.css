@@ -255,3 +255,23 @@ code {
   background: #888;
   border-radius: 4px;
 }
+
+/* Modal slide-up effect */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.slide-up-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  animation: slide-up 0.3s ease-in-out;
+  border-radius: 10px 10px 0 0;
+}
