@@ -1,6 +1,6 @@
 package io.inji.verify.dto.authorizationRequest;
 
-import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.dto.presentation.PresentationDefinitionDto;
 import lombok.*;
 
 @Data
@@ -13,5 +13,5 @@ public class VPRequestCreateDto {
     String transactionId;
     String presentationDefinitionId;
     String nonce;
-    VPDefinitionResponseDto presentationDefinition;
+    PresentationDefinitionDto presentationDefinition;
 }
