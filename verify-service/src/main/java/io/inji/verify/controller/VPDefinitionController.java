@@ -1,7 +1,7 @@
 package io.inji.verify.controller;
 
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
-import io.inji.verify.spi.PresentationDefinitionService;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.spi.VPDefinitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/vp-definition")
 @RestController
-public class PresentationDefinitionController {
+public class VPDefinitionController {
     @Autowired
-    PresentationDefinitionService presentationDefinitionService;
+    VPDefinitionService VPDefinitionService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<PresentationDefinitionDto> getPresentationDefinitionFor(@PathVariable String id) {
+    public ResponseEntity<VPDefinitionResponseDto> getPresentationDefinitionFor(@PathVariable String id) {
 
-        PresentationDefinitionDto presentationDefinitionDto = presentationDefinitionService.getPresentationDefinition(id);
-        if (presentationDefinitionDto != null)
+        VPDefinitionResponseDto VPDefinitionResponseDto = VPDefinitionService.getPresentationDefinition(id);
+        if (VPDefinitionResponseDto != null)
         {
-            return new ResponseEntity<>(presentationDefinitionDto, HttpStatus.OK);
+            return new ResponseEntity<>(VPDefinitionResponseDto, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
