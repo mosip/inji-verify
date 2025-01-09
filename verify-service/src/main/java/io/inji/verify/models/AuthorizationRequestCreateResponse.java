@@ -1,6 +1,6 @@
 package io.inji.verify.models;
 
-import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
+import io.inji.verify.dto.authorizationRequest.AuthorizationRequestResponseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

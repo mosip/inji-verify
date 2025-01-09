@@ -1,9 +1,9 @@
 package io.inji.verify.services;
 
-import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
-import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
-import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
-import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.authorizationRequest.AuthorizationRequestResponseDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestCreateDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;

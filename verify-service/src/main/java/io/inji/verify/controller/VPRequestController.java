@@ -1,8 +1,8 @@
 package io.inji.verify.controller;
 
-import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
-import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
-import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestCreateDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
+import io.inji.verify.dto.authorizationRequest.VPRequestStatusDto;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
