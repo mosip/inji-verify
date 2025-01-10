@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MobileStepper from "../../VerificationProgressTracker/MobileStepper";
 import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
 import { useAppDispatch } from "../../../../redux/hooks";

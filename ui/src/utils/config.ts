@@ -104,6 +104,7 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
 export const AlertMessages =()=> {
     return {
         qrUploadSuccess: {message: i18next.t("AlertMessages:qrUploadSuccess"), severity: "success", autoHideDuration: 1200} as AlertInfo,
+        qrScanSuccess: {message: i18next.t("AlertMessages:qrScanSuccess"), severity: "success", autoHideDuration: 1200} as AlertInfo,
         sessionExpired: {message: i18next.t("AlertMessages:sessionExpired"), severity: "error"} as AlertInfo,
         qrNotDetected: {message: i18next.t("AlertMessages:qrNotDetected"), severity: "error"} as AlertInfo,
         qrNotSupported: {message: i18next.t("AlertMessages:qrNotSupported"), severity: "error"} as AlertInfo,

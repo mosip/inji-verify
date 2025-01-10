@@ -1,7 +1,7 @@
 package io.inji.verify.services;
 
 import io.inji.verify.dto.presentation.InputDescriptorDto;
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.models.PresentationDefinition;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-class PresentationDefinitionServiceImplTest {
+class VPDefinitionServiceImplTest {
 
 
     @Test
@@ -25,10 +25,10 @@ class PresentationDefinitionServiceImplTest {
         PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
         when(mockRepository.findById("test_id")).thenReturn(java.util.Optional.of(mockPresentationDefinition));
 
-        PresentationDefinitionServiceImpl service = new PresentationDefinitionServiceImpl();
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
         service.presentationDefinitionRepository = mockRepository;
 
-        PresentationDefinitionDto result = service.getPresentationDefinition("test_id");
+        VPDefinitionResponseDto result = service.getPresentationDefinition("test_id");
 
         assertNotNull(result);
         assertEquals("test_id", result.getId());
@@ -41,10 +41,10 @@ class PresentationDefinitionServiceImplTest {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         when(mockRepository.findById("non_existent_id")).thenReturn(java.util.Optional.empty());
 
-        PresentationDefinitionServiceImpl service = new PresentationDefinitionServiceImpl();
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
         service.presentationDefinitionRepository = mockRepository;
 
-        PresentationDefinitionDto result = service.getPresentationDefinition("non_existent_id");
+        VPDefinitionResponseDto result = service.getPresentationDefinition("non_existent_id");
 
         assertNull(result);
     }

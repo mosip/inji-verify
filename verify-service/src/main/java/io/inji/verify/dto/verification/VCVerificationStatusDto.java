@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VerificationStatusDto {
+public class VCVerificationStatusDto {
     VerificationStatus verificationStatus;
 }

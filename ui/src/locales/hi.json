@@ -110,9 +110,10 @@
   },
   "AlertMessages": {
     "qrUploadSuccess": "क्यूआर कोड सफलतापूर्वक अपलोड हो गया!",
+    "qrScanSuccess": "क्यूआर कोड सफलतापूर्वक स्कैन किया गया!",
     "sessionExpired": "निष्क्रियता के कारण स्कैन सत्र समाप्त हो गया है। ",
     "qrNotDetected": "कोई भी मल्टीफ़ॉर्मेट रीडर क्यूआर कोड का पता लगाने में सक्षम नहीं था।",
-    "qrNotSupported": "QR कोड प्रारूप समर्थित नहीं है.",
+    "qrNotSupported": "क्यूआर कोड प्रारूप समर्थित नहीं है.",
     "unsupportedFileSize": "फ़ाइल का आकार समर्थित नहीं है. ",
     "verificationMethodComingSoon": "जल्द आ रहा है",
     "unsupportedFileType": "असमर्थित फ़ाइल स्वरूप। ",

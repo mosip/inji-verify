@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
-import { QrCodeExpiry } from "../../../utils/config";
 import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
@@ -13,7 +12,6 @@ import { Button } from "./commons/Button";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
-  const [timeLeft, setTimeLeft] = useState(QrCodeExpiry);
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
   const qrData = useVerifyFlowSelector((state) => state.qrData);
   const status = useVerifyFlowSelector((state) => state.status);
@@ -36,28 +34,6 @@ const DisplayActiveStep = () => {
   const HandelRestartProcess = () => {
     dispatch(resetVpRequest());
   };
-  const formatTime = (time: number): string => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
-  useEffect(() => {
-    if (qrData) {
-      setTimeLeft(QrCodeExpiry);
-    }
-  }, [qrData]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
 
   if (isLoading) {
     return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
@@ -107,10 +83,6 @@ const DisplayActiveStep = () => {
       </div>
     );
   } else if (qrData) {
-    // const qrFooter =
-    //   status === "EXPIRED"
-    //     ? "QR Code Expired"
-    //     : `Valid for ${formatTime(timeLeft)}`;
     return (
       <QrCode
         title={t("qrCodeInfo")}

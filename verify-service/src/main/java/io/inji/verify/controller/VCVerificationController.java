@@ -1,7 +1,7 @@
 package io.inji.verify.controller;
 
-import io.inji.verify.dto.verification.VerificationStatusDto;
-import io.inji.verify.spi.CredentialVerificationService;
+import io.inji.verify.dto.verification.VCVerificationStatusDto;
+import io.inji.verify.spi.VCVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(path = "/vc-verification")
 @RestController
-public class CredentialVerificationController {
+public class VCVerificationController {
     @Autowired
-    CredentialVerificationService credentialVerificationService;
+    VCVerificationService VCVerificationService;
     @PostMapping()
-    public VerificationStatusDto verify(@RequestBody String vc) {
-        return credentialVerificationService.verify(vc);
+    public VCVerificationStatusDto verify(@RequestBody String vc) {
+        return VCVerificationService.verify(vc);
     }
 }

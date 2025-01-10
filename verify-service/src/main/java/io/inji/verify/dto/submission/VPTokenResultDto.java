@@ -1,6 +1,8 @@
 package io.inji.verify.dto.submission;
 
-import io.inji.verify.enums.SubmissionStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.inji.verify.enums.ErrorCode;
+import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.models.VCResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VPTokenResultDto {
     String transactionId;
-    SubmissionStatus submissionStatus;
+    VPResultStatus VPResultStatus;
     List<VCResult> VCResults;
+    ErrorCode errorCode;
+    String errorMessage;
 }

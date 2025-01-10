@@ -1,11 +1,13 @@
 package io.inji.verify.spi;
 
-import io.inji.verify.dto.submission.ResponseAcknowledgementDto;
+import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 
-public interface VerifiablePresentationSubmissionService {
-    ResponseAcknowledgementDto submit(VPSubmissionDto vpSubmissionDto);
+import java.util.List;
 
-    VPTokenResultDto getVPResult(String requestId, String transactionId);
+public interface VerifiablePresentationSubmissionService {
+    VPSubmissionResponseDto submit(VPSubmissionDto vpSubmissionDto);
+
+    VPTokenResultDto getVPResult(List<String> requestId, String transactionId);
 }

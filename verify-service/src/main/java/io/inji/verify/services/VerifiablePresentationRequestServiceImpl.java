@@ -1,26 +1,26 @@
 package io.inji.verify.services;
 
-import io.inji.verify.dto.authorizationRequest.AuthorizationRequestResponseDto;
-import io.inji.verify.dto.authorizationRequest.StatusDto;
-import io.inji.verify.dto.authorizationRequest.VPRequestCreateDto;
-import io.inji.verify.dto.authorizationRequest.VPRequestResponseDto;
-import io.inji.verify.dto.presentation.PresentationDefinitionDto;
+import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
+import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
+import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
-import io.inji.verify.enums.SubmissionState;
-import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
-import io.inji.verify.repository.PresentationDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.Instant;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
 
 @Service
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
@@ -41,8 +41,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         long  expiresAt  = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce()!=null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
-        PresentationDefinitionDto presentationDefinitionDto = vpRequestCreate.getPresentationDefinition();
-        PresentationDefinition presentationDefinition = new PresentationDefinition(presentationDefinitionDto.getId(),presentationDefinitionDto.getInputDescriptors(), presentationDefinitionDto.getSubmissionRequirements());
+        VPDefinitionResponseDto VPDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
+        PresentationDefinition presentationDefinition = new PresentationDefinition(VPDefinitionResponseDto.getId(), VPDefinitionResponseDto.getInputDescriptors(), VPDefinitionResponseDto.getSubmissionRequirements());
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition,nonce);
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
@@ -54,29 +54,24 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public StatusDto getCurrentAuthorizationRequestStateFor(String requestId) {
+    public VPRequestStatusDto getCurrentRequestStatus(String requestId) {
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
         if (vpSubmission != null) {
-            return new StatusDto(SubmissionState.COMPLETED);
+            return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
         }
         Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
         if (expiresAt == null){
             return null;
         }
         if(Instant.now().toEpochMilli() > expiresAt){
-            return new StatusDto(SubmissionState.EXPIRED);
+            return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
         }
-        return new StatusDto(SubmissionState.PENDING);
+        return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
     }
 
     @Override
-    public String getTransactionIdFor(String requestId) {
-        return authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getTransactionId).orElse(null);
-    }
-
-    @Override
-    public String getLatestRequestIdFor(String transactionId) {
-        return authorizationRequestCreateResponseRepository.findFirstByTransactionIdOrderByExpiresAtDesc(transactionId).map(AuthorizationRequestCreateResponse::getRequestId).orElse(null);
+    public List<String> getLatestRequestIdFor(String transactionId) {
+        return authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(transactionId).stream().map(AuthorizationRequestCreateResponse::getRequestId).toList();
     }
 }

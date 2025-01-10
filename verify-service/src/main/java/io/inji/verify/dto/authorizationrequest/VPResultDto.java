@@ -1,4 +1,4 @@
-package io.inji.verify.dto.authorizationRequest;
+package io.inji.verify.dto.authorizationrequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -16,4 +16,4 @@ public class VPResultDto {
     String transactionId;
     boolean verified;
     JSONObject claims;
-}
+}   

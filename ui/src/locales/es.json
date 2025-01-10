@@ -110,6 +110,7 @@
   },
   "AlertMessages": {
     "qrUploadSuccess": "¡El código QR se cargó exitosamente!",
+    "qrScanSuccess": "¡Código QR escaneado con éxito!",
     "sessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis.",
     "qrNotDetected": "Ningún lector multiformato pudo detectar el código QR.",
     "qrNotSupported": "El formato de código QR no es compatible.",
