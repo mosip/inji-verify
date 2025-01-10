@@ -10,6 +10,8 @@ export type VcStatus = {
   verificationStatus: "SUCCESS" | "INVALID" | "EXPIRED";
 };
 
+export type VerificationStatus = "SUCCESS" | "INVALID" | "EXPIRED";
+
 export type VerificationStep = {
   label: string;
   description: string | string[];

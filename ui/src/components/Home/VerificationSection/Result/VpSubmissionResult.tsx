@@ -1,8 +1,9 @@
 import React from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
+import { VerificationStatus } from '../../../../types/data-types';
 
-const VpSubmissionResult = ( vc:any, vcStatus:"SUCCESS" | "EXPIRED" | "INVALID" ) => {
+const VpSubmissionResult = ( vc:any, vcStatus:VerificationStatus ) => {
 
     // validate vc and show success/failure component
     return (
