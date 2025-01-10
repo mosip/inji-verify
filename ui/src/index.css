@@ -19,12 +19,12 @@
     --iv-verificationMethodTabs-bg-color: #ffffff;
     --iv-horizontal-line: #ff7f00;
     --iv-page-background-color: #fafbfd;
-    --iv-success: #4b9d1f;
-    --iv-invalid: #d73e3e;
+    --iv-success: #1f9f60;
+    --iv-invalid: #cb4241;
     --iv-expired: #d98c00;
-    --iv-success-alert: #57a04b;
+    --iv-success-alert: #1f9f60;
     --iv-warning-alert: #d98c00;
-    --iv-error-alert: #d73e3e;
+    --iv-error-alert: #cb4241;
     --iv-arrow-background: #f2fcff;
     --iv-stepper-background: #fafbfd;
     --iv-stepper-label: #868686;

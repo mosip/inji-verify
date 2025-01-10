@@ -1,48 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
-import { QrCodeExpiry } from "../../../utils/config";
 import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
-  const [timeLeft, setTimeLeft] = useState(QrCodeExpiry);
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
   const qrData = useVerifyFlowSelector((state) => state.qrData);
   const status = useVerifyFlowSelector((state) => state.status);
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
-
-  useEffect(() => {
-    if (qrData) {
-      setTimeLeft(QrCodeExpiry);
-    }
-  }, [qrData]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (time: number): string => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
+  const { vc, vcStatus } = useVerifyFlowSelector(state => state.verificationSubmissionResult ?? { vc: null, vcStatus: null })
 
   if (isLoading) {
     return <Loader className="relative lg:top-[200px]" />;
-  } else if (status === "COMPLETED") {
+  } else if (vc) {
     return (
       <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">
-        <VpSubmissionResult />
+        <VpSubmissionResult vc={vc} vcStatus={vcStatus} />
       </div>
     );
   } else if (!qrData) {
@@ -64,21 +41,15 @@ const DisplayActiveStep = () => {
         </div>
       </div>
     );
-  } else if (qrData) {
-    const qrFooter =
-      status === "EXPIRED"
-        ? t("qrCodeExpired")
-        : t("timer", `${formatTime(timeLeft)}`);
+  } else if (qrData)
     return (
       <QrCode
         title={t("qrCodeInfo")}
         data={qrData}
         size={qrSize}
         status={status}
-        footer={qrFooter}
       />
     );
-  }
 };
 
 export const VpVerification = () => {
