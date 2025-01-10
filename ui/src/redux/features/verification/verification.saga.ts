@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {goToHomeScreen, verificationComplete, verificationInit} from './verification.slice';
 import {closeAlert, raiseAlert} from "../alerts/alerts.slice";
-import {AlertMessages, OvpQrHeader} from '../../../utils/config';
+import {AlertMessages, OvpErrors, OvpQrHeader} from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
@@ -51,17 +51,13 @@ function* verifyVC(vc: any) {
         if (!onLine) {
             yield put(updateInternetConnectionStatus({internetConnectionStatus: "OFFLINE"}));
             return;
-        }
-        yield put(verificationComplete({
-            verificationResult: {
-                vcStatus: {
-                    verificationStatus: false,
-                },
-                vc: null
-            }
-        }));
-        yield put(closeAlert({}));
+        } else {
+      yield put(goToHomeScreen({}));
+      const OvpErrorMessages = OvpErrors();
+      yield put(raiseAlert({ message: OvpErrorMessages.resource_not_found, severity: "error" }));
+      return;
     }
+  }
 }
 
 function* verificationSaga() {

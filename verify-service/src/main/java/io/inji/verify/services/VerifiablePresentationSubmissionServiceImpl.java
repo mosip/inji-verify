@@ -97,4 +97,3 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return verificationResults;
     }
 }
-

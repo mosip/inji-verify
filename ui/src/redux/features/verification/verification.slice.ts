@@ -5,7 +5,7 @@ import {VerificationSteps} from "../../../utils/config";
 export const PreloadedState: VerificationState = {
     alert: {},
     qrReadResult: {status: "NOT_READ"},
-    method: "UPLOAD",
+    method: 'UPLOAD',
     activeScreen: VerificationSteps["UPLOAD"].QrCodePrompt,
     verificationResult: {vc: undefined, vcStatus: undefined},
     ovp: {}
@@ -21,7 +21,6 @@ const verificationSlice = createSlice({
             state.activeScreen = method === "SCAN" ? VerificationSteps[state.method].ActivateCamera : VerificationSteps[method].Verifying;
             state.method = method;
         },
-        // qrReadComplete and init verification
         verificationInit: (state, action) => {
             state.activeScreen = VerificationSteps[state.method].Verifying;
             state.qrReadResult = action.payload.qrReadResult;
@@ -32,10 +31,11 @@ const verificationSlice = createSlice({
             state.verificationResult = action.payload.verificationResult;
         },
         goToHomeScreen: (state, action) => {
+            const method = action.payload.method ?? state.method;
+            state.method = method;
             state.qrReadResult = {status: "NOT_READ"};
-            state.activeScreen = VerificationSteps[state.method].QrCodePrompt;
+            state.activeScreen =  method === "VERIFY" ? VerificationSteps[state.method].InitiateVpRequest : VerificationSteps[state.method].QrCodePrompt ;
             state.verificationResult = {vc: undefined, vcStatus: undefined};
-            state.method = action.payload.method ?? state.method;
             state.ovp = {};
         }
     },

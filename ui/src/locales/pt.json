@@ -19,7 +19,23 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "Formatos de arquivo permitidos: PNG/JPEG/JPG/PDF \n Tamanho mínimo: 10KB | \n Tamanho máximo: 5 MB"
+    "format": "Formatos de arquivo permitidos: PNG/JPEG/JPG/PDF \n Tamanho do arquivo – 10 KB a 5 MB"
+  },
+  "Verify": {
+    "selectorTitle": "Painel de seleção de credenciais verificáveis",
+    "selectorSubTitle": "Selecione as credenciais verificáveis ​​que você deseja receber da carteira do usuário",
+    "searchPlaceholder": "Procure o tipo de credencial verificável",
+    "listHeader": "Selecione as credenciais verificáveis ​​necessárias",
+    "sortAtoZ": "Classificar (A-Z)",
+    "sortZtoA": "Classificar (Z-A)",
+    "rqstButton": "Solicite credenciais verificáveis",
+    "goBack": "Volte",
+    "generateQrCodeBtn": "Gerar código QR",
+    "qrCodeInfo": "Por favor, leia o código QR abaixo com sua carteira digital para compartilhar a credencial solicitada",
+    "qrCodeExpired": "Código QR expirado",
+    "noClaims": "Nenhuma reivindicação encontrada.",
+    "download": "Download",
+    "timer": "Válido para {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -53,12 +69,31 @@
         "label": "Ver resultado",
         "description": "Veja o resultado da verificação."
       }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Iniciar processo de solicitação de VP",
+        "description": "Clique em Solicitar credenciais verificáveis ​​para iniciar o processo de verificação."
+      },
+      "SelectCredential": {
+        "label": "Selecione credenciais e gere código QR",
+        "description": "Escolha as credenciais verificáveis ​​necessárias e clique em Gerar código QR."
+      },
+      "ScanQrCode": {
+        "label": "Digitalize o código QR (use um dispositivo diferente)",
+        "description": "Use uma carteira contendo credenciais verificáveis ​​em um dispositivo diferente com recursos de leitura de código QR para ler o código QR (o suporte para leitura no mesmo dispositivo estará disponível em breve!)"
+      },
+      "DisplayResult": {
+        "label": "Ver resultados da verificação",
+        "description": "Verifique os resultados da verificação das credenciais verificáveis ​​compartilhadas da carteira."
+      }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Parabéns, a credencial fornecida é válida!",
     "INVALID": "Infelizmente, a credencial fornecida é inválida!",
-    "EXPIRED": "Infelizmente, a credencial fornecida expirou!"
+    "EXPIRED": "A credencial fornecida é válida, mas expirou!",
+    "TIMEOUT": "A sessão de verificação expirou devido à inatividade. Inicie uma nova verificação."
   },
   "AlertMessages": {
     "qrUploadSuccess": "Código QR carregado com sucesso!",
@@ -69,6 +104,8 @@
     "verificationMethodComingSoon": "Em breve",
     "unsupportedFileType": "Formato de arquivo não suportado. Os formatos de arquivo permitidos são: png, jpeg, jpg, pdf",
     "pageNotFound": "Página não encontrada!!",
+    "failToGenerateQrCode": "Opa! Estamos com problemas para gerar a solicitação de verificação. Tente novamente mais tarde.",
+    "unexpectedError": "Ocorreu um erro inesperado. Tente novamente mais tarde ou entre em contato com o suporte se o problema persistir.",
     "scanSessionExpired": "A sessão de verificação expirou devido à inatividade. Por favor, inicie uma nova verificação."
   },
   "OvpErrors": {
@@ -89,7 +126,7 @@
     "invalidParams": "Parâmetros inválidos!!"
   },
   "CopyRight": {
-    "content": "2024 © MOSIP – Todos os direitos reservados."
+    "content": "Desenvolvido por Inji, um produto MOSIP"
   },
   "CameraAccessDenied": {
     "header": "Acesso à câmera negado",
