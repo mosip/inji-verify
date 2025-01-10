@@ -3,7 +3,7 @@ import { VerificationSteps } from "../../../utils/config";
 
 const PreloadedState = {
   isLoading: false,
-  status: "PENDING",
+  status: "ACTIVE",
   qrData: "",
   txnId: "",
   reqId: "",

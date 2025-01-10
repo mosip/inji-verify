@@ -1,6 +1,6 @@
 import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, QrData } from "../../../types/data-types";
+import { ApiRequest, QrData, RequestStatus } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -83,7 +83,7 @@ function* getVpStatus(reqId: string, txnId: string) {
       );
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
-      const status = parsedData.status;
+      const status:RequestStatus = parsedData.status;
       if (status !== "ACTIVE") {
         yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
         return;
