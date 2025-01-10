@@ -33,7 +33,9 @@
     "generateQrCodeBtn": "Generate QR Code",
     "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credential",
     "qrCodeExpired": "QR Code Expired",
-    "noClaims": "No Claims found."
+    "noClaims": "No Claims found.",
+    "download": "Download",
+    "timer":"Valid for {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {

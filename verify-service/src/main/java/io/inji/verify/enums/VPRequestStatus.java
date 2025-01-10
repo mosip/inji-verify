@@ -5,4 +5,3 @@ public enum VPRequestStatus {
     VP_SUBMITTED,
     EXPIRED
 }
-

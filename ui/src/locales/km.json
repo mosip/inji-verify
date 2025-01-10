@@ -33,7 +33,9 @@
     "generateQrCodeBtn": "បង្កើត QR Code",
     "qrCodeInfo": "សូមស្កេនកូដ QR ខាងក្រោមជាមួយកាបូបឌីជីថលរបស់អ្នក ដើម្បីចែករំលែកព័ត៌មានសម្ងាត់ដែលបានស្នើសុំ",
     "qrCodeExpired": "កូដ QR ផុតកំណត់",
-    "noClaims": "រកមិនឃើញការទាមទារ។"
+    "noClaims": "រកមិនឃើញការទាមទារ។",
+    "download": "ទាញយក",
+    "timer": "មានសុពលភាពសម្រាប់ {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {

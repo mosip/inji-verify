@@ -33,7 +33,9 @@
     "generateQrCodeBtn": "Gerar código QR",
     "qrCodeInfo": "Por favor, leia o código QR abaixo com sua carteira digital para compartilhar a credencial solicitada",
     "qrCodeExpired": "Código QR expirado",
-    "noClaims": "Nenhuma reivindicação encontrada."
+    "noClaims": "Nenhuma reivindicação encontrada.",
+    "download": "Download",
+    "timer": "Válido para {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {

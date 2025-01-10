@@ -17,7 +17,7 @@ import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
 
 function VcDisplayCard({ vc }: { vc: any }) {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { t } = useTranslation("Verify");
   const [isHover, setHover] = useState(false);
   const Download = isHover ? WhiteDownloadIcon : DownloadIcon;
 
@@ -78,7 +78,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
       </div>
       <div>
         <Button
-          title={"Download"}
+          title={t("Download")}
           icon={<Download />}
           className="w-[125px] mt-2"
           onClick={saveData}

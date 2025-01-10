@@ -12,6 +12,7 @@ import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
+import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
@@ -33,6 +34,8 @@ import java.util.List;
 @Slf4j
 public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePresentationSubmissionService {
 
+    @Autowired
+    AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
 
@@ -94,4 +97,3 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return verificationResults;
     }
 }
-

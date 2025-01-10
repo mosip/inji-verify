@@ -9,5 +9,4 @@ import java.util.Optional;
 
 public interface AuthorizationRequestCreateResponseRepository extends JpaRepository<AuthorizationRequestCreateResponse, String> {
     List<AuthorizationRequestCreateResponse> findAllByTransactionIdOrderByExpiresAtDesc(@NotNull String transactionId);
-}
-
+    }

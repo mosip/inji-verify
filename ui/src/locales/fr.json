@@ -33,7 +33,9 @@
     "generateQrCodeBtn": "Générer un code QR",
     "qrCodeInfo": "Veuillez scanner le code QR ci-dessous avec votre portefeuille numérique pour partager les informations d'identification demandées",
     "qrCodeExpired": "Code QR expiré",
-    "noClaims": "Aucune réclamation trouvée."
+    "noClaims": "Aucune réclamation trouvée.",
+    "download": "Télécharger",
+    "timer": "Valable pour {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {

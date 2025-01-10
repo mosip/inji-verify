@@ -1,7 +1,7 @@
 package io.inji.verify.controller;
 
 import com.nimbusds.jose.shaded.gson.Gson;
-import io.inji.verify.dto.authorizationRequest.VPRequestStatusDto;
+import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionResponseDto;
