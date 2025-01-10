@@ -35,7 +35,7 @@ public class VPRequestController {
 
     @GetMapping(path = "/{requestId}/status")
     public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>((long)300000, "Request timedout"); // 30-second timeout
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>((long)300000, "Request timeout"); // 30-second timeout
         verifiablePresentationRequestService.getCurrentRequestStatusPeriodic(requestId,result,null);
 
         return result;

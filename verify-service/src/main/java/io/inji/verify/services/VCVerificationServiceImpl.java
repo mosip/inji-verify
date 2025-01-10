@@ -20,7 +20,7 @@ public class VCVerificationServiceImpl implements VCVerificationService {
     @Override
     public VCVerificationStatusDto verify(String vc) {
         VerificationResult verificationResult = credentialsVerifier.verify(vc, CredentialFormat.LDP_VC);
-        log.info("VC verification result:: " + verificationResult);
+        log.info("VC verification result:: {}", verificationResult);
         if (verificationResult.getVerificationStatus()) {
             if (verificationResult.getVerificationErrorCode().equals(CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED))
                 return new VCVerificationStatusDto(VerificationStatus.EXPIRED);

@@ -2,14 +2,13 @@ package io.inji.verify.services;
 
 
 import io.inji.verify.dto.submission.VPSubmissionDto;
-import io.inji.verify.dto.submission.VPSubmissionResponseDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
+import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
-import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
@@ -32,18 +31,14 @@ import java.util.List;
 public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePresentationSubmissionService {
 
     @Autowired
-    AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
-    @Autowired
     VPSubmissionRepository vpSubmissionRepository;
 
     @Autowired
     CredentialsVerifier credentialsVerifier;
 
     @Override
-    public VPSubmissionResponseDto submit(VPSubmissionDto vpSubmissionDto) {
+    public void submit(VPSubmissionDto vpSubmissionDto) {
         vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
-        return new VPSubmissionResponseDto("", "", "");
-
     }
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
@@ -82,7 +77,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
 
         if (vpSubmission == null){
-            return new VPTokenResultDto(transactionId,SubmissionStatus.NOT_SUBMITTED,null);
+            return new VPTokenResultDto(transactionId,null,null, ErrorCode.ERR_101, Constants.ERR_101);
         }
         return processSubmission(vpSubmission,transactionId);
     }

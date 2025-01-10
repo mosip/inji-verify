@@ -18,7 +18,7 @@ public class VPDefinitionResponseDtoTest {
                 List.of(submissionRequirementDto)
         );
 
-        assertEquals(presentationDefinitionDto.getId(), "pd1");
+        assertEquals("pd1", presentationDefinitionDto.getId());
         assertEquals(presentationDefinitionDto.getInputDescriptors(), List.of(inputDescriptorDto));
         assertEquals(presentationDefinitionDto.getSubmissionRequirements(), List.of(submissionRequirementDto));
     }

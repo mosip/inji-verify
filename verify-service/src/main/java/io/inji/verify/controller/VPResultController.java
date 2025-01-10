@@ -30,9 +30,6 @@ public class VPResultController {
         }
 
         VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_101, Constants.ERR_101),HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -21,9 +21,9 @@ public class InputDescriptorDtoTest {
 
         InputDescriptorDto inputDescriptorDto = new InputDescriptorDto(id, name, purpose, group, format, constraints);
 
-        assertEquals(inputDescriptorDto.getId(), id);
-        assertEquals(inputDescriptorDto.getName(), name);
-        assertEquals(inputDescriptorDto.getPurpose(), purpose);
+        assertEquals(id, inputDescriptorDto.getId());
+        assertEquals(name, inputDescriptorDto.getName());
+        assertEquals(purpose, inputDescriptorDto.getPurpose());
         assertEquals(inputDescriptorDto.getGroup(), group);
         assertEquals(inputDescriptorDto.getFormat(), format);
         assertEquals(inputDescriptorDto.getConstraints(), constraints);

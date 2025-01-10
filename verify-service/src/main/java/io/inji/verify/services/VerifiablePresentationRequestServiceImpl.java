@@ -101,9 +101,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             result.setResult(currentRequestStatus);
         } else {
             ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
-            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> {
-                getCurrentRequestStatusPeriodic(requestId, result,threadSafeDelayedMethodCallExecutor);
-            }, 5, TimeUnit.SECONDS);
+            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result,threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
 
         }
     }

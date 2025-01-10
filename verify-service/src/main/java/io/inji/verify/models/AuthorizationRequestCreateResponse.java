@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Cacheable
+@Table(name = "AuthorizationRequestCreateResponse")
 public class AuthorizationRequestCreateResponse implements Serializable {
     @Id
     private final String requestId;

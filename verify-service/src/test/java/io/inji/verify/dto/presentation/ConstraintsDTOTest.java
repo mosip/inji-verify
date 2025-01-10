@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 public class ConstraintsDTOTest {
 
     @Test
-    public void shouldTestConstructor() throws Exception {
+    public void shouldTestConstructor() {
 
         FieldDTO field1 = new FieldDTO(new String[]{"value1", "value2"},mock());
         FieldDTO field2 = new FieldDTO(new String[]{"value3", "value4"}, mock());
