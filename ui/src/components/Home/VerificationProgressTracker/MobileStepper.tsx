@@ -64,14 +64,25 @@ function MobileStepper(props: any) {
             <div className="col-start-1 col-end-13 flex justify-between items-center w-full max-w-xl mx-auto mb-7"
                  style={{maxWidth}}
                  id="stepper">
-                {
-                    getRangeOfNumbers(stepCount).map((value, index) => (
-                        <div key={index}>
-                            <Step stepNumber={value} activeOrCompleted={value <= activeScreen} />
-                            {(value < stepCount) && (<div className={`bg-${window._env_.DEFAULT_THEME}-gradient p-[1px] w-[44px] ${value >= activeScreen ? "opacity-20" : ""}`}><div className={stepperLine}/></div>)}
-                        </div>
-                    ))
-                }
+                {getRangeOfNumbers(stepCount).map((value, index) => (
+          <div key={index} className="flex flex-column items-center">
+            <Step
+              stepNumber={value}
+              activeOrCompleted={value <= activeScreen}
+            />
+            {value < stepCount && (
+              <div
+                className={`bg-${
+                  window._env_.DEFAULT_THEME
+                }-gradient p-[1px] w-[44px] h-[1px] ${
+                  value >= activeScreen ? "opacity-20" : ""
+                }`}
+              >
+                <div className={stepperLine} />
+              </div>
+            )}
+          </div>
+        ))}
             </div>
             <div className="col-start-1 col-end-13 text-center">
                 <p id={convertToId(label)} className="font-bold text-stepperLabel my-1">

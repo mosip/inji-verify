@@ -241,5 +241,4 @@ export const verifiableClaims: any[] = [
   },
 ];
 export const OPENID4VP_PROTOCOL = "openid4vp://authorize?"
-export const QrCodeExpiry = 300; //5*60 seconds
 export const PollStatusDelay = 5000; // Continue polling after 5 seconds untill status is changes

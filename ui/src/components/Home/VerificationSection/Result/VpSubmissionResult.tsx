@@ -1,10 +1,8 @@
 import React from 'react';
 import ResultSummary from "./ResultSummary";
 import VcDisplayCard from "./VcDisplayCard";
-import {  useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 
-const VpSubmissionResult = () => {
-    const { vc, vcStatus } = useVerifyFlowSelector(state => state.verificationSubmissionResult ?? { vc: null, vcStatus: null })
+const VpSubmissionResult = ( vc:any, vcStatus:"SUCCESS" | "EXPIRED" | "INVALID" ) => {
 
     // validate vc and show success/failure component
     return (

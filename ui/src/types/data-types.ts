@@ -130,6 +130,6 @@ export type QrCodeProps = {
   title: string;
   data: string;
   size: number;
-  footer: string;
+  footer?: string;
   status:"SUCCESS" | "EXPIRED" | "INVALID";
 };

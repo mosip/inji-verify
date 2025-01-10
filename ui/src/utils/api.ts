@@ -38,6 +38,7 @@ export class api {
                 proof_type: ["Ed25519Signature2020"],
               },
             },
+            constraints: {},
           },
         ],
       },

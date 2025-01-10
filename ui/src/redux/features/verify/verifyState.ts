@@ -36,10 +36,10 @@ const verifyState = createSlice({
       state.status = action.payload.status;
       state.txnId = action.payload.txnId;
       state.reqId = action.payload.reqId;
-      state.activeScreen = VerificationSteps[state.method].DisplayResult;
     },
     verificationSubmissionComplete: (state, action) => {
       state.verificationSubmissionResult = action.payload.verificationResult;
+      state.activeScreen = VerificationSteps[state.method].DisplayResult;
     },
     resetVpRequest: (state) => {
       state.activeScreen = VerificationSteps[state.method].InitiateVpRequest;

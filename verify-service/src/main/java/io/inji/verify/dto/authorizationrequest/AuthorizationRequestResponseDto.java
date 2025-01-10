@@ -27,7 +27,7 @@ public class AuthorizationRequestResponseDto implements Serializable {
 
     public AuthorizationRequestResponseDto(String clientId, PresentationDefinition presentationDefinition, String nonce) {
         this.clientId = clientId;
-        this.responseUri = Constants.RESPONSE_SUBMISSION_URI;
+        this.responseUri = Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI;
         this.presentationDefinitionUri = presentationDefinition.getURL();
         this.issuedAt = Instant.now().toEpochMilli();
         this.nonce  = nonce;

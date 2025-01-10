@@ -84,7 +84,7 @@ function* getVpStatus(reqId: string, txnId: string) {
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
       const status = parsedData.status;
-      if (status !== "PENDING") {
+      if (status !== "ACTIVE") {
         yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
         return;
       } else {
@@ -103,7 +103,7 @@ function* getVpStatus(reqId: string, txnId: string) {
 }
 
 function* getVpResult(status: string, txnId: string) {
-  if (status === "COMPLETED") {
+  if (status === "VP_SUBMITTED") {
     const apiRequest: ApiRequest = api.fetchVpResult;
     const requestOptions = {
       method: apiRequest.methodType,
@@ -117,15 +117,13 @@ function* getVpResult(status: string, txnId: string) {
       );
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
-      const verifiablePresentations = JSON.parse(
-        parsedData.vpToken
-      ).verifiableCredential;
-      const verificationStatus = parsedData.verificationStatus;
-      const vc1 = JSON.parse(verifiablePresentations[0]);
+      const verifiablePresentations = parsedData.vcresults[0]
+      const verificationStatus = parsedData.vcresults[0].verificationStatus;
+      const vc1 = JSON.parse(verifiablePresentations.vc);
       yield put(
         verificationSubmissionComplete({
           verificationResult: {
-            vc: vc1.verifiableCredential.credential,
+            vc: vc1,
             vcStatus: verificationStatus,
           },
         })
