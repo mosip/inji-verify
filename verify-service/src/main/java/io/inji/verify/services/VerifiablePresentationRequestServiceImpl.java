@@ -39,7 +39,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) {
-
+        log.info("Creating authorization request");
         String transactionId = vpRequestCreate.getTransactionId() != null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
@@ -63,8 +63,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
 
-        presentationDefinitionRepository.save(presentationDefinition);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+        log.info("Authorization request created");
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
     }
 
@@ -102,7 +102,6 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         } else {
             ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
             threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result,threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
-
         }
     }
 }

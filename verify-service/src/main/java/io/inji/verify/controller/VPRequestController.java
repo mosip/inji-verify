@@ -28,6 +28,7 @@ public class VPRequestController {
         }
         VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
         if (authorizationRequestResponse == null){
+            //todo ::  send proper error
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);

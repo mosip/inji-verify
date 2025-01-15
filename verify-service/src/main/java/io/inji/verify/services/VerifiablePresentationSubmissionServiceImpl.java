@@ -42,6 +42,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
+        log.info("Processing VP submission");
         JSONObject vpProof = new JSONObject(vpSubmission.getVpToken()).getJSONObject(Constants.KEY_PROOF);
         String keyType = vpProof.getString(Constants.KEY_TYPE);
         List<VCResult> verificationResults = null;
@@ -65,6 +66,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
+            log.info("Verification completed");
             return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults,null,null);
         } catch (Exception e) {
             log.error("Failed to verify",e);
