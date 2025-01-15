@@ -1,4 +1,4 @@
-import {AlertInfo, claims, VerificationStepsContentType} from "../types/data-types";
+import {AlertInfo, claim, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
 import certImage from '../assets/defaultTheme/cert.png';
 import certImage2 from '../assets/defaultTheme/cert2.png';
@@ -162,7 +162,7 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
-export const verifiableClaims: claims[] = [
+export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "CAR Statement",
@@ -278,3 +278,17 @@ export const borderColorMapping: any = {
   EXPIRED: "border-expiredBorder",
   INVALID: "border-invalidBorder",
 };
+
+export const desiredOrder = [
+  "fullName",
+  "gender",
+  "dob",
+  "benefits",
+  "policyName",
+  "policyNumber",
+  "policyIssuedOn",
+  "policyExpiresOn",
+  "mobile",
+  "email",
+];
+

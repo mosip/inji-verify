@@ -1,6 +1,6 @@
 import React from "react";
 import ResultSummary from "./ResultSummary";
-import { claims, VpSubmissionResultInt } from "../../../../types/data-types";
+import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
 import VpVerifyResultSummary from "./VpVerifyResultSummary";
 import DisplayVcCardView from "./DisplayVcCardView";
 import { Button } from "../commons/Button";
@@ -9,7 +9,7 @@ import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
-  unverifiedClaims: claims[];
+  unverifiedClaims: claim[];
   txnId: string;
   requestCredentials: () => void;
   reGenerateQr: () => void;
@@ -78,7 +78,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
             />
           ))}
           {!isSingleVc &&
-            unverifiedClaims.map((vc) => <DisplayUnVerifiedVc vc={vc} />)}
+            unverifiedClaims.map((claim) => <DisplayUnVerifiedVc claim={claim} />)}
         </div>
       </div>
 

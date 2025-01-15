@@ -8,6 +8,7 @@ import {
 } from "../../../../utils/misc";
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
+import { getDetailsOrder } from "../../../../utils/commonUtils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -27,34 +28,9 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   logo,
 }) => {
   const { t } = useTranslation("Verify");
+  const orderedDetails = getDetailsOrder(vc.credentialSubject);
 
   if (!isOpen) return null;
-
-  const desiredOrder = [
-    "fullName",
-    "gender",
-    "dob",
-    "benefits",
-    "policyName",
-    "policyNumber",
-    "policyIssuedOn",
-    "policyExpiresOn",
-    "mobile",
-    "email",
-  ];
-  type Detail = {
-    key: string;
-    value: string;
-  };
-
-  const orderedDetails: Detail[] = desiredOrder.map((value) => {
-    const key = Object.keys(vc.credentialSubject).find((key) => key === value);
-    if (key) {
-      return { key, value: vc.credentialSubject[key] };
-    }
-    return { key: value, value: "N/A" };
-  });
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-lg">

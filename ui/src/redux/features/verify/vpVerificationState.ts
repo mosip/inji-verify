@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { verifiableClaims, VerificationSteps } from "../../../utils/config";
-import { claims, VerifyState, VpSubmissionResultInt } from "../../../types/data-types";
+import { claim, VerifyState, VpSubmissionResultInt } from "../../../types/data-types";
 
 const calculateUnverifiedClaims = (
-  selectedClaims: claims[],
+  selectedClaims: claim[],
   verificationSubmissionResult: VpSubmissionResultInt[]
 ) => {
   if (selectedClaims.length > 1) return [];
@@ -16,7 +16,7 @@ const calculateUnverifiedClaims = (
 
 const PreloadedState: VerifyState = {
   isLoading: false,
-  status: "PENDING",
+  status: "ACTIVE",
   qrData: "",
   txnId: "",
   reqId: "",
@@ -74,7 +74,7 @@ const vpVerificationState = createSlice({
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";
-      state.status = "PENDING";
+      state.status = "ACTIVE";
     },
     resetVpRequest: (state) => {
       state.activeScreen = VerificationSteps[state.method].InitiateVpRequest;
@@ -87,7 +87,7 @@ const vpVerificationState = createSlice({
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";
-      state.status = "PENDING";
+      state.status = "ACTIVE";
     },
   },
 });

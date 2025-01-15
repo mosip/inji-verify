@@ -12,6 +12,7 @@ import {
 } from "../../../../utils/theme-utils";
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
+import { getDetailsOrder } from "../../../../utils/commonUtils";
 
 function DisplayVcDetailView({
   vc,
@@ -22,32 +23,8 @@ function DisplayVcDetailView({
   onExpand: any;
   className?: string;
 }) {
-  const desiredOrder = [
-    "fullName",
-    "gender",
-    "dob",
-    "benefits",
-    "policyName",
-    "policyNumber",
-    "policyIssuedOn",
-    "policyExpiresOn",
-    "mobile",
-    "email",
-  ];
-  type Detail = {
-    key: string;
-    value: string;
-  };
-
-  const orderedDetails: Detail[] = desiredOrder.map((value) => {
-    const key = Object.keys(vc.credentialSubject).find((key) => key === value);
-    if (key) {
-      return { key, value: vc.credentialSubject[key] };
-    }
-    return { key: value, value: "N/A" };
-  });
-
   const { t } = useTranslation("Verify");
+  const orderedDetails = getDetailsOrder(vc.credentialSubject);
 
   return (
     <div>

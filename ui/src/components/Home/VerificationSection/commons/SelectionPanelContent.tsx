@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { claims } from "../../../../types/data-types";
+import { claim } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
@@ -39,11 +39,11 @@ function SelectionPanelContent() {
         : b.name.localeCompare(a.name);
     });
 
-  const toggleClaimSelection = (claim: claims) => {
+  const toggleClaimSelection = (claim: claim) => {
     if (selectedClaims.includes(claim)) {
       dispatch(
         setSelectedClaims(
-         { selectedClaims: selectedClaims.filter((c: claims) => claim.name !== c.name)}
+         { selectedClaims: selectedClaims.filter((c: claim) => claim.name !== c.name)}
         )
       );
     } else {
@@ -63,10 +63,11 @@ function SelectionPanelContent() {
 
   useEffect(() => {
     const essentialClaims = selectedClaims;
-    essentialClaims.forEach((claim: claims) =>
+    essentialClaims.forEach((claim: claim) =>
       storage.setItem(storage.ESSENTIAL_CLAIM, claim)
     );
   }, []);
+  
   return (
     <div className="fill-primary grid gap-6 p-3 lg:p-0">
       <div className="hidden lg:block text-center sm:text-left">

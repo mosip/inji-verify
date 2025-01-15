@@ -7,7 +7,7 @@ import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 import { useAppDispatch } from "../../../redux/hooks";
 import { getVpRequest, resetVpRequest, setSelectCredential } from "../../../redux/features/verify/vpVerificationState";
-import { claims, VpSubmissionResultInt } from "../../../types/data-types";
+import { claim, VpSubmissionResultInt } from "../../../types/data-types";
 import { Button } from "./commons/Button";
 
 const DisplayActiveStep = () => {
@@ -39,7 +39,7 @@ const DisplayActiveStep = () => {
     return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
   } else if (verifiedVcs.length > 0) {
     const isSingleVc = selectedClaims.length === 1;
-    const unverifiedClaims = selectedClaims.filter((claim: claims) =>
+    const unverifiedClaims = selectedClaims.filter((claim: claim) =>
       verifiedVcs.some(({ vc }) => vc.credentialConfigurationId !== claim.type)
     );
     return (

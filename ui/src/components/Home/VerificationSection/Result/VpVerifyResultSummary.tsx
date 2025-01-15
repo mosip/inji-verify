@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { claims, VpSubmissionResultInt } from "../../../../types/data-types";
+import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import {
   backgroundColorMapping,
@@ -10,7 +10,7 @@ import {
 
 interface VpVerifyResultSummaryProps {
   verifiedVcs: VpSubmissionResultInt[];
-  unverifiedClaims: claims[];
+  unverifiedClaims: claim[];
 }
 
 const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({

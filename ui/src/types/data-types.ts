@@ -93,7 +93,7 @@ export interface VerificationStepsContentType {
 
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
-export interface claims {
+export interface claim {
   name: string;
   type: string;
   logo: string;
@@ -152,8 +152,8 @@ export type VerifyState = {
   activeScreen: number;
   verificationSubmissionResult: VpSubmissionResultInt[];
   SelectionPanel: boolean;
-  selectedClaims: claims[];
-  unVerifiedClaims: claims[];
+  selectedClaims: claim[];
+  unVerifiedClaims: claim[];
 };
 
 export type QrData = {
@@ -182,19 +182,7 @@ export type QrCodeProps = {
 export type VC = {
   credential: {
     "@context": string[];
-    credentialSubject: {
-      benefits: string[];
-      gender: string;
-      policyName: string;
-      dob: string;
-      mobile: string;
-      policyNumber: string;
-      fullName: string;
-      policyIssuedOn: string;
-      id: string;
-      email: string;
-      policyExpiresOn: string;
-    };
+    credentialSubject: credentialSubject;
     expirationDate: string;
     id: string;
     issuanceDate: string;
@@ -216,6 +204,25 @@ export type VC = {
   wellKnown: string;
 };
 
+export type credentialSubject = {
+  benefits: string[];
+  gender: string;
+  policyName: string;
+  dob: string;
+  mobile: string;
+  policyNumber: string;
+  fullName: string;
+  policyIssuedOn: string;
+  id: string;
+  email: string;
+  policyExpiresOn: string;
+};
+
 export interface fetchStatusResponse {
   status: string;
 }
+
+export type Detail = {
+  key: string;
+  value: string | string[];
+};

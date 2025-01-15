@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claims, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
+import { ApiRequest, claim, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -8,13 +8,11 @@ import {
   setVpRequestStatus,
   verificationSubmissionComplete,
 } from "./vpVerificationState";
-import {
-  AlertMessages,
-  OPENID4VP_PROTOCOL,
-} from "../../../utils/config";
+import { AlertMessages, OPENID4VP_PROTOCOL } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
+import { getPresentationDefinition } from "../../../utils/commonUtils";
 
-function* fetchRequestUri(claims: claims[]) {
+function* fetchRequestUri(claims: claim[]) {
   let qrData;
   let txnId;
   let reqId;
@@ -35,28 +33,8 @@ function* fetchRequestUri(claims: claims[]) {
     );
     const data: string = yield response.text();
     const parsedData = JSON.parse(data) as QrData;
-    const pdef =
-      `client_id=${parsedData.authorizationDetails.clientId}` +
-      `&response_type=${parsedData.authorizationDetails.responseType}` +
-      `&response_mode=direct_post` +
-      `&nonce=${parsedData.authorizationDetails.nonce}` +
-      `&state=${parsedData.requestId}` +
-      `&response_uri=${
-        window._env_.VERIFY_SERVICE_API_URL +
-        parsedData.authorizationDetails.responseUri
-      }` +
-      `${
-        parsedData.authorizationDetails.presentationDefinitionUri
-          ? `&presentation_definition_uri=${
-              window._env_.VERIFY_SERVICE_API_URL +
-              parsedData.authorizationDetails.presentationDefinitionUri
-            }`
-          : `&presentation_definition=${JSON.stringify(
-              parsedData.authorizationDetails.presentationDefinition
-            )}`
-      }` +
-      `&client_metadata={"client_name":"${window.location.origin}"}`;
-    qrData = OPENID4VP_PROTOCOL + btoa(pdef);
+    const presentationDefinition = getPresentationDefinition(parsedData);
+    qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
   } catch (error) {
