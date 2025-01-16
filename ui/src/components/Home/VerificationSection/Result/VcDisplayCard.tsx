@@ -41,7 +41,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
       <div
         className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}
       >
-        {vc ? (
+        {vc.credentialSubject ? (
           Object.keys(vc.credentialSubject)
             .filter(
               (key) =>
