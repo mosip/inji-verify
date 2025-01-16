@@ -28,9 +28,8 @@ public class SecurityUtilsTest {
                 "Q8tqKn8P0B00vto8bEhadIpj53efNTTMmP6fnLhFEX+xOWVp4lJi8qM4Y0UMbbnx\n"+
                 "ewIDAQAB\n"+
                 "-----END PUBLIC KEY-----";
-        byte[] encoded = Base64.getEncoder().encode(pemString.getBytes());
 
-        RSAPublicKey publicKey = SecurityUtils.readX509PublicKey(new String(encoded));
+        RSAPublicKey publicKey = SecurityUtils.readX509PublicKey(pemString);
 
         assertNotNull(publicKey);
     }
