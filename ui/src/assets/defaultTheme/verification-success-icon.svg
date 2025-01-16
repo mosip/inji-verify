@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.642" height="25.87" viewBox="0 0 20.642 25.87">
+  <g id="Group_58157" data-name="Group 58157" transform="translate(-120.48 -171.649)">
+    <g id="success_message_icon" transform="translate(97.217 151)">
+      <g id="success_icon" transform="translate(23.263 20.649)">
+        <g id="Group_57086" data-name="Group 57086">
+          <path id="gpp_maybe_FILL0_wght400_GRAD0_opsz48" d="M18.321,29.82A12.666,12.666,0,0,1,10.9,24.565,15.364,15.364,0,0,1,8,15.527V7.83L18.321,3.95,28.642,7.83v7.7a15.364,15.364,0,0,1-2.9,9.038A12.666,12.666,0,0,1,18.321,29.82Z" transform="translate(-8 -3.95)" fill="#fff"/>
+          <path id="check_circle_FILL0_wght400_GRAD0_opsz48" d="M9.734,14.072,15.39,8.416l-.919-.9L9.734,12.253l-2.4-2.4-.9.9ZM10.913,10.434Z" transform="translate(-0.545 1.936)" fill="#4b9d1f"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

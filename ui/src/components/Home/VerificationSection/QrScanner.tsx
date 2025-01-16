@@ -60,6 +60,9 @@ function QrScanner() {
           clearTimeout(timer);
           stopVideoStream();
           dispatch(
+            raiseAlert({ ...AlertMessages().qrScanSuccess, open: true })
+          );
+          dispatch(
             verificationInit({
               qrReadResult: { qrData: result.bytes, status: "SUCCESS" },
               flow: "SCAN",
@@ -228,7 +231,7 @@ function QrScanner() {
           <div className="lg:hidden absolute bottom-20 w-4/5 flex items-center justify-center">
             <MinusOutlined
               onClick={() => handleZoomChange(zoomLevel - 1)}
-              className="bg-gradient text-white border border-primary p-2 rounded-full mr-3"
+              className={`bg-${window._env_.DEFAULT_THEME}-gradient text-white border border-primary p-2 rounded-full mr-3`}
             />
 
             <div className="w-60">
@@ -260,7 +263,7 @@ function QrScanner() {
             </div>
 
             <PlusOutlined
-              className="bg-gradient text-white p-2 border border-primary rounded-full ml-3"
+              className={`bg-${window._env_.DEFAULT_THEME}-gradient text-white p-2 border border-primary rounded-full ml-3`}
               onClick={() => handleZoomChange(zoomLevel + 1)}
             />
           </div>

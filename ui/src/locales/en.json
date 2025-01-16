@@ -19,7 +19,23 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \nMin Size : 10KB | Max Size : 5MB"
+    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \n File Size - 10KB to 5MB"
+  },
+  "Verify": {
+    "selectorTitle": "Verifiable Credential Selection Panel",
+    "selectorSubTitle": "Please select the Verifiable Credentials that you wish to receive from the user’s wallet",
+    "searchPlaceholder": "Search for the Verifiable Credential type",
+    "listHeader": "Select the required Verifiable Credentials",
+    "sortAtoZ": "Sort (A-Z)",
+    "sortZtoA": "Sort (Z-A)",
+    "rqstButton": "Request Verifiable Credentials",
+    "goBack": "Go Back",
+    "generateQrCodeBtn": "Generate QR Code",
+    "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credential",
+    "qrCodeExpired": "QR Code Expired",
+    "noClaims": "No Claims found.",
+    "download": "Download",
+    "timer":"Valid for {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -53,15 +69,35 @@
         "label": "View result",
         "description": "View the verification result."
       }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Initiate VP Request Process",
+        "description": "Click Request Verifiable Credentials to begin the verification process."
+      },
+      "SelectCredential": {
+        "label": "Select Credentials & Generate QR Code",
+        "description": "Choose the required verifiable credentials and click Generate QR Code."
+      },
+      "ScanQrCode": {
+        "label": "Scan QR Code (Use a Different Device)",
+        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
+      },
+      "DisplayResult": {
+        "label": "View Verification Results",
+        "description": "Check the verification results for the verifiable credentials shared from the wallet."
+      }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Congratulations, the given credential is valid!",
     "INVALID": "Unfortunately, the given credential is invalid!",
-    "EXPIRED": "Unfortunately, the given credential is expired!"
+    "EXPIRED": "The given credential is valid but expired!",
+    "TIMEOUT": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "AlertMessages": {
     "qrUploadSuccess": "QR code uploaded successfully!",
+    "qrScanSuccess":"QR code scanned successfully!",
     "sessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan.",
     "qrNotDetected": "No MultiFormat Readers were able to detect the QR code.",
     "qrNotSupported": "QR code format is not supported.",
@@ -69,6 +105,8 @@
     "verificationMethodComingSoon": "Coming soon",
     "unsupportedFileType": "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf",
     "pageNotFound": "Page Not Found!!",
+    "failToGenerateQrCode": "Oops! We’re having trouble generating the verification request. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists.",
     "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "OvpErrors": {
@@ -89,7 +127,7 @@
     "invalidParams": "Invalid Parameters!!"
   },
   "CopyRight": {
-    "content": "2024 © MOSIP - All rights reserved."
+    "content": "Powered by Inji, a MOSIP product"
   },
   "CameraAccessDenied": {
     "header": "Camera Access Denied",

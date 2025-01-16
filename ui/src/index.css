@@ -5,11 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  [class="default_theme"] {
     --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #951f6f;
-    --iv-color-primary: #ff5300;
-    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -21,12 +19,12 @@
     --iv-verificationMethodTabs-bg-color: #ffffff;
     --iv-horizontal-line: #ff7f00;
     --iv-page-background-color: #fafbfd;
-    --iv-success: #4b9d1f;
-    --iv-invalid: #d73e3e;
+    --iv-success: #1f9f60;
+    --iv-invalid: #cb4241;
     --iv-expired: #d98c00;
-    --iv-success-alert: #57a04b;
+    --iv-success-alert: #1f9f60;
     --iv-warning-alert: #d98c00;
-    --iv-error-alert: #d73e3e;
+    --iv-error-alert: #cb4241;
     --iv-arrow-background: #f2fcff;
     --iv-stepper-background: #fafbfd;
     --iv-stepper-label: #868686;
@@ -43,6 +41,10 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-sortBy-border: #d0d5dd;
+    --iv-sortBy-text: #344054;
+    --iv-disabled-button-bg: #c1c1c1;
     --iv-gradient-scanning-line: linear-gradient(
       90deg,
       #ff5300 0%,
@@ -54,12 +56,13 @@
       #7c1389 90%,
       #5b03ad 100%
     );
+    --iv-selector-pannel-title: #101828;
+    --iv-selector-pannel-sub-title: #475467;
+    --iv-qr-code-timer: #8e8e8e;
   }
   [class="purple_theme"] {
     --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
-    --iv-color-primary: #ff5300;
-    --iv-color-secondary: #5b03ad;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
     --iv-white-text: #ffffff;
@@ -93,31 +96,81 @@
     --iv-disabledTab-bg: #e5e7eb;
     --iv-disabledTab-text: #4b5563;
     --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-search-border: #d5d8e2;
+    --iv-searAll-text: #535353;
+    --iv-disabled-button-bg: #c1c1c1;
     --iv-gradient-scanning-line: linear-gradient(
       90deg,
-      #ff5300 0%,
-      #fb5103 16%,
-      #f04c0f 31%,
-      #de4322 46%,
-      #c5363c 61%,
-      #a4265f 75%,
-      #7c1389 90%,
-      #5b03ad 100%
+      #8f69ec 0%,
+      #5a31ee 100%
     );
+    --iv-selector-pannel-title: #101828;
+    --iv-selector-pannel-sub-title: #475467;
+    --iv-qr-code-timer: #8e8e8e;
+  }
+  [class="car_theme"] {
+    --iv-font-base: "Inter", sans-serif;
+    --iv-primary-color: #278834;
+    --iv-logo-start-color: #ffb600;
+    --iv-background-color: #ffffff;
+    --iv-white-text: #ffffff;
+    --iv-header-label-text: #000000;
+    --iv-header-description-text: #000000;
+    --iv-offline-label-text: #2c2c2c;
+    --iv-offline-description-text: #7b7b7b;
+    --iv-header-background-color: #f2fcff;
+    --iv-verificationMethodTabs-bg-color: #ffffff;
+    --iv-horizontal-line: #ff7f00;
+    --iv-page-background-color: #fafbfd;
+    --iv-success: #1f9f60;
+    --iv-invalid: #cb4241;
+    --iv-expired: #d98c00;
+    --iv-success-alert: #1f9f60;
+    --iv-warning-alert: #d98c00;
+    --iv-error-alert: #cb4241;
+    --iv-arrow-background: #f2fcff;
+    --iv-stepper-background: #fafbfd;
+    --iv-stepper-label: #868686;
+    --iv-stepper-description: #535353;
+    --iv-camera-denied-label-color: #000000;
+    --iv-camera-denied-description-color: #707070;
+    --iv-upload-description: #8e8e8e;
+    --iv-copyrights-text: #707070;
+    --iv-copyrights-border: #707070;
+    --iv-active-tab-text: #ffffff;
+    --iv-active-tab-background: #ff7f00;
+    --iv-inactive-tab-text: #000000;
+    --iv-inactive-tab-background: #ffffff;
+    --iv-disabledTab-bg: #e8e8e8;
+    --iv-disabledTab-text: #4d4d4d;
+    --iv-document-icon: #000000;
+    --iv-selector-border: #e4e7ec;
+    --iv-sortBy-border: #d0d5dd;
+    --iv-sortBy-text: #344054;
+    --iv-disabled-button-bg: #c1c1c1;
+    --iv-gradient-scanning-line: linear-gradient(
+      90deg,
+      #52ae32 0%,
+      #006535 100%
+    );
+    --iv-selector-pannel-title: #101828;
+    --iv-selector-pannel-sub-title: #475467;
+    --iv-qr-code-timer: #8e8e8e;
   }
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 

@@ -9,6 +9,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
 
 const Tab = ({
   id,
@@ -24,9 +25,8 @@ const Tab = ({
   onClick?: () => void;
 }) => {
   const activeTab =
-    "bg-gradient border-t-[6px] border-y-transparent text-activeTabText";
-  const inactiveTab =
-    "bg-inactiveTabBackground text-inactiveTabText";
+    `bg-${window._env_.DEFAULT_THEME}-gradient border-t-[6px] border-y-transparent text-activeTabText`;
+  const inactiveTab = "bg-inactiveTabBackground text-inactiveTabText";
   const disabledTab = "text-disableTabText bg-disableTabBackground";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
@@ -52,6 +52,7 @@ function VerificationMethodTabs(props: any) {
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
+    dispatch(resetVpRequest());
   }
 
   function showAlert() {
@@ -75,7 +76,7 @@ function VerificationMethodTabs(props: any) {
   };
 
   return (
-    <div className="container mx-auto w-[100%] bg-lighter-gradient  max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
+    <div className={`container mx-auto w-[100%] bg-${window._env_.DEFAULT_THEME}-lighter-gradient  max-w-[100vw] overflow-x-hidden lg:overflow-x-auto`}>
       <div className="flex flex-row items-center mx-auto justify-center relative">
         <div className="absolute left-0 h-full w-12 bg-light-gradient md:hidden grid items-center">
           <button
@@ -98,8 +99,7 @@ function VerificationMethodTabs(props: any) {
               onClick={() => {
                 switchToVerificationMethod("UPLOAD");
                 navigate(Pages.Home);
-              }
-              }
+              }}
             />
             <Tab
               id="scan-qr-code-tab"
@@ -112,10 +112,12 @@ function VerificationMethodTabs(props: any) {
             />
             <Tab
               id="vp-verification-tab"
-              active={false}
+              active={method === "VERIFY"}
               label={t('VP_Verification')}
-              disabled
-              onClick={showAlert}
+              onClick={() => {
+                switchToVerificationMethod("VERIFY");
+                navigate(Pages.VerifyCredentials);
+              }}
             />
             <Tab
               id="ble-tab"
@@ -136,7 +138,10 @@ function VerificationMethodTabs(props: any) {
           </button>
         </div>
       </div>
-      <div id="horizontalLine" className="bg-gradient h-[3px] border-b-2 border-b-transparent" />
+      <div
+        id="horizontalLine"
+        className={`bg-${window._env_.DEFAULT_THEME}-gradient h-[3px] border-b-2 border-b-transparent`}
+      />
     </div>
   );
 }

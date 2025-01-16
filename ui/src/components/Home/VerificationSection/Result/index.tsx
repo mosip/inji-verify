@@ -4,17 +4,7 @@ import VcDisplayCard from "./VcDisplayCard";
 import { useVerificationFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import { VcStatus } from "../../../../types/data-types";
 
-const getVcStatusValue = (vcStatus?: VcStatus): "SUCCESS" | "INVALID" | "EXPIRED" => {
-    if (vcStatus?.verificationStatus) {
-        if (vcStatus.verificationErrorCode && vcStatus.verificationErrorCode === "ERR_VC_EXPIRED") {
-            return "EXPIRED";
-        } else {
-            return "SUCCESS";
-        }
-    } else {
-        return "INVALID";
-    }
-}
+const getVcStatusValue = (vcStatus: VcStatus)  => {return vcStatus.verificationStatus}
 
 const Result = () => {
     const { vc, vcStatus } = useVerificationFlowSelector(state => state.verificationResult ?? { vc: null, vcStatus: null })
@@ -32,7 +22,7 @@ const Result = () => {
                     top: `106px`,
                     right: window.innerWidth >= 1024 ? `calc((50vw - 340px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
-                <VcDisplayCard vc={vcStatus?.verificationStatus ? vc : null} />
+                <VcDisplayCard vc={vcStatus?.verificationStatus !== "INVALID" ? vc : null} />
             </div>
         </div>
     );

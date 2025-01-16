@@ -19,7 +19,23 @@
     "ble": "BLE"
   },
   "Upload": {
-    "format": "Formats de fichiers autorisés : PNG/JPEG/JPG/PDF \n Taille minimale : 10 Ko | \n Taille maximale : 5 Mo"
+    "format": "Formats de fichiers autorisés : PNG/JPEG/JPG/PDF \n Taille du fichier : 10 Ko à 5 Mo"
+  },
+  "Verify": {
+    "selectorTitle": "Panel de sélection des titres de compétences vérifiables",
+    "selectorSubTitle": "Veuillez sélectionner les informations d'identification vérifiables que vous souhaitez recevoir du portefeuille de l'utilisateur.",
+    "searchPlaceholder": "Recherchez le type d'informations d'identification vérifiables",
+    "listHeader": "Sélectionnez les informations d'identification vérifiables requises",
+    "sortAtoZ": "Trier (A-Z)",
+    "sortZtoA": "Trier (Z-A)",
+    "rqstButton": "Demander des informations d'identification vérifiables",
+    "goBack": "Retourner",
+    "generateQrCodeBtn": "Générer un code QR",
+    "qrCodeInfo": "Veuillez scanner le code QR ci-dessous avec votre portefeuille numérique pour partager les informations d'identification demandées",
+    "qrCodeExpired": "Code QR expiré",
+    "noClaims": "Aucune réclamation trouvée.",
+    "download": "Télécharger",
+    "timer": "Valable pour {{time}}"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -53,15 +69,35 @@
         "label": "Afficher le résultat",
         "description": "Afficher le résultat de la vérification."
       }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Lancer le processus de demande de vice-président",
+        "description": "Cliquez sur Demander des informations d'identification vérifiables pour commencer le processus de vérification."
+      },
+      "SelectCredential": {
+        "label": "Sélectionnez les informations d'identification et générez un code QR",
+        "description": "Choisissez les informations d'identification vérifiables requises et cliquez sur Générer un code QR."
+      },
+      "ScanQrCode": {
+        "label": "Scannez le code QR (utilisez un autre appareil)",
+        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR (la prise en charge de la numérisation sur le même appareil sera bientôt disponible !)"
+      },
+      "DisplayResult": {
+        "label": "Afficher les résultats de la vérification",
+        "description": "Vérifiez les résultats de la vérification des informations d'identification vérifiables partagées à partir du portefeuille."
+      }
     }
   },
   "ResultSummary": {
     "SUCCESS": "Félicitations, le titre donné est valide !",
     "INVALID": "Malheureusement, les informations d'identification fournies ne sont pas valides !",
-    "EXPIRED": "Malheureusement, l'identifiant donné est expiré !"
+    "EXPIRED": "L'identifiant donné est valide mais expiré !",
+    "TIMEOUT": "La session d'analyse a expiré en raison d'une inactivité. Veuillez lancer une nouvelle analyse."
   },
   "AlertMessages": {
     "qrUploadSuccess": "Code QR téléchargé avec succès !",
+    "qrScanSuccess": "Code QR scanné avec succès !",
     "sessionExpired": "La session d'analyse a expiré pour cause d'inactivité. ",
     "qrNotDetected": "Aucun lecteur MultiFormat n'a pu détecter le code QR.",
     "qrNotSupported": "Le format de code QR n'est pas pris en charge.",
@@ -69,6 +105,8 @@
     "verificationMethodComingSoon": "À venir",
     "unsupportedFileType": "Format de fichier non pris en charge. ",
     "pageNotFound": "Page introuvable !!",
+    "failToGenerateQrCode": "Oups ! Nous ne parvenons pas à générer la demande de vérification. Veuillez réessayer plus tard.",
+    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard ou contacter l'assistance si le problème persiste.",
     "scanSessionExpired": "La session d'analyse a expiré pour cause d'inactivité. Veuillez lancer une nouvelle analyse."
   },
   "OvpErrors": {

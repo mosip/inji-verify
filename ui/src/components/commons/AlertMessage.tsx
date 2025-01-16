@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch} from "../../redux/hooks";
 import {closeAlert} from "../../redux/features/alerts/alerts.slice";
-import {ReactComponent as CloseIcon} from "../../assets/close_icon.svg";
+import { CloseIcon } from '../../utils/theme-utils';
 import {useAlertsSelector} from "../../redux/features/alerts/alerts.selector";
 
 const backgroundColorMapping: any = {
@@ -28,7 +28,7 @@ const AlertMessage = (props:any) => {
     return (
         <>
             <div
-                className={`fixed top-[80px] lg:top-[84px] ${isRtl?'left-4 lg:left-[2]':'right-4 lg:right-[2]'} py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
+                className={`fixed top-[100px] ${isRtl?'left-4 lg:left-[2]':'right-4 lg:right-[2]'} py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
                 <div className="flex items-center">
                     <p id="alert-message">
                         {alertInfo.message}
