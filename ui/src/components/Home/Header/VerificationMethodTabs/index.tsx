@@ -9,7 +9,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
-import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
+import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
 
 const Tab = ({
   id,

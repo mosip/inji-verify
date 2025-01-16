@@ -92,7 +92,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             JSONObject credential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL).getJSONObject(Constants.KEY_CREDENTIAL);
             VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
-            verificationResults.add(new VCResult(credential.toString(),singleVCVerification));
+            verificationResults.add(new VCResult(verifiableCredential.toString(),singleVCVerification));
         }
         return verificationResults;
     }

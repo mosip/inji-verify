@@ -1,102 +1,91 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   convertToId,
   convertToTitleCase,
   getDisplayValue,
+  saveData,
 } from "../../../../utils/misc";
-import { Button } from "../commons/Button";
 import {
   DocumentIcon,
-  DownloadIcon,
-  WhiteDownloadIcon,
+  VectorDownload,
+  VectorExpand,
+  VectorOutline,
 } from "../../../../utils/theme-utils";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { goToHomeScreen } from "../../../../redux/features/verification/verification.slice";
-import { useTranslation } from "react-i18next";
-import { resetVpRequest } from "../../../../redux/features/verify/verifyState";
 
-function VcDisplayCard({ vc }: { vc: any }) {
-  const dispatch = useAppDispatch();
-  const { t } = useTranslation("Verify");
-  const [isHover, setHover] = useState(false);
-  const Download = isHover ? WhiteDownloadIcon : DownloadIcon;
-
-  const saveData = async () => {
-    const myData = vc;
-    const fileName = `${vc.credentialSubject.fullName}`;
-    const json = JSON.stringify(myData);
-    const blob = new Blob([json], { type: "application/json" });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = href;
-    link.download = fileName + ".json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
+  const desiredOrder = [
+    "fullName",
+    "gender",
+    "dob",
+    "benefits",
+    "policyName",
+    "policyNumber",
+    "policyIssuedOn",
+    "policyExpiresOn",
+    "mobile",
+    "email",
+  ];
+  type Detail = {
+    key: string;
+    value: string;
   };
+
+  const orderedDetails: Detail[] = desiredOrder.map((value) => {
+    const key = Object.keys(vc.credentialSubject).find((key) => key === value);
+    if (key) {
+      return { key, value: vc.credentialSubject[key] };
+    }
+    return { key: value, value: "N/A" };
+  });
 
   return (
     <div>
       <div
-        className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}
+        className={`w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4`}
       >
         {vc ? (
-          Object.keys(vc.credentialSubject)
-            .filter(
-              (key) =>
-                key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type"
-            )
-            .map((key, index) => (
+          <div className="grid">
+            {orderedDetails.map((label, index) => (
               <div
                 className={`py-2.5 px-1 xs:col-end-13 ${
                   index % 2 === 0
                     ? "lg:col-start-1 lg:col-end-6"
                     : "lg:col-start-8 lg:col-end-13"
                 }`}
-                key={key}
+                key={label.key}
               >
                 <p
-                  id={convertToId(key)}
-                  className="font-normal text-verySmallTextSize break-all"
+                  id={convertToId(label.key)}
+                  className="font-normal text-verySmallTextSize break-all text-[#666666]"
                 >
-                  {convertToTitleCase(key)}
+                  {convertToTitleCase(label.key)}
                 </p>
                 <p
-                  id={`${convertToId(key)}-value`}
+                  id={`${convertToId(label.key)}-value`}
                   className="font-bold text-smallTextSize break-all"
                 >
-                  {getDisplayValue(vc.credentialSubject[key])}
+                  {getDisplayValue(label.value)}
                 </p>
               </div>
-            ))
+            ))}
+            <div
+              className="flex items-center justify-center relative left-[331px] bottom-[100px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
+              style={{ backgroundImage: `url(${VectorOutline})` }}
+            >
+              <VectorExpand onClick={onExpand} />
+            </div>
+            <div
+              className="flex items-center justify-center relative left-[290px] bottom-[40px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
+              style={{ backgroundImage: `url(${VectorOutline})` }}
+            >
+              <VectorDownload onClick={() => saveData(vc)} />
+            </div>
+          </div>
         ) : (
           <div className="grid content-center justify-center w-[100%] h-[320px] text-documentIcon">
             <DocumentIcon />
           </div>
         )}
-      </div>
-      <div>
-        <Button
-          title={t("Download")}
-          icon={<Download />}
-          className="w-[125px] mt-2"
-          onClick={saveData}
-          disabled={!vc}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-        />
-      </div>
-      <div className="grid">
-        <Button
-          id="verify-another-qr-code-button"
-          title={t("Common:Button.verifyAnotherQrCode")}
-          className="w-[200px] lg:w-[350px] mt-2 mb-20 lg:mb-6 text-lgNormalTextSize inline-flex"
-          onClick={() => {
-            dispatch(goToHomeScreen({}));
-            dispatch(resetVpRequest());
-          }}
-        />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@
   },
   "Tab": {
     "upload": "Télécharger le code QR",
-    "scan": "Scannez le QR Code",
+    "scan": "Scanner le code QR",
     "VP_Verification": "Vérification du vice-président",
     "ble": "BLE"
   },
@@ -33,9 +33,18 @@
     "generateQrCodeBtn": "Générer un code QR",
     "qrCodeInfo": "Veuillez scanner le code QR ci-dessous avec votre portefeuille numérique pour partager les informations d'identification demandées",
     "qrCodeExpired": "Code QR expiré",
-    "noClaims": "Aucune réclamation trouvée.",
+    "noVcsFound": "Aucune information d'identification vérifiable trouvée.",
+    "sortBy": "Trier par",
+    "expand": "Ouvert en entier",
+    "collapse": "Fermer le plein écran",
     "download": "Télécharger",
-    "timer": "Valable pour {{time}}"
+    "missingCredentials": "Demander des informations d'identification manquantes",
+    "restartProcess": "Redémarrer le processus",
+    "notShared": "Non partagé",
+    "SUCCESS": "Valide",
+    "EXPIRED": "Valide mais expiré",
+    "INVALID": "Invalide",
+    "credentialsRequested": "Des informations d'identification ont été demandées"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -73,15 +82,19 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Lancer le processus de demande de vice-président",
-        "description": "Cliquez sur Demander des informations d'identification vérifiables pour commencer le processus de vérification."
+        "description": "Cliquez <span> Demander des informations d'identification vérifiables <span> pour commencer le processus de vérification."
       },
       "SelectCredential": {
         "label": "Sélectionnez les informations d'identification et générez un code QR",
-        "description": "Choisissez les informations d'identification vérifiables requises et cliquez sur Générer un code QR."
+        "description": "Choisissez les informations d'identification vérifiables requises et cliquez sur <span>Générer un code QR<span>."
+      },
+      "RequestMissingCredential": {
+        "label": "Demander les informations d'identification manquantes et générer un code QR",
+        "description": "Cliquez sur <span>Demander les informations d'identification manquantes<span> pour procéder à la vérification du VC manquant, ou cliquez sur <span>Redémarrer le processus<span> pour recommencer tout le processus."
       },
       "ScanQrCode": {
         "label": "Scannez le code QR (utilisez un autre appareil)",
-        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR (la prise en charge de la numérisation sur le même appareil sera bientôt disponible !)"
+        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR. <span>(La prise en charge de l'analyse sur le même appareil sera bientôt disponible !)<span>"
       },
       "DisplayResult": {
         "label": "Afficher les résultats de la vérification",

@@ -1,7 +1,11 @@
 package io.inji.verify.models;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
+
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Table(name = "VPSubmission")
 @Getter
