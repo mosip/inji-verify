@@ -45,26 +45,23 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = Optional.ofNullable(vpRequestCreate.getNonce()).orElse(SecurityUtils.generateNonce());
-        AuthorizationRequestResponseDto authorizationRequestResponseDto;
-        if (vpRequestCreate.getPresentationDefinitionId() != null) {
-            PresentationDefinition presentationDefinition = presentationDefinitionRepository.findById(vpRequestCreate.getPresentationDefinitionId()).orElse(null);
-            if (presentationDefinition == null) {
-                return null;
-            }
 
-            VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getSubmissionRequirements());
-            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
+        AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
+                .map(presentationDefinitionId ->
+                        presentationDefinitionRepository.findById(presentationDefinitionId)
+                                .map(presentationDefinition -> {
+                                    VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
+                                    return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
+                                })
+                                .orElse(null))
+                .orElse(new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
 
-        } else {
-            VPDefinitionResponseDto vpDefinitionResponseDto = vpRequestCreate.getPresentationDefinition();
-            authorizationRequestResponseDto = new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpDefinitionResponseDto, nonce);
-        }
-
-        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
-
-        authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-        log.info("Authorization request created");
-        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(),null,null);
+        return Optional.of(authorizationRequestResponseDto).map(authRequestResponseDto ->{
+            AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authRequestResponseDto, expiresAt);
+            authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+            log.info("Authorization request created");
+            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(), null, null);
+        }).orElse(null);
     }
 
     @Override
@@ -100,7 +97,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public void getCurrentRequestStatusPeriodic(String requestId, DeferredResult<VPRequestStatusDto> result, ThreadSafeDelayedMethodCall executor) {
-        if (executor != null )executor.shutdown();
+        if (executor != null) executor.shutdown();
         VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
         if (currentRequestStatus.getStatus() == null) {
             result.setErrorResult("NOT_FOUND");
@@ -109,7 +106,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             result.setResult(currentRequestStatus);
         } else {
             ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
-            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result,threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
+            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result, threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
         }
     }
 }
