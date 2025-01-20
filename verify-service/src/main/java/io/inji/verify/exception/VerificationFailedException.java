@@ -6,3 +6,4 @@ public class VerificationFailedException extends Exception{
         super(message);
     }
 }
+

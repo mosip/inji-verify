@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 @Table(name = "PresentationDefinition")
@@ -33,7 +35,6 @@ public class PresentationDefinition {
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
-
 
     @JsonIgnore
     public String getURL(){

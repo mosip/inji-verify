@@ -3,6 +3,8 @@ package io.inji.verify.controller;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.enums.ErrorCode;
+import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -24,19 +26,18 @@ public class VPRequestController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VPRequestResponseDto> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
         if (vpRequestCreate.getPresentationDefinitionId() == null && vpRequestCreate.getPresentationDefinition() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_200, Constants.ERR_200));
         }
         VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
         if (authorizationRequestResponse == null){
-            //todo ::  send proper error
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_201, Constants.ERR_201));
         }
         return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{requestId}/status")
     public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>((long)300000, "Request timeout"); // 30-second timeout
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(Constants.LONG_POLL_TIMEOUT, "Request timeout");
         verifiablePresentationRequestService.getCurrentRequestStatusPeriodic(requestId,result,null);
 
         return result;

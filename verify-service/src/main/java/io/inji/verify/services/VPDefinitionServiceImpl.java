@@ -1,7 +1,6 @@
 package io.inji.verify.services;
 
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
-import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.spi.VPDefinitionService;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +17,8 @@ public class VPDefinitionServiceImpl implements VPDefinitionService {
     @Override
     public VPDefinitionResponseDto getPresentationDefinition(String id) {
 
-        PresentationDefinition presentationDefinition = presentationDefinitionRepository.findById(id).orElse(null);
-        if (presentationDefinition != null) {
-            return new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
-        }
-        return null;
+        return presentationDefinitionRepository.findById(id)
+                .map(presentationDefinition ->  new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements()))
+                .orElse(null);
     }
 }

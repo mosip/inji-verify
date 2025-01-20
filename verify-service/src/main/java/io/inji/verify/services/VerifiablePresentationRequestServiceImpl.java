@@ -24,6 +24,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -40,16 +41,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) {
         log.info("Creating authorization request");
-        String transactionId = vpRequestCreate.getTransactionId() != null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
+        String transactionId = Optional.ofNullable(vpRequestCreate.getTransactionId()).orElse(Utils.generateID(Constants.TRANSACTION_ID_PREFIX));
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
-        String nonce = vpRequestCreate.getNonce() != null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
+        String nonce = Optional.ofNullable(vpRequestCreate.getNonce()).orElse(SecurityUtils.generateNonce());
         AuthorizationRequestResponseDto authorizationRequestResponseDto;
         if (vpRequestCreate.getPresentationDefinitionId() != null) {
             PresentationDefinition presentationDefinition = presentationDefinitionRepository.findById(vpRequestCreate.getPresentationDefinitionId()).orElse(null);
             if (presentationDefinition == null) {
-                //todo ::  is this what u have to do?
-                //Todo:: Examples of PD
                 return null;
             }
 
@@ -65,7 +64,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         log.info("Authorization request created");
-        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
+        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(),null,null);
     }
 
     @Override
@@ -88,6 +87,15 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public List<String> getLatestRequestIdFor(String transactionId) {
         return authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(transactionId).stream().map(AuthorizationRequestCreateResponse::getRequestId).toList();
+    }
+
+    @Override
+    public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
+        String requestId = getLatestRequestIdFor(transactionId).getFirst();
+        if (requestId == null) {
+            return null;
+        }
+        return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
     }
 
     @Override

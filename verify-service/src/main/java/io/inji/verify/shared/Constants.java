@@ -3,6 +3,7 @@ package io.inji.verify.shared;
 public class Constants {
 
     public static final int DEFAULT_EXPIRY =  300;
+    public static final Long LONG_POLL_TIMEOUT =  300000L;
     public static final String RESPONSE_SUBMISSION_URI_ROOT = "/vp-submission";
     public static final String RESPONSE_SUBMISSION_URI = "/direct-post";
     public static final String VP_DEFINITION_URI = "/vp-definition/";
@@ -25,5 +26,7 @@ public class Constants {
     //ERROR MESSAGES
     public static final String ERR_100 = "Invalid transaction ID, No requests found for given transaction ID.";
     public static final String ERR_101 = "No VP submission found for given transaction ID.";
+    public static final String ERR_200 = "Both Presentation Definition and Presentation Definition ID cannot be empty.";
+    public static final String ERR_201 = "No Presentation Definition found for given Presentation Definition ID.";
 
 }

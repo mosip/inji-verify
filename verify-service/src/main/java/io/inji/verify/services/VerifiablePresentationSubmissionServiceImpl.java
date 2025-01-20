@@ -1,12 +1,15 @@
 package io.inji.verify.services;
 
 
+import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
+import io.inji.verify.exception.TokenMatchingFailedException;
 import io.inji.verify.exception.VerificationFailedException;
+import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -36,6 +39,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     @Autowired
     CredentialsVerifier credentialsVerifier;
 
+    @Autowired
+    VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
+
     @Override
     public void submit(VPSubmissionDto vpSubmissionDto) {
         vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
@@ -47,6 +53,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         String keyType = vpProof.getString(Constants.KEY_TYPE);
         List<VCResult> verificationResults = null;
         try {
+            log.info("Processing VP verification");
             switch (keyType) {
                 case Constants.RSA_SIGNATURE_2018:
                     VerificationUtils.verifyRsaSignature2018(vpProof);
@@ -56,7 +63,12 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                     VerificationUtils.verifyEd25519Signature(vpProof);
                     break;
             }
-
+            log.info("VP verification done");
+            log.info("Processing VP token matching");
+            if (!isVPTokenMatching(vpSubmission,transactionId)){
+                throw new TokenMatchingFailedException();
+            }
+            log.info("Processing VC verification");
             JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
             verificationResults = getVCVerificationResults(verifiableCredentials);
             boolean combinedVerificationStatus = true;
@@ -66,7 +78,8 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            log.info("Verification completed");
+            log.info("VC verification done");
+            log.info("VP submission processing done");
             return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults,null,null);
         } catch (Exception e) {
             log.error("Failed to verify",e);
@@ -94,5 +107,19 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             verificationResults.add(new VCResult(fullVerifiableCredential.toString(),singleVCVerification));
         }
         return verificationResults;
+    }
+
+    private boolean isVPTokenMatching(VPSubmission vpSubmission, String transactionId) {
+        JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
+        List<DescriptorMapDto> descriptorMap = vpSubmission.getPresentationSubmission().getDescriptorMap();
+        AuthorizationRequestCreateResponse request = verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId);
+
+        if(verifiableCredentials.isEmpty() || request == null || descriptorMap == null || descriptorMap.isEmpty()){
+            log.info("Unable to perform token matching");
+            return false;
+        }
+
+        log.info("VP token matching done");
+        return true;
     }
 }
