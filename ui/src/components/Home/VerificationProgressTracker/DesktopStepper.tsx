@@ -85,7 +85,7 @@ const DesktopStepper: React.FC = () => {
                     }`}
                   >
                     <div
-                      className={`bg-${window._env_.DEFAULT_THEME}-gradient w-[1px] h-full m-auto`}
+                      className={`bg-${window._env_.DEFAULT_THEME}-gradient mt-1 w-[1px] h-full m-auto`}
                     >
                       <div
                         className={`${

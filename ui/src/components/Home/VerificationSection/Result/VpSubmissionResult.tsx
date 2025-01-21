@@ -82,7 +82,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center lg:hidden">
         {isPartiallyShared
           ? renderMissingAndResetButton()
           : renderRequestCredentialsButton()}

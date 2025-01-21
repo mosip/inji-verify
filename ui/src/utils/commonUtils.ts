@@ -1,4 +1,4 @@
-import { claim, credentialSubject, Detail, VC, VpSubmissionResultInt } from "../types/data-types";
+import { claim, credentialSubject, Detail, VC } from "../types/data-types";
 import { desiredOrder } from "./config";
 
 export const getPresentationDefinition = (data: any) => {
@@ -25,15 +25,14 @@ export const getDetailsOrder = (vc: credentialSubject): Detail[] => {
   });
 };
 
-
 export const calculateUnverifiedClaims = (
   selectedClaims: claim[],
   verificationSubmissionResult: { vc: VC; vcStatus: string }[]
 ) => {
-  if (selectedClaims.length > 1) return [];
-  return selectedClaims.filter((claim) =>
-    verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId !== claim.type
-    )
+  const credentialConfigIds = verificationSubmissionResult.map(
+    (vc) => vc.vc.credentialConfigurationId
+  );
+  return selectedClaims.filter(
+    (claim) => !credentialConfigIds.includes(claim.type)
   );
 };

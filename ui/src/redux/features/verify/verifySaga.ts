@@ -1,6 +1,6 @@
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claim, fetchStatusResponse, QrData, VC, VpSubmissionResultInt } from "../../../types/data-types";
+import { ApiRequest, claim, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -10,7 +10,7 @@ import {
 } from "./vpVerificationState";
 import { AlertMessages, OPENID4VP_PROTOCOL } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
-import { calculateUnverifiedClaims, getPresentationDefinition } from "../../../utils/commonUtils";
+import { getPresentationDefinition } from "../../../utils/commonUtils";
 import { RootState } from "../../store";
 
 function* fetchRequestUri(claims: claim[]) {
@@ -102,10 +102,8 @@ function* getVpResult(status: string, txnId: string) {
           });
         }
       );
-
       yield put(verificationSubmissionComplete({verificationResult: [...vcResults]}));
-      const selectedClaims:[] = yield select((state: RootState) => state.verify.selectedClaims);
-      const unVerifiedClaims = calculateUnverifiedClaims(selectedClaims, [...vcResults]);
+      const unVerifiedClaims:[] = yield select((state: RootState) => state.verify.unVerifiedClaims);
       const isPartiallyShared = unVerifiedClaims.length > 0;
       if(isPartiallyShared){
         yield put(raiseAlert({ ...AlertMessages().partialCredentialShared, open: true }));

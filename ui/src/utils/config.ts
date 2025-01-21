@@ -220,7 +220,7 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "Life Insurance",
-    type: "LifeInsurance",
+    type: "LifeInsuranceCredential",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -237,7 +237,7 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "Health Insurance",
-    type: "HealthInsurance",
+    type: "InsuranceCredential",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",

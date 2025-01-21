@@ -68,7 +68,7 @@ const vpVerificationState = createSlice({
       state.activeScreen = VerificationSteps["VERIFY"].InitiateVpRequest;
       state.SelectionPanel = false;
       state.unVerifiedClaims = [];
-      state.selectedClaims =  verifiableClaims.filter((claim) => claim.essential);
+      state.selectedClaims = [];
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";
