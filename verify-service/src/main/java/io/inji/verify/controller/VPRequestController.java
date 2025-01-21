@@ -3,6 +3,8 @@ package io.inji.verify.controller;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.core.ErrorDto;
+import io.inji.verify.dto.core.ResponseWrapper;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.shared.Constants;
@@ -25,16 +27,20 @@ public class VPRequestController {
     VerifiablePresentationRequestService verifiablePresentationRequestService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VPRequestResponseDto> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
+    public ResponseEntity<Object> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
+        ResponseWrapper<VPRequestResponseDto> responseWrapper = new ResponseWrapper<VPRequestResponseDto>();
         if (vpRequestCreate.getPresentationDefinitionId() == null && vpRequestCreate.getPresentationDefinition() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_200, Constants.ERR_200));
+            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseWrapper);
         }
         try{
             VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
-            return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
+            responseWrapper.setResponse(authorizationRequestResponse);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseWrapper);
         }catch (PresentationDefinitionNotFoundException e){
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_201, Constants.ERR_201));
+            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseWrapper);
         }
     }
 

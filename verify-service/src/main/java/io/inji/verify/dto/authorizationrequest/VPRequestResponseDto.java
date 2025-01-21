@@ -13,6 +13,4 @@ public class VPRequestResponseDto {
     String requestId;
     AuthorizationRequestResponseDto authorizationDetails;
     Long expiresAt;
-    ErrorCode errorCode;
-    String errorMessage;
 }

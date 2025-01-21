@@ -1,7 +1,10 @@
 package io.inji.verify.controller;
 
+import io.inji.verify.dto.core.ErrorDto;
+import io.inji.verify.dto.core.ResponseWrapper;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.ErrorCode;
+import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
@@ -24,14 +27,21 @@ public class VPResultController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @GetMapping(path = "/vp-result/{transactionId}")
-    public ResponseEntity<VPTokenResultDto> getVPResult(@PathVariable String transactionId) {
+    public ResponseEntity<Object> getVPResult(@PathVariable String transactionId) {
+        ResponseWrapper<VPTokenResultDto> responseWrapper =  new ResponseWrapper<>();
         List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
 
         if (requestIds.isEmpty()) {
-            return new ResponseEntity<>(new VPTokenResultDto(null,null,null, ErrorCode.ERR_100, Constants.ERR_100), HttpStatus.OK);
+            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100));
+        }
+        try {
+            VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
+            responseWrapper.setResponse(result);
+        }catch (VPSubmissionNotFoundException e){
+            log.error(e.getMessage());
+            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101));
         }
 
-        VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds,transactionId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
     }
 }

@@ -16,6 +16,4 @@ public class VPTokenResultDto {
     String transactionId;
     VPResultStatus VPResultStatus;
     List<VCResult> VCResults;
-    ErrorCode errorCode;
-    String errorMessage;
 }

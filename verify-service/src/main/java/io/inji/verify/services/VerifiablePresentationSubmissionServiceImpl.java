@@ -8,12 +8,14 @@ import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.TokenMatchingFailedException;
+import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
+import io.inji.verify.spi.VPDefinitionService;
 import io.inji.verify.spi.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.Utils;
 import io.inji.verify.utils.VerificationUtils;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -80,21 +83,21 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
             log.info("VC verification done");
             log.info("VP submission processing done");
-            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults,null,null);
+            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults);
         } catch (Exception e) {
-            log.error("Failed to verify",e);
-            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults,null,null);
+            log.error("Failed to verify", e);
+            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
         }
     }
 
     @Override
-    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) {
+    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
 
-        if (vpSubmission == null){
-            return new VPTokenResultDto(transactionId,null,null, ErrorCode.ERR_101, Constants.ERR_101);
+        if (vpSubmission == null) {
+            throw new VPSubmissionNotFoundException();
         }
-        return processSubmission(vpSubmission,transactionId);
+        return processSubmission(vpSubmission, transactionId);
     }
 
     private List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {

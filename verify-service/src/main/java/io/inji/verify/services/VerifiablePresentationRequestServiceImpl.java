@@ -42,10 +42,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
         log.info("Creating authorization request");
-        String transactionId = Optional.ofNullable(vpRequestCreate.getTransactionId()).orElse(Utils.generateID(Constants.TRANSACTION_ID_PREFIX));
+        String transactionId = vpRequestCreate.getTransactionId() != null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
-        String nonce = Optional.ofNullable(vpRequestCreate.getNonce()).orElseGet(SecurityUtils::generateNonce);
+        String nonce = vpRequestCreate.getNonce() != null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
                 .map(presentationDefinitionId -> {
@@ -56,13 +56,13 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                             })
                             .orElse(null);
                 })
-                .orElse(new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
+                .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
 
-        return Optional.of(authorizationRequestResponseDto).map(authRequestResponseDto ->{
+        return Optional.of(authorizationRequestResponseDto).map(authRequestResponseDto -> {
             AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authRequestResponseDto, expiresAt);
             authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
             log.info("Authorization request created");
-            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(), null, null);
+            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
         }).orElseThrow(PresentationDefinitionNotFoundException::new);
     }
 
