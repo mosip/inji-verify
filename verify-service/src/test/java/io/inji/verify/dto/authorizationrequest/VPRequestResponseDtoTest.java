@@ -14,7 +14,7 @@ public class VPRequestResponseDtoTest {
         AuthorizationRequestResponseDto authorizationDetails = new AuthorizationRequestResponseDto("client123", "",new VPDefinitionResponseDto("pd123", mock(), mock()), "nonce123");
         long expiresAt = 1687318740000L;
 
-        VPRequestResponseDto vpRequestResponseDto = new VPRequestResponseDto(transactionId, requestId, authorizationDetails, expiresAt,null,null);
+        VPRequestResponseDto vpRequestResponseDto = new VPRequestResponseDto(transactionId, requestId, authorizationDetails, expiresAt);
 
         assertEquals(transactionId, vpRequestResponseDto.getTransactionId());
         assertEquals(requestId, vpRequestResponseDto.getRequestId());

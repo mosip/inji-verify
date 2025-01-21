@@ -20,17 +20,11 @@ class VPTokenResultDtoTest {
         List<VCResult> vcResults = new ArrayList<>();
         vcResults.add(new VCResult("vc1", VerificationStatus.SUCCESS));
         vcResults.add(new VCResult("vc2", VerificationStatus.INVALID));
-        ErrorCode errorCode = ErrorCode.ERR_100;
-        String errorMessage = Constants.ERR_100;
 
-        VPTokenResultDto resultDto = new VPTokenResultDto(transactionId, vpResultStatus, vcResults, errorCode, errorMessage);
+        VPTokenResultDto resultDto = new VPTokenResultDto(transactionId, vpResultStatus, vcResults);
 
         assertEquals(transactionId, resultDto.getTransactionId());
         assertEquals(vpResultStatus, resultDto.getVPResultStatus());
         assertEquals(vcResults, resultDto.getVCResults());
-        assertEquals(errorCode,resultDto.getErrorCode());
-        assertEquals(errorMessage,resultDto.getErrorMessage());
     }
-
-
 }
