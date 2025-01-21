@@ -6,6 +6,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
+import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.enums.VPRequestStatus;
@@ -40,7 +41,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     }
     @Test
-    public void shouldCreateNewAuthorizationRequest() {
+    public void shouldCreateNewAuthorizationRequest() throws PresentationDefinitionNotFoundException {
         when(mockPresentationDefinitionRepository.save(any(PresentationDefinition.class))).thenReturn(null);
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class))).thenReturn(null);
 
@@ -59,7 +60,7 @@ class VerifiablePresentationRequestServiceImplTest {
         assertTrue(responseDto.getExpiresAt() > Instant.now().toEpochMilli());
     }
     @Test
-    public void shouldCreateAuthorizationRequestWithMissingTransactionId() {
+    public void shouldCreateAuthorizationRequestWithMissingTransactionId() throws PresentationDefinitionNotFoundException {
 
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();

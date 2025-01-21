@@ -4,6 +4,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.enums.ErrorCode;
+import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.spi.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
@@ -28,11 +29,13 @@ public class VPRequestController {
         if (vpRequestCreate.getPresentationDefinitionId() == null && vpRequestCreate.getPresentationDefinition() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_200, Constants.ERR_200));
         }
-        VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
-        if (authorizationRequestResponse == null){
+        try{
+            VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
+            return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
+        }catch (PresentationDefinitionNotFoundException e){
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new VPRequestResponseDto(null,null,null,null, ErrorCode.ERR_201, Constants.ERR_201));
         }
-        return new ResponseEntity<>(authorizationRequestResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{requestId}/status")

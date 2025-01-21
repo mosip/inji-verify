@@ -25,8 +25,7 @@ public class VerificationUtilsTest {
                 cKWTjpBP2dPwVZ4WWC+9aGVd+Gyn1o0CLelf4rEjGoXbAAEgAqeGUxrcIlbjXfbc
                 mwIDAQAB
                 -----END PUBLIC KEY-----""";
-        byte[] encoded = Base64.getEncoder().encode(pemString.getBytes());
-        Mockito.when(proofObject.getString(Constants.KEY_VERIFICATION_METHOD)).thenReturn(new String(encoded));
+        Mockito.when(proofObject.getString(Constants.KEY_VERIFICATION_METHOD)).thenReturn(pemString);
         Mockito.when(proofObject.getString(Constants.KEY_JWS)).thenReturn("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.NHVaYe26MbtOYhSKkoKYdFVomg4i8ZJd8_-RU8VNbftc4TSMb4bXP3l3YlNWACwyXPGffz5aXHc6lty1Y2t4SWRqGteragsVdZufDn5BlnJl9pdR_kdVFUsra2rWKEofkZeIC4yWytE58sMIihvo9H1ScmmVwBcQP6XETqYd0aSHp1gOa9RdUPDvoXQ5oqygTqVtxaDr6wUFKrKItgBMzWIdNZ6y7O9E0DhEPTbE9rfBo6KTFsHAZnMg4k68CDp2woYIaXbmYTWcvbzIuHO7_37GT79XdIwkm95QJ7hYC9RiwrV7mesbY4PAahERJawntho0my942XheVLmGwLMBkQ");
 
         VerificationUtils.verifyRsaSignature2018(proofObject);
@@ -43,8 +42,8 @@ public class VerificationUtilsTest {
                 16dbe5ac3a773f606724e3a7EAQIDAQAB
                 -----END PUBLIC KEY-----
                 """;
-        String cert =  new String(Base64.getEncoder().encode(pemString.getBytes()));
-        Mockito.when(proofObject.getString(Constants.KEY_VERIFICATION_METHOD)).thenReturn(cert);
+
+        Mockito.when(proofObject.getString(Constants.KEY_VERIFICATION_METHOD)).thenReturn(pemString);
         Mockito.when(proofObject.getString(Constants.KEY_JWS)).thenReturn("invalid.jws");
 
         assertThrows(InvalidKeySpecException.class, () -> VerificationUtils.verifyRsaSignature2018(proofObject));
