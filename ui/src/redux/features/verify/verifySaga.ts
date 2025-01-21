@@ -1,6 +1,6 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claim, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
+import { ApiRequest, claim, fetchStatusResponse, QrData, VC, VpSubmissionResultInt } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -10,7 +10,8 @@ import {
 } from "./vpVerificationState";
 import { AlertMessages, OPENID4VP_PROTOCOL } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
-import { getPresentationDefinition } from "../../../utils/commonUtils";
+import { calculateUnverifiedClaims, getPresentationDefinition } from "../../../utils/commonUtils";
+import { RootState } from "../../store";
 
 function* fetchRequestUri(claims: claim[]) {
   let qrData;
@@ -87,11 +88,7 @@ function* getVpResult(status: string, txnId: string) {
       headers: apiRequest.headers(),
     };
     try {
-      const response: Response = yield call(
-        fetch,
-        apiRequest.url(txnId),
-        requestOptions
-      );
+      const response: Response = yield call(fetch, apiRequest.url(txnId), requestOptions);
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
       const vcResults: { vc: VC; vcStatus: string }[] = [];
@@ -106,16 +103,18 @@ function* getVpResult(status: string, txnId: string) {
         }
       );
 
-      yield put(
-        verificationSubmissionComplete({
-          verificationResult: [...vcResults],
-        })
-      );
+      yield put(verificationSubmissionComplete({verificationResult: [...vcResults]}));
+      const selectedClaims:[] = yield select((state: RootState) => state.verify.selectedClaims);
+      const unVerifiedClaims = calculateUnverifiedClaims(selectedClaims, [...vcResults]);
+      const isPartiallyShared = unVerifiedClaims.length > 0;
+      if(isPartiallyShared){
+        yield put(raiseAlert({ ...AlertMessages().partialCredentialShared, open: true }));
+      }
       return;
     } catch (error) {
       console.error("Error occurred:", error);
       yield put(resetVpRequest());
-      yield put(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
+      yield put(raiseAlert({ ...AlertMessages().validationFailure, open: true }));
       return;
     }
   }

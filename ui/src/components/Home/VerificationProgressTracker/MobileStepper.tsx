@@ -74,12 +74,12 @@ function MobileStepper() {
         ))}
       </div>
       <div className="col-start-1 col-end-13 text-center px-4">
-        <p id={convertToId(label)} className="font-bold text-stepperLabel text-normalTextSize my-1">
+        <p id={convertToId(label)} className="font-bold text-stepperLabel md:text-smallTextSize text-normalTextSize my-1">
           {label}
         </p>
         <p
           id={`${convertToId(label)}-description`}
-          className="text-stepperDescription text-normalTextSize"
+          className="text-stepperDescription text-smallTextSize md:text-normalTextSize"
         >
           {description.split("<span>").map((text: string, index: number) =>
               index % 2 === 1 ? <span style={{ fontStyle: "italic" }}>"{text.trim()}"</span> : text

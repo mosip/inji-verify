@@ -79,8 +79,8 @@ function SelectionPanelContent() {
         </p>
       </div>
 
-      <div className="flex justify-around gap-1 lg:gap-4">
-        <div className="w-[200px] lg:w-[483px] h-[44px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
+      <div className="flex justify-around lg:gap-4 box-border">
+        <div className="w-[200px] lg:w-[483px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
           <SearchIcon />
           <input
             type="text"
@@ -91,7 +91,7 @@ function SelectionPanelContent() {
         </div>
         <div
           onClick={() => setShowMenu(!showMenu)}
-          className="lg:w-[106px] h-[44px] relative flex items-center rounded-lg p-2 cursor-pointer border border-sortByBorder"
+          className="lg:w-[106px] relative flex items-center rounded-lg p-2 cursor-pointer border border-sortByBorder"
         >
           <FilterLinesIcon />
           <span className="text-sortByText font-semibold text-smallTextSize ml-2">
@@ -126,7 +126,7 @@ function SelectionPanelContent() {
           {t("listHeader")}
         </h2>
         {filteredClaims.length > 0 ? (
-          <ul className="grid gap-4 max-h-[100px] lg:max-h-[250px] overflow-y-auto custom-scrollbar pr-4">
+          <ul className="grid gap-4 max-h-[120px] lg:max-h-[250px] overflow-y-auto custom-scrollbar pr-4">
             {filteredClaims.map((claim, index) => {
               const isSelectedClaim = selectedClaims.includes(claim)
               return (

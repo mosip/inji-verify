@@ -16,7 +16,7 @@ const DesktopModal: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const SlideModal: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="fixed inset-0 z-50 overflow-hidden">
     <div className="absolute inset-0 bg-black opacity-50"></div>
-    <div className="relative w-full h-full">
+    <div className="absolute bottom-0 w-full h-[60vh]">
       <div className="slide-up-container">{children}</div>
     </div>
   </div>
@@ -34,7 +34,7 @@ const SelectionPanel: React.FC = () => {
         <SlideModal>
           <div className="flex justify-center">
             <div
-              className="w-10 h-1 bg-[#404653] rounded-full my-2 cursor-pointer"
+              className="w-10 h-1 rounded-full my-2 cursor-pointer"
               onClick={HandelBack}
             />
           </div>

@@ -114,7 +114,9 @@ export const AlertMessages =()=> {
         pageNotFound: {message: i18next.t("AlertMessages:pageNotFound"), severity: "error"} as AlertInfo,
         failToGenerateQrCode: {message:i18next.t("AlertMessages:failToGenerateQrCode"), severity: "error"} as AlertInfo,
         unexpectedError: {message:i18next.t("AlertMessages:unexpectedError"), severity: "error"} as AlertInfo,
-        scanSessionExpired: {message: i18next.t("AlertMessages:scanSessionExpired"), severity: "error"} as AlertInfo
+        scanSessionExpired: {message: i18next.t("AlertMessages:scanSessionExpired"), severity: "error"} as AlertInfo,
+        partialCredentialShared:{message: i18next.t("AlertMessages:partialCredentialShared"), severity: "error"} as AlertInfo,
+        validationFailure:{message: i18next.t("AlertMessages:validationFailure"), severity: "error"} as AlertInfo,
     }
 };
 
@@ -165,8 +167,8 @@ export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to ever
 export const verifiableClaims: claim[] = [
   {
     logo: certImage,
-    name: "CAR Statement",
-    type: "Statement",
+    name: "MOSIP ID",
+    type: "MosipId",
     essential: true,
     definition: {
       purpose:
@@ -190,8 +192,8 @@ export const verifiableClaims: claim[] = [
   },
   {
     logo: certImage2,
-    name: "CAR Registration Receipt",
-    type: "RegistrationReceiptCredential",
+    name: "Farmer ID",
+    type: "FarmerId",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -217,8 +219,8 @@ export const verifiableClaims: claim[] = [
   },
   {
     logo: certImage,
-    name: "Farmer Registry Certificate",
-    type: "FarmerRegistryCertificate",
+    name: "Life Insurance",
+    type: "LifeInsurance",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -235,24 +237,14 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "Health Insurance",
-    type: "InsuranceCredential",
+    type: "HealthInsurance",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
       input_descriptors: [
         {
           id: "id card credential",
-          constraints: {
-            fields: [
-              {
-                path: ["$.type"],
-                filter: {
-                  type: "object",
-                  pattern: "InsuranceCredential",
-                },
-              },
-            ],
-          },
+          constraints: {},        
         },
       ],
     },
