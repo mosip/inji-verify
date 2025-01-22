@@ -2,7 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import verificationFlowReducer from './features/verification/verification.slice';
 import alertsReducer from "./features/alerts/alerts.slice";
 import applicationStateReducer from "./features/application-state/application-state.slice";
-import vpVerificationState from "./features/verify/verifyState"
+import vpVerificationReducer from "./features/verify/vpVerificationState"
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
 import commonReducer from './features/common/commonSlice'
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
     alert: alertsReducer,
     appState: applicationStateReducer,
     common:commonReducer,
-    verify: vpVerificationState
+    verify: vpVerificationReducer
 });
 
 const store = configureStore({

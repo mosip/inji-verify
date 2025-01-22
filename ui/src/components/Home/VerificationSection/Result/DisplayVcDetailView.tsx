@@ -9,41 +9,29 @@ import {
   DocumentIcon,
   VectorDownload,
   VectorExpand,
-  VectorOutline,
 } from "../../../../utils/theme-utils";
+import ActionButton from "../commons/ActionButton";
+import { useTranslation } from "react-i18next";
+import { getDetailsOrder } from "../../../../utils/commonUtils";
 
-function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
-  const desiredOrder = [
-    "fullName",
-    "gender",
-    "dob",
-    "benefits",
-    "policyName",
-    "policyNumber",
-    "policyIssuedOn",
-    "policyExpiresOn",
-    "mobile",
-    "email",
-  ];
-  type Detail = {
-    key: string;
-    value: string;
-  };
-
-  const orderedDetails: Detail[] = desiredOrder.map((value) => {
-    const key = Object.keys(vc.credentialSubject).find((key) => key === value);
-    if (key) {
-      return { key, value: vc.credentialSubject[key] };
-    }
-    return { key: value, value: "N/A" };
-  });
+function DisplayVcDetailView({
+  vc,
+  onExpand,
+  className,
+}: {
+  vc: any;
+  onExpand: any;
+  className?: string;
+}) {
+  const { t } = useTranslation("Verify");
+  const orderedDetails = getDetailsOrder(vc.credentialSubject);
 
   return (
     <div>
       <div
-        className={`w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4`}
+        className={`w-[339px] lg:w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4 ${className}`}
       >
-        {vc.credentialSubject ? (
+        {vc ? (
           <div className="grid">
             {orderedDetails.map((label, index) => (
               <div
@@ -68,17 +56,19 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
                 </p>
               </div>
             ))}
-            <div
-              className="flex items-center justify-center relative left-[331px] bottom-[100px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
-              style={{ backgroundImage: `url(${VectorOutline})` }}
-            >
-              <VectorExpand onClick={onExpand} />
-            </div>
-            <div
-              className="flex items-center justify-center relative left-[290px] bottom-[40px] w-[40px] h-[40px] aspect-square bg-cover opacity-25"
-              style={{ backgroundImage: `url(${VectorOutline})` }}
-            >
-              <VectorDownload onClick={() => saveData(vc)} />
+            <div className="relative">
+              <ActionButton
+                label={t("expand")}
+                onClick={onExpand}
+                icon={<VectorExpand />}
+                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[70px]"
+              />
+              <ActionButton
+                label={t("download")}
+                onClick={() => saveData(vc)}
+                icon={<VectorDownload />}
+                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[20px]"
+              />
             </div>
           </div>
         ) : (
@@ -91,4 +81,4 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
   );
 }
 
-export default VcDisplayCard;
+export default DisplayVcDetailView;

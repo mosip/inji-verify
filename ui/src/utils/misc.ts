@@ -31,9 +31,25 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
-export const getVerificationStepsCount = (method: VerificationMethod) => {
-  const VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
-  return VerificationStepsContent[method].length;
+export const fetchVerificationSteps = (method: VerificationMethod,isPartiallyShared:boolean) => {
+  let VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
+  if (method === "VERIFY") {
+    VerificationStepsContent = {
+            ...VerificationStepsContent,
+            [method]: VerificationStepsContent[method as VerificationMethod].filter(
+              (_, index: number) => {
+                if (isPartiallyShared && index === 1) {
+                  return false;
+                }
+                if (!isPartiallyShared && index === 2) {
+                  return false;
+                }
+                return true;
+              }
+            ),
+          };
+  }
+  return VerificationStepsContent[method];
 };
 
 export const getRangeOfNumbers = (length: number): number[] => {
@@ -85,4 +101,19 @@ export const generateRandomString = (
     randomString += charset[randomIndex];
   }
   return randomString;
+};
+
+export const saveData = async (vc: any) => {
+  const myData = vc;
+  const fileName = `${vc.credentialSubject.fullName}`;
+  const json = JSON.stringify(myData);
+  const blob = new Blob([json], { type: "application/json" });
+  const href = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = fileName + ".json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
 };

@@ -16,7 +16,7 @@ export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
 
 export type VerificationStep = {
   label: string;
-  description: string | string[];
+  description: string;
 };
 
 export type CardPositioning = {
@@ -75,7 +75,7 @@ export type OvpFlowData = {
 export type VerificationTrigger = {};
 
 export type VerificationResult = {
-  vc?: any;
+  vc?: VC;
   vcStatus?: VcStatus;
 };
 
@@ -93,27 +93,67 @@ export interface VerificationStepsContentType {
 
 export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
+export interface claim {
+  name: string;
+  type: string;
+  logo: string;
+  essential?: boolean;
+  definition: PresentationDefinition;
+}
+
+interface InputDescriptor {
+  id: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  constraints?: {};
+}
+
+interface PresentationDefinition {
+  id?: string;
+  purpose: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  input_descriptors: InputDescriptor[];
+}
+
+interface BodyType {
+  transactionId: string;
+  clientId: string;
+  presentationDefinition: PresentationDefinition;
+  nonce: string;
+}
+
 export type ApiRequest = {
   url: (...args: string[]) => string;
   methodType: MethodType;
   headers: (...args: string[]) => Record<string, string>;
-  body?: string;
+  body?: BodyType;
 };
 
-export type VerificationSubmissionResult = {
-  vc?: any;
-  vcStatus?: string;
+export type VpSubmissionResultInt = {
+  vc: VC;
+  vcStatus: "SUCCESS" | "EXPIRED" | "INVALID";
+  view?: boolean;
 };
 
 export type VerifyState = {
   isLoading: boolean;
-  status:string,
+  status: string;
   qrData: string;
   txnId: string;
   reqId: string;
-  activeScreen: number; 
-  verificationSubmissionResult?: VerificationSubmissionResult;
-  SelectionPannel:boolean;
+  method: string;
+  activeScreen: number;
+  verificationSubmissionResult: VpSubmissionResultInt[];
+  SelectionPanel: boolean;
+  selectedClaims: claim[];
+  unVerifiedClaims: claim[];
 };
 
 export type QrData = {
@@ -122,7 +162,8 @@ export type QrData = {
   authorizationDetails: {
     responseType: string;
     clientId: string;
-    presentationDefinitionUri: string;
+    presentationDefinition: object;
+    presentationDefinitionUri?: string;
     responseUri: string;
     nonce: string;
     iat: number;
@@ -135,5 +176,53 @@ export type QrCodeProps = {
   data: string;
   size: number;
   footer?: string;
-  status:"SUCCESS" | "EXPIRED" | "INVALID";
+  status: "SUCCESS" | "EXPIRED" | "INVALID";
+};
+
+export type VC = {
+  credential: {
+    "@context": string[];
+    credentialSubject: credentialSubject;
+    expirationDate: string;
+    id: string;
+    issuanceDate: string;
+    issuer: string;
+    proof: {
+      proofValue: string;
+      created: string;
+      proofPurpose: string;
+      type: string;
+      verificationMethod: string;
+    };
+    type: string[];
+  };
+  credentialConfigurationId: string;
+  issuerLogo: {
+    url: string;
+    alt_text: string;
+  };
+  wellKnown: string;
+};
+
+export type credentialSubject = {
+  benefits: string[];
+  gender: string;
+  policyName: string;
+  dob: string;
+  mobile: string;
+  policyNumber: string;
+  fullName: string;
+  policyIssuedOn: string;
+  id: string;
+  email: string;
+  policyExpiresOn: string;
+};
+
+export interface fetchStatusResponse {
+  status: string;
+}
+
+export type Detail = {
+  key: string;
+  value: string | string[];
 };

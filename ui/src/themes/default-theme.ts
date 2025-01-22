@@ -23,8 +23,14 @@ import { ReactComponent as WhiteReGenerate } from "../assets/defaultTheme/white-
 import { ReactComponent as CrossIcon } from "../assets/defaultTheme/close_icon.svg";
 import { ReactComponent as HamburgerIcon } from "../assets/defaultTheme/hamburger-menu.svg";
 import { ReactComponent as TabIcon } from "../assets/defaultTheme/new-tab.svg";
+import { ReactComponent as VectorDownArrow } from "../assets/defaultTheme/vector-arrow-down.svg";
+import { ReactComponent as VectorUpArrow } from "../assets/defaultTheme/vector-arrow-up.svg";
+import { ReactComponent as VectorExpandIcon } from "../assets/defaultTheme/vector-expand.svg";
+import { ReactComponent as VectorCollapseIcon } from "../assets/defaultTheme/vector-collapse.svg";
+import { ReactComponent as VectorDownloadIcon } from "../assets/defaultTheme/vector-download.svg";
 import ScannerOutline from "../assets/defaultTheme/scanner-outline.svg";
 import QrOutline from "../assets/defaultTheme/qr-code-outline.svg";
+import VectorOutline from "../assets/defaultTheme/vector-icon-outline.svg";
 
 const defaultTheme = {
   Logo: NavLogo,
@@ -54,6 +60,12 @@ const defaultTheme = {
   CloseIcon: CrossIcon,
   MenuIcon: HamburgerIcon,
   NewTabIcon: TabIcon,
+  VectorDown: VectorDownArrow,
+  VectorUp: VectorUpArrow,
+  VectorOutline: VectorOutline,
+  VectorExpand: VectorExpandIcon,
+  VectorCollapse: VectorCollapseIcon,
+  VectorDownload: VectorDownloadIcon,
 };
 
 export default defaultTheme;
