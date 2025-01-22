@@ -1,7 +1,7 @@
-import { claim, credentialSubject, Detail, VC } from "../types/data-types";
+import { claim, credentialSubject, Detail, QrData, VC } from "../types/data-types";
 import { desiredOrder } from "./config";
 
-export const getPresentationDefinition = (data: any) => {
+export const getPresentationDefinition = (data: QrData) => {
   return (
     `client_id=${data.authorizationDetails.clientId}` +
     `&response_type=${data.authorizationDetails.responseType}` +
