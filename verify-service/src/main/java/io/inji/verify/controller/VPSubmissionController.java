@@ -4,22 +4,19 @@ import com.nimbusds.jose.shaded.gson.Gson;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
-import io.inji.verify.dto.submission.VPSubmissionResponseDto;
-import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.spi.VerifiablePresentationRequestService;
-import io.inji.verify.spi.VerifiablePresentationSubmissionService;
+import io.inji.verify.services.VerifiablePresentationRequestService;
+import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(path = "/vp-submission")
+@RequestMapping(path = Constants.RESPONSE_SUBMISSION_URI_ROOT)
+@Slf4j
 public class VPSubmissionController {
 
     @Autowired
@@ -29,11 +26,11 @@ public class VPSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @Autowired
-    Gson gson;
+    Gson Gson;
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<VPSubmissionResponseDto> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
-        PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+    public ResponseEntity<?> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
+        PresentationSubmissionDto presentationSubmissionDto = Gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
@@ -42,7 +39,7 @@ public class VPSubmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        VPSubmissionResponseDto submissionResponseDto = verifiablePresentationSubmissionService.submit(vpSubmissionDto);
-        return new ResponseEntity<>(submissionResponseDto, HttpStatus.OK);
+        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

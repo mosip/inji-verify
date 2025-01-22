@@ -43,7 +43,7 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
       <div
         className={`w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4`}
       >
-        {vc ? (
+        {vc.credentialSubject ? (
           <div className="grid">
             {orderedDetails.map((label, index) => (
               <div

@@ -1,14 +1,10 @@
 package io.inji.verify.dto.submission;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter
 public class PathNestedDto {
     String format;
     String path;
