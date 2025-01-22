@@ -1,18 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { verifiableClaims, VerificationSteps } from "../../../utils/config";
-import { claim, VerifyState, VpSubmissionResultInt } from "../../../types/data-types";
-
-const calculateUnverifiedClaims = (
-  selectedClaims: claim[],
-  verificationSubmissionResult: VpSubmissionResultInt[]
-) => {
-  if (selectedClaims.length > 1) return [];
-  return selectedClaims.filter((claim) =>
-    verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId !== claim.type
-    )
-  );
-};
+import { VerifyState } from "../../../types/data-types";
+import { calculateUnverifiedClaims } from "../../../utils/commonUtils";
 
 const PreloadedState: VerifyState = {
   isLoading: false,
@@ -61,12 +50,8 @@ const vpVerificationState = createSlice({
       state.reqId = action.payload.reqId;
     },
     verificationSubmissionComplete: (state, action) => {
-      state.verificationSubmissionResult.push(
-        ...action.payload.verificationResult
-      );
-      state.unVerifiedClaims = calculateUnverifiedClaims(
-        state.selectedClaims,
-        state.verificationSubmissionResult);
+      state.verificationSubmissionResult.push(...action.payload.verificationResult);
+      state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
       const isPartiallyShared = state.unVerifiedClaims.length > 0;
       state.activeScreen = isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
@@ -83,7 +68,7 @@ const vpVerificationState = createSlice({
       state.activeScreen = VerificationSteps["VERIFY"].InitiateVpRequest;
       state.SelectionPanel = false;
       state.unVerifiedClaims = [];
-      state.selectedClaims =  verifiableClaims.filter((claim) => claim.essential);
+      state.selectedClaims = [];
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";

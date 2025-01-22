@@ -18,13 +18,13 @@ public class VerificationUtils {
     public static void verifyRsaSignature2018(JSONObject proofObject) throws Exception {
         String publicKeyPem = proofObject.getString(Constants.KEY_VERIFICATION_METHOD);
         Algorithm algorithm = Algorithm.RSA256(SecurityUtils.readX509PublicKey(publicKeyPem), null);
-        String jws = proofObject.getString(Constants.KEY_JWS);
+        String jws = proofObject.getString(Constants.KEY_JWS).replaceAll("\n", "");
         JWTVerifier verifier = JWT.require(algorithm).build();
         verifier.verify(jws);
     }
 
     public static void verifyEd25519Signature(JSONObject proofObject) throws ParseException, JOSEException {
-        SignedJWT parsedJWS = SignedJWT.parse(proofObject.getString(Constants.KEY_JWS));
+        SignedJWT parsedJWS = SignedJWT.parse(proofObject.getString(Constants.KEY_JWS).replaceAll("\n", ""));
         JWK jwk = parsedJWS.getHeader().getJWK();
         OctetKeyPair okp = (OctetKeyPair) jwk;
         JWSVerifier verifier = new Ed25519Verifier(okp);

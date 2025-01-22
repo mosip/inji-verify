@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
 import { ApiRequest, claim, fetchStatusResponse, QrData, VC } from "../../../types/data-types";
 import {
@@ -11,6 +11,7 @@ import {
 import { AlertMessages, OPENID4VP_PROTOCOL } from "../../../utils/config";
 import { raiseAlert } from "../alerts/alerts.slice";
 import { getPresentationDefinition } from "../../../utils/commonUtils";
+import { RootState } from "../../store";
 
 function* fetchRequestUri(claims: claim[]) {
   let qrData;
@@ -32,7 +33,7 @@ function* fetchRequestUri(claims: claim[]) {
       requestOptions
     );
     const data: string = yield response.text();
-    const parsedData = JSON.parse(data) as QrData;
+    const parsedData = JSON.parse(data).response as QrData;
     const presentationDefinition = getPresentationDefinition(parsedData);
     qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
@@ -87,13 +88,9 @@ function* getVpResult(status: string, txnId: string) {
       headers: apiRequest.headers(),
     };
     try {
-      const response: Response = yield call(
-        fetch,
-        apiRequest.url(txnId),
-        requestOptions
-      );
+      const response: Response = yield call(fetch, apiRequest.url(txnId), requestOptions);
       const data: string = yield response.text();
-      const parsedData = JSON.parse(data);
+      const parsedData = JSON.parse(data).response;
       const vcResults: { vc: VC; vcStatus: string }[] = [];
       parsedData.vcresults.forEach(
         (vcResult: { vc: string; verificationStatus: string }) => {
@@ -105,17 +102,17 @@ function* getVpResult(status: string, txnId: string) {
           });
         }
       );
-
-      yield put(
-        verificationSubmissionComplete({
-          verificationResult: [...vcResults],
-        })
-      );
+      yield put(verificationSubmissionComplete({verificationResult: [...vcResults]}));
+      const unVerifiedClaims:[] = yield select((state: RootState) => state.verify.unVerifiedClaims);
+      const isPartiallyShared = unVerifiedClaims.length > 0;
+      if(isPartiallyShared){
+        yield put(raiseAlert({ ...AlertMessages().partialCredentialShared, open: true }));
+      }
       return;
     } catch (error) {
       console.error("Error occurred:", error);
       yield put(resetVpRequest());
-      yield put(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
+      yield put(raiseAlert({ ...AlertMessages().validationFailure, open: true }));
       return;
     }
   }

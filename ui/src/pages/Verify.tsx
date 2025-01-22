@@ -41,7 +41,7 @@ export function Verify() {
   );
 
   const renderMissingAndResetButton = () => (
-    <div className="flex items-center justify-around mt-10 hidden lg:block">
+    <div className="hidden lg:flex items-center justify-around mt-10">
       <Button
         id="missing-credentials-button"
         title={t("missingCredentials")}

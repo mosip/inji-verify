@@ -1,7 +1,7 @@
-import { credentialSubject, Detail } from "../types/data-types";
+import { claim, credentialSubject, Detail, QrData, VC } from "../types/data-types";
 import { desiredOrder } from "./config";
 
-export const getPresentationDefinition = (data: any) => {
+export const getPresentationDefinition = (data: QrData) => {
   return (
     `client_id=${data.authorizationDetails.clientId}` +
     `&response_type=${data.authorizationDetails.responseType}` +
@@ -23,4 +23,16 @@ export const getDetailsOrder = (vc: credentialSubject): Detail[] => {
     }
     return { key, value: "N/A" };
   });
+};
+
+export const calculateUnverifiedClaims = (
+  selectedClaims: claim[],
+  verificationSubmissionResult: { vc: VC; vcStatus: string }[]
+) => {
+  const credentialConfigIds = verificationSubmissionResult.map(
+    (vc) => vc.vc.credentialConfigurationId
+  );
+  return selectedClaims.filter(
+    (claim) => !credentialConfigIds.includes(claim.type)
+  );
 };

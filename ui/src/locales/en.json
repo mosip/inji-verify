@@ -120,7 +120,9 @@
     "pageNotFound": "Page Not Found!!",
     "failToGenerateQrCode": "Oops! We’re having trouble generating the verification request. Please try again later.",
     "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists.",
-    "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan."
+    "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan.",
+    "partialCredentialShared": "Verification completed with partial credentials. Please note that not all requested credentials were provided.",
+    "validationFailure": "We couldn’t validate the verification response. Please ensure the response is correct and try again."
   },
   "OvpErrors": {
     "invalidScope": "Invalid Scope",

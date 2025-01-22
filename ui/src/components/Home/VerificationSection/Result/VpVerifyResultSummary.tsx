@@ -68,14 +68,14 @@ const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({
             )
           );
         })}
-        {unverifiedClaims && (
+        {unverifiedClaims.length > 0 && (
           <div
             className={`rounded-xl bg-[#EFEFEF] min-w-[80px] border border-[#C4C4C4] mr-2 p-1`}
           >
             <p
               className={`font-normal text-lgNormalTextSize text-center text-[#636363]`}
             >
-              {t("notShared")}
+              {t("notShared")}{" "}
               {unverifiedClaims.length + "/" + selectedClaims.length}
             </p>
           </div>
