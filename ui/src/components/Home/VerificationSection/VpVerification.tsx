@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 import { useAppDispatch } from "../../../redux/hooks";
-import { getVpRequest, resetVpRequest, setSelectCredential } from "../../../redux/features/verify/vpVerificationState";
+import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../../../redux/features/verify/vpVerificationState";
 import { VpSubmissionResultInt } from "../../../types/data-types";
 import { Button } from "./commons/Button";
 
@@ -28,6 +28,7 @@ const DisplayActiveStep = () => {
   };
 
   const HandelGenerateQr = () => {
+    dispatch(setSelectedClaims({selectedClaims: unverifiedClaims}));
     dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
   
@@ -36,7 +37,7 @@ const DisplayActiveStep = () => {
   };
 
   if (isLoading) {
-    return <Loader className={`relative lg:top-[200px] right-[calc(50vw/2)]`} />;
+    return <Loader className={`absolute lg:top-[200px] right-[100px]`} />;
   } else if (verifiedVcs.length > 0) {
     const isSingleVc = selectedClaims.length === 1;
     return (
