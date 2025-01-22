@@ -168,16 +168,16 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "MOSIP ID",
-    type: "MosipId",
+    type: "MockVerifiableCredential",
     essential: true,
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
       input_descriptors: [
         {
           id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
           constraints: {
             fields: [
               {
@@ -193,11 +193,11 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage2,
     name: "Farmer ID",
-    type: "FarmerId",
+    type: "FarmerCredential",
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
       input_descriptors: [
         {
           id: "id card credential",
@@ -224,7 +224,7 @@ export const verifiableClaims: claim[] = [
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
       input_descriptors: [
         {
           id: "id card credential",

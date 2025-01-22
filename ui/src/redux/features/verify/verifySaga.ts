@@ -90,7 +90,7 @@ function* getVpResult(status: string, txnId: string) {
     try {
       const response: Response = yield call(fetch, apiRequest.url(txnId), requestOptions);
       const data: string = yield response.text();
-      const parsedData = JSON.parse(data);
+      const parsedData = JSON.parse(data).response;
       const vcResults: { vc: VC; vcStatus: string }[] = [];
       parsedData.vcresults.forEach(
         (vcResult: { vc: string; verificationStatus: string }) => {
