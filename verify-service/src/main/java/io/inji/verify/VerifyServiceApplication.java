@@ -10,5 +10,4 @@ public class VerifyServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(VerifyServiceApplication.class, args);
     }
-
 }

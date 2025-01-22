@@ -1,4 +1,4 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
@@ -6,6 +6,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
+import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.enums.VPRequestStatus;
@@ -22,8 +23,6 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class VerifiablePresentationRequestServiceImplTest {
     static VerifiablePresentationRequestServiceImpl service;
@@ -42,16 +41,14 @@ class VerifiablePresentationRequestServiceImplTest {
 
     }
     @Test
-    public void shouldCreateNewAuthorizationRequest() {
+    public void shouldCreateNewAuthorizationRequest() throws PresentationDefinitionNotFoundException {
         when(mockPresentationDefinitionRepository.save(any(PresentationDefinition.class))).thenReturn(null);
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class))).thenReturn(null);
 
-        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto();
-        vpRequestCreateDto.setTransactionId("test_transaction_id");
-        vpRequestCreateDto.setClientId("test_client_id");
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
+        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
+        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id","test_transaction_id",null,"",mockPresentationDefinitionDto);
 
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
@@ -63,12 +60,12 @@ class VerifiablePresentationRequestServiceImplTest {
         assertTrue(responseDto.getExpiresAt() > Instant.now().toEpochMilli());
     }
     @Test
-    public void shouldCreateAuthorizationRequestWithMissingTransactionId() {
-        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto();
-        vpRequestCreateDto.setClientId("test_client_id");
+    public void shouldCreateAuthorizationRequestWithMissingTransactionId() throws PresentationDefinitionNotFoundException {
+
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        vpRequestCreateDto.setPresentationDefinition(new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos));
+        VPDefinitionResponseDto mockPresentationDefinitionDto = new VPDefinitionResponseDto("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
+        VPRequestCreateDto vpRequestCreateDto = new VPRequestCreateDto("test_client_id",null,null,"",mockPresentationDefinitionDto);
 
         VPRequestResponseDto responseDto = service.createAuthorizationRequest(vpRequestCreateDto);
 

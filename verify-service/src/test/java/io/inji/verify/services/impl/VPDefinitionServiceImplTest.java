@@ -1,4 +1,4 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;

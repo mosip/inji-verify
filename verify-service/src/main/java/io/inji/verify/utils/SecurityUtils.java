@@ -29,7 +29,6 @@ public class SecurityUtils {
     }
 
     public static RSAPublicKey readX509PublicKey(String pem) throws Exception {
-        // String decodedPem = new String(Base64.getDecoder().decode(pem));
         KeyFactory factory = KeyFactory.getInstance("RSA");
         PemReader pemReader = new PemReader(new StringReader(pem));
         PemObject pemObject = pemReader.readPemObject();

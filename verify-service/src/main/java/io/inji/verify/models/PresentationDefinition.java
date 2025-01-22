@@ -1,5 +1,6 @@
 package io.inji.verify.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.shared.Constants;
@@ -13,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 @Table(name = "PresentationDefinition")
@@ -33,7 +36,7 @@ public class PresentationDefinition {
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
 
-
+    @JsonIgnore
     public String getURL(){
         return Constants.VP_DEFINITION_URI +this.id;
     }
