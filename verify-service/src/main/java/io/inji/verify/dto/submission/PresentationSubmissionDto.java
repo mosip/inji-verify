@@ -3,16 +3,11 @@ package io.inji.verify.dto.submission;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.Getter;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter
 public class PresentationSubmissionDto {
     String id;
     @JsonProperty("definition_id")

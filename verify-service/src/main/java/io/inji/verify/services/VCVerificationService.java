@@ -1,4 +1,4 @@
-package io.inji.verify.spi;
+package io.inji.verify.services;
 
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
 

@@ -2,15 +2,11 @@ package io.inji.verify.dto.authorizationrequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.json.JSONObject;
 
-@Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VPResultDto {
     String transactionId;
