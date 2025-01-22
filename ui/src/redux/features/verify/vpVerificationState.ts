@@ -23,9 +23,11 @@ const vpVerificationState = createSlice({
   reducers: {
     setSelectedClaims: (state, actions) => {
       state.selectedClaims = actions.payload.selectedClaims;
+      state.verificationSubmissionResult = [];
     },
     getVpRequest: (state, actions) => {
       state.isLoading = true;
+      state.SelectionPanel = false;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
     },

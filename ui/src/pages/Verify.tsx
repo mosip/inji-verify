@@ -6,7 +6,7 @@ import SelectionPanel from "../components/Home/VerificationSection/commons/Selec
 import { Button } from "../components/Home/VerificationSection/commons/Button";
 import { useTranslation } from "react-i18next";
 import { useVerifyFlowSelector } from "../redux/features/verification/verification.selector";
-import { getVpRequest, resetVpRequest, setSelectCredential } from "../redux/features/verify/vpVerificationState";
+import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../redux/features/verify/vpVerificationState";
 import { useAppDispatch } from "../redux/hooks";
 
 export function Verify() {
@@ -22,6 +22,7 @@ export function Verify() {
   };
 
   const HandelGenerateQr = () => {
+    dispatch(setSelectedClaims({selectedClaims: unverifiedClaims}));
     dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
 
