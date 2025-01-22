@@ -2,7 +2,7 @@ package io.inji.verify.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
-import io.inji.verify.spi.VCVerificationService;
+import io.inji.verify.services.VCVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

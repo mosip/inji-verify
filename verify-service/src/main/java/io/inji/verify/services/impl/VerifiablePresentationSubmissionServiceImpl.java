@@ -1,10 +1,9 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 
 import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.exception.TokenMatchingFailedException;
@@ -15,8 +14,7 @@ import io.inji.verify.models.VCResult;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.spi.VPDefinitionService;
-import io.inji.verify.spi.VerifiablePresentationSubmissionService;
+import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import io.inji.verify.utils.Utils;
 import io.inji.verify.utils.VerificationUtils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
@@ -30,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j

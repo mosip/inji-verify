@@ -1,7 +1,7 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
-import io.inji.verify.spi.VPDefinitionService;
+import io.inji.verify.services.VPDefinitionService;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.inji.verify.enums.VerificationStatus;
-import io.inji.verify.spi.VCVerificationService;
+import io.inji.verify.services.VCVerificationService;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.constants.CredentialValidatorConstants;

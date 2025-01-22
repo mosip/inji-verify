@@ -1,4 +1,4 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
@@ -8,13 +8,12 @@ import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
-import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.spi.VerifiablePresentationRequestService;
+import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.ThreadSafeDelayedMethodCall;
 import io.inji.verify.utils.Utils;
@@ -48,22 +47,21 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String nonce = vpRequestCreate.getNonce() != null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
-                .map(presentationDefinitionId -> {
-                    return presentationDefinitionRepository.findById(presentationDefinitionId)
-                            .map(presentationDefinition -> {
-                                VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
-                                return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
-                            })
-                            .orElse(null);
-                })
+                .map(presentationDefinitionId -> presentationDefinitionRepository.findById(presentationDefinitionId)
+                        .map(presentationDefinition -> {
+                            VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
+                            return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
+                        })
+                        .orElseThrow(PresentationDefinitionNotFoundException::new))
                 .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
 
-        return Optional.of(authorizationRequestResponseDto).map(authRequestResponseDto -> {
-            AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authRequestResponseDto, expiresAt);
-            authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
-            log.info("Authorization request created");
-            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
-        }).orElseThrow(PresentationDefinitionNotFoundException::new);
+
+        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new
+                AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
+        authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+        log.info("Authorization request created");
+        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
+
     }
 
     @Override

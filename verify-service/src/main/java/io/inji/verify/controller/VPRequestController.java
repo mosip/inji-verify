@@ -8,7 +8,7 @@ import io.inji.verify.dto.core.ResponseWrapper;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.shared.Constants;
-import io.inji.verify.spi.VerifiablePresentationRequestService;
+import io.inji.verify.services.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
