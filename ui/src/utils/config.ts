@@ -117,6 +117,7 @@ export const AlertMessages =()=> {
         scanSessionExpired: {message: i18next.t("AlertMessages:scanSessionExpired"), severity: "error"} as AlertInfo,
         partialCredentialShared:{message: i18next.t("AlertMessages:partialCredentialShared"), severity: "error"} as AlertInfo,
         validationFailure:{message: i18next.t("AlertMessages:validationFailure"), severity: "error"} as AlertInfo,
+        incorrectCredential:{message: i18next.t("AlertMessages:incorrectCredential"), severity: "error"} as AlertInfo,
     }
 };
 
@@ -168,21 +169,24 @@ export const verifiableClaims: claim[] = [
   {
     logo: certImage,
     name: "MOSIP ID",
-    type: "MockVerifiableCredential",
+    type: "RegistrationReceiptCredential",
     essential: true,
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+      format: { ldp_vc: { proof_type: ["Ed25519Signature2018"] } },
       input_descriptors: [
         {
           id: "id card credential",
-          format: { ldp_vc: { proof_type: ["RsaSignature2018"] } },
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2018"] } },
           constraints: {
             fields: [
               {
                 path: ["$.type"],
-                filter: { type: "string", pattern: "StatementCredential" },
+                filter: { 
+                  type: "object", 
+                  pattern: "RegistrationReceiptCredential" 
+                },
               },
             ],
           },
@@ -207,8 +211,8 @@ export const verifiableClaims: claim[] = [
               {
                 path: ["$.type"],
                 filter: {
-                  type: "string",
-                  pattern: "RegistrationReceiptCredential",
+                  type: "object",
+                  pattern: "FarmerCredential",
                 },
               },
             ],
@@ -229,7 +233,17 @@ export const verifiableClaims: claim[] = [
         {
           id: "id card credential",
           format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-          constraints: {},
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: {
+                  type: "object",
+                  pattern: "LifeInsuranceCredential",
+                },
+              },
+            ],
+          },
         },
       ],
     },
@@ -241,10 +255,22 @@ export const verifiableClaims: claim[] = [
     definition: {
       purpose:
         "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
       input_descriptors: [
         {
           id: "id card credential",
-          constraints: {},        
+          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
+          constraints: {
+            fields: [
+              {
+                path: ["$.type"],
+                filter: {
+                  type: "object",
+                  pattern: "InsuranceCredential",
+                },
+              },
+            ],
+          },
         },
       ],
     },

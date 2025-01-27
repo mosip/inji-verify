@@ -20,6 +20,7 @@ function* fetchRequestUri(claims: claim[]) {
   const apiRequest: ApiRequest = api.fetchVpRequest;
   const def = claims.flatMap((claim) => claim.definition.input_descriptors);
   apiRequest.body!.presentationDefinition.input_descriptors = [...def];
+  apiRequest.body!.transactionId = `txn_${crypto.randomUUID()}`
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
@@ -53,7 +54,10 @@ function* fetchRequestUri(claims: claim[]) {
   return;
 }
 
-function* getVpStatus(reqId: string, txnId: string) {
+function* getVpStatus() {
+  const txnId: string = yield select((state: RootState) => state.verify.txnId);
+  const reqId: string = yield select((state: RootState) => state.verify.reqId);
+
   const apiRequest: ApiRequest = api.fetchStatus;
   const requestOptions = {
     method: apiRequest.methodType,
@@ -80,7 +84,10 @@ function* getVpStatus(reqId: string, txnId: string) {
   yield call(fetchStatus);
 }
 
-function* getVpResult(status: string, txnId: string) {
+function* getVpResult() {
+  const status: string = yield select((state: RootState) => state.verify.status);
+  const txnId: string = yield select((state: RootState) => state.verify.txnId);
+
   if (status === "VP_SUBMITTED") {
     const apiRequest: ApiRequest = api.fetchVpResult;
     const requestOptions = {
@@ -123,12 +130,8 @@ function* verifySaga() {
     takeLatest(getVpRequest, function* ({ payload }) {
       yield call(fetchRequestUri, payload.selectedClaims);
     }),
-    takeLatest(setVpRequestResponse, function* ({ payload }) {
-      yield call(getVpStatus, payload.reqId, payload.txnId);
-    }),
-    takeLatest(setVpRequestStatus, function* ({ payload }) {
-      yield call(getVpResult, payload.status, payload.txnId);
-    }),
+    takeLatest(setVpRequestResponse, getVpStatus),
+    takeLatest(setVpRequestStatus, getVpResult),
   ]);
 }
 

@@ -9,6 +9,8 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../../../redux/features/verify/vpVerificationState";
 import { VpSubmissionResultInt } from "../../../types/data-types";
 import { Button } from "./commons/Button";
+import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
+import { AlertMessages } from "../../../utils/config";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -38,7 +40,12 @@ const DisplayActiveStep = () => {
 
   if (isLoading) {
     return <Loader className={`absolute lg:top-[200px] right-[100px]`} />;
-  } else if (verifiedVcs.length > 0) {
+  } 
+  else if(selectedClaims.length === 1 && unverifiedClaims.length === 1){
+    dispatch(raiseAlert({ ...AlertMessages().incorrectCredential, open: true }))
+    dispatch(resetVpRequest());
+  }
+  else if (verifiedVcs.length > 0) {
     const isSingleVc = selectedClaims.length === 1;
     return (
       <div className="w-[100vw] lg:w-[50vw]">

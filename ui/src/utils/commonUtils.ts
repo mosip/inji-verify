@@ -29,10 +29,9 @@ export const calculateUnverifiedClaims = (
   selectedClaims: claim[],
   verificationSubmissionResult: { vc: VC; vcStatus: string }[]
 ) => {
-  const credentialConfigIds = verificationSubmissionResult.map(
-    (vc) => vc.vc.credentialConfigurationId
-  );
-  return selectedClaims.filter(
-    (claim) => !credentialConfigIds.includes(claim.type)
+  return selectedClaims.filter((claim) =>
+    verificationSubmissionResult.every(
+      (vc) => vc.vc.credentialConfigurationId !== claim.type
+    )
   );
 };
