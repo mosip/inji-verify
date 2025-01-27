@@ -64,7 +64,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
     selectedClaims.some(
       (selectedVc) =>
-      verifiedVc.vc.credentialConfigurationId !== selectedVc.type
+      verifiedVc.vc.credentialConfigurationId === selectedVc.type
     )
   );
 
