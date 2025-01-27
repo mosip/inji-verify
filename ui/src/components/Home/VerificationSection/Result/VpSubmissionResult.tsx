@@ -6,6 +6,7 @@ import DisplayVcCardView from "./DisplayVcCardView";
 import { Button } from "../commons/Button";
 import { t } from "i18next";
 import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
+import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
@@ -27,49 +28,59 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   isSingleVc,
 }) => {
   const { vcStatus } = verifiedVcs[0];
+  const selectedClaims:claim[] = useVerifyFlowSelector((state) => state.selectedClaims)||[];
+
   const renderRequestCredentialsButton = (propClasses = "") => (
-    <Button
-      id="request-credentials-button"
-      title={t("Verify:rqstButton")}
-      className={`w-[300px] mt-4 mb-[100px] lg:ml-[76px] lg:hidden ${propClasses}`}
-      fill
-      onClick={requestCredentials}
-      disabled={txnId !== ""}
-    />
+    <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
+      <Button
+        id="request-credentials-button"
+        title={t("Verify:rqstButton")}
+        className={`w-[339px] mt-5`}
+        fill
+        onClick={requestCredentials}
+        disabled={txnId !== ""}
+      />
+    </div>
   );
 
   const renderMissingAndResetButton = () => (
-    <div className="flex items-center justify-around mt-10 lg:hidden">
+    <div className="flex flex-col items-center lg:hidden">
       <Button
         id="missing-credentials-button"
         title={t("missingCredentials")}
-        className={`w-[250px]`}
+        className={`w-[339px] mt-5`}
         fill
         onClick={reGenerateQr}
       />
       <Button
         id="restart-process-button"
         title={t("restartProcess")}
-        className={`w-[200px]`}
+        className={`w-[341px] mt-5`}
         onClick={restart}
       />
     </div>
   );
   const isPartiallyShared = unverifiedClaims.length > 0;
+  const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
+    selectedClaims.some(
+      (selectedVc) =>
+      verifiedVc.vc.credentialConfigurationId !== selectedVc.type
+    )
+  );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mb-[100px] lg:mb-0">
       {isSingleVc ? (
         <ResultSummary status={vcStatus} />
       ) : (
         <VpVerifyResultSummary
-          verifiedVcs={[...verifiedVcs]}
+          verifiedVcs={[...filterVerifiedVcs]}
           unverifiedClaims={unverifiedClaims}
         />
       )}
       <div className="relative">
         <div className="flex flex-col items-center space-y-4 lg:space-y-6 mt-[-60px] lg:mt-[-70px]">
-          {verifiedVcs.map(({ vc, vcStatus }, index) => (
+          {filterVerifiedVcs.map(({ vc, vcStatus }, index) => (
             <DisplayVcCardView
               key={index}
               vc={vc}
@@ -78,15 +89,15 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
             />
           ))}
           {!isSingleVc &&
-            unverifiedClaims.map((claim) => <DisplayUnVerifiedVc claim={claim} />)}
+            unverifiedClaims.map((claim) => (
+              <DisplayUnVerifiedVc claim={claim} />
+            ))}
         </div>
       </div>
 
-      <div className="flex justify-center lg:hidden">
-        {isPartiallyShared
-          ? renderMissingAndResetButton()
-          : renderRequestCredentialsButton()}
-      </div>
+      {isPartiallyShared
+        ? renderMissingAndResetButton()
+        : renderRequestCredentialsButton()}
     </div>
   );
 };

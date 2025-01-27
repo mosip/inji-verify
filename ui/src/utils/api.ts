@@ -19,7 +19,7 @@ export class api {
       };
     },
     body: {
-      transactionId: `txn_${crypto.randomUUID()}`,
+      transactionId: "",
       clientId: window.location.origin,
       presentationDefinition: {
         id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",

@@ -48,8 +48,6 @@ const vpVerificationState = createSlice({
     },
     setVpRequestStatus: (state, action) => {
       state.status = action.payload.status;
-      state.txnId = action.payload.txnId;
-      state.reqId = action.payload.reqId;
     },
     verificationSubmissionComplete: (state, action) => {
       state.verificationSubmissionResult.push(...action.payload.verificationResult);
