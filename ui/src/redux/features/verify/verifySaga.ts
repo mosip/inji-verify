@@ -1,6 +1,6 @@
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claim, fetchStatusResponse, QrData, VC, VcStatus } from "../../../types/data-types";
+import { ApiRequest, claim, CredentialVC, fetchStatusResponse, QrData, VcStatus } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -98,11 +98,11 @@ function* getVpResult() {
       const response: Response = yield call(fetch, apiRequest.url(txnId), requestOptions);
       const data: string = yield response.text();
       const parsedData = JSON.parse(data).response;
-      const vcResults: { vc: VC; vcStatus: VcStatus }[] = [];
+      const vcResults: { vc: CredentialVC; vcStatus: VcStatus }[] = [];
       parsedData.vcresults.forEach(
         (vcResult: { vc: string; verificationStatus: VcStatus }) => {
           const verificationStatus = vcResult.verificationStatus;
-          const vc: VC = JSON.parse(vcResult.vc);
+          const vc: CredentialVC = JSON.parse(vcResult.vc);
           vcResults.push({
             vc: vc,
             vcStatus: verificationStatus,

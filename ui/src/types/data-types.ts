@@ -133,7 +133,7 @@ export type ApiRequest = {
 };
 
 export type VpSubmissionResultInt = {
-  vc: VC;
+  vc: CredentialVC;
   vcStatus: "SUCCESS" | "EXPIRED" | "INVALID";
   view?: boolean;
 };
@@ -190,6 +190,25 @@ export type VC = {
     verificationMethod: string;
   };
   type: string[];
+};
+
+export type CredentialVC = {
+  credential:{
+    "@context": string[];
+    credentialSubject: credentialSubject;
+    expirationDate: string;
+    id: string;
+    issuanceDate: string;
+    issuer: string;
+    proof: {
+      proofValue: string;
+      created: string;
+      proofPurpose: string;
+      type: string;
+      verificationMethod: string;
+    };
+    type: string[];
+  }
   credentialConfigurationId: string;
   issuerLogo: {
     url: string;
