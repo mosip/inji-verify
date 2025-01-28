@@ -133,7 +133,7 @@ export type ApiRequest = {
 };
 
 export type VpSubmissionResultInt = {
-  vc: VC;
+  vc: VCWrapper;
   vcStatus: "SUCCESS" | "EXPIRED" | "INVALID";
   view?: boolean;
 };
@@ -190,6 +190,10 @@ export type VC = {
     verificationMethod: string;
   };
   type: string[];
+};
+
+export type VCWrapper = {
+  credential: VC
   credentialConfigurationId: string;
   issuerLogo: {
     url: string;

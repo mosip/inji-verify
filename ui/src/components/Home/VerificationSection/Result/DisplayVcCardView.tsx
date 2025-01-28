@@ -30,7 +30,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const { t } = useTranslation("Verify");
   const imgUrl = vc.issuerLogo.url;
   const imgAlt = vc.issuerLogo.alt_text;
-  const credential = vc;
+  const credential = vc.credential;
   const credentialType: string = vc.credentialConfigurationId;
 
   return (

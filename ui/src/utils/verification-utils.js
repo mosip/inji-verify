@@ -6,7 +6,7 @@ const verify = async (credential) => {
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
-    body: JSON.stringify(apiRequest.body),
+    body: apiRequest.body,
   };
 
   try {
