@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {goToHomeScreen, verificationComplete, verificationInit} from './verification.slice';
 import {closeAlert, raiseAlert} from "../alerts/alerts.slice";
-import {AlertMessages, OvpErrors, OvpQrHeader} from '../../../utils/config';
+import {AlertMessages, BASE64_PADDING, OvpErrors, OvpQrHeader} from '../../../utils/config';
 import { decodeQrData } from '../../../utils/qr-utils'; // Assuming these functions are defined elsewhere
 import {verify} from '../../../utils/verification-utils';
 import {VcStatus} from "../../../types/data-types";
@@ -21,7 +21,7 @@ function* handleVerification(data: any) {
           return;
         }
         const vc: object = yield call(JSON.parse, yield call(decodeQrData, data as Uint8Array));
-        if(vc.toString().endsWith("==")){
+        if(vc.toString().endsWith(BASE64_PADDING)){
             throw Error("Vc Type Not Supported")
         }
         yield call(verifyVC, vc);

@@ -1,5 +1,5 @@
 import { claim, credentialSubject, Detail, QrData, VC } from "../types/data-types";
-import { defaultOrder, FarmerCredentialOrder, farmerOrder } from "./config";
+import { defaultCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
   return (
@@ -21,7 +21,7 @@ export const getDetailsOrder = (vc: any): Detail[] => {
   const credential = vc.credentialSubject
   switch (type) {
     case "farmer":
-      return farmerOrder.flatMap((key) => {
+      return farmerLandCredentialRenderOrder.flatMap((key) => {
         if (typeof key === "string") {
           return {
             key,
@@ -43,14 +43,14 @@ export const getDetailsOrder = (vc: any): Detail[] => {
         return { key, value: "N/A" };
       });
     case "FarmerCredential":
-      return FarmerCredentialOrder.map((key) => {
+      return farmerCredentialRenderOrder.map((key) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
         return { key, value: "N/A" };
       });
     default:
-      return defaultOrder.map((key) => {
+      return defaultCredentialRenderOrder.map((key) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }

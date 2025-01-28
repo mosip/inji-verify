@@ -297,7 +297,7 @@ export const borderColorMapping: any = {
   INVALID: "border-invalidBorder",
 };
 
-export const defaultOrder = [
+export const defaultCredentialRenderOrder = [
   "fullName",
   "gender",
   "dob",
@@ -310,7 +310,7 @@ export const defaultOrder = [
   "email",
 ];
 
-export const farmerOrder = [
+export const farmerLandCredentialRenderOrder = [
   "id",
   "farmerId",
   "dvcType",
@@ -319,7 +319,7 @@ export const farmerOrder = [
   },
 ];
 
-export const FarmerCredentialOrder  = [
+export const farmerCredentialRenderOrder = [
   "fullName",
   "dob" ,
   "gender",
@@ -331,3 +331,5 @@ export const FarmerCredentialOrder  = [
   "policyIssuedOn",
   "policyExpiresOn"
 ];
+
+export const BASE64_PADDING = "=="
