@@ -9,11 +9,12 @@ import {
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
+import { VC } from "../../../../types/data-types";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  vc: any;
+  vc: VC;
   status: string;
   vcType: string;
   logo?: { url: any; alt: string };
