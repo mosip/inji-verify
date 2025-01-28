@@ -13,18 +13,19 @@ import {
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
+import { VC } from "../../../../types/data-types";
 
 function DisplayVcDetailView({
   vc,
   onExpand,
   className,
 }: {
-  vc: any;
+  vc: VC
   onExpand: any;
   className?: string;
 }) {
   const { t } = useTranslation("Verify");
-  const orderedDetails = getDetailsOrder(vc.credentialSubject);
+  const orderedDetails = getDetailsOrder(vc);
 
   return (
     <div>

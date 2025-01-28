@@ -1,41 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import ResultSummary from "./ResultSummary";
 import { useVerificationFlowSelector } from "../../../../redux/features/verification/verification.selector";
-import { VcStatus } from "../../../../types/data-types";
-import DisplayVcDetailsModal from './DisplayVcDetailsModal';
-import DisplayVcDetailView from './DisplayVcDetailView';
-
-const getVcStatusValue = (vcStatus: VcStatus)  => {return vcStatus.verificationStatus}
+import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
+import DisplayVcDetailView from "./DisplayVcDetailView";
+import { Button } from "../commons/Button";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch } from "../../../../redux/hooks";
+import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
 
 const Result = () => {
-    const { vc, vcStatus } = useVerificationFlowSelector(state => state.verificationResult ?? { vc: null, vcStatus: null })
-    const status = getVcStatusValue(vcStatus);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const credentialType: string= vc.verifiableCredential.credential.credentialConfigurationId
+  const { vc, vcStatus } = useVerificationFlowSelector(
+    (state) => state.verificationResult ?? { vc: null, vcStatus: null }
+  );
+  const status = vcStatus;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const credentialType: string = vc.type[1];
+  const {t} = useTranslation();
+  const dispatch = useAppDispatch();
 
-    // validate vc and show success/failure component
-    return (
-        <div id="result-section" className="relative">
-            <div className={`text-whiteText`}>
-                <ResultSummary status={status} />
-            </div>
-            <div
-                className={`absolute m-auto`}
-                style={{
-                    top: `106px`,
-                    right: window.innerWidth >= 1024 ? `calc((50vw - 410px) / 2)` : `calc((100vw - 410px) / 2)`
-                }}>
-                <DisplayVcDetailView  vc={vc} onExpand={() => setModalOpen(true)} />
-            </div>
-            <DisplayVcDetailsModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                vc={vc}
-                status={status}
-                vcType={credentialType}
-            />
+  // validate vc and show success/failure component
+  return (
+    <div id="result-section" className="relative mb-[100px]">
+      <div className={`text-whiteText`}>
+        <ResultSummary status={status} />
+      </div>
+      <div>
+        <div className={`h-[3px] border-b-2 border-b-transparent`} />
+        <DisplayVcDetailView
+          vc={vc}
+          onExpand={() => setModalOpen(true)}
+          className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
+        />
+        <div className="grid content-center justify-center">
+          <Button
+            id="verify-another-qr-code-button"
+            title={t("Common:Button.verifyAnotherQrCode")}
+            onClick={()=>dispatch(goToHomeScreen({}))}
+            className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
+          />
         </div>
-    );
-}
+      </div>
+      <DisplayVcDetailsModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        vc={vc}
+        status={status}
+        vcType={credentialType}
+      />
+    </div>
+  );
+};
 
 export default Result;

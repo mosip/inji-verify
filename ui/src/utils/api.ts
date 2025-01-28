@@ -10,6 +10,16 @@ const generateNonce = (): string => {
 export class api {
   static Host = window._env_.VERIFY_SERVICE_API_URL;
 
+  static fetchVerifyCredentialOnline: ApiRequest ={
+    url: () => api.Host + "/vc-verification",
+    methodType: "POST",
+    headers: () => {
+      return {
+        "Content-Type": "application/json",
+      };
+    },
+  };
+
   static fetchVpRequest: ApiRequest = {
     url: () => api.Host + "/vp-request",
     methodType: "POST",

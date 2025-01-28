@@ -297,7 +297,7 @@ export const borderColorMapping: any = {
   INVALID: "border-invalidBorder",
 };
 
-export const desiredOrder = [
+export const defaultOrder = [
   "fullName",
   "gender",
   "dob",
@@ -310,3 +310,24 @@ export const desiredOrder = [
   "email",
 ];
 
+export const farmerOrder = [
+  "id",
+  "farmerId",
+  "dvcType",
+  {
+    farmerLandDetails: ["farmId", "district", "surveyNumber"],
+  },
+];
+
+export const FarmerCredentialOrder  = [
+  "fullName",
+  "dob" ,
+  "gender",
+  "email",
+  "mobile",
+  "benefits",
+  "policyName",
+  "policyNumber",
+  "policyIssuedOn",
+  "policyExpiresOn"
+];

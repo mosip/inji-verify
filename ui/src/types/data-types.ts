@@ -6,11 +6,7 @@ export type QrScanResult = {
 
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
-export type VcStatus = {
-  verificationStatus: "SUCCESS" | "INVALID" | "EXPIRED";
-};
-
-export type VerificationStatus = "SUCCESS" | "INVALID" | "EXPIRED";
+export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED";
 
 export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
 
@@ -180,22 +176,20 @@ export type QrCodeProps = {
 };
 
 export type VC = {
-  credential: {
-    "@context": string[];
-    credentialSubject: credentialSubject;
-    expirationDate: string;
-    id: string;
-    issuanceDate: string;
-    issuer: string;
-    proof: {
-      proofValue: string;
-      created: string;
-      proofPurpose: string;
-      type: string;
-      verificationMethod: string;
-    };
-    type: string[];
+  "@context": string[];
+  credentialSubject: credentialSubject;
+  expirationDate: string;
+  id: string;
+  issuanceDate: string;
+  issuer: string;
+  proof: {
+    proofValue: string;
+    created: string;
+    proofPurpose: string;
+    type: string;
+    verificationMethod: string;
   };
+  type: string[];
   credentialConfigurationId: string;
   issuerLogo: {
     url: string;

@@ -30,7 +30,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const { t } = useTranslation("Verify");
   const imgUrl = vc.issuerLogo.url;
   const imgAlt = vc.issuerLogo.alt_text;
-  const credential = vc.credential;
+  const credential = vc;
   const credentialType: string = vc.credentialConfigurationId;
 
   return (
@@ -72,7 +72,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         <div>
           <div className={`h-[3px] border-b-2 border-b-transparent`} />
           <DisplayVcDetailView
-            vc={vc?.credential}
+            vc={credential}
             onExpand={() => setModalOpen(true)}
             className={`${
               view ? "h-auto" : "h-[257px]"
