@@ -1,4 +1,4 @@
-import { claim, credentialSubject, CredentialVC, Detail, QrData } from "../types/data-types";
+import { claim, credentialSubject, VCWrapper, Detail, QrData } from "../types/data-types";
 import { defaultCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
@@ -61,7 +61,7 @@ export const getDetailsOrder = (vc: any): Detail[] => {
 
 export const calculateUnverifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: CredentialVC; vcStatus: string }[]
+  verificationSubmissionResult: { vc: VCWrapper; vcStatus: string }[]
 ) => {
   return selectedClaims.filter((claim) =>
     verificationSubmissionResult.every(
