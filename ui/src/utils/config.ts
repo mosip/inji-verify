@@ -320,16 +320,19 @@ export const farmerLandCredentialRenderOrder = [
 ];
 
 export const farmerCredentialRenderOrder = [
+  "farmerID",
+  "landOwnershipType",
   "fullName",
-  "dob" ,
+  "mobileNumber",
+  "dateOfBirth",
   "gender",
-  "email",
-  "mobile",
-  "benefits",
-  "policyName",
-  "policyNumber",
-  "policyIssuedOn",
-  "policyExpiresOn"
+  "villageOrTown",
+  "district",
+  "state",
+  "postalCode",
+  "landArea",
+  "primaryCropType",
+  "secondaryCropType",
 ];
 
 export const BASE64_PADDING = "=="
