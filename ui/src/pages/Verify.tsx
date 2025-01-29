@@ -15,7 +15,7 @@ export function Verify() {
   const openSelection = useVerifyFlowSelector((state) => state.SelectionPanel);
   const dispatch = useAppDispatch();
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
-  const isPartiallyShared = unverifiedClaims.length > 0;
+  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const handleRequestCredentials = () => {
     dispatch(setSelectCredential());

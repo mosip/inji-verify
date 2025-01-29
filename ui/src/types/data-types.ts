@@ -6,7 +6,7 @@ export type QrScanResult = {
 
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
-export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED";
+export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
 
 export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
 
@@ -134,7 +134,7 @@ export type ApiRequest = {
 
 export type VpSubmissionResultInt = {
   vc: VCWrapper;
-  vcStatus: "SUCCESS" | "EXPIRED" | "INVALID";
+  vcStatus: VcStatus;
   view?: boolean;
 };
 
@@ -150,7 +150,14 @@ export type VerifyState = {
   SelectionPanel: boolean;
   selectedClaims: claim[];
   unVerifiedClaims: claim[];
+  sharingType: VCShareType;
+  isPartiallyShared: boolean;
 };
+
+export enum VCShareType {
+  SINGLE = "single",
+  MULTIPLE = "multiple",
+}
 
 export type QrData = {
   transactionId: string;

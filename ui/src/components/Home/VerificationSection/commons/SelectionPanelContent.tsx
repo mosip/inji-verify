@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { claim } from "../../../../types/data-types";
+import { claim, VCShareType } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
@@ -9,6 +9,7 @@ import {
   getVpRequest,
   resetVpRequest,
   setSelectedClaims,
+  setSharingType,
 } from "../../../../redux/features/verify/vpVerificationState";
 import { storage } from "../../../../utils/storage";
 import { Button } from "./Button";
@@ -58,6 +59,12 @@ function SelectionPanelContent() {
 
   const HandelGenerateQr = () => {
     setSearch("");
+    if(selectedClaims.length === 1){
+      dispatch(setSharingType({sharingType : VCShareType.SINGLE}))
+    }
+    else if (selectedClaims.length > 1){
+      dispatch(setSharingType({sharingType : VCShareType.MULTIPLE}))
+    }
     dispatch(getVpRequest({ selectedClaims }));
   };
 

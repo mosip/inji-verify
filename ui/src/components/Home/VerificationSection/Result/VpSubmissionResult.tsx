@@ -28,7 +28,8 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   isSingleVc,
 }) => {
   const { vcStatus } = verifiedVcs[0];
-  const selectedClaims:claim[] = useVerifyFlowSelector((state) => state.selectedClaims)||[];
+  const selectedClaims: claim[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
+  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const renderRequestCredentialsButton = (propClasses = "") => (
     <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
@@ -60,11 +61,10 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       />
     </div>
   );
-  const isPartiallyShared = unverifiedClaims.length > 0;
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
     selectedClaims.some(
       (selectedVc) =>
-      verifiedVc.vc.credentialConfigurationId === selectedVc.type
+        verifiedVc.vc.credentialConfigurationId === selectedVc.type
     )
   );
 
@@ -88,10 +88,9 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
               view={isSingleVc}
             />
           ))}
-          {!isSingleVc &&
-            unverifiedClaims.map((claim) => (
-              <DisplayUnVerifiedVc claim={claim} />
-            ))}
+          {unverifiedClaims.map((claim) => (
+            <DisplayUnVerifiedVc claim={claim} />
+          ))}
         </div>
       </div>
 

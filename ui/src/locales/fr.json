@@ -94,7 +94,7 @@
       },
       "ScanQrCode": {
         "label": "Scannez le code QR (utilisez un autre appareil)",
-        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR. <span>(La prise en charge de l'analyse sur le même appareil sera bientôt disponible !)<span>"
+        "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR. (La prise en charge de l'analyse sur le même appareil sera bientôt disponible !)"
       },
       "DisplayResult": {
         "label": "Afficher les résultats de la vérification",

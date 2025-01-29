@@ -9,9 +9,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import {goToHomeScreen} from "../../../../redux/features/verification/verification.slice";
 
 const Result = () => {
-  const { vc, vcStatus } = useVerificationFlowSelector(
-    (state) => state.verificationResult ?? { vc: null, vcStatus: null }
-  );
+  const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
   const status = vcStatus;
   const [isModalOpen, setModalOpen] = useState(false);
   const credentialType: string = vc.type[1];

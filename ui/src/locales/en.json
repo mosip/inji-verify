@@ -94,7 +94,7 @@
       },
       "ScanQrCode": {
         "label": "Scan QR Code (Use a Different Device)",
-        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code <span>(Support for same-device scanning is coming soon!)<span>"
+        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
       },
       "DisplayResult": {
         "label": "View Verification Results",

@@ -94,7 +94,7 @@
       },
       "ScanQrCode": {
         "label": "Escanear código QR (use un dispositivo diferente)",
-        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR <span>(¡Próximamente se admitirá el escaneo en el mismo dispositivo!)<span>"
+        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR (¡Próximamente se admitirá el escaneo en el mismo dispositivo!)"
       },
       "DisplayResult": {
         "label": "Ver resultados de verificación",
