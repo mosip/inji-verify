@@ -63,7 +63,6 @@ const vpVerificationState = createSlice({
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
-      state.sharingType = state.isPartiallyShared ? VCShareType.MULTIPLE : VCShareType.SINGLE;
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";

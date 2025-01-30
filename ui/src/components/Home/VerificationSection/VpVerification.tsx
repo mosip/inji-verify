@@ -31,12 +31,12 @@ const DisplayActiveStep = () => {
     dispatch(setSelectCredential());
   };
 
-  const HandelReGenerateQr = () => {
+  const handleRegenerateQr = () => {
     dispatch(setSelectedClaims({selectedClaims: unverifiedClaims}));
     dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
   
-  const HandelRestartProcess = () => {
+  const handleRestartProcess = () => {
     dispatch(resetVpRequest());
   };
 
@@ -55,8 +55,8 @@ const DisplayActiveStep = () => {
           unverifiedClaims={unverifiedClaims}
           txnId={txnId}
           requestCredentials={handleRequestCredentials}
-          reGenerateQr={HandelReGenerateQr}
-          restart={HandelRestartProcess}
+          reGenerateQr={handleRegenerateQr}
+          restart={handleRestartProcess}
           isSingleVc={isSingleVc}
         />
       </div>
