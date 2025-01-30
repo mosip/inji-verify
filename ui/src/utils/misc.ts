@@ -105,8 +105,8 @@ export const generateRandomString = (
 
 export const saveData = async (vc: any) => {
   const myData = vc;
-  const fileName = `${vc.credentialSubject.fullName}`;
-  const json = JSON.stringify(myData);
+  const fileName = vc.type[1];
+  const json = JSON.stringify(myData, null, 2);
   const blob = new Blob([json], { type: "application/json" });
   const href = URL.createObjectURL(blob);
   const link = document.createElement("a");

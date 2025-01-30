@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { verifiableClaims, VerificationSteps } from "../../../utils/config";
-import { VerifyState } from "../../../types/data-types";
+import { VCShareType, VerifyState } from "../../../types/data-types";
 import { calculateUnverifiedClaims } from "../../../utils/commonUtils";
 
 const PreloadedState: VerifyState = {
@@ -15,12 +15,17 @@ const PreloadedState: VerifyState = {
   verificationSubmissionResult: [],
   selectedClaims: verifiableClaims.filter((claim) => claim.essential),
   unVerifiedClaims: [],
+  sharingType: VCShareType.SINGLE,
+  isPartiallyShared: false,
 };
 
 const vpVerificationState = createSlice({
   name: "vpVerification",
   initialState: PreloadedState,
   reducers: {
+    setSharingType: (state, actions) => {
+      state.sharingType = actions.payload.sharingType;
+    },
     setSelectedClaims: (state, actions) => {
       state.selectedClaims = actions.payload.selectedClaims;
       state.verificationSubmissionResult = [];
@@ -36,7 +41,9 @@ const vpVerificationState = createSlice({
       state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
-      state.selectedClaims =  verifiableClaims.filter((claim) => claim.essential);
+      state.selectedClaims = verifiableClaims.filter(
+        (claim) => claim.essential
+      );
     },
     setVpRequestResponse: (state, action) => {
       state.qrData = action.payload.qrData;
@@ -52,8 +59,8 @@ const vpVerificationState = createSlice({
     verificationSubmissionComplete: (state, action) => {
       state.verificationSubmissionResult.push(...action.payload.verificationResult);
       state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
-      const isPartiallyShared = state.unVerifiedClaims.length > 0;
-      state.activeScreen = isPartiallyShared
+      state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
+      state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
       state.txnId = "";
@@ -79,6 +86,7 @@ const vpVerificationState = createSlice({
 
 export const {
   getVpRequest,
+  setSharingType,
   setSelectCredential,
   setVpRequestResponse,
   setVpRequestStatus,

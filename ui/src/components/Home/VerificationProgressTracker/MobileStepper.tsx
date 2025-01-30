@@ -24,8 +24,7 @@ function MobileStepper() {
     method: state.method,
   }));
   const VerifyActiveScreen = useVerifyFlowSelector((state) => state.activeScreen );
-  const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
-  const isPartiallyShared = unverifiedClaims.length > 0;
+  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   if (method === "VERIFY") {
     activeScreen = VerifyActiveScreen;

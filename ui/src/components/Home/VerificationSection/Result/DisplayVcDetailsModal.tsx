@@ -9,13 +9,18 @@ import {
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
-import { VC } from "../../../../types/data-types";
+import { VC, VcStatus } from "../../../../types/data-types";
+import {
+  backgroundColorMapping,
+  borderColorMapping,
+  textColorMapping,
+} from "../../../../utils/config";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   vc: VC;
-  status: string;
+  status: VcStatus;
   vcType: string;
   logo?: { url: any; alt: string };
 }
@@ -49,7 +54,15 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
               <h2 className="text-lg font-bold">
                 {convertToTitleCase(vcType)}
               </h2>
-              <span className="font-medium text-sm">Status: {status}</span>
+              <div
+                className={`rounded-xl w-[43px] ${backgroundColorMapping[status]} border ${borderColorMapping[status]} mr-2 p-1`}
+              >
+                <p
+                  className={`font-normal text-smallTextSize text-center ${textColorMapping[status]}`}
+                >
+                  {t(status)}
+                </p>
+              </div>
             </div>
           </div>
           <button

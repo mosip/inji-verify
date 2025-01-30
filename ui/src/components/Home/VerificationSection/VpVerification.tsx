@@ -7,7 +7,7 @@ import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 import { useAppDispatch } from "../../../redux/hooks";
 import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../../../redux/features/verify/vpVerificationState";
-import { VpSubmissionResultInt } from "../../../types/data-types";
+import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { Button } from "./commons/Button";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../utils/config";
@@ -20,8 +20,10 @@ const DisplayActiveStep = () => {
   const txnId = useVerifyFlowSelector((state) => state.txnId);
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims);
   const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
+  const sharingType = useVerifyFlowSelector((state) => state.sharingType);
   const verifiedVcs: VpSubmissionResultInt[] = useVerifyFlowSelector((state) => state.verificationSubmissionResult);
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
+  const isSingleVc = sharingType === VCShareType.SINGLE;
 
   const dispatch = useAppDispatch();
 
@@ -29,24 +31,23 @@ const DisplayActiveStep = () => {
     dispatch(setSelectCredential());
   };
 
-  const HandelGenerateQr = () => {
+  const handleRegenerateQr = () => {
     dispatch(setSelectedClaims({selectedClaims: unverifiedClaims}));
     dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
   
-  const HandelRestartProcess = () => {
+  const handleRestartProcess = () => {
     dispatch(resetVpRequest());
   };
 
   if (isLoading) {
     return <Loader className={`absolute lg:top-[200px] right-[100px]`} />;
   } 
-  else if(selectedClaims.length === 1 && unverifiedClaims.length === 1){
+  else if(selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc){
     dispatch(raiseAlert({ ...AlertMessages().incorrectCredential, open: true }))
     dispatch(resetVpRequest());
   }
   else if (verifiedVcs.length > 0) {
-    const isSingleVc = selectedClaims.length === 1;
     return (
       <div className="w-[100vw] lg:w-[50vw]">
         <VpSubmissionResult
@@ -54,8 +55,8 @@ const DisplayActiveStep = () => {
           unverifiedClaims={unverifiedClaims}
           txnId={txnId}
           requestCredentials={handleRequestCredentials}
-          reGenerateQr={HandelGenerateQr}
-          restart={HandelRestartProcess}
+          reGenerateQr={handleRegenerateQr}
+          restart={handleRestartProcess}
           isSingleVc={isSingleVc}
         />
       </div>

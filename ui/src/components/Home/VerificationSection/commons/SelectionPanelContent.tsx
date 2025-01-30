@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { claim } from "../../../../types/data-types";
+import { claim, VCShareType } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
@@ -9,6 +9,7 @@ import {
   getVpRequest,
   resetVpRequest,
   setSelectedClaims,
+  setSharingType,
 } from "../../../../redux/features/verify/vpVerificationState";
 import { storage } from "../../../../utils/storage";
 import { Button } from "./Button";
@@ -51,13 +52,19 @@ function SelectionPanelContent() {
     }
   };
 
-  const HandelBack = () => {
+  const handleBack = () => {
     setSearch("");
     dispatch(resetVpRequest());
   };
 
-  const HandelGenerateQr = () => {
+  const handleGenerateQR = () => {
     setSearch("");
+    if(selectedClaims.length === 1){
+      dispatch(setSharingType({sharingType : VCShareType.SINGLE}))
+    }
+    else if (selectedClaims.length > 1){
+      dispatch(setSharingType({sharingType : VCShareType.MULTIPLE}))
+    }
     dispatch(getVpRequest({ selectedClaims }));
   };
 
@@ -197,13 +204,13 @@ function SelectionPanelContent() {
         <Button
           id="verification-back-button"
           className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
-          onClick={HandelBack}
+          onClick={handleBack}
           title={t("goBack")}
         />
         <Button
           id="camera-access-denied-okay-button"
           title={t("generateQrCodeBtn")}
-          onClick={HandelGenerateQr}
+          onClick={handleGenerateQR}
           className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
           disabled={selectedClaims.length <= 0}
           fill

@@ -110,8 +110,7 @@ function* getVpResult() {
         }
       );
       yield put(verificationSubmissionComplete({verificationResult: [...vcResults]}));
-      const unVerifiedClaims:[] = yield select((state: RootState) => state.verify.unVerifiedClaims);
-      const isPartiallyShared = unVerifiedClaims.length > 0;
+      const isPartiallyShared:boolean = yield select((state: RootState) => state.verify.isPartiallyShared);
       if(isPartiallyShared){
         yield put(raiseAlert({ ...AlertMessages().partialCredentialShared, open: true }));
       }

@@ -94,7 +94,7 @@
       },
       "ScanQrCode": {
         "label": "Digitalize o código QR (use um dispositivo diferente)",
-        "description": "Use uma carteira contendo credenciais verificáveis ​​em um dispositivo diferente com recursos de leitura de código QR para ler o código QR <span>(O suporte para verificação no mesmo dispositivo estará disponível em breve!)<span>"
+        "description": "Use uma carteira contendo credenciais verificáveis ​​em um dispositivo diferente com recursos de leitura de código QR para ler o código QR (O suporte para verificação no mesmo dispositivo estará disponível em breve!)"
       },
       "DisplayResult": {
         "label": "Ver resultados da verificação",
