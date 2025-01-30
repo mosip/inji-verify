@@ -56,7 +56,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
               {convertToTitleCase(credentialType)}
             </p>
             <div
-              className={`rounded-xl w-[43px] ${backgroundColorMapping[vcStatus]} border ${borderColorMapping[vcStatus]} mr-2 p-1`}
+              className={`rounded-xl max-w-[120px] ${backgroundColorMapping[vcStatus]} border ${borderColorMapping[vcStatus]} p-1`}
             >
               <p
                 className={`font-normal text-smallTextSize text-center ${textColorMapping[vcStatus]}`}

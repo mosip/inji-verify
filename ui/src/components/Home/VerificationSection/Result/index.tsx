@@ -10,7 +10,6 @@ import {goToHomeScreen} from "../../../../redux/features/verification/verificati
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
-  const status = vcStatus;
   const [isModalOpen, setModalOpen] = useState(false);
   const credentialType: string = vc.type[1];
   const {t} = useTranslation();
@@ -20,7 +19,7 @@ const Result = () => {
   return (
     <div id="result-section" className="relative mb-[100px]">
       <div className={`text-whiteText`}>
-        <ResultSummary status={status} />
+        <ResultSummary status={vcStatus} />
       </div>
       <div>
         <div className={`h-[3px] border-b-2 border-b-transparent`} />
@@ -42,7 +41,7 @@ const Result = () => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
         vc={vc}
-        status={status}
+        status={vcStatus}
         vcType={credentialType}
       />
     </div>
