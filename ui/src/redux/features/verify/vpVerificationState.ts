@@ -80,6 +80,8 @@ const vpVerificationState = createSlice({
       state.qrData = "";
       state.reqId = "";
       state.status = "ACTIVE";
+      state.sharingType = VCShareType.SINGLE;
+      state.isPartiallyShared = false;
     },
   },
 });
