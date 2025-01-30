@@ -52,12 +52,12 @@ function SelectionPanelContent() {
     }
   };
 
-  const HandelBack = () => {
+  const handleBack = () => {
     setSearch("");
     dispatch(resetVpRequest());
   };
 
-  const HandelGenerateQr = () => {
+  const handleGenerateQR = () => {
     setSearch("");
     if(selectedClaims.length === 1){
       dispatch(setSharingType({sharingType : VCShareType.SINGLE}))
@@ -204,13 +204,13 @@ function SelectionPanelContent() {
         <Button
           id="verification-back-button"
           className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
-          onClick={HandelBack}
+          onClick={handleBack}
           title={t("goBack")}
         />
         <Button
           id="camera-access-denied-okay-button"
           title={t("generateQrCodeBtn")}
-          onClick={HandelGenerateQr}
+          onClick={handleGenerateQR}
           className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
           disabled={selectedClaims.length <= 0}
           fill
