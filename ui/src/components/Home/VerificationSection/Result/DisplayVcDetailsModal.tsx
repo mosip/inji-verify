@@ -55,7 +55,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
                 {convertToTitleCase(vcType)}
               </h2>
               <div
-                className={`rounded-xl w-[43px] ${backgroundColorMapping[status]} border ${borderColorMapping[status]} mr-2 p-1`}
+                className={`rounded-xl max-w-[120px] ${backgroundColorMapping[status]} border ${borderColorMapping[status]} p-1`}
               >
                 <p
                   className={`font-normal text-smallTextSize text-center ${textColorMapping[status]}`}

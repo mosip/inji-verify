@@ -33,7 +33,8 @@ function DisplayVcDetailView({
         className={`w-[339px] lg:w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4 ${className}`}
       >
         {vc ? (
-          <div className="grid">
+          <div className="relative">
+          <div className="grid relative">
             {orderedDetails.map((label, index) => (
               <div
                 className={`py-2.5 px-1 xs:col-end-13 ${
@@ -57,21 +58,23 @@ function DisplayVcDetailView({
                 </p>
               </div>
             ))}
-            <div className="relative">
-              <ActionButton
-                label={t("expand")}
-                onClick={onExpand}
-                icon={<VectorExpand />}
-                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[70px]"
-              />
-              <ActionButton
-                label={t("download")}
-                onClick={() => saveData(vc)}
-                icon={<VectorDownload />}
-                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[20px]"
-              />
-            </div>
           </div>
+
+          <div className="absolute inset-x-0 bottom-0 flex justify-end lg:justify-start px-4">
+            <ActionButton
+              label={t("expand")}
+              onClick={onExpand}
+              icon={<VectorExpand />}
+              positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[60px]"
+            />
+            <ActionButton
+              label={t("download")}
+              onClick={() => saveData(vc)}
+              icon={<VectorDownload />}
+              positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[10px]"
+            />
+          </div>
+        </div>
         ) : (
           <div className="grid content-center justify-center w-[100%] h-[320px] text-documentIcon">
             <DocumentIcon />
