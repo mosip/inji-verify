@@ -8,10 +8,8 @@ This document contains the following sections:
 
 - Installations
 - Folder Structure
-- Configuration
 - Developer Setup
 - Demo Setup
-- Troubleshoot
 
 ---
 
@@ -19,50 +17,31 @@ This document contains the following sections:
 
 Prerequisites:
 
-- **Node 18**
+- **JAVA 21**
 
-  Can be installed using [nvm](https://github.com/nvm-sh/nvm). Run following commands to install node
+  Can be installed using [sdkman](https://sdkman.io/). Run following commands to install node
 
   ```shell
-  $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-  $ nvm install 18
+  $ curl -s "https://get.sdkman.io" | bash
+  $ sdk install java 21.0.5-tem
   ```
-
-- **Docker**
-
-  - [Install on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-  - [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
-  - [Other platforms](https://docs.docker.com/engine/install/)
-
-- **Docker Compose**
-
-  `Note: Requires installation of Docker. This step can be skippped if Docker desktop(Windows) is installed as it comes along with docker compose. Please install Docker using above links before proceeding for the installation of docker compose`
-
-  - [Install as plugin to docker command](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin)
-  - [Install the Compose standalone](https://docs.docker.com/compose/install/#scenario-three-install-the-compose-standalone)
-
-  Once installed, use Docker compose option below to run the Inji Verify application for a quick demo.
-
----
+- [Maven](https://maven.apache.org/install.html) 
 
 # Folder Structure:
 
 Once the repo is cloned, following folders can be found under the inji-verify repository folder:
 
+- **deploy:** folder contains deployment scripts required to deploy on K8S
 - **helm:** folder contains helm charts required to deploy on K8S
-- **inji-verify:** contains the application source code, Dockerfile and docker-compose.yml files
+- **samples:** folder contains sample QR codes for testing
+- **ui:** contains the application source code for web UI, Dockerfile and docker-compose.yml files
   - src (source code)
   - Dockerfile
   - docker-compose.yml
+  - [Readme.md](./ui/README.md)
 - **ui-test:** contains the ui automation tests
-
----
-
-# Configuration:
-
-The configuration to the Inji Verify application can be passed using the .env file which is present inside the **inji-verify** folder.
-
-It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_TIMEOUT variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the .env file.
+- **verify-service:** contains source code for the verify backend service
+- **verify-service-bom:** contains BOM for the verify backend service dependencies
 
 ---
 
@@ -73,7 +52,6 @@ Once the repo is cloned, move into the inji-verify repository folder and run the
 ```shell
 cd inji-verify # move into the repository folder
 git checkout develop
-cd inji-verify # contains source code, Dockerfile and docker-compose.yml
 ```
 
 ### Development server:
@@ -81,8 +59,8 @@ cd inji-verify # contains source code, Dockerfile and docker-compose.yml
 To get a development server up and running, run the following commands:
 
 ```shell
-npm install
-npm start
+mvn clean
+mvn spring-boot:run
 ```
 
 ### Run Docker Image:
@@ -92,44 +70,23 @@ npm start
 Run the following commands to build and test the application as docker images
 
 ```shell
+mvn -U -B package
 docker build -t <dockerImageName>:<tag> .
-docker run -it -d -p 3000:8000 --env-file ./.env --name inji-verify-dev <dockerImageName>:<tag>
+docker run -it -d -p 3000:8000 --env-file ./.env --name inji-verify-service-dev <dockerImageName>:<tag>
 ```
 
 To build the Docker image locally, use the following command. Ensure you are in the directory containing the Dockerfile:
 
 ```shell
-docker build -t inji-verify:local
+docker build -t inji-verify-service:local
 ```
 
 Stop and delete the docker containers using the following commands:
 
 ```shell
-docker stop inji-verify-dev
-docker rm inji-verify-dev
+docker stop inji-verify-service-dev
+docker rm inji-verify-service-dev
 ```
-
-### Run Using Docker Compose:
-
-(Note: Make sure that the following commands are run in the directory where docker-compose.yml file is present)
-
-Use the above image `<dockerImageName>:<tag>` in the docker-compose.yml file and run the following commands to run as docker compose:
-
-```shell
-$ docker-compose up -d # if docker compose is installed as a standalone command.
-$ docker compose up -d # if docker compose is installed as a plugin to docker command
-```
-
-To stop the application, run the following command:
-
-```shell
-$ docker-compose down # if docker compose is installed as a standalone command.
-$ docker compose down # if docker compose is installed as a plugin to docker command
-```
-
-Once started, the application is accessible at http://localhost:3000.
-
----
 
 # Demo Setup:
 
@@ -139,13 +96,10 @@ Once the repository is cloned, move into the inji-verify repository directory.
 Choose one of the branches that are currently available for the demo:
 
 release branches:
-- release-0.8.x
-- release-0.9.x
+- release-0.11.x
 
 tags : 
-- v0.9.0
-- v0.8.1
-- v0.8.0
+- v0.11.0
 
 active branches:
 - master
@@ -154,84 +108,4 @@ active branches:
 ```shell
 cd ./inji-verify # repository folder
 git checkout branchName/tagname # choose from any of the above branches
-```
-
-To start the application, run the following commands:
-
-```shell
-$ cd ./inji-verify # source code folder
-$ docker-compose up -d # if docker compose is installed as a standalone command.
-$ docker compose up -d # if docker compose is installed as a plugin to docker command
-```
-
-The application is now accessible at http://localhost:3000.
-
-Once the demo is done, cleanup using the following command:
-
-```shell
-$ docker-compose down # if docker compose is installed as a standalone command.
-$ docker compose down # if docker compose is installed as a plugin to docker command
-```
-
-# Troubleshoot:
-
-This section contains some common problems that could occur during the setup and steps to resolve then:
-
-## Issue with starting docker compose:
-
-```
-no configuration file provided: not found
-```
-
-or
-
-```
-Can't find a suitable configuration file in this directory or any
-parent. Are you in the right directory?
-
-Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml
-```
-
-### Solution:
-
-Make sure that you are in the right directory `inji-verify/inji-verify` and the docker-compose.yml file is present in this directory.
-
-Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
-
-## Issue with ports:
-
-```
-Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:3000 -> 0.0.0.0:0: listen tcp 0.0.0.0:80: bind: An attempt was made to access a socket in a way forbidden by its access permissions.
-```
-
-### Solution:
-
-Try updating the port in the docker-compose.yml file from 3000:80 to <other_port>:80 and try again
-
-## Issue with building docker image:
-
-```
-ERROR: failed to solve: failed to read dockerfile: no such file or directory
-```
-
-### Solution:
-
-Make sure that you are in the right directory `inji-verify/inji-verify` and the Dockerfile is present in this directory.
-
-Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
-
-## Issue with docker engine:
-
-```
-docker engine/socket not available
-```
-
-### Solution:
-
-In Windows: Start/Restart Docker desktop application
-
-In Ubuntu: Run the following command to make sure that the docker service is running
-
-```shell
-sudo systemctl restart docker.service
 ```
