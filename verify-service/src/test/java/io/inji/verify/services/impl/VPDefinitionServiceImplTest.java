@@ -22,7 +22,7 @@ class VPDefinitionServiceImplTest {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos, mockSubmissionRequirementDtos);
+        PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos,"name","purpose", mockSubmissionRequirementDtos);
         when(mockRepository.findById("test_id")).thenReturn(java.util.Optional.of(mockPresentationDefinition));
 
         VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
