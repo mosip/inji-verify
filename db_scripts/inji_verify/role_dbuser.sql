@@ -3,7 +3,7 @@
 -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
 -- -------------------------------------------------------------------------------------------------
 
-CREATE ROLE certifyuser WITH
+CREATE ROLE verifyuser WITH
     INHERIT
     LOGIN
     PASSWORD :dbuserpwd;

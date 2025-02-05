@@ -6,7 +6,7 @@ CREATE DATABASE inji_verify
 	OWNER = postgres
 	TEMPLATE  = template0;
 
-COMMENT ON DATABASE inji_verify IS 'Verify related data is stored in this database';
+COMMENT ON DATABASE inji_verify IS 'Inji Verify related data is stored in this database';
 
 \c inji_verify postgres
 
