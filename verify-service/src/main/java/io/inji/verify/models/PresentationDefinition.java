@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@Table(name = "PresentationDefinition")
+@Table(name = "presentation_definition")
 @Getter
 @Setter
 @Entity
@@ -32,6 +31,11 @@ public class PresentationDefinition {
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<InputDescriptorDto> inputDescriptors;
 
+    private String name;
+
+    private String purpose;
+
+
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
@@ -40,4 +44,5 @@ public class PresentationDefinition {
     public String getURL(){
         return Constants.VP_DEFINITION_URI +this.id;
     }
-    }
+
+}

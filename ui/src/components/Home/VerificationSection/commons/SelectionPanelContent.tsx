@@ -28,7 +28,7 @@ function SelectionPanelContent() {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
-  const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims)||[];
+  const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
 
   const filteredClaims = verifiableClaims
     .filter((claim) => claim.name.toLowerCase().includes(search.toLowerCase()))
@@ -73,7 +73,7 @@ function SelectionPanelContent() {
     essentialClaims.forEach((claim: claim) =>
       storage.setItem(storage.ESSENTIAL_CLAIM, claim)
     );
-  }, []);
+  }, [selectedClaims]);
   
   return (
     <div className="fill-primary grid gap-6 p-3 lg:p-0">
