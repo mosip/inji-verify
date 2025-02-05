@@ -6,7 +6,7 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-NS=inji-verify
+NS=injiverify
 CHART_VERSION=12.0.1-develop
 
 helm repo add mosip https://mosip.github.io/mosip-helm
