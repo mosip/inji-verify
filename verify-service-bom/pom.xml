@@ -26,7 +26,6 @@
         <vcverifier-jar.version>1.1.0-beta.1</vcverifier-jar.version>
         <json.version>20240303</json.version>
         <bouncycastle.version>1.76</bouncycastle.version>
-        <hypersistence-utils-hibernate-63.version>3.8.3</hypersistence-utils-hibernate-63.version>
         <java-jwt.version>3.18.1</java-jwt.version>
         <tink.version>1.15.0</tink.version>
     </properties>
@@ -109,11 +108,6 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.hypersistence</groupId>
-                <artifactId>hypersistence-utils-hibernate-63</artifactId>
-                <version>${hypersistence-utils-hibernate-63.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.auth0</groupId>
