@@ -39,6 +39,6 @@ public class VPResultController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101));
             }
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100));
     }
 }
