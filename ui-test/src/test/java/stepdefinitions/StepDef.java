@@ -7,12 +7,24 @@ import org.testng.Assert;
 import constants.UiConstants;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import java.io.IOException;
 import pages.BLE;
 import pages.HomePage;
 import pages.ScanQRCodePage;
 import pages.UploadQRCode;
 import pages.VpVerification;
 import utils.BaseTest;
+import java.util.Base64;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.File;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.pdmodel.PDPage;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class StepDef {
 
@@ -414,7 +426,18 @@ public class StepDef {
 
 	}
 
-	@Then("verify click on okay button")
+	@Then("Verify VP verification step3 label after")
+	public void verify_VP_verification_step3_label_after() {
+		Assert.assertTrue(vpverification.isVisibleVPverificationstep3LabelAfter());
+
+	}
+
+	@Then("Verify click on request verifiable credentials button")
+	public void verify_click_request_verifiable_credentials_button() {
+		vpverification.clickOnVerifiableCredentialsButton();
+	}
+
+	@When("verify click on okay button")
 	public void verify_click_on_okay_button() {
 		scanqrcode.ClickonOkayButton();
 	}
@@ -529,10 +552,27 @@ public class StepDef {
 		}
 		homePage.enterIssuersInSearchBox(string);
 	}
-	@When("User click on veridonia credentials button")
-	public void user_click_on_download_veridonia_button() {
+
+	@Then("User search the VC with {string}")
+	public void user_search_the_Vc_with(String string) {
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		vpverification.enterVcInSearchBox(string);
+	}
+
+	@When("User click on StayProtected Insurance credentials button")
+	public void user_click_on_download_StayProtected_Insurance_button() {
 		homePage.clickOnDownloadMosipCredentials();
 	}
+
+	@When("User click on get started button")
+	public void user_click_on_get_started_button() {
+		homePage.clickOnGetStartedButton();
+	}
+
 	@Then("User verify mosip national id by e-signet displayed")
 	public void user_verify_mosip_national_id_by_e_signet_displayed() {
 		Assert.assertTrue(homePage.isMosipNationalIdDisplayed());
@@ -541,6 +581,22 @@ public class StepDef {
 	public void user_click_on_health_insurance_id_by_e_signet_button() {
 		homePage.clickOnMosipNationalId();
 	}
+
+	@When("User click on validity dropdown")
+	public void user_click_on_validity_dropdown_button() {
+		homePage.clickOnValidityDropdown();
+	}
+
+	@When("User click on no limit")
+	public void user_click_on_no_limit_button() {
+		homePage.clickOnNoLimit();
+	}
+
+	@When("User click on proceed")
+	public void user_click_on_proceed_button() {
+		homePage.clickOnOnProceed();
+	}
+
 	@When("User enter the  {string}")
 	public void user_enter_the(String string) {
 		homePage.enterVid(string);
@@ -608,8 +664,8 @@ public class StepDef {
 
     @Then("Verify that user convert pdf into png")
     public void verify_that_user_convert_pdf_into_png() throws IOException {
-		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
-		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
+		String pdfPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential.pdf";
+		String outputPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential";
 
 		PDDocument document = PDDocument.load(new File(pdfPath));
 		PDFRenderer renderer = new PDFRenderer(document);
@@ -649,6 +705,33 @@ public class StepDef {
 		homePage.clickOnLogin();
 	}
 
+	@Then("User click on Go Back button")
+	public void user_click_on_Go_Back_Button() {
+		vpverification.clickOnGoBack();
+	}
+
+	@Then("Verify uncheck Mosip VC check box")
+	public void user_click_on_Mosip_Vc_Check_Box() {
+		vpverification.clickOnMosipVC();
+	}
+
+	@Then("User click on Health Insurance check box")
+	public void user_click_on_Health_Insurance_Check_Box() {
+		vpverification.clickOnHealthInsurance();
+	}
+
+	@Then("User click on Generate QR Code button")
+	public void user_click_on_Generate_Qr_Code_Button() {
+		vpverification.clickOnGenerateQRCodeButton();
+	}
+
+
+
+	@Then("User click on Life Insurance VC check box")
+	public void user_click_on_Life_Insurance_Check_Box() {
+		vpverification.clickOnLifeInsurance();
+	}
+
 	@Then("Open inji web in tab")
 	public void user_Open_inji_web_in_tab() {
 		homePage.SwitchToWebTab();
@@ -664,6 +747,60 @@ public class StepDef {
 		homePage.isErrorMessageVisible();
 	}
 
+	@Then("Verify VP verification qr code step1 description")
+	public void verify_vp_verification_qr_code_step1_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION);
+	}
 
+	@Then("Verify VP verification qr code step1 label")
+	public void verify_vp_verification_qr_code_step1_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step2 label")
+	public void verify_vp_verification_qr_code_step2_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step2 description")
+	public void verify_vp_verification_qr_code_step2_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION);
+	}
+
+	@Then("Verify VP verification qr code step3 label")
+	public void verify_vp_verification_qr_code_step3_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step3 description")
+	public void verify_vp_verification_qr_code_step3_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION);
+	}
+
+	@Then("Verify VP verification qr code step4 label")
+	public void verify_vp_verification_qr_code_step4_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step4 description")
+	public void verify_vp_verification_qr_code_step4_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_DESCRIPTION);
+	}
+
+	@Then("verify request verifiable credentials button")
+	public void verify_request_verifiable_credentials_button() {
+		Assert.assertTrue(vpverification.isVisibleVerifiableCredentialsButton());
+	}
+
+	@Then("Verify VP verification QR code generated")
+	public void verify_VP_verifiable_QR_code_generated() {
+		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	}
+
+
+	@Then("verify Verifiable Credential Selection Panel")
+	public void verify_Verifiable_Credential_Selection_Panel() {
+		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
+	}
 
 }

@@ -20,7 +20,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public class BaseTest {
 
-	public String url ="https://injiverify.qa-inji.mosip.net/";
+	public String url ="https://injiverify.qa-inji1.mosip.net/";
 
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
