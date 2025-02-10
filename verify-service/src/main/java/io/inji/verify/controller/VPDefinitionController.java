@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class VPDefinitionController {
     @Autowired
-    VPDefinitionService VPDefinitionService;
+    VPDefinitionService vpDefinitionService;
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<VPDefinitionResponseDto> getPresentationDefinitionFor(@PathVariable String id) {
 
-        VPDefinitionResponseDto VPDefinitionResponseDto = VPDefinitionService.getPresentationDefinition(id);
-        if (VPDefinitionResponseDto != null)
+        VPDefinitionResponseDto vpDefinitionResponseDto = vpDefinitionService.getPresentationDefinition(id);
+        if (vpDefinitionResponseDto != null)
         {
-            return new ResponseEntity<>(VPDefinitionResponseDto, HttpStatus.OK);
+            return new ResponseEntity<>(vpDefinitionResponseDto, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
