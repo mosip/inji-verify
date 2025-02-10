@@ -33,7 +33,7 @@ public class VPResultController {
         if (!requestIds.isEmpty()) {
             try {
                 VPTokenResultDto result = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
-                ResponseEntity.status(HttpStatus.OK).body(result);
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             } catch (VPSubmissionNotFoundException e) {
                 log.error(e.getMessage());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101));

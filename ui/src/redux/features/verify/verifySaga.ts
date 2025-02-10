@@ -34,7 +34,7 @@ function* fetchRequestUri(claims: claim[]) {
       requestOptions
     );
     const data: string = yield response.text();
-    const parsedData = JSON.parse(data).response as QrData;
+    const parsedData = JSON.parse(data) as QrData;
     const presentationDefinition = getPresentationDefinition(parsedData);
     qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
@@ -97,7 +97,7 @@ function* getVpResult() {
     try {
       const response: Response = yield call(fetch, apiRequest.url(txnId), requestOptions);
       const data: string = yield response.text();
-      const parsedData = JSON.parse(data).response;
+      const parsedData = JSON.parse(data);
       const vcResults: { vc: VCWrapper; vcStatus: VcStatus }[] = [];
       parsedData.vcresults.forEach(
         (vcResult: { vc: string; verificationStatus: VcStatus }) => {

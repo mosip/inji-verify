@@ -1,17 +1,15 @@
-package io.inji.verify.models;
+package io.inji.verify.dto.result;
 
 
 import io.inji.verify.enums.VerificationStatus;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class VCResult {
+@Getter
+public class VCResultDto {
     String vc;
     VerificationStatus verificationStatus;
 }

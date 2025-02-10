@@ -18,9 +18,6 @@ ARG active_profile
 # can be passed during Docker build as build time environment for config server URL
 ARG spring_config_url
 
-# can be passed during Docker build as build time environment for artifactory URL
-ARG artifactory_url
-
 # environment variable to pass active profile such as DEV, QA etc at docker runtime
 ENV active_profile_env=${active_profile}
 
@@ -29,9 +26,6 @@ ENV spring_config_label_env=${spring_config_label}
 
 # environment variable to pass github branch to pickup configuration from, at docker runtime
 ENV spring_config_label_env=${spring_config_label}
-
-# environment variable to pass artifactory url, at docker runtime
-ENV artifactory_url_env=${artifactory_url}
 
 # environment variable to pass iam_adapter url, at docker runtime
 ENV iam_adapter_url_env=${iam_adapter_url}
@@ -60,7 +54,6 @@ WORKDIR /home/${container_user}
 ENV work_dir=/home/${container_user}
 
 ADD ./target/verify-service-*.jar ./verify-service.jar
-#COPY ./target/mimoto-*.jar mimoto.jar
 
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
