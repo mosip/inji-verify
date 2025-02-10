@@ -50,7 +50,7 @@ jobs:
     if: "${{  github.event_name != 'pull_request' }}"
     uses: mosip/kattu/.github/workflows/maven-sonar-analysis-new.yml@develop
     with:
-      SERVICE_LOCATION: ./verify-service
+      SERVICE_LOCATION: verify-service
       SONAR_URL: 'https://sonarcloud.io'
       PROJECT_KEY: 'mosip_inji-verify'
     secrets:
