@@ -115,7 +115,7 @@ public class VpVerification extends BasePage {
 		return getText(driver, verifiableCredentialPanel);
 	}
 
-	public void ClickonVPVerificationTab() {
+	public void clickonVPVerificationTab() {
 		clickOnElement(driver, vpVerificationTab);
 	}
 
