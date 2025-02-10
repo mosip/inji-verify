@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: "ui"
+          - SERVICE_LOCATION: "verify-ui"
             SERVICE_NAME: "inji-verify-ui"
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
