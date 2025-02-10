@@ -4,7 +4,6 @@ import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.core.ErrorDto;
-import io.inji.verify.dto.core.ResponseWrapper;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.shared.Constants;
@@ -28,19 +27,15 @@ public class VPRequestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
-        ResponseWrapper<VPRequestResponseDto> responseWrapper = new ResponseWrapper<VPRequestResponseDto>();
         if (vpRequestCreate.getPresentationDefinitionId() == null && vpRequestCreate.getPresentationDefinition() == null){
-            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseWrapper);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200));
         }
         try{
             VPRequestResponseDto authorizationRequestResponse = verifiablePresentationRequestService.createAuthorizationRequest(vpRequestCreate);
-            responseWrapper.setResponse(authorizationRequestResponse);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseWrapper);
+            return ResponseEntity.status(HttpStatus.CREATED).body(authorizationRequestResponse);
         }catch (PresentationDefinitionNotFoundException e){
             log.error(e.getMessage());
-            responseWrapper.setError(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseWrapper);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201));
         }
     }
 
