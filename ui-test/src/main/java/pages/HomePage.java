@@ -6,6 +6,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.JavascriptException;
+import java.util.Set;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+
+
 
 import base.BasePage;
 
@@ -18,10 +26,10 @@ public class HomePage extends BasePage {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(xpath = "//img[@src='/assets/images/inji_verify.svg']")
+	@FindBy(xpath = "//nav/div/a/svg")
 	WebElement injiVerifyLogo;
 
-	@FindBy(xpath = "//p[@id='verify-credentials-heading']")
+	@FindBy(id = "verify-credentials-heading")
 	WebElement header;
 
 	@FindBy(xpath = "//p[@id='verify-credentials-description']")
@@ -75,10 +83,10 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//*[@id='view-result-description']")
 	WebElement UploadQRCodeStep3Description;
 
-	@FindBy(xpath = "//div[@class='relative grid content-center justify-center w-[275px] lg:w-[350px] aspect-square my-1.5 mx-auto bg-cover']")
+	@FindBy(id = "scan-qr-code-tab")
 	WebElement ScanElement;
 
-	@FindBy(xpath = "//span[@class='inline-grid mr-1.5']")
+	@FindBy(xpath = "//span[@class='mr-1.5']")
 	WebElement UploadIcon;
 
 	@FindBy(id = "upload-qr-code-button")
@@ -99,10 +107,22 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
 
-	@FindBy(xpath = "(//h3[@data-testid='ItemBox-Text'])[1]")
+	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text']")
 	WebElement mosipCrdentials;
 
-	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text']")
+	@FindBy(xpath = "(//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Get Started')])[1]")
+	WebElement getStartedButton;
+
+	@FindBy(xpath = "(//label[contains(@class, 'w-full h-full') and contains(text(), 'Once')])[1]")
+	WebElement getValidityDropdown;
+
+	@FindBy(xpath = "(//label[contains(@data-testid, 'DataShareContent-Validity-Times-DropDown-NoLimit') and contains(text(), 'No Limit')])[1]")
+	WebElement getOnNoLimit;
+
+	@FindBy(xpath = "(//button[contains(@data-testid, 'DataShareFooter-Success-Button') and contains(text(), 'Proceed')])[1]")
+	WebElement getOnOnProceed;
+
+	@FindBy(xpath = "//div[@data-testid='ItemBox-Outer-Container-0']")
 	WebElement isMosipNationalId;
 
 	@FindBy(xpath = "//input[@id='Otp_mosip-vid']")
@@ -269,6 +289,19 @@ public class HomePage extends BasePage {
 		clickOnElement(driver,mosipCrdentials);
 	}
 
+	public void clickOnGetStartedButton() {
+		clickOnElement(driver,getStartedButton);
+	}
+
+	public void clickOnValidityDropdown() {
+		clickOnElement(driver,getValidityDropdown);
+	}
+
+	public void clickOnNoLimit() {
+		clickOnElement(driver,getOnNoLimit);
+	}
+
+
 	public Boolean isMosipNationalIdDisplayed() {
 		try {
 			Thread.sleep(2000);
@@ -286,6 +319,16 @@ public class HomePage extends BasePage {
 			e.printStackTrace();
 		}
 		clickOnElement(driver, isMosipNationalId);
+	}
+
+	public void clickOnOnProceed() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		clickOnElement(driver, getOnOnProceed);
 	}
 
 	public void enterVid(String string) {
@@ -323,7 +366,7 @@ public class HomePage extends BasePage {
 	}
 
 	public  void openNewTab(){
-		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji.mosip.net/')");
+		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji1.mosip.net/')");
 		Set<String> allWindowHandles = driver.getWindowHandles();
 		System.out.println(allWindowHandles);
 		if (allWindowHandles.size() >= 2) {
@@ -362,7 +405,7 @@ public class HomePage extends BasePage {
 	}
 	public void selectDateOfBirth() {
 		driver.findElement(By.xpath("//input[@id='_form_fullName']")).sendKeys(Keys.TAB);
-		driver.findElement(By.id("_form_dob")).sendKeys("01/01/2024");
+		driver.findElement(By.id("_form_dob")).sendKeys("01/01/2025");
 
 
 		driver.findElement(By.xpath("//input[@id='_form_dob']")).click();
