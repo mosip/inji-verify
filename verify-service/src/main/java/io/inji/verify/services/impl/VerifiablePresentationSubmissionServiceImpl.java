@@ -10,7 +10,7 @@ import io.inji.verify.exception.TokenMatchingFailedException;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
-import io.inji.verify.models.VCResult;
+import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
@@ -51,7 +51,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         log.info("Processing VP submission");
         JSONObject vpProof = new JSONObject(vpSubmission.getVpToken()).getJSONObject(Constants.KEY_PROOF);
         String keyType = vpProof.getString(Constants.KEY_TYPE);
-        List<VCResult> verificationResults = null;
+        List<VCResultDto> verificationResults = null;
         try {
             log.info("Processing VP verification");
             switch (keyType) {
@@ -72,7 +72,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
             verificationResults = getVCVerificationResults(verifiableCredentials);
             boolean combinedVerificationStatus = true;
-            for (VCResult verificationResult : verificationResults) {
+            for (VCResultDto verificationResult : verificationResults) {
                 combinedVerificationStatus = combinedVerificationStatus && (verificationResult.getVerificationStatus() == VerificationStatus.SUCCESS);
             }
             if (!combinedVerificationStatus) {
@@ -97,14 +97,14 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return processSubmission(vpSubmission, transactionId);
     }
 
-    private List<VCResult> getVCVerificationResults(JSONArray verifiableCredentials) {
-        List<VCResult> verificationResults = new ArrayList<>();
+    private List<VCResultDto> getVCVerificationResults(JSONArray verifiableCredentials) {
+        List<VCResultDto> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
             JSONObject fullVerifiableCredential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL);
             JSONObject credential = fullVerifiableCredential.getJSONObject(Constants.KEY_CREDENTIAL);
             VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
-            verificationResults.add(new VCResult(fullVerifiableCredential.toString(),singleVCVerification));
+            verificationResults.add(new VCResultDto(fullVerifiableCredential.toString(),singleVCVerification));
         }
         return verificationResults;
     }
