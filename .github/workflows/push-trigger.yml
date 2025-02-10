@@ -53,6 +53,7 @@ jobs:
     with:
       SERVICE_LOCATION: ./verify-service
       SONAR_URL: 'https://sonarcloud.io'
+      PROJECT_KEY: 'mosip_inji-verify'
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
