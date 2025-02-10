@@ -8,9 +8,9 @@ export const getPresentationDefinition = (data: QrData) => {
     `&response_mode=direct_post` +
     `&nonce=${data.authorizationDetails.nonce}` +
     `&state=${data.requestId}` +
-    `&response_uri=${window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.responseUri}` +
+    `&response_uri=${window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.responseUri}` +
     `${data.authorizationDetails.presentationDefinitionUri ? 
-      `&presentation_definition_uri=${window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.presentationDefinitionUri}` : 
+      `&presentation_definition_uri=${window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.presentationDefinitionUri}` : 
       `&presentation_definition=${JSON.stringify(data.authorizationDetails.presentationDefinition)}`}` +
     `&client_metadata={"client_name":"${window.location.origin}"}`
   );

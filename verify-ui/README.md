@@ -184,7 +184,7 @@ Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compo
 
 ### Solution:
 
-Make sure that you are in the right directory `inji-verify/ui` and the docker-compose.yml file is present in this directory.
+Make sure that you are in the right directory `inji-verify/verify-ui` and the docker-compose.yml file is present in this directory.
 
 Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
 
@@ -206,7 +206,7 @@ ERROR: failed to solve: failed to read dockerfile: no such file or directory
 
 ### Solution:
 
-Make sure that you are in the right directory `inji-verify/ui` and the Dockerfile is present in this directory.
+Make sure that you are in the right directory `inji-verify/verify-ui` and the Dockerfile is present in this directory.
 
 Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
 

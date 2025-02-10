@@ -38,7 +38,7 @@ jobs:
     needs: build-dockers-inji-verify
     uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
-      SERVICE_LOCATION: ./ui
+      SERVICE_LOCATION: ./verify-ui
       SONAR_URL: 'https://sonarcloud.io'
       PROJECT_KEY: 'mosip_inji-verify'
     secrets:
