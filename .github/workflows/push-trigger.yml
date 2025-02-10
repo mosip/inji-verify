@@ -48,7 +48,7 @@ jobs:
       
   sonar-analysis-inji-verify-service:
     if: "${{  github.event_name != 'pull_request' }}"
-    needs: build-dockers-inji-verify-service
+    needs: build-dockers
     uses: mosip/kattu/.github/workflows/maven-sonar-analysis-new.yml@develop
     with:
       SERVICE_LOCATION: ./verify-service
