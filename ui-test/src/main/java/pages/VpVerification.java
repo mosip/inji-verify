@@ -39,13 +39,13 @@ public class VpVerification extends BasePage {
 	WebElement generateQRCodeButton;
 
 	@FindBy(id = "request-credentials-button")
-	WebElement VerifiableCredentialsButton;
+	WebElement verifiableCredentialsButton;
 
 	@FindBy(xpath = "//svg[@role='img']")
 	WebElement verificationQrCode;
 
 	@FindBy(xpath = "//h1[@class='font-bold text-smallTextSize lg:text-lg sm:text-xl text-selectorPanelTitle']")
-	WebElement VerifiableCredentialPanel;
+	WebElement verifiableCredentialPanel;
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='2'])")
 	WebElement VPverificationstep3LabelAfter;
@@ -100,7 +100,7 @@ public class VpVerification extends BasePage {
 
 
 	public Boolean isVisibleVerifiableCredentialsButton() {
-		return isElementIsVisible(driver, VerifiableCredentialsButton);
+		return isElementIsVisible(driver, verifiableCredentialsButton);
 	}
 
 	public Boolean isVpVerificationQrCodeGenerated() {
@@ -108,11 +108,11 @@ public class VpVerification extends BasePage {
 	}
 
 	public void clickOnVerifiableCredentialsButton() {
-		 clickOnElement(driver, VerifiableCredentialsButton);
+		 clickOnElement(driver, verifiableCredentialsButton);
 	}
 
 	public String isVerifiableCredentialSelectionPannelDisplayed() {
-		return getText(driver, VerifiableCredentialPanel);
+		return getText(driver, verifiableCredentialPanel);
 	}
 
 	public void ClickonVPVerificationTab() {
