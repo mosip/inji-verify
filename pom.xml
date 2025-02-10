@@ -10,6 +10,7 @@
         <version>3.2.3</version>
     </parent>
 
+    <name>verify-service-parent</name>
     <groupId>io.inji.verify</groupId>
     <artifactId>verify-service-parent</artifactId>
     <version>0.11.0-SNAPSHOT</version>
