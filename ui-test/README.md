@@ -1,8 +1,8 @@
-# Inji verify  Automation - web Automation Framework using selenium with cucumber
+# Inji verify UI Automation - web Automation Framework using selenium with cucumber
 
 ## Overview
 
-uitest-injiverify is a automation framework designed for inji verify web app. It automates both positive and negative scenarios to ensure comprehensive testing of web applications.
+Inji verify UI Automation is a automation framework designed for inji verify web app. It automates both positive and negative scenarios to ensure comprehensive testing of web applications.
 
 ## Pre-requisites
 
