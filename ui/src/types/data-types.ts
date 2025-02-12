@@ -132,6 +132,13 @@ export type ApiRequest = {
   body?: BodyType;
 };
 
+export type CheckInApiRequest = {
+  url: (...args: string[]) => string;
+  methodType: MethodType;
+  headers: (...args: string[]) => Record<string, string>;
+  body: BodyInit ;
+};
+
 export type VpSubmissionResultInt = {
   vc: VCWrapper;
   vcStatus: VcStatus;

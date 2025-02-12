@@ -15,6 +15,7 @@ const verify = async (credential) => {
     return data.verificationStatus
   } catch (error) {
     console.error("Error occurred:", error);
+    throw new Error(error);
   }
 };
 

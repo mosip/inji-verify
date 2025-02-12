@@ -335,4 +335,14 @@ export const farmerCredentialRenderOrder = [
   "secondaryCropType",
 ];
 
+export const InvitationPass03 = [
+  "designation",
+  "id",
+  "organisationName",
+  "recipientEmail",
+  "recipientName",
+  "recipientPhone",
+  "type",
+];
+
 export const BASE64_PADDING = "=="
