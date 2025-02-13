@@ -113,8 +113,8 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
-            - name: config-volume
-              mountPath: /app/config
+            - name: conf-file
+              mountPath: /usr/share/nginx/html/assets/config.json
               readOnly: true
           ports:
             - name: spring-service
