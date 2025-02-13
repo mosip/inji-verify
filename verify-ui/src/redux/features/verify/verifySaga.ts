@@ -1,6 +1,6 @@
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { api } from "../../../utils/api";
-import { ApiRequest, claim, VCWrapper, fetchStatusResponse, QrData, VcStatus } from "../../../types/data-types";
+import { ApiRequest, claim, VCWrapper, VpRequestStatusApi, QrData, VcStatus } from "../../../types/data-types";
 import {
   getVpRequest,
   resetVpRequest,
@@ -17,10 +17,11 @@ function* fetchRequestUri(claims: claim[]) {
   let qrData;
   let txnId;
   let reqId;
+  let expiresAt;
   const apiRequest: ApiRequest = api.fetchVpRequest;
   const def = claims.flatMap((claim) => claim.definition.input_descriptors);
   apiRequest.body!.presentationDefinition.input_descriptors = [...def];
-  apiRequest.body!.transactionId = `txn_${crypto.randomUUID()}`
+  apiRequest.body!.transactionId = `txn_${crypto.randomUUID()}`;
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
@@ -39,6 +40,7 @@ function* fetchRequestUri(claims: claim[]) {
     qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
+    expiresAt = parsedData.expiresAt
   } catch (error) {
     console.error("Failed to fetch request URI:", error);
     yield put(resetVpRequest());
@@ -49,30 +51,40 @@ function* fetchRequestUri(claims: claim[]) {
   }
 
   yield put(
-    setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId })
+    setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId , expiresAt: expiresAt})
   );
   return;
 }
 
-function* getVpStatus() {
+function* getVpStatus(expireAt:any) {
   const txnId: string = yield select((state: RootState) => state.verify.txnId);
   const reqId: string = yield select((state: RootState) => state.verify.reqId);
-
-  const apiRequest: ApiRequest = api.fetchStatus;
+  const apiRequest: VpRequestStatusApi = api.fetchStatus;
   const requestOptions = {
     method: apiRequest.methodType,
     headers: apiRequest.headers(),
   };
 
   const fetchStatus: any = function* () {
+    const timeToExpiry = expireAt - Date.now()
+    const pollTimeout = window._env_.VP_REQUEST_STATUS_LONGPOLL_TIMEOUT
+    const timeOut = timeToExpiry > pollTimeout ? pollTimeout : Math.abs(timeToExpiry);
     try {
-      let status;
-      yield fetch(apiRequest.url(reqId), requestOptions)
-        .then((res) => res.json() as unknown as fetchStatusResponse)
-        .then((data) => (status = data.status));
-      if (status === "VP_SUBMITTED") {
-        yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
-        return;
+      const response: Response = yield call(fetch,apiRequest.url(reqId,timeOut),requestOptions);
+      const data: string = yield response.text();
+      const parsedData = JSON.parse(data);
+      const status = parsedData.status;
+      switch (status) {
+        case "VP_SUBMITTED":
+          yield put(setVpRequestStatus({ status, txnId, qrData: "" }));
+          return;
+        case "EXPIRED":
+          yield put(raiseAlert({ ...AlertMessages().sessionExpired, open: true }));
+          yield put(resetVpRequest());
+          return;
+        default:
+          yield call(fetchStatus);
+          return;
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -129,7 +141,9 @@ function* verifySaga() {
     takeLatest(getVpRequest, function* ({ payload }) {
       yield call(fetchRequestUri, payload.selectedClaims);
     }),
-    takeLatest(setVpRequestResponse, getVpStatus),
+    takeLatest(setVpRequestResponse,function* ({ payload }) {
+      yield call(getVpStatus, payload.expiresAt);
+    }),
     takeLatest(setVpRequestStatus, getVpResult),
   ]);
 }

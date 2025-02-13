@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
+import java.util.Optional;
+
 
 @RequestMapping("/vp-request")
 @RestController
@@ -40,10 +42,9 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(Constants.LONG_POLL_TIMEOUT, "Request timeout");
-        verifiablePresentationRequestService.getCurrentRequestStatusPeriodic(requestId,result,null);
-
+    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout) {
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT), verifiablePresentationRequestService.getCurrentRequestStatus(requestId));
+        verifiablePresentationRequestService.registerSubmissionListener(requestId,result);
         return result;
     }
 

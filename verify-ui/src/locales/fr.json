@@ -111,7 +111,7 @@
   "AlertMessages": {
     "qrUploadSuccess": "Code QR téléchargé avec succès !",
     "qrScanSuccess": "Code QR scanné avec succès !",
-    "sessionExpired": "La session d'analyse a expiré pour cause d'inactivité. ",
+    "sessionExpired": "Le code QR a expiré. Veuillez en demander un nouveau.",
     "qrNotDetected": "Aucun lecteur MultiFormat n'a pu détecter le code QR.",
     "qrNotSupported": "Le format de code QR n'est pas pris en charge.",
     "unsupportedFileSize": "Taille de fichier non prise en charge. ",

@@ -1,4 +1,4 @@
-import { ApiRequest } from "../types/data-types";
+import { ApiRequest, VpRequestStatusApi } from "../types/data-types";
 
 const generateNonce = (): string => {
   const dateTimeString = Date.now().toString();
@@ -46,8 +46,8 @@ export class api {
     },
   };
 
-  static fetchStatus: ApiRequest = {
-    url: (reqId: string) => api.Host + `/vp-request/${reqId}/status`,
+  static fetchStatus: VpRequestStatusApi = {
+    url: (reqId: string,timeout: number) => api.Host + `/vp-request/${reqId}/status?timeout=${timeout}`,
     methodType: "GET",
     headers: () => {
       return {

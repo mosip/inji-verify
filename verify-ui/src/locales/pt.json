@@ -111,7 +111,7 @@
   "AlertMessages": {
     "qrUploadSuccess": "Código QR carregado com sucesso!",
     "qrScanSuccess": "Código QR digitalizado com sucesso!",
-    "sessionExpired": "A sessão de verificação expirou devido à inatividade. Por favor, inicie uma nova verificação.",
+    "sessionExpired": "Código QR expirou. Solicite um novo.",
     "qrNotDetected": "Nenhum leitor MultiFormat conseguiu detectar o código QR.",
     "qrNotSupported": "O formato do código QR não é compatível.",
     "unsupportedFileSize": "Tamanho do arquivo não suportado. O tamanho do arquivo deve estar entre 10 KB e 5 MB.",
