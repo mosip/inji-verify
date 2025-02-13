@@ -113,6 +113,9 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
+            - name: config-volume
+              mountPath: /app/config
+              readOnly: true
           ports:
             - name: spring-service
               containerPort: {{ .Values.inji_verify.port }}
@@ -144,3 +147,9 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-{{ .Values.configMap.name }}
+            items:
+              - key: config.json
+                path: config.json
