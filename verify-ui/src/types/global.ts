@@ -11,7 +11,8 @@ declare global {
             OVP_QR_HEADER: string
             INTERNET_CONNECTIVITY_CHECK_ENDPOINT: string,
             INTERNET_CONNECTIVITY_CHECK_TIMEOUT: string,
-            VERIFY_SERVICE_API_URL: string
+            VERIFY_SERVICE_API_URL: string,
+            VERIFIABLE_CLAIMS_CONFIG_URL: string
         }
     }
 }
