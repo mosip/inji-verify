@@ -1,7 +1,5 @@
 import {AlertInfo, claim, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
-import certImage from '../assets/defaultTheme/cert.png';
-import certImage2 from '../assets/defaultTheme/cert2.png';
 
 export const Pages = {
     Home: "/",
@@ -165,117 +163,20 @@ export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
 export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
-export const verifiableClaims: claim[] = [
-  {
-    logo: certImage,
-    name: "MOSIP ID",
-    type: "RegistrationReceiptCredential",
-    essential: true,
-    definition: {
-      purpose:
-        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["Ed25519Signature2018"] } },
-      input_descriptors: [
-        {
-          id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2018"] } },
-          constraints: {
-            fields: [
-              {
-                path: ["$.type"],
-                filter: { 
-                  type: "object", 
-                  pattern: "RegistrationReceiptCredential" 
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  },
-  {
-    logo: certImage2,
-    name: "Farmer ID",
-    type: "FarmerCredential",
-    definition: {
-      purpose:
-        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-      input_descriptors: [
-        {
-          id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-          constraints: {
-            fields: [
-              {
-                path: ["$.type"],
-                filter: {
-                  type: "object",
-                  pattern: "FarmerCredential",
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  },
-  {
-    logo: certImage,
-    name: "Life Insurance",
-    type: "LifeInsuranceCredential",
-    definition: {
-      purpose:
-        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-      input_descriptors: [
-        {
-          id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-          constraints: {
-            fields: [
-              {
-                path: ["$.type"],
-                filter: {
-                  type: "object",
-                  pattern: "LifeInsuranceCredential",
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  },
-  {
-    logo: certImage,
-    name: "Health Insurance",
-    type: "InsuranceCredential",
-    definition: {
-      purpose:
-        "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-      format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-      input_descriptors: [
-        {
-          id: "id card credential",
-          format: { ldp_vc: { proof_type: ["Ed25519Signature2020"] } },
-          constraints: {
-            fields: [
-              {
-                path: ["$.type"],
-                filter: {
-                  type: "object",
-                  pattern: "InsuranceCredential",
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  },
-];
+export let verifiableClaims: claim[] = [];
+export const initializeClaims = async () => {
+  try {
+    const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    verifiableClaims = data.verifiableClaims as claim[];
+  } catch (error) {
+    console.error("Error loading claims from ConfigMap:", error);
+  }
+};
+initializeClaims();
 export const OPENID4VP_PROTOCOL = "openid4vp://authorize?";
 export const QrCodeExpiry = 300; //5*60 seconds
 export const PollStatusDelay = 5000; // Continue polling after 5 seconds untill status is changes
