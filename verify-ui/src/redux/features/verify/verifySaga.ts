@@ -40,7 +40,7 @@ function* fetchRequestUri(claims: claim[]) {
     qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
-    expiresAt = parsedData.expiresAt
+    expiresAt = parsedData.expiresAt;
   } catch (error) {
     console.error("Failed to fetch request URI:", error);
     yield put(resetVpRequest());
@@ -50,13 +50,11 @@ function* fetchRequestUri(claims: claim[]) {
     return;
   }
 
-  yield put(
-    setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId , expiresAt: expiresAt})
-  );
+  yield put(setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId , expiresAt: expiresAt }));
   return;
 }
 
-function* getVpStatus(expireAt:any) {
+function* getVpStatus(expireAt: any) {
   const txnId: string = yield select((state: RootState) => state.verify.txnId);
   const reqId: string = yield select((state: RootState) => state.verify.reqId);
   const apiRequest: VpRequestStatusApi = api.fetchStatus;
@@ -66,8 +64,8 @@ function* getVpStatus(expireAt:any) {
   };
 
   const fetchStatus: any = function* () {
-    const timeToExpiry = expireAt - Date.now()
-    const pollTimeout = window._env_.VP_REQUEST_STATUS_LONGPOLL_TIMEOUT
+    const timeToExpiry = expireAt - Date.now();
+    const pollTimeout = window._env_.VP_REQUEST_STATUS_LONGPOLL_TIMEOUT;
     const timeOut = timeToExpiry > pollTimeout ? pollTimeout : Math.abs(timeToExpiry);
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId,timeOut),requestOptions);
@@ -141,7 +139,7 @@ function* verifySaga() {
     takeLatest(getVpRequest, function* ({ payload }) {
       yield call(fetchRequestUri, payload.selectedClaims);
     }),
-    takeLatest(setVpRequestResponse,function* ({ payload }) {
+    takeLatest(setVpRequestResponse, function* ({ payload }) {
       yield call(getVpStatus, payload.expiresAt);
     }),
     takeLatest(setVpRequestStatus, getVpResult),
