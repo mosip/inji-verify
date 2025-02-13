@@ -15,7 +15,6 @@ import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
-import io.inji.verify.utils.ThreadSafeDelayedMethodCall;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -37,6 +36,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
+
+    HashMap<String,DeferredResult<VPRequestStatusDto>> submissionListeners = new HashMap<>();
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
@@ -96,17 +97,23 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public void getCurrentRequestStatusPeriodic(String requestId, DeferredResult<VPRequestStatusDto> result, ThreadSafeDelayedMethodCall executor) {
-        if (executor != null) executor.shutdown();
+    public void registerSubmissionListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
         VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
         if (currentRequestStatus.getStatus() == null) {
             result.setErrorResult("NOT_FOUND");
+            return;
         }
-        if (currentRequestStatus.getStatus() != VPRequestStatus.ACTIVE) {
-            result.setResult(currentRequestStatus);
-        } else {
-            ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
-            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result, threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
+        if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
+            result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+            return;
         }
+        submissionListeners.put(requestId, result);
+    }
+
+    @Override
+    public void invokeSubmissionListener(String requestId) {
+        DeferredResult<VPRequestStatusDto> vpRequestStatusDtoDeferredResult = submissionListeners.get(requestId);
+        vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
+        submissionListeners.remove(requestId);
     }
 }

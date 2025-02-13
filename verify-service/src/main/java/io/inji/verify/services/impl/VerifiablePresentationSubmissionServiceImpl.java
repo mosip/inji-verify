@@ -45,6 +45,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     @Override
     public void submit(VPSubmissionDto vpSubmissionDto) {
         vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
+        verifiablePresentationRequestService.invokeSubmissionListener(vpSubmissionDto.getState());
     }
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {

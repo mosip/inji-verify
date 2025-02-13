@@ -111,7 +111,7 @@
   "AlertMessages": {
     "qrUploadSuccess": "¡El código QR se cargó exitosamente!",
     "qrScanSuccess": "¡Código QR escaneado con éxito!",
-    "sessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis.",
+    "sessionExpired": "El código QR ha expirado. Solicite uno nuevo.",
     "qrNotDetected": "Ningún lector multiformato pudo detectar el código QR.",
     "qrNotSupported": "El formato de código QR no es compatible.",
     "unsupportedFileSize": "El tamaño del archivo no es compatible. El tamaño del archivo debe estar entre 10 KB y 5 MB",
