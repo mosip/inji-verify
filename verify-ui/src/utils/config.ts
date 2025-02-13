@@ -168,7 +168,7 @@ export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to ever
 export let verifiableClaims: claim[] = [];
 export const initializeClaims = async () => {
   try {
-    const response = await fetch('/assets/config.json');
+    const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

@@ -147,9 +147,9 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
-        - name: config-volume
+        - name: inji-verify-ui-config
           configMap:
-            name: {{ .Release.Name }}-{{ .Values.configMap.name }}
+            name: {{ template "common.names.fullname" . }}-config
             items:
               - key: config.json
                 path: config.json
