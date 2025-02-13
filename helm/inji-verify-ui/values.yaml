@@ -438,4 +438,3 @@ extraVolumes:
   - name: config-volume
     configMap:
       name: inji-verify-ui-config
-      
