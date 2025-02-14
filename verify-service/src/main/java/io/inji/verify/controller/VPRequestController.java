@@ -42,7 +42,7 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout,@RequestHeader("Request-Timeout") String requestTime) {
+    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout, @RequestHeader("Request-Time") String requestTime) {
         Long timeOut = timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT);
         log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
