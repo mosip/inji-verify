@@ -69,6 +69,8 @@ function* getVpStatus(expireAt: any) {
     const timeOut = timeToExpiry > pollTimeout ? pollTimeout : Math.abs(timeToExpiry);
     console.error("timeOut : " , timeOut);
     requestOptions.headers["Request-Time"] = `${Date.now()}`;
+    requestOptions.headers["Connection"] = `close`;
+    console.error(requestOptions.headers);
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId,timeOut),requestOptions);
       const data: string = yield response.text();
