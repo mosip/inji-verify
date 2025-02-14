@@ -3,7 +3,7 @@ package io.inji.verify.shared;
 public class Constants {
 
     public static final int DEFAULT_EXPIRY =  300;
-    public static final Long DEFAULT_LONG_POLL_TIMEOUT =  6000L;
+    public static final Long DEFAULT_LONG_POLL_TIMEOUT =  60000L;
     public static final String RESPONSE_SUBMISSION_URI_ROOT = "/vp-submission";
     public static final String RESPONSE_SUBMISSION_URI = "/direct-post";
     public static final String VP_DEFINITION_URI = "/vp-definition/";
