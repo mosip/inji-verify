@@ -67,10 +67,13 @@ function* getVpStatus(expireAt: any) {
     const timeToExpiry = expireAt - Date.now();
     const pollTimeout = window._env_.VP_REQUEST_STATUS_LONGPOLL_TIMEOUT;
     const timeOut = timeToExpiry > pollTimeout ? pollTimeout : Math.abs(timeToExpiry);
+    console.log("timeOut : " , timeOut);
+    requestOptions.headers["Request-Time"] = `${Date.now()}`;
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId,timeOut),requestOptions);
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
+      console.log("Data : " , parsedData);
       const status = parsedData.status;
       switch (status) {
         case "VP_SUBMITTED":
