@@ -44,15 +44,15 @@ public class VPRequestController {
 
     @GetMapping(path = "/{requestId}/status")
     public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout, @RequestHeader("Request-Time") String requestTime) {
+        response.setHeader("Connection", "close");
         Long timeOut = timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT);
         log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
         DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut, ()->{
-            log.info("Timeout occured");
-           return verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
+            log.info("Timeout occurred");
+            return verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
         });
-        verifiablePresentationRequestService.registerSubmissionListener(requestId,result);
-        response.setHeader("Connection", "close");
+        verifiablePresentationRequestService.registerSubmissionListener(requestId, result);
         return result;
     }
 
