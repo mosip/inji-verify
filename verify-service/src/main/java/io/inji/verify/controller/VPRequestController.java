@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import java.util.Optional;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @RequestMapping("/vp-request")
@@ -42,12 +43,13 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout, @RequestHeader("Request-Time") String requestTime) {
+    public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout, @RequestHeader("Request-Time") String requestTime) {
         Long timeOut = timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT);
         log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
         DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut, verifiablePresentationRequestService.getCurrentRequestStatus(requestId));
         verifiablePresentationRequestService.registerSubmissionListener(requestId,result);
+        response.setHeader("Connection", "close");
         return result;
     }
 
