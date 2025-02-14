@@ -51,7 +51,8 @@ export class api {
     methodType: "GET",
     headers: () => {
       return {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Connection": "close"
       };
     },
   };
