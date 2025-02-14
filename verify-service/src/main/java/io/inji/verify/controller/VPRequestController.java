@@ -47,7 +47,10 @@ public class VPRequestController {
         Long timeOut = timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT);
         log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut, verifiablePresentationRequestService.getCurrentRequestStatus(requestId));
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut, ()->{
+            log.info("Timeout occured");
+           return verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
+        });
         verifiablePresentationRequestService.registerSubmissionListener(requestId,result);
         response.setHeader("Connection", "close");
         return result;
