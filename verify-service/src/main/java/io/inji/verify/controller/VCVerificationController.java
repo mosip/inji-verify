@@ -1,7 +1,6 @@
 package io.inji.verify.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path = "/vc-verification")
 @RestController
 @Slf4j
-@CrossOrigin
 public class VCVerificationController {
     @Autowired
     VCVerificationService VCVerificationService;

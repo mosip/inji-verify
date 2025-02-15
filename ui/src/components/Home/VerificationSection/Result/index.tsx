@@ -20,7 +20,7 @@ const Result = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isPopulating, setIsPopulating] = useState(false);
-  console.log(vc);
+  const [isCheckIn, setIsCheckIn] = useState(false);
   
   const populateGoogleSheet = async () => {
     if (!vc) {
@@ -32,9 +32,11 @@ const Result = () => {
 
     try {
       const rowData = {
-        fullname: vc.credentialSubject.fullName || "",
-        email: vc.credentialSubject.email || "",
-        mobile: vc.credentialSubject.mobile || "",
+        fullName: vc.credentialSubject.recipientName || "",
+        email: vc.credentialSubject.recipientEmail || "",
+        organisation: vc.credentialSubject.organisationName || "",
+        designation: vc.credentialSubject.designation || "",
+        timestamp: Date.now() || "",
       };
 
       const apiRequest = api.fetchCheckIn;
@@ -46,12 +48,12 @@ const Result = () => {
       };
 
       await fetch(apiRequest.url(), requestOptions);
+      setIsCheckIn(true);
     } catch (error) {
       console.error("Error sending data to backend:", error);
       dispatch(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
     } finally {
       setIsPopulating(false);
-      dispatch(goToHomeScreen({}));
     }
   };
 
@@ -71,16 +73,17 @@ const Result = () => {
         <div className="grid content-center justify-center">
           <Button
             id="verify-another-qr-code-button"
-            title={t("Common:Button.verifyAnotherQrCode")}
-            onClick={() => dispatch(goToHomeScreen({}))}
-            className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
+            title={t("Common:Button.checkIn")}
+            disabled={isCheckIn || isPopulating}
+            onClick={populateGoogleSheet}
+            className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
           />
           <Button
             id="verify-another-qr-code-button"
-            title={"Check In"}
-            disabled={isPopulating}
-            onClick={populateGoogleSheet}
-            className="mx-auto mt-1 mb-20 lg:mb-6 lg:w-[339px]"
+            title={t("Common:Button.verifyAnotherQrCode")}
+            onClick={() => dispatch(goToHomeScreen({}))}
+            disabled={!isCheckIn}
+            className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
           />
         </div>
       </div>

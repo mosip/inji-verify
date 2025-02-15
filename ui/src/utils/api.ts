@@ -67,7 +67,7 @@ export class api {
   };
 
   static fetchCheckIn: CheckInApiRequest ={
-    url: () => api.Host + "/api/append",
+    url: () => api.Host + "api/sheets/append",
     methodType: "POST",
     headers: () => {
       return {

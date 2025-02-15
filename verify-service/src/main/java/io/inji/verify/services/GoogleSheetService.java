@@ -1,7 +1,8 @@
 package io.inji.verify.services;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
@@ -16,68 +17,49 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class GoogleSheetService {
 
-    @Value("${google.credentials.path}")
-    private String credentialsFilePath;
+    @Value("${google.credentials.json}")
+    private String credentialsJson;
 
     @Value("${google.sheets.id}")
     private String spreadsheetId;
 
-    private Sheets getSheetsService() throws IOException, GeneralSecurityException {
+    private Sheets sheetsService;
+
+    @PostConstruct
+    private void initializeSheetsService() throws IOException, GeneralSecurityException {
         System.out.println("Initializing Google Sheets Service...");
 
         NetHttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-        FileInputStream credentialsStream;
-        try {
-            credentialsStream = new FileInputStream(credentialsFilePath);
-        } catch (IOException e) {
-            System.err.println("Error opening credentials file: " + e.getMessage());
-            throw e;
-        }
+        GoogleCredentials credentials = GoogleCredentials.fromStream(
+                new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8)))
+                .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
 
-        GoogleCredentials credentials;
-        try {
-            credentials = GoogleCredentials.fromStream(credentialsStream)
-                    .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
-
-        } catch (IOException e) {
-            System.err.println("Error reading credentials file: " + e.getMessage());
-            throw e;
-        }
-
-        System.out.println("Successfully loaded credentials.");
-
-        HttpCredentialsAdapter httpCredentialsAdapter = new HttpCredentialsAdapter(credentials);
-
-        Sheets service = new Sheets.Builder(httpTransport, jsonFactory, httpCredentialsAdapter)
+        sheetsService = new Sheets.Builder(httpTransport, jsonFactory, new HttpCredentialsAdapter(credentials))
                 .setApplicationName("Inji Verify")
                 .build();
 
-        System.out.println("Google Sheets Service initialized successfully.");
-
-        return service;
+        System.out.println("Google Sheets Service initialized successfully");
     }
 
-    public void appendData(List<List<Object>> rowData) throws IOException, GeneralSecurityException {
-        Sheets service = getSheetsService();
+    public void appendData(String range, List<List<Object>> rowData) throws IOException {
 
         ValueRange body = new ValueRange().setValues(rowData);
 
-        service.spreadsheets().values()
-                .append(spreadsheetId, "Sheet1!A:E", body)
+        sheetsService.spreadsheets().values()
+                .append(spreadsheetId, range, body)
                 .setValueInputOption("USER_ENTERED")
                 .execute();
-
     }
 
-    public List<List<Object>> getSheetData(String range) throws IOException, GeneralSecurityException {
-        Sheets service = getSheetsService();
-
-        ValueRange response = service.spreadsheets().values()
+    public List<List<Object>> getSheetData(String range) throws IOException {
+        ValueRange response = sheetsService.spreadsheets().values()
                 .get(spreadsheetId, range)
                 .execute();
 

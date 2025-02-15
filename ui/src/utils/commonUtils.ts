@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VCWrapper, Detail, QrData } from "../types/data-types";
-import { defaultCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder } from "./config";
+import { defaultCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, InvitationPassRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
   return (
@@ -49,7 +49,14 @@ export const getDetailsOrder = (vc: any): Detail[] => {
         }
         return { key, value: "N/A" };
       });
-    default:
+    case "InvitationPass03":
+      return InvitationPassRenderOrder.map((key) => {
+        if (key in credential) {
+          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
+        }
+        return { key, value: "N/A" };
+      });
+      default:
       return defaultCredentialRenderOrder.map((key) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
