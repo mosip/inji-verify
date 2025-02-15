@@ -160,6 +160,7 @@
       "upload": "رفع",
       "scan": "مسح",
       "back": "خلف",
+      "checkIn": "تسجيل الوصول",
       "verifyAnotherQrCode": "التحقق من رمز QR آخر"
     }
   }

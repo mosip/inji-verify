@@ -160,6 +160,7 @@
       "upload": "Upload",
       "scan": "Scan",
       "back": "Back",
+      "checkIn": "Check-In",
       "verifyAnotherQrCode": "Verify Another QR code"
     }
   }

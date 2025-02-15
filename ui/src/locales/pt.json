@@ -160,6 +160,7 @@
       "upload": "Carregar",
       "scan": "Digitalizar",
       "back": "Voltar",
+      "checkIn": "Check-In",
       "verifyAnotherQrCode": "Verifique outro código QR"
     }
   }
