@@ -47,7 +47,7 @@ export class api {
   };
 
   static fetchStatus: VpRequestStatusApi = {
-    url: (reqId: string,timeout: number) => api.Host + `/vp-request/${reqId}/status?timeout=${timeout}`,
+    url: (reqId: string) => api.Host + `/vp-request/${reqId}/status`,
     methodType: "GET",
     headers: () => {
       return {

@@ -10,13 +10,14 @@ import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -27,6 +28,8 @@ public class VPRequestController {
 
     @Autowired
     VerifiablePresentationRequestService verifiablePresentationRequestService;
+    @Value("${default.long-polling-timeout}")
+    Long timeOut;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
@@ -43,14 +46,14 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestParam("timeout")Optional<Long> timeout, @RequestHeader("Request-Time") String requestTime) {
+    public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestHeader("Request-Time") String requestTime) {
         response.setHeader("Connection", "close");
-        Long timeOut = timeout.orElse(Constants.DEFAULT_LONG_POLL_TIMEOUT);
         log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut, ()->{
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
+        result.onTimeout(()->{
             log.info("Timeout occurred");
-            return verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
+            result.setErrorResult(ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body("requested Timed out"));
         });
         log.info("registerSubmissionListener...");
         verifiablePresentationRequestService.registerSubmissionListener(requestId, result);
