@@ -26,6 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 @Service
 @Slf4j
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
@@ -36,6 +40,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
+    @Value("${default.long-polling-timeout}")
+    Long defaultTimeOut;
 
     HashMap<String,DeferredResult<VPRequestStatusDto>> submissionListeners = new HashMap<>();
 
@@ -67,23 +73,18 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public VPRequestStatusDto getCurrentRequestStatus(String requestId) {
-        log.info("Get Current Rqst Status...");
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
         if (vpSubmission != null) {
-            log.info("Get Current Rqst Status... VP_SUBMITTED");
             return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
         }
         Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
         if (expiresAt == null) {
-            log.info("Get Current Rqst Status... NULL");
             return null;
         }
         if (Instant.now().toEpochMilli() > expiresAt) {
-        log.info("Get Current Rqst Status... EXPIRED");
             return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
         }
-        log.info("Get Current Rqst Status... ACTIVE");
         return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
     }
 
@@ -105,12 +106,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public void registerSubmissionListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
         VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
         if (currentRequestStatus.getStatus() == null) {
-            log.info("Result error : NOT_FOUND");
             result.setErrorResult("NOT_FOUND");
             return;
         }
         if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
-            log.info("Result error : EXPIRED");
             result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
             return;
         }
@@ -121,7 +120,18 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public void invokeSubmissionListener(String requestId) {
         DeferredResult<VPRequestStatusDto> vpRequestStatusDtoDeferredResult = submissionListeners.get(requestId);
         vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
-        log.info("Result success : VP_SUBMITTED");
         submissionListeners.remove(requestId);
+    }
+    @Override
+    public DeferredResult<VPRequestStatusDto> getStatus(String requestId){
+        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
+        Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
+        Long timeOut = timeToExpiry > defaultTimeOut ? defaultTimeOut : timeToExpiry ; 
+        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
+        result.onTimeout(()->{
+            result.setErrorResult(ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body("Request Timed out"));
+        });
+        registerSubmissionListener(requestId, result);
+        return result;
     }
 }
