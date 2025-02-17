@@ -41,8 +41,7 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestHeader("Request-Time") String requestTime) {
-        log.info("Checking Request-Time Header: " + requestTime);
+    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId) {
         return verifiablePresentationRequestService.getStatus(requestId);
     }
 
