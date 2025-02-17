@@ -62,7 +62,6 @@ function* getVpStatus() {
   };
 
   const fetchStatus: any = function* () {
-    requestOptions.headers["Request-Time"] = `${Date.now()}`;
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId),requestOptions);
       if(response.status === 504){
