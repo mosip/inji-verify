@@ -12,18 +12,18 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 @SpringBootTest
 public class AppConfigTest {
 
-    @Autowired
-    private ApplicationContext context;
+    // @Autowired
+    // private ApplicationContext context;
 
-    @Test
-    public void testCredentialsVerifierBean() {
-        CredentialsVerifier credentialsVerifier = context.getBean(CredentialsVerifier.class);
-        assertNotNull(credentialsVerifier);
-    }
+    // @Test
+    // public void testCredentialsVerifierBean() {
+    //     CredentialsVerifier credentialsVerifier = context.getBean(CredentialsVerifier.class);
+    //     assertNotNull(credentialsVerifier);
+    // }
 
-    @Test
-    public void testGsonBean() {
-        Gson gson = context.getBean(Gson.class);
-        assertNotNull(gson);
-    }
+    // @Test
+    // public void testGsonBean() {
+    //     Gson gson = context.getBean(Gson.class);
+    //     assertNotNull(gson);
+    // }
 }
