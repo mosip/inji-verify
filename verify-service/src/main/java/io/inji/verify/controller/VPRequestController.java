@@ -52,6 +52,7 @@ public class VPRequestController {
             log.info("Timeout occurred");
             return verifiablePresentationRequestService.getCurrentRequestStatus(requestId);
         });
+        log.info("registerSubmissionListener...");
         verifiablePresentationRequestService.registerSubmissionListener(requestId, result);
         return result;
     }
