@@ -17,7 +17,6 @@ function* fetchRequestUri(claims: claim[]) {
   let qrData;
   let txnId;
   let reqId;
-  let expiresAt;
   const apiRequest: ApiRequest = api.fetchVpRequest;
   const def = claims.flatMap((claim) => claim.definition.input_descriptors);
   apiRequest.body!.presentationDefinition.input_descriptors = [...def];
@@ -40,7 +39,6 @@ function* fetchRequestUri(claims: claim[]) {
     qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
-    expiresAt = parsedData.expiresAt;
   } catch (error) {
     console.error("Failed to fetch request URI:", error);
     yield put(resetVpRequest());
@@ -50,11 +48,11 @@ function* fetchRequestUri(claims: claim[]) {
     return;
   }
 
-  yield put(setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId , expiresAt: expiresAt }));
+  yield put(setVpRequestResponse({ qrData: qrData, txnId: txnId, reqId: reqId }));
   return;
 }
 
-function* getVpStatus(expireAt: any) {
+function* getVpStatus() {
   const txnId: string = yield select((state: RootState) => state.verify.txnId);
   const reqId: string = yield select((state: RootState) => state.verify.reqId);
   const apiRequest: VpRequestStatusApi = api.fetchStatus;
@@ -65,18 +63,14 @@ function* getVpStatus(expireAt: any) {
 
   const fetchStatus: any = function* () {
     requestOptions.headers["Request-Time"] = `${Date.now()}`;
-    requestOptions.headers["Connection"] = `close`;
-    console.error(requestOptions.headers);
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId),requestOptions);
-      console.log(response);
       if(response.status === 504){
         yield call(fetchStatus);
         return;
       }
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
-      console.error("Data : " , parsedData);
       const status = parsedData.status;
       switch (status) {
         case "VP_SUBMITTED":
@@ -145,9 +139,7 @@ function* verifySaga() {
     takeLatest(getVpRequest, function* ({ payload }) {
       yield call(fetchRequestUri, payload.selectedClaims);
     }),
-    takeLatest(setVpRequestResponse, function* ({ payload }) {
-      yield call(getVpStatus, payload.expiresAt);
-    }),
+    takeLatest(setVpRequestResponse, getVpStatus),
     takeLatest(setVpRequestStatus, getVpResult),
   ]);
 }

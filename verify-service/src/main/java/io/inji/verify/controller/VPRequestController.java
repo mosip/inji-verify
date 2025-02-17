@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.beans.factory.annotation.Value;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -28,8 +27,6 @@ public class VPRequestController {
 
     @Autowired
     VerifiablePresentationRequestService verifiablePresentationRequestService;
-    @Value("${default.long-polling-timeout}")
-    Long timeOut;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {
@@ -47,17 +44,8 @@ public class VPRequestController {
 
     @GetMapping(path = "/{requestId}/status")
     public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestHeader("Request-Time") String requestTime) {
-        response.setHeader("Connection", "close");
-        log.info("Checking Status with timeout: " + timeOut);
         log.info("Checking Request-Time Header: " + requestTime);
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
-        result.onTimeout(()->{
-            log.info("Timeout occurred");
-            result.setErrorResult(ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body("requested Timed out"));
-        });
-        log.info("registerSubmissionListener...");
-        verifiablePresentationRequestService.registerSubmissionListener(requestId, result);
-        return result;
+        return verifiablePresentationRequestService.getStatus(requestId);
     }
 
 }

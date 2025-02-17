@@ -22,4 +22,6 @@ public interface VerifiablePresentationRequestService {
     void registerSubmissionListener(@NotNull String requestId, @NotNull DeferredResult<VPRequestStatusDto> result);
 
     void invokeSubmissionListener(@NotNull String state);
+
+    DeferredResult<VPRequestStatusDto> getStatus(@NotNull String requestId);
 }
