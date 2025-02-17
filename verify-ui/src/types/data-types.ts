@@ -133,7 +133,7 @@ export type ApiRequest = {
 };
 
 export type VpRequestStatusApi = {
-  url: (reqId: string,timeout:number) => string;
+  url: (reqId: string) => string;
   methodType: MethodType;
   headers: (...args: string[]) => Record<string, string>;
   body?: BodyType;
