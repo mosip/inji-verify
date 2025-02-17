@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import jakarta.servlet.http.HttpServletResponse;
-
 
 @RequestMapping("/vp-request")
 @RestController
@@ -43,7 +41,7 @@ public class VPRequestController {
     }
 
     @GetMapping(path = "/{requestId}/status")
-    public DeferredResult<VPRequestStatusDto> getStatus(HttpServletResponse response, @PathVariable String requestId, @RequestHeader("Request-Time") String requestTime) {
+    public DeferredResult<VPRequestStatusDto> getStatus(@PathVariable String requestId, @RequestHeader("Request-Time") String requestTime) {
         log.info("Checking Request-Time Header: " + requestTime);
         return verifiablePresentationRequestService.getStatus(requestId);
     }
