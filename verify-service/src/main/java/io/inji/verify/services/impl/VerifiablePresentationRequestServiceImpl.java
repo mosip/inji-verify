@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Service
 @Slf4j
@@ -124,12 +122,12 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
     @Override
     public DeferredResult<VPRequestStatusDto> getStatus(String requestId){
-        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
+        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElseGet(()->Instant.now().toEpochMilli());
         Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
         Long timeOut = timeToExpiry > defaultTimeOut ? defaultTimeOut : timeToExpiry ; 
         DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
         result.onTimeout(()->{
-            result.setErrorResult(ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body("Request Timed out"));
+            result.setResult(getCurrentRequestStatus(requestId));
         });
         registerSubmissionListener(requestId, result);
         return result;
