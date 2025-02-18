@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = { "default.long-polling-timeout = 1000" })
+@TestPropertySource(properties = { "inji.vp-request.long-polling-timeout = 1000" })
 class VerifyServiceApplicationTests {
 
      @Test

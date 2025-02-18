@@ -38,10 +38,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
-    @Value("${default.long-polling-timeout}")
-    Long defaultTimeOut;
+    @Value("${inji.vp-request.long-polling-timeout}")
+    Long defaultTimeout;
 
-    HashMap<String,DeferredResult<VPRequestStatusDto>> submissionListeners = new HashMap<>();
+    HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
@@ -53,16 +53,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
                 .map(presentationDefinitionId -> presentationDefinitionRepository.findById(presentationDefinitionId)
-                        .map(presentationDefinition -> {
-                            VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
-                            return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
-                        })
-                        .orElseThrow(PresentationDefinitionNotFoundException::new))
+                .map(presentationDefinition -> {
+                    VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
+                    return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
+                })
+                .orElseThrow(PresentationDefinitionNotFoundException::new))
                 .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
 
-
-        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new
-                AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
+        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         log.info("Authorization request created");
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
@@ -100,36 +98,43 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
     }
 
-    @Override
-    public void registerSubmissionListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
-        VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
-        if (currentRequestStatus.getStatus() == null) {
-            result.setErrorResult("NOT_FOUND");
-            return;
-        }
-        if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
-            result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
-            return;
-        }
-        submissionListeners.put(requestId, result);
+    private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
+        vpRequestStatusListeners.put(requestId, result);
     }
 
     @Override
-    public void invokeSubmissionListener(String requestId) {
-        DeferredResult<VPRequestStatusDto> vpRequestStatusDtoDeferredResult = submissionListeners.get(requestId);
-        vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
-        submissionListeners.remove(requestId);
-    }
-    @Override
-    public DeferredResult<VPRequestStatusDto> getStatus(String requestId){
-        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElseGet(()->Instant.now().toEpochMilli());
-        Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
-        Long timeOut = timeToExpiry > defaultTimeOut ? defaultTimeOut : timeToExpiry ; 
-        DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
-        result.onTimeout(()->{
-            result.setResult(getCurrentRequestStatus(requestId));
+    public void invokeVpRequestStatusListener(String requestId) {
+        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).map(vpRequestStatusDtoDeferredResult -> {
+            vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
+            vpRequestStatusListeners.remove(requestId);
+            return null;
         });
-        registerSubmissionListener(requestId, result);
-        return result;
+    }
+
+    @Override
+    public DeferredResult<VPRequestStatusDto> getStatus(String requestId) {
+       return authorizationRequestCreateResponseRepository
+                .findById(requestId)
+                .map(authorizationRequestCreateResponse -> {
+                    long expiresAt = authorizationRequestCreateResponse.getExpiresAt();
+                    Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
+                    Long timeOut = timeToExpiry > defaultTimeout ? defaultTimeout : timeToExpiry;
+                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
+                    VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
+
+                    if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
+                        result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        return result;
+                    }
+
+                    result.onTimeout(() -> result.setResult(getCurrentRequestStatus(requestId)));
+                    registerVpRequestStatusListener(requestId, result);
+                    return result;
+                })
+                .orElseGet(() -> {
+                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>();
+                    result.setErrorResult("NOT_FOUND");
+                    return result;
+                });
     }
 }
