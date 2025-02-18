@@ -71,18 +71,21 @@ const Result = () => {
           className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
         />
         <div className="grid content-center justify-center">
-          <Button
-            id="verify-another-qr-code-button"
-            title={t("Common:Button.checkIn")}
-            disabled={isCheckIn || isPopulating}
-            onClick={populateGoogleSheet}
-            className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
-          />
+          {vc.type[1].includes("InvitationPass") && (
+            <Button
+              id="verify-another-qr-code-button"
+              title={t("Common:Button.checkIn")}
+              disabled={isCheckIn || isPopulating}
+              onClick={populateGoogleSheet}
+              className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
+            />
+          )}
+
           <Button
             id="verify-another-qr-code-button"
             title={t("Common:Button.verifyAnotherQrCode")}
             onClick={() => dispatch(goToHomeScreen({}))}
-            disabled={!isCheckIn}
+            disabled={vc.type[1].includes("InvitationPass") && !isCheckIn}
             className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
           />
         </div>
