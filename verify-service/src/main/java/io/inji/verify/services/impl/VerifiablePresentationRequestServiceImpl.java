@@ -124,12 +124,12 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
     @Override
     public DeferredResult<VPRequestStatusDto> getStatus(String requestId){
-        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
+        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElseGet(()->Instant.now().toEpochMilli());
         Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
         Long timeOut = timeToExpiry > defaultTimeOut ? defaultTimeOut : timeToExpiry ; 
         DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
         result.onTimeout(()->{
-            result.setErrorResult(ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body("Request Timed out"));
+            result.setResult(getCurrentRequestStatus(requestId));
         });
         registerSubmissionListener(requestId, result);
         return result;

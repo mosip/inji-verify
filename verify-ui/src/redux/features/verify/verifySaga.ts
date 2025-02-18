@@ -64,10 +64,6 @@ function* getVpStatus() {
   const fetchStatus: any = function* () {
     try {
       const response: Response = yield call(fetch,apiRequest.url(reqId),requestOptions);
-      if(response.status === 504){
-        yield call(fetchStatus);
-        return;
-      }
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
       const status = parsedData.status;
