@@ -149,7 +149,7 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
-
+                
         - name: inji-verify-ui-config
           configMap:
             name: {{ template "common.names.fullname" . }}-config
