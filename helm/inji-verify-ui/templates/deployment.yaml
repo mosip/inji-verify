@@ -10,6 +10,7 @@ metadata:
     {{- if .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
     {{- end }}
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount }}
   {{- if .Values.updateStrategy }}
@@ -113,8 +114,9 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
-            - name: conf-file
+            - name: inji-verify-ui-config
               mountPath: /usr/share/nginx/html/assets/config.json
+              subPath: config.json
               readOnly: true
           ports:
             - name: spring-service
@@ -147,6 +149,7 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
+
         - name: inji-verify-ui-config
           configMap:
             name: {{ template "common.names.fullname" . }}-config
