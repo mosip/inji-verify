@@ -88,21 +88,6 @@ export const checkInternetStatus = async (): Promise<boolean> => {
 
 export const convertToId = (content: string) => content.toLowerCase().replaceAll(" ", "-");
 
-export const generateRandomString = (
-  length = 43,
-  charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
-) => {
-  let randomString = "";
-  for (let i = 0; i < 43; i++) {
-    const array = new Uint32Array(1);
-    const randomOffset =
-      (crypto.getRandomValues(array)[0] / 2 ** 32) * charset.length;
-    const randomIndex = Math.floor(randomOffset);
-    randomString += charset[randomIndex];
-  }
-  return randomString;
-};
-
 export const saveData = async (vc: any) => {
   const myData = vc;
   const fileName = vc.type[1];
