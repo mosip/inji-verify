@@ -6,9 +6,9 @@ import CheckingForInternetConnectivity from "../misc/CheckingForInternetConnecti
 const PageTemplate = (props: any) => {
     return (
         <div>
-            <Navbar/>
+            {/* <Navbar/> */}
             {props.children}
-            <Copyrights/>
+            {/* <Copyrights/> */}
             <CheckingForInternetConnectivity/>
         </div>
     );

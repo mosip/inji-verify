@@ -1,0 +1,58 @@
+{
+  "Header": {
+    "heading": "Loan Verification Portal",
+    "headingHighlight": "with ease!",
+    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+  },
+  "navheader": {
+    "about_us": "About Us",
+    "our_features": "Our Features",
+    "help": "Help",
+    "home": "Home"
+  },
+  "landing_page": {
+    "sign_in_with_esignet": "Sign In with National ID",
+    "sign_in_to_banking_portal": "Log In",
+    "username": "Username",
+    "password": "Password",
+    "username_placeholder": "Enter username",
+    "password_placeholder":"Enter password",
+    "keep_me_sign_in": "Keep me sign in",
+    "forgot_password": "Forgot Password?",
+    "submit": "Submit",
+    "or": "Or",
+    "no_account": "Don't have an account?",
+    "sign_up": "Sign up now"
+  },
+  "loan_page": {
+    "success_message": "You have successfully logged into Omera Bank using eSignet",
+    "get_started": "Welcome",
+    "loan_upto": "Get loan upto ",
+    "amount": "$10,000/-",
+    "apply_loan": "Apply for loan",
+    "subtext": "Get quick and easy loans in just a few steps"
+  },
+  "loading": {
+    "background_process": "Background verification is in progress",
+    "please_wait": "Please wait..."
+  },
+  "loan_result": {
+    "verify_credentials": "Verify Credentials",
+    "congrats": "Congratulations!",
+    "info": "Click the button below to verify your credentials and avail the loan.",
+    "background_process": "Your background verification is completed successfully."
+  },
+  "application": {
+    "details": "Fill Details",
+    "details_description": "Lorem ipsum dolor sit amet",
+    "eligible_check": "Eligibility Check",
+    "eligible_check_description": "Lorem ipsum dolor sit amet",
+    "result": "View Result",
+    "result_description": "Lorem ipsum dolor sit amet"
+  },
+  "form": {
+    "home_loan": "Home Loan",
+    "personal_loan": "Personal Loan",
+    "education_loan": "Education Loan"
+  }
+}

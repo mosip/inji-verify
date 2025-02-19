@@ -1,6 +1,6 @@
 import React from 'react';
-import scanQr from "../../../assets/scanner-ouline.svg";
-import qrIcon from "../../../assets/qr-code-icon.svg";
+import scanQr from "../../../assets/qr-border.svg";
+import qrIcon from "../../../assets/qr_code.svg";
 import {ReactComponent as TabScanFillIcon} from "../../../assets/tab-scan-fill.svg";
 import StyledButton from "./commons/StyledButton";
 import {UploadQrCode} from "./UploadQrCode";
@@ -17,7 +17,7 @@ const Scan = () => {
             <StyledButton
                 id="scan-button"
                 icon={<TabScanFillIcon className="fill-inherit"/>}
-                className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#ff7f00] hover:fill-white'
+                className='mx-0 my-1.5 py-3 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px] fill-[#7F56D9] hover:fill-white text-[#7F56D9] border-[#7F56D9] hover:bg-[#7F56D9] !rounded-xl'
                 fill={false}
                 onClick={async (event) => {
                     dispatch(updateInternetConnectionStatus({internetConnectionStatus: "LOADING"}))
@@ -53,7 +53,7 @@ const ScanQrCode = () => {
                     className={`relative grid content-center justify-center w-[275px] lg:w-[350px] aspect-square my-1.5 mx-auto bg-cover`}
                     style={{backgroundImage: `url(${scanQr})`}}>
                     <div
-                        className="grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
+                        className="grid bg-[#F9F5FF] rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center">
                     </div>
                     <div
                         className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
@@ -65,7 +65,7 @@ const ScanQrCode = () => {
                             : (<Upload/>)
                     }
                 </div>
-                {
+                {/* {
                     method === "UPLOAD" && (
                         <div className="grid text-center content-center justify-center pt-2">
                             <p id="file-format-constraints" className="font-normal text-[14px] text-[#8E8E8E] w-[280px]">
@@ -73,7 +73,7 @@ const ScanQrCode = () => {
                             </p>
                         </div>
                     )
-                }
+                } */}
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactComponent as NoPhotographyIcon} from "../../../assets/no-photography-icon.svg";
+import {ReactComponent as NoPhotographyIcon} from "../../../assets/camera_off.svg";
 import StyledButton from "./commons/StyledButton";
 import {CSSProperties} from "react";
 
@@ -45,7 +45,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
         <Modal>
             <Fade>
                 <div className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-md shadow-lg" style={style}>
-                    <NoPhotographyIcon fontSize={"inherit"} className="text-primary my-3 mx-auto"/>
+                    <NoPhotographyIcon fontSize={"inherit"} className="text-[#7F56D9] my-3 mx-auto"/>
                     <p id="camera-access-denied" className="font-bold  text-[20px] my-3 mx-auto">
                         Camera Access Denied
                     </p>
@@ -56,7 +56,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                     <StyledButton
                         id="camer-access-denied-okay-button"
                         onClick={handleClose}
-                        className="w-[180px] mx-auto my-[18px]"
+                        className="w-[180px] mx-auto my-[18px] text-[#7F56D9] border-[#7F56D9] hover:bg-[#7F56D9] !rounded-xl"
                         data-testid="camera-access-denied-okay"
                     >
                         Okay

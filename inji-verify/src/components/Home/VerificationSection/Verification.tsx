@@ -1,5 +1,5 @@
 import React from "react";
-import scanQr from "../../../assets/scanner-ouline.svg";
+import scanQr from "../../../assets/qr-border.svg";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import StyledButton from "./commons/StyledButton";
@@ -23,7 +23,7 @@ const Verification = () => {
         }}
       >
         {activeScreen === VerificationSteps[method].Verifying ? (
-          <Loader />
+          <Loader className="align-loading-center"/>
         ) : (
           <QrScanner />
         )}
@@ -31,7 +31,7 @@ const Verification = () => {
       <div className="col-span-12">
         <StyledButton
           id="verification-back-button"
-          className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px]"
+          className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px] text-[#7F56D9] border-[#7F56D9] hover:bg-[#7F56D9] !rounded-xl"
           onClick={() => {
             dispatch(goHomeScreen({}));
           }}

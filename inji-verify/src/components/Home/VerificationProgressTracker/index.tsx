@@ -4,7 +4,7 @@ import MobileStepper from "./MobileStepper";
 
 function VerificationProgressTracker() {
     return (
-        <div className="bg-white lg:bg-[#FAFBFD] bg-no-repeat">
+        <div className="bg-white bg-no-repeat">
             <DesktopStepper/>
             <MobileStepper/>
         </div>
