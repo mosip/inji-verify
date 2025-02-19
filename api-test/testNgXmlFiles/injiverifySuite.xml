@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Inji-Verify API Test">
+	<!-- Passing Group as parmeter unsing "testType" Possible Groups are: smoke 
+		regression smokeAndRegression -->
+	<listeners>
+		<listener class-name="io.mosip.testrig.apirig.report.EmailableReport" />
+	</listeners>
+
+	<test name="CreateNewVerificationRequest">
+		<parameter name="ymlFile"
+			value="injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest.yml" />
+		<parameter name="idKeyName" value="transactionId,requestId,id" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
+		</classes>
+	</test>
+	<test name="VpSubmission">
+		<parameter name="ymlFile"
+			value="injiverify/VpSubmission/VpSubmission.yml" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenIdForUrlEncoded" />
+		</classes>
+	</test>
+	<test name="GetVpRequestStatus">
+		<parameter name="ymlFile"
+			value="injiverify/GetVpRequestStatus/GetVpRequestStatus.yml" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.GetWithParam" />
+		</classes>
+	</test>
+	<test name="GetVpTokenForRequest">
+		<parameter name="ymlFile"
+			value="injiverify/GetVpTokenForRequest/GetVpTokenForRequest.yml" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.GetWithParam" />
+		</classes>
+	</test>
+	<test name="VcVerification">
+		<parameter name="ymlFile"
+			value="injiverify/VcVerification/VcVerification.yml" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePost" />
+		</classes>
+	</test>
+</suite>
