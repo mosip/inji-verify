@@ -75,7 +75,7 @@ const Result = () => {
             <Button
               id="verify-another-qr-code-button"
               title={t("Common:Button.checkIn")}
-              disabled={isCheckIn || isPopulating}
+              disabled={isCheckIn || isPopulating || vcStatus !== "SUCCESS"}
               onClick={populateGoogleSheet}
               className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
             />
@@ -85,7 +85,11 @@ const Result = () => {
             id="verify-another-qr-code-button"
             title={t("Common:Button.verifyAnotherQrCode")}
             onClick={() => dispatch(goToHomeScreen({}))}
-            disabled={vc.type[1].includes("InvitationPass") && !isCheckIn}
+            disabled={
+              vcStatus === "SUCCESS" &&
+              vc.type[1].includes("InvitationPass") &&
+              !isCheckIn
+            }
             className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
           />
         </div>

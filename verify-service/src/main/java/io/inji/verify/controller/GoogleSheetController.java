@@ -28,7 +28,7 @@ public class GoogleSheetController {
     private GoogleSheetService googleSheetService;
 
     private String generateNextSNo() throws IOException, GeneralSecurityException {
-        List<List<Object>> data = googleSheetService.getSheetData("'MOSIP Connect'!A:F");
+        List<List<Object>> data = googleSheetService.getSheetData("Sheet1!A:F");
         if (data == null || data.isEmpty()) {
             return "1";
         }
@@ -36,7 +36,7 @@ public class GoogleSheetController {
         int lastSNo = 0;
     
         for (List<Object> row : data) {
-            if (row.isEmpty() || row.get(0) == null) continue; // Skip empty rows
+            if (row.isEmpty() || row.get(0) == null) continue;
     
             try {
                 String sNoStr = row.get(0).toString().trim();
@@ -74,7 +74,7 @@ public class GoogleSheetController {
             List<List<Object>> dataToAppend = new ArrayList<>();
             dataToAppend.add(values);
     
-            googleSheetService.appendData("'MOSIP Connect'!A:F", dataToAppend);
+            googleSheetService.appendData("Sheet1!A:F", dataToAppend);
             return ResponseEntity.ok("Data has been added to Google Sheets!");
     
         } catch (IOException e) {

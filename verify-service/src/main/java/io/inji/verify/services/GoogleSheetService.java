@@ -18,8 +18,10 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class GoogleSheetService {
 
     @Value("${google.credentials.json}")
@@ -37,15 +39,21 @@ public class GoogleSheetService {
         NetHttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-        GoogleCredentials credentials = GoogleCredentials.fromStream(
-                new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8)))
-                .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
+        try {
+            GoogleCredentials credentials = GoogleCredentials.fromStream(
+                    new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8)))
+                    .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
 
-        sheetsService = new Sheets.Builder(httpTransport, jsonFactory, new HttpCredentialsAdapter(credentials))
-                .setApplicationName("Inji Verify")
-                .build();
+            sheetsService = new Sheets.Builder(httpTransport, jsonFactory, new HttpCredentialsAdapter(credentials))
+                    .setApplicationName("Inji Verify")
+                    .build();
 
-        System.out.println("Google Sheets Service initialized successfully");
+            System.out.println("Google Sheets Service initialized successfully");
+
+        } catch (IOException e) {
+            log.error("Failed to parse Google credentials JSON", e);
+            throw e;
+        }
     }
 
     public void appendData(String range, List<List<Object>> rowData) throws IOException {
