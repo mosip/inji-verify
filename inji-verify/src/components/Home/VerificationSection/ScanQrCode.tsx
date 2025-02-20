@@ -9,9 +9,12 @@ import { qrReadInit } from "../../../redux/features/verification/verification.sl
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
 import { checkInternetStatus } from "../../../utils/misc";
 import { updateInternetConnectionStatus } from "../../../redux/features/application-state/application-state.slice";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const Scan = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("scan_qr_code");
   return (
     <>
       <StyledButton
@@ -36,7 +39,7 @@ const Scan = () => {
           }
         }}
       >
-        Scan
+        {t("scan")}
       </StyledButton>
       <button
         id="trigger-scan"
@@ -53,7 +56,7 @@ const Upload = () => (
   <>
     <UploadQrCode
       className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
-      displayMessage="Upload"
+      displayMessage={t("Upload")}
     />
   </>
 );

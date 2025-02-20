@@ -7,6 +7,7 @@ import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const Tab = ({
   id,
@@ -43,6 +44,7 @@ const Tab = ({
 
 function VerificationMethodTabs(props: any) {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("tab");
   const method = useVerificationFlowSelector((state) => state.method);
 
   function switchToVerificationMethod(method: VerificationMethod) {
@@ -78,7 +80,7 @@ function VerificationMethodTabs(props: any) {
             onClick={handlePrev}
             className="focus:outline-none"
           >
-            <MdArrowBackIos className="mx-auto" />
+            <MdArrowBackIos className="mx-auto"></MdArrowBackIos>
           </button>
         </div>
         <div
@@ -89,13 +91,13 @@ function VerificationMethodTabs(props: any) {
             <Tab
               id="upload-qr-code-tab"
               active={method === "UPLOAD"}
-              label="Upload QR Code"
+              label={t("upload_qr_code")}
               onClick={() => switchToVerificationMethod("UPLOAD")}
             />
             <Tab
               id="scan-qr-code-tab"
               active={method === "SCAN"}
-              label="Scan the QR Code"
+              label={t("scan_qr_code")}
               onClick={() => switchToVerificationMethod("SCAN")}
             />
           </div>

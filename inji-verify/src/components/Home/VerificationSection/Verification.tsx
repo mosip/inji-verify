@@ -7,9 +7,11 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { goHomeScreen } from "../../../redux/features/verification/verification.slice";
 import { VerificationSteps } from "../../../utils/config";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
+import { useTranslation } from "react-i18next";
 
 const Verification = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("verification");
   const { activeScreen, method } = useVerificationFlowSelector((state) => ({
     activeScreen: state.activeScreen,
     method: state.method,
@@ -36,7 +38,7 @@ const Verification = () => {
             dispatch(goHomeScreen({}));
           }}
         >
-          Back
+          {t("back")}
         </StyledButton>
       </div>
     </div>
