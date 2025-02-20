@@ -8,6 +8,7 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import "./ScanningLine.css";
+import Loader from "../../commons/Loader";
 
 let timer: NodeJS.Timeout;
 
@@ -215,11 +216,9 @@ function QrScanner() {
       className="fixed inset-0 flex items-center justify-center overflow-hidden lg:relative lg:overflow-visible"
     >
       {!isCameraBlocked && (
-        <div className="absolute top-[-15px] left-[-15px] h-[280px] w-[280px] lg:top-[-12px] lg:left-[-12px] lg:h-[340px] lg:w-[340px] flex items-center justify-center">
-          <div
-            id="scanning-line"
-            className="hidden lg:block scanning-line"
-          ></div>
+        <div className="absolute w-[280px] lg:left-[-12px] lg:w-[340px] block m-auto !top-[40%]">
+          <Loader />
+          <p className="text-[#6941C6] text-center m-auto py-3">Verifying...</p>
         </div>
       )}
 

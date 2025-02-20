@@ -1,11 +1,14 @@
 import {AlertInfo} from "../types/data-types";
 
 export const Pages = {
-    Home: "/",
+    Home: "/verification",
     VerifyCredentials: "/",/*"/verify"*/
     Offline: "/offline",
     Redirect: "/redirect",
-    PageNotFound: "*"
+    PageNotFound: "*",
+    LandingPage: "/",
+    LoanPage: "/userprofile",
+    Application: "/application"
 }
 
 export const SUPPORTED_DID_METHODS = ["web"];

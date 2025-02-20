@@ -1,10 +1,15 @@
-import React from 'react';
+import React from "react";
+import LoadingCircle from "../../assets/loading_circle.svg";
 
 function Loader(props: any) {
-    return (
-        <div id="loader" className={`w-[56px] lg:w-[76px] aspect-square rounded-[50%] border-[3px] border-l-primary border-t-primary animate-spin ${props.className ?? ""}`}>
-        </div>
-    );
+  return (
+    <div id="loader">
+      <img
+        src={LoadingCircle}
+        className={`${props.className} animate-spin m-auto`}
+      />
+    </div>
+  );
 }
 
 export default Loader;
