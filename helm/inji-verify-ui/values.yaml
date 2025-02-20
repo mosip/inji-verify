@@ -248,7 +248,6 @@ extraEnvVarsCM:
   - global
   - config-server-share
   - artifactory-share
-  - inji-verify-ui-config
 
 ## Secret with extra environment variables
 ##
