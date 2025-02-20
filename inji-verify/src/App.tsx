@@ -14,7 +14,6 @@ import langConfigService from "./portals/banking/services/langConfigService";
 import Loan from "./portals/banking/pages/Loan";
 import Application from "./portals/banking/pages/Application";
 import NavHeader from "./portals/banking/components/NavHeader";
-import '../src/utils/i18n'; // Ensure the i18n configuration loads
 
 const preloadImages = [
   "/assets/images/under_construction.svg",
@@ -74,15 +73,15 @@ function App() {
     },
     {
       path: Pages.LandingPage,
-      element: <LandingPage langOptions={langOptions} />,
+      element: <LandingPage />,
     },
     {
       path: Pages.LoanPage,
-      element: <Loan langOptions={langOptions} />,
+      element: <Loan />,
     },
     {
       path: Pages.Application,
-      element: <Application langOptions={langOptions} />,
+      element: <Application />,
     },
   ]);
 

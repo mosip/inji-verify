@@ -56,7 +56,7 @@ const CameraAccessDenied = ({open, handleClose}: { open: boolean, handleClose: (
                     <StyledButton
                         id="camer-access-denied-okay-button"
                         onClick={handleClose}
-                        className="w-[180px] mx-auto my-[18px] text-[#7F56D9] border-[#7F56D9] hover:bg-[#7F56D9] !rounded-xl"
+                        className="w-[180px] mx-auto my-[18px] !text-[#7F56D9] hover:!text-white !border-[#7F56D9] hover:!bg-[#7F56D9] !rounded-xl"
                         data-testid="camera-access-denied-okay"
                     >
                         Okay

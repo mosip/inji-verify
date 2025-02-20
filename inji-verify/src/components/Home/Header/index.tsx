@@ -12,12 +12,6 @@ function Header(props: any) {
           className="mx-auto my-1.5 font-bold text-lgMediumTextSize lg:text-lgBoldTextSize max-w-[80vw] text-headerLabelText !text-[#42307D] text-[1.5em]"
         >
           {t("heading")}
-          {/* <span
-            id="heading-highlighted-content"
-            className={`bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent lg:text-lgBoldTextSize font-bold`}
-          >
-            {t("headingHighlight")}
-          </span> */}
         </p>
         <p
           id="verify-credentials-description"

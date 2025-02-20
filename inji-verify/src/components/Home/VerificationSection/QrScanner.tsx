@@ -217,10 +217,6 @@ function QrScanner() {
     >
       {!isCameraBlocked && (
         <div className="absolute w-[280px] lg:left-[-12px] lg:w-[340px] block m-auto !top-[40%]">
-          {/* <div
-            id="scanning-line"
-            className="hidden lg:block scanning-line"
-          ></div> */}
           <Loader />
           <p className="text-[#6941C6] text-center m-auto py-3">Verifying...</p>
         </div>

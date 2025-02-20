@@ -31,7 +31,7 @@ const Verification = () => {
       <div className="col-span-12">
         <StyledButton
           id="verification-back-button"
-          className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px] text-[#7F56D9] border-[#7F56D9] hover:bg-[#7F56D9] !rounded-xl"
+          className="w-[100%] lg:w-[350px] max-w-[280px] lg:max-w-none mt-[18px] !text-[#7F56D9] hover:!text-white !border-[#7F56D9] hover:!bg-[#7F56D9] !rounded-xl"
           onClick={() => {
             dispatch(goHomeScreen({}));
           }}

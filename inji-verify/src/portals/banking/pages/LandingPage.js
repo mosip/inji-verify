@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clientDetails from "../constants/clientDetails";
 import { useExternalScript } from "../hooks/useExternalScript";
-import NavHeader from "../components/NavHeader";
 
-const LandingPage = ({ langOptions }) => {
+const LandingPage = () => {
   
   const { i18n, t } = useTranslation("landing_page");
   const signInButtonScript = window._env_.SIGN_IN_BUTTON_PLUGIN_URL;
@@ -42,11 +41,8 @@ const LandingPage = ({ langOptions }) => {
     });
   };
 
-  const navLinks = ["about_us", "our_features", "help"];
-
   return (
     <div>
-      {/* <NavHeader langOptions={langOptions} navLinks={navLinks} /> */}
       <div className="pt-2 flex">
         <div className="relative pr-[4rem] hidden lg:block">
           <img src="assets/images/mask.svg" className="relative" />

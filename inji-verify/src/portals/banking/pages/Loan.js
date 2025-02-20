@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import NavHeader from "../components/NavHeader";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import relyingPartyService from "../services/relyingPartyService";
 import clientDetails from "../constants/clientDetails";
 
-const Loan = ({ langOptions }) => {
+const Loan = () => {
   const { t } = useTranslation("loan_page");
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,8 +18,6 @@ const Loan = ({ langOptions }) => {
   useEffect(() => {
     setSuccessBanner(true);
   }, []);
-
-  const navLinks = ["home", "help"];
 
   const handleCross = () => {
     setSuccessBanner(false);
@@ -52,6 +49,10 @@ const Loan = ({ langOptions }) => {
         grant_type
       );
       setUserInfo(userInformation);
+      localStorage.setItem(
+        "userInfo",
+        window.btoa(JSON.stringify(userInformation))
+      );
     } catch (errormsg) {
       console.log(errormsg);
     }
@@ -59,16 +60,13 @@ const Loan = ({ langOptions }) => {
 
   const handleLoan = () => {
     if (userInfo) {
-      navigate("/application", {
-        state: userInfo,
-      });
+      navigate("/verification");
     }
   };
 
   return (
     userInfo && (
       <div>
-        {/* <NavHeader langOptions={langOptions} navLinks={navLinks} /> */}
         {successBanner && (
           <div className="bg-[#57A04B] py-2 flex justify-between">
             <span className="text-white font-light xl:pl-[10rem] pl-4">
@@ -92,12 +90,12 @@ const Loan = ({ langOptions }) => {
             />
           </div>
           <div className="lg:px-[4rem] m-auto lg:py-0 py-6 px-4">
-            <div className="text-[2.5rem] xl:w-[100%] m-auto xl:m-0 font-bold">
+            <div className="text-[2rem] xl:w-[100%] m-auto xl:m-0 font-bold flex">
               {t("get_started")}
-              <p>{userInfo.name}</p>
+              <p className="mx-4">{userInfo.name}</p>
             </div>
-            <p className="my-3 font-semibold text-[1.5rem]">{t("subtext")}</p>
-            <div className="mt-4 mb-[3rem] text-[#5A7184] font-semibold">
+            <p className="my-3 font-semibold text-[1.25rem]">{t("subtext")}</p>
+            <div className="mt-4 mb-[1rem] text-[#5A7184] font-semibold">
               {t("loan_upto")}
               <span className="text-[#6006A8]">{t("amount")}</span>
             </div>
