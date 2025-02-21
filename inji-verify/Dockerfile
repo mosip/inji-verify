@@ -83,9 +83,11 @@ ENV nginx_dir=/usr/share/nginx
 ENV work_dir=${nginx_dir}/html
 
 ADD configure_start.sh configure_start.sh
-ADD .env /usr/share/nginx/html/.env
 
-RUN echo "ESIGNET_UI_BASE_URL=$ESIGNET_UI_BASE_URL" >> /usr/share/nginx/html/.env \
+RUN echo "INTERNET_CONNECTIVITY_CHECK_ENDPOINT=$INTERNET_CONNECTIVITY_CHECK_ENDPOINT" > /usr/share/nginx/html/.env \
+    && echo "INTERNET_CONNECTIVITY_CHECK_TIMEOUT=$INTERNET_CONNECTIVITY_CHECK_TIMEOUT" >> /usr/share/nginx/html/.env \
+    && echo "OVP_QR_HEADER=$OVP_QR_HEADER" >> /usr/share/nginx/html/.env \
+    && echo "ESIGNET_UI_BASE_URL=$ESIGNET_UI_BASE_URL" >> /usr/share/nginx/html/.env \
     && echo "MOCK_RELYING_PARTY_SERVER_URL=$MOCK_RELYING_PARTY_SERVER_URL" >> /usr/share/nginx/html/.env \
     && echo "REDIRECT_URI=$REDIRECT_URI" >> /usr/share/nginx/html/.env \
     && echo "CLIENT_ID=$CLIENT_ID" >> /usr/share/nginx/html/.env \
