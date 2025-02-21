@@ -1,11 +1,11 @@
 {
   "languages": {
     "en": "English",
+    "es": "español",
+    "fr": "français",
     "hi": "हिंदी",
-    "ar": "عربى",
     "km": "ខ្មែរ",
     "kn": "ಕನ್ನಡ",
     "ta": "தமிழ்"
-  },
-  "rtlLanguages": ["ar"]
+  }
 }
