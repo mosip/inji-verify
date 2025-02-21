@@ -32,7 +32,7 @@ export const Button = (props: ButtonProps) => {
         {props.icon && <span className="mr-1.5">{props.icon}</span>}
         <span
           id={props.id}
-          className={`font-bold ${
+          className={`font-bold px-3 ${
             props.disabled
               ? "text-white"
               : props.fill
