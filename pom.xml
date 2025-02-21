@@ -116,7 +116,6 @@
     </properties>
 
     <modules>
-        <module>verify-service-bom</module>
         <module>verify-service</module>
     </modules>
     <build>
