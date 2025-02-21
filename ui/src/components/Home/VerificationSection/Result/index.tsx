@@ -77,7 +77,7 @@ const Result = () => {
               title={t("Common:Button.checkIn")}
               disabled={isCheckIn || isPopulating || vcStatus !== "SUCCESS"}
               onClick={populateGoogleSheet}
-              className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
+              className="mt-1 mb-2 lg:mb-1 lg:w-[339px]"
             />
           )}
 
