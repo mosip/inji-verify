@@ -43,7 +43,7 @@ const LandingPage = () => {
 
   return (
     <div>
-      <div className="pt-2 flex">
+      <div className="pt-2 flex font-semibold">
         <div className="relative pr-[4rem] hidden lg:block">
           <img src="assets/images/mask.svg" className="relative" />
           <img
@@ -78,7 +78,7 @@ const LandingPage = () => {
                     {t("keep_me_sign_in")}{" "}
                   </label>
                 </div>
-                <a href="" className="text-[#1565D8]">
+                <a href="" className="text-[#7F56D9]">
                   {t("forgot_password")}
                 </a>
               </div>
@@ -101,7 +101,7 @@ const LandingPage = () => {
             </div>
             <p className="text-sm my-[1.75rem]">
               <span className="text-[#5A7184] mr-2">{t("no_account")}</span>
-              <a href="" className="text-[#1565D8]">
+              <a href="" className="text-[#7F56D9]">
                 {t("sign_up")}
               </a>
             </p>

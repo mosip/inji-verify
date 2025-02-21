@@ -17,8 +17,8 @@
     "password": "Password",
     "username_placeholder": "Enter username",
     "password_placeholder": "Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
+    "keep_me_sign_in": "Keep me logged in",
+    "forgot_password": "Forgot password?",
     "submit": "Submit",
     "or": "Or",
     "no_account": "Don't have an account?",
@@ -29,8 +29,12 @@
     "get_started": "Welcome",
     "loan_upto": "Get loan upto ",
     "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "apply_for_loan": "Apply for loan",
+    "subtext": "Get quick and easy loans in just a few steps",
+    "apply_loan": "Click on 'Apply For Loan' to move forward",
+    "avail_loan": "Avail Loan",
+    "fill_details": "Fill Loan Details",
+    "verify_tan": "Verify TAN ID"
   },
   "loading": {
     "background_process": "Verifying Details",
@@ -38,7 +42,13 @@
   },
   "loan_result": {
     "congrats": "Congratulations!",
-    "background_process": "Your application has been verified and approved!"
+    "background_process": "Your application has been verified and approved!",
+    "approved_loan": "Approved Loan Amount",
+    "approved_loan_value": "$10,000",
+    "roi": "Rate of Interest",
+    "roi_value": "3%",
+    "tenure": "Tenure",
+    "tenure_value": "24 Months"
   },
   "application": {
     "details": "Fill Details",
@@ -61,15 +71,15 @@
     "loan_type": "Type of Loan",
     "loan_amount": "Loan amount",
     "personal_details": "(2) Personal Details",
-    "first_name": "First Name",
-    "last_name": "Last Name",
+    "full_name": "Full Name",
+    "dob": "Date Of Birth",
     "gender": "Gender",
     "phone_number": "Phone Number",
     "photo": "Photo",
     "email": "Email",
     "residential_address": "(3) Residential Address",
     "address": "Address",
-    "declarations": "(4) Declarations",
+    "declarations": "(4) Declaration",
     "terms&conditions": "I hereby declare that all the information provided is true and accurate. I consent to background verification based on my tax profile.",
     "proceed": "Proceed"
   },
@@ -107,5 +117,8 @@
     "close": "Close",
     "congrats": "Congratulations!",
     "background_process": "Your TAN details have been successfully verified, and your credit score is Excellent!"
+  },
+  "vc_card": {
+    "proceed": "Proceed"
   }
 }

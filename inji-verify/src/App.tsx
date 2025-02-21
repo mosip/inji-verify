@@ -14,6 +14,7 @@ import langConfigService from "./portals/banking/services/langConfigService";
 import Loan from "./portals/banking/pages/Loan";
 import Application from "./portals/banking/pages/Application";
 import NavHeader from "./portals/banking/components/NavHeader";
+import RedirectOnReload from "./portals/banking/components/RedirectOnReload";
 
 const preloadImages = [
   "/assets/images/under_construction.svg",
@@ -22,13 +23,7 @@ const preloadImages = [
 
 function App() {
   const [langOptions, setLangOptions] = useState([]);
-  var navLinks: any;
-
-  if (window.location.pathname === "/") {
-    navLinks = ["about_us", "our_features", "help"];
-  } else {
-    navLinks = ["home", "help"];
-  }
+  var navLinks: any = ["home", "help"];
 
   //Loading rtlLangs
   useEffect(() => {
@@ -87,6 +82,7 @@ function App() {
 
   return (
     <div className="font-base">
+      <RedirectOnReload />
       <NavHeader langOptions={langOptions} navLinks={navLinks} />
       <RouterProvider router={router} />
       <AlertMessage />

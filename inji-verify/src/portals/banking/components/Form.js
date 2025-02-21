@@ -20,13 +20,19 @@ const Form = (props) => {
   ];
 
   const [isChecked, setIsChecked] = useState(false);
+  const [loanType, setLoanType] = useState(null);
 
   const handleProceed = () => {
     props.child(1);
+    localStorage.removeItem("userInfo");
   };
 
   const handleTerms = (e) => {
     setIsChecked(e.target.checked);
+  };
+
+  const handleSelect = (e) => {
+    setLoanType(e.value);
   };
 
   const userInfo = JSON.parse(window.atob(localStorage.getItem("userInfo")));
@@ -74,13 +80,19 @@ const Form = (props) => {
               </div>
               <div className="flex mt-6">
                 <div className="w-full mr-4">
-                  <p className="mb-2">{t("loan_type")}</p>
+                  <span>{t("loan_type")}</span>
+                  <img
+                    src="assets/images/asterisk.svg"
+                    alt="asterisk"
+                    className="inline relative bottom-1"
+                  />
                   <Select
                     styles={customStyles}
                     isSearchable={false}
-                    className="appearance-none"
+                    className="mt-[0.6rem]"
                     options={loanTypes}
                     placeholder="Select an Option"
+                    onChange={handleSelect}
                   />
                 </div>
                 <div className="w-full ml-4">
@@ -100,19 +112,7 @@ const Form = (props) => {
               </p>
               <div className="flex my-6">
                 <div className="w-full mr-4">
-                  <span className="mb-2">{t("first_name")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
-                  <input
-                    type="text"
-                    value={userInfo?.name}
-                    disabled
-                    className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
-                  />
-                  <span>{t("last_name")}</span>
+                  <span className="mb-2">{t("full_name")}</span>
                   <img
                     src="assets/images/asterisk.svg"
                     alt="asterisk"
@@ -136,7 +136,7 @@ const Form = (props) => {
                     disabled
                     className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
                   />
-                  <span>{t("phone_number")}</span>
+                  <span>{t("dob")}</span>
                   <img
                     src="assets/images/asterisk.svg"
                     alt="asterisk"
@@ -144,7 +144,19 @@ const Form = (props) => {
                   />
                   <input
                     type="text"
-                    value={userInfo.phone_number}
+                    value={userInfo.birthdate}
+                    disabled
+                    className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
+                  />
+                  <span>{t("email")}</span>
+                  <img
+                    src="assets/images/asterisk.svg"
+                    alt="asterisk"
+                    className="inline relative bottom-1"
+                  />
+                  <input
+                    type="text"
+                    value={userInfo.email}
                     disabled
                     className="p-3 w-full rounded-md text-gray-500 mt-3"
                   />
@@ -166,15 +178,10 @@ const Form = (props) => {
                         : "assets/images/profile.svg"
                     }
                   />
-                  <span>{t("email")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
+                  <span>{t("phone_number")}</span>
                   <input
                     type="text"
-                    value={userInfo.email}
+                    value={userInfo.phone_number}
                     disabled
                     className="p-3 w-full rounded-md text-gray-500 mt-3"
                   />
@@ -196,7 +203,13 @@ const Form = (props) => {
                   />
                   <input
                     type="text"
-                    value="#2342, Sector 30B, Chandigarh"
+                    value={
+                      userInfo.address
+                        ? Object.values(userInfo.address)
+                            .map((v) => v.trim())
+                            .join(", ")
+                        : "#2342, Sector 30B, Chandigarh"
+                    }
                     disabled
                     className="p-3 w-full rounded-md text-gray-500  mt-3"
                   />
@@ -215,7 +228,7 @@ const Form = (props) => {
                 className="text-md scale-150 relative top-[1.5px] mr-1 hover:cursor-pointer"
                 onChange={handleTerms}
               />
-              <label for="signin" className="mx-0 text-[#5A7184] font-[400]">
+              <label for="signin" className="mx-0 font-[400]">
                 {" "}
                 {t("terms&conditions")}
               </label>
@@ -226,7 +239,7 @@ const Form = (props) => {
               type="submit"
               className="bg-[#53389E] px-[3rem] py-3 text-white rounded-md hover:cursor-pointer"
               onClick={handleProceed}
-              disabled={!isChecked}
+              disabled={!isChecked || !loanType}
             >
               {t("proceed")}{" "}
             </button>
