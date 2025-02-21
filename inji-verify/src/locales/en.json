@@ -120,5 +120,10 @@
   },
   "vc_card": {
     "proceed": "Proceed"
+  },
+  "vc_result": {
+    "success": "Congratulations, the TAN is valid!",
+    "invalid": "Unfortunately, the TAN is invalid!",
+    "expired": "Unfortunately, the TAN is expired!"
   }
 }
