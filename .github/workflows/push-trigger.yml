@@ -13,6 +13,7 @@ on:
       - 1.*
       - develop
       - MOSIP*
+      - ES-2227
 
 jobs:
   build-dockers-inji-verify:
