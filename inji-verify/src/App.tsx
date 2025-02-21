@@ -80,13 +80,23 @@ function App() {
     },
   ]);
 
+  const userInfo = localStorage.getItem("userInfo");
+
   return (
     <div className="font-base">
       <RedirectOnReload />
-      <NavHeader langOptions={langOptions} navLinks={navLinks} />
-      <RouterProvider router={router} />
-      <AlertMessage />
-      <PreloadImages imageUrls={preloadImages} />
+      {!(
+        !userInfo &&
+        (window.location.pathname === "/verification" ||
+          window.location.pathname === "/application")
+      ) && (
+        <>
+          <NavHeader langOptions={langOptions} navLinks={navLinks} />
+          <RouterProvider router={router} />
+          <AlertMessage />
+          <PreloadImages imageUrls={preloadImages} />
+        </>
+      )}
     </div>
   );
 }

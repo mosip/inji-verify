@@ -41,6 +41,8 @@ const LandingPage = () => {
     });
   };
 
+  localStorage.removeItem("userInfo");
+
   return (
     <div>
       <div className="pt-2 flex font-semibold">

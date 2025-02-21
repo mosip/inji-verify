@@ -12,13 +12,35 @@ import { useTranslation } from "react-i18next";
 function VcDisplayCard({ vc }: { vc: any }) {
   const navigate = useNavigate();
   const { t } = useTranslation("vc_card");
+
+  const orderedKeys: (keyof typeof vc.credentialSubject)[] = [
+    "fullName",
+    "dateOfBirth",
+    "gender",
+    "email",
+    "mobile",
+    "id",
+    "policyIssuedOn",
+    "policyExpiresOn",
+  ];
+
+  const orderedObject = Object.fromEntries(
+    orderedKeys
+      .map((key) =>
+        key === "dateOfBirth"
+          ? ["dateOfBirth", vc.credentialSubject["dob"]]
+          : [key, vc.credentialSubject[key]]
+      )
+      .filter(([key, value]) => value !== undefined) // Ensure valid values
+  );
+
   return (
     <div>
       <div
         className={`grid w-[340px] m-auto bg-white rounded-[12px] py-[5px] px-[15px] shadow-lg`}
       >
         {vc ? (
-          Object.keys(vc.credentialSubject)
+          Object.keys(orderedObject)
             .filter(
               (key) =>
                 key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type"
@@ -26,7 +48,9 @@ function VcDisplayCard({ vc }: { vc: any }) {
             .map((key, index) => (
               <div
                 className={`py-2.5 px-1 xs:col-end-13 ${
-                  index % 2 === 0
+                  index === 0
+                    ? "lg:col-start-1 lg:col-end-13"
+                    : index % 2 !== 0
                     ? "lg:col-start-1 lg:col-end-6"
                     : "lg:col-start-8 lg:col-end-13"
                 }`}
@@ -42,7 +66,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
                   id={`${convertToId(key)}-value`}
                   className="font-bold text-[12px] break-all"
                 >
-                  {getDisplayValue(vc.credentialSubject[key])}
+                  {getDisplayValue(orderedObject[key])}
                 </p>
               </div>
             ))
@@ -55,7 +79,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
       <div className="grid content-center justify-center">
         <StyledButton
           id="verify-another-qr-code-button"
-          className="mx-auto mt-6 mb-20 lg:mb-6 !rounded-xl"
+          className="mx-auto mt-6 mb-20 lg:mb-6 !rounded-xl !px-[8rem]"
           onClick={() => {
             navigate("/application");
           }}

@@ -35,7 +35,9 @@ const Form = (props) => {
     setLoanType(e.value);
   };
 
-  const userInfo = JSON.parse(window.atob(localStorage.getItem("userInfo")));
+  const isUserInfo = localStorage.getItem("userInfo");
+
+  const userInfo = isUserInfo ? JSON.parse(window.atob(isUserInfo)) : "";
 
   return (
     userInfo && (
