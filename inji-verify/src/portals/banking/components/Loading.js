@@ -6,7 +6,7 @@ const Loading = (props) => {
   useEffect(() => {
     setTimeout(() => {
       props.child(2);
-    }, 2000);
+    }, 1500);
   }, []);
 
   return (
