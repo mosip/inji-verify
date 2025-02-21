@@ -160,6 +160,7 @@
       "upload": "Subir",
       "scan": "Escanear",
       "back": "Atrás",
+      "checkIn": "Registrarse",
       "verifyAnotherQrCode": "Verificar otro código QR"
     }
   }

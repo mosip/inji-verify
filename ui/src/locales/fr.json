@@ -160,6 +160,7 @@
       "upload": "Télécharger",
       "scan": "Balayage",
       "back": "Dos",
+      "checkIn": "Enregistrement",
       "verifyAnotherQrCode": "Vérifier un autre code QR"
     }
   }

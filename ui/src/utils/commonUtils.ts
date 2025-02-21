@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VCWrapper, Detail, QrData } from "../types/data-types";
-import { defaultCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder } from "./config";
+import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, InvitationPassRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
   return (
@@ -18,8 +18,19 @@ export const getPresentationDefinition = (data: QrData) => {
 
 export const getDetailsOrder = (vc: any): Detail[] => {
   const type = vc.type[1];
-  const credential = vc.credentialSubject
+  const credential = vc.credentialSubject;
   switch (type) {
+    case "InsuranceCredential":
+    case "LifeInsuranceCredential":
+      return InsuranceCredentialRenderOrder.map((key) => {
+        if (key in credential) {
+          return {
+            key,
+            value: credential[key as keyof credentialSubject] || "N/A",
+          };
+        }
+        return { key, value: "N/A" };
+      });
     case "farmer":
       return farmerLandCredentialRenderOrder.flatMap((key) => {
         if (typeof key === "string") {
@@ -49,8 +60,16 @@ export const getDetailsOrder = (vc: any): Detail[] => {
         }
         return { key, value: "N/A" };
       });
+    case "InvitationPass03":
+    case "InvitationPass05":
+      return InvitationPassRenderOrder.map((key) => {
+        if (key in credential) {
+          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
+        }
+        return { key, value: "N/A" };
+      });
     default:
-      return defaultCredentialRenderOrder.map((key) => {
+      return Object.keys(credential).map((key) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }

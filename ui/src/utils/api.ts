@@ -1,4 +1,4 @@
-import { ApiRequest } from "../types/data-types";
+import { ApiRequest, CheckInApiRequest } from "../types/data-types";
 
 const generateNonce = (): string => {
   const dateTimeString = Date.now().toString();
@@ -64,5 +64,16 @@ export class api {
         "Content-Type": "application/json"
       };
     },
+  };
+
+  static fetchCheckIn: CheckInApiRequest ={
+    url: () => api.Host + "/api/sheets/append",
+    methodType: "POST",
+    headers: () => {
+      return {
+        "Content-Type": "application/json",
+      };
+    },
+    body: ""
   };
 }
