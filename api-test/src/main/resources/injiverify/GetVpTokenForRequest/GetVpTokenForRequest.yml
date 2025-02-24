@@ -1,0 +1,32 @@
+GetVpTokenForRequest:
+  Injiverify_GetVpTokenForRequest_All_Valid_Smoke:
+      endPoint: /v1/verify/vp-result/{transactionId}
+      description: Getting the VP token for the Request
+      uniqueIdentifier: TC_InjiVerify_GetVpTokenForRequest_01
+      role: noauth
+      restMethod: get
+      inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
+      outputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequestResult
+      input: '{
+      "transactionId":"$ID:CreateNewVerificationRequest_All_Valid_Smoke_Sid_transactionId$"
+      }'
+      output: '{
+    "transactionId": "$ID:CreateNewVerificationRequest_All_Valid_Smoke_Sid_transactionId$",
+    "vpresultStatus": "SUCCESS"
+}'
+
+  Injiverify_GetVpTokenForRequest_Invalid_TransactionId_Neg:
+      endPoint: /v1/verify/vp-result/{transactionId}
+      description: Getting the VP token for the Request with inavlid transaction id
+      uniqueIdentifier: TC_InjiVerify_GetVpTokenForRequest_02
+      role: noauth
+      restMethod: get
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "transactionId":"hgyghvgftA"
+      }'
+      output: '{
+      "responseCode": "500"
+}'

@@ -1,0 +1,183 @@
+CreateNewVerificationRequest:
+  Injiverify_CreateNewVerificationRequest_All_Valid_Smoke_Sid:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_01
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestResult
+      input: '{
+      "clientId":"client123",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+    "responseType": "vp_token",
+    "clientId": "client123",
+    "responseUri": "/vp-submission/direct-post",
+    "id": "$PRESENTATIONDEFINITIONID$"
+}'
+
+  Injiverify_CreateNewVerificationRequest_ForExpiry_All_Valid_Smoke_Sid:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request for expiry
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_02
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestResult
+      input: '{
+      "clientId":"client123",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+    "responseType": "vp_token",
+    "clientId": "client123",
+    "responseUri": "/vp-submission/direct-post",
+    "id": "$PRESENTATIONDEFINITIONID$"
+}'
+
+  Injiverify_CreateNewVerificationRequest_Invalid_ClientId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with invalid client id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_03
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"ygygduDS",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_Invalid_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with invalid presentation definition id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_04
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"client123",
+      "id":"dsAygyasa"
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_Empty_ClientId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with empty client id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_05
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_without_ClientId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request without client id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_06
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"$REMOVE$",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_Empty_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with empty presentation definition id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_07
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"client123",
+      "id":""
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_Without_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request without presentation definition id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_08
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+      input: '{
+      "clientId":"client123",
+      "id":"$REMOVE$"
+      }'
+      output: '{
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_ForNeg_Valid_Sid:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_09
+      role: noauth
+      restMethod: post
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestResult
+      input: '{
+      "clientId":"client123",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+    "responseType": "vp_token",
+    "clientId": "client123",
+    "responseUri": "/vp-submission/direct-post",
+    "id": "$PRESENTATIONDEFINITIONID$"
+}'

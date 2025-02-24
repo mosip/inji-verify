@@ -1,0 +1,173 @@
+VpSubmission:
+  Injiverify_VpSubmission_All_Valid_Smoke:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_01
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_All_Valid_Smoke_Sid_requestId$",
+      "definition_id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "responseCode": "200"
+}'
+
+  Injiverify_VpSubmission_Invalid_State_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid state
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_02
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"hdbhgshaJ",
+      "definition_id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Invalid_VpToken_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid vp token
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_03
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmissionNeg
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":"$PRESENTATIONDEFINITIONID$",
+      "vp_token": "bdhgyga"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Empty_VpToken_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with empty vp token
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_04
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmissionNeg
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":"$PRESENTATIONDEFINITIONID$",
+      "vp_token": ""
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Empty_State_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with empty state
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_05
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"",
+      "definition_id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Invalid_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid presentation definition id
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_06
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":"hbdBYGdy"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Empty_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with empty presentation definition id
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_07
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":""
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Without_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response without presentation definition id
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_08
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":"$REMOVE$"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Without_State_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response without state
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_09
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmission
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$REMOVE$",
+      "definition_id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Without_VpToken_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response without vp token
+      uniqueIdentifier: TC_InjiVerify_VpSubmission_10
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/VpSubmission/VpSubmissionNeg
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "state":"$ID:CreateNewVerificationRequest_ForNeg_Valid_Sid_requestId$",
+      "definition_id":"$PRESENTATIONDEFINITIONID$",
+      "vp_token": "$REMOVE$"
+      }'
+      output: '{
+      "responseCode": "400"
+}'
