@@ -49,7 +49,10 @@ function installing_inji-verify-ui() {
   helm repo update
 
   echo Copy configmaps
-  ./copy_cm.sh
+  COPY_UTIL=../copy_cm_func.sh
+  $COPY_UTIL configmap global default $NS
+  $COPY_UTIL configmap artifactory-share artifactory $NS
+  $COPY_UTIL configmap config-server-share config-server $NS
 
   INJIVERIFY_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-injiverify-host})
   echo Installing INJIVERIFY
