@@ -197,7 +197,7 @@ export const borderColorMapping: any = {
   INVALID: "border-invalidBorder",
 };
 
-export const defaultCredentialRenderOrder = [
+export const InsuranceCredentialRenderOrder = [
   "fullName",
   "gender",
   "dob",

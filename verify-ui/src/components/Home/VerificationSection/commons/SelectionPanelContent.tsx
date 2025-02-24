@@ -33,8 +33,12 @@ function SelectionPanelContent() {
   const filteredClaims = verifiableClaims
     .filter((claim) => claim.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      if (a.essential && !b.essential) return -1;
-      if (!a.essential && b.essential) return 1;
+      const aSelected = selectedClaims.includes(a);
+      const bSelected = selectedClaims.includes(b);
+
+      if (aSelected && !bSelected) return -1;
+      if (!aSelected && bSelected) return 1;
+
       return isAscending
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name);
