@@ -32,9 +32,9 @@ const Result = () => {
 
     try {
       const rowData = {
-        fullName: vc.credentialSubject.fullName || "",
-        email: vc.credentialSubject.email || "",
-        organisation: vc.credentialSubject.organisation || "",
+        fullName: vc.credentialSubject.recipientName || "",
+        email: vc.credentialSubject.recipientEmail || "",
+        organisation: vc.credentialSubject.organisationName || "",
         designation: vc.credentialSubject.designation || "",
       };
 
@@ -83,7 +83,7 @@ const Result = () => {
               loader={isPopulating}
               disabled={isCheckIn || vcStatus !== "SUCCESS"}
               onClick={populateGoogleSheet}
-              className="mt-1 mb-2 lg:mb-1 lg:w-[339px]"
+              className="mx-auto mt-1 mb-20 lg:mb-1 lg:w-[339px]"
             />
           )}
 

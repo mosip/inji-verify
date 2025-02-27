@@ -337,10 +337,11 @@ export const farmerCredentialRenderOrder = [
 ];
 
 export const InvitationPassRenderOrder = [
-  "fullName",
-  "email",
-  "organisation",
+  "recipientName",
+  "recipientEmail",
+  "organisationName",
   "designation",
+  "recipientPhone",
 ];
 
 export const BASE64_PADDING = "=="
