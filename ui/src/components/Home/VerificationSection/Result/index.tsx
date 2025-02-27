@@ -32,9 +32,9 @@ const Result = () => {
 
     try {
       const rowData = {
-        fullName: vc.credentialSubject.recipientName || "",
-        email: vc.credentialSubject.recipientEmail || "",
-        organisation: vc.credentialSubject.organisationName || "",
+        fullName: vc.credentialSubject.fullName || "",
+        email: vc.credentialSubject.email || "",
+        organisation: vc.credentialSubject.organisation || "",
         designation: vc.credentialSubject.designation || "",
       };
 
