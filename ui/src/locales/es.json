@@ -123,7 +123,8 @@
     "scanSessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis.",
     "partialCredentialShared": "Verificación completada con credenciales parciales. Tenga en cuenta que faltan algunas credenciales solicitadas.",
     "validationFailure": "No pudimos validar la respuesta de verificación. Asegúrese de que la respuesta sea correcta y vuelva a intentarlo.",
-    "incorrectCredential":"Las credenciales compartidas no coinciden con las solicitadas. Proporcione las credenciales correctas e inténtelo de nuevo."
+    "incorrectCredential":"Las credenciales compartidas no coinciden con las solicitadas. Proporcione las credenciales correctas e inténtelo de nuevo.",
+    "alreadyCheckedIn": "Ang indibidwal na ito ay na-verify na at naka-check in. Hindi pinapayagan ang dobleng check-in."
   },
   "OvpErrors": {
     "invalidScope": "Alcance no válido",

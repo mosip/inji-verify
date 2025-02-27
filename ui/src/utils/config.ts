@@ -118,6 +118,7 @@ export const AlertMessages =()=> {
         partialCredentialShared:{message: i18next.t("AlertMessages:partialCredentialShared"), severity: "error"} as AlertInfo,
         validationFailure:{message: i18next.t("AlertMessages:validationFailure"), severity: "error"} as AlertInfo,
         incorrectCredential:{message: i18next.t("AlertMessages:incorrectCredential"), severity: "error"} as AlertInfo,
+        alreadyCheckedIn:{message: i18next.t("AlertMessages:alreadyCheckedIn"), severity: "error"} as AlertInfo,
     }
 };
 

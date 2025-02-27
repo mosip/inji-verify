@@ -55,14 +55,40 @@ public class GoogleSheetController {
 
     @PostMapping("/append")
     public ResponseEntity<String> appendData(@RequestBody Map<String, Object> rowData) throws GeneralSecurityException {
-    
         try {
+            List<List<Object>> existingData = googleSheetService.getSheetData("Sheet1!B:E");
+
+            String fullName = rowData.getOrDefault("fullName", "").toString().trim();
+            String email = rowData.getOrDefault("email", "").toString().trim();
+            String organisation = rowData.getOrDefault("organisation", "").toString().trim();
+            String designation = rowData.getOrDefault("designation", "").toString().trim();
+
+            if (fullName.isEmpty() || email.isEmpty() || organisation.isEmpty() || designation.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: All fields (Full Name, Email, Organisation, Designation) are required.");
+            }
+
+            for (List<Object> row : existingData) {
+                if (row.size() >= 4) {
+                    String existingFullName = row.get(0).toString().trim();
+                    String existingEmail = row.get(1).toString().trim();
+                    String existingOrganisation = row.get(2).toString().trim();
+                    String existingDesignation = row.get(3).toString().trim();
+
+                    if (existingFullName.equalsIgnoreCase(fullName)
+                            && existingEmail.equalsIgnoreCase(email)
+                            && existingOrganisation.equalsIgnoreCase(organisation)
+                            && existingDesignation.equalsIgnoreCase(designation)) {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Individual already registered.");
+                    }
+                }
+            }
+
             List<Object> values = new ArrayList<>();
             values.add(generateNextSNo());
-            values.add(rowData.getOrDefault("fullName", ""));
-            values.add(rowData.getOrDefault("email", ""));
-            values.add(rowData.getOrDefault("organisation", ""));
-            values.add(rowData.getOrDefault("designation", ""));
+            values.add(fullName);
+            values.add(email);
+            values.add(organisation);
+            values.add(designation);
             long timestampMillis = Instant.now().toEpochMilli();
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestampMillis)
                     .atZone(ZoneId.of("Asia/Kolkata"))

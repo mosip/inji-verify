@@ -36,7 +36,6 @@ const Result = () => {
         email: vc.credentialSubject.email || "",
         organisation: vc.credentialSubject.organisation || "",
         designation: vc.credentialSubject.designation || "",
-        timestamp: Date.now() || "",
       };
 
       const apiRequest = api.fetchCheckIn;
@@ -47,10 +46,16 @@ const Result = () => {
         body: apiRequest.body,
       };
 
-      await fetch(apiRequest.url(), requestOptions);
+      const response = await fetch(apiRequest.url(), requestOptions);
+      if (response.status === 409) {
+        setIsCheckIn(true);
+        dispatch(raiseAlert({ ...AlertMessages().alreadyCheckedIn, open: true }));
+       }
       setIsCheckIn(true);
+      setIsPopulating(false);
     } catch (error) {
-      console.error("Error sending data to backend:", error);
+      console.error(error);
+      setIsPopulating(false);
       dispatch(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
     } finally {
       setIsPopulating(false);
@@ -75,7 +80,8 @@ const Result = () => {
             <Button
               id="verify-another-qr-code-button"
               title={t("Common:Button.checkIn")}
-              disabled={isCheckIn || isPopulating || vcStatus !== "SUCCESS"}
+              loader={isPopulating}
+              disabled={isCheckIn || vcStatus !== "SUCCESS"}
               onClick={populateGoogleSheet}
               className="mt-1 mb-2 lg:mb-1 lg:w-[339px]"
             />
