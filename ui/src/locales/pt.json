@@ -123,7 +123,8 @@
     "scanSessionExpired": "A sessão de verificação expirou devido à inatividade. Por favor, inicie uma nova verificação.",
     "partialCredentialShared": "Verificação concluída com credenciais parciais. Observe que algumas credenciais solicitadas estão faltando.",
     "validationFailure": "Não foi possível validar a resposta de verificação. Certifique-se de que a resposta está correta e tente novamente.",
-    "incorrectCredential":"As credenciais compartilhadas não correspondem às solicitadas. Forneça as credenciais corretas e tente novamente."
+    "incorrectCredential":"As credenciais compartilhadas não correspondem às solicitadas. Forneça as credenciais corretas e tente novamente.",
+    "alreadyCheckedIn":"Este indivíduo já foi verificado e fez check-in. Não é permitido o check-in duplicado."
   },
   "OvpErrors": {
     "invalidScope": "Escopo inválido",

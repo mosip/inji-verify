@@ -123,7 +123,8 @@
     "scanSessionExpired": "La session d'analyse a expiré pour cause d'inactivité. Veuillez lancer une nouvelle analyse.",
     "partialCredentialShared": "Vérification terminée avec des identifiants partiels. Veuillez noter que certains identifiants demandés sont manquants.",
     "validationFailure": "Nous n'avons pas pu valider la réponse de vérification. Veuillez vous assurer que la réponse est correcte et réessayer.",
-    "incorrectCredential": "Les informations d'identification partagées ne correspondent pas à celles demandées. Veuillez fournir les informations d'identification correctes et réessayer."
+    "incorrectCredential": "Les informations d'identification partagées ne correspondent pas à celles demandées. Veuillez fournir les informations d'identification correctes et réessayer.",
+    "alreadyCheckedIn": "Cette personne a déjà été vérifiée et enregistrée. L'enregistrement en double n'est pas autorisé."
   },
   "OvpErrors": {
     "invalidScope": "Portée invalide",
