@@ -1,6 +1,5 @@
 import React from "react";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
-import { VerificationStepsContent } from "../../../utils/config";
 import {
   convertToId,
   getRangeOfNumbers,
@@ -32,9 +31,9 @@ const Step = ({
         className={`flex items-center justify-center w-9 h-9 ${stepperCircle}`}
       >
         {active === stepNumber ? (
-          <img src="assets/images/dot.svg" alt="dot" className="!w-[2rem]" />
-        ) : activeOrCompleted ? (
-          <img src="assets/images/check.svg" alt="dot" className="!w-[2rem]" />
+          <img src="assets/images/dot.svg" alt="dot" className="!w-[2.5rem] rounded-[25px] bg-[#7F56D9] brightness-125 outline-2 outline-[#9E77ED]" />
+        ) : activeOrCompleted || (activeOrCompleted && active === stepNumber) ? (
+          <img src="assets/images/check.svg" alt="dot" className="!w-[2rem] brightness-125" />
         ) : (
           <img
             src="assets/images/disabled_dot.svg"

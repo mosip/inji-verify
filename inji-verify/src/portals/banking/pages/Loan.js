@@ -24,9 +24,28 @@ const Loan = () => {
     setSuccessBanner(false);
   };
 
+  const navigateToLogin = (errorCode, errorDescription) => {
+    let params = "?";
+    if (errorDescription) {
+      params = params + "error_description=" + errorDescription + "&";
+    }
+
+    //REQUIRED
+    params = params + "error=" + errorCode;
+
+    navigate(process.env.PUBLIC_URL + "/" + params, { replace: true });
+  };
+
   useEffect(() => {
     const getSearchParams = async () => {
       let authCode = searchParams.get("code");
+      let errorCode = searchParams.get("error");
+      let error_desc = searchParams.get("error_description");
+
+      if (errorCode) {
+        navigateToLogin(errorCode, error_desc);
+        return;
+      }
 
       if (authCode) {
         getUserDetails(authCode);
@@ -75,8 +94,8 @@ const Loan = () => {
   return userInfo ? (
     <div>
       {successBanner && (
-        <div className="bg-[#57A04B] py-2 flex justify-between">
-          <span className="text-white font-light xl:pl-[10rem] pl-4">
+        <div className="bg-[#1F9F60] py-2 flex justify-between">
+          <span className="text-white font-normal xl:pl-[10rem] pl-4">
             {t("success_message")}
           </span>
           <img
@@ -87,38 +106,50 @@ const Loan = () => {
           />
         </div>
       )}
-      <div className="pt-2 flex">
-        <div className="relative pr-[6rem] hidden lg:block">
-          <img src="assets/images/mask.svg" className="relative" alt="mask" />
+      <div className="pt-2 lg:flex">
+        <div className="relative lg:pr-[4rem] px-4 py-2">
+          {window.screen.availWidth >= 1024 ? (
+            <img src="assets/images/mask.svg" className="relative" alt="mask" />
+          ) : (
+            <img
+              src="assets/images/large_mask.svg"
+              className="relative w-full"
+              alt="large_mask"
+            />
+          )}
           <img
             src="assets/images/bank.svg"
-            className="absolute top-[13%] left-[3%] xl:w-auto w-[550px]"
             alt="bank"
+            className="absolute top-[7%] left-[15%] lg:top-[13%] lg:left-[3%] xl:w-auto lg:w-[550px] w-[70vw]"
           />
         </div>
-        <div className="lg:px-[4rem] m-auto lg:py-0 py-6 px-4">
-          <div className="text-[2.25rem] xl:w-[100%] m-auto xl:m-0 font-bold flex">
-            {t("get_started")}
-            <p className="mx-4">{userInfo.name}</p>
+        <div className="lg:px-[4rem] m-auto lg:py-0 pb-6 pt-2 px-4">
+          <div className="text-[2.25rem] xl:w-[100%] m-auto xl:m-0 font-bold md:flex block">
+            <span>{t("get_started")}</span>
+            <p className="md:mx-4">{userInfo?.name}</p>
           </div>
           <p className="my-3 font-semibold text-[1.75rem]">{t("subtext")}</p>
           <div className="my-4">
             {steps.map((item, index) => {
               return (
-                <div className="flex my-2 text-sm font-semibold">
-                  <span className="ml-0 mr-1 border-2 border-[#7F56D9] rounded-[25px] w-5 text-center text-[#7F56D9] text-xs font-bold">{index + 1}</span>
-                  <span className="ml-1 mr-3 items-center flex text-[#514A68]">{item}</span>
+                <div className="flex my-2 text-sm font-semibold items-start">
+                  <span className="ml-0 mr-1 border-2 border-[#7F56D9] rounded-[25px] w-5 text-center text-[#7F56D9] text-xs font-bold relative top-[1px]">
+                    {index + 1}
+                  </span>
+                  <span className="ml-1 mr-3 items-center flex text-[#514A68]">
+                    {item}
+                  </span>
                 </div>
               );
             })}
           </div>
-          <div className="mt-4 mb-[1rem] text-[#5A7184] font-semibold">
+          <div className="mt-6 mb-[1rem] text-[#5A7184] font-semibold">
             {t("loan_upto")}
             <span className="text-[#6006A8]">{t("amount")}</span>
           </div>
           <button
             type="button"
-            className="bg-[#6006A8] py-3 sm:px-[8rem] px-[5rem] rounded-md text-white"
+            className="bg-[#7F56D9] py-3 sm:w-80 w-full rounded-md text-white"
             onClick={handleLoan}
           >
             {t("apply_for_loan")}
@@ -127,7 +158,7 @@ const Loan = () => {
       </div>
     </div>
   ) : (
-    <Loader className="align-loading-center" />
+    <Loader className="mx-auto mt-[12rem]" />
   );
 };
 

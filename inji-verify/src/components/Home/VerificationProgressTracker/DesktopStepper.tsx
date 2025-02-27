@@ -42,7 +42,7 @@ function DesktopStepper() {
           {
             label: t("view_result"),
             description: t("view_result_description"),
-          }
+          },
         ];
   const isLastStep = (index: number) => steps.length - 1 === index;
   const isStepCompleted = (index: number) => activeScreen > index;
@@ -60,17 +60,18 @@ function DesktopStepper() {
                     : "bg-white text-[#9E77ED] border-[1px]"
                 }`}
               >
-                {isStepCompleted(index) && activeScreen !== index + 1 ? (
+                {(isStepCompleted(index) && activeScreen !== index + 1) ||
+                (steps.length - 1 === index && activeScreen === index + 1) ? (
                   <img
                     src="assets/images/check.svg"
                     alt="dot"
-                    className="!w-[2rem]"
+                    className="!w-[2rem] brightness-125"
                   />
                 ) : activeScreen === index + 1 ? (
                   <img
                     src="assets/images/dot.svg"
                     alt="dot"
-                    className="!w-[2.25rem] !border-[3px] !rounded-[25px] !shadow-md"
+                    className="!w-[2.25rem] rounded-[25px] bg-[#7F56D9] brightness-125 outline-2 outline-[#9E77ED]"
                   />
                 ) : (
                   <img

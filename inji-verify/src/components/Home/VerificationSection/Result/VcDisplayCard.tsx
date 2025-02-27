@@ -1,7 +1,6 @@
 import React from "react";
 import {
   convertToId,
-  convertToTitleCase,
   getDisplayValue,
 } from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
@@ -15,7 +14,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
 
   const orderedKeys: (keyof typeof vc.credentialSubject)[] = [
     "fullName",
-    "dateOfBirth",
+    "dob",
     "gender",
     "email",
     "mobile",
@@ -26,12 +25,8 @@ function VcDisplayCard({ vc }: { vc: any }) {
 
   const orderedObject = Object.fromEntries(
     orderedKeys
-      .map((key) =>
-        key === "dateOfBirth"
-          ? ["dateOfBirth", vc.credentialSubject["dob"]]
-          : [key, vc.credentialSubject[key]]
-      )
-      .filter(([key, value]) => value !== undefined) // Ensure valid values
+      .filter((key) => key in vc.credentialSubject) // Ensure key exists
+      .map((key) => [key, vc.credentialSubject[key]])
   );
 
   return (
@@ -60,7 +55,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
                   id={convertToId(key)}
                   className="font-normal text-[11px] break-all"
                 >
-                  {convertToTitleCase(key)}
+                  {t(key)}
                 </p>
                 <p
                   id={`${convertToId(key)}-value`}
@@ -79,7 +74,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
       <div className="grid content-center justify-center">
         <StyledButton
           id="verify-another-qr-code-button"
-          className="mx-auto mt-6 mb-20 lg:mb-6 !rounded-xl !px-[8rem]"
+          className="mx-auto mt-6 mb-20 lg:mb-6 !rounded-xl sm:!px-[8rem] !px-[6.5rem]"
           onClick={() => {
             navigate("/application");
           }}
