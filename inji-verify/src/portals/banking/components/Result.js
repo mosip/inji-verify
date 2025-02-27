@@ -20,27 +20,27 @@ const Result = () => {
   ];
 
   return (
-    <div className="rounded-[2rem] bg-white shadow-md pb-6">
+    <div className="rounded-xl bg-white shadow-md pb-6 result">
       <div className="m-auto w-full">
         <img
           src="assets/gifs/success.gif"
           alt="success"
           className="block m-auto h-[250px]"
         />
-        <p className="text-center font-semibold text-[36px] py-4">
+        <p className="text-center font-semibold md:text-[36px] text-[32px] pb-4">
           {t("congrats")}
         </p>
-        <p className="text-center text-[20px] mt-4 mb-6">
+        <p className="text-center text-[20px] my-4 px-2">
           {t("background_process")}
         </p>
-        <div className="mt-6 mb-[1rem] flex flex-col w-[35%] mx-auto">
+        <div className="mt-6 mb-[1rem] flex flex-col xl:w-[35%] md:w-[50%] mx-2 sm:mx-auto">
           {list.map((item) => {
             return (
-              <div className="my-2 flex justify-between">
+              <div className="my-2 flex justify-center items-center">
                 <img
                   src="assets/images/arrow_right.svg"
                   alt="arrow_right"
-                  className="inline relative top-[1px]"
+                  className="inline relative"
                 />
                 <span className="mx-4 w-48 text-left">{item.label}:</span>
                 <span className="text-[#14A35C] font-semibold w-24">

@@ -13,12 +13,12 @@ const ModalPopup = () => {
     transform: "translate(-50%, -50%)",
     width: 570,
     backgroundColor: "white",
-    fontSize: "52px",
     display: "grid",
     placeItems: "center",
     borderRadius: "20px",
     outline: "none",
     padding: "38px",
+    display: "block"
   };
 
   const Modal = ({ children }) => (
@@ -56,10 +56,10 @@ const ModalPopup = () => {
         <Modal>
           <Fade>
             <div
-              className="container grid justify-items-center items-center text-center max-w-[95vw] lg:max-w-xl shadow-lg"
+              className="container grid justify-items-center items-center text-center sm:max-w-xl shadow-lg max-w-xs"
               style={style}
             >
-              <p className="text-center font-semibold text-[36px] py-4">
+              <p className="text-center font-semibold text-[36px] pb-4">
                 {t("congrats")}
               </p>
               <img
@@ -67,13 +67,13 @@ const ModalPopup = () => {
                 alt="cibil"
                 className="block m-auto"
               />
-              <p className="text-center font-normal text-[16px] mb-4 px-[5rem]">
+              <p className="text-center font-normal text-[16px] mb-4 sm:px-[4rem]">
                 {t("background_process")}
               </p>
               <StyledButton
                 id="camer-access-denied-okay-button"
                 onClick={handleClose}
-                className="w-[180px] mx-auto my-[18px] !text-[#7F56D9] hover:!text-white !border-[#7F56D9] hover:!bg-[#7F56D9] !rounded-xl !px-[10rem]"
+                className="w-[180px] mx-auto my-[18px] !text-[#7F56D9] hover:!text-white !border-[#7F56D9] hover:!bg-[#7F56D9] !rounded-xl !px-[8rem] sm:!px-[10rem]"
                 data-testid="camera-access-denied-okay"
               >
                 {t("close")}

@@ -29,9 +29,9 @@
     "get_started": "Welcome",
     "loan_upto": "Get loan upto ",
     "amount": "$10,000/-",
-    "apply_for_loan": "Apply for loan",
+    "apply_for_loan": "Apply for Loan",
     "subtext": "Get quick and easy loans in just a few steps",
-    "apply_loan": "Click on 'Apply For Loan' to move forward",
+    "apply_loan": "Click on \"Apply for Loan\" to move forward",
     "avail_loan": "Avail Loan",
     "fill_details": "Fill Loan Details",
     "verify_tan": "Verify TAN ID"
@@ -56,7 +56,8 @@
     "eligible_check": "Eligibility Check",
     "eligible_check_description": "Lorem ipsum dolor sit amet",
     "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "result_description": "Lorem ipsum dolor sit amet",
+    "header": "Loan application"
   },
   "form": {
     "home_loan": "Home Loan",
@@ -119,11 +120,19 @@
     "background_process": "Your TAN details have been successfully verified, and your credit score is Excellent!"
   },
   "vc_card": {
-    "proceed": "Proceed"
+    "proceed": "Proceed",
+    "fullName": "Full Name",
+    "dob": "Date Of Birth",
+    "email": "Email",
+    "gender": "Gender",
+    "mobile": "Mobile"
   },
   "vc_result": {
     "success": "Congratulations, the TAN is valid!",
     "invalid": "Unfortunately, the TAN is invalid!",
     "expired": "Unfortunately, the TAN is expired!"
+  },
+  "qr_scan": {
+    "verify": "Verifying..."
   }
 }

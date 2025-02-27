@@ -6,12 +6,12 @@ const Loading = (props) => {
   useEffect(() => {
     setTimeout(() => {
       props.child(2);
-    }, 1500);
+    }, 2000);
   }, []);
 
   return (
-    <div className="rounded-[2rem] bg-white shadow-md">
-      <p className="text-center text-[#42307D] text-[2.5rem] font-semibold w-[50%] mx-auto pt-[3rem]">
+    <div className="rounded-xl bg-white shadow-md">
+      <p className="text-center text-[#42307D] text-[2.5rem] font-semibold mx-auto pt-[3rem] flex justify-center">
         {t("background_process")}
       </p>
       <img
@@ -19,7 +19,7 @@ const Loading = (props) => {
         alt="loading"
         className="block m-auto h-[350px]"
       />
-      <p className="text-center text-[#42307D] font-semibold w-[50%] text-[1.5rem] mx-auto pb-[3rem]">
+      <p className="text-center text-[#42307D] font-semibold text-[1.5rem] mx-auto pb-[3rem]">
         {t("please_wait")}
       </p>
     </div>

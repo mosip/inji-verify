@@ -9,6 +9,7 @@ import {
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import "./ScanningLine.css";
 import Loader from "../../commons/Loader";
+import { useTranslation } from "react-i18next";
 
 let timer: NodeJS.Timeout;
 
@@ -20,6 +21,7 @@ function QrScanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
   const zxingRef = useRef<any>(null);
+  const { t } = useTranslation("qr_scan");
 
   const scannerRef = useRef<HTMLDivElement>(null);
 
@@ -218,7 +220,9 @@ function QrScanner() {
       {!isCameraBlocked && (
         <div className="absolute w-[280px] lg:left-[-12px] lg:w-[340px] block m-auto !top-[40%]">
           <Loader />
-          <p className="text-[#6941C6] text-center m-auto py-3">Verifying...</p>
+          <p className="text-[#6941C6] text-center m-auto py-3">
+            {t("verify")}
+          </p>
         </div>
       )}
 

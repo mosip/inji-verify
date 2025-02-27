@@ -2,14 +2,30 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clientDetails from "../constants/clientDetails";
 import { useExternalScript } from "../hooks/useExternalScript";
+import { Error } from "../commons/Errors";
+import { useSearchParams } from "react-router-dom";
 
 const LandingPage = () => {
-  
   const { i18n, t } = useTranslation("landing_page");
   const signInButtonScript = window._env_.SIGN_IN_BUTTON_PLUGIN_URL;
   const state = useExternalScript(signInButtonScript);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const getSearchParams = async () => {
+      let errorCode = searchParams.get("error");
+      let error_desc = searchParams.get("error_description");
+
+      if (errorCode) {
+        setError({
+          errorCode: errorCode,
+          errorMsg: error_desc,
+          showToast: true,
+        });
+      }
+    };
+    getSearchParams();
     renderSignInButton();
   }, [state]);
 
@@ -45,35 +61,58 @@ const LandingPage = () => {
 
   return (
     <div>
-      <div className="pt-2 flex font-semibold">
-        <div className="relative pr-[4rem] hidden lg:block">
-          <img src="assets/images/mask.svg" className="relative" />
+      {error && (
+        <Error
+          errorCode={error.errorCode}
+          errorMsg={error.errorMsg}
+          showToast={error.showToast}
+        />
+      )}
+      <div className="pt-2 lg:flex font-semibold">
+        <div className="relative lg:pr-[4rem] px-4 py-2">
+          {window.screen.availWidth >= 1024 ? (
+            <img src="assets/images/mask.svg" className="relative" alt="mask" />
+          ) : (
+            <img
+              src="assets/images/full_mask.svg"
+              className="relative w-full"
+              alt="full_mask"
+            />
+          )}
           <img
             src="assets/images/bank.svg"
             alt="bank"
-            className="absolute top-[13%] left-[3%] xl:w-auto w-[550px]"
+            className="absolute top-[9%] left-[25%] lg:top-[13%] lg:left-[3%] xl:w-auto lg:w-[550px] w-[48vw]"
           />
         </div>
-        <div className="xl:pl-[4rem] xl:pt-[2rem] pt-0 px-4 lg:m-0 m-auto">
+        <div className="xl:pl-[4rem] xl:pt-[2rem] lg:pt-0 px-4 lg:m-0 m-auto pt-4">
           <p className="font-bold text-[36px] ">
             {t("sign_in_to_banking_portal")}
           </p>
-          <div className="lg:w-full pt-[1rem] lg:m-0 m-auto">
+          <div className="lg:w-full lg:pt-[1rem] lg:m-0 m-auto">
             <form className="my-6">
               <label className="my-3 block text-[#5A7184]">
                 {t("username")}
               </label>
-              <input type="text" className="input-box py-2 px-4 w-full mb-6" placeholder={t("username_placeholder")}/>
+              <input
+                type="text"
+                className="input-box py-2 px-4 w-full mb-6"
+                placeholder={t("username_placeholder")}
+              />
               <label className="mb-3 block mt-6 text-[#5A7184]">
                 {t("password")}
               </label>
-              <input type="text" className="input-box py-2 px-4 w-full" placeholder={t("password_placeholder")}/>
+              <input
+                type="text"
+                className="input-box py-2 px-4 w-full"
+                placeholder={t("password_placeholder")}
+              />
               <div className="flex justify-between my-[1.75rem] text-sm">
                 <div>
                   <input
                     type="checkbox"
                     id="signin"
-                    className="text-md scale-125 relative top-[1.5px] mr-1"
+                    className="text-md scale-125 relative top-[1.5px] mr-1 hover:cursor-pointer"
                   />
                   <label for="signin" className="mx-0 text-[#5A7184]">
                     {" "}
@@ -86,14 +125,22 @@ const LandingPage = () => {
               </div>
               <button
                 type="submit"
-                className="bg-[#6006A8] text-white w-full py-3 rounded-md mb-3 font-semibold"
+                className="bg-[#7F56D9] text-white w-full py-3 rounded-md mb-3 font-semibold"
               >
                 {t("submit")}
               </button>
               <div className="flex my-4">
-                <img src="assets/images/line.svg" className="sm:w-[50%] w-[45%]" alt="line"/>
+                <img
+                  src="assets/images/line.svg"
+                  className="sm:w-[50%] w-[45%]"
+                  alt="line"
+                />
                 <span className="mx-1">{t("or")}</span>
-                <img src="assets/images/line.svg" className="sm:w-[50%] w-[45%]" alt="line"/>
+                <img
+                  src="assets/images/line.svg"
+                  className="sm:w-[50%] w-[45%]"
+                  alt="line"
+                />
               </div>
             </form>
             <div>
