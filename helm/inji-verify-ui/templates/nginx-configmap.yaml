@@ -21,6 +21,7 @@ data:
     http {
       access_log /var/log/nginx/access1.log;
       error_log /var/log/nginx/error1.log;
+      client_max_body_size 10M;
       server {
         listen {{ .Values.inji_verify.port }};
         server_name  localhost;
