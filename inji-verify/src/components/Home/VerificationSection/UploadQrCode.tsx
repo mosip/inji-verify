@@ -8,6 +8,7 @@ import {checkInternetStatus, getFileExtension} from "../../../utils/misc";
 import {updateInternetConnectionStatus} from "../../../redux/features/application-state/application-state.slice";
 import {AlertInfo} from "../../../types/data-types";
 import {Dispatch} from "redux";
+import { useTranslation } from "react-i18next";
 
 const doFileChecks = (dispatch: Dispatch, file: File | null): boolean => {
     if (!file) return false;
@@ -58,11 +59,12 @@ function UploadButton({ displayMessage }: {displayMessage: string}) {
     );
 }
 
-export const UploadQrCode = ({displayMessage, className}: { displayMessage: string, className?: string }) => {
+export const UploadQrCode = ({className}: { className?: string }) => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation("upload_qr_code");
     return (
         <div className={`mx-auto my-1.5 flex content-center justify-center ${className}`}>
-            <UploadButton displayMessage={displayMessage}/>
+            <UploadButton displayMessage={t("upload")}/>
             <br/>
             <input
                 type="file"

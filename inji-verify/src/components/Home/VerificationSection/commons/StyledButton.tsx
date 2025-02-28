@@ -2,6 +2,7 @@ import React, {HTMLAttributes, ReactElement} from 'react';
 
 type StyledButtonProps = HTMLAttributes<HTMLButtonElement> & {
     fill?: boolean,
+    disabled?: boolean,
     icon?: ReactElement
 }
 

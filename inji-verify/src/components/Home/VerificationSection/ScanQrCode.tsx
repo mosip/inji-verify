@@ -56,7 +56,6 @@ const Upload = () => (
   <>
     <UploadQrCode
       className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
-      displayMessage={t("Upload")}
     />
   </>
 );

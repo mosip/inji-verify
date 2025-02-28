@@ -1,18 +1,15 @@
 import React from "react";
-import {
-  convertToId,
-  getDisplayValue,
-} from "../../../../utils/misc";
+import { convertToId, getDisplayValue } from "../../../../utils/misc";
 import StyledButton from "../commons/StyledButton";
 import { ReactComponent as DocumentIcon } from "../../../../assets/document.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-function VcDisplayCard({ vc }: { vc: any }) {
+function VcDisplayCard({ vc, status }: { vc: any; status: any }) {
   const navigate = useNavigate();
   const { t } = useTranslation("vc_card");
 
-  const orderedKeys: (keyof typeof vc.credentialSubject)[] = [
+  const orderedKeys: any[] = [
     "fullName",
     "dob",
     "gender",
@@ -23,10 +20,10 @@ function VcDisplayCard({ vc }: { vc: any }) {
     "policyExpiresOn",
   ];
 
-  const orderedObject = Object.fromEntries(
+  const orderedObject = vc && Object.fromEntries(
     orderedKeys
-      .filter((key) => key in vc.credentialSubject) // Ensure key exists
-      .map((key) => [key, vc.credentialSubject[key]])
+      .filter((key) => key in vc?.credentialSubject) // Ensure key exists
+      .map((key) => [key, vc?.credentialSubject[key]])
   );
 
   return (
@@ -78,6 +75,7 @@ function VcDisplayCard({ vc }: { vc: any }) {
           onClick={() => {
             navigate("/application");
           }}
+          disabled={status !== "SUCCESS"}
         >
           {t("proceed")}
         </StyledButton>

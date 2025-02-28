@@ -30,7 +30,7 @@ const Result = () => {
                     top: `106px`,
                     right: window.innerWidth >= 1024 ? `calc((50vw - 340px) / 2)` : `calc((100vw - 340px) / 2)`
                 }}>
-                <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null}/>
+                <VcDisplayCard vc={vcStatus?.status === "OK" ? vc : null} status={status}/>
             </div>
         </div>
     );

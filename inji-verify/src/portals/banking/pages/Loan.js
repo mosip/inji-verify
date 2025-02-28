@@ -126,7 +126,7 @@ const Loan = () => {
         <div className="lg:px-[4rem] m-auto lg:py-0 pb-6 pt-2 px-4">
           <div className="text-[2.25rem] xl:w-[100%] m-auto xl:m-0 font-bold md:flex block">
             <span>{t("get_started")}</span>
-            <p className="md:mx-4">{userInfo?.name}</p>
+            <p className="md:mx-4 break-words">{userInfo?.name}</p>
           </div>
           <p className="my-3 font-semibold text-[1.75rem]">{t("subtext")}</p>
           <div className="my-4">

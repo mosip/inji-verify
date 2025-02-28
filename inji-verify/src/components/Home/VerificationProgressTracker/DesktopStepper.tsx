@@ -64,7 +64,7 @@ function DesktopStepper() {
                 (steps.length - 1 === index && activeScreen === index + 1) ? (
                   <img
                     src="assets/images/check.svg"
-                    alt="dot"
+                    alt="check"
                     className="!w-[2rem] brightness-125"
                   />
                 ) : activeScreen === index + 1 ? (
@@ -76,7 +76,7 @@ function DesktopStepper() {
                 ) : (
                   <img
                     src="assets/images/disabled_dot.svg"
-                    alt="dot"
+                    alt="disabled_dot"
                     className="!w-[2rem]"
                   />
                 )}

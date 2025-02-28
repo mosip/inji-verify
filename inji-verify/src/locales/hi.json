@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "ऋण सत्यापन पोर्टल",
+    "headingHighlight": "आसानी से!",
+    "description": "ओमेरा बैंक सत्यापन पोर्टल के साथ प्रमाण-पत्रों को आसानी से सत्यापित करें! बस QR कोड स्कैन करें या उसे अपलोड करें और तुरंत मान्यता प्राप्त करें, नीचे दिए गए चरणों का पालन करें।"
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "हमारे बारे में",
+    "our_features": "हमारी विशेषताएँ",
+    "help": "सहायता",
+    "home": "मुख्य पृष्ठ"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "राष्ट्रीय आईडी से साइन इन करें",
+    "sign_in_to_banking_portal": "लॉग इन करें",
+    "username": "उपयोगकर्ता नाम",
+    "password": "पासवर्ड",
+    "username_placeholder": "उपयोगकर्ता नाम दर्ज करें",
+    "password_placeholder": "पासवर्ड दर्ज करें",
+    "keep_me_sign_in": "मुझे लॉग इन रखें",
+    "forgot_password": "पासवर्ड भूल गए?",
+    "submit": "सबमिट करें",
+    "or": "या",
+    "no_account": "क्या आपका खाता नहीं है?",
+    "sign_up": "अभी साइन अप करें"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
+    "success_message": "आप eSignet का उपयोग करके ओमेरा बैंक में सफलतापूर्वक लॉग इन कर चुके हैं",
+    "get_started": "स्वागत है",
+    "loan_upto": "ऋण प्राप्त करें ",
     "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "apply_for_loan": "ऋण के लिए आवेदन करें",
+    "subtext": "कुछ आसान चरणों में त्वरित और सरल ऋण प्राप्त करें",
+    "apply_loan": "आगे बढ़ने के लिए \"ऋण के लिए आवेदन करें\" पर क्लिक करें",
+    "avail_loan": "ऋण प्राप्त करें",
+    "fill_details": "ऋण विवरण भरें",
+    "verify_tan": "TAN आईडी सत्यापित करें"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "विवरण सत्यापित किया जा रहा है",
+    "please_wait": "कृपया प्रतीक्षा करें..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "बधाई हो!",
+    "background_process": "आपका आवेदन सत्यापित और स्वीकृत किया गया है!",
+    "approved_loan": "स्वीकृत ऋण राशि",
+    "approved_loan_value": "$10,000",
+    "roi": "ब्याज दर",
+    "roi_value": "3%",
+    "tenure": "अवधि",
+    "tenure_value": "24 महीने"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "ऋण विवरण दर्ज करें",
+    "details_description": "शुरू करने के लिए अपनी जानकारी भरें।",
+    "eligible_check": "पात्रता जांचें",
+    "eligible_check_description": "अपना आवेदन जमा करें और जांचें कि आप पात्र हैं या नहीं।",
+    "result": "परिणाम देखें",
+    "result_description": "अपने ऋण स्वीकृति की स्थिति तुरंत प्राप्त करें!",
+    "header": "ऋण आवेदन"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "गृह ऋण",
+    "personal_loan": "व्यक्तिगत ऋण",
+    "education_loan": "शिक्षा ऋण",
+    "fill_details": "विवरण भरें",
+    "loan_details": "(1) ऋण विवरण",
+    "details_description": "अपनी ऋण जानकारी भरें, पहले से भरे गए विवरण की समीक्षा करें, और आगे बढ़ने के लिए जमा करें।",
+    "avail_loan_before": "क्या आपने पहले ऋण लिया है?",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "loan_type": "ऋण का प्रकार",
+    "loan_amount": "ऋण राशि",
+    "personal_details": "(2) व्यक्तिगत विवरण",
+    "full_name": "पूरा नाम",
+    "dob": "जन्म तिथि",
+    "gender": "लिंग",
+    "phone_number": "फोन नंबर",
+    "photo": "फोटो",
+    "email": "ईमेल",
+    "residential_address": "(3) आवासीय पता",
+    "address": "पता",
+    "declarations": "(4) घोषणा",
+    "terms&conditions": "मैं hereby घोषणा करता/करती हूँ कि दी गई सभी जानकारी सत्य और सटीक है। मैं अपनी कर प्रोफ़ाइल के आधार पर पृष्ठभूमि सत्यापन के लिए सहमति देता/देती हूँ।",
+    "proceed": "आगे बढ़ें",
+    "select_option": "एक विकल्प चुनें"
+  },
+  "camera_access": {
+    "camera_access_denied": "कैमरा एक्सेस अस्वीकृत",
+    "camera_access_denied_description": "हमें कोड स्कैन करने के लिए आपके कैमरे की आवश्यकता है। कृपया अपने ब्राउज़र सेटिंग में जाएँ और इस वेबसाइट के लिए कैमरा एक्सेस की अनुमति दें।",
+    "okay": "ठीक है"
+  },
+  "scan_qr_code": {
+    "scan": "स्कैन करें"
+  },
+  "verification": {
+    "back": "वापस जाएँ"
+  },
+  "tab": {
+    "upload_qr_code": "QR कोड अपलोड करें",
+    "scan_qr_code": "QR कोड स्कैन करें"
+  },
+  "stepper": {
+    "upload_qr_code": "अपना TAN VC अपलोड करें",
+    "upload_qr_code_description": "QR कोड वाली फ़ाइल अपलोड करें",
+    "verify_document": "दस्तावेज़ सत्यापित करें",
+    "verify_document_description": "दस्तावेज़ या कार्ड का सत्यापन प्रगति पर है।",
+    "view_result": "परिणाम देखें",
+    "view_result_description": "सत्यापन परिणाम देखें।",
+    "scan_qr_code": "अपना TAN VC स्कैन करें",
+    "scan_qr_code_description": "स्कैनिंग शुरू करने के लिए 'स्कैन' पर क्लिक करें",
+    "activate_camera": "कैमरा सक्रिय करें और QR कोड पोजीशन करें",
+    "activate_camera_description": "अपने डिवाइस का कैमरा सक्रिय करें और QR कोड को फ्रेम में रखें ताकि सत्यापन शुरू हो सके।",
+    "verify_process": "सत्यापन प्रगति पर है",
+    "verify_process_description": "QR कोड सत्यापन प्रगति पर है।"
+  },
+  "modal": {
+    "close": "बंद करें",
+    "congrats": "बधाई हो!",
+    "background_process": "आपके TAN विवरण सफलतापूर्वक सत्यापित किए गए हैं, और आपका क्रेडिट स्कोर उत्कृष्ट है!"
+  },
+  "vc_card": {
+    "proceed": "आगे बढ़ें",
+    "fullName": "पूरा नाम",
+    "dob": "जन्म तिथि",
+    "email": "ईमेल",
+    "gender": "लिंग",
+    "mobile": "मोबाइल"
+  },
+  "vc_result": {
+    "success": "बधाई हो, TAN मान्य है!",
+    "invalid": "दुर्भाग्य से, TAN अमान्य है!",
+    "expired": "दुर्भाग्य से, TAN की अवधि समाप्त हो गई है!"
+  },
+  "qr_scan": {
+    "verify": "सत्यापन हो रहा है..."
+  },
+  "upload_qr_code": {
+    "upload": "अपलोड करें"
   }
 }

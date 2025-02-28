@@ -99,7 +99,7 @@ const Form = (props) => {
                     isSearchable={false}
                     className="mt-[0.6rem]"
                     options={loanTypes}
-                    placeholder="Select an Option"
+                    placeholder={t("select_option")}
                     onChange={handleSelect}
                   />
                 </div>

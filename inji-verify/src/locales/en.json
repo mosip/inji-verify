@@ -51,12 +51,12 @@
     "tenure_value": "24 Months"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
+    "details": "Enter Loan Details",
+    "details_description": "Fill in your information to get started.",
+    "eligible_check": "Check Eligibility",
+    "eligible_check_description": "Submit your application to see if you're eligible.",
     "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet",
+    "result_description": "Get your loan approval status instantly!",
     "header": "Loan application"
   },
   "form": {
@@ -65,7 +65,7 @@
     "education_loan": "Education Loan",
     "fill_details": "Fill Details",
     "loan_details": "(1) Loan Details",
-    "details_description": "Ut faucibus est ut amet at mattis proin. A nec lacinia faucibus tincidunt adipiscing.",
+    "details_description": "Fill in your loan information, review the pre-filled details, and submit to proceed.",
     "avail_loan_before": "Have you availed a loan before?",
     "yes": "YES",
     "no": "NO",
@@ -82,7 +82,8 @@
     "address": "Address",
     "declarations": "(4) Declaration",
     "terms&conditions": "I hereby declare that all the information provided is true and accurate. I consent to background verification based on my tax profile.",
-    "proceed": "Proceed"
+    "proceed": "Proceed",
+    "select_option": "Select an Option"
   },
   "camera_access": {
     "camera_access_denied": "Camera Access Denied",
@@ -90,8 +91,7 @@
     "okay": "Okay"
   },
   "scan_qr_code": {
-    "scan": "Scan",
-    "Upload": "Upload"
+    "scan": "Scan"
   },
   "verification": {
     "back": "Back"
@@ -134,5 +134,8 @@
   },
   "qr_scan": {
     "verify": "Verifying..."
+  },
+  "upload_qr_code": {
+    "upload": "Upload"
   }
 }

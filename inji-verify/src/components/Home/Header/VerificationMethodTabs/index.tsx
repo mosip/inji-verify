@@ -74,7 +74,7 @@ function VerificationMethodTabs(props: any) {
   return (
     <div className="container mx-auto w-[100%] bg-[#F9F5FF] border-b-2 border-b-[#7F56D9] max-w-[100vw] overflow-x-hidden lg:overflow-x-auto">
       <div className="flex flex-row items-center mx-auto justify-center relative">
-        <div className="absolute left-0 h-full w-12 bg-[#F2FCFF] md:hidden grid items-center">
+        <div className="absolute left-0 h-full w-12 md:hidden grid items-center">
           <button
             id="tabs-carousel-left-icon"
             onClick={handlePrev}

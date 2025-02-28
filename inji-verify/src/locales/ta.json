@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "கடன் சரிபார்ப்பு போர்டல்",
+    "headingHighlight": "எளிதாக!",
+    "description": "ஓமெரா வங்கி சரிபார்ப்பு போர்டலுடன் சான்றுகளை எளிதாக சரிபார்க்கவும்! QR குறியீட்டை ஸ்கேன் செய்யவும் அல்லது பதிவேற்றவும், கீழே உள்ள படிகளைப் பின்பற்றவும்."
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "எங்களை பற்றி",
+    "our_features": "எங்கள் அம்சங்கள்",
+    "help": "உதவி",
+    "home": "முகப்பு"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "தேசிய அடையாளத்துடன் உள்நுழையவும்",
+    "sign_in_to_banking_portal": "உள்நுழையவும்",
+    "username": "பயனர்பெயர்",
+    "password": "கடவுச்சொல்",
+    "username_placeholder": "பயனர்பெயரை உள்ளிடவும்",
+    "password_placeholder": "கடவுச்சொல்லை உள்ளிடவும்",
+    "keep_me_sign_in": "என்னை உள்நுழைந்தே வைத்திருக்கவும்",
+    "forgot_password": "கடவுச்சொல் மறந்துவிட்டதா?",
+    "submit": "சமர்ப்பிக்கவும்",
+    "or": "அல்லது",
+    "no_account": "கணக்கு இல்லையா?",
+    "sign_up": "இப்போது பதிவு செய்யவும்"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
+    "success_message": "eSignet மூலம் ஓமெரா வங்கியில் வெற்றிகரமாக உள்நுழைந்துவிட்டீர்கள்",
+    "get_started": "நல்வரவு",
+    "loan_upto": "₹10,000/- வரை கடன் பெறுங்கள்",
     "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "apply_for_loan": "கடன் பெற விண்ணப்பிக்கவும்",
+    "subtext": "குறுகிய படிகளில் விரைவாக மற்றும் எளிதாக கடன் பெறுங்கள்",
+    "apply_loan": "\"கடன் பெற விண்ணப்பிக்கவும்\" கிளிக் செய்து தொடரவும்",
+    "avail_loan": "கடன் பெறுங்கள்",
+    "fill_details": "கடன் விவரங்களை நிரப்பவும்",
+    "verify_tan": "TAN ஐ சரிபார்க்கவும்"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "விவரங்களை சரிபார்க்கிறது",
+    "please_wait": "தயவுசெய்து காத்திருக்கவும்..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "வாழ்த்துகள்!",
+    "background_process": "உங்கள் விண்ணப்பம் வெற்றிகரமாக சரிபார்க்கப்பட்டு அங்கீகரிக்கப்பட்டுள்ளது!",
+    "approved_loan": "அங்கீகரிக்கப்பட்ட கடன் தொகை",
+    "approved_loan_value": "$10,000",
+    "roi": "வட்டி விகிதம்",
+    "roi_value": "3%",
+    "tenure": "காலம்",
+    "tenure_value": "24 மாதங்கள்"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "கடன் விவரங்களை உள்ளிடவும்",
+    "details_description": "தொடங்குவதற்கு உங்கள் தகவலை நிரப்பவும்.",
+    "eligible_check": "தகுதியை சரிபார்க்கவும்",
+    "eligible_check_description": "நீங்கள் தகுதியானவரா என்பதை அறிய உங்கள் விண்ணப்பத்தை சமர்ப்பிக்கவும்.",
+    "result": "முடிவைக் காண்க",
+    "result_description": "உங்கள் கடன் அங்கீகார நிலையை உடனடியாக பெறுங்கள்!",
+    "header": "கடன் விண்ணப்பம்"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "வீட்டுக் கடன்",
+    "personal_loan": "தனிநபர் கடன்",
+    "education_loan": "கல்விக் கடன்",
+    "fill_details": "விவரங்களை நிரப்பவும்",
+    "loan_details": "(1) கடன் விவரங்கள்",
+    "details_description": "உங்கள் கடன் தகவலை நிரப்பி, முன் நிரப்பப்பட்ட விவரங்களை பரிசீலித்து, தொடர சமர்ப்பிக்கவும்.",
+    "avail_loan_before": "முந்தையதாக நீங்கள் கடன் பெற்றுள்ளீர்களா?",
+    "yes": "ஆம்",
+    "no": "இல்லை",
+    "loan_type": "கடன் வகை",
+    "loan_amount": "கடன் தொகை",
+    "personal_details": "(2) தனிப்பட்ட விவரங்கள்",
+    "full_name": "முழு பெயர்",
+    "dob": "பிறந்த தேதி",
+    "gender": "பாலினம்",
+    "phone_number": "தொலைபேசி எண்",
+    "photo": "புகைப்படம்",
+    "email": "மின்னஞ்சல்",
+    "residential_address": "(3) இருப்பிடம்",
+    "address": "முகவரி",
+    "declarations": "(4) அறிவிப்பு",
+    "terms&conditions": "நான் வழங்கிய அனைத்து தகவல்களும் உண்மையானவை மற்றும் துல்லியமானவை என்பதனை நான் உறுதிப்படுத்துகிறேன். என் வரி சுயவிவரத்தின் அடிப்படையில் பின்னணி சரிபார்ப்புக்கு எனது ஒப்புதலை வழங்குகிறேன்.",
+    "proceed": "தொடரவும்",
+    "select_option": "ஒரு விருப்பத்தை தேர்வுசெய்க"
+  },
+  "camera_access": {
+    "camera_access_denied": "கேமரா அணுகல் மறுக்கப்பட்டது",
+    "camera_access_denied_description": "கோடினை ஸ்கேன் செய்ய உங்கள் கேமரா தேவை. உங்கள் உலாவி அமைப்புகளுக்குச் சென்று இந்த இணையதளத்திற்கு கேமரா அணுகலை அனுமதிக்கவும்.",
+    "okay": "சரி"
+  },
+  "scan_qr_code": {
+    "scan": "ஸ்கேன் செய்யவும்"
+  },
+  "verification": {
+    "back": "மீண்டும்"
+  },
+  "tab": {
+    "upload_qr_code": "QR குறியீட்டை பதிவேற்றவும்",
+    "scan_qr_code": "QR குறியீட்டை ஸ்கேன் செய்யவும்"
+  },
+  "stepper": {
+    "upload_qr_code": "உங்கள் TAN VC ஐ பதிவேற்றவும்",
+    "upload_qr_code_description": "QR குறியீடு உள்ள கோப்பை பதிவேற்றவும்",
+    "verify_document": "ஆவணத்தை சரிபார்க்கவும்",
+    "verify_document_description": "ஆவணம் அல்லது கார்டு சரிபார்ப்பு நடைபெறுகிறது.",
+    "view_result": "முடிவைப் பார்க்கவும்",
+    "view_result_description": "சரிபார்ப்பு முடிவைப் பார்வையிடவும்.",
+    "scan_qr_code": "உங்கள் TAN VC ஐ ஸ்கேன் செய்யவும்",
+    "scan_qr_code_description": "'ஸ்கேன்' கிளிக் செய்து, QR குறியீடு உள்ள ஆவணத்தை ஸ்கேன் செய்யத் தொடங்கவும்",
+    "activate_camera": "கேமராவை இயக்கி QR குறியீட்டை நிலைநிறுத்தவும்",
+    "activate_camera_description": "உங்கள் சாதனத்தின் கேமராவை இயக்கி, சரிபார்ப்பைத் தொடங்க QR குறியீட்டை பிரேமிற்குள் வைத்திருக்கவும்.",
+    "verify_process": "சரிபார்ப்பு நடைபெறுகிறது",
+    "verify_process_description": "QR குறியீடு சரிபார்ப்பு நடைமுறையில் உள்ளது."
+  },
+  "modal": {
+    "close": "மூடுக",
+    "congrats": "வாழ்த்துகள்!",
+    "background_process": "உங்கள் TAN விவரங்கள் வெற்றிகரமாக சரிபார்க்கப்பட்டு, உங்கள் கிரெடிட் மதிப்பீடு சிறப்பாக உள்ளது!"
+  },
+  "vc_card": {
+    "proceed": "தொடரவும்",
+    "fullName": "முழு பெயர்",
+    "dob": "பிறந்த தேதி",
+    "email": "மின்னஞ்சல்",
+    "gender": "பாலினம்",
+    "mobile": "மொபைல்"
+  },
+  "vc_result": {
+    "success": "வாழ்த்துகள், TAN செல்லுபடியாகும்!",
+    "invalid": "மன்னிக்கவும், TAN செல்லுபடியாகாது!",
+    "expired": "மன்னிக்கவும், TAN காலாவதி ஆகிவிட்டது!"
+  },
+  "qr_scan": {
+    "verify": "சரிபார்க்கிறது..."
+  },
+  "upload_qr_code": {
+    "upload": "பதிவேற்றவும்"
   }
 }
