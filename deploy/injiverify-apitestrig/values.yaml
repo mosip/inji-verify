@@ -1,0 +1,24 @@
+modules:
+  injivertify:
+    enabled: true
+    image:
+      repository: mosipdev/apitest-injivertify
+      tag: develop
+      pullPolicy: Always
+  prereg:
+    enabled: false
+    masterdata:
+      enabled: false
+    idrepo:
+      enabled: false
+    partner:
+      enabled: false
+    pms:
+    resident:
+      enabled: false
+    auth:
+      enabled: false
+    esignet:
+      enabled: false
+    mimoto:
+      enabled: false
