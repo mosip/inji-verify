@@ -6,7 +6,7 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-NS=inji-vertify
+NS=injiverify
 CHART_VERSION=0.0.1-develop
 
 echo Create $NS namespace

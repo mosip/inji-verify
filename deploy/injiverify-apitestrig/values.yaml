@@ -1,24 +1,7 @@
 modules:
-  injivertify:
+  injiverify:
     enabled: true
     image:
-      repository: mosipdev/apitest-injivertify
+      repository: mosipdev/apitest-inji-verify
       tag: develop
       pullPolicy: Always
-  prereg:
-    enabled: false
-    masterdata:
-      enabled: false
-    idrepo:
-      enabled: false
-    partner:
-      enabled: false
-    pms:
-    resident:
-      enabled: false
-    auth:
-      enabled: false
-    esignet:
-      enabled: false
-    mimoto:
-      enabled: false
