@@ -235,4 +235,16 @@ export const farmerCredentialRenderOrder = [
   "secondaryCropType",
 ];
 
+export const MosipVerifiableCredentialRenderOrder = [
+  "face",
+  "UIN",
+  "fullName",
+  "dateOfBirth",
+  "gender",
+  "phone",
+  "email",
+  "addressLine1",
+  "city",
+];
+
 export const BASE64_PADDING = "=="

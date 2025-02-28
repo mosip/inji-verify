@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VCWrapper, Detail, QrData } from "../types/data-types";
-import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder } from "./config";
+import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
   return (
@@ -56,6 +56,18 @@ export const getDetailsOrder = (vc: any): Detail[] => {
     case "FarmerCredential":
       return farmerCredentialRenderOrder.map((key) => {
         if (key in credential) {
+          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
+        }
+        return { key, value: "N/A" };
+      });
+    case "MOSIPVerifiableCredential":
+    case "MockVerifiableCredential":
+      return MosipVerifiableCredentialRenderOrder.map((key) => {
+        if (key in credential) {
+          
+          if(typeof(credential[key])=="object"){
+            return { key, value: credential[key as keyof credentialSubject][0].value || "N/A" };
+          }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
         return { key, value: "N/A" };
