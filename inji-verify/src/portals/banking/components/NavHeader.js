@@ -42,7 +42,7 @@ export default function NavHeader(props) {
   }, [props.langOptions]);
 
   var dropdownItemClass =
-    "group text-[14px] leading-none flex items-center relative select-none outline-none data-[disabled]:pointer-events-none hover:font-bold cursor-pointer py-2";
+    "group text-[14px] leading-none flex items-center relative select-none outline-none data-[disabled]:pointer-events-none hover:font-bold cursor-pointer py-3 hover:text-[#6006A8]";
 
   var borderBottomClass = "border-b-[1px]";
 
@@ -64,7 +64,7 @@ export default function NavHeader(props) {
           )}
           <img
             src="assets/images/logo.svg"
-            className="m-auto lg:m-0 my-2 w-40 sm:w-72"
+            className="m-auto lg:m-0 my-2 w-36 sm:w-72"
             alt="logo"
           />
         </div>
@@ -106,7 +106,7 @@ export default function NavHeader(props) {
               </DropdownMenu.Trigger>
               <DropdownMenu.Portal>
                 <DropdownMenu.Content
-                  className="min-w-[220px] bg-white rounded-md shadow-md will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade px-3 py-2 border border-[#BCBCBC] outline-0 relative top-[-0.5rem]"
+                  className="min-w-[220px] bg-white rounded-md shadow-md will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade px-4 pb-2 pt-1 border border-[#BCBCBC] outline-0 relative top-[-0.5rem]"
                   sideOffset={5}
                 >
                   {props.langOptions.map((key, idx) => (
@@ -116,8 +116,8 @@ export default function NavHeader(props) {
                       className={
                         i18n.language === key.value
                           ? props.langOptions.length - 1 !== idx
-                            ? `font-bold ${dropdownItemClass} ${borderBottomClass}`
-                            : `font-bold ${dropdownItemClass}`
+                            ? `font-bold ${dropdownItemClass} ${borderBottomClass} text-[#7F56D9]`
+                            : `font-bold ${dropdownItemClass} text-[#7F56D9]`
                           : props.langOptions.length - 1 !== idx
                           ? `${dropdownItemClass} ${borderBottomClass}`
                           : `${dropdownItemClass}`
@@ -133,8 +133,8 @@ export default function NavHeader(props) {
                             height="16"
                             viewBox="0 0 24 24"
                             fill="none"
-                            stroke="#6006A8"
-                            strokeWidth="2"
+                            stroke="#7F56D9"
+                            strokeWidth="3"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             className="lucide lucide-check relative top-[1px] checkIcon"

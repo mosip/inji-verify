@@ -26,7 +26,12 @@ const LandingPage = () => {
       }
     };
     getSearchParams();
+
     renderSignInButton();
+
+    i18n.on("languageChanged", function (lng) {
+      renderSignInButton();
+    });
   }, [state]);
 
   const renderSignInButton = () => {

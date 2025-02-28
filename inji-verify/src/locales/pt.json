@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "Portal de Verificação de Empréstimos",
+    "headingHighlight": "com facilidade!",
+    "description": "Verifique credenciais sem esforço com o Portal de Verificação do Omera Bank! Basta escanear o código QR ou carregá-lo para validação instantânea, seguindo os passos abaixo."
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "Sobre Nós",
+    "our_features": "Nossos Recursos",
+    "help": "Ajuda",
+    "home": "Início"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "Entrar com ID Nacional",
+    "sign_in_to_banking_portal": "Fazer Login",
+    "username": "Nome de Usuário",
+    "password": "Senha",
+    "username_placeholder": "Digite o nome de usuário",
+    "password_placeholder": "Digite a senha",
+    "keep_me_sign_in": "Manter-me conectado",
+    "forgot_password": "Esqueceu a senha?",
+    "submit": "Enviar",
+    "or": "Ou",
+    "no_account": "Não tem uma conta?",
+    "sign_up": "Cadastre-se agora"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
-    "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "success_message": "Você entrou com sucesso no Omera Bank usando o eSignet",
+    "get_started": "Bem-vindo",
+    "loan_upto": "Obtenha um empréstimo de até ",
+    "amount": "$10.000/-",
+    "apply_for_loan": "Solicitar Empréstimo",
+    "subtext": "Obtenha empréstimos rápidos e fáceis em apenas alguns passos",
+    "apply_loan": "Clique em \"Solicitar Empréstimo\" para continuar",
+    "avail_loan": "Obter Empréstimo",
+    "fill_details": "Preencher Detalhes do Empréstimo",
+    "verify_tan": "Verificar ID TAN"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "Verificando Detalhes",
+    "please_wait": "Por favor, aguarde..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "Parabéns!",
+    "background_process": "Sua solicitação foi verificada e aprovada!",
+    "approved_loan": "Valor do Empréstimo Aprovado",
+    "approved_loan_value": "$10.000",
+    "roi": "Taxa de Juros",
+    "roi_value": "3%",
+    "tenure": "Prazo",
+    "tenure_value": "24 Meses"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "Inserir detalhes do empréstimo",
+    "details_description": "Preencha suas informações para começar.",
+    "eligible_check": "Verificar elegibilidade",
+    "eligible_check_description": "Envie sua solicitação para ver se você é elegível.",
+    "result": "Ver resultado",
+    "result_description": "Obtenha instantaneamente o status de aprovação do seu empréstimo!",
+    "header": "Solicitação de empréstimo"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "Empréstimo Imobiliário",
+    "personal_loan": "Empréstimo Pessoal",
+    "education_loan": "Empréstimo Educacional",
+    "fill_details": "Preencher detalhes",
+    "loan_details": "(1) Detalhes do Empréstimo",
+    "details_description": "Preencha as informações do seu empréstimo, revise os detalhes pré-preenchidos e envie para continuar.",
+    "avail_loan_before": "Você já solicitou um empréstimo antes?",
+    "yes": "SIM",
+    "no": "NÃO",
+    "loan_type": "Tipo de Empréstimo",
+    "loan_amount": "Valor do Empréstimo",
+    "personal_details": "(2) Detalhes Pessoais",
+    "full_name": "Nome Completo",
+    "dob": "Data de Nascimento",
+    "gender": "Gênero",
+    "phone_number": "Número de Telefone",
+    "photo": "Foto",
+    "email": "E-mail",
+    "residential_address": "(3) Endereço Residencial",
+    "address": "Endereço",
+    "declarations": "(4) Declaração",
+    "terms&conditions": "Declaro que todas as informações fornecidas são verdadeiras e precisas. Autorizo a verificação de antecedentes com base no meu perfil tributário.",
+    "proceed": "Prosseguir",
+    "select_option": "Selecione uma Opção"
+  },
+  "camera_access": {
+    "camera_access_denied": "Acesso à Câmera Negado",
+    "camera_access_denied_description": "Precisamos da sua câmera para escanear o código. Vá para as configurações do navegador e permita o acesso à câmera para este site.",
+    "okay": "Ok"
+  },
+  "scan_qr_code": {
+    "scan": "Escanear"
+  },
+  "verification": {
+    "back": "Voltar"
+  },
+  "tab": {
+    "upload_qr_code": "Carregar Código QR",
+    "scan_qr_code": "Escanear o Código QR"
+  },
+  "stepper": {
+    "upload_qr_code": "Carregar seu TAN VC",
+    "upload_qr_code_description": "Carregue um arquivo que contém um código QR",
+    "verify_document": "Verificar documento",
+    "verify_document_description": "A verificação do documento ou cartão está em andamento.",
+    "view_result": "Ver resultado",
+    "view_result_description": "Veja o resultado da verificação.",
+    "scan_qr_code": "Escanear seu TAN VC",
+    "scan_qr_code_description": "Clique em 'Escanear' para começar a escanear o documento ou cartão com um código QR",
+    "activate_camera": "Ativar Câmera e Posicionar Código QR",
+    "activate_camera_description": "Ative a câmera do dispositivo e mantenha o código QR dentro do quadro para iniciar a verificação.",
+    "verify_process": "Verificação em Andamento",
+    "verify_process_description": "A verificação do código QR está em andamento."
+  },
+  "modal": {
+    "close": "Fechar",
+    "congrats": "Parabéns!",
+    "background_process": "Os detalhes do seu TAN foram verificados com sucesso, e seu score de crédito é Excelente!"
+  },
+  "vc_card": {
+    "proceed": "Continuar",
+    "fullName": "Nome Completo",
+    "dob": "Data de Nascimento",
+    "email": "Email",
+    "gender": "Gênero",
+    "mobile": "Celular"
+  },
+  "vc_result": {
+    "success": "Parabéns, o TAN é válido!",
+    "invalid": "Infelizmente, o TAN é inválido!",
+    "expired": "Infelizmente, o TAN está expirado!"
+  },
+  "qr_scan": {
+    "verify": "Verificando..."
+  },
+  "upload_qr_code": {
+    "upload": "Carregar"
   }
 }

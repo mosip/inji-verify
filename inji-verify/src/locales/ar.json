@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "بوابة التحقق من القروض",
+    "headingHighlight": "بكل سهولة!",
+    "description": "تحقق من بيانات الاعتماد بكل سهولة مع بوابة التحقق من بنك أوميرا! ما عليك سوى مسح رمز الاستجابة السريعة أو تحميله للتحقق الفوري، باتباع الخطوات أدناه."
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "معلومات عنا",
+    "our_features": "مميزاتنا",
+    "help": "المساعدة",
+    "home": "الرئيسية"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "تسجيل الدخول بالهوية الوطنية",
+    "sign_in_to_banking_portal": "تسجيل الدخول",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "username_placeholder": "أدخل اسم المستخدم",
+    "password_placeholder": "أدخل كلمة المرور",
+    "keep_me_sign_in": "إبقني مسجلاً",
+    "forgot_password": "نسيت كلمة المرور؟",
+    "submit": "إرسال",
+    "or": "أو",
+    "no_account": "ليس لديك حساب؟",
+    "sign_up": "سجل الآن"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
+    "success_message": "لقد سجلت الدخول بنجاح إلى بنك أوميرا باستخدام eSignet",
+    "get_started": "مرحبًا",
+    "loan_upto": "احصل على قرض يصل إلى ",
     "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "apply_for_loan": "التقديم على قرض",
+    "subtext": "احصل على قروض سريعة وسهلة في بضع خطوات فقط",
+    "apply_loan": "انقر على \"التقديم على قرض\" للمتابعة",
+    "avail_loan": "احصل على قرض",
+    "fill_details": "املأ تفاصيل القرض",
+    "verify_tan": "تحقق من رقم TAN"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "جارٍ التحقق من التفاصيل",
+    "please_wait": "يرجى الانتظار..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "تهانينا!",
+    "background_process": "تم التحقق من طلبك والموافقة عليه!",
+    "approved_loan": "مبلغ القرض الموافق عليه",
+    "approved_loan_value": "$10,000",
+    "roi": "معدل الفائدة",
+    "roi_value": "3%",
+    "tenure": "مدة السداد",
+    "tenure_value": "24 شهرًا"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "أدخل تفاصيل القرض",
+    "details_description": "املأ معلوماتك للبدء.",
+    "eligible_check": "تحقق من الأهلية",
+    "eligible_check_description": "قدم طلبك لمعرفة ما إذا كنت مؤهلاً.",
+    "result": "عرض النتيجة",
+    "result_description": "احصل على حالة الموافقة على القرض فورًا!",
+    "header": "طلب القرض"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "قرض السكن",
+    "personal_loan": "القرض الشخصي",
+    "education_loan": "قرض التعليم",
+    "fill_details": "املأ التفاصيل",
+    "loan_details": "(1) تفاصيل القرض",
+    "details_description": "املأ معلومات القرض الخاصة بك، وراجع التفاصيل المعبأة مسبقًا، ثم قدم الطلب للمتابعة.",
+    "avail_loan_before": "هل حصلت على قرض من قبل؟",
+    "yes": "نعم",
+    "no": "لا",
+    "loan_type": "نوع القرض",
+    "loan_amount": "مبلغ القرض",
+    "personal_details": "(2) التفاصيل الشخصية",
+    "full_name": "الاسم الكامل",
+    "dob": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "phone_number": "رقم الهاتف",
+    "photo": "الصورة",
+    "email": "البريد الإلكتروني",
+    "residential_address": "(3) العنوان السكني",
+    "address": "العنوان",
+    "declarations": "(4) الإقرار",
+    "terms&conditions": "أقر بموجب هذا أن جميع المعلومات المقدمة صحيحة ودقيقة. أوافق على التحقق من الخلفية بناءً على ملفي الضريبي.",
+    "proceed": "متابعة",
+    "select_option": "اختر خيارًا"
+  },
+  "camera_access": {
+    "camera_access_denied": "تم رفض الوصول إلى الكاميرا",
+    "camera_access_denied_description": "نحتاج إلى الكاميرا لمسح الرمز. انتقل إلى إعدادات المتصفح واسمح بالوصول إلى الكاميرا لهذا الموقع.",
+    "okay": "حسنًا"
+  },
+  "scan_qr_code": {
+    "scan": "مسح"
+  },
+  "verification": {
+    "back": "عودة"
+  },
+  "tab": {
+    "upload_qr_code": "تحميل رمز QR",
+    "scan_qr_code": "مسح رمز QR"
+  },
+  "stepper": {
+    "upload_qr_code": "تحميل TAN VC الخاص بك",
+    "upload_qr_code_description": "قم بتحميل ملف يحتوي على رمز QR",
+    "verify_document": "التحقق من المستند",
+    "verify_document_description": "جارٍ التحقق من المستند أو البطاقة.",
+    "view_result": "عرض النتيجة",
+    "view_result_description": "عرض نتيجة التحقق.",
+    "scan_qr_code": "مسح TAN VC الخاص بك",
+    "scan_qr_code_description": "انقر على 'مسح' لبدء مسح المستند أو البطاقة التي تحتوي على رمز QR",
+    "activate_camera": "تفعيل الكاميرا وتوجيه رمز QR",
+    "activate_camera_description": "قم بتفعيل كاميرا الجهاز وضع رمز QR داخل الإطار لبدء التحقق.",
+    "verify_process": "جارٍ التحقق",
+    "verify_process_description": "جارٍ التحقق من رمز QR."
+  },
+  "modal": {
+    "close": "إغلاق",
+    "congrats": "تهانينا!",
+    "background_process": "تم التحقق من تفاصيل TAN الخاصة بك بنجاح، ودرجة الائتمان لديك ممتازة!"
+  },
+  "vc_card": {
+    "proceed": "متابعة",
+    "fullName": "الاسم الكامل",
+    "dob": "تاريخ الميلاد",
+    "email": "البريد الإلكتروني",
+    "gender": "الجنس",
+    "mobile": "الجوال"
+  },
+  "vc_result": {
+    "success": "تهانينا، رقم TAN صالح!",
+    "invalid": "للأسف، رقم TAN غير صالح!",
+    "expired": "للأسف، رقم TAN منتهي الصلاحية!"
+  },
+  "qr_scan": {
+    "verify": "جارٍ التحقق..."
+  },
+  "upload_qr_code": {
+    "upload": "تحميل"
   }
 }

@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "ಸಾಲ ಪರಿಶೀಲನೆ ಪೋರ್ಟಲ್",
+    "headingHighlight": "ಸುಲಭವಾಗಿ!",
+    "description": "ಒಮೆರಾ ಬ್ಯಾಂಕ್ ಪರಿಶೀಲನೆ ಪೋರ್ಟಲ್‌ನೊಂದಿಗೆ ನಿಗದಿತ ಪಟ್ಟಿ ಪರಿಶೀಲಿಸಿ! QR ಕೋಡ್ ಅನ್ನು ಸ್ಕಾನ್ ಮಾಡಿ ಅಥವಾ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಕೆಳಗಿನ ಹಂತಗಳನ್ನು ಅನುಸರಿಸಿ."
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "ನಮ್ಮ ಬಗ್ಗೆ",
+    "our_features": "ನಮ್ಮ ವೈಶಿಷ್ಟ್ಯಗಳು",
+    "help": "ಸಹಾಯ",
+    "home": "ಮುಖಪುಟ"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "ರಾಷ್ಟ್ರೀಯ ID ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ",
+    "sign_in_to_banking_portal": "ಲಾಗ್ ಇನ್ ಮಾಡಿ",
+    "username": "ಬಳಕೆದಾರ ಹೆಸರು",
+    "password": "ಗುಪ್ತಪದ",
+    "username_placeholder": "ಬಳಕೆದಾರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+    "password_placeholder": "ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ",
+    "keep_me_sign_in": "ನನ್ನನ್ನು ಲಾಗ್ ಇನ್ ಆಗಿಡಿ",
+    "forgot_password": "ಗುಪ್ತಪದ ಮರೆಯುತ್ತಿದ್ದೀರಾ?",
+    "submit": "ಸಲ್ಲಿಸು",
+    "or": "ಅಥವಾ",
+    "no_account": "ಖಾತೆ ಇಲ್ಲವೇ?",
+    "sign_up": "ಈಗಲೇ ನೋಂದಣಿ ಮಾಡಿ"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
-    "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "success_message": "ನೀವು eSignet ಬಳಸಿ ಒಮೆರಾ ಬ್ಯಾಂಕ್‌ಗೆ ಯಶಸ್ವಿಯಾಗಿ ಲಾಗ್ ಇನ್ ಆಗಿದ್ದೀರಿ",
+    "get_started": "ಸ್ವಾಗತ",
+    "loan_upto": "ಸಾಲ ಪಡೆಯಿರಿ",
+    "amount": "₹10,000/-",
+    "apply_for_loan": "ಸಾಲಕ್ಕೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    "subtext": "ಕೆಲವು ಹಂತಗಳಲ್ಲಿ ವೇಗವಾಗಿ ಮತ್ತು ಸುಲಭವಾಗಿ ಸಾಲ ಪಡೆಯಿರಿ",
+    "apply_loan": "ಮುಂದುವರಿಯಲು \"ಸಾಲಕ್ಕೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ\" ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "avail_loan": "ಸಾಲ ಪಡೆಯಿರಿ",
+    "fill_details": "ಸಾಲದ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    "verify_tan": "TAN ID ಪರಿಶೀಲಿಸಿ"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ",
+    "please_wait": "ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "ಅಭಿನಂದನೆಗಳು!",
+    "background_process": "ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದ್ದು, ಅನುಮೋದನೆ ನೀಡಲಾಗಿದೆ!",
+    "approved_loan": "ಅನುಮೋದಿತ ಸಾಲದ ಮೊತ್ತ",
+    "approved_loan_value": "₹10,000",
+    "roi": "ಆಸ್ತಿ ಬಡ್ಡಿದರ",
+    "roi_value": "3%",
+    "tenure": "ಕಾಲಾವಧಿ",
+    "tenure_value": "24 ತಿಂಗಳು"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "ಕಡೈ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ",
+    "details_description": "ಪ್ರಾರಂಭಿಸಲು ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಭರ್ತಿ ಮಾಡಿ.",
+    "eligible_check": "ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ",
+    "eligible_check_description": "ನೀವು ಅರ್ಹರಾಗಿದ್ದೀರಾ ಎಂಬುದನ್ನು ನೋಡಲು ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಿ.",
+    "result": "ಫಲಿತಾಂಶವನ್ನು ವೀಕ್ಷಿಸಿ",
+    "result_description": "ನಿಮ್ಮ ಸಾಲ ಅನುಮೋದನಾ ಸ್ಥಿತಿಯನ್ನು ತಕ್ಷಣವೇ ಪಡೆಯಿರಿ!",
+    "header": "ಸಾಲ ಅರ್ಜಿ"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "ಮನೆ ಸಾಲ",
+    "personal_loan": "ವೈಯಕ್ತಿಕ ಸಾಲ",
+    "education_loan": "ಶಿಕ್ಷಣ ಸಾಲ",
+    "fill_details": "ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    "loan_details": "(1) ಸಾಲ ವಿವರಗಳು",
+    "details_description": "ನಿಮ್ಮ ಸಾಲ ಮಾಹಿತಿಯನ್ನು ಭರ್ತಿ ಮಾಡಿ, ಪೂರ್ವ-ಭರ್ತಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮುಂದುವರಿಸಲು ಸಲ್ಲಿಸಿ.",
+    "avail_loan_before": "ನೀವು ಹಿಂದೆ ಸಾಲ ಪಡೆದಿದ್ದೀರಾ?",
+    "yes": "ಹೌದು",
+    "no": "ಇಲ್ಲ",
+    "loan_type": "ಸಾಲದ ಪ್ರಕಾರ",
+    "loan_amount": "ಸಾಲದ ಮೊತ್ತ",
+    "personal_details": "(2) ವೈಯಕ್ತಿಕ ವಿವರಗಳು",
+    "full_name": "ಪೂರ್ಣ ಹೆಸರು",
+    "dob": "ಜನ್ಮ ದಿನಾಂಕ",
+    "gender": "ಲಿಂಗ",
+    "phone_number": "ಫೋನ್ ಸಂಖ್ಯೆ",
+    "photo": "ಫೋಟೋ",
+    "email": "ಇಮೇಲ್",
+    "residential_address": "(3) ನಿವಾಸ ವಿಳಾಸ",
+    "address": "ವಿಳಾಸ",
+    "declarations": "(4) ಘೋಷಣೆ",
+    "terms&conditions": "ನಾನು ನೀಡಿದ ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸತ್ಯ ಮತ್ತು ಸರಿಯಾದದ್ದಾಗಿದೆ ಎಂದು ನಾನು ಘೋಷಿಸುತ್ತೇನೆ. ನನ್ನ ತೆರಿಗೆ ಪ್ರೊಫೈಲ್ ಆಧಾರಿತ ಹಿನ್ನೆಲೆ ಪರಿಶೀಲನೆಗೆ ನಾನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇನೆ.",
+    "proceed": "ಮುಂದುವರಿಸಿ",
+    "select_option": "ಒಂದು ಆಯ್ಕೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+  },
+  "camera_access": {
+    "camera_access_denied": "ಕ್ಯಾಮೆರಾ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ",
+    "camera_access_denied_description": "ನಾವು QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲು ನಿಮ್ಮ ಕ್ಯಾಮೆರಾವನ್ನು ಬಳಸಬೇಕಾಗುತ್ತದೆ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್ಗಳಿಗೆ ಹೋಗಿ ಮತ್ತು ಈ ವೆಬ್‌ಸೈಟಿಗಾಗಿ ಕ್ಯಾಮೆರಾ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.",
+    "okay": "ಸರಿ"
+  },
+  "scan_qr_code": {
+    "scan": "ಸ್ಕ್ಯಾನ್ ಮಾಡಿ"
+  },
+  "verification": {
+    "back": "ಹಿಂದಕ್ಕೆ"
+  },
+  "tab": {
+    "upload_qr_code": "QR ಕೋಡ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    "scan_qr_code": "QR ಕೋಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ"
+  },
+  "modal": {
+    "close": "ಮುಚ್ಚಿ",
+    "congrats": "ಅಭಿನಂದನೆಗಳು!",
+    "background_process": "ನಿಮ್ಮ TAN ವಿವರಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಮತ್ತು ನಿಮ್ಮ ಕ್ರೆಡಿಟ್ ಸ್ಕೋರ್ ಅತ್ಯುತ್ತಮವಾಗಿದೆ!"
+  },
+  "stepper": {
+    "upload_qr_code": "ನಿಮ್ಮ ಟಿಎನ್ ವಿಸಿ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    "upload_qr_code_description": "ಕ್ಯೂಆರ್ ಕೋಡ್ ಅನ್ನು ಒಳಗೊಂಡ ಫೈಲ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    "verify_document": "ದಾಖಲೆ ಪರಿಶೀಲಿಸಿ",
+    "verify_document_description": "ದಾಖಲೆ ಅಥವಾ ಕಾರ್ಡ್ ಪರಿಶೀಲನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ.",
+    "view_result": "ಫಲಿತಾಂಶ ವೀಕ್ಷಿಸಿ",
+    "view_result_description": "ಪರಿಶೀಲನೆ ಫಲಿತಾಂಶವನ್ನು ವೀಕ್ಷಿಸಿ.",
+    "scan_qr_code": "ನಿಮ್ಮ ಟಿಎನ್ ವಿಸಿ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
+    "scan_qr_code_description": "ದಸ್ತಾವೇಜು ಅಥವಾ ಕಾರ್ಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲು 'ಸ್ಕ್ಯಾನ್' ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "activate_camera": "ಕ್ಯಾಮೆರಾವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ ಮತ್ತು ಕ್ಯೂಆರ್ ಕೋಡ್ ಹೊಂದಿಸಿ",
+    "activate_camera_description": "ನಿಮ್ಮ ಸಾಧನದ ಕ್ಯಾಮೆರಾವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ ಮತ್ತು ಪರಿಶೀಲನೆ ಆರಂಭಿಸಲು ಕ್ಯೂಆರ್ ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನೊಳಗೆ ಹಿಡಿಯಿರಿ.",
+    "verify_process": "ಪರಿಶೀಲನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ",
+    "verify_process_description": "ಕ್ಯೂಆರ್ ಕೋಡ್ ಪರಿಶೀಲನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ."
+  },
+  "vc_card": {
+    "proceed": "ಮುಂದುವರಿಸಿ",
+    "fullName": "ಪೂರ್ಣ ಹೆಸರು",
+    "dob": "ಜನ್ಮ ದಿನಾಂಕ",
+    "email": "ಇಮೇಲ್",
+    "gender": "ಲಿಂಗ",
+    "mobile": "ಮೊಬೈಲ್"
+  },
+  "vc_result": {
+    "success": "ಅಭಿನಂದನೆಗಳು, TAN ಮಾನ್ಯವಾಗಿದೆ!",
+    "invalid": "ಕ್ಷಮಿಸಿ, TAN ಅಮಾನ್ಯವಾಗಿದೆ!",
+    "expired": "ಕ್ಷಮಿಸಿ, TAN ಮುಕ್ತಾಯಗೊಂಡಿದೆ!"
+  },
+  "qr_scan": {
+    "verify": "ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
+  },
+  "upload_qr_code": {
+    "upload": "ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
   }
 }

@@ -11,10 +11,12 @@ const Step = ({
   stepNumber,
   activeOrCompleted,
   active,
+  stepCount,
 }: {
   stepNumber: number;
   activeOrCompleted: boolean;
   active: number;
+  stepCount: number;
 }) => {
   const stepperStep = "flex items-center";
   const stepperActiveOrCompleted = "rounded-full bg-[#F2FCFF] text-white";
@@ -30,14 +32,22 @@ const Step = ({
       <div
         className={`flex items-center justify-center w-9 h-9 ${stepperCircle}`}
       >
-        {active === stepNumber ? (
-          <img src="assets/images/dot.svg" alt="dot" className="!w-[2.5rem] rounded-[25px] bg-[#7F56D9] brightness-125 outline-2 outline-[#9E77ED]" />
-        ) : activeOrCompleted || (activeOrCompleted && active === stepNumber) ? (
-          <img src="assets/images/check.svg" alt="dot" className="!w-[2rem] brightness-125" />
+        {activeOrCompleted || active === stepCount ? (
+          <img
+            src="assets/images/check.svg"
+            alt="check"
+            className="!w-[2rem] brightness-125"
+          />
+        ) : active === stepNumber ? (
+          <img
+            src="assets/images/dot.svg"
+            alt="dot"
+            className="!w-[2.5rem] rounded-[25px] bg-[#7F56D9] brightness-125 outline-2 outline-[#9E77ED]"
+          />
         ) : (
           <img
             src="assets/images/disabled_dot.svg"
-            alt="dot"
+            alt="disabled_dot"
             className="!w-[2rem]"
           />
         )}
@@ -56,7 +66,6 @@ function MobileStepper(props: any) {
 
   const stepCount = getVerificationStepsCount(method);
   const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
-
   const steps =
     method === "UPLOAD"
       ? [
@@ -108,6 +117,7 @@ function MobileStepper(props: any) {
               stepNumber={value}
               activeOrCompleted={value <= activeScreen}
               active={activeScreen}
+              stepCount={stepCount}
             />
             {value < stepCount && <div className={stepperLine}></div>}
           </>

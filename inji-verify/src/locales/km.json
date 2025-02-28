@@ -1,58 +1,141 @@
 {
   "Header": {
-    "heading": "Loan Verification Portal",
-    "headingHighlight": "with ease!",
-    "description": "Effortlessly verify credentials with Omera Bank Verify Portal! Just scan the QR code or upload it for instant validation, following the steps below."
+    "heading": "ទីតាំងផ្ទៀងផ្ទាត់ប្រាក់កម្ចី",
+    "headingHighlight": "ដោយងាយស្រួល!",
+    "description": "ផ្ទៀងផ្ទាត់អត្តសញ្ញាណដោយងាយស្រួលជាមួយ Omera Bank Verify Portal! គ្រាន់តែស្កេន QR code ឬផ្ទុកឡើងសម្រាប់ការផ្ទៀងផ្ទាត់ភ្លាមៗ ដោយអនុវត្តជំហានខាងក្រោម។"
   },
   "navheader": {
-    "about_us": "About Us",
-    "our_features": "Our Features",
-    "help": "Help",
-    "home": "Home"
+    "about_us": "អំពីពួកយើង",
+    "our_features": "លក្ខណៈពិសេសរបស់យើង",
+    "help": "ជំនួយ",
+    "home": "ទំព័រដើម"
   },
   "landing_page": {
-    "sign_in_with_esignet": "Sign In with National ID",
-    "sign_in_to_banking_portal": "Log In",
-    "username": "Username",
-    "password": "Password",
-    "username_placeholder": "Enter username",
-    "password_placeholder":"Enter password",
-    "keep_me_sign_in": "Keep me sign in",
-    "forgot_password": "Forgot Password?",
-    "submit": "Submit",
-    "or": "Or",
-    "no_account": "Don't have an account?",
-    "sign_up": "Sign up now"
+    "sign_in_with_esignet": "ចូលប្រើប្រាស់ជាមួយអត្តសញ្ញាណជាតិ",
+    "sign_in_to_banking_portal": "ចូលប្រើប្រាស់",
+    "username": "ឈ្មោះអ្នកប្រើប្រាស់",
+    "password": "ពាក្យសម្ងាត់",
+    "username_placeholder": "បញ្ចូលឈ្មោះអ្នកប្រើប្រាស់",
+    "password_placeholder": "បញ្ចូលពាក្យសម្ងាត់",
+    "keep_me_sign_in": "រក្សាភាពភ្ជាប់",
+    "forgot_password": "ភ្លេចពាក្យសម្ងាត់?",
+    "submit": "បញ្ជូន",
+    "or": "ឬ",
+    "no_account": "មិនទាន់មានគណនី?",
+    "sign_up": "ចុះឈ្មោះឥឡូវនេះ"
   },
   "loan_page": {
-    "success_message": "You have successfully logged into Omera Bank using eSignet",
-    "get_started": "Welcome",
-    "loan_upto": "Get loan upto ",
+    "success_message": "អ្នកបានចូលប្រើប្រាស់ Omera Bank ជាសម្រេចដោយប្រើ eSignet",
+    "get_started": "ស្វាគមន៍",
+    "loan_upto": "អាចខ្ចីប្រាក់បានដល់",
     "amount": "$10,000/-",
-    "apply_loan": "Apply for loan",
-    "subtext": "Get quick and easy loans in just a few steps"
+    "apply_for_loan": "ដាក់ពាក្យស្នើសុំប្រាក់កម្ចី",
+    "subtext": "ទទួលបានប្រាក់កម្ចីយ៉ាងឆាប់រហ័ស និងងាយស្រួលតាមជំហានប៉ុន្មាន",
+    "apply_loan": "ចុចលើ \"ដាក់ពាក្យស្នើសុំប្រាក់កម្ចី\" ដើម្បីបន្ត",
+    "avail_loan": "ស្នើសុំប្រាក់កម្ចី",
+    "fill_details": "បំពេញព័ត៌មានប្រាក់កម្ចី",
+    "verify_tan": "ផ្ទៀងផ្ទាត់លេខសម្គាល់ TAN"
   },
   "loading": {
-    "background_process": "Background verification is in progress",
-    "please_wait": "Please wait..."
+    "background_process": "កំពុងផ្ទៀងផ្ទាត់ព័ត៌មាន",
+    "please_wait": "សូមរង់ចាំ..."
   },
   "loan_result": {
-    "verify_credentials": "Verify Credentials",
-    "congrats": "Congratulations!",
-    "info": "Click the button below to verify your credentials and avail the loan.",
-    "background_process": "Your background verification is completed successfully."
+    "congrats": "អបអរសាទរ!",
+    "background_process": "ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់ និងអនុម័ត!",
+    "approved_loan": "ចំនួនប្រាក់កម្ចីដែលបានអនុម័ត",
+    "approved_loan_value": "$10,000",
+    "roi": "អត្រាការប្រាក់",
+    "roi_value": "3%",
+    "tenure": "អំឡុងពេលបង់",
+    "tenure_value": "24 ខែ"
   },
   "application": {
-    "details": "Fill Details",
-    "details_description": "Lorem ipsum dolor sit amet",
-    "eligible_check": "Eligibility Check",
-    "eligible_check_description": "Lorem ipsum dolor sit amet",
-    "result": "View Result",
-    "result_description": "Lorem ipsum dolor sit amet"
+    "details": "បំពេញព័ត៌មានឥណទាន",
+    "details_description": "បំពេញព័ត៌មានរបស់អ្នកដើម្បីចាប់ផ្តើម។",
+    "eligible_check": "ពិនិត្យសិទ្ធិ",
+    "eligible_check_description": "ដាក់ស្នើពាក្យរបស់អ្នកដើម្បីមើលថាតើអ្នកមានសិទ្ធិឬអត់។",
+    "result": "មើលលទ្ធផល",
+    "result_description": "ទទួលបានស្ថានភាពអនុម័តឥណទានភ្លាមៗ!",
+    "header": "ពាក្យស្នើសុំឥណទាន"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
-    "education_loan": "Education Loan"
+    "home_loan": "ឥណទានផ្ទះ",
+    "personal_loan": "ឥណទានផ្ទាល់ខ្លួន",
+    "education_loan": "ឥណទានសិក្សា",
+    "fill_details": "បំពេញព័ត៌មាន",
+    "loan_details": "(1) ព័ត៌មានអំពីឥណទាន",
+    "details_description": "បំពេញព័ត៌មានអំពីឥណទានរបស់អ្នក ពិនិត្យព័ត៌មានដែលបានបំពេញរួចហើយ ហើយដាក់ស្នើដើម្បីបន្ត។",
+    "avail_loan_before": "តើអ្នកបានប្រើប្រាស់ឥណទានមុននេះដែរ​ឬអត់?",
+    "yes": "បាទ/ចាស",
+    "no": "ទេ",
+    "loan_type": "ប្រភេទឥណទាន",
+    "loan_amount": "ចំនួនទឹកប្រាក់ឥណទាន",
+    "personal_details": "(2) ព័ត៌មានផ្ទាល់ខ្លួន",
+    "full_name": "ឈ្មោះពេញ",
+    "dob": "ថ្ងៃខែឆ្នាំកំណើត",
+    "gender": "ភេទ",
+    "phone_number": "លេខទូរស័ព្ទ",
+    "photo": "រូបថត",
+    "email": "អ៊ីមែល",
+    "residential_address": "(3) អាសយដ្ឋានស្នាក់នៅ",
+    "address": "អាសយដ្ឋាន",
+    "declarations": "(4) សេចក្តីប្រកាស",
+    "terms&conditions": "ខ្ញុំសូមប្រកាសថា ព័ត៌មានទាំងអស់ដែលបានផ្តល់គឺពិតប្រាកដ និងត្រឹមត្រូវ។ ខ្ញុំយល់ព្រមឱ្យធ្វើការពិនិត្យផ្ទៃខាងក្រោយនៅលើទម្រង់ពន្ធរបស់ខ្ញុំ។",
+    "proceed": "បន្ត",
+    "select_option": "ជ្រើសរើសជម្រើស"
+  },
+  "camera_access": {
+    "camera_access_denied": "ការចូលប្រើកាមេរ៉ាត្រូវបានបដិសេធ",
+    "camera_access_denied_description": "យើងត្រូវការកាមេរ៉ារបស់អ្នកដើម្បីស្កេនលេខកូដ។ ទៅកាន់ការកំណត់កម្មវិធីរុករករបស់អ្នក ហើយអនុញ្ញាតឱ្យវ៉េបសាយនេះចូលប្រើកាមេរ៉ា។",
+    "okay": "យល់ព្រម"
+  },
+  "scan_qr_code": {
+    "scan": "ស្កេន"
+  },
+  "verification": {
+    "back": "ថយក្រោយ"
+  },
+  "tab": {
+    "upload_qr_code": "ផ្ទុកលេខកូដ QR",
+    "scan_qr_code": "ស្កេនលេខកូដ QR"
+  },
+  "stepper": {
+    "upload_qr_code": "ផ្ទុកលេខកូដ QR របស់អ្នក",
+    "upload_qr_code_description": "ផ្ទុកឯកសារដែលមានលេខកូដ QR",
+    "verify_document": "ផ្ទៀងផ្ទាត់ឯកសារ",
+    "verify_document_description": "ការផ្ទៀងផ្ទាត់ឯកសារឬកាតកំពុងដំណើរការ។",
+    "view_result": "មើលលទ្ធផល",
+    "view_result_description": "មើលលទ្ធផលនៃការផ្ទៀងផ្ទាត់។",
+    "scan_qr_code": "ស្កេនលេខកូដ QR របស់អ្នក",
+    "scan_qr_code_description": "ចុច \"ស្កេន\" ដើម្បីចាប់ផ្តើមការស្កេនឯកសារឬកាតដែលមានលេខកូដ QR",
+    "activate_camera": "បើកកាមេរ៉ា និងដាក់លេខកូដ QR",
+    "activate_camera_description": "បើកកាមេរ៉ាឧបករណ៍របស់អ្នក ហើយដាក់លេខកូដ QR នៅក្នុងស៊ុមដើម្បីចាប់ផ្តើមការផ្ទៀងផ្ទាត់។",
+    "verify_process": "ការផ្ទៀងផ្ទាត់កំពុងដំណើរការ",
+    "verify_process_description": "ការផ្ទៀងផ្ទាត់លេខកូដ QR កំពុងដំណើរការ។"
+  },
+  "modal": {
+    "close": "បិទ",
+    "congrats": "អបអរសាទរ!",
+    "background_process": "ព័ត៌មាន TAN របស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់ដោយជោគជ័យ ហើយពិន្ទុឥណទានរបស់អ្នកល្អឥតខ្ចោះ!"
+  },
+  "vc_card": {
+    "proceed": "បន្ត",
+    "fullName": "ឈ្មោះពេញ",
+    "dob": "ថ្ងៃខែឆ្នាំកំណើត",
+    "email": "អ៊ីមែល",
+    "gender": "ភេទ",
+    "mobile": "លេខទូរស័ព្ទ"
+  },
+  "vc_result": {
+    "success": "អបអរសាទរ, TAN ត្រឹមត្រូវ!",
+    "invalid": "សោកស្តាយណាស់, TAN មិនត្រឹមត្រូវ!",
+    "expired": "សោកស្តាយណាស់, TAN ផុតកំណត់!"
+  },
+  "qr_scan": {
+    "verify": "កំពុងផ្ទៀងផ្ទាត់..."
+  },
+  "upload_qr_code": {
+    "upload": "ផ្ទុកឡើង"
   }
 }
