@@ -60,8 +60,8 @@
     "header": "Demande de prêt"
   },
   "form": {
-    "home_loan": "Prêt immobilier",
-    "personal_loan": "Prêt personnel",
+    "business_loan": "Prêt aux petites entreprises",
+    "agriculture_loan": "Prêt agricole",
     "education_loan": "Prêt étudiant",
     "fill_details": "Remplir les détails",
     "loan_details": "(1) Détails du prêt",

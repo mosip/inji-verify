@@ -14,8 +14,8 @@ const Form = (props) => {
   };
 
   const loanTypes = [
-    { value: t("home_loan"), label: t("home_loan") },
-    { value: t("personal_loan"), label: t("personal_loan") },
+    { value: t("business_loan"), label: t("business_loan") },
+    { value: t("agriculture_loan"), label: t("agriculture_loan") },
     { value: t("education_loan"), label: t("education_loan") },
   ];
 

@@ -60,8 +60,8 @@
     "header": "Solicitud de préstamo"
   },
   "form": {
-    "home_loan": "Préstamo hipotecario",
-    "personal_loan": "Préstamo personal",
+    "business_loan": "Préstamo para Pequeñas Empresas",
+    "agriculture_loan": "Préstamo Agrícola",
     "education_loan": "Préstamo educativo",
     "fill_details": "Completar detalles",
     "loan_details": "(1) Detalles del préstamo",
