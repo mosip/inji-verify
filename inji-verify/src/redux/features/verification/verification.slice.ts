@@ -30,19 +30,15 @@ const verificationSlice = createSlice({
         verificationComplete: (state, action) => {
             state.activeScreen = VerificationSteps[state.method].DisplayResult;
 
-            // the below condition is used for later
+            const isUserInfo = localStorage.getItem("userInfo");
+            const userInfo = isUserInfo ? JSON.parse(window.atob(isUserInfo)) : "";
 
-            // const isUserInfo = localStorage.getItem("userInfo");
-            // const userInfo = isUserInfo ? JSON.parse(window.atob(isUserInfo)) : "";
-
-            // if (action.payload && action.payload.verificationResult.vc.credentialSubject.email !== userInfo?.email) {
-            //     state.verificationResult = {}
-            // }
-            // else {
-            //     state.verificationResult = action.payload.verificationResult;
-            // }
-
-            state.verificationResult = action.payload.verificationResult;
+            if (action.payload && action.payload.verificationResult.vc.credentialSubject.email !== userInfo?.email) {
+                state.verificationResult = {}
+            }
+            else {
+                state.verificationResult = action.payload.verificationResult;
+            }
         },
         goHomeScreen: (state, action) => {
             state.qrReadResult = { status: "NOT_READ" };

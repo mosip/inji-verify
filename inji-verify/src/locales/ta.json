@@ -60,8 +60,8 @@
     "header": "கடன் விண்ணப்பம்"
   },
   "form": {
-    "home_loan": "வீட்டுக் கடன்",
-    "personal_loan": "தனிநபர் கடன்",
+    "business_loan": "சிறிய தொழில் கடன்",
+    "agriculture_loan": "விவசாயக் கடன்",
     "education_loan": "கல்விக் கடன்",
     "fill_details": "விவரங்களை நிரப்பவும்",
     "loan_details": "(1) கடன் விவரங்கள்",

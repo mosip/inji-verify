@@ -60,8 +60,8 @@
     "header": "ಸಾಲ ಅರ್ಜಿ"
   },
   "form": {
-    "home_loan": "ಮನೆ ಸಾಲ",
-    "personal_loan": "ವೈಯಕ್ತಿಕ ಸಾಲ",
+    "business_loan": "ಸಣ್ಣ ವ್ಯವಹಾರದ ಸಾಲ",
+    "agriculture_loan": "ಕೃಷಿ ಸಾಲ",
     "education_loan": "ಶಿಕ್ಷಣ ಸಾಲ",
     "fill_details": "ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
     "loan_details": "(1) ಸಾಲ ವಿವರಗಳು",

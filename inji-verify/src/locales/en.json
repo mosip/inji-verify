@@ -60,8 +60,8 @@
     "header": "Loan application"
   },
   "form": {
-    "home_loan": "Home Loan",
-    "personal_loan": "Personal Loan",
+    "business_loan": "Small Business Loan",
+    "agriculture_loan": "Agriculture Loan",
     "education_loan": "Education Loan",
     "fill_details": "Fill Details",
     "loan_details": "(1) Loan Details",

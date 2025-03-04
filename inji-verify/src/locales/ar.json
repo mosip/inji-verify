@@ -60,8 +60,8 @@
     "header": "طلب القرض"
   },
   "form": {
-    "home_loan": "قرض السكن",
-    "personal_loan": "القرض الشخصي",
+    "business_loan": "قرض الأعمال الصغيرة",
+    "agriculture_loan": "قرض الزراعة",
     "education_loan": "قرض التعليم",
     "fill_details": "املأ التفاصيل",
     "loan_details": "(1) تفاصيل القرض",

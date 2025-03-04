@@ -60,8 +60,8 @@
     "header": "ពាក្យស្នើសុំឥណទាន"
   },
   "form": {
-    "home_loan": "ឥណទានផ្ទះ",
-    "personal_loan": "ឥណទានផ្ទាល់ខ្លួន",
+    "business_loan": "ឥណទានអាជីវកម្មតូច",
+    "agriculture_loan": "ឥណទានកសិកម្ម",
     "education_loan": "ឥណទានសិក្សា",
     "fill_details": "បំពេញព័ត៌មាន",
     "loan_details": "(1) ព័ត៌មានអំពីឥណទាន",

@@ -60,8 +60,8 @@
     "header": "ऋण आवेदन"
   },
   "form": {
-    "home_loan": "गृह ऋण",
-    "personal_loan": "व्यक्तिगत ऋण",
+    "business_loan": "छोटा व्यवसाय ऋण",
+    "agriculture_loan": "कृषि ऋण",
     "education_loan": "शिक्षा ऋण",
     "fill_details": "विवरण भरें",
     "loan_details": "(1) ऋण विवरण",
