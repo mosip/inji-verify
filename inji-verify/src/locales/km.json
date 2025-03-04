@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "កំពុងផ្ទៀងផ្ទាត់ព័ត៌មាន",
-    "please_wait": "សូមរង់ចាំ..."
+    "please_wait": "សូមរង់ចាំ...",
+    "national_id": "លេខសម្គាល់ជាតិ",
+    "tan_id_check": "ការត្រួតពិនិត្យលេខសម្គាល់ TAN",
+    "credit_score": "ពិន្ទុឥណទាន",
+    "existing_loan_check": "ការត្រួតពិនិត្យប្រាក់កម្ចីដែលមានស្រាប់"
   },
   "loan_result": {
     "congrats": "អបអរសាទរ!",
@@ -47,6 +51,7 @@
     "approved_loan_value": "$10,000",
     "roi": "អត្រាការប្រាក់",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "អំឡុងពេលបង់",
     "tenure_value": "24 ខែ"
   },
@@ -60,7 +65,7 @@
     "header": "ពាក្យស្នើសុំឥណទាន"
   },
   "form": {
-    "business_loan": "ឥណទានអាជីវកម្មតូច",
+    "business_loan": "ឥណទានអាជីវកម្មសម្រាប់អ្នកពិការភាព",
     "agriculture_loan": "ឥណទានកសិកម្ម",
     "education_loan": "ឥណទានសិក្សា",
     "fill_details": "បំពេញព័ត៌មាន",
@@ -122,10 +127,14 @@
   "vc_card": {
     "proceed": "បន្ត",
     "fullName": "ឈ្មោះពេញ",
-    "dob": "ថ្ងៃខែឆ្នាំកំណើត",
+    "dateOfBirth": "ថ្ងៃ ខែ ឆ្នាំកំណើត",
     "email": "អ៊ីមែល",
     "gender": "ភេទ",
-    "mobile": "លេខទូរស័ព្ទ"
+    "phoneNumber": "ទូរស័ព្ទចល័ត",
+    "tan": "លេខសម្គាល់",
+    "type": "ប្រភេទអត្តសញ្ញាណ",
+    "issued": "ចេញនៅថ្ងៃទី",
+    "expiresOn": "ផុតកំណត់នៅថ្ងៃទី"
   },
   "vc_result": {
     "success": "អបអរសាទរ, TAN ត្រឹមត្រូវ!",

@@ -11,8 +11,8 @@ window._env_ = {
     "http://localhost:5000/mock-relying-party-server",
   REDIRECT_URI_USER_PROFILE: "http://localhost:5000/userprofile",
   REDIRECT_URI: "http://localhost:5000/userprofile",
-  CLIENT_ID: "IIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiFbPJ",
-  ACRS: "mosip:idp:acr:generated-code%20mosip:idp:acr:linked-wallet",
+  CLIENT_ID: "IIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsFWo7",
+  ACRS: "mosip:idp:acr:generated-code%20mosip:idp:acr:biometrics%20mosip:idp:acr:linked-wallet",
   SCOPE_USER_PROFILE: "openid%20profile%20resident-service",
   SCOPE_REGISTRATION: "openid%20profile",
   CLAIMS_USER_PROFILE:

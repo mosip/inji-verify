@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "جارٍ التحقق من التفاصيل",
-    "please_wait": "يرجى الانتظار..."
+    "please_wait": "يرجى الانتظار...",
+    "national_id": "الهوية الوطنية",
+    "tan_id_check": "التحقق من رقم التان",
+    "credit_score": "تقييم الائتمان",
+    "existing_loan_check": "التحقق من القرض الحالي"
   },
   "loan_result": {
     "congrats": "تهانينا!",
@@ -47,6 +51,7 @@
     "approved_loan_value": "$10,000",
     "roi": "معدل الفائدة",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "مدة السداد",
     "tenure_value": "24 شهرًا"
   },
@@ -60,7 +65,7 @@
     "header": "طلب القرض"
   },
   "form": {
-    "business_loan": "قرض الأعمال الصغيرة",
+    "business_loan": "قرض تجاري لذوي الاحتياجات الخاصة",
     "agriculture_loan": "قرض الزراعة",
     "education_loan": "قرض التعليم",
     "fill_details": "املأ التفاصيل",
@@ -122,10 +127,14 @@
   "vc_card": {
     "proceed": "متابعة",
     "fullName": "الاسم الكامل",
-    "dob": "تاريخ الميلاد",
+    "dateOfBirth": "تاريخ الميلاد",
     "email": "البريد الإلكتروني",
     "gender": "الجنس",
-    "mobile": "الجوال"
+    "phoneNumber": "الجوال",
+    "tan": "رقم الهوية",
+    "type": "نوع الهوية",
+    "issued": "تاريخ الإصدار",
+    "expiresOn": "تاريخ الانتهاء"
   },
   "vc_result": {
     "success": "تهانينا، رقم TAN صالح!",

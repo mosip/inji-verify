@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
 import ModalPopup from "./Modal";
 
 const Form = (props) => {
-  const { t } = useTranslation("form");
+  const { t, i18n } = useTranslation("form");
   const customStyles = {
     control: (base) => ({
       ...base,
@@ -14,9 +14,9 @@ const Form = (props) => {
   };
 
   const loanTypes = [
-    { value: t("business_loan"), label: t("business_loan") },
-    { value: t("agriculture_loan"), label: t("agriculture_loan") },
-    { value: t("education_loan"), label: t("education_loan") },
+    { value: "business_loan", label: t("business_loan") },
+    { value: "agriculture_loan", label: t("agriculture_loan") },
+    { value: "education_loan", label: t("education_loan") },
   ];
 
   const [isChecked, setIsChecked] = useState(false);
@@ -32,8 +32,15 @@ const Form = (props) => {
   };
 
   const handleSelect = (e) => {
-    setLoanType(e.value);
+    setLoanType(e.value); // Store the key instead of the translated text
   };
+
+  // Ensure loanType updates when language changes
+  useEffect(() => {
+    if (loanType) {
+      setLoanType(loanType); // This will trigger a re-render with the new translation
+    }
+  }, [i18n.language]); // Runs whenever the language changes
 
   const isUserInfo = localStorage.getItem("userInfo");
 
@@ -101,6 +108,7 @@ const Form = (props) => {
                     options={loanTypes}
                     placeholder={t("select_option")}
                     onChange={handleSelect}
+                    value={loanType ? { value: loanType, label: t(loanType) } : t("select_option")}
                   />
                 </div>
                 <div className="w-full sm:ml-4 mt-4 sm:mt-0">

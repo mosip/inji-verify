@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "विवरण सत्यापित किया जा रहा है",
-    "please_wait": "कृपया प्रतीक्षा करें..."
+    "please_wait": "कृपया प्रतीक्षा करें...",
+    "national_id": "राष्ट्रीय आईडी",
+    "tan_id_check": "टैन आईडी जांच",
+    "credit_score": "क्रेडिट स्कोर",
+    "existing_loan_check": "मौजूदा ऋण जांच"
   },
   "loan_result": {
     "congrats": "बधाई हो!",
@@ -47,6 +51,7 @@
     "approved_loan_value": "$10,000",
     "roi": "ब्याज दर",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "अवधि",
     "tenure_value": "24 महीने"
   },
@@ -60,7 +65,7 @@
     "header": "ऋण आवेदन"
   },
   "form": {
-    "business_loan": "छोटा व्यवसाय ऋण",
+    "business_loan": "विकलांग व्यक्ति के लिए व्यावसायिक ऋण",
     "agriculture_loan": "कृषि ऋण",
     "education_loan": "शिक्षा ऋण",
     "fill_details": "विवरण भरें",
@@ -122,10 +127,14 @@
   "vc_card": {
     "proceed": "आगे बढ़ें",
     "fullName": "पूरा नाम",
-    "dob": "जन्म तिथि",
+    "dateOfBirth": "जन्म तिथि",
     "email": "ईमेल",
     "gender": "लिंग",
-    "mobile": "मोबाइल"
+    "phoneNumber": "मोबाइल",
+    "tan": "पहचान संख्या",
+    "type": "पहचान प्रकार",
+    "issued": "जारी किया गया",
+    "expiresOn": "समाप्ति तिथि"
   },
   "vc_result": {
     "success": "बधाई हो, TAN मान्य है!",
