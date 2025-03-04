@@ -124,7 +124,7 @@
     "partialCredentialShared": "Verification completed with partial credentials. Please note that some requested credentials are missing.",
     "validationFailure": "We couldn’t validate the verification response. Please ensure the response is correct and try again.",
     "incorrectCredential":"The credentials shared do not match the requested ones. Please provide the correct credentials and try again.",
-    "alreadyCheckedIn":"This individual has already been verified and checked in. Duplicate check-in is not permitted"
+    "alreadyCheckedIn":"This individual has already been verified and checked in. Duplicate check-in is not permitted."
   },
   "OvpErrors": {
     "invalidScope": "Invalid Scope",

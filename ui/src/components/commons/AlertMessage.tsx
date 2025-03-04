@@ -28,7 +28,7 @@ const AlertMessage = (props:any) => {
     return (
         <>
             <div
-                className={`fixed top-[30px] ${isRtl?'left-4 lg:left-[2]':'right-4 lg:right-[2]'} py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
+                className={`fixed top-[30px] ${isRtl?'left-1 lg:left-[2]':'right-1 lg:right-[2]'} py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"}`}>
                 <div className="flex items-center">
                     <p id="alert-message">
                         {alertInfo.message}
