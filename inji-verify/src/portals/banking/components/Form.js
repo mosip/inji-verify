@@ -45,7 +45,7 @@ const Form = (props) => {
   const isUserInfo = localStorage.getItem("userInfo");
 
   const userInfo = isUserInfo ? JSON.parse(window.atob(isUserInfo)) : "";
-console.log(loanType)
+
   return (
     userInfo && (
       <>
