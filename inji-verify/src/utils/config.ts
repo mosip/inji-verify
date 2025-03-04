@@ -40,12 +40,12 @@ export const VerificationStepsContent: any = {
             description: 'Activate your device camera and hold the QR code within the frame to initiate verification.',
         },
         {
-            label: 'Verification in Progress',
+            label: ' TruckPass Verification in Progress',
             description: 'The QR code verification is in progress.'
         },
         {
-            label: 'View result',
-            description: 'View the verification result.'
+            label: 'View TruckPass result',
+            description: 'View verification result.'
         }
     ],
     UPLOAD: [
@@ -54,11 +54,11 @@ export const VerificationStepsContent: any = {
             description: 'Upload a file that contains a QR code',
         },
         {
-            label: 'Verify document',
+            label: 'Verify Truck Pass',
             description: 'Verification for the document or card is in progress.',
         },
         {
-            label: 'View result',
+            label: 'View Truck Pass result',
             description: 'View the verification result.'
         }
     ]
@@ -112,3 +112,11 @@ export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._en
     : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
+
+export const ZOOM_STEP = 2.5;
+export const INITIAL_ZOOM_LEVEL = 0;
+export const CONSTRAINTS_IDEAL_WIDTH = 2560;
+export const CONSTRAINTS_IDEAL_HEIGHT = 1440;
+export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
+export const FRAME_PROCESS_INTERVAL_MS = 100;
+export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)

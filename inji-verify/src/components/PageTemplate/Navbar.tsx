@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Logo } from '../../utils/theme-utils';
 import {ReactComponent as MenuIcon} from "../../assets/burger-menu-svgrepo-com.svg";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
@@ -86,7 +87,7 @@ function Navbar(props: any) {
     const [showMenu, setShowMenu] = useState(false);
     // Logo goes here
     return (
-        <nav className="bg-white border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded">
+        <nav className="bg-background border-gray-200 xs:px-4 lg:px-20 py-3.5 rounded">
             <div className="container flex flex-wrap xs:justify-start lg:justify-between items-center h-[40px] mx-0">
                 <button data-collapse-toggle="navbar-default" type="button"
                         className="inline-flex items-center p-3 text-sm text-gray-500 rounded-md lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -96,8 +97,9 @@ function Navbar(props: any) {
                     <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                 </button>
                 <a href={Pages.Home} className="flex items-center">
-                    <img id="inji-verify-logo" className="h-[100%]" src='/assets/images/inji_verify.svg' alt="inji-verify-logo"/>
-                </a>
+                    <Logo />
+                   
+</a>
                 <DesktopMenu/>
                 <MobileDropDownMenu showMenu={showMenu}/>
             </div>
