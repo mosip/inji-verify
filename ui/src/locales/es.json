@@ -124,7 +124,7 @@
     "partialCredentialShared": "Verificación completada con credenciales parciales. Tenga en cuenta que faltan algunas credenciales solicitadas.",
     "validationFailure": "No pudimos validar la respuesta de verificación. Asegúrese de que la respuesta sea correcta y vuelva a intentarlo.",
     "incorrectCredential":"Las credenciales compartidas no coinciden con las solicitadas. Proporcione las credenciales correctas e inténtelo de nuevo.",
-    "alreadyCheckedIn": "Na-verify at naka-check in na ang indibidwal na ito. Hindi pinahihintulutan ang duplicate na check-in"
+    "alreadyCheckedIn": "Na-verify at naka-check in na ang indibidwal na ito. Hindi pinahihintulutan ang duplicate na check-in."
   },
   "OvpErrors": {
     "invalidScope": "Alcance no válido",

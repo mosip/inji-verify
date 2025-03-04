@@ -30,7 +30,7 @@ function DisplayVcDetailView({
   return (
     <div>
       <div
-        className={`w-[339px] lg:w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4 ${className}`}
+        className={`w-[320px] lg:w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4 ${className}`}
       >
         {vc ? (
           <div className="relative">
