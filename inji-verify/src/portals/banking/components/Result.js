@@ -20,7 +20,7 @@ const Result = () => {
   ];
 
   return (
-    <div className="rounded-xl bg-white shadow-md pb-6 result">
+    <div className="rounded-xl bg-white shadow-md pb-6 result text-[#42307D]">
       <div className="m-auto w-full">
         <img
           src="assets/gifs/success.gif"
@@ -34,7 +34,7 @@ const Result = () => {
           {t("background_process")}
         </p>
         <div className="mt-6 mb-[1rem] flex flex-col xl:w-[35%] md:w-[50%] mx-2 sm:mx-auto">
-          {list.map((item) => {
+          {list.map((item, idx) => {
             return (
               <div className="my-2 flex justify-center items-center">
                 <img
@@ -43,8 +43,11 @@ const Result = () => {
                   className="inline relative"
                 />
                 <span className="mx-4 w-48 text-left">{item.label}:</span>
-                <span className="text-[#14A35C] font-semibold w-24">
-                  {item.value}
+                <span className="w-24">
+                  {idx === 1 && (
+                    <span className="text-[13px] line-through mr-1">{t("discounted_roi_value")}</span>
+                  )}
+                  <span className="text-[#14A35C] font-semibold">{item.value}</span>
                 </span>
               </div>
             );

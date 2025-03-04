@@ -33,7 +33,7 @@ const verificationSlice = createSlice({
             const isUserInfo = localStorage.getItem("userInfo");
             const userInfo = isUserInfo ? JSON.parse(window.atob(isUserInfo)) : "";
 
-            if (action.payload && action.payload.verificationResult.vc.credentialSubject.email !== userInfo?.email) {
+            if (action.payload && action.payload.verificationResult.vc.credentialSubject.email.toLowerCase() !== userInfo?.email.toLowerCase()) {
                 state.verificationResult = {}
             }
             else {

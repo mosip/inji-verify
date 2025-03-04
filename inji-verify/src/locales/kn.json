@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ",
-    "please_wait": "ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ..."
+    "please_wait": "ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ...",
+    "national_id": "ರಾಷ್ಟ್ರೀಯ ಗುರುತು ಸಂಖ್ಯೆ",
+    "tan_id_check": "ಟಿಎನ್ ಗುರುತು ಪರಿಶೀಲನೆ",
+    "credit_score": "ಕ್ರೆಡಿಟ್ ಸ್ಕೋರ್",
+    "existing_loan_check": "ಇದಿರುವ ಸಾಲ ಪರಿಶೀಲನೆ"
   },
   "loan_result": {
     "congrats": "ಅಭಿನಂದನೆಗಳು!",
@@ -47,6 +51,7 @@
     "approved_loan_value": "₹10,000",
     "roi": "ಆಸ್ತಿ ಬಡ್ಡಿದರ",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "ಕಾಲಾವಧಿ",
     "tenure_value": "24 ತಿಂಗಳು"
   },
@@ -60,7 +65,7 @@
     "header": "ಸಾಲ ಅರ್ಜಿ"
   },
   "form": {
-    "business_loan": "ಸಣ್ಣ ವ್ಯವಹಾರದ ಸಾಲ",
+    "business_loan": "ಆಂಗವೈಕಲ್ಯ ಹೊಂದಿರುವ ವ್ಯಕ್ತಿಗಳಿಗೆ ವ್ಯಾಪಾರ ಸಾಲ",
     "agriculture_loan": "ಕೃಷಿ ಸಾಲ",
     "education_loan": "ಶಿಕ್ಷಣ ಸಾಲ",
     "fill_details": "ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
@@ -120,12 +125,16 @@
     "verify_process_description": "ಕ್ಯೂಆರ್ ಕೋಡ್ ಪರಿಶೀಲನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ."
   },
   "vc_card": {
-    "proceed": "ಮುಂದುವರಿಸಿ",
+    "proceed": "ಮುಂದುವರೆಯಿರಿ",
     "fullName": "ಪೂರ್ಣ ಹೆಸರು",
-    "dob": "ಜನ್ಮ ದಿನಾಂಕ",
+    "dateOfBirth": "ಜನ್ಮ ದಿನಾಂಕ",
     "email": "ಇಮೇಲ್",
     "gender": "ಲಿಂಗ",
-    "mobile": "ಮೊಬೈಲ್"
+    "phoneNumber": "ಮೊಬೈಲ್",
+    "tan": "ಐಡಿ ಸಂಖ್ಯೆ",
+    "type": "ಐಡಿ ಪ್ರಕಾರ",
+    "issued": "ಪ್ರದಾನಿಸಿದ ದಿನಾಂಕ",
+    "expiresOn": "ಗೌರವಾವಧಿ ಮುಗಿಯುವ ದಿನಾಂಕ"
   },
   "vc_result": {
     "success": "ಅಭಿನಂದನೆಗಳು, TAN ಮಾನ್ಯವಾಗಿದೆ!",

@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "விவரங்களை சரிபார்க்கிறது",
-    "please_wait": "தயவுசெய்து காத்திருக்கவும்..."
+    "please_wait": "தயவுசெய்து காத்திருக்கவும்...",
+    "national_id": "தேசிய அடையாள அட்டை",
+    "tan_id_check": "TAN அடையாள சரிபார்ப்பு",
+    "credit_score": "கடன் மதிப்பெண்",
+    "existing_loan_check": "நிலவும் கடன் சரிபார்ப்பு"
   },
   "loan_result": {
     "congrats": "வாழ்த்துகள்!",
@@ -47,6 +51,7 @@
     "approved_loan_value": "$10,000",
     "roi": "வட்டி விகிதம்",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "காலம்",
     "tenure_value": "24 மாதங்கள்"
   },
@@ -60,7 +65,7 @@
     "header": "கடன் விண்ணப்பம்"
   },
   "form": {
-    "business_loan": "சிறிய தொழில் கடன்",
+    "business_loan": "உடையாக்கமுற்ற நபர்களுக்கான வணிகக் கடன்",
     "agriculture_loan": "விவசாயக் கடன்",
     "education_loan": "கல்விக் கடன்",
     "fill_details": "விவரங்களை நிரப்பவும்",
@@ -120,12 +125,16 @@
     "background_process": "உங்கள் TAN விவரங்கள் வெற்றிகரமாக சரிபார்க்கப்பட்டு, உங்கள் கிரெடிட் மதிப்பீடு சிறப்பாக உள்ளது!"
   },
   "vc_card": {
-    "proceed": "தொடரவும்",
+    "proceed": "முன்னேறு",
     "fullName": "முழு பெயர்",
-    "dob": "பிறந்த தேதி",
+    "dateOfBirth": "பிறந்த தேதி",
     "email": "மின்னஞ்சல்",
     "gender": "பாலினம்",
-    "mobile": "மொபைல்"
+    "phoneNumber": "கைபேசி",
+    "tan": "அடையாள எண்",
+    "type": "அடையாள வகை",
+    "issued": "வெளியிடப்பட்ட தேதி",
+    "expiresOn": "காலாவதியாகும் தேதி"
   },
   "vc_result": {
     "success": "வாழ்த்துகள், TAN செல்லுபடியாகும்!",

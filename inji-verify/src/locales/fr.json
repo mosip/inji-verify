@@ -38,7 +38,11 @@
   },
   "loading": {
     "background_process": "Vérification des détails",
-    "please_wait": "Veuillez patienter..."
+    "please_wait": "Veuillez patienter...",
+    "national_id": "Identifiant National",
+    "tan_id_check": "Vérification de l'ID TAN",
+    "credit_score": "Score de Crédit",
+    "existing_loan_check": "Vérification du Prêt Existant"
   },
   "loan_result": {
     "congrats": "Félicitations !",
@@ -47,6 +51,7 @@
     "approved_loan_value": "10 000 $",
     "roi": "Taux d'intérêt",
     "roi_value": "3%",
+    "discounted_roi_value": "8%",
     "tenure": "Durée",
     "tenure_value": "24 mois"
   },
@@ -60,7 +65,7 @@
     "header": "Demande de prêt"
   },
   "form": {
-    "business_loan": "Prêt aux petites entreprises",
+    "business_loan": "Prêt commercial pour personne handicapée",
     "agriculture_loan": "Prêt agricole",
     "education_loan": "Prêt étudiant",
     "fill_details": "Remplir les détails",
@@ -120,12 +125,16 @@
     "background_process": "Vos détails TAN ont été vérifiés avec succès et votre score de crédit est Excellent !"
   },
   "vc_card": {
-    "proceed": "Continuer",
+    "proceed": "Procéder",
     "fullName": "Nom complet",
-    "dob": "Date de naissance",
-    "email": "Email",
+    "dateOfBirth": "Date de naissance",
+    "email": "E-mail",
     "gender": "Genre",
-    "mobile": "Mobile"
+    "phoneNumber": "Mobile",
+    "tan": "Numéro d'identité",
+    "type": "Type d'identité",
+    "issued": "Délivré le",
+    "expiresOn": "Expire le"
   },
   "vc_result": {
     "success": "Félicitations, le TAN est valide !",
