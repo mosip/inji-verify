@@ -11,13 +11,13 @@ function VcDisplayCard({ vc, status }: { vc: any; status: any }) {
 
   const orderedKeys: any[] = [
     "fullName",
-    "dob",
+    "dateOfBirth",
     "gender",
     "email",
-    "mobile",
-    "id",
-    "policyIssuedOn",
-    "policyExpiresOn",
+    "phoneNumber",
+    "tan",
+    "issued",
+    "expiresOn",
   ];
 
   const orderedObject = vc && Object.fromEntries(
