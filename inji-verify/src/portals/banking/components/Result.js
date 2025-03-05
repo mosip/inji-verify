@@ -45,7 +45,7 @@ const Result = () => {
                 <span className="mx-4 w-48 text-left">{item.label}:</span>
                 <span className="w-24">
                   {idx === 1 && (
-                    <span className="text-[13px] line-through mr-1">{t("discounted_roi_value")}</span>
+                    <span className="line-through mr-1 font-extrabold">{t("discounted_roi_value")}</span>
                   )}
                   <span className="text-[#14A35C] font-semibold">{item.value}</span>
                 </span>
