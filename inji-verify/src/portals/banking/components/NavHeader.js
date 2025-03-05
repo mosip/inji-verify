@@ -17,10 +17,6 @@ export default function NavHeader(props) {
       ? JSON.parse(fallbackLangObj)
       : { label: "English", value: "en" };
 
-  const changeLanguageHandler = (e) => {
-    i18n.changeLanguage(e.value);
-  };
-
   // check language in the langOptions,
   // which came through langCnfigService
   // then setting that language as selected one
@@ -29,17 +25,26 @@ export default function NavHeader(props) {
     setSelectedLang(lang ?? fallbackLang);
   };
 
+  const changeLanguageHandler = (e) => {
+    i18n.changeLanguage(e.value);
+    localStorage.setItem("ui_locales", e.value);
+    setLanguage(e.value);
+  };
+
   useEffect(() => {
     if (!props.langOptions || props.langOptions.length === 0) {
       return;
     }
 
-    setLanguage(i18n.language);
-    //Gets fired when changeLanguage got called.
-    i18n.on("languageChanged", function (lng) {
-      setLanguage(lng);
-    });
-  }, [props.langOptions]);
+    const currentLang = localStorage.getItem("ui_locales");
+
+    if (currentLang) {
+      i18n.changeLanguage(currentLang);
+      setLanguage(currentLang);
+    } else {
+      setLanguage(i18n.language);
+    }
+  }, [props.langOptions, i18n]);
 
   var dropdownItemClass =
     "group text-[14px] leading-none flex items-center relative select-none outline-none data-[disabled]:pointer-events-none hover:font-bold cursor-pointer py-3 hover:text-[#6006A8]";
@@ -96,7 +101,7 @@ export default function NavHeader(props) {
                     alt="globe"
                     className="mx-1 relative bottom-[0.5px]"
                   />
-                  <span className="">{selectedLang?.label}</span>
+                  <span id="selectedLang">{selectedLang?.label}</span>
                   <img
                     src="assets/images/chevron_down.svg"
                     alt="chevron down"

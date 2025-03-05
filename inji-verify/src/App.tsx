@@ -49,6 +49,12 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (window.location.pathname === "/") {
+      localStorage.removeItem("ui_locales");
+    }
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: Pages.Home,
