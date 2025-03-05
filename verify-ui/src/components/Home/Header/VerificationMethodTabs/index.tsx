@@ -114,10 +114,8 @@ function VerificationMethodTabs(props: any) {
               id="vp-verification-tab"
               active={method === "VERIFY"}
               label={t('VP_Verification')}
-              onClick={() => {
-                switchToVerificationMethod("VERIFY");
-                navigate(Pages.VerifyCredentials);
-              }}
+              disabled
+              onClick={showAlert}
             />
             <Tab
               id="ble-tab"
