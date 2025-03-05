@@ -6,7 +6,7 @@ export default function NavHeader(props) {
   const { i18n, t } = useTranslation("navheader");
 
   const [selectedLang, setSelectedLang] = useState();
-  const [collapsibleBtn, setCollapsibleBtn] = useState(false);
+
   // fallback language from the environment configuration
   const fallbackLangObj = window._env_.FALLBACK_LANG
     ? decodeURIComponent(window._env_.FALLBACK_LANG)
@@ -17,10 +17,6 @@ export default function NavHeader(props) {
       ? JSON.parse(fallbackLangObj)
       : { label: "English", value: "en" };
 
-  const changeLanguageHandler = (e) => {
-    i18n.changeLanguage(e.value);
-  };
-
   // check language in the langOptions,
   // which came through langCnfigService
   // then setting that language as selected one
@@ -29,39 +25,41 @@ export default function NavHeader(props) {
     setSelectedLang(lang ?? fallbackLang);
   };
 
+  const changeLanguageHandler = (e) => {
+    i18n.changeLanguage(e.value);
+    localStorage.setItem("ui_locales", e.value);
+    setLanguage(e.value);
+  };
+
   useEffect(() => {
     if (!props.langOptions || props.langOptions.length === 0) {
       return;
     }
 
-    setLanguage(i18n.language);
-    //Gets fired when changeLanguage got called.
-    i18n.on("languageChanged", function (lng) {
-      setLanguage(lng);
-    });
-  }, [props.langOptions]);
+    const currentLang = localStorage.getItem("ui_locales");
+
+    if (currentLang) {
+      i18n.changeLanguage(currentLang);
+      setLanguage(currentLang);
+    } else {
+      setLanguage(i18n.language);
+    }
+  }, [props.langOptions, i18n]);
 
   var dropdownItemClass =
     "group text-[14px] leading-none flex items-center relative select-none outline-none data-[disabled]:pointer-events-none hover:font-bold cursor-pointer py-3 hover:text-[#6006A8]";
 
   var borderBottomClass = "border-b-[1px]";
 
-  const handleHamburger = () => {
-    setCollapsibleBtn(!collapsibleBtn);
+  const handleLogout = () => {
+    window.location.replace("/");
+    localStorage.removeItem("userInfo");
   };
 
   return (
     <nav className="md:px-[3rem] py-2 pl-4 pr-2">
       <div className="flex justify-between">
         <div className="flex">
-          {window.screen.availWidth < 768 && (
-            <img
-              src="assets/images/hamburger.svg"
-              className="m-0 my-2 w-5 sm:w-7 mr-2 sm:mr-4 hover:cursor-pointer relative top-[1px]"
-              alt="hamburger"
-              onClick={handleHamburger}
-            />
-          )}
           <img
             src="assets/images/logo.svg"
             className="m-auto lg:m-0 my-2 w-36 sm:w-72"
@@ -69,20 +67,6 @@ export default function NavHeader(props) {
           />
         </div>
         <div className="flex">
-          {window.screen.availWidth >= 768 && (
-            <div className="flex">
-              {props.navLinks.map((item) => {
-                return (
-                  <a
-                    className="lg:px-[1.75rem] p-4 font-bold self-center m-auto lg:m-0"
-                    href="/"
-                  >
-                    {t(`${item}`)}
-                  </a>
-                );
-              })}
-            </div>
-          )}
           <div className="lg:pl-4 py-4 self-center font-bold m-auto lg:m-0 flex">
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
@@ -96,7 +80,7 @@ export default function NavHeader(props) {
                     alt="globe"
                     className="mx-1 relative bottom-[0.5px]"
                   />
-                  <span className="">{selectedLang?.label}</span>
+                  <span id="selectedLang">{selectedLang?.label}</span>
                   <img
                     src="assets/images/chevron_down.svg"
                     alt="chevron down"
@@ -167,20 +151,17 @@ export default function NavHeader(props) {
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
           </div>
+          {window.location.pathname !== "/" && (
+            <img
+              src="assets/images/log_out.svg"
+              className="mx-2 sm:ml-6 hover:cursor-pointer"
+              alt="log_out"
+              onClick={handleLogout}
+              title="Logout"
+            />
+          )}
         </div>
       </div>
-
-      {collapsibleBtn && (
-        <div className="block">
-          {props.navLinks.map((item) => {
-            return (
-              <a className="font-bold block my-4" href="">
-                {t(`${item}`)}
-              </a>
-            );
-          })}
-        </div>
-      )}
     </nav>
   );
 }

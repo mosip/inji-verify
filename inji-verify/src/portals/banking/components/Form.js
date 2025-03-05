@@ -160,14 +160,9 @@ const Form = (props) => {
                 </div>
                 <div class="row-span sm:col-span-1 col-span-12">
                   <span>{t("gender")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
                   <input
                     type="text"
-                    value={userInfo.gender ?? "Male"}
+                    value={userInfo.gender ?? ""}
                     disabled
                     className="p-3 w-full rounded-md text-gray-500 sm:mb-6 my-4"
                   />
@@ -197,7 +192,7 @@ const Form = (props) => {
                     type="text"
                     value={userInfo.email}
                     disabled
-                    className="p-3 w-full rounded-md text-gray-500 sm:mb-6 my-4 sm:mb-0 mt-3"
+                    className="p-3 w-full rounded-md text-gray-500 my-4 mt-3"
                   />
                 </div>
                 <div class="row-span sm:col-span-1 col-span-12">
@@ -210,89 +205,6 @@ const Form = (props) => {
                   />
                 </div>
               </div>
-
-
-
-
-              {/* <div className="sm:flex my-6">
-                <div className="w-full mr-4">
-                  <div className="sm:w-auto w-full">
-                    <span className="mb-2">{t("full_name")}</span>
-                    <img
-                      src="assets/images/asterisk.svg"
-                      alt="asterisk"
-                      className="inline relative bottom-1"
-                    />
-                    <input
-                      type="text"
-                      value={userInfo?.name}
-                      disabled
-                      className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
-                    />
-                  </div>
-                  <span>{t("gender")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
-                  <input
-                    type="text"
-                    value={userInfo.gender ?? "Male"}
-                    disabled
-                    className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
-                  />
-                  <span>{t("dob")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
-                  <input
-                    type="text"
-                    value={userInfo.birthdate}
-                    disabled
-                    className="p-3 w-full rounded-md text-gray-500 mb-6 mt-3"
-                  />
-                  <span>{t("email")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
-                  <input
-                    type="text"
-                    value={userInfo.email}
-                    disabled
-                    className="p-3 w-full rounded-md text-gray-500 mt-3"
-                  />
-                </div>
-
-                <div className="w-full sm:ml-4 mt-6 sm:mt-0">
-                  <span className="mb-2">{t("photo")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
-                  <img
-                    alt={t("profile_picture")}
-                    className="h-[167px] w-[167px] sm:mb-[7.5rem] mt-3 mb-6"
-                    src={
-                      userInfo?.picture
-                        ? userInfo?.picture
-                        : "assets/images/profile.svg"
-                    }
-                  />
-                  <span>{t("phone_number")}</span>
-                  <input
-                    type="text"
-                    value={userInfo.phone_number}
-                    disabled
-                    className="p-3 w-full rounded-md text-gray-500 mt-3"
-                  />
-                </div>
-              </div> */}
             </div>
 
             <div className="sm:mt-[2.5rem] mt-6">
@@ -300,13 +212,8 @@ const Form = (props) => {
                 {t("residential_address")}
               </p>
               <div className="flex sm:my-6 my-3">
-                <div className="sm:w-[49%] md:mr-4 w-full">
+                <div className="sm:w-[48.5%] md:mr-4 w-full">
                   <span>{t("address")}</span>
-                  <img
-                    src="assets/images/asterisk.svg"
-                    alt="asterisk"
-                    className="inline relative bottom-1"
-                  />
                   <input
                     type="text"
                     value={
@@ -314,10 +221,10 @@ const Form = (props) => {
                         ? Object.values(userInfo.address)
                             .map((v) => v.trim())
                             .join(", ")
-                        : "#2342, Sector 30B, Chandigarh"
+                        : ""
                     }
                     disabled
-                    className="p-3 w-full rounded-md text-gray-500 mt-3"
+                    className="p-3 w-full rounded-md text-gray-500 mt-3 border"
                   />
                 </div>
               </div>

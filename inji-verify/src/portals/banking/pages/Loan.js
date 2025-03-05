@@ -109,7 +109,11 @@ const Loan = () => {
       <div className="pt-2 lg:flex">
         <div className="relative lg:pr-[4rem] px-4 py-2">
           {window.screen.availWidth >= 1024 ? (
-            <img src="assets/images/mask.svg" className="relative" alt="mask" />
+            <img
+              src="assets/images/mask.svg"
+              className="relative max-w-[105%]"
+              alt="mask"
+            />
           ) : (
             <img
               src="assets/images/large_mask.svg"
@@ -158,7 +162,9 @@ const Loan = () => {
       </div>
     </div>
   ) : (
-    <Loader className="mx-auto mt-[12rem]" />
+    <div className="align-loading-center">
+      <Loader />
+    </div>
   );
 };
 
