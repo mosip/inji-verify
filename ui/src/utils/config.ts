@@ -4,7 +4,7 @@ import certImage from '../assets/defaultTheme/cert.png';
 import certImage2 from '../assets/defaultTheme/cert2.png';
 
 export const Pages = {
-    Home: "/",
+    Home: "/upload",
     Scan:"/scan",
     VerifyCredentials: "/verify",
     Offline: "/offline",
