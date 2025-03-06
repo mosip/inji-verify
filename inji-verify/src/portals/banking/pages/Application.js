@@ -34,7 +34,7 @@ const Application = (props) => {
   return (
     <div>
       <div className="lg:flex block">
-        <div className="lg:w-[30%] bg-[#53389E] text-white lg:flex w-full block">
+        <div className="lg:w-max bg-[#53389E] text-white lg:flex w-full block">
           <div className="self-center m-auto">
             {window.screen.availWidth < 1024 && (
               <p className="text-center pt-4 pb-2 font-semibold text-lg">
