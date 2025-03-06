@@ -5,9 +5,9 @@ import {convertToId, getRangeOfNumbers, getVerificationStepsCount} from "../../.
 
 const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCompleted: boolean}) => {
     const stepperStep = "flex items-center";
-    const stepperActiveOrCompleted = "rounded-full bg-[#FF7F00] text-white";
-    const stepperUpcomingStep = "bg-white text-[#FF7F00]";
-    const stepperCircle = "rounded-full border-[1px] border-[#FF7F00]";
+    const stepperActiveOrCompleted = "rounded-full bg-primary text-whiteText";
+    const stepperUpcomingStep = "bg-background text-primary";
+    const stepperCircle = "rounded-full border-[1px] border-primary";
     return (
         <div className={`${stepperStep} ${activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep}`}
              data-step="1">
@@ -18,12 +18,12 @@ const Step = ({stepNumber, activeOrCompleted, }: {stepNumber: number, activeOrCo
 
 function MobileStepper(props: any) {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({activeScreen: state.activeScreen, method: state.method}));
-    const stepperLine = "flex-grow border-t-2 border-[#FFDFB4] w-[44px]";
+    const stepperLine = "flex-grow border-t-2 border-primary w-[44px]";
 
     const stepCount = getVerificationStepsCount(method);
     const maxWidth = `${stepCount * 35 + (stepCount - 1) * 40}px`;
 
-    const heading = VerificationStepsContent[method][activeScreen - 1].label;
+    const label = VerificationStepsContent[method][activeScreen - 1].label;
     const description = VerificationStepsContent[method][activeScreen - 1].description;
 
     return (
@@ -41,10 +41,10 @@ function MobileStepper(props: any) {
                 }
             </div>
             <div className="col-start-1 col-end-13 text-center">
-                <p id={convertToId(heading)} className="font-bold my-1">
-                    {heading}
+                <p id={convertToId(label)} className="font-bold text-stepperLabel my-1">
+                    {label}
                 </p>
-                <p id={`${convertToId(heading)}-description`} className="text-[#535353] text-[14px]">
+                <p id={`${convertToId(label)}-description`} className="text-stepperDescription text-normalTextSize">
                     {description}
                 </p>
             </div>

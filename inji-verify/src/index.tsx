@@ -1,3 +1,4 @@
+import './setupEnvironment'; // Ensure this is the first import
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

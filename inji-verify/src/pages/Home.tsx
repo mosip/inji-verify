@@ -8,12 +8,12 @@ function Home(props: any) {
     return (
         <PageTemplate>
             <div>
-                <div className="w-full bg-[#FAFBFD] text-center">
+                <div className="w-full bg-[#FCFAFF] text-center">
                     <Header/>
                 </div>
                 <div className="grid grid-cols-12">
                     <div
-                        className="col-start-1 col-end-13 lg:col-start-1 lg:col-span-6 lg:bg-[#FAFBFD] xs:w-[100vw] lg:max-w-[50vw]">
+                        className="col-start-1 col-end-13 lg:col-start-1 lg:col-span-6 lg:bg-[#FCFAFF] xs:w-[100vw] lg:max-w-[50vw]">
                         <VerificationProgressTracker/>
                     </div>
                     <div className="col-start-1 col-end-13 lg:col-start-7 lg:col-end-13 xs:[100vw] lg:max-w-[50vw]">

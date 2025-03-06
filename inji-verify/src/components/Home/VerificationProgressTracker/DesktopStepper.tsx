@@ -3,6 +3,7 @@ import {useVerificationFlowSelector} from "../../../redux/features/verification/
 import {VerificationStepsContent} from "../../../utils/config";
 import {convertToId} from "../../../utils/misc";
 
+
 function DesktopStepper() {
     const {activeScreen, method} = useVerificationFlowSelector(state => ({
         activeScreen: state.activeScreen,
@@ -11,6 +12,7 @@ function DesktopStepper() {
     const steps = VerificationStepsContent[method];
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen > index;
+    const lastStepCompleted = activeScreen === steps.length;
 
     return (
         <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
@@ -20,18 +22,18 @@ function DesktopStepper() {
                         <>
                             <div className="flex items-center">
                                 <div
-                                    className={`text-center rounded-full w-6 h-6 flex items-center justify-center font-normal text-normal text-[12px] leading-5  ${isStepCompleted(index) ? "bg-primary text-white border-1 border-none" : "bg-white text-primary border-[1px] border-primary"}`}
+                                    className={`text-center rounded-full w-6 h-6 flex items-center justify-center font-normal text-normal text-smallTextSize leading-5  ${isStepCompleted(index) ? "bg-primary text-white border-1 border-none" : "bg-white text-primary border-[1px] border-primary"}`}
                                 >
                                     {index + 1}
                                 </div>
-                                <div id={convertToId(step.label)} className={`ml-[10px] text-[16px]  font-bold ${isStepCompleted(index) ? "text-black" : "text-[#868686]"}`}>{step.label}</div>
+                                <div id={convertToId(step.label)} className={`ml-[10px] text-lgNormalTextSize  font-bold ${isStepCompleted(index) ? "text-black" : "text-stepperLabel"}`}>{step.label}</div>
                             </div>
                             <div className={"grid items-start"}>
                                 <div className={"grid items-center m-0"}>
                                     <div className="w-6 h-[100%] col-end-2">
                                         <div className={`${!isLastStep(index) ? "border-white border-l-primary" : "border-none"} border-[1px] w-[1px] h-[100%] m-auto`}/>
                                     </div>
-                                    <div id={`${convertToId(step.label)}-description`} className="ml-[10px] text-[14px] text-[#535353] font-normal leading-5  col-end-13">
+                                    <div id={`${convertToId(step.label)}-description`} className="ml-[10px] text-normalTextSize text-stepperDescription font-normal leading-5  col-end-13">
                                         {step.description}
                                     </div>
                                     {!isLastStep(index) && (
@@ -45,6 +47,12 @@ function DesktopStepper() {
                     ))
                 }
             </div>
+            <button 
+                className={`mt-16 w-80 px-6 py-2 text-white font-bold rounded  ${lastStepCompleted ? 'bg-[#6941C6] hover:bg-[#6941C6]' : 'bg-gray-300 cursor-not-allowed'}`} 
+                disabled={!lastStepCompleted}
+            >
+                Allow Entry
+            </button>
         </div>
     );
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import Navbar from "./Navbar";
+import Navbar from "../travelPass/Navbar";
 import Copyrights from "./Copyrights";
 import CheckingForInternetConnectivity from "../misc/CheckingForInternetConnectivity";
 
 const PageTemplate = (props: any) => {
     return (
         <div>
-            <Navbar/>
+            {/* <Navbar/> */}
             {props.children}
             <Copyrights/>
             <CheckingForInternetConnectivity/>

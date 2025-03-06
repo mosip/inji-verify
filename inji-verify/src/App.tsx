@@ -1,43 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import './App.css';
 import Home from "./pages/Home";
-import Offline from "./pages/Offline";
-import {RouterProvider, createBrowserRouter} from "react-router-dom";
-import AlertMessage from "./components/commons/AlertMessage";
+import Dashboard from './components/travelPass/Dashboard';
+import MainLayout from './components/travelPass/MainLayout';
+import PrivateRoute from './components/travelPass/PrivateRoute';
+import Login from './components/travelPass/login';
 
-import PreloadImages from "./components/commons/PreloadImages";
-import OvpRedirect from "./pages/OvpRedirect";
-import PageNotFound404 from "./pages/PageNotFound404";
-import {Pages} from "./utils/config";
-
-const router = createBrowserRouter([
-    {
-        path: Pages.Home,
-        element: <Home/>
-    },
-    {
-        path: Pages.Redirect,
-        element: <OvpRedirect/>
-    },
-    {
-        path: Pages.Offline,
-        element: <Offline/>
-    },
-    {
-        path: Pages.PageNotFound,
-        element: <PageNotFound404/>
+const LoginPage = () => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    const navigate = useNavigate();
+  
+    const handleLogin = () => {
+      localStorage.setItem("isAuthenticated", "true");
+      navigate("/dashboard");
+    };
+  
+    if (isAuthenticated) {
+      return <Navigate to="/dashboard" replace />;
     }
-])
-
-const preloadImages = ['/assets/images/under_construction.svg', '/assets/images/inji-logo.svg'];
+  
+    return <Login onLogin={handleLogin} />;
+};
 
 function App() {
+    useEffect(() => {
+        
+        localStorage.removeItem("isAuthenticated");
+    }, []);
+
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+
     return (
-        <div className="font-base">
-            <RouterProvider router={router}/>
-            <AlertMessage/>
-            <PreloadImages imageUrls={preloadImages}/>
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route
+                    path="/dashboard"
+                    element={<PrivateRoute element={<MainLayout><Dashboard /></MainLayout>} />}
+                />
+                <Route path="/home" element={<PrivateRoute element={<MainLayout><Home/></MainLayout>}/>} />
+                <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
+            </Routes>
+        </Router>
     );
 }
 
