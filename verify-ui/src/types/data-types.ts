@@ -236,5 +236,5 @@ export interface fetchStatusResponse {
 
 export type Detail = {
   key: string;
-  value: string | string[];
+  value: string;
 };

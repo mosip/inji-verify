@@ -75,22 +75,46 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
 
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            {orderedDetails.map((label) => (
-              <div key={label.key}>
-                <p
-                  id={convertToId(label.key)}
-                  className="font-normal text-verySmallTextSize break-all text-[#666666]"
+            {orderedDetails.map((label, index) => {
+              const faceIndex = orderedDetails.findIndex( (item) => item.key === "face" );
+              const isEven = (index - (faceIndex !== -1 ? 1 : 0)) % 2 === 0;
+              return label.key === "face" ? (
+                <>
+                  <img
+                    src={label.value}
+                    alt="face"
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 10,
+                      marginTop: 10,
+                    }}
+                  />
+                </>
+              ) : (
+                <div
+                  className={`py-2.5 px-1 xs:col-end-13 ${
+                    isEven
+                      ? "lg:col-start-1 lg:col-end-6"
+                      : "lg:col-start-8 lg:col-end-13"
+                  }`}
+                  key={label.key}
                 >
-                  {convertToTitleCase(label.key)}
-                </p>
-                <p
-                  id={`${convertToId(label.key)}-value`}
-                  className="font-bold text-smallTextSize break-all"
-                >
-                  {getDisplayValue(label.value)}
-                </p>
-              </div>
-            ))}
+                  <p
+                    id={convertToId(label.key)}
+                    className="font-normal text-verySmallTextSize break-all text-[#666666]"
+                  >
+                    {convertToTitleCase(label.key)}
+                  </p>
+                  <p
+                    id={`${convertToId(label.key)}-value`}
+                    className="font-bold text-smallTextSize break-all"
+                  >
+                    {getDisplayValue(label.value)}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
 
