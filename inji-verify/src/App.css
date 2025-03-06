@@ -66,11 +66,15 @@ input[type="radio"] {
   left: 0.5em;
   font-size: 1em;
   font-family: inherit;
-  margin-right: 1.25rem;
+  width: max-content;
   text-align: left;
   overflow-wrap: anywhere;
   color: #e9d7fe;
   font-weight: 300;
+}
+
+.verticalStepper .middleStepConnector {
+  width: 1.5px !important;
 }
 
 .verticalStepper .activeConnector {
