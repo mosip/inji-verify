@@ -121,7 +121,7 @@ function Navbar(props: any) {
                         <MenuIcon id="menu-icon" style={{width: "25px", height: "19px"}}/>
                     </button>
                     <a href={Pages.Home} className="flex items-center">
-                        <Logo className="w-[184px] h-[32px] cursor-pointer"/>
+                        <Logo className="w-[150px] sm:w-[184px] h-[32px] cursor-pointer"/>
                     </a>
                 </div>
                 <DesktopMenu/>
