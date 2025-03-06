@@ -103,7 +103,7 @@
   },
   "tab": {
     "upload_qr_code": "Carregar Código QR",
-    "scan_qr_code": "Escanear o Código QR"
+    "scan_qr_code": "Digitalize o código QR"
   },
   "stepper": {
     "upload_qr_code": "Carregar seu TAN VC",
