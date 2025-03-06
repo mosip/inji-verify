@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useVerificationFlowSelector} from "../../../redux/features/verification/verification.selector";
 import {VerificationStepsContent} from "../../../utils/config";
 import {convertToId} from "../../../utils/misc";
+import Modal from "./modal";
+import tickImage from "../../../assets/images/tick_.gif";
+
 
 
 function DesktopStepper() {
@@ -13,6 +16,7 @@ function DesktopStepper() {
     const isLastStep = (index: number) => steps.length -1 === index;
     const isStepCompleted = (index: number) => activeScreen > index;
     const lastStepCompleted = activeScreen === steps.length;
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <div className="hidden pt-0 pb-[100px] pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9">
@@ -50,9 +54,11 @@ function DesktopStepper() {
             <button 
                 className={`mt-16 w-80 px-6 py-2 text-white font-bold rounded  ${lastStepCompleted ? 'bg-[#6941C6] hover:bg-[#6941C6]' : 'bg-gray-300 cursor-not-allowed'}`} 
                 disabled={!lastStepCompleted}
+                onClick={() => setShowModal(true)}
             >
                 Allow Entry
             </button>
+            {showModal && <Modal onClose={() => setShowModal(false)} tickImage={tickImage} />}
         </div>
     );
 }
