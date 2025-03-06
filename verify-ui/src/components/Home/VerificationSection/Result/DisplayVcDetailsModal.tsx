@@ -39,7 +39,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-lg">
+      <div className="bg-white rounded-xl w-full max-w-2xl p-6 shadow-lg h-[90vh] overflow-y-auto custom-scrollbar">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-2">
             {logo && (
@@ -74,7 +74,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
         </div>
 
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid relative">
             {orderedDetails.map((label, index) => {
               const faceIndex = orderedDetails.findIndex( (item) => item.key === "face" );
               const isEven = (index - (faceIndex !== -1 ? 1 : 0)) % 2 === 0;
