@@ -103,7 +103,7 @@
   },
   "tab": {
     "upload_qr_code": "Subir Código QR",
-    "scan_qr_code": "Escanear el Código QR"
+    "scan_qr_code": "Escanear código QR"
   },
   "stepper": {
     "upload_qr_code": "Sube tu TAN VC",
