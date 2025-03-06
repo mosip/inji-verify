@@ -92,6 +92,15 @@ function VerificationMethodTabs(props: any) {
           ref={carouselRef}
         >
           <div className="flex space-x-0.5 border-gray-200 font-bold items-end mx-auto lg:justify-center">
+          <Tab
+              id="scan-qr-code-tab"
+              active={method === "SCAN"}
+              label={t('scan')}
+              onClick={() => {
+                switchToVerificationMethod("SCAN");
+                navigate(Pages.Scan);
+              }}
+            />
             <Tab
               id="upload-qr-code-tab"
               active={method === "UPLOAD"}
@@ -99,15 +108,6 @@ function VerificationMethodTabs(props: any) {
               onClick={() => {
                 switchToVerificationMethod("UPLOAD");
                 navigate(Pages.Home);
-              }}
-            />
-            <Tab
-              id="scan-qr-code-tab"
-              active={method === "SCAN"}
-              label={t('scan')}
-              onClick={() => {
-                switchToVerificationMethod("SCAN");
-                navigate(Pages.Scan);
               }}
             />
             <Tab
