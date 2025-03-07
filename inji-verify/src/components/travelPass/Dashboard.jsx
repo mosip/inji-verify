@@ -1,8 +1,9 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Line, CartesianGrid } from "recharts";
+import { useState, useEffect } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { useNavigate } from "react-router-dom";
-import approved_icon from '../../assets/images/approved_icon.png'
-import newverify_icon from '../../assets/images/newverify_icon.png'
-import rejected_icon from '../../assets/images/rejected_icon.png'
+import approved_icon from '../../assets/images/approved_icon.png';
+import newverify_icon from '../../assets/images/newverify_icon.png';
+import rejected_icon from '../../assets/images/rejected_icon.png';
 
 const data = [
   { month: "Jan", approved: 25, pending: 30, rejected: 20 },
@@ -19,12 +20,14 @@ const data = [
   { month: "Dec", approved: 25, pending: 30, rejected: 20 },
 ];
 
-function Card({ children, className,onClick }) {
+function Card({ children, className, onClick }) {
   return (
-    <div className={`bg-white shadow-lg border border-gray-200 rounded-xl p-10 flex flex-col justify-center items-center h-[331px] w-[460px] ${className}`}
-      onClick={onClick} 
+    <div
+      className={`bg-white shadow-lg border border-gray-200 rounded-xl p-4 md:p-10 flex flex-col justify-center items-center h-auto md:h-[331px] w-full sm:max-w-[280px] md:max-w-[460px] ${className}`}
+      onClick={onClick}
       role="button"
-      tabIndex={0} >
+      tabIndex={0}
+    >
       {children}
     </div>
   );
@@ -35,40 +38,46 @@ function CardContent({ children, className }) {
 }
 
 export default function Dashboard() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [barSize, setBarSize] = useState(window.innerWidth < 768 ? 20 : 30);
+
+  useEffect(() => {
+    const handleResize = () => setBarSize(window.innerWidth < 768 ? 20 : 30);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="flex h-screen bg-white">
-      
-      <div className="flex-1 p-8">
-        {/* <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Welcome, &lt;User&gt;</h1>
-        </div> */}
-        <div className="flex justify-between mb-8">
-          {[{ title: "New Verification", imgsrc: newverify_icon,onClick: () => navigate("/home") },
-            { title: "Approved Digi-Passes", imgsrc:approved_icon },
-            { title: "Rejected Digi-Passes", imgsrc: rejected_icon }].map((item, index) => (
-            <Card key={index}  onClick={item.onClick}>
+    <div className="flex flex-col md:flex-row h-screen bg-white p-4 md:p-8">
+      <div className="flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-6 md:mb-8 place-items-center">
+          {[
+            { title: "New Verification", imgsrc: newverify_icon, onClick: () => navigate("/home") },
+            { title: "Approved Digi-Passes", imgsrc: approved_icon },
+            { title: "Rejected Digi-Passes", imgsrc: rejected_icon },
+          ].map((item, index) => (
+            <Card key={index} onClick={item.onClick}>
               <CardContent>
-                <div className="w-16 h-16 flex items-center justify-center border border-gray-300 rounded-lg shadow-md">
-                  <img src={item.imgsrc} className="text-[#6941C6] w-8 h-8" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center border border-gray-300 rounded-lg shadow-md">
+                  <img src={item.imgsrc} className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
                 </div>
-                <h2 className="font-semibold text-xl text-[#6941C6] mt-8">{item.title}</h2>
-                <p className="font-inter font-medium text-sm leading-5 tracking-normal text-center text-[#475467]">Verify and process new travel passes</p>
+                <h2 className="font-semibold text-base sm:text-lg md:text-xl text-[#6941C6] mt-2 sm:mt-4 md:mt-8">{item.title}</h2>
+                <p className="text-xs sm:text-sm text-[#475467]">Verify and process new travel passes</p>
               </CardContent>
             </Card>
           ))}
         </div>
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-          <div className="border-b border-gray-200 pb-4 mb-4">
-            <h3 className="text-2xl font-semibold text-gray-900">Total Verifications</h3>
-            <p className="text-gray-500 text-sm">Keep track of the number of travel passes issued</p>
+        <div className="bg-white p-4 md:p-8 rounded-xl shadow-lg border border-gray-200">
+          <div className="border-b border-gray-200 pb-2 md:pb-4 mb-2 md:mb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">Total Verifications</h3>
+            <p className="text-gray-500 text-xs sm:text-sm">Keep track of the number of travel passes issued</p>
           </div>
-          <div className="mt-6 w-full h-80">
-          <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} barSize={30} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+          <div className="mt-4 md:mt-6 w-full h-52 sm:h-60 md:h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data} barSize={barSize} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="month" stroke="#A0AEC0" tick={{ fontSize: 12 }} label={{ value: 'Month', position: 'insideBottom', dy: 10 }} />
-                <YAxis stroke="#A0AEC0" tick={{ fontSize: 12 }} label={{ value: 'Total Entries', angle: -90, position: 'insideLeft', dy: -10 }} />
+                <XAxis dataKey="month" stroke="#A0AEC0" tick={{ fontSize: 10 }} label={{ value: 'Month', position: 'insideBottom', dy: 5 }} />
+                <YAxis stroke="#A0AEC0" tick={{ fontSize: 10 }} label={{ value: 'Total Entries', angle: -90, position: 'insideLeft', dy: -5 }} />
                 <Tooltip wrapperStyle={{ display: 'none' }} />
                 <Bar dataKey="approved" fill="#53389E" stackId="a" radius={[2, 2, 0, 0]} />
                 <Bar dataKey="pending" fill="#9E77ED" stackId="a" radius={[0, 0, 1, 1]} />
@@ -76,8 +85,10 @@ export default function Dashboard() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="border-t border-gray-200 mt-4 pt-4 flex justify-end">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">View full report</button>
+          <div className="border-t border-gray-200 mt-4 pt-4 flex justify-center md:justify-end">
+            <button className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
+              View full report
+            </button>
           </div>
         </div>
       </div>
