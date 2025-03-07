@@ -1,4 +1,4 @@
-import { claim, credentialSubject, VCWrapper, Detail, QrData } from "../types/data-types";
+import { claim, credentialSubject, VCWrapper, QrData } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
@@ -16,9 +16,9 @@ export const getPresentationDefinition = (data: QrData) => {
   );
 };
 
-export const getDetailsOrder = (vc: any): Detail[] => {
+export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
-  const credential = vc.credentialSubject
+  const credential = vc.credentialSubject;
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
@@ -73,12 +73,14 @@ export const getDetailsOrder = (vc: any): Detail[] => {
         return { key, value: "N/A" };
       });
     default:
-      return Object.keys(credential).map((key) => {
-        if (key in credential) {
-          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
-        }
-        return { key, value: "N/A" };
-      });
+      return Object.keys(credential)
+        .filter((key) =>
+            key !== "id" &&
+            credential[key] !== null &&
+            credential[key] !== undefined &&
+            credential[key] !== ""
+        )
+        .map((key) => ({ key, value: credential[key] }));
   }
 };
 
