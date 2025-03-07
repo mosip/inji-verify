@@ -104,7 +104,7 @@ export const OvpErrors: any = {
 export const ScanSessionExpiryTime = 60000; // in milliseconds
 
 export const UploadFileSizeLimits = {
-    min: 10000, // 10KB
+    min: 5000, // 5KB
     max: 5000000 // 5MB
 }
 
