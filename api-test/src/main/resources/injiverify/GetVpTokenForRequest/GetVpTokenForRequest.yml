@@ -21,12 +21,12 @@ GetVpTokenForRequest:
       uniqueIdentifier: TC_InjiVerify_GetVpTokenForRequest_02
       role: noauth
       restMethod: get
-      checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
-      outputTemplate: injiverify/responseCode
+      outputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequestError
       input: '{
       "transactionId":"hgyghvgftA"
       }'
       output: '{
-      "responseCode": "500"
+      "errorCode": "ERR_100",
+      "errorMessage": "Invalid transaction ID, No requests found for given transaction ID."
 }'

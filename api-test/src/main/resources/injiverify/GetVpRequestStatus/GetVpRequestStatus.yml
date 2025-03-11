@@ -14,6 +14,21 @@ GetVpRequestStatus:
     "status": "VP_SUBMITTED"
 }'
 
+  Injiverify_GetVpRequestStatus_Active_All_Valid_Smoke:
+      endPoint: /v1/verify/vp-request/{requestId}/status
+      description: Getting the status of VP Request
+      uniqueIdentifier: TC_InjiVerify_GetVpRequestStatus_04
+      role: noauth
+      restMethod: get
+      inputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatus
+      outputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatusResult
+      input: '{
+      "requestId":"$ID:CreateNewVerificationRequest_ForExpiry_All_Valid_Smoke_Sid_requestId$"
+      }'
+      output: '{
+    "status": "ACTIVE"
+}'
+
   Injiverify_GetVpRequestStatus_Expiry_All_Valid_Smoke:
       endPoint: /v1/verify/vp-request/{requestId}/status
       description: Getting the status of VP Request
