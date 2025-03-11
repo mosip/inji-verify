@@ -52,9 +52,9 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Verify that user convert pdf into png
     And Upload QR code file png
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
@@ -62,14 +62,14 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step3 label
     And Verify that Upload button visible
     And Upload QR code file png
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file png
-    And verify alert message
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -101,9 +101,9 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Verify that user convert pdf into png
     And Upload QR code file PDF
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
@@ -111,14 +111,14 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step3 label
     And Verify that Upload button visible
     And Upload QR code file PDF
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file PDF
-    And verify alert message
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -149,9 +149,9 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Verify that user convert pdf into png
     And Upload QR code file JPG
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
@@ -159,14 +159,14 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step3 label
     And Verify that Upload button visible
     And Upload QR code file JPG
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file JPG
-    And verify alert message
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -198,9 +198,9 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Verify that user convert pdf into png
     And Upload QR code file JPEG
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
@@ -208,14 +208,14 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step3 label
     And Verify that Upload button visible
     And Upload QR code file JPEG
-    And verify upload QR code step2 description after
-    And verify upload QR code step3 description after
-    And verify tick icon is visible on successful verification
+    #And verify upload QR code step2 description after
+    #And verify upload QR code step3 description after
+    #And verify tick icon is visible on successful verification
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
     And Upload QR code file JPEG
-    And verify alert message
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |

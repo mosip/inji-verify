@@ -28,10 +28,10 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//div[@class='grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10']")
 	WebElement BlankImageQRArea;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[2]")
+	@FindBy(xpath = "(//div[@class='ml-[10px] text-lgNormalTextSize font-bold text-black'])[2]")
 	WebElement UploadQRCodeStep2LabelAfter;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[3]")
+	@FindBy(xpath = "(//div[@class='ml-[10px] text-lgNormalTextSize font-bold text-black'])[3]")
 	WebElement UploadQRCodeStep3LabelAfter;
 
 	@FindBy(xpath = "//*[contains(text(), 'QR code uploaded successfully!')]")
@@ -67,15 +67,15 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//a[@id='verify-credentials-button']")
 	WebElement Credentialsbutton;
 
-	@FindBy(xpath = "//span[@id='upload-qr-code-button']")
+	@FindBy(id = "upload-qr-code-button")
 	WebElement UploadQRCodeButton;
 
 	public void ClickonUploadQRCodePng() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -83,7 +83,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
@@ -99,7 +99,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
+		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
 
 	}
 

@@ -228,6 +228,11 @@ public class StepDef {
 
 	@Then("verify congratulations message on successful verification")
 	public void verify_congratulations_message_on_successful_verification() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getCongratulationtext(), UiConstants.CONGRATULATIONS_MESSAGE);
 
 	}
@@ -465,7 +470,7 @@ public class StepDef {
 
 	@Then("Click on vp verification tab")
 	public void click_on_vp_verification_tab() {
-		vpverification.ClickonVPVerificationTab();
+		vpverification.clickOnVPVerificationTab();
 		Assert.assertTrue(true);
 
 	}
@@ -501,6 +506,11 @@ public class StepDef {
 
 	@Then("Upload QR code file Expired png")
 	public void upload_qr_code_file_expired_png() {
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
 		Assert.assertTrue(true);
 	}
@@ -664,8 +674,8 @@ public class StepDef {
 
     @Then("Verify that user convert pdf into png")
     public void verify_that_user_convert_pdf_into_png() throws IOException {
-		String pdfPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential.pdf";
-		String outputPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential";
+		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
+		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
 
 		PDDocument document = PDDocument.load(new File(pdfPath));
 		PDFRenderer renderer = new PDFRenderer(document);
