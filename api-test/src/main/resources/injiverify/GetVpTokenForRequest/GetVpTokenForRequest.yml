@@ -12,7 +12,7 @@ GetVpTokenForRequest:
       }'
       output: '{
     "transactionId": "$ID:CreateNewVerificationRequest_All_Valid_Smoke_Sid_transactionId$",
-    "vpresultStatus": "SUCCESS"
+    "vpResultStatus": "SUCCESS"
 }'
 
   Injiverify_GetVpTokenForRequest_Invalid_TransactionId_Neg:
