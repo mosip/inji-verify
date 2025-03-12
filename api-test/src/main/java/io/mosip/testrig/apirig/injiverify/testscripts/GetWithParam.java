@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -90,22 +91,17 @@ public class GetWithParam extends InjiVerifyUtil implements ITest {
 		if (testCaseName.contains("_Expiry")) {
 			final int MAX_DURATION_MS = Integer
 					.parseInt(InjiVerifyConfigManager.getproperty(InjiVerifyConstants.EXPIRATION_TIME));
-			Instant startTime = Instant.now();
-
-			while (Duration.between(startTime, Instant.now()).toMillis() < MAX_DURATION_MS) {
-				response = getWithPathParamAndCookie(injiVerifyBaseUrl + testCaseDTO.getEndPoint(),
-						getJsonFromTemplate(testCaseDTO.getInput(), testCaseDTO.getInputTemplate()), auditLogCheck,
-						COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
-
-				if (response.asString().contains("status")) {
-					break;
-				}
+			
+			try {
+				TimeUnit.SECONDS.sleep(MAX_DURATION_MS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		} else {
-			response = getWithPathParamAndCookie(injiVerifyBaseUrl + testCaseDTO.getEndPoint(),
-					getJsonFromTemplate(testCaseDTO.getInput(), testCaseDTO.getInputTemplate()), auditLogCheck,
-					COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
 		}
+		
+		response = getWithPathParamAndCookie(injiVerifyBaseUrl + testCaseDTO.getEndPoint(),
+				getJsonFromTemplate(testCaseDTO.getInput(), testCaseDTO.getInputTemplate()), auditLogCheck,
+				COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
 
 		Map<String, List<OutputValidationDto>> ouputValid = null;
 		ouputValid = OutputValidationUtil.doJsonOutputValidation(response.asString(),
