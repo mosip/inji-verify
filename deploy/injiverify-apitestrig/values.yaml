@@ -1,7 +1,0 @@
-modules:
-  injiverify:
-    enabled: true
-    image:
-      repository: mosipdev/apitest-inji-verify
-      tag: develop
-      pullPolicy: Always
