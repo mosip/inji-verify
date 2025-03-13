@@ -21,7 +21,7 @@ const ResultSummary = ({
     >
       <div className={`block mb-2.5 text-white`}>
         {status === "SUCCESS" ? (
-          <VerificationSuccessIcon />
+          <VerificationSuccessIcon id="success_message_icon" />
         ) : (
           <VerificationFailedIcon />
         )}
