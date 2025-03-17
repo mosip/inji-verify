@@ -58,7 +58,7 @@ public class VPRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
 
     }
 
@@ -71,7 +71,7 @@ public class VPRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200))));
 
         verify(verifiablePresentationRequestService, never()).createAuthorizationRequest(any());
     }
@@ -88,7 +88,7 @@ public class VPRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201))));
     }
 
     @Test

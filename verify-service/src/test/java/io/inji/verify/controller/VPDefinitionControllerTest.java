@@ -50,7 +50,7 @@ public class VPDefinitionControllerTest {
         mockMvc.perform(get("/vp-definition/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
+                .andExpect(content().string(objectMapper.writeValueAsString(expectedResponse)));
 
         verify(vpDefinitionService, times(1)).getPresentationDefinition(id);
     }

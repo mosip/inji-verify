@@ -61,7 +61,7 @@ public class VPResultControllerTest {
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(resultDto)));
+                .andExpect(content().string(objectMapper.writeValueAsString(resultDto)));
 
         verify(verifiablePresentationRequestService, times(1)).getLatestRequestIdFor(transactionId);
         verify(verifiablePresentationSubmissionService, times(1)).getVPResult(requestIds, transactionId);
@@ -77,7 +77,7 @@ public class VPResultControllerTest {
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100))));
 
         verify(verifiablePresentationRequestService, times(1)).getLatestRequestIdFor(transactionId);
         verify(verifiablePresentationSubmissionService, never()).getVPResult(any(), any());
@@ -96,7 +96,7 @@ public class VPResultControllerTest {
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101))));
 
         verify(verifiablePresentationRequestService, times(1)).getLatestRequestIdFor(transactionId);
         verify(verifiablePresentationSubmissionService, times(1)).getVPResult(requestIds, transactionId);
