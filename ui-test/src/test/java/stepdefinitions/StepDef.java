@@ -207,9 +207,20 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePng();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file png")
+	public void Upload_another_QR_code_file() {
+		uploadqrcode.ClickonAnotherUploadQRCodePng();
+		Assert.assertTrue(true);
+	}
 
 	@Then("verify upload QR code step2 description after")
 	public void verify_upload_qr_code_step2_description_after() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertTrue(uploadqrcode.isVisibleUploadQRCodeStep2LabelAfter());
 
 	}
@@ -222,6 +233,11 @@ public class StepDef {
 
 	@Then("verify tick icon is visible on successful verification")
 	public void verify_tick_icon_is_visible_for_successful_verification() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertTrue(uploadqrcode.isTickIconVisible());
 
 	}
@@ -261,16 +277,35 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePdf();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file PDF")
+	public void UploadanotherQRcodefilepdf() {
+		uploadqrcode.ClickonAnotherUploadQRCodePdf();
+		Assert.assertTrue(true);
+	}
+
 
 	@Then("Upload QR code file JPG")
 	public void UploadQRcodefilejpg() {
 		uploadqrcode.ClickonUploadQRCodeJpg();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file JPG")
+	public void UploadanotherQRcodefilejpg() {
+		uploadqrcode.ClickonAnotherUploadQRCodeJpg();
+		Assert.assertTrue(true);
+	}
 
 	@Then("Upload QR code file JPEG")
 	public void UploadQRcodefilejpeg() {
 		uploadqrcode.ClickonUploadQRCodeJpeg();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Upload another QR code file JPEG")
+	public void UploadanotherQRcodefilejpeg() {
+		uploadqrcode.ClickonAnotherUploadQRCodeJpeg();
 		Assert.assertTrue(true);
 	}
 
@@ -535,11 +570,21 @@ public class StepDef {
 
 	@Then("Verify message for valid QR code")
 	public void verify_message_for_valid_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
 	}
 
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
 	}
 
@@ -632,7 +677,7 @@ public class StepDef {
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
 		try {
-			Thread.sleep(6000);
+			Thread.sleep(9000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

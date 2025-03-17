@@ -22,16 +22,16 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//p[@id='vc-result-display-message']")
 	WebElement ErrorTextInvalidQRCode;
 
-	@FindBy(xpath = "//p[@id='vc-result-display-message']")
+	@FindBy(id = "vc-result-display-message")
 	WebElement ErrorTextExpiredQRCode;
 
 	@FindBy(xpath = "//div[@class='grid content-center justify-center w-[100%] h-[320px] text-[#000000] opacity-10']")
 	WebElement BlankImageQRArea;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-lgNormalTextSize font-bold text-black'])[2]")
+	@FindBy(id = "verify-document")
 	WebElement UploadQRCodeStep2LabelAfter;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-lgNormalTextSize font-bold text-black'])[3]")
+	@FindBy(id = "view-result")
 	WebElement UploadQRCodeStep3LabelAfter;
 
 	@FindBy(xpath = "//*[contains(text(), 'QR code uploaded successfully!')]")
@@ -71,23 +71,39 @@ public class UploadQRCode extends BasePage {
 	WebElement UploadQRCodeButton;
 
 	public void ClickonUploadQRCodePng() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.png");
+	}
+	
+	public void ClickonAnotherUploadQRCodePng() {
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpg");
+	}
+	
+	public void ClickonAnotherUploadQRCodeJpg() {
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
+	
+	public void ClickonAnotherUploadQRCodePdf() {
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential.pdf");
+	}
 
 	public void ClickonUploadQRCodeJpeg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpeg");
+	}
+	
+	public void ClickonAnotherUploadQRCodeJpeg() {
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
+		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
 	public void ClickonUploadQRCodeInvalid() {
