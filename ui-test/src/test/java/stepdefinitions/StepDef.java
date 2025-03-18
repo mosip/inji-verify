@@ -216,10 +216,6 @@ public class StepDef {
 
 	@Then("verify upload QR code step2 description after")
 	public void verify_upload_qr_code_step2_description_after() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertTrue(uploadqrcode.isVisibleUploadQRCodeStep2LabelAfter());
 
 	}
@@ -232,20 +228,12 @@ public class StepDef {
 
 	@Then("verify tick icon is visible on successful verification")
 	public void verify_tick_icon_is_visible_for_successful_verification() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertTrue(uploadqrcode.isTickIconVisible());
 
 	}
 
 	@Then("verify congratulations message on successful verification")
 	public void verify_congratulations_message_on_successful_verification() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertEquals(uploadqrcode.getCongratulationtext(), UiConstants.CONGRATULATIONS_MESSAGE);
 
 	}
@@ -538,10 +526,6 @@ public class StepDef {
 
 	@Then("Upload QR code file Expired png")
 	public void upload_qr_code_file_expired_png() {
-		/*
-		 * try { Thread.sleep(6000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
 		Assert.assertTrue(true);
 	}
@@ -566,19 +550,11 @@ public class StepDef {
 
 	@Then("Verify message for valid QR code")
 	public void verify_message_for_valid_qr_code() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
 	}
 
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
 	}
 
@@ -670,10 +646,6 @@ public class StepDef {
 
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
-		/*
-		 * try { Thread.sleep(9000); } catch (InterruptedException e) { throw new
-		 * RuntimeException(e); }
-		 */
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
 	@Then("User verify pdf is downloaded")
