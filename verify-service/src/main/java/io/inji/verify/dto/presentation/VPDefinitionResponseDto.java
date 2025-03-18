@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -16,11 +15,11 @@ import java.util.List;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VPDefinitionResponseDto {
-    @NotNull
-    @NotBlank
-    @NotEmpty
+    @NotNull(message = "ID cannot be null")
+    @NotBlank(message = "ID cannot be blank")
+    @NotEmpty(message = "ID cannot be empty")
     String id;
-    @NonNull
+    @NotNull(message = "Input Descriptors cannot be null")
     @JsonProperty("input_descriptors")
     @SerializedName("input_descriptors")
     List<InputDescriptorDto> inputDescriptors;

@@ -4,7 +4,9 @@ import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.core.ErrorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
@@ -135,7 +137,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                 })
                 .orElseGet(() -> {
                     DeferredResult<VPRequestStatusDto> result = new DeferredResult<>();
-                    result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(Constants.ERR_102));
+                    result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_102,Constants.ERR_102)));
                     return result;
                 });
     }
