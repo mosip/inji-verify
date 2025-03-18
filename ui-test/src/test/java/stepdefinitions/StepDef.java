@@ -207,6 +207,12 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePng();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file png")
+	public void Upload_another_QR_code_file() {
+		uploadqrcode.ClickonAnotherUploadQRCodePng();
+		Assert.assertTrue(true);
+	}
 
 	@Then("verify upload QR code step2 description after")
 	public void verify_upload_qr_code_step2_description_after() {
@@ -256,16 +262,35 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePdf();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file PDF")
+	public void UploadanotherQRcodefilepdf() {
+		uploadqrcode.ClickonAnotherUploadQRCodePdf();
+		Assert.assertTrue(true);
+	}
+
 
 	@Then("Upload QR code file JPG")
 	public void UploadQRcodefilejpg() {
 		uploadqrcode.ClickonUploadQRCodeJpg();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload another QR code file JPG")
+	public void UploadanotherQRcodefilejpg() {
+		uploadqrcode.ClickonAnotherUploadQRCodeJpg();
+		Assert.assertTrue(true);
+	}
 
 	@Then("Upload QR code file JPEG")
 	public void UploadQRcodefilejpeg() {
 		uploadqrcode.ClickonUploadQRCodeJpeg();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Upload another QR code file JPEG")
+	public void UploadanotherQRcodefilejpeg() {
+		uploadqrcode.ClickonAnotherUploadQRCodeJpeg();
 		Assert.assertTrue(true);
 	}
 
@@ -465,7 +490,7 @@ public class StepDef {
 
 	@Then("Click on vp verification tab")
 	public void click_on_vp_verification_tab() {
-		vpverification.ClickonVPVerificationTab();
+		vpverification.clickOnVPVerificationTab();
 		Assert.assertTrue(true);
 
 	}
@@ -621,11 +646,6 @@ public class StepDef {
 
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
-		try {
-			Thread.sleep(6000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
 	@Then("User verify pdf is downloaded")
@@ -664,8 +684,8 @@ public class StepDef {
 
     @Then("Verify that user convert pdf into png")
     public void verify_that_user_convert_pdf_into_png() throws IOException {
-		String pdfPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential.pdf";
-		String outputPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential";
+		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
+		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
 
 		PDDocument document = PDDocument.load(new File(pdfPath));
 		PDFRenderer renderer = new PDFRenderer(document);

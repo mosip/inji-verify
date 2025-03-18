@@ -44,6 +44,6 @@ public class UiConstants {
 	public static final String ERROR_MESSAGE_INVALID_QR = "Unfortunately, the given credential is invalid!";
 	public static final String ERROR_MESSAGE_LARGEFILE_QR = "File size not supported. The file size should be between 10 KB and 5 MB.";
 	public static final String ERROR_MESSAGE_SCAN_TIMEOUT = "The scan session has expired due to inactivity. Please initiate a new scan.";
-	public static final String ERROR_MESSAGE_EXPIRED_QR = "Unfortunately, the given credential is expired!";
+	public static final String ERROR_MESSAGE_EXPIRED_QR = "The given credential is valid but expired!";
 	public static final String ERROR_UNSUPPORTED_FORMAT = "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf";
 }
