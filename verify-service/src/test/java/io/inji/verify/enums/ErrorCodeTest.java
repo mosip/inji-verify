@@ -7,7 +7,7 @@ public class ErrorCodeTest {
 
     @Test
     public void testValues() {
-        ErrorCode[] expectedValues = {ErrorCode.ERR_100, ErrorCode.ERR_101,ErrorCode.ERR_200,ErrorCode.ERR_201};
+        ErrorCode[] expectedValues = {ErrorCode.ERR_100, ErrorCode.ERR_101,ErrorCode.ERR_102,ErrorCode.ERR_200,ErrorCode.ERR_201};
         assertArrayEquals(expectedValues, ErrorCode.values());
     }
 }
