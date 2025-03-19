@@ -14,7 +14,6 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,6 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
 class VerifiablePresentationRequestServiceImplTest {
     static VerifiablePresentationRequestServiceImpl service;
     static AuthorizationRequestCreateResponseRepository mockAuthorizationRequestCreateResponseRepository;

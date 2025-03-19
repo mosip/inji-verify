@@ -24,7 +24,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@Slf4j
 public class VerifiablePresentationSubmissionServiceImplTest {
 
     @Mock
@@ -71,7 +70,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
             assertNotNull(resultDto);
-            assertEquals(VPResultStatus.SUCCESS, resultDto.getVPResultStatus());
+            assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
             verify(credentialsVerifier, times(1)).verify(anyString(), any(CredentialFormat.class));
         }
     }
@@ -101,7 +100,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
         assertNotNull(resultDto);
-        assertEquals(VPResultStatus.FAILED, resultDto.getVPResultStatus());
+        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
     }
 
     @Test
@@ -115,6 +114,6 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(new AuthorizationRequestCreateResponse());
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
         assertNotNull(resultDto);
-        assertEquals(VPResultStatus.FAILED, resultDto.getVPResultStatus());
+        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
     }
 }
