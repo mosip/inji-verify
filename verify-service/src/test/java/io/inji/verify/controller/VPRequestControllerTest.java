@@ -5,11 +5,11 @@ import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.core.ErrorDto;
+import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.services.VerifiablePresentationRequestService;
-import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.request.async.DeferredResult;
 
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -49,7 +51,8 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_Success() throws Exception {
-        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",mock());
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), new ArrayList<>());
+        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
         VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(),0l);
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any())).thenReturn(responseDto);
@@ -71,14 +74,16 @@ public class VPRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_200, Constants.ERR_200))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.BOTH_ID_AND_PD_CANNOT_BE_NULL))));
 
         verify(verifiablePresentationRequestService, never()).createAuthorizationRequest(any());
     }
 
     @Test
     public void testCreateVPRequest_NotFound() throws Exception {
-        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",mock());
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), new ArrayList<>());
+
+        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
 
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any()))
@@ -88,7 +93,7 @@ public class VPRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_201, Constants.ERR_201))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.NO_PRESENTATION_DEFINITION))));
     }
 
     @Test

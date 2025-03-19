@@ -8,7 +8,6 @@ import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
-import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -77,7 +76,7 @@ public class VPResultControllerTest {
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID))));
 
         verify(verifiablePresentationRequestService, times(1)).getLatestRequestIdFor(transactionId);
         verify(verifiablePresentationSubmissionService, never()).getVPResult(any(), any());
@@ -96,7 +95,7 @@ public class VPResultControllerTest {
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101))));
+                .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.NO_VP_SUBMISSION))));
 
         verify(verifiablePresentationRequestService, times(1)).getLatestRequestIdFor(transactionId);
         verify(verifiablePresentationSubmissionService, times(1)).getVPResult(requestIds, transactionId);

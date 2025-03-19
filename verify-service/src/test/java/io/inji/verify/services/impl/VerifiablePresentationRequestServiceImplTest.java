@@ -17,6 +17,8 @@ import io.inji.verify.shared.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
@@ -104,7 +106,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         DeferredResult<VPRequestStatusDto> result = service.getStatus("req_id");
 
-        assertEquals("NOT_FOUND", result.getResult());
+        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity) result.getResult()).getStatusCode());
     }
 
     @Test()

@@ -8,12 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ErrorDtoTest {
     @Test
     public void shouldTestConstructor() {
-        String message = "testMessage";
 
-        ErrorDto errorDto = new ErrorDto(ErrorCode.ERR_100, message);
+        ErrorDto errorDto = new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID);
 
-        assertEquals(ErrorCode.ERR_100, errorDto.getErrorCode());
-        assertEquals(message, errorDto.getErrorMessage());
+        assertEquals(ErrorCode.INVALID_TRANSACTION_ID, errorDto.getErrorCode());
     }
 
 }

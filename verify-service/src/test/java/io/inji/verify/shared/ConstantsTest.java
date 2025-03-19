@@ -23,9 +23,5 @@ public class ConstantsTest {
         assertEquals("verificationMethod", Constants.KEY_VERIFICATION_METHOD);
         assertEquals("verifiableCredential", Constants.KEY_VERIFIABLE_CREDENTIAL);
         assertEquals("credential", Constants.KEY_CREDENTIAL);
-        assertEquals("Invalid transaction ID, No requests found for given transaction ID.", Constants.ERR_100);
-        assertEquals("No VP submission found for given transaction ID.", Constants.ERR_101);
-        assertEquals("Both Presentation Definition and Presentation Definition ID cannot be empty.", Constants.ERR_200);
-        assertEquals("No Presentation Definition found for given Presentation Definition ID.", Constants.ERR_201);
     }
 }
