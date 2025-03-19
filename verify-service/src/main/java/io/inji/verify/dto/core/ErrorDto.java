@@ -8,5 +8,4 @@ import lombok.Getter;
 @Getter
 public class ErrorDto {
     ErrorCode errorCode;
-    String errorMessage;
 }

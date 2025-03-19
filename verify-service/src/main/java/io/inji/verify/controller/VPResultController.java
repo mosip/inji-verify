@@ -36,9 +36,9 @@ public class VPResultController {
                 return ResponseEntity.status(HttpStatus.OK).body(result);
             } catch (VPSubmissionNotFoundException e) {
                 log.error(e.getMessage());
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_101, Constants.ERR_101));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.NO_VP_SUBMISSION));
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_100, Constants.ERR_100));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID));
     }
 }

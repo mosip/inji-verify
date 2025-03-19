@@ -137,7 +137,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                 })
                 .orElseGet(() -> {
                     DeferredResult<VPRequestStatusDto> result = new DeferredResult<>();
-                    result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.ERR_102,Constants.ERR_102)));
+                    result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.NO_AUTH_REQUEST)));
                     return result;
                 });
     }
