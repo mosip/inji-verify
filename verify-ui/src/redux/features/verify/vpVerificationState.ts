@@ -13,7 +13,7 @@ const PreloadedState: VerifyState = {
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
   SelectionPanel: false,
   verificationSubmissionResult: [],
-  selectedClaims: verifiableClaims.filter((claim) => claim.essential),
+  selectedClaims: [],
   unVerifiedClaims: [],
   sharingType: VCShareType.SINGLE,
   isPartiallyShared: false,
@@ -28,6 +28,7 @@ const vpVerificationState = createSlice({
     },
     setSelectedClaims: (state, actions) => {
       state.selectedClaims = actions.payload.selectedClaims;
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
       state.verificationSubmissionResult = [];
     },
     getVpRequest: (state, actions) => {
@@ -41,9 +42,6 @@ const vpVerificationState = createSlice({
       state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
-      state.selectedClaims = verifiableClaims.filter(
-        (claim) => claim.essential
-      );
     },
     setVpRequestResponse: (state, action) => {
       state.qrData = action.payload.qrData;
@@ -56,10 +54,14 @@ const vpVerificationState = createSlice({
     setVpRequestStatus: (state, action) => {
       state.status = action.payload.status;
     },
+    setVpRequest: (state, action) => {
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
+    },
     verificationSubmissionComplete: (state, action) => {
       state.verificationSubmissionResult.push(...action.payload.verificationResult);
       state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
       state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
+      console.log(state.isPartiallyShared);
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
@@ -94,7 +96,8 @@ export const {
   setVpRequestStatus,
   resetVpRequest,
   verificationSubmissionComplete,
-  setSelectedClaims
+  setSelectedClaims,
+  setVpRequest
 } = vpVerificationState.actions;
 
 export default vpVerificationState.reducer;

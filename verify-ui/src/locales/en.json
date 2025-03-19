@@ -82,7 +82,7 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Initiate VP Request Process",
-        "description": "Click <span> Request Verifiable Credentials <span> to begin the verification process."
+        "description": "Click <span> QR Code Icon <span> to begin the verification process."
       },
       "SelectCredential": {
         "label": "Select Credentials & Generate QR Code",

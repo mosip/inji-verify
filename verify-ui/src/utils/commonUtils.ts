@@ -85,12 +85,12 @@ export const getDetailsOrder = (vc: any) => {
 };
 
 export const calculateUnverifiedClaims = (
-  selectedClaims: claim[],
+  selectedClaims: string[],
   verificationSubmissionResult: { vc: VCWrapper; vcStatus: string }[]
 ) => {
   return selectedClaims.filter((claim) =>
     verificationSubmissionResult.every(
-      (vc) => vc.vc.credentialConfigurationId !== claim.type
+      (vc) => vc.vc.credentialConfigurationId !== claim
     )
   );
 };

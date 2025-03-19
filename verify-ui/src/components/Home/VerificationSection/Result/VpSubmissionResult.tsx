@@ -10,7 +10,7 @@ import { useVerifyFlowSelector } from "../../../../redux/features/verification/v
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
-  unverifiedClaims: claim[];
+  unverifiedClaims: string[];
   txnId: string;
   requestCredentials: () => void;
   reGenerateQr: () => void;
@@ -28,7 +28,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   isSingleVc,
 }) => {
   const { vcStatus } = verifiedVcs[0];
-  const selectedClaims: claim[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
+  const selectedClaims: string[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const renderRequestCredentialsButton = (propClasses = "") => (
@@ -64,7 +64,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
     selectedClaims.some(
       (selectedVc) =>
-        verifiedVc.vc.credentialConfigurationId === selectedVc.type
+        verifiedVc.vc.credentialConfigurationId === selectedVc
     )
   );
 
@@ -80,7 +80,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       )}
       <div className="relative">
         <div className="flex flex-col items-center space-y-4 lg:space-y-6 mt-[-60px] lg:mt-[-70px]">
-          {filterVerifiedVcs.map(({ vc, vcStatus }, index) => (
+          {verifiedVcs.map(({ vc, vcStatus }, index) => (
             <DisplayVcCardView
               key={index}
               vc={vc}

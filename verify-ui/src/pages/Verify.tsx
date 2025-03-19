@@ -18,7 +18,7 @@ export function Verify() {
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const handleRequestCredentials = () => {
-    dispatch(setSelectCredential());
+    dispatch(resetVpRequest());
   };
 
   const HandelGenerateQr = () => {
@@ -65,8 +65,6 @@ export function Verify() {
       <div className="grid grid-cols-13">
         <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] lg:pb-[100px]">
           <VerificationProgressTracker />
-          {isPartiallyShared ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
-          {openSelection && <SelectionPanel />}
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 xs:w-[100vw] lg:max-w-[50vw]">
           <VpVerification />

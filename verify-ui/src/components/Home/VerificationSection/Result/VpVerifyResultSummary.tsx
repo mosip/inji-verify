@@ -10,7 +10,7 @@ import {
 
 interface VpVerifyResultSummaryProps {
   verifiedVcs: VpSubmissionResultInt[];
-  unverifiedClaims: claim[];
+  unverifiedClaims: string[];
 }
 
 const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({

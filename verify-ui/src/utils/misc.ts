@@ -31,7 +31,7 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
-export const fetchVerificationSteps = (method: VerificationMethod,isPartiallyShared:boolean) => {
+export const fetchVerificationSteps = (method: VerificationMethod,isPartiallyShared?:boolean) => {
   let VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
   if (method === "VERIFY") {
     VerificationStepsContent = {

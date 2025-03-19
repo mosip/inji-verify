@@ -39,10 +39,10 @@ function MobileStepper() {
   const description: string = VerificationStepsContent[activeScreen - 1].description as string;
 
   useEffect(() => {
-    fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
+    fetchVerificationSteps(method as VerificationMethod);
 
     const handleLanguageChange = () => {
-      fetchVerificationSteps(method, isPartiallyShared);
+      fetchVerificationSteps(method);
     };
 
     i18n.on("languageChanged", handleLanguageChange);
@@ -50,7 +50,7 @@ function MobileStepper() {
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
     };
-  }, [method, isPartiallyShared]);
+  }, [method]);
 
   return (
     <div className={`grid grid-cols-13 lg:hidden flex flex-column mx-auto items-center`}>
