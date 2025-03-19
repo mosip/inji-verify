@@ -10,9 +10,7 @@ import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,22 +25,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VPResultControllerTest {
 
-    @Mock
-    private VerifiablePresentationRequestService verifiablePresentationRequestService;
+    private final VerifiablePresentationRequestService verifiablePresentationRequestService = Mockito.mock(VerifiablePresentationRequestService.class);
 
-    @Mock
-    private VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
-
-    @InjectMocks
-    private VPResultController vpResultController;
+    private final VerifiablePresentationSubmissionService verifiablePresentationSubmissionService = Mockito.mock(VerifiablePresentationSubmissionService.class);
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        VPResultController vpResultController = new VPResultController(verifiablePresentationRequestService, verifiablePresentationSubmissionService);
         mockMvc = MockMvcBuilders.standaloneSetup(vpResultController).build();
     }
 

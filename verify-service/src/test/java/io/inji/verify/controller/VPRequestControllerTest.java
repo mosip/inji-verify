@@ -12,9 +12,7 @@ import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,19 +31,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VPRequestControllerTest {
 
-    @Mock
-    private VerifiablePresentationRequestService verifiablePresentationRequestService;
-
-    @InjectMocks
-    private VPRequestController vpRequestController;
+    private final VerifiablePresentationRequestService verifiablePresentationRequestService = Mockito.mock(VerifiablePresentationRequestService.class);
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        VPRequestController vpRequestController = new VPRequestController(verifiablePresentationRequestService);
         mockMvc = MockMvcBuilders.standaloneSetup(vpRequestController).build();
     }
 
@@ -53,7 +47,7 @@ public class VPRequestControllerTest {
     public void testCreateVPRequest_Success() throws Exception {
         VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), new ArrayList<>());
         VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
-        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(),0l);
+        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(), 0L);
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any())).thenReturn(responseDto);
 

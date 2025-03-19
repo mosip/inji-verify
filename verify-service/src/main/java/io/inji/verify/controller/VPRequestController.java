@@ -6,12 +6,10 @@ import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.core.ErrorDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
-import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +23,11 @@ import org.springframework.web.context.request.async.DeferredResult;
 @Slf4j
 public class VPRequestController {
 
-    @Autowired
-    VerifiablePresentationRequestService verifiablePresentationRequestService;
+    final VerifiablePresentationRequestService verifiablePresentationRequestService;
+
+    public VPRequestController(VerifiablePresentationRequestService verifiablePresentationRequestService) {
+        this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createVPRequest(@Valid @RequestBody VPRequestCreateDto vpRequestCreate) {

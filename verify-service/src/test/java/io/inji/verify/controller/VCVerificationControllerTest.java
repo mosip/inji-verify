@@ -5,9 +5,7 @@ import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.inji.verify.enums.VerificationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import io.inji.verify.services.VCVerificationService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,20 +19,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VCVerificationControllerTest {
 
-    @Mock
-    private  VCVerificationService VCVerificationService;
-
-    @InjectMocks
-    private VCVerificationController VCVerificationController;
+    private final VCVerificationService VCVerificationService = Mockito.mock(VCVerificationService.class);
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(VCVerificationController).build();
+        VCVerificationController vcVerificationController = new VCVerificationController(VCVerificationService);
+        mockMvc = MockMvcBuilders.standaloneSetup(vcVerificationController).build();
     }
 
     @Test

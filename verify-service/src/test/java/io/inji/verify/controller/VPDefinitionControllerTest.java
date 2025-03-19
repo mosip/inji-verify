@@ -5,9 +5,7 @@ import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.services.VPDefinitionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +22,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VPDefinitionControllerTest {
 
-    @Mock
-    private VPDefinitionService vpDefinitionService;
+    private final VPDefinitionService vpDefinitionService = Mockito.mock(VPDefinitionService.class);
 
-    @InjectMocks
     private VPDefinitionController vpDefinitionController;
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        vpDefinitionController = new VPDefinitionController(vpDefinitionService);
         mockMvc = MockMvcBuilders.standaloneSetup(vpDefinitionController).build();
     }
 
