@@ -1,4 +1,4 @@
-# Inji Verify Backend
+# Inji Verify Backend Service
 
 ### Contents
 * Features
@@ -6,12 +6,12 @@
 * API docs
 
 
-##### Features
+#### Features
 * ###### VC Verification
-  Inji Verify backend provides API for verifying the VC on the backend server. It take the VC and performs validations and proof verification on VC using MOSIP [vc-verifier](https://github.com/mosip/vc-verifier/tree/master/vc-verifier/kotlin)
+  It offers an API for verifying VCs on the server side. The API takes a VC as input and carries out validation and proof verification using the [vc-verifier](https://github.com/mosip/vc-verifier/tree/master/vc-verifier/kotlin) module.
 
 * ###### OpenID4VP Sharing
-  Inji verify backend server is designed to support OpenID4VP spec. The current supported draft is [draft 15](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#appendix-G-20).
+  It is designed to support OpenID4VP specification. The current supported draft is [draft 21](https://openid.net/specs/openid-4-verifiable-presentations-1_0-21.html).
 
 ##### Setup Guide
 
