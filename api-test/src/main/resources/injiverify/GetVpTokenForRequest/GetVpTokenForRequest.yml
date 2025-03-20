@@ -22,19 +22,10 @@ GetVpTokenForRequest:
       role: noauth
       restMethod: get
       inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
-<<<<<<< HEAD
       outputTemplate: injiverify/error2
-=======
-      outputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequestError
->>>>>>> 4a608c54adcd76f1cf5269fc3485e827853d2455
       input: '{
       "transactionId":"hgyghvgftA"
       }'
       output: '{
-<<<<<<< HEAD
       "errorCode": "INVALID_TRANSACTION_ID"
-=======
-      "errorCode": "ERR_100",
-      "errorMessage": "Invalid transaction ID, No requests found for given transaction ID."
->>>>>>> 4a608c54adcd76f1cf5269fc3485e827853d2455
 }'
