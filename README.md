@@ -3,7 +3,6 @@
 Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
 
 # Contents:
-
 This document contains the following sections:
 
 - Installations
