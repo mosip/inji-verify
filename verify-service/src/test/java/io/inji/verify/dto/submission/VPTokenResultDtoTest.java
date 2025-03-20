@@ -22,7 +22,7 @@ class VPTokenResultDtoTest {
         VPTokenResultDto resultDto = new VPTokenResultDto(transactionId, vpResultStatus, vcResults);
 
         assertEquals(transactionId, resultDto.getTransactionId());
-        assertEquals(vpResultStatus, resultDto.getVPResultStatus());
-        assertEquals(vcResults, resultDto.getVCResults());
+        assertEquals(vpResultStatus, resultDto.getVpResultStatus());
+        assertEquals(vcResults, resultDto.getVcResults());
     }
 }

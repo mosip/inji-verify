@@ -18,8 +18,9 @@ function OvpRedirect(props: any) {
             const params = new URLSearchParams(location.hash.substring(1));
             const queryParams = new URLSearchParams(location.search.substring(1));
 
-            vpToken = !!params.get("vp_token")
-                ? JSON.parse(atob(params.get("vp_token") as string)) // base64 encoded
+            const vpTokenParam = params.get("vp_token");
+            vpToken = vpTokenParam
+                ? JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(vpTokenParam), c => c.charCodeAt(0))))
                 : undefined;
             presentationSubmission = !!params.get("presentation_submission")
                 ? decodeURIComponent(params.get("presentation_submission") as string) // url encoded
