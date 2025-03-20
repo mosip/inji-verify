@@ -33,9 +33,26 @@ Prerequisites:
   - [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
   - [Other platforms](https://docs.docker.com/engine/install/)
 
+<<<<<<< HEAD:verify-ui/README.md
 # Configuration:
 
 The configuration to the Inji Verify application can be passed using the .env file which is present inside the **verify-ui** folder.
+=======
+- **Docker Compose**
+
+  `Note: Requires installation of Docker. This step can be skippped if Docker desktop(Windows) is installed as it comes along with docker compose. Please install Docker using above links before proceeding for the installation of docker compose`
+
+  - [Install as plugin to docker command](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin)
+  - [Install the Compose standalone](https://docs.docker.com/compose/install/#scenario-three-install-the-compose-standalone)
+
+  Once installed, use Docker compose option below to run the Inji Verify application for a quick demo.
+
+---
+
+# Configuration:
+
+The configuration to the Inji Verify application can be passed using the .env file which is present inside the **inji-verify** folder.
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 
 It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_TIMEOUT variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the .env file.
 
@@ -48,7 +65,11 @@ Once the repo is cloned, move into the inji-verify repository folder and run the
 ```shell
 cd inji-verify # move into the repository folder
 git checkout develop
+<<<<<<< HEAD:verify-ui/README.md
 cd verify-ui # contains source code and Dockerfile
+=======
+cd ui # contains source code and Dockerfile
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 ```
 
 ### Development server:
@@ -84,6 +105,31 @@ docker stop inji-verify-dev
 docker rm inji-verify-dev
 ```
 
+<<<<<<< HEAD:verify-ui/README.md
+=======
+### Run Using Docker Compose:
+
+(Note: Make sure that the following commands are run in the directory where docker-compose.yml file is present)
+
+Use the above image `<dockerImageName>:<tag>` in the docker-compose.yml file and run the following commands to run as docker compose:
+
+```shell
+$ docker-compose up -d # if docker compose is installed as a standalone command.
+$ docker compose up -d # if docker compose is installed as a plugin to docker command
+```
+
+To stop the application, run the following command:
+
+```shell
+$ docker-compose down # if docker compose is installed as a standalone command.
+$ docker compose down # if docker compose is installed as a plugin to docker command
+```
+
+Once started, the application is accessible at http://localhost:3000.
+
+---
+
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 # Demo Setup:
 
 This section helps to quickly get started with a demo of the Inji Verify application
@@ -92,14 +138,21 @@ Once the repository is cloned, move into the inji-verify repository directory.
 Choose one of the branches that are currently available for the demo:
 
 release branches:
+<<<<<<< HEAD:verify-ui/README.md
 
+=======
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 - release-0.8.x
 - release-0.9.x
 - release-0.10.x
 - release-0.11.x
 
+<<<<<<< HEAD:verify-ui/README.md
 tags :
 
+=======
+tags : 
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 - v0.11.0
 - v0.10.0
 - v0.9.0
@@ -107,7 +160,10 @@ tags :
 - v0.8.0
 
 active branches:
+<<<<<<< HEAD:verify-ui/README.md
 
+=======
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 - master
 - develop
 
@@ -154,7 +210,11 @@ Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compo
 
 ### Solution:
 
+<<<<<<< HEAD:verify-ui/README.md
 Make sure that you are in the right directory `inji-verify/verify-ui` and the docker-compose.yml file is present in this directory.
+=======
+Make sure that you are in the right directory `inji-verify/ui` and the docker-compose.yml file is present in this directory.
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 
 Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
 
@@ -176,7 +236,11 @@ ERROR: failed to solve: failed to read dockerfile: no such file or directory
 
 ### Solution:
 
+<<<<<<< HEAD:verify-ui/README.md
 Make sure that you are in the right directory `inji-verify/verify-ui` and the Dockerfile is present in this directory.
+=======
+Make sure that you are in the right directory `inji-verify/ui` and the Dockerfile is present in this directory.
+>>>>>>> 8c930c923156c3f26423d5db16c953289b52962c:ui/README.md
 
 Check using `ls` command in ubuntu terminal or `dir` command in windows command prompt for the contents of the current directory
 

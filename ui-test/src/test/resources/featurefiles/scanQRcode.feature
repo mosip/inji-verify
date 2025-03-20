@@ -24,7 +24,7 @@ Feature: Inji Verify scan qr code testing
     And Click on Home button
     And Verify that Upload button visible
     And verify click on scan the qr tab
-    And Click on Verify Credential button
-    And Verify that Upload button visible
+    And Click on vp verification tab
+    And verify request verifiable credentials button
     And verify click on scan the qr tab
     And verify click on scan qr code button

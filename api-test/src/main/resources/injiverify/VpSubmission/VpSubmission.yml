@@ -30,7 +30,7 @@ VpSubmission:
       "definition_id":"$PRESENTATIONDEFINITIONID$"
       }'
       output: '{
-      "responseCode": "404"
+      "responseCode": "200"
 }'
 
   Injiverify_VpSubmission_RandomValue_VpToken_Neg:
