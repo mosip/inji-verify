@@ -50,11 +50,21 @@ GetVpRequestStatus:
       uniqueIdentifier: TC_InjiVerify_GetVpRequestStatus_03
       role: noauth
       restMethod: get
+<<<<<<< HEAD
       inputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatus
       outputTemplate: injiverify/error2
+=======
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatus
+      outputTemplate: injiverify/responseCode
+>>>>>>> 4a608c54adcd76f1cf5269fc3485e827853d2455
       input: '{
       "requestId":"bsdgyshuaHAGYAuaA"
       }'
       output: '{
+<<<<<<< HEAD
        "errorCode": "NO_AUTH_REQUEST"
+=======
+      "responseCode": "500"
+>>>>>>> 4a608c54adcd76f1cf5269fc3485e827853d2455
 }'
