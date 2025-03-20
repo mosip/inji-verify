@@ -82,7 +82,7 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar proceso de solicitud de vicepresidente",
-        "description": "Hacer clic <span> Solicitar credenciales verificables <span> para comenzar el proceso de verificación."
+        "description": "Haga clic en el ícono de código QR <span> para comenzar el proceso de verificación"
       },
       "SelectCredential": {
         "label": "Seleccione Credenciales y Generar Código QR",

@@ -1,4 +1,4 @@
-import { claim, credentialSubject, VCWrapper, QrData } from "../types/data-types";
+import { credentialSubject, VCWrapper, QrData } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {

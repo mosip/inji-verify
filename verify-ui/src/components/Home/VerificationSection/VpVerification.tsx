@@ -1,38 +1,31 @@
-import React from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
 import { useTranslation } from "react-i18next";
-import { QrCode } from "../../commons/QrCode";
 import VpSubmissionResult from "./Result/VpSubmissionResult";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
   getVpRequest,
   resetVpRequest,
-  setSelectCredential,
   setSelectedClaims,
   setSharingType,
-  setVpRequest,
-  setVpRequestResponse,
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
 import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { Button } from "./commons/Button";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages, pdef } from "../../../utils/config";
+import { AlertMessages, insuranceCredentialPresentationDefinition } from "../../../utils/config";
 import OpenID4VPVerification from "../../openid4vp-verification/OpenID4VPVerification";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
-  const qrData = useVerifyFlowSelector((state) => state.qrData);
-  const status = useVerifyFlowSelector((state) => state.status);
   const txnId = useVerifyFlowSelector((state) => state.txnId);
   const unverifiedClaims = useVerifyFlowSelector(
     (state) => state.unVerifiedClaims
   );
   const sharingType =
-    pdef.input_descriptors.length > 1
+  insuranceCredentialPresentationDefinition.input_descriptors.length > 1
       ? VCShareType.MULTIPLE
       : VCShareType.SINGLE;
   const verifiedVcs: VpSubmissionResultInt[] = useVerifyFlowSelector(
@@ -76,7 +69,7 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
-  const selectedClaims = pdef.input_descriptors.flatMap((input) =>
+  const selectedClaims = insuranceCredentialPresentationDefinition.input_descriptors.flatMap((input) =>
     input.constraints.fields.map((field) => field.filter.pattern)
   );
 
@@ -133,14 +126,9 @@ const DisplayActiveStep = () => {
                 className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[300px] lg:w-[350px] aspect-square content-center justify-center`}
               >
                 <OpenID4VPVerification
-                  triggerElement={
-                    <QrIcon
-                      className="w-[78px] lg:w-[100px]"
-                      onClick={handleSelectedClaims}
-                    />
-                  }
+                  triggerElement={ <QrIcon className="w-[78px] lg:w-[100px]" onClick={handleSelectedClaims} /> }
                   verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
-                  presentationDefinition={pdef}
+                  presentationDefinition={insuranceCredentialPresentationDefinition}
                   onVpProcessed={handleOnVpProcessed}
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
+import { VpSubmissionResultInt } from "../../../../types/data-types";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import {
   backgroundColorMapping,

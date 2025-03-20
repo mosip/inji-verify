@@ -82,7 +82,7 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar processo de solicitação de VP",
-        "description": "Clique <span> Solicite credenciais verificáveis <span> para iniciar o processo de verificação."
+        "description": "Clique no <span> ícone do código QR <span> para iniciar o processo de verificação."
       },
       "SelectCredential": {
         "label": "Selecione credenciais e gere código QR",

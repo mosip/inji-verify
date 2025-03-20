@@ -1,6 +1,6 @@
 import React from "react";
 import ResultSummary from "./ResultSummary";
-import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
+import { VpSubmissionResultInt } from "../../../../types/data-types";
 import VpVerifyResultSummary from "./VpVerifyResultSummary";
 import DisplayVcCardView from "./DisplayVcCardView";
 import { Button } from "../commons/Button";

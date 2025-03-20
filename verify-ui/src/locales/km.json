@@ -82,7 +82,7 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "ចាប់ផ្តើមដំណើរការស្នើសុំ VP",
-        "description": "ចុច <span> ស្នើសុំលិខិតបញ្ជាក់ដែលអាចផ្ទៀងផ្ទាត់បាន។ <span> ដើម្បីចាប់ផ្តើមដំណើរការផ្ទៀងផ្ទាត់។"
+        "description": "ចុច <span> QR Code Icon <span> ដើម្បីចាប់ផ្តើមដំណើរការផ្ទៀងផ្ទាត់។"
       },
       "SelectCredential": {
         "label": "ជ្រើសរើសព័ត៌មានសម្ងាត់ និងបង្កើតកូដ QR",

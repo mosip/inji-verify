@@ -2,20 +2,17 @@ import React from "react";
 import PageTemplate from "../components/PageTemplate";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
-import SelectionPanel from "../components/Home/VerificationSection/commons/SelectionPanel";
 import { Button } from "../components/Home/VerificationSection/commons/Button";
 import { useTranslation } from "react-i18next";
 import { useVerifyFlowSelector } from "../redux/features/verification/verification.selector";
-import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../redux/features/verify/vpVerificationState";
+import { getVpRequest, resetVpRequest, setSelectedClaims } from "../redux/features/verify/vpVerificationState";
 import { useAppDispatch } from "../redux/hooks";
 
 export function Verify() {
   const { t } = useTranslation("Verify");
   const txnId = useVerifyFlowSelector((state) => state.txnId);
-  const openSelection = useVerifyFlowSelector((state) => state.SelectionPanel);
   const dispatch = useAppDispatch();
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
-  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const handleRequestCredentials = () => {
     dispatch(resetVpRequest());

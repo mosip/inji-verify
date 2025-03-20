@@ -82,7 +82,7 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Lancer le processus de demande de vice-président",
-        "description": "Cliquez <span> Demander des informations d'identification vérifiables <span> pour commencer le processus de vérification."
+        "description": "Cliquez sur <span> l'icône du code QR <span> pour commencer le processus de vérification."
       },
       "SelectCredential": {
         "label": "Sélectionnez les informations d'identification et générez un code QR",

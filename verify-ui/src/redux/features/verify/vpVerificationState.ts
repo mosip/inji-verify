@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { verifiableClaims, VerificationSteps } from "../../../utils/config";
+import { VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
 import { calculateUnverifiedClaims } from "../../../utils/commonUtils";
 
