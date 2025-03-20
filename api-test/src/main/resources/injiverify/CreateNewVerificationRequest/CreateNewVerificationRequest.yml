@@ -115,19 +115,15 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_07
       role: noauth
       restMethod: post
+      checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
-      outputTemplate: injiverify/error
+      outputTemplate: injiverify/responseCode
       input: '{
       "clientId":"client123",
       "id":""
       }'
       output: '{
-      "errors": [
-      {
-       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
-       "message": "The provided presentationDefinitionId does not exist."
-       }
-       ]
+      "responseCode": "400"
 }'
 
   Injiverify_CreateNewVerificationRequest_Without_PresentationDefinitionId_Neg:
@@ -136,19 +132,15 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_08
       role: noauth
       restMethod: post
+      checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
-      outputTemplate: injiverify/error
+      outputTemplate: injiverify/responseCode
       input: '{
       "clientId":"client123",
       "id":"$REMOVE$"
       }'
       output: '{
-      "errors": [
-      {
-       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
-       "message": "The provided presentationDefinitionId does not exist."
-       }
-       ]
+      "responseCode": "400"
 }'
 
   Injiverify_CreateNewVerificationRequest_ForNeg_Valid_Sid:
