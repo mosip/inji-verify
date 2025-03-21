@@ -29,9 +29,13 @@ Feature: Inji Verify upload qr code testing
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with png
     And Open inji web in new tab
-    And User search the issuers with "veridonia"
-    When User click on veridonia credentials button
-    When User click on health insurance by e-signet button
+    When User click on get started button
+    Then User search the issuers with "StayProtected Insurance"
+    When User click on StayProtected Insurance credentials button
+    And User click on health insurance by e-signet button
+    And User click on validity dropdown
+    And User click on no limit
+    And User click on proceed
     And User enter the policy number "<policy number>"
     And User enter the full name  "<full name>"
     And User enter the date of birth "<date of birth>"
@@ -64,19 +68,23 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file png
-    And verify alert message
+    And Upload another QR code file png
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
-      | 120786786    | PolicyTestAutomation     | 01-01-2024   |
+      | 9991    | hello     | 01-01-2025   |
 
 
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with PDF
     And Open inji web in new tab
-    And User search the issuers with "veridonia"
-    When User click on veridonia credentials button
+    When User click on get started button
+    Then User search the issuers with "StayProtected Insurance"
+    When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
+    And User click on validity dropdown
+    And User click on no limit
+    And User click on proceed
     And User enter the policy number "<policy number>"
     And User enter the full name  "<full name>"
     And User enter the date of birth "<date of birth>"
@@ -109,18 +117,22 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file PDF
-    And verify alert message
+    And Upload another QR code file PDF
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
-      | 3455432102    | TestAutomationVerifyUI3     | 01-01-2024   |
+      | 9991    | hello     | 01-01-2025   |
 
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with jpg
     And Open inji web in new tab
-    And User search the issuers with "veridonia"
-    When User click on veridonia credentials button
+    When User click on get started button
+    Then User search the issuers with "StayProtected Insurance"
+    When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
+    And User click on validity dropdown
+    And User click on no limit
+    And User click on proceed
     And User enter the policy number "<policy number>"
     And User enter the full name  "<full name>"
     And User enter the date of birth "<date of birth>"
@@ -153,19 +165,23 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file JPG
-    And verify alert message
+    And Upload another QR code file JPG
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
-      | 3455432101    | TestAutomationVerifyUI2     | 01-01-2024   |
+      | 9991    | hello     | 01-01-2025   |
 
 
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with jpeg
     And Open inji web in new tab
-    And User search the issuers with "veridonia"
-    When User click on veridonia credentials button
+    When User click on get started button
+    Then User search the issuers with "StayProtected Insurance"
+    When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
+    And User click on validity dropdown
+    And User click on no limit
+    And User click on proceed
     And User enter the policy number "<policy number>"
     And User enter the full name  "<full name>"
     And User enter the date of birth "<date of birth>"
@@ -198,11 +214,11 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file JPEG
-    And verify alert message
+    And Upload another QR code file JPEG
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
-      | 3455432100    | TestAutomationVerifyUI1     | 01-01-2024   |
+      | 9991    | hello     | 01-01-2025   |
 
 
   @smoke @verifyuploadValidqrcodeDownloadedByMobileApp
