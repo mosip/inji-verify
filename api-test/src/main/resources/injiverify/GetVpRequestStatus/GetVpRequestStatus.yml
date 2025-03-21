@@ -14,7 +14,6 @@ GetVpRequestStatus:
     "status": "VP_SUBMITTED"
 }'
 
-<<<<<<< HEAD
   Injiverify_GetVpRequestStatus_Active_All_Valid_Smoke:
       endPoint: /v1/verify/vp-request/{requestId}/status
       description: Getting the status of VP Request
@@ -30,8 +29,6 @@ GetVpRequestStatus:
     "status": "ACTIVE"
 }'
 
-=======
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
   Injiverify_GetVpRequestStatus_Expiry_All_Valid_Smoke:
       endPoint: /v1/verify/vp-request/{requestId}/status
       description: Getting the status of VP Request
@@ -53,21 +50,12 @@ GetVpRequestStatus:
       uniqueIdentifier: TC_InjiVerify_GetVpRequestStatus_03
       role: noauth
       restMethod: get
-<<<<<<< HEAD
-      inputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatus
-      outputTemplate: injiverify/error2
-=======
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/GetVpRequestStatus/GetVpRequestStatus
       outputTemplate: injiverify/responseCode
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "requestId":"bsdgyshuaHAGYAuaA"
       }'
       output: '{
-<<<<<<< HEAD
-       "errorCode": "NO_AUTH_REQUEST"
-=======
       "responseCode": "500"
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'

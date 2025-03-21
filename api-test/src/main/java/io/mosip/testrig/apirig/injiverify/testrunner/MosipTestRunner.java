@@ -67,19 +67,10 @@ public class MosipTestRunner {
 			GlobalMethods.setModuleNameAndReCompilePattern(InjiVerifyConfigManager.getproperty("moduleNamePattern"));
 			
 
-<<<<<<< HEAD
-=======
-			// For now we are not doing health check for qa-115.
-			if (BaseTestCase.isTargetEnvLTS()) {
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 				HealthChecker healthcheck = new HealthChecker();
 				healthcheck.setCurrentRunningModule(BaseTestCase.currentModule);
 				Thread trigger = new Thread(healthcheck);
 				trigger.start();
-<<<<<<< HEAD
-=======
-			}
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 
 			BaseTestCase.getLanguageList();
 
@@ -88,12 +79,7 @@ public class MosipTestRunner {
 			LOGGER.error("Exception " + e.getMessage());
 		}
 
-<<<<<<< HEAD
 		HealthChecker.bTerminate = true;
-=======
-		if (BaseTestCase.isTargetEnvLTS())
-			HealthChecker.bTerminate = true;
->>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 
 		System.exit(0);
 
