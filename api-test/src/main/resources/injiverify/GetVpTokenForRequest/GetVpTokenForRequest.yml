@@ -12,7 +12,11 @@ GetVpTokenForRequest:
       }'
       output: '{
     "transactionId": "$ID:CreateNewVerificationRequest_All_Valid_Smoke_Sid_transactionId$",
+<<<<<<< HEAD
     "vpResultStatus": "SUCCESS"
+=======
+    "vpresultStatus": "SUCCESS"
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_GetVpTokenForRequest_Invalid_TransactionId_Neg:
@@ -21,11 +25,21 @@ GetVpTokenForRequest:
       uniqueIdentifier: TC_InjiVerify_GetVpTokenForRequest_02
       role: noauth
       restMethod: get
+<<<<<<< HEAD
       inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
       outputTemplate: injiverify/error2
+=======
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/GetVpTokenForRequest/GetVpTokenForRequest
+      outputTemplate: injiverify/responseCode
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "transactionId":"hgyghvgftA"
       }'
       output: '{
+<<<<<<< HEAD
       "errorCode": "INVALID_TRANSACTION_ID"
+=======
+      "responseCode": "500"
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'

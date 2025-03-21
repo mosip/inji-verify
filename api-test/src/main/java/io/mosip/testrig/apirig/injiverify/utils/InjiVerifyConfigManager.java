@@ -20,7 +20,12 @@ public class InjiVerifyConfigManager extends ConfigManager {
 			Properties props = getproperties(path);
 			// Convert Properties to Map and add to moduleSpecificPropertiesMap
 			for (String key : props.stringPropertyNames()) {
+<<<<<<< HEAD
 				moduleSpecificPropertiesMap.put(key, props.getProperty(key));
+=======
+				String value = System.getenv(key) == null ? props.getProperty(key) : System.getenv(key);
+				moduleSpecificPropertiesMap.put(key, value);
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());

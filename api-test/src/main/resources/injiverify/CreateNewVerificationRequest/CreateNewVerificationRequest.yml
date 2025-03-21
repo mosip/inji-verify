@@ -37,19 +37,30 @@ CreateNewVerificationRequest:
     "id": "$PRESENTATIONDEFINITIONID$"
 }'
 
+<<<<<<< HEAD
   Injiverify_CreateNewVerificationRequest_Random_ClientId_Neg:
       endPoint: /v1/verify/vp-request
       description: Creating a new verification request with random value for client id
+=======
+  Injiverify_CreateNewVerificationRequest_Invalid_ClientId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with invalid client id
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_03
       role: noauth
       restMethod: post
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+<<<<<<< HEAD
       outputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestResult
+=======
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"ygygduDS",
       "id":"$PRESENTATIONDEFINITIONID$"
       }'
       output: '{
+<<<<<<< HEAD
     "responseType": "vp_token",
     "clientId": "ygygduDS",
     "responseUri": "/vp-submission/direct-post",
@@ -59,20 +70,46 @@ CreateNewVerificationRequest:
   Injiverify_CreateNewVerificationRequest_Random_PresentationDefinitionId_Neg:
       endPoint: /v1/verify/vp-request
       description: Creating a new verification request with random value for presentation definition id
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+}'
+
+  Injiverify_CreateNewVerificationRequest_Invalid_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with invalid presentation definition id
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_04
       role: noauth
       restMethod: post
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+<<<<<<< HEAD
       outputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestResult
+=======
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"client123",
       "id":"dsAygyasa"
       }'
       output: '{
+<<<<<<< HEAD
     "responseType": "vp_token",
     "clientId": "client123",
     "responseUri": "/vp-submission/direct-post",
     "id": "dsAygyasa"
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_CreateNewVerificationRequest_Empty_ClientId_Neg:
@@ -81,15 +118,29 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_05
       role: noauth
       restMethod: post
+<<<<<<< HEAD
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
       outputTemplate: injiverify/responseCode
+=======
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"",
       "id":"$PRESENTATIONDEFINITIONID$"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "400"
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_CreateNewVerificationRequest_without_ClientId_Neg:
@@ -98,15 +149,29 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_06
       role: noauth
       restMethod: post
+<<<<<<< HEAD
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
       outputTemplate: injiverify/responseCode
+=======
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"$REMOVE$",
       "id":"$PRESENTATIONDEFINITIONID$"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "400"
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_CLIENT_ID",
+       "message": "The provided ClientID is not valid."
+       }
+       ]
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_CreateNewVerificationRequest_Empty_PresentationDefinitionId_Neg:
@@ -115,15 +180,29 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_07
       role: noauth
       restMethod: post
+<<<<<<< HEAD
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
       outputTemplate: injiverify/responseCode
+=======
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"client123",
       "id":""
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "400"
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_CreateNewVerificationRequest_Without_PresentationDefinitionId_Neg:
@@ -132,15 +211,29 @@ CreateNewVerificationRequest:
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_08
       role: noauth
       restMethod: post
+<<<<<<< HEAD
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
       outputTemplate: injiverify/responseCode
+=======
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/error
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       input: '{
       "clientId":"client123",
       "id":"$REMOVE$"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "400"
+=======
+      "errors": [
+      {
+       "errorCode": "INVALID_PRESENTATION_DEFINITION_ID",
+       "message": "The provided presentationDefinitionId does not exist."
+       }
+       ]
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_CreateNewVerificationRequest_ForNeg_Valid_Sid:

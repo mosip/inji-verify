@@ -16,9 +16,15 @@ VpSubmission:
       "responseCode": "200"
 }'
 
+<<<<<<< HEAD
   Injiverify_VpSubmission_Random_State_Neg:
       endPoint: /v1/verify/vp-submission/direct-post
       description: Submitting the authorization response with random value for state
+=======
+  Injiverify_VpSubmission_Invalid_State_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid state
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       uniqueIdentifier: TC_InjiVerify_VpSubmission_02
       role: noauth
       restMethod: post
@@ -30,12 +36,21 @@ VpSubmission:
       "definition_id":"$PRESENTATIONDEFINITIONID$"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "404"
 }'
 
   Injiverify_VpSubmission_RandomValue_VpToken_Neg:
       endPoint: /v1/verify/vp-submission/direct-post
       description: Submitting the authorization response with random value for vp token
+=======
+      "responseCode": "400"
+}'
+
+  Injiverify_VpSubmission_Invalid_VpToken_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid vp token
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       uniqueIdentifier: TC_InjiVerify_VpSubmission_03
       role: noauth
       restMethod: post
@@ -48,7 +63,11 @@ VpSubmission:
       "vp_token": "bdhgyga"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "200"
+=======
+      "responseCode": "400"
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_VpSubmission_Empty_VpToken_Neg:
@@ -86,9 +105,15 @@ VpSubmission:
       "responseCode": "400"
 }'
 
+<<<<<<< HEAD
   Injiverify_VpSubmission_RandomValue_PresentationDefinitionId_Neg:
       endPoint: /v1/verify/vp-submission/direct-post
       description: Submitting the authorization response with random value for presentation definition id
+=======
+  Injiverify_VpSubmission_Invalid_PresentationDefinitionId_Neg:
+      endPoint: /v1/verify/vp-submission/direct-post
+      description: Submitting the authorization response with invalid presentation definition id
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
       uniqueIdentifier: TC_InjiVerify_VpSubmission_06
       role: noauth
       restMethod: post
@@ -100,7 +125,11 @@ VpSubmission:
       "definition_id":"hbdBYGdy"
       }'
       output: '{
+<<<<<<< HEAD
       "responseCode": "200"
+=======
+      "responseCode": "400"
+>>>>>>> 9921a12 (MOSIP-39523 - Created apitestrig for inji verify)
 }'
 
   Injiverify_VpSubmission_Empty_PresentationDefinitionId_Neg:
