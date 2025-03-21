@@ -64,8 +64,8 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
-  const handleOnError = () => {
-    dispatch(raiseAlert({ ...AlertMessages().unexpectedError, open: true }));
+  const handleOnError = (error:Error) => {
+    dispatch(raiseAlert({ error, open: true }));
     dispatch(resetVpRequest());
   };
 

@@ -112,7 +112,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           throw new Error("Failed to fetch VP result");
         const VpVerificationResult = await response.json();
         const vcResults:{ vc:unknown, vcStatus:string }[] = [];
-        VpVerificationResult.vcresults.forEach(
+        VpVerificationResult.vcResults.forEach(
                 (vcResult: { vc:any, verificationStatus:string }) => {
                   const vc = JSON.parse(vcResult.vc);
                   const verificationStatus = vcResult.verificationStatus;

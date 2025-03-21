@@ -317,9 +317,6 @@ export const MosipVerifiableCredentialRenderOrder = [
   "city",
 ];
 
-<<<<<<< HEAD:verify-ui/src/utils/config.ts
-export const BASE64_PADDING = "=="
-=======
 export const BASE64_PADDING = "==";
 
 export const insuranceCredentialPresentationDefinition = {
@@ -372,4 +369,3 @@ export const insuranceCredentialPresentationDefinition = {
     },
   ],
 };
->>>>>>> bd57f6a ([INJIVER-627] remove unused imports and comments):ui/src/utils/config.ts
