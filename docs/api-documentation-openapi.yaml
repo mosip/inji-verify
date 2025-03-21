@@ -1,0 +1,546 @@
+openapi: 3.0.0
+tags:
+  - name: Presentation Definition Management
+    description: APIs for Presentation Definition related operations
+  - name: VC verification API
+    description: APIs for Verifiable Credential Verification related operations
+  - name: VP Request Management
+    description: APIs for Verifiable Presentation Authorization Request related operations
+  - name: VP Submission
+    description: APIs for Verifiable Presentation submission related operations
+x-stoplight:
+  id: exiu5fepecoj7
+info:
+  title: OpenID4VP Verifier API - Inji Verify
+  version: 1.0.2
+  contact:
+    name: MOSIP
+    url: "https://mosip.io"
+    email: mosip.emailnotifier@gmail.com
+  license:
+    name: MPL-2.0
+    url: "https://www.mozilla.org/en-US/MPL/2.0/"
+  description: API for OpenID4VP verifier supporting direct_post and cross-device flow
+paths:
+  /vp-request:
+    post:
+      summary: Create a new verification request
+      description: "Using its response the UI can build /authorize endpoint and render it in qrcode form based on cross or same device flow. example - openid4vp://authorize?{RESPONSE}"
+      operationId: createVPRequest
+      tags:
+        - VP Request Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VPRequestCreate"
+            example:
+              clientId: client123
+              presentationDefinitionId: age_verification
+      responses:
+        "201":
+          description: VP Request created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VPRequestResponse"
+              example:
+                transactionId: txn_12345
+                requestId: req_12345
+                authorizationDetails: {}
+                expiresAt: 123456789876
+        "400":
+          description: VP Request not created due to bad request. Fields missing or type missmatch in body sent.
+        "404":
+          description: VP Request not created due to PresentationDefiniton not found for given ID.
+      x-stoplight:
+        id: xs9xoxyyqg5qj
+  "/vp-request/{requestId}/status":
+    get:
+      summary: Get VP Request status
+      description: This API returns the current status of the transaction and returns not found if there is no transaction with given request id.
+      operationId: getVPRequestStatus
+      tags:
+        - VP Request Management
+      parameters:
+        - name: requestId
+          description: Request Id for which you want to get the status for
+          in: path
+          required: true
+          schema:
+            type: string
+          example: req_12345
+      responses:
+        "200":
+          description: VP Request status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/status"
+        "404":
+          description: VP Request not found for given request id
+      x-stoplight:
+        id: fnqvm2pbdv6wy
+  "/vp-claims-result/{transactionId}":
+    get:
+      summary: Get VP Request result
+      description: Get the VP claims result submitted for the transaction
+      operationId: getVPResult
+      tags:
+        - VP Request Management
+      parameters:
+        - name: transactionId
+          in: path
+          description: Transaction Id for which you want to get the submitted claims for
+          required: true
+          schema:
+            type: string
+          example: txn_12345
+      responses:
+        "200":
+          description: VP Request result retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VPResult"
+              example:
+                transactionId: txn_12345
+                verified: true
+                claims:
+                  age: over_18
+      x-stoplight:
+        id: 0hjfalp8a486b
+  /vp-submission/direct-post:
+    post:
+      summary: Submit authorization response
+      description: API to submit the VP token
+      operationId: submitResponse
+      tags:
+        - VP Submission
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthorizationResponse"
+            example:
+              vp_token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2cCI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iXSwidmVyaWZpYWJsZUNyZWRlbnRpYWwiOlsiZXlKaGJHY2lPaUpGVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhkV1FpT2lKb2RIUndjem92TDNabGNtbG1lUzVrWlhZeExtMXZjMmx3TG01bGRDOXlaWE53YjI1elpYTWlMQ0pqYkdGcGJYTWlPbnNpWVdkbElqb3hPSDBzSW1semN5STZJbWgwZEhCek9pOHZkbVZ5YVdaNUxtUmxkakV1Ylc5emFYQXVibVYwTDJselozSmhiblJsY25NaUxDSnVZbVlpT2pFMk9ESTVOekF3TURBc0ltVjRjQ0k2TVRjd05qazNNREF3TUgwLnNpZ25hdHVyZSJdfSwibm9uY2UiOiJub25jZV8xMjM0NSIsImF1ZCI6ImNsaWVudDEyMyJ9.signature
+              state: state_abcde
+              presentation_submission:
+                id: submission_12345
+                definition_id: age_verification_1
+                descriptor_map:
+                  - id: age_credential
+                    format: jwt_vc
+                    path: "$.verifiableCredential[0]"
+      responses:
+        "200":
+          description: Response processed successfully / Error occured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseAcknowledgement"
+              examples:
+                success:
+                  value:
+                    redirectUri: "https://verify.dev1.mosip.net/"
+                error:
+                  value:
+                    error: invalid_request
+                    errorDescription: unsupported%20client_id_scheme
+      x-stoplight:
+        id: vq0lhhd3rj7hp
+  "/vp-result/{transactionId}":
+    parameters:
+      - schema:
+          type: string
+        name: transactionId
+        description: Transaction Id for which you want to get the Vp token for
+        in: path
+        required: true
+    get:
+      summary: Get the VP token for a request
+      description: API to get the VP token for given transaction id
+      tags:
+        - VP Request Management
+      responses:
+        "200":
+          description: Response processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VpTokenResult"
+        "404":
+          description: No result found for given transaction id or Given transaction ID is invalid.
+      operationId: get-vp-result-requestId-presentations
+      x-stoplight:
+        id: 86ppr30yg1nm3
+  "/vp-definition/{id}":
+    parameters:
+      - schema:
+          type: string
+        name: id
+        description: Presentation Definition Id for which you want to get the Presentation Definition for
+        in: path
+        required: true
+    get:
+      summary: Get presentation definition
+      description: Allows  user to fetch the presentation definition created/submitted when a new auth request has been created.
+      tags:
+        - Presentation Definition Management
+      responses:
+        "200":
+          description: Presentation definition is found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PresentationDefinition"
+        "404":
+          description: Presentation definition is not found
+      operationId: get-presentation-id
+      x-stoplight:
+        id: supt4xjki8o27
+  /vc-verification:
+    post:
+      summary: Get the submitted VC verified
+      description: API to perform the server side VC verification to check the integrity of the VC submitted
+      tags:
+        - VC verification API
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VCVerificationRequest"
+        description: Vc to be verified
+      responses:
+        "200":
+          description: VC verification status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VCVerificationResult"
+      operationId: post-verify-vc
+      x-stoplight:
+        id: 1r4yxmahkmbm9
+components:
+  schemas:
+    VPRequestCreate:
+      type: object
+      required:
+        - clientId
+      allOf:
+        - oneOf:
+            - required:
+                - presentationDefinitionId
+            - required:
+                - presentationDefinition
+      properties:
+        clientId:
+          type: string
+          description: ID of the client asking to create a new Verifiable Presentation request
+        presentationDefinitionId:
+          type: string
+          description: Either presentationDefinitionId or presentationDefinition should be passed. A predefined presentation definition Id so that the user does not need to pass the presentation definition
+        presentationDefinition:
+          type: string
+          description: Either presentationDefinitionId or presentationDefinition should be passed. Verifiable Presentation definition for getting the credential
+        transactionId:
+          description: A unique id of the verifiable presentation request transaction. This is optional and will be generated on server if not passed.
+          type: string
+      x-stoplight:
+        id: ayf2p7ofmj2g1
+      title: ""
+    VPRequestResponse:
+      type: object
+      properties:
+        transactionId:
+          description: A unique id of the verifiable presentation request transaction
+          type: string
+        requestId:
+          type: string
+          description: A unique id of the verifiable presentation request
+        authorizationDetails:
+          type: object
+          description: The authorization request object with entire presentation_definition
+          $ref: "#/components/schemas/AuthorizationRequestResponse"
+        expiresAt:
+          type: integer
+          description: Expiry of a transaction. Defaults to 5 minutes from creation of auth request.
+      x-stoplight:
+        id: wkbn3jolevhw7
+    status:
+      type: object
+      description: Status of the verifiable presentation request transaction
+      properties:
+        status:
+          type: string
+          description: current status
+          enum:
+            - ACTIVE
+            - VP_SUBMITTED
+            - EXPIRED
+    verificationStatus:
+      type: string
+      description: Status of the verifiable VC verification
+      enum:
+        - SUCCESS
+        - EXPIRED
+        - INVALID
+    VPResult:
+      type: object
+      properties:
+        transactionId:
+          description: A unique id of the verifiable presentation request transaction
+          type: string
+        verificationStatus:
+          type: string
+          $ref: "#/components/schemas/verificationStatus"
+        claims:
+          type: object
+          additionalProperties: true
+          description: Claims that are reuested for the verifiable presentation request transaction
+      x-stoplight:
+        id: fle75j137hzgq
+    AuthorizationResponse:
+      type: object
+      required:
+        - vp_token
+        - presentation_submission
+        - state
+      properties:
+        vp_token:
+          type: string
+          description: vp_token - REQUIRED. JSON String or JSON object that MUST contain a single Verifiable Presentation or an array of JSON Strings and JSON objects each of them containing a Verifiable Presentations.
+        state:
+          type: string
+          description: Its the requestId created for the transaction
+        presentationSubmission:
+          type: object
+          required:
+            - id
+            - definitionId
+            - descriptorMap
+          properties:
+            id:
+              type: string
+              description: Unique ID for mapping vefifiable presentation
+            definitionId:
+              description: Unique ID for mapping vefifiable presentation definition
+              type: string
+            descriptorMap:
+              type: array
+              description: Contains details on VC type and path details for fetching the required feild.
+              items:
+                $ref: "#/components/schemas/DescriptorMap"
+      x-stoplight:
+        id: t1vy6b6cd273t
+    DescriptorMap:
+      type: object
+      required:
+        - id
+        - format
+        - path
+      properties:
+        id:
+          type: string
+          description: ID of the descriptor map
+        format:
+          type: string
+          description: Format of the verifiable presentation
+        path:
+          type: string
+          description: Root path of the verifiable presentation
+        path_nested:
+          $ref: "#/components/schemas/PathNested"
+      x-stoplight:
+        id: xr9gftlbvszfn
+    PathNested:
+      type: object
+      description: Contains nested path for each verifiable presentation
+      required:
+        - format
+        - path
+      properties:
+        format:
+          type: string
+          description: Format of the verifiable presentation
+        path:
+          type: string
+          description: Path of the field in the verifiable presentation
+      x-stoplight:
+        id: 6dwp727e51ft5
+    ResponseAcknowledgement:
+      type: object
+      properties:
+        redirectUri:
+          type: string
+          description: URL for the presenter to redirect back after the verifiable presentation submission
+          format: uri
+        error:
+          type: string
+          description: Error code for submission request
+        errorDescription:
+          type: string
+          description: Error description for submission request
+      x-stoplight:
+        id: kuaiv78t0mx54
+    AuthorizationRequestResponse:
+      title: AuthorizationRequestResponse
+      x-stoplight:
+        id: qiiayk4b5xbsu
+      type: object
+      properties:
+        responseUri:
+          type: string
+          description: URL for the wallet to submit the verifiable presentation
+          format: uri
+        responseType:
+          type: string
+          description: Response type of the verifiable presentation
+        clientId:
+          type: string
+          description: Client id of the verifier
+        nonce:
+          type: string
+          description: Nonce for encryption. It is used to securely bind the Verifiable Presentation(s) provided by the Wallet to the particular transaction
+        presentationDefinitionUri:
+          type: string
+          format: uri
+          description: A string containing a Presentation Definition JSON object
+        iat:
+          type: integer
+          format: unixtime
+          description: Issued time
+    PresentationResponse:
+      title: PresentationResponse
+      x-stoplight:
+        id: 8ose07cofc83j
+      type: object
+      properties:
+        transactionId:
+          type: string
+        vpToken:
+          type: string
+          x-stoplight:
+            id: uetof6mlsvvhw
+        verificationStatus:
+          type: string
+          $ref: "#/components/schemas/verificationStatus"
+    PresentationDefinition:
+      title: PresentationDefinition
+      required:
+        - id
+        - input_descriptors
+      x-stoplight:
+        id: 0fbx5yroozjr2
+      type: object
+      properties:
+        id:
+          type: string
+        input_descriptors:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/InputDescriptors"
+        submission_requirements:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/SubmissionRequirements"
+    SubmissionRequirements:
+      title: SubmissionRequirements
+      required:
+        - id
+      x-stoplight:
+        id: fnmdzlczuf9ja
+      type: object
+      properties:
+        name:
+          type: string
+        rule:
+          type: string
+        count:
+          type: integer
+        from:
+          type: string
+    InputDescriptors:
+      title: InputDescriptors
+      x-stoplight:
+        id: jvynvx3picklp
+      type: object
+      properties:
+        id:
+          type: string
+        group:
+          type: array
+          items:
+            type: string
+        format:
+          type: object
+        constrains:
+          type: object
+          properties:
+            fields:
+              type: array
+              items:
+                type: object
+                properties:
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  filter:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      pattern:
+                        type: string
+    VCVerificationResult:
+      title: VCVerificationResult
+      x-stoplight:
+        id: dy5qt5sekvm09
+      type: object
+      properties:
+        verificationStatus:
+          type: string
+          $ref: "#/components/schemas/verificationStatus"
+    VCVerificationRequest:
+      title: VCVerificationRequest
+      x-stoplight:
+        id: mbfm9slzvrs3d
+      type: object
+    VpTokenResult:
+      title: VpTokenResult
+      x-stoplight:
+        id: a129jjchw95sj
+      type: object
+      properties:
+        transactionId:
+          type: string
+        submissionStatus:
+          type: string
+          enum:
+            - SUCCESS
+            - FAILED
+        vcResults:
+          type: array
+          items:
+            $ref: "#/components/schemas/VcResult"
+    VcResult:
+      title: VcResult
+      x-stoplight:
+        id: 8te0cgwgjfu4g
+      type: object
+      properties:
+        vc:
+          type: string
+        verificationStatus:
+          type: string
+          $ref: "#/components/schemas/verificationStatus"
+  securitySchemes:
+    ClientIdSecret:
+      type: http
+      scheme: basic

@@ -4,7 +4,9 @@ import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
+import io.inji.verify.dto.core.ErrorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
+import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
@@ -15,17 +17,20 @@ import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
-import io.inji.verify.utils.ThreadSafeDelayedMethodCall;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 @Slf4j
@@ -37,6 +42,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     @Autowired
     VPSubmissionRepository vpSubmissionRepository;
+    @Value("${inji.vp-request.long-polling-timeout}")
+    Long defaultTimeout;
+
+    HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
@@ -48,16 +57,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
                 .map(presentationDefinitionId -> presentationDefinitionRepository.findById(presentationDefinitionId)
-                        .map(presentationDefinition -> {
-                            VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
-                            return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
-                        })
-                        .orElseThrow(PresentationDefinitionNotFoundException::new))
+                .map(presentationDefinition -> {
+                    VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements());
+                    return new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), presentationDefinition.getURL(), vpDefinitionResponseDto, nonce);
+                })
+                .orElseThrow(PresentationDefinitionNotFoundException::new))
                 .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce));
 
-
-        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new
-                AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
+        AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         log.info("Authorization request created");
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt());
@@ -95,18 +102,43 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
     }
 
+    private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
+        vpRequestStatusListeners.put(requestId, result);
+    }
+
     @Override
-    public void getCurrentRequestStatusPeriodic(String requestId, DeferredResult<VPRequestStatusDto> result, ThreadSafeDelayedMethodCall executor) {
-        if (executor != null) executor.shutdown();
-        VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
-        if (currentRequestStatus.getStatus() == null) {
-            result.setErrorResult("NOT_FOUND");
-        }
-        if (currentRequestStatus.getStatus() != VPRequestStatus.ACTIVE) {
-            result.setResult(currentRequestStatus);
-        } else {
-            ThreadSafeDelayedMethodCall threadSafeDelayedMethodCallExecutor = new ThreadSafeDelayedMethodCall();
-            threadSafeDelayedMethodCallExecutor.scheduleMethod(() -> getCurrentRequestStatusPeriodic(requestId, result, threadSafeDelayedMethodCallExecutor), 5, TimeUnit.SECONDS);
-        }
+    public void invokeVpRequestStatusListener(String requestId) {
+        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).map(vpRequestStatusDtoDeferredResult -> {
+            vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
+            vpRequestStatusListeners.remove(requestId);
+            return null;
+        });
+    }
+
+    @Override
+    public DeferredResult<VPRequestStatusDto> getStatus(String requestId) {
+       return authorizationRequestCreateResponseRepository
+                .findById(requestId)
+                .map(authorizationRequestCreateResponse -> {
+                    long expiresAt = authorizationRequestCreateResponse.getExpiresAt();
+                    Long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
+                    Long timeOut = timeToExpiry > defaultTimeout ? defaultTimeout : timeToExpiry;
+                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
+                    VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
+
+                    if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
+                        result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        return result;
+                    }
+
+                    result.onTimeout(() -> result.setResult(getCurrentRequestStatus(requestId)));
+                    registerVpRequestStatusListener(requestId, result);
+                    return result;
+                })
+                .orElseGet(() -> {
+                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>();
+                    result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.NO_AUTH_REQUEST)));
+                    return result;
+                });
     }
 }

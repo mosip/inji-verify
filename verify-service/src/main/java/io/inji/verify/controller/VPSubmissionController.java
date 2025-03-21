@@ -7,12 +7,19 @@ import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = Constants.RESPONSE_SUBMISSION_URI_ROOT)
@@ -26,13 +33,17 @@ public class VPSubmissionController {
     VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @Autowired
-    Gson Gson;
+    Gson gson;
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> submitVP(@RequestParam(value = "vp_token") String vpToken, @RequestParam(value = "presentation_submission") String presentationSubmission, @RequestParam(value = "state") String state) {
-        PresentationSubmissionDto presentationSubmissionDto = Gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+    public ResponseEntity<?> submitVP(@NotNull @NotBlank @RequestParam(value = "vp_token") String vpToken, @NotNull @NotBlank @RequestParam(value = "presentation_submission") String presentationSubmission, @NotNull @NotBlank @RequestParam(value = "state") String state) {
+        PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(presentationSubmissionDto);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations.iterator().next().getMessage());
+        }
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state);
-        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
         VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
         if (currentVPRequestStatusDto == null) {

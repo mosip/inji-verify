@@ -5,7 +5,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
-import io.inji.verify.utils.ThreadSafeDelayedMethodCall;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
@@ -19,5 +19,7 @@ public interface VerifiablePresentationRequestService {
 
     AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId);
 
-    void getCurrentRequestStatusPeriodic(String requestId, DeferredResult<VPRequestStatusDto> result, ThreadSafeDelayedMethodCall executor);
+    void invokeVpRequestStatusListener(@NotNull String state);
+
+    DeferredResult<VPRequestStatusDto> getStatus(@NotNull String requestId);
 }

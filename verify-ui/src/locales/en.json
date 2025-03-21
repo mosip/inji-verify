@@ -1,0 +1,166 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "verifyCredentials": "Verify Credentials",
+    "help": "Help",
+    "contactUs": "Contact us",
+    "documentation": "Documentation",
+    "faqs": "FAQs"
+  },
+  "Header": {
+    "heading": "Verify credentials ",
+    "headingHighlight": "with ease!",
+    "description": "Effortlessly verify credentials with Inji Verify! Just scan the QR code or upload it for instant validation, following the steps below."
+  },
+  "Tab": {
+    "upload": "Upload QR Code",
+    "scan": "Scan QR Code",
+    "VP_Verification": "VP Verification",
+    "ble": "BLE"
+  },
+  "Upload": {
+    "format": "Allowed file formats: PNG/JPEG/JPG/PDF \n File Size - 10KB to 5MB"
+  },
+  "Verify": {
+    "selectorTitle": "Verifiable Credential Selection Panel",
+    "selectorSubTitle": "Please select the Verifiable Credentials that you wish to receive from the user’s wallet",
+    "searchPlaceholder": "Search for the Verifiable Credential type",
+    "listHeader": "Select the required Verifiable Credentials",
+    "sortAtoZ": "Sort (A-Z)",
+    "sortZtoA": "Sort (Z-A)",
+    "rqstButton": "Request Verifiable Credentials",
+    "goBack": "Go Back",
+    "generateQrCodeBtn": "Generate QR Code",
+    "qrCodeInfo": "Please scan the below QR code with your digital wallet to share the requested credential",
+    "qrCodeExpired": "QR Code Expired",
+    "noVcsFound": "No Verifiable Credentials found.",
+    "sortBy": "Sort by",
+    "expand": "Open In Full",
+    "collapse": "Close Fullscreen",
+    "download": "Download",
+    "missingCredentials": "Request Missing credentials",
+    "restartProcess": "Restart Process",
+    "notShared": "Not Shared",
+    "SUCCESS": "Valid",
+    "EXPIRED": "Valid But Expired",
+    "INVALID": "Invalid",
+    "credentialsRequested": "Credentials were requested"
+  },
+  "VerificationStepsContent": {
+    "SCAN": {
+      "QrCodePrompt": {
+        "label": "Scan QR Code",
+        "description": "Tap 'Scan' to start scanning the document or card with a QR code"
+      },
+      "ActivateCamera": {
+        "label": "Activate Camera and Position QR Code",
+        "description": "Activate your device camera and hold the QR code within the frame to initiate verification."
+      },
+      "Verifying": {
+        "label": "Verification in Progress",
+        "description": "The QR code verification is in progress."
+      },
+      "DisplayResult": {
+        "label": "View result",
+        "description": "View the verification result."
+      }
+    },
+    "UPLOAD": {
+      "QrCodePrompt": {
+        "label": "Upload QR Code",
+        "description": "Upload a file that contains a QR code"
+      },
+      "Verifying": {
+        "label": "Verify document",
+        "description": "Verification for the document or card is in progress."
+      },
+      "DisplayResult": {
+        "label": "View result",
+        "description": "View the verification result."
+      }
+    },
+    "VERIFY": {
+      "InitiateVpRequest": {
+        "label": "Initiate VP Request Process",
+        "description": "Click <span> Request Verifiable Credentials <span> to begin the verification process."
+      },
+      "SelectCredential": {
+        "label": "Select Credentials & Generate QR Code",
+        "description": "Choose the required verifiable credentials and click <span>Generate QR Code<span>."
+      },
+      "RequestMissingCredential": {
+        "label": "Request Missing Credentials & Generate QR Code",
+        "description": "Click on <span>Request Missing Credentials<span> to proceed with verifying the missing VC, or click on <span>Restart Process<span> to start the entire process again."
+      },
+      "ScanQrCode": {
+        "label": "Scan QR Code (Use a Different Device)",
+        "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
+      },
+      "DisplayResult": {
+        "label": "View Verification Results",
+        "description": "Check the verification results for the verifiable credentials shared from the wallet."
+      }
+    }
+  },
+  "ResultSummary": {
+    "SUCCESS": "Congratulations, the given credential is valid!",
+    "INVALID": "Unfortunately, the given credential is invalid!",
+    "EXPIRED": "The given credential is valid but expired!",
+    "TIMEOUT": "The scan session has expired due to inactivity. Please initiate a new scan."
+  },
+  "AlertMessages": {
+    "qrUploadSuccess": "QR code uploaded successfully!",
+    "qrScanSuccess":"QR code scanned successfully!",
+    "sessionExpired": "QR code expired. Please request a new one.",
+    "qrNotDetected": "No MultiFormat Readers were able to detect the QR code.",
+    "qrNotSupported": "QR code format is not supported.",
+    "unsupportedFileSize": "File size not supported. The file size should be between 10 KB and 5 MB.",
+    "verificationMethodComingSoon": "Coming soon",
+    "unsupportedFileType": "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf",
+    "pageNotFound": "Page Not Found!!",
+    "failToGenerateQrCode": "Oops! We’re having trouble generating the verification request. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+    "scanSessionExpired": "The scan session has expired due to inactivity. Please initiate a new scan.",
+    "partialCredentialShared": "Verification completed with partial credentials. Please note that some requested credentials are missing.",
+    "validationFailure": "We couldn’t validate the verification response. Please ensure the response is correct and try again.",
+    "incorrectCredential":"The credentials shared do not match the requested ones. Please provide the correct credentials and try again."
+  },
+  "OvpErrors": {
+    "invalidScope": "Invalid Scope",
+    "invalidRequest": "Please check your input and try again",
+    "invalidClient": "Invalid Client",
+    "vpFormatsNotSupported": "VP Formats Not Supported",
+    "invalidPresentationDefinitionUri": "Invalid Presentation Definition URI",
+    "invalidPresentationDefinitionReference": "Invalid Presentation Definition Reference",
+    "resourceNotFound": "Something went wrong with your request. Please check and try again.",
+    "requestTimeOut": "The request took too long. Please try again later.",
+    "uriTooLong": "The URL is too long. Please use a shorter link.",
+    "internalServerError": "We're having trouble processing your request. Please try again later.",
+    "serverUnavailable": "The service is currently unavailable. Please try again later",
+    "invalidVpToken": "The credentials don't meet the requirements. Please check and try again.",
+    "unsupportedFormat": "VP Formats Not Supported",
+    "invalidResources": "The requested resource is invalid.",
+    "invalidParams": "Invalid Parameters!!"
+  },
+  "CopyRight": {
+    "content": "2024 © MOSIP - All rights reserved."
+  },
+  "CameraAccessDenied": {
+    "header": "Camera Access Denied",
+    "description": "We need your camera to scan the code. Go to your browser settings and allow camera access for this website.",
+    "okay": "Okay"
+  },
+  "Offline": {
+    "header": "No Internet Connection!",
+    "description": "Oops! We cant seem to connect. Check your internet connection and try again.",
+    "retry": "Please try again"
+  },
+  "Common": {
+    "Button": {
+      "upload": "Upload",
+      "scan": "Scan",
+      "back": "Back",
+      "verifyAnotherQrCode": "Verify Another QR code"
+    }
+  }
+}

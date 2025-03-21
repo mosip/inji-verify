@@ -38,7 +38,7 @@ Once the repo is cloned, following folders can be found under the inji-verify re
   - src (source code)
   - Dockerfile
   - docker-compose.yml
-  - [Readme.md](./ui/README.md)
+  - [Readme.md](./verify-ui/README.md)
 - **ui-test:** contains the ui automation tests
 - **verify-service:** contains source code for the verify backend service
 - **verify-service-bom:** contains BOM for the verify backend service dependencies

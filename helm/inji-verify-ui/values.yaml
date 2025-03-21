@@ -249,18 +249,9 @@ extraEnvVarsCM:
   - config-server-share
   - artifactory-share
 
-
 ## Secret with extra environment variables
 ##
 extraEnvVarsSecret: []
-
-## Extra volumes to add to the deployment
-##
-extraVolumes: []
-
-## Extra volume mounts to add to the container
-##
-extraVolumeMounts: []
 
 ## Add init containers to the  pods.
 ## Example:
@@ -431,3 +422,21 @@ istio:
   hosts:
     - injiverify.sandbox.xyz.net
   prefix: /
+
+
+configMap:
+  enabled: true
+  name: inji-verify-ui-config
+
+extraVolumeMounts:
+  - name: inji-verify-ui-config
+    mountPath: /usr/share/nginx/html/assets/
+    readOnly: true
+
+extraVolumes:
+  - name: inji-verify-ui-config
+    configMap:
+      name: inji-verify-ui-config
+
+config:
+  key1: "value1"

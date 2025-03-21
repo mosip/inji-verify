@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  inji-verify:
+    image: mosipid/inji-verify:0.10.0
+    ports:
+       - "3000:8000"
+    environment:
+      - INTERNET_CONNECTIVITY_CHECK_ENDPOINT=${INTERNET_CONNECTIVITY_CHECK_ENDPOINT-https://dns.google/}
+      - INTERNET_CONNECTIVITY_CHECK_TIMEOUT=${INTERNET_CONNECTIVITY_CHECK_TIMEOUT-10000}
+      - OVP_QR_HEADER={OVP_QR_HEADER-INJI_OVP://payload=}
