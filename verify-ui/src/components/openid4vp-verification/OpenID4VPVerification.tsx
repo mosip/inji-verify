@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import styles from "./OpenID4VPVerification.module.css";
-import { OpenID4VPVerificationProps, QrData, vpRequestBody} from "./OpenID4VPVerification.types";
+import {
+  OpenID4VPVerificationProps,
+  QrData,
+  vpRequestBody,
+} from "./OpenID4VPVerification.types";
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   triggerElement,
@@ -42,7 +46,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         : `&presentation_definition=${JSON.stringify(
             data.authorizationDetails.presentationDefinition
           )}`) +
-      `&client_metadata={"client_name":"${window.location.origin}"}`
+      `&client_metadata={"client_name":"${window.location.origin}", "vp_formats": {}}`
     );
   };
 
@@ -111,17 +115,17 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         if (response.status !== 200)
           throw new Error("Failed to fetch VP result");
         const VpVerificationResult = await response.json();
-        const vcResults:{ vc:unknown, vcStatus:string }[] = [];
+        const vcResults: { vc: unknown; vcStatus: string }[] = [];
         VpVerificationResult.vcResults.forEach(
-                (vcResult: { vc:any, verificationStatus:string }) => {
-                  const vc = JSON.parse(vcResult.vc);
-                  const verificationStatus = vcResult.verificationStatus;
-                  vcResults.push({
-                    vc,
-                    vcStatus:verificationStatus,
-                  });
-                }
-              );
+          (vcResult: { vc: any; verificationStatus: string }) => {
+            const vc = JSON.parse(vcResult.vc);
+            const verificationStatus = vcResult.verificationStatus;
+            vcResults.push({
+              vc,
+              vcStatus: verificationStatus,
+            });
+          }
+        );
         onVpProcessed(vcResults);
         setTxnId(null);
         setReqId(null);
@@ -172,7 +176,15 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (!triggerElement) {
       createVpRequest();
     }
-  }, [onError, onQrCodeExpired, onVpProcessed, onVpReceived, presentationDefinition, presentationDefinitionId, triggerElement]);
+  }, [
+    onError,
+    onQrCodeExpired,
+    onVpProcessed,
+    onVpReceived,
+    presentationDefinition,
+    presentationDefinitionId,
+    triggerElement,
+  ]);
 
   useEffect(() => {
     if (reqId) {
@@ -205,7 +217,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
             bgColor={qrCodeStyles?.bgColor || "#ffffff"}
             fgColor={qrCodeStyles?.fgColor || "#000000"}
             marginSize={qrCodeStyles?.margin || 10}
-            style={{borderRadius: qrCodeStyles?.borderRadius || 10}}
+            style={{ borderRadius: qrCodeStyles?.borderRadius || 10 }}
           />
         </div>
       )}
