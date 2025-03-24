@@ -1,4 +1,4 @@
-import { credentialSubject, VCWrapper, QrData } from "../types/data-types";
+import { credentialSubject, VCWrapper, QrData, claim } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 export const getPresentationDefinition = (data: QrData) => {
@@ -85,12 +85,12 @@ export const getDetailsOrder = (vc: any) => {
 };
 
 export const calculateUnverifiedClaims = (
-  selectedClaims: string[],
+  selectedClaims: claim[],
   verificationSubmissionResult: { vc: VCWrapper; vcStatus: string }[]
 ) => {
   return selectedClaims.filter((claim) =>
     verificationSubmissionResult.every(
-      (vc) => vc.vc.credentialConfigurationId !== claim
+      (vc) => vc.vc.credentialConfigurationId !== claim.type
     )
   );
 };

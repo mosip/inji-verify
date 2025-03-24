@@ -155,8 +155,8 @@ export type VerifyState = {
   activeScreen: number;
   verificationSubmissionResult: VpSubmissionResultInt[];
   SelectionPanel: boolean;
-  selectedClaims: string[];
-  unVerifiedClaims: string[];
+  selectedClaims: claim[];
+  unVerifiedClaims: claim[];
   sharingType: VCShareType;
   isPartiallyShared: boolean;
 };

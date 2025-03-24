@@ -68,8 +68,8 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file png
-    And verify alert message
+    And Upload another QR code file png
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -117,8 +117,8 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file PDF
-    And verify alert message
+    And Upload another QR code file PDF
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -165,8 +165,8 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file JPG
-    And verify alert message
+    And Upload another QR code file JPG
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
@@ -214,8 +214,8 @@ Feature: Inji Verify upload qr code testing
     And verify congratulations message on successful verification
     And Verify verify another qr code button on successful verification
     And Verify click on another qr code button
-    And Upload QR code file JPEG
-    And verify alert message
+    And Upload another QR code file JPEG
+    And Verify message for valid QR code
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |

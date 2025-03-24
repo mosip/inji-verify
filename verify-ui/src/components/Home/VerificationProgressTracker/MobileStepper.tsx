@@ -39,10 +39,10 @@ function MobileStepper() {
   const description: string = VerificationStepsContent[activeScreen - 1].description as string;
 
   useEffect(() => {
-    fetchVerificationSteps(method as VerificationMethod);
+    fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
 
     const handleLanguageChange = () => {
-      fetchVerificationSteps(method);
+      fetchVerificationSteps(method, isPartiallyShared);
     };
 
     i18n.on("languageChanged", handleLanguageChange);

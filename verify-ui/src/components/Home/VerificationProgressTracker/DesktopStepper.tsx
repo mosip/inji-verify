@@ -24,7 +24,7 @@ const DesktopStepper: React.FC = () => {
     activeScreen = mainActiveScreen;
   }
 
-  const steps = fetchVerificationSteps(method);
+  const steps = fetchVerificationSteps(method, isPartiallyShared);
   const isLastStep = (index: number) => steps.length - 1 === index;
   const isStepCompleted = (index: number) => activeScreen > index;
   const language = useAppSelector((state: RootState) => state.common.language);

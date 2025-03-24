@@ -70,6 +70,11 @@ function SelectionPanelContent() {
       dispatch(setSharingType({sharingType : VCShareType.MULTIPLE}))
     }
     dispatch(getVpRequest({ selectedClaims }));
+    const triggerElement = document.getElementById("OpenID4VPVerification_trigger");    
+    if (triggerElement) {
+      const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+      triggerElement.dispatchEvent(event);
+    }
   };
 
   useEffect(() => {

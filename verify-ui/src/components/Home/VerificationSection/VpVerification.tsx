@@ -65,17 +65,13 @@ const DisplayActiveStep = () => {
   };
 
   const handleOnError = (error:Error) => {
-    dispatch(raiseAlert({ error, open: true }));
+    dispatch(raiseAlert({ message:error.message, severity:"error", open:true }));
     dispatch(resetVpRequest());
   };
 
   const selectedClaims = insuranceCredentialPresentationDefinition.input_descriptors.flatMap((input) =>
-    input.constraints.fields.map((field) => field.filter.pattern)
+    input.constraints.fields.map((field:any) => field.filter.pattern)
   );
-
-  const handleSelectedClaims = () => {
-    dispatch(setSelectedClaims({selectedClaims}));
-  };
 
   const renderRequestCredentialsButton = () => (
       <Button
@@ -126,7 +122,7 @@ const DisplayActiveStep = () => {
                 className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[300px] lg:w-[350px] aspect-square content-center justify-center`}
               >
                 <OpenID4VPVerification
-                  triggerElement={ <QrIcon className="w-[78px] lg:w-[100px]" onClick={handleSelectedClaims} /> }
+                  triggerElement={ <QrIcon id="OpenID4VPVerification_trigger" className="w-[78px] lg:w-[100px]" aria-disabled={insuranceCredentialPresentationDefinition.input_descriptors.length===0} /> }
                   verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
                   presentationDefinition={insuranceCredentialPresentationDefinition}
                   onVpProcessed={handleOnVpProcessed}

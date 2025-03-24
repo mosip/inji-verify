@@ -1,6 +1,6 @@
 import React from "react";
 import ResultSummary from "./ResultSummary";
-import { VpSubmissionResultInt } from "../../../../types/data-types";
+import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
 import VpVerifyResultSummary from "./VpVerifyResultSummary";
 import DisplayVcCardView from "./DisplayVcCardView";
 import { Button } from "../commons/Button";
@@ -10,7 +10,7 @@ import { useVerifyFlowSelector } from "../../../../redux/features/verification/v
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
-  unverifiedClaims: string[];
+  unverifiedClaims: claim[];
   txnId: string;
   requestCredentials: () => void;
   reGenerateQr: () => void;
@@ -28,7 +28,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   isSingleVc,
 }) => {
   const { vcStatus } = verifiedVcs[0];
-  const selectedClaims: string[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
+  const selectedClaims: claim[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
   const renderRequestCredentialsButton = (propClasses = "") => (
@@ -64,7 +64,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
     selectedClaims.some(
       (selectedVc) =>
-        verifiedVc.vc.credentialConfigurationId === selectedVc
+        verifiedVc.vc.credentialConfigurationId === selectedVc.type
     )
   );
 
@@ -88,8 +88,8 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
               view={isSingleVc}
             />
           ))}
-          {unverifiedClaims.map((claim) => (
-            <DisplayUnVerifiedVc claim={claim} />
+          {unverifiedClaims.map((claim,index) => (
+            <DisplayUnVerifiedVc key={index} claim={claim} />
           ))}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { VerificationSteps } from "../../../utils/config";
+import { insuranceCredentialPresentationDefinition, verifiableClaims, VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
 import { calculateUnverifiedClaims } from "../../../utils/commonUtils";
 
@@ -13,7 +13,7 @@ const PreloadedState: VerifyState = {
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
   SelectionPanel: false,
   verificationSubmissionResult: [],
-  selectedClaims: [],
+  selectedClaims: verifiableClaims?.filter((claim) => claim.essential),
   unVerifiedClaims: [],
   sharingType: VCShareType.SINGLE,
   isPartiallyShared: false,
@@ -28,17 +28,26 @@ const vpVerificationState = createSlice({
     },
     setSelectedClaims: (state, actions) => {
       state.selectedClaims = actions.payload.selectedClaims;
-      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
+      const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
+      insuranceCredentialPresentationDefinition.input_descriptors = [...inputDescriptors];
       state.verificationSubmissionResult = [];
     },
     getVpRequest: (state, actions) => {
-      state.isLoading = true;
       state.SelectionPanel = false;
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
+      const triggerElement = document.getElementById("OpenID4VPVerification_trigger");
+      if (triggerElement) {
+        const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+        triggerElement.dispatchEvent(event);
+      }
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
     },
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
+      state.selectedClaims = verifiableClaims.filter(
+        (claim) => claim.essential
+      );
       state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
@@ -61,7 +70,6 @@ const vpVerificationState = createSlice({
       state.verificationSubmissionResult.push(...action.payload.verificationResult);
       state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
       state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
-      console.log(state.isPartiallyShared);
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
