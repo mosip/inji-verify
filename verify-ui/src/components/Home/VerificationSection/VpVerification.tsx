@@ -14,8 +14,11 @@ import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../utils/config";
 import OpenID4VPVerification from "../../openid4vp-verification/OpenID4VPVerification";
+import { Button } from "./commons/Button";
+import { useTranslation } from "react-i18next";
 
 const DisplayActiveStep = () => {
+  const { t } = useTranslation("Verify");	
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
   const txnId = useVerifyFlowSelector((state) => state.txnId);
   const sharingType = useVerifyFlowSelector((state) => state.sharingType);
@@ -113,6 +116,14 @@ const DisplayActiveStep = () => {
                   qrCodeStyles={{ size: qrSize }}
                 />
               </div>
+              <Button	
+                id="request-credentials-button"	
+                title={t("rqstButton")}	
+                className={`w-[300px] mx-auto lg:ml-[76px] mt-10 lg:hidden`}	
+                fill	
+                onClick={handleRequestCredentials}	
+                disabled={activeScreen === 3 }	
+              />
             </div>
           </div>
         </div>
