@@ -42,7 +42,7 @@ export interface VPRequestBody {
   nonce: string;
   transactionId?: string;
   presentationDefinitionId?: string;
-  presentationDefinition?: Record<string, unknown>;
+  presentationDefinition?: PresentationDefinition;
 }
 
 type ExclusivePresentationDefinition =
@@ -56,7 +56,7 @@ type ExclusivePresentationDefinition =
    * If provided, it will be used instead of fetching from the backend.
    */
   | {
-      presentationDefinition?: Record<string, unknown>;
+      presentationDefinition?: PresentationDefinition;
       presentationDefinitionId?: never;
     };
 
@@ -74,6 +74,27 @@ type ExclusiveCallbacks =
       onVPProcessed: (VPResult: VerificationResults) => void;
       onVPReceived?: never;
     };
+
+interface InputDescriptor {
+  id: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  constraints?: {};
+}
+
+interface PresentationDefinition {
+  id?: string;
+  purpose: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  input_descriptors: InputDescriptor[];
+}
 
 export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   ExclusiveCallbacks & {

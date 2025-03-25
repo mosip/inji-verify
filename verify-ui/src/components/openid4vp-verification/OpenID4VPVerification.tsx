@@ -54,36 +54,38 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   const createVpRequest = async () => {
-    try {
-      setLoading(true);
-      const requestBody: VPRequestBody = {
-        clientId: window.location.origin,
-        nonce: generateNonce(),
-      };
-
-      if (txnId) requestBody.transactionId = txnId;
-      if (presentationDefinitionId)
-        requestBody.presentationDefinitionId = presentationDefinitionId;
-      if (presentationDefinition)
-        requestBody.presentationDefinition = presentationDefinition;
-
-      const response = await fetch(`${verifyServiceUrl}/vp-request`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (response.status !== 201)
-        throw new Error("Failed to create VP request");
-      const data: QrData = await response.json();
-      const qrData = OPENID4VP_PROTOCOL + btoa(getPresentationDefinition(data));
-      setTxnId(data.transactionId);
-      setReqId(data.requestId);
-      setQrCodeData(qrData);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      onError(error as Error);
+    if(presentationDefinition?.input_descriptors.length !== 0) {
+      try {
+        setLoading(true);
+        const requestBody: VPRequestBody = {
+          clientId: window.location.origin,
+          nonce: generateNonce(),
+        };
+  
+        if (txnId) requestBody.transactionId = txnId;
+        if (presentationDefinitionId)
+          requestBody.presentationDefinitionId = presentationDefinitionId;
+        if (presentationDefinition)
+          requestBody.presentationDefinition = presentationDefinition;
+  
+        const response = await fetch(`${verifyServiceUrl}/vp-request`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+  
+        if (response.status !== 201)
+          throw new Error("Failed to create VP request");
+        const data: QrData = await response.json();
+        const qrData = OPENID4VP_PROTOCOL + window.encodeURIComponent(getPresentationDefinition(data));
+        setTxnId(data.transactionId);
+        setReqId(data.requestId);
+        setQrCodeData(qrData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        onError(error as Error);
+      }
     }
   };
 

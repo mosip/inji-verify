@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { claim, VCShareType } from "../../../../types/data-types";
+import { claim } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
@@ -9,7 +9,6 @@ import {
   getVpRequest,
   resetVpRequest,
   setSelectedClaims,
-  setSharingType,
 } from "../../../../redux/features/verify/vpVerificationState";
 import { storage } from "../../../../utils/storage";
 import { Button } from "./Button";
@@ -25,9 +24,6 @@ function SelectionPanelContent() {
   let language = useAppSelector((state: RootState) => state.common.language);
   language = language ?? window._env_.DEFAULT_LANG;
   const rtl = isRTL(language);
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
   const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
 
   const filteredClaims = verifiableClaims
@@ -43,6 +39,10 @@ function SelectionPanelContent() {
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name);
     });
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.target.value);
+    };
 
   const toggleClaimSelection = (claim: claim) => {
     if (selectedClaims.includes(claim)) {
@@ -63,12 +63,6 @@ function SelectionPanelContent() {
 
   const handleGenerateQR = () => {
     setSearch("");
-    if(selectedClaims.length === 1){
-      dispatch(setSharingType({sharingType : VCShareType.SINGLE}))
-    }
-    else if (selectedClaims.length > 1){
-      dispatch(setSharingType({sharingType : VCShareType.MULTIPLE}))
-    }
     dispatch(getVpRequest({ selectedClaims }));
     const triggerElement = document.getElementById("OpenID4VPVerification_trigger");    
     if (triggerElement) {
