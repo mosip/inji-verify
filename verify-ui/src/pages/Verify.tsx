@@ -16,7 +16,7 @@ export function Verify() {
   const dispatch = useAppDispatch();
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
-  
+  const activeScreen = useVerifyFlowSelector((state) => state.activeScreen );
   const handleRequestCredentials = () => {
     dispatch(setSelectCredential());
   };
@@ -37,7 +37,7 @@ export function Verify() {
       className={`w-[300px] mx-auto lg:ml-[76px] mt-10 hidden lg:block`}
       fill
       onClick={handleRequestCredentials}
-      disabled={txnId !== ""}
+      disabled={activeScreen === 3 }
     />
   );
 

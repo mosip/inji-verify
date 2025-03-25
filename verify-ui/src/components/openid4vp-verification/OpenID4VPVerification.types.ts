@@ -1,3 +1,50 @@
+export type OpenID4VPError = {
+  message: string;
+  code?: string;
+  details?: unknown;
+};
+
+export type VerificationStatus = "valid" | "invalid" | "expired";
+
+export interface VerificationResult {
+  /**
+  
+  Verified credential data (structured per implementation).
+  */
+  vc: Record<string, unknown>;
+
+  /**
+  
+  The status of the verification.
+  */
+  vcStatus: VerificationStatus;
+}
+
+export type VerificationResults = VerificationResult[];
+
+export interface QrData {
+  transactionId: string;
+  requestId: string;
+  authorizationDetails: {
+    responseType: string;
+    clientId: string;
+    presentationDefinition: Record<string, unknown>;
+    presentationDefinitionUri?: string;
+    responseUri: string;
+    nonce: string;
+    iat: number;
+  };
+  expiresAt: number;
+}
+
+export interface VPRequestBody {
+  clientId: string;
+  nonce: string;
+  transactionId?: string;
+  presentationDefinitionId?: string;
+  presentationDefinition?: Record<string, unknown>;
+}
+
 type ExclusivePresentationDefinition =
   /**
    * ID of the presentation definition used for verification.
@@ -18,83 +65,55 @@ type ExclusiveCallbacks =
    * Callback triggered when the verification presentation (VP) is received.
    * Provides the associated transaction ID.
    */
-  | { onVpReceived: (transactionId: string) => void; onVpProcessed?: never }
+  | { onVPReceived: (transactionId: string) => void; onVPProcessed?: never }
   /**
    * Callback triggered when the VP is successfully processed.
    * Provides the verification result data.
    */
   | {
-      onVpProcessed: (vpResult: VerificationResults) => void;
-      onVpReceived?: never;
+      onVPProcessed: (VPResult: VerificationResults) => void;
+      onVPReceived?: never;
     };
 
 export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   ExclusiveCallbacks & {
     /**
-     * React element that triggers the verification process (e.g., a button).
-     * If not provided, the component may automatically start the process.
-     */
+  
+  React element that triggers the verification process (e.g., a button).
+  
+  If not provided, the component may automatically start the process.
+  */
     triggerElement?: React.ReactNode;
 
     /**
-     * The backend service URL where the verification request will be sent.
-     * This is a required field.
-     */
+  
+  The backend service URL where the verification request will be sent.
+  */
     verifyServiceUrl: string;
 
     /**
-     * A unique identifier for the transaction.
-     * This is optional but recommended for tracking verification requests.
-     */
+  
+  The protocol being used for verification (e.g., OpenID4VP).
+  */
+    protocol?: string;
+
+    /**
+  
+  A unique identifier for the transaction.
+  */
     transactionId?: string;
 
+    /**
+  
+  Styling options for the QR code.
+  */
     qrCodeStyles?: {
-      /**
-       * The size of the QR code in pixels.
-       * Determines the width and height of the QR code.
-       * @default 200
-       */
-      size?: number;
-
-      /**
-       * The error correction level of the QR code.
-       * Determines how much damage the QR code can sustain while still being readable.
-       * Options:
-       *  - "L" (Low, ~7% recovery)
-       *  - "M" (Medium, ~15% recovery)
-       *  - "Q" (Quartile, ~25% recovery)
-       *  - "H" (High, ~30% recovery)
-       * @default "L"
-       */
-      level?: "L" | "M" | "Q" | "H";
-
-      /**
-       * The background color of the QR code.
-       * Accepts any valid CSS color string (e.g., hex, rgb, rgba).
-       * @default "#ffffff" (White)
-       */
-      bgColor?: string;
-
-      /**
-       * The foreground (QR code) color.
-       * Accepts any valid CSS color string (e.g., hex, rgb, rgba).
-       * @default "#000000" (Black)
-       */
-      fgColor?: string;
-
-      /**
-       * The margin around the QR code in pixels.
-       * Helps ensure proper spacing for QR code scanning.
-       * @default 10
-       */
-      margin?: number;
-
-      /**
-       * The borderRadius around the QR code in pixels.
-       * Helps ensure proper spacing for QR code scanning.
-       * @default 10
-       */
-      borderRadius?: number;
+      size?: number; // Default: 200px
+      level?: "L" | "M" | "Q" | "H"; // Default: "L"
+      bgColor?: string; // Default: "#ffffff"
+      fgColor?: string; // Default: "#000000"
+      margin?: number; // Default: 10px
+      borderRadius?: number; // Default: 10px
     };
 
     /**
@@ -108,55 +127,3 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      */
     onError: (error: Error) => void;
   };
-
-interface VerificationResult {
-  /**
-   * Verified credential data (structure depends on implementation).
-   */
-  vc: unknown;
-
-  /**
-   * The status of the verification (e.g., "valid", "invalid", "expired").
-   */
-  vcStatus: string;
-}
-
-type VerificationResults = VerificationResult[];
-
-export interface QrData {
-  /**
-   * Unique transaction identifier.
-   */
-  transactionId: string;
-
-  /**
-   * Request identifier associated with the verification.
-   */
-  requestId: string;
-
-  /**
-   * Authorization details required for verification.
-   */
-  authorizationDetails: {
-    responseType: string;
-    clientId: string;
-    presentationDefinition: Record<string, unknown>; // More precise than 'object'
-    presentationDefinitionUri?: string;
-    responseUri: string;
-    nonce: string;
-    iat: number;
-  };
-
-  /**
-   * Expiration timestamp of the QR code.
-   */
-  expiresAt: number;
-}
-
-export interface vpRequestBody {
-  clientId: string;
-  nonce: string;
-  transactionId?: string;
-  presentationDefinitionId?: string;
-  presentationDefinition?: Record<string, unknown>;
-}

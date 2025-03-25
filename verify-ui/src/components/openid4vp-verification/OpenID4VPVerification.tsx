@@ -4,16 +4,19 @@ import styles from "./OpenID4VPVerification.module.css";
 import {
   OpenID4VPVerificationProps,
   QrData,
-  vpRequestBody,
+  VerificationResults,
+  VerificationStatus,
+  VPRequestBody,
 } from "./OpenID4VPVerification.types";
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   triggerElement,
   verifyServiceUrl,
+  protocol,
   presentationDefinitionId,
   presentationDefinition,
-  onVpReceived,
-  onVpProcessed,
+  onVPReceived,
+  onVPProcessed,
   qrCodeStyles,
   onQrCodeExpired,
   onError,
@@ -22,7 +25,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [reqId, setReqId] = useState<string | null>(null);
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const OPENID4VP_PROTOCOL = "openid4vp://authorize?";
+  const OPENID4VP_PROTOCOL = `${protocol || "openid4vp://"}authorize?`;
 
   const generateNonce = (): string => {
     return btoa(Date.now().toString());
@@ -53,7 +56,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const createVpRequest = async () => {
     try {
       setLoading(true);
-      const requestBody: vpRequestBody = {
+      const requestBody: VPRequestBody = {
         clientId: window.location.origin,
         nonce: generateNonce(),
       };
@@ -110,29 +113,29 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   const fetchVpResult = async () => {
     try {
-      if (onVpProcessed) {
+      if (onVPProcessed) {
         const response = await fetch(`${verifyServiceUrl}/vp-result/${txnId}`);
         if (response.status !== 200)
           throw new Error("Failed to fetch VP result");
         const VpVerificationResult = await response.json();
-        const vcResults: { vc: unknown; vcStatus: string }[] = [];
+        const VPResult: VerificationResults = [];
         VpVerificationResult.vcResults.forEach(
-          (vcResult: { vc: any; verificationStatus: string }) => {
+          (vcResult: { vc: any; verificationStatus: VerificationStatus }) => {
             const vc = JSON.parse(vcResult.vc);
             const verificationStatus = vcResult.verificationStatus;
-            vcResults.push({
+            VPResult.push({
               vc,
               vcStatus: verificationStatus,
             });
           }
         );
-        onVpProcessed(vcResults);
+        onVPProcessed(VPResult);
         setTxnId(null);
         setReqId(null);
         setQrCodeData(null);
       }
-      if (onVpReceived && txnId) {
-        onVpReceived(txnId);
+      if (onVPReceived && txnId) {
+        onVPReceived(txnId);
         setTxnId(null);
         setReqId(null);
         setQrCodeData(null);
@@ -157,12 +160,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         "Both presentationDefinitionId and presentationDefinition cannot be provided simultaneously"
       );
     }
-    if (!onVpReceived && !onVpProcessed) {
+    if (!onVPReceived && !onVPProcessed) {
       throw new Error(
         "Either onVpReceived or onVpProcessed must be provided, but not both"
       );
     }
-    if (onVpReceived && onVpProcessed) {
+    if (onVPReceived && onVPProcessed) {
       throw new Error(
         "Both onVpReceived and onVpProcessed cannot be provided simultaneously"
       );
@@ -176,15 +179,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (!triggerElement) {
       createVpRequest();
     }
-  }, [
-    onError,
-    onQrCodeExpired,
-    onVpProcessed,
-    onVpReceived,
-    presentationDefinition,
-    presentationDefinitionId,
-    triggerElement,
-  ]);
+  }, [onError, onQrCodeExpired, onVPProcessed, onVPReceived, presentationDefinition, presentationDefinitionId, triggerElement ]);
 
   useEffect(() => {
     if (reqId) {

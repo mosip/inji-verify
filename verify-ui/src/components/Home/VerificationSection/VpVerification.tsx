@@ -77,7 +77,7 @@ const DisplayActiveStep = () => {
       <Button
         id="request-credentials-button"
         title={t("rqstButton")}
-        className={`w-[300px] mx-auto lg:ml-[76px] mt-10 hidden lg:block`}
+        className={`w-[300px] mx-auto lg:ml-[76px] mt-10 lg:hidden`}
         fill
         onClick={handleRequestCredentials}
         disabled={txnId !== ""}
@@ -125,7 +125,7 @@ const DisplayActiveStep = () => {
                   triggerElement={ <QrIcon id="OpenID4VPVerification_trigger" className="w-[78px] lg:w-[100px]" aria-disabled={insuranceCredentialPresentationDefinition.input_descriptors.length===0} /> }
                   verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
                   presentationDefinition={insuranceCredentialPresentationDefinition}
-                  onVpProcessed={handleOnVpProcessed}
+                  onVPProcessed={handleOnVpProcessed}
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   qrCodeStyles={{ size: qrSize }}
