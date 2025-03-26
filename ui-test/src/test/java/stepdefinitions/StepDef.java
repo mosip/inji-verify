@@ -822,4 +822,5 @@ public class StepDef {
 	public void verify_Verifiable_Credential_Selection_Panel() {
 		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
 	}
- }
+
+}
