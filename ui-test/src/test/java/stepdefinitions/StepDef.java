@@ -684,8 +684,8 @@ public class StepDef {
 
     @Then("Verify that user convert pdf into png")
     public void verify_that_user_convert_pdf_into_png() throws IOException {
-		String pdfPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential.pdf";
-		String outputPath = System.getProperty("user.dir") + "/Downloads/InsuranceCredential";
+		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
+		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
 
 		PDDocument document = PDDocument.load(new File(pdfPath));
 		PDFRenderer renderer = new PDFRenderer(document);
