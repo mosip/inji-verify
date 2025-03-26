@@ -247,4 +247,4 @@ export const MosipVerifiableCredentialRenderOrder = [
   "city",
 ];
 
-export const BASE64_PADDING = "=="
+export const BASE64_PADDING = "==";
