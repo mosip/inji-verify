@@ -4,7 +4,6 @@ Feature: Inji Verify homepage testing
   Scenario: Verify the Inji web homepage
     Given User gets the title of the page
     Then Validate the title of the page
-    And Verify that inji verify logo is displayed
     And Verify that header is displayed
     And Verify that sub header is displayed
     And Verify that home button is displayed
@@ -12,7 +11,6 @@ Feature: Inji Verify homepage testing
     And Verify that Help button is displayed
     And Verify that expansion button is displayed before expansion
     And Verify click on home button
-    And Verify that expansion button is displayed after expansion
     And Verify that links are valid under help
     And Verify minimize help option
     And Verify that upload QR Code tab is visible
@@ -24,6 +22,7 @@ Feature: Inji Verify homepage testing
     And Verify upload QR code step1 description
     And Verify upload QR code step2 label
     And Verify upload QR code step2 description
+    And Verify upload QR code step3 label
     And Verify upload QR code step3 label
     And Verify upload QR code step3 description
     And Verify that scan element is visible

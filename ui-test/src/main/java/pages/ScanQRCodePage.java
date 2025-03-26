@@ -25,13 +25,13 @@ public class ScanQRCodePage extends BasePage {
 	@FindBy(xpath = "//div[@id='scan-qr-code-description']")
 	WebElement ScanQRCodeStep1Description;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-[16px]  font-bold text-[#868686]'])[1]")
+	@FindBy(id = "activate-camera-and-position-qr-code")
 	WebElement ScanQRCodeStep2Label;
 
 	@FindBy(xpath = "//div[@id='activate-camera-and-position-qr-code-description']")
 	WebElement ScanQRCodeStep2Description;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-[16px]  font-bold text-[#868686]'])[2]")
+	@FindBy(id = "verification-in-progress")
 	WebElement ScanQRCodeStep3Label;
 
 	@FindBy(xpath = "//div[@id='verification-in-progress-description']")
@@ -43,16 +43,16 @@ public class ScanQRCodePage extends BasePage {
 	@FindBy(xpath = "//div[@id='view-result-description']")
 	WebElement ScanQRCodeStep4Description;
 
-	@FindBy(xpath = "//div[@class='grid bg-primary opacity-5 rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center']")
+	@FindBy(xpath = "//div[@class='grid bg-default_theme-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center']")
 	WebElement ScanQRCodeArea;
 
-	@FindBy(xpath = "//*[@id='Group_57429']")
+	@FindBy(xpath = "//*[name()='svg' and @width='24' and @height='22']")
 	WebElement ScanQRCodeIcon;
 
 	@FindBy(xpath = "//span[@id='scan-button']")
 	WebElement ScanQRCodeButtonTo;
 
-	@FindBy(xpath = "(//div[@class='ml-[10px] text-[16px]  font-bold text-black'])[2]")
+	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='3'])")
 	WebElement ScanQRCodeStep2LabelAfter;
 
 	@FindBy(xpath = "//div[@style='width: 316px; padding-top: 100%; overflow: hidden; position: relative; place-content: center; display: grid; place-items: center; border-radius: 12px;']")
