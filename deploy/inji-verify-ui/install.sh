@@ -11,8 +11,8 @@ CHART_VERSION=0.0.1-develop
 
 DEFAULT_MOSIP_INJIVERIFY_HOST=$( kubectl get cm global -n config-server -o jsonpath={.data.mosip-injiverify-host} )
 # Check if MOSIP_INJIVERIFY_HOST is present under configmap/global of configserver
-if echo "$DEFAULT_MOSIP_INJIVERIFY_HOST" | grep -q "MOSIP_INJIVERIFY_HOST"; then
-    echo "MOSIP_INJIVERIFY_HOST is already present in configmap/global of configserver"
+if echo "$DEFAULT_MOSIP_INJIVERIFY_HOST" | grep -q "mosip-injiverify-host"; then
+    echo "mosip-injiverify-host is already present in configmap/global of configserver"
     MOSIP_INJIVERIFY_HOST=DEFAULT_MOSIP_INJIVERIFY_HOST
 else
     read -p "Please provide injiverifyhost (eg: injiverify.sandbox.xyz.net ) : " MOSIP_INJIVERIFY_HOST
@@ -30,11 +30,11 @@ if [ $? -gt 0 ]; then
 fi
 
 echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
-    # Add injiverify host to global
+    # Add injiverify host to inj-global
     kubectl patch configmap global -n config-server --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
     kubectl patch configmap global -n default --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
     # Add the host
-    kubectl set env deployment/config-server SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_MOSIP_ESIGNET_INJIVERIFY_HOST=$MOSIP_INJIVERIFY_HOST -n config-server
+    kubectl -n config-server set env --keys=mosip-injiverify-host --from configmap/global deployment/config-server --prefix=SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_
     # Restart the configserver deployment
     kubectl -n config-server get deploy -o name | xargs -n1 -t kubectl -n config-server rollout status 
 
