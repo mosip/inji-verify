@@ -71,19 +71,19 @@ public class UploadQRCode extends BasePage {
 	WebElement UploadQRCodeButton;
 
 	public void ClickonUploadQRCodePng() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 	
 	public void ClickonAnotherUploadQRCodePng() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.png");
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 	
 	public void ClickonAnotherUploadQRCodeJpg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpg");
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -95,11 +95,11 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 	
 	public void ClickonAnotherUploadQRCodeJpeg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpeg");
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
