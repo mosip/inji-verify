@@ -32,25 +32,32 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   const getPresentationDefinition = (data: QrData) => {
-    return (
-      `client_id=${data.authorizationDetails.clientId}` +
-      `&response_type=${data.authorizationDetails.responseType}` +
-      `&response_mode=direct_post` +
-      `&nonce=${data.authorizationDetails.nonce}` +
-      `&state=${data.requestId}` +
-      `&response_uri=${
-        verifyServiceUrl + data.authorizationDetails.responseUri
-      }` +
-      (data.authorizationDetails.presentationDefinitionUri
-        ? `&presentation_definition_uri=${
-            verifyServiceUrl +
-            data.authorizationDetails.presentationDefinitionUri
-          }`
-        : `&presentation_definition=${JSON.stringify(
-            data.authorizationDetails.presentationDefinition
-          )}`) +
-      `&client_metadata={"client_name":"${window.location.origin}", "vp_formats": {}}`
+    const params = new URLSearchParams();
+    params.set("client_id", data.authorizationDetails.clientId);
+    params.set("response_type", data.authorizationDetails.responseType);
+    params.set("response_mode", "direct_post");
+    params.set("nonce", data.authorizationDetails.nonce);
+    params.set("state", data.requestId);
+    params.set(
+      "response_uri",
+      verifyServiceUrl + data.authorizationDetails.responseUri
     );
+    if (data.authorizationDetails.presentationDefinitionUri) {
+      params.set(
+        "presentation_definition_uri",
+        verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+      );
+    } else {
+      params.set(
+        "presentation_definition",
+        JSON.stringify(data.authorizationDetails.presentationDefinition)
+      );
+    }
+    params.set(
+      "client_metadata",
+      JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
+    );
+    return params.toString();
   };
 
   const createVpRequest = async () => {
@@ -77,7 +84,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         if (response.status !== 201)
           throw new Error("Failed to create VP request");
         const data: QrData = await response.json();
-        const qrData = OPENID4VP_PROTOCOL + window.encodeURIComponent(getPresentationDefinition(data));
+        const qrData = OPENID4VP_PROTOCOL + getPresentationDefinition(data);
         setTxnId(data.transactionId);
         setReqId(data.requestId);
         setQrCodeData(qrData);
