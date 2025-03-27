@@ -216,6 +216,11 @@ public class StepDef {
 
 	@Then("verify upload QR code step2 description after")
 	public void verify_upload_qr_code_step2_description_after() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertTrue(uploadqrcode.isVisibleUploadQRCodeStep2LabelAfter());
 
 	}
@@ -550,11 +555,21 @@ public class StepDef {
 
 	@Then("Verify message for valid QR code")
 	public void verify_message_for_valid_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
 	}
 
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
 	}
 
@@ -592,6 +607,16 @@ public class StepDef {
 	public void user_click_on_download_StayProtected_Insurance_button() {
 		homePage.clickOnDownloadMosipCredentials();
 	}
+	
+	@Then("User search the issuers sunbird")
+	public void user_search_the_issuers_sunbird() throws Exception {
+	        String issuerText = System.getenv("Issuer_Text_sunbird");
+	        if (issuerText == null || issuerText.isEmpty()) {
+	            String[] string = baseTest.fetchIssuerTexts();
+	            issuerText = string[1];
+	        }
+	        homePage.enterIssuersInSearchBox(issuerText);
+	    }
 
 	@When("User click on get started button")
 	public void user_click_on_get_started_button() {
@@ -646,6 +671,11 @@ public class StepDef {
 
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
 	@Then("User verify pdf is downloaded")
