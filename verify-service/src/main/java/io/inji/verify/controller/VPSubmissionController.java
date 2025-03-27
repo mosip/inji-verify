@@ -13,7 +13,6 @@ import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +25,17 @@ import java.util.Set;
 @Slf4j
 public class VPSubmissionController {
 
-    @Autowired
-    VerifiablePresentationRequestService verifiablePresentationRequestService;
+    final VerifiablePresentationRequestService verifiablePresentationRequestService;
 
-    @Autowired
-    VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
+    final VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
-    @Autowired
-    Gson gson;
+    final Gson gson;
+
+    public VPSubmissionController(VerifiablePresentationRequestService verifiablePresentationRequestService, VerifiablePresentationSubmissionService verifiablePresentationSubmissionService, Gson gson) {
+        this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+        this.verifiablePresentationSubmissionService = verifiablePresentationSubmissionService;
+        this.gson = gson;
+    }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> submitVP(@NotNull @NotBlank @RequestParam(value = "vp_token") String vpToken, @NotNull @NotBlank @RequestParam(value = "presentation_submission") String presentationSubmission, @NotNull @NotBlank @RequestParam(value = "state") String state) {
