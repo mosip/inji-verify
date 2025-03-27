@@ -82,35 +82,6 @@ paths:
           description: VP Request not found for given request id
       x-stoplight:
         id: fnqvm2pbdv6wy
-  "/vp-claims-result/{transactionId}":
-    get:
-      summary: Get VP Request result
-      description: Get the VP claims result submitted for the transaction
-      operationId: getVPResult
-      tags:
-        - VP Request Management
-      parameters:
-        - name: transactionId
-          in: path
-          description: Transaction Id for which you want to get the submitted claims for
-          required: true
-          schema:
-            type: string
-          example: txn_12345
-      responses:
-        "200":
-          description: VP Request result retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VPResult"
-              example:
-                transactionId: txn_12345
-                verified: true
-                claims:
-                  age: over_18
-      x-stoplight:
-        id: 0hjfalp8a486b
   /vp-submission/direct-post:
     post:
       summary: Submit authorization response
@@ -288,21 +259,6 @@ components:
         - SUCCESS
         - EXPIRED
         - INVALID
-    VPResult:
-      type: object
-      properties:
-        transactionId:
-          description: A unique id of the verifiable presentation request transaction
-          type: string
-        verificationStatus:
-          type: string
-          $ref: "#/components/schemas/verificationStatus"
-        claims:
-          type: object
-          additionalProperties: true
-          description: Claims that are reuested for the verifiable presentation request transaction
-      x-stoplight:
-        id: fle75j137hzgq
     AuthorizationResponse:
       type: object
       required:
@@ -520,8 +476,10 @@ components:
       properties:
         transactionId:
           type: string
+          description: "Transaction Id for the VP request for which the result needs to be fetched"
         submissionStatus:
           type: string
+          description: "Overall status for the VP submission"
           enum:
             - SUCCESS
             - FAILED
@@ -534,11 +492,14 @@ components:
       x-stoplight:
         id: 8te0cgwgjfu4g
       type: object
+      description: "Array of VC and its proof verification results"
       properties:
         vc:
           type: string
+          description: "VC as a JSON string"
         verificationStatus:
           type: string
+          description: "Proof verification status for the VC"
           $ref: "#/components/schemas/verificationStatus"
   securitySchemes:
     ClientIdSecret:
