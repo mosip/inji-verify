@@ -22,7 +22,7 @@ The API documentations can be found [here](https://mosip.stoplight.io/docs/inji-
   - Inji verify Ui will make a request to backend to create the authorization request and the UI will render this as a QR code for the wallet to scan.
 
 #####  Authorization Request Status:
-- Inji Verify have API to get the current status of a authorization request.
+- Inji Verify have API to get the current status of an authorization request.
     - The status will be,
       - **_ACTIVE_** - Authorization request is created but nor expired or any VP submission has been received. 
       - **_VP_SUBMITTED_** - VP has been submitted for authorization request.
@@ -47,9 +47,9 @@ sequenceDiagram
     participant Wallet
 
 
-    Verify UI->>Verify Backend: 1. Create a Autherization Request (BACKEND_URL/vp-request)
-    Verify Backend--)Verify Backend: 2. Process the request,<br> create and return Autherization Request response
-    Verify Backend->>Verify UI: 3. Autherization Request Response
+    Verify UI->>Verify Backend: 1. Create a Authorization Request (BACKEND_URL/vp-request)
+    Verify Backend--)Verify Backend: 2. Process the request,<br> create and return Authorization Request response
+    Verify Backend->>Verify UI: 3. Authorization Request Response
     Verify UI--)Verify UI: 4. Generate QR Code with response
     Verify UI--)Verify UI: 5. Polling Status BACKEND_URL/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
     Wallet--)Wallet: 6. Scan QR Code

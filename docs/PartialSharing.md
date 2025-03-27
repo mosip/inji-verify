@@ -20,9 +20,9 @@ sequenceDiagram
     participant Wallet
 
 
-    Verify UI->>Verify Backend: 1. Create a Autherization Request
+    Verify UI->>Verify Backend: 1. Create a Authorization Request
     Verify Backend--)Verify Backend: 2. Process the request,<br> create and return Autherization Request response
-    Verify Backend->>Verify UI: 3. Autherization Request Response
+    Verify Backend->>Verify UI: 3. Authorization Request Response
     Verify UI--)Verify UI: 4. Generate QR Code with response
     Verify UI--)Verify UI: 5. Polling Status BACKEND_URL/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
     Wallet--)Wallet: 6. Scan QR Code

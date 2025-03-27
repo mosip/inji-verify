@@ -23,7 +23,7 @@ participant Verify UI
     Verify Backend->>VC Verifier: 2. Send VC for verification
     VC Verifier->>VC Verifier: 3. Perform VC Validation
     VC Verifier->>VC Verifier: 4. Perform VC Proof Verification
-    VC Verifier->>Verify Backend: 5. Return the Verificaion Result (SUCCESS,EXPIRED,INVALID)
-    Verify Backend->>Verify UI: 6. Return the Verificaion Result (SUCCESS,EXPIRED,INVALID)
-    Verify UI->>Verify UI: 7. Render the Verificaion Result in UI
+    VC Verifier->>Verify Backend: 5. Return the Verification Result (SUCCESS,EXPIRED,INVALID)
+    Verify Backend->>Verify UI: 6. Return the Verification Result (SUCCESS,EXPIRED,INVALID)
+    Verify UI->>Verify UI: 7. Render the Verification Result in UI
 ```
