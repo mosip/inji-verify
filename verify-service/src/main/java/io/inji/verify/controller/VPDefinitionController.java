@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class VPDefinitionController {
-    @Autowired
-    VPDefinitionService vpDefinitionService;
+
+    final VPDefinitionService vpDefinitionService;
+
+    public VPDefinitionController(VPDefinitionService vpDefinitionService) {
+        this.vpDefinitionService = vpDefinitionService;
+    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<VPDefinitionResponseDto> getPresentationDefinitionFor(@PathVariable String id) {
