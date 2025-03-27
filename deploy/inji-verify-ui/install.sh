@@ -30,7 +30,7 @@ if [ $? -gt 0 ]; then
 fi
 
 echo "MOSIP_INJIVERIFY_HOST is not present in configmap/global of configserver"
-    # Add injiverify host to inj-global
+    # Add injiverify host to global
     kubectl patch configmap global -n config-server --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
     kubectl patch configmap global -n default --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
     # Add the host
