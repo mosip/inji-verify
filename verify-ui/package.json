@@ -1,6 +1,6 @@
 {
   "name": "inji-verify",
-  "version": "0.1.0",
+  "version": "0.11.0",
   "author": "MOSIP",
   "license": "MPL-2.0",
   "private": true,
@@ -20,6 +20,7 @@
     "@types/react-redux": "^7.1.33",
     "@types/redux-thunk": "^2.1.0",
     "i18next": "^23.11.2",
+    "inji-verify": "file:",
     "patch-package": "^8.0.0",
     "pdfjs-dist": "^4.5.136",
     "qrcode.react": "^4.1.0",
