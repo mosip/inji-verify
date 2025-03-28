@@ -51,13 +51,12 @@ sequenceDiagram
     Verify Backend--)Verify Backend: 2. Process the request,<br> create and return Authorization Request response
     Verify Backend->>Verify UI: 3. Authorization Request Response
     Verify UI--)Verify UI: 4. Generate QR Code with response
-    Verify UI--)Verify Backend: 5. Polling Status BACKEND_URL/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
-    Verify Backend--)Verify UI: 
-    Wallet--)Verify UI: 6. Scan QR Code
+    Verify UI--)Verify UI: 5. Polling Status BACKEND_URL/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
+    Wallet--)Wallet: 6. Scan QR Code
     Wallet--)Wallet: 7. Process the QR Data and List the matching VC's
-    Wallet->>Verify Backend: 8.Submits VP Token <br> (BACKEND_URL/vp-submission/direct-post)
+    Wallet->>Verify Backend: 8.Authenticate User & Submitts VP Token <br> (BACKEND_URL/vp-submission/direct-post)
     Verify Backend--)Verify UI: 9. Status == VP_SUBMITTED
-    Verify UI->>Verify Backend: 10. Request the submission result <br> Ex- (BACKEND_URL/vp-result/${txnId})
+    Verify UI->>Verify Backend: 10. Request the response from the respective endpoints <br> Ex- (BACKEND_URL/vp-result/${txnId})
     Verify Backend->>Verify UI: 11. Using txn_Id the server will fetch the data from DB and validate it using vc-verifier and return the response
     Verify UI--)Verify UI: 12. Render VC and its statuses accordingly
     
