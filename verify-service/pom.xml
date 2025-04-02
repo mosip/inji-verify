@@ -116,10 +116,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.3</version>
-                <configuration>
+<!--                <configuration>
                     <executable>true</executable>
                     <layout>ZIP</layout>
-                </configuration>
+                </configuration> -->
                 <executions>
                     <execution>
                         <goals>
@@ -139,6 +139,19 @@
                     <autoPublish>true</autoPublish>
                 </configuration>
             </plugin>
+	<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+        </execution>
+    </executions>
+        </plugin>
         </plugins>
     </build>
 
