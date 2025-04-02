@@ -36,7 +36,7 @@ function* fetchRequestUri(claims: claim[]) {
     const data: string = yield response.text();
     const parsedData = JSON.parse(data) as QrData;
     const presentationDefinition = getPresentationDefinition(parsedData);
-    qrData = OPENID4VP_PROTOCOL + presentationDefinition;
+    qrData = OPENID4VP_PROTOCOL + btoa(presentationDefinition);
     txnId = parsedData.transactionId;
     reqId = parsedData.requestId;
   } catch (error) {
