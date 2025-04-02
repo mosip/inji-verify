@@ -252,7 +252,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
-                    <autoPublish>true</autoPublish>
+                    <autoPublish>false</autoPublish>
                 </configuration>
             </plugin>
             <plugin>
