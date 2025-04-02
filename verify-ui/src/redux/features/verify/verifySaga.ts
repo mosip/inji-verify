@@ -104,7 +104,7 @@ function* getVpResult() {
       const data: string = yield response.text();
       const parsedData = JSON.parse(data);
       const vcResults: { vc: VCWrapper; vcStatus: VcStatus }[] = [];
-      parsedData.vcresults.forEach(
+      parsedData.vcResults.forEach(
         (vcResult: { vc: string; verificationStatus: VcStatus }) => {
           const verificationStatus = vcResult.verificationStatus;
           const vc: VCWrapper = JSON.parse(vcResult.vc);
