@@ -24,7 +24,6 @@ function installing_inji-verify-service() {
   $COPY_UTIL configmap global default $NS
   $COPY_UTIL configmap artifactory-share artifactory $NS
   $COPY_UTIL configmap config-server-share config-server $NS
-  $COPY_UTIL configmap postgres-config postgres $NS
 
   echo "Do you have public domain & valid SSL? (Y/n) "
   echo "Y: if you have public domain & valid ssl certificate"
