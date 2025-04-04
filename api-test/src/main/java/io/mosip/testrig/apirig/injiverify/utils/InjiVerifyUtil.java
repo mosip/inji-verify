@@ -1,5 +1,9 @@
 package io.mosip.testrig.apirig.injiverify.utils;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.Logger;
 import org.testng.SkipException;
 
@@ -43,5 +47,17 @@ public class InjiVerifyUtil extends AdminTestUtil {
 		return jsonString;
 
 	}
+	
+	public void delayedExecution(int secondsToWait) {
+	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	        
+	        logger.info("Task scheduled. Waiting for " + secondsToWait + " seconds..."); 
+
+	        scheduler.schedule(() -> {
+	            System.out.println("Executing task after " + secondsToWait + " seconds...");
+	        }, 5, TimeUnit.SECONDS);
+
+	        scheduler.shutdown();
+	    }
 
 }
