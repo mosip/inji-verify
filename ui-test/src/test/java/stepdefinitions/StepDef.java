@@ -216,6 +216,11 @@ public class StepDef {
 
 	@Then("verify upload QR code step2 description after")
 	public void verify_upload_qr_code_step2_description_after() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertTrue(uploadqrcode.isVisibleUploadQRCodeStep2LabelAfter());
 
 	}
@@ -550,11 +555,21 @@ public class StepDef {
 
 	@Then("Verify message for valid QR code")
 	public void verify_message_for_valid_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
 	}
 
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
+		try {
+			Thread.sleep(9000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.ERROR_MESSAGE_EXPIRED_QR);
 	}
 
@@ -592,6 +607,16 @@ public class StepDef {
 	public void user_click_on_download_StayProtected_Insurance_button() {
 		homePage.clickOnDownloadMosipCredentials();
 	}
+	
+	@Then("User search the issuers sunbird")
+	public void user_search_the_issuers_sunbird() throws Exception {
+	        String issuerText = System.getenv("Issuer_Text_sunbird");
+	        if (issuerText == null || issuerText.isEmpty()) {
+	            String[] string = baseTest.fetchIssuerTexts();
+	            issuerText = string[1];
+	        }
+	        homePage.enterIssuersInSearchBox(issuerText);
+	    }
 
 	@When("User click on get started button")
 	public void user_click_on_get_started_button() {
@@ -646,9 +671,11 @@ public class StepDef {
 
 	@Then("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
+		try {
+			throw new RuntimeException(e);
+		}
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
-	@Then("User verify pdf is downloaded")
 	public void user_verify_pdf_is_downloaded() throws IOException, IOException {
 		try {
 			Thread.sleep(10000);
@@ -817,6 +844,56 @@ public class StepDef {
 		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
 	}
 
+	@Then("Verify VP verification qr code step1 label")
+	public void verify_vp_verification_qr_code_step1_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step2 label")
+	public void verify_vp_verification_qr_code_step2_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step2 description")
+	public void verify_vp_verification_qr_code_step2_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION);
+	}
+
+	@Then("Verify VP verification qr code step3 label")
+	public void verify_vp_verification_qr_code_step3_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step3 description")
+	public void verify_vp_verification_qr_code_step3_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION);
+	}
+
+	@Then("Verify VP verification qr code step4 label")
+	public void verify_vp_verification_qr_code_step4_label() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_LABEL);
+	}
+
+	@Then("Verify VP verification qr code step4 description")
+	public void verify_vp_verification_qr_code_step4_description() {
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_DESCRIPTION);
+	}
+
+	@Then("verify request verifiable credentials button")
+	public void verify_request_verifiable_credentials_button() {
+		Assert.assertTrue(vpverification.isVisibleVerifiableCredentialsButton());
+	}
+
+	@Then("Verify VP verification QR code generated")
+	public void verify_VP_verifiable_QR_code_generated() {
+		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	}
+
+
+	@Then("verify Verifiable Credential Selection Panel")
+	public void verify_Verifiable_Credential_Selection_Panel() {
+		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
+	}
 
 	@Then("verify Verifiable Credential Selection Panel")
 	public void verify_Verifiable_Credential_Selection_Panel() {

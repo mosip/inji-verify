@@ -30,7 +30,7 @@ Feature: Inji Verify upload qr code testing
   Scenario Outline: Verify upload qr code with png
     And Open inji web in new tab
     When User click on get started button
-    Then User search the issuers with "StayProtected Insurance"
+    Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     And User click on health insurance by e-signet button
     And User click on validity dropdown
@@ -79,7 +79,7 @@ Feature: Inji Verify upload qr code testing
   Scenario Outline: Verify upload qr code with PDF
     And Open inji web in new tab
     When User click on get started button
-    Then User search the issuers with "StayProtected Insurance"
+    Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
     And User click on validity dropdown
@@ -127,7 +127,7 @@ Feature: Inji Verify upload qr code testing
   Scenario Outline: Verify upload qr code with jpg
     And Open inji web in new tab
     When User click on get started button
-    Then User search the issuers with "StayProtected Insurance"
+    Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
     And User click on validity dropdown
@@ -176,7 +176,7 @@ Feature: Inji Verify upload qr code testing
   Scenario Outline: Verify upload qr code with jpeg
     And Open inji web in new tab
     When User click on get started button
-    Then User search the issuers with "StayProtected Insurance"
+    Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
     And User click on validity dropdown

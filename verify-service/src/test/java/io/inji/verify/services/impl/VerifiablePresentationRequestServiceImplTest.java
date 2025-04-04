@@ -16,6 +16,9 @@ import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
 import java.util.List;
@@ -94,5 +97,26 @@ class VerifiablePresentationRequestServiceImplTest {
         VPRequestStatusDto vpRequestStatusDto = service.getCurrentRequestStatus("nonexistent_id");
 
         assertNull(vpRequestStatusDto);
+    }
+    @Test
+    void getStatus_requestIdNotFound_returnsNotFoundError() {
+        when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(Optional.empty());
+
+        DeferredResult<VPRequestStatusDto> result = service.getStatus("req_id");
+
+        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity) result.getResult()).getStatusCode());
+    }
+
+    @Test()
+    void getStatus_requestExpired_returnsExpiredStatus() {
+        service.defaultTimeout =1000L;
+        String requestId = "req_id";
+        AuthorizationRequestCreateResponse response = new AuthorizationRequestCreateResponse("req_id", "tx_id", null, Instant.now().toEpochMilli()-10000);
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId)).thenReturn(Optional.of(response));
+
+
+        DeferredResult<VPRequestStatusDto> result = service.getStatus(requestId);
+
+        assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) result.getResult()).getStatus());
     }
 }
