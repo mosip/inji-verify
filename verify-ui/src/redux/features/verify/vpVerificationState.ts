@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { verifiableClaims, VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
-import { calculateUnverifiedClaims } from "../../../utils/commonUtils";
+import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../utils/commonUtils";
 
 const PreloadedState: VerifyState = {
   isLoading: false,
@@ -13,51 +13,57 @@ const PreloadedState: VerifyState = {
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
   SelectionPanel: false,
   verificationSubmissionResult: [],
-  selectedClaims: verifiableClaims.filter((claim) => claim.essential),
+  selectedClaims: verifiableClaims?.filter((claim) => claim.essential),
   unVerifiedClaims: [],
   sharingType: VCShareType.SINGLE,
   isPartiallyShared: false,
+  presentationDefinition:{
+    id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
+    purpose:
+      "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+    format: {
+      ldp_vc: {
+        proof_type: ["Ed25519Signature2020"],
+      },
+    },
+    input_descriptors: [] as any[],
+  }  
 };
 
 const vpVerificationState = createSlice({
   name: "vpVerification",
   initialState: PreloadedState,
   reducers: {
-    setSharingType: (state, actions) => {
-      state.sharingType = actions.payload.sharingType;
-    },
-    setSelectedClaims: (state, actions) => {
-      state.selectedClaims = actions.payload.selectedClaims;
-      state.verificationSubmissionResult = [];
-    },
-    getVpRequest: (state, actions) => {
-      state.isLoading = true;
-      state.SelectionPanel = false;
-      state.verificationSubmissionResult = [];
-      state.unVerifiedClaims = [];
-    },
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
+      state.selectedClaims = verifiableClaims.filter((claim) => claim.essential );
+      state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
+      const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
+      state.presentationDefinition.input_descriptors = [...inputDescriptors];
       state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
-      state.selectedClaims = verifiableClaims.filter(
-        (claim) => claim.essential
-      );
     },
-    setVpRequestResponse: (state, action) => {
-      state.qrData = action.payload.qrData;
-      state.txnId = action.payload.txnId;
-      state.reqId = action.payload.reqId;
-      state.isLoading = false;
-      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
+    setSelectedClaims: (state, actions) => {
+      state.selectedClaims = actions.payload.selectedClaims;
+      state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
+      const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
+      state.presentationDefinition.input_descriptors = [...inputDescriptors];
+      state.verificationSubmissionResult = [];
+    },
+    getVpRequest: (state, actions) => {
+      state.selectedClaims = actions.payload.selectedClaims;
+      state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
+      const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
+      state.presentationDefinition.input_descriptors = [...inputDescriptors];
       state.SelectionPanel = false;
-    },
-    setVpRequestStatus: (state, action) => {
-      state.status = action.payload.status;
+      state.activeScreen = VerificationSteps[state.method].ScanQrCode;
+      state.verificationSubmissionResult = [];
+      state.unVerifiedClaims = [];
     },
     verificationSubmissionComplete: (state, action) => {
-      state.verificationSubmissionResult.push(...action.payload.verificationResult);
+      const verifiedVCs = calculateVerifiedClaims(state.selectedClaims, action.payload.verificationResult);
+      state.verificationSubmissionResult.push(...verifiedVCs);
       state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
       state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
       state.activeScreen = state.isPartiallyShared
@@ -82,19 +88,17 @@ const vpVerificationState = createSlice({
       state.status = "ACTIVE";
       state.sharingType = VCShareType.SINGLE;
       state.isPartiallyShared = false;
+      state.presentationDefinition.input_descriptors = [];
     },
   },
 });
 
 export const {
   getVpRequest,
-  setSharingType,
   setSelectCredential,
-  setVpRequestResponse,
-  setVpRequestStatus,
   resetVpRequest,
   verificationSubmissionComplete,
-  setSelectedClaims
+  setSelectedClaims,
 } = vpVerificationState.actions;
 
 export default vpVerificationState.reducer;
