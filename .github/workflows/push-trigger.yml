@@ -67,13 +67,13 @@ jobs:
     with:
       SERVICE_LOCATION: ./
       BUILD_ARTIFACT: inji-verify-service
+      MAVEN_NON_EXEC_ARTIFACTS : "verify-service*-SNAPSHOT.jar"
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_INJI_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_INJI_SECRET }}
       OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}
-
       
   publish_to_nexus:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
@@ -84,7 +84,7 @@ jobs:
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_INJI_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_INJI_SECRET }}
-      OSSRH_URL: ${{ secrets.RELEASE_URL }}
+      OSSRH_URL: ${{ secrets.OSSRH_INJI_SNAPSHOT_URL }}
       OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
@@ -97,6 +97,7 @@ jobs:
             - SERVICE_LOCATION: 'verify-service'
               SERVICE_NAME: 'inji-verify-service'
               BUILD_ARTIFACT: 'inji-verify-service'
+              SQUASH_LAYERS: '7'
         fail-fast: false
       name: ${{ matrix.SERVICE_NAME }}
       uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
@@ -104,6 +105,7 @@ jobs:
         SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
         SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
         BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+        SQUASH_LAYERS: ${{ matrix.SQUASH_LAYERS }}
       secrets:
         DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
         ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
