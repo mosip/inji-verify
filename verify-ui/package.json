@@ -38,8 +38,7 @@
     "build": "react-scripts build",
     "test": "jest --passWithNoTests --updateSnapshot --coverage",
     "eject": "react-scripts eject",
-    "sonar": "sonar-scanner",
-    "postinstall": "patch-package"
+    "sonar": "sonar-scanner"
   },
   "eslintConfig": {
     "extends": [
