@@ -81,29 +81,41 @@ public class BasePage {
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
 
-	public void verifyHomePageLinks(WebDriver driver, List<WebElement> links) {
+	public Boolean verifyHomePageLinks(WebDriver driver, List<WebElement> links) {
+	    boolean allLinksValid = true; 
 
-		for (WebElement link : links) {
-			String url = link.getAttribute("href");
-			if (url != null && !url.isEmpty()) {
-				try {
-					URL linkUrl = new URL(url);
-					HttpURLConnection httpConn = (HttpURLConnection) linkUrl.openConnection();
-					httpConn.connect();
-					int responseCode = httpConn.getResponseCode();
-					if (responseCode >= 200 && responseCode < 300) {
-						System.out.println(url + " - " + "Valid link (Status " + responseCode + ")");
-					} else {
-						System.out.println(url + " - " + "Broken link (Status " + responseCode + ")");
-					}
-					httpConn.disconnect();
-				} catch (IOException e) {
-					System.out.println(url + " - " + "Exception occurred: " + e.getMessage());
-				}
-			}
-		}
+	    for (WebElement link : links) {
+	        String url = link.getAttribute("href");
 
+	        if (url != null && !url.isEmpty()) {
+	            HttpURLConnection httpConn = null;
+	            try {
+	                URL linkUrl = new URL(url);
+	                httpConn = (HttpURLConnection) linkUrl.openConnection();
+	                httpConn.setRequestMethod("HEAD"); 
+	                httpConn.connect();
+	                int responseCode = httpConn.getResponseCode();
+
+	                if (responseCode < 200 || responseCode >= 400) {
+	                    System.out.println(url + " - Broken link (Status " + responseCode + ")");
+	                    allLinksValid = false;
+	                } else {
+	                    System.out.println(url + " - Valid link (Status " + responseCode + ")");
+	                }
+	            } catch (IOException e) {
+	                System.out.println(url + " - Exception occurred: " + e.getMessage());
+	                allLinksValid = false;
+	            } finally {
+	                if (httpConn != null) {
+	                    httpConn.disconnect();
+	                }
+	            }
+	        }
+	    }
+	    return allLinksValid;
 	}
+
+		
 	protected void sendKeysToTextBox(WebDriver driver ,WebElement element, String text) {
 		this.waitForElementToBeVisible(element);
 		element.sendKeys(text);
