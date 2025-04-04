@@ -1,30 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>io.mosip.injiweb</groupId>
-   <artifactId>uitest-injiverify</artifactId>
-   <version>0.10.0-SNAPSHOT</version>
-   <name>inji-web-test</name>
-   <description>Parent project of ui automation of injiweb</description>
-   <url>https://github.com/mosip/inji-web</url>
-
-   <licenses>
-      <license>
-         <name>MPL 2.0</name>
-         <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
-      </license>
-   </licenses>
-
-   <developers>
-      <developer>
-         <name>Mosip</name>
-         <email>mosip.emailnotifier@gmail.com</email>
-         <organization>io.mosip</organization>
-         <organizationUrl>https://github.com/mosip/inji-web</organizationUrl>
-      </developer>
-   </developers>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.mosip.uiautomation</groupId>
+    <artifactId>uitest-injiverify</artifactId>
+    <version>0.10.0-SNAPSHOT</version>
 
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

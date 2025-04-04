@@ -6,11 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ConstantsTest {
 
     @Test
-    public void shouldTestConstants() {
-        // Test integer constants
+    void testConstantsValues() {
         assertEquals(300, Constants.DEFAULT_EXPIRY);
-
-        // Test String constants
+        assertEquals("/vp-submission", Constants.RESPONSE_SUBMISSION_URI_ROOT);
         assertEquals("/direct-post", Constants.RESPONSE_SUBMISSION_URI);
         assertEquals("/vp-definition/", Constants.VP_DEFINITION_URI);
         assertEquals("vp_token", Constants.RESPONSE_TYPE);
@@ -25,7 +23,5 @@ public class ConstantsTest {
         assertEquals("verificationMethod", Constants.KEY_VERIFICATION_METHOD);
         assertEquals("verifiableCredential", Constants.KEY_VERIFIABLE_CREDENTIAL);
         assertEquals("credential", Constants.KEY_CREDENTIAL);
-        assertEquals("Invalid transaction ID, No requests found for given transaction ID.", Constants.ERR_100);
-        assertEquals("No VP submission found for given transaction ID.", Constants.ERR_101);
     }
 }

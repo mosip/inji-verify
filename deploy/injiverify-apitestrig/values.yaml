@@ -2,6 +2,6 @@ modules:
   injiverify:
     enabled: true
     image:
-      repository: mosipdev/apitest-inji-verify
-      tag: develop
+      repository: mosipid/apitest-inji-verify
+      tag: 0.11.0
       pullPolicy: Always
