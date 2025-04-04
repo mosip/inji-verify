@@ -6,7 +6,6 @@ import vpVerificationReducer from "./features/verify/vpVerificationState"
 import verificationSaga from './features/verification/verification.saga';
 import createSagaMiddleware from "redux-saga";
 import commonReducer from './features/common/commonSlice'
-import verifySaga from "./features/verify/verifySaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -31,7 +30,6 @@ export type AppDispatch = typeof store.dispatch;
 
 // Run the saga
 sagaMiddleware.run(verificationSaga);
-sagaMiddleware.run(verifySaga);
 
 
 export default store;

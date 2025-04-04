@@ -27,7 +27,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   restart,
   isSingleVc,
 }) => {
-  const { vcStatus } = verifiedVcs[0];
+  const vcStatus = verifiedVcs.length > 0 ? verifiedVcs[0].vcStatus : "INVALID";
   const selectedClaims: claim[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
 
@@ -70,7 +70,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
 
   return (
     <div className="space-y-6 mb-[100px] lg:mb-0">
-      {isSingleVc ? (
+      {isSingleVc && verifiedVcs.length > 0 ? (
         <ResultSummary status={vcStatus} />
       ) : (
         <VpVerifyResultSummary
@@ -80,7 +80,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       )}
       <div className="relative">
         <div className="flex flex-col items-center space-y-4 lg:space-y-6 mt-[-60px] lg:mt-[-70px]">
-          {filterVerifiedVcs.map(({ vc, vcStatus }, index) => (
+          {verifiedVcs.length > 0 && verifiedVcs.map(({ vc, vcStatus }, index) => (
             <DisplayVcCardView
               key={index}
               vc={vc}
@@ -88,8 +88,8 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
               view={isSingleVc}
             />
           ))}
-          {unverifiedClaims.map((claim) => (
-            <DisplayUnVerifiedVc claim={claim} />
+          {unverifiedClaims.length > 0 && unverifiedClaims.map((claim,index) => (
+            <DisplayUnVerifiedVc key={index} claim={claim} />
           ))}
         </div>
       </div>
