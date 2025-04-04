@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.inji.verify</groupId>
         <artifactId>verify-service-parent</artifactId>
-        <version>0.11.0-SNAPSHOT</version>
+        <version>0.11.0-alpha</version>
     </parent>
 
     <artifactId>verify-service</artifactId>
@@ -116,10 +116,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.3</version>
-                <configuration>
+<!--                <configuration>
                     <executable>true</executable>
                     <layout>ZIP</layout>
-                </configuration>
+                </configuration> -->
                 <executions>
                     <execution>
                         <goals>
@@ -129,6 +129,35 @@
                     </execution>
                 </executions>
             </plugin>
+	<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+        </execution>
+    </executions>
+        </plugin>
+	<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+                  <execution>
+                    <id>attach-javadocs</id>
+                    <goals>
+                         <goal>jar</goal>
+                    </goals>
+                  </execution>
+            </executions>
+            <configuration>
+                   <doclint>none</doclint>
+            </configuration>
+         </plugin>
         </plugins>
     </build>
 
