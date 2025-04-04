@@ -3,13 +3,16 @@ package utils;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -83,5 +86,21 @@ public class BaseTest {
 		}  else {
 			throw new RuntimeException("Invalid YAML format, expected a map");
 		}
+	}
+	
+	public static String[] fetchIssuerTexts() {
+	    String issuerSearchText = null;
+	    String issuerSearchTextforSunbird = null;
+	    String propertyFilePath = System.getProperty("user.dir") + "/src/test/resources/config.properties";
+	    Properties properties = new Properties();
+
+	    try (FileInputStream fileInputStream = new FileInputStream(propertyFilePath)) {
+	       properties.load(fileInputStream);
+	       issuerSearchText = properties.getProperty("issuerSearchText");
+	       issuerSearchTextforSunbird = properties.getProperty("issuerSearchTextforSunbird");
+	    } catch (IOException e) {
+	       e.printStackTrace();
+	    }
+	    return new String[]{issuerSearchText, issuerSearchTextforSunbird};
 	}
 }

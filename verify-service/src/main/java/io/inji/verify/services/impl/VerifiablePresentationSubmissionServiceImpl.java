@@ -90,11 +90,12 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     @Override
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
-        VPSubmission vpSubmission = vpSubmissionRepository.findAllById(requestIds).getFirst();
+        List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
-        if (vpSubmission == null) {
+        if (vpSubmissions.isEmpty()) {
             throw new VPSubmissionNotFoundException();
         }
+        VPSubmission vpSubmission = vpSubmissions.getFirst();
         return processSubmission(vpSubmission, transactionId);
     }
 
