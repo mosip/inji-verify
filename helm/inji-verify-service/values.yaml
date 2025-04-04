@@ -265,7 +265,7 @@ extraEnvVars: |
 ## ConfigMap with extra environment variables that used
 ##
 extraEnvVarsCM:
-  - global
+  - inji-stack-config
   - config-server-share
   - artifactory-share
 
