@@ -13,7 +13,6 @@ declare global {
             INTERNET_CONNECTIVITY_CHECK_TIMEOUT: string,
             VERIFY_SERVICE_API_URL: string,
             VERIFIABLE_CLAIMS_CONFIG_URL: string,
-            VP_REQUEST_STATUS_LONGPOLL_TIMEOUT: number
         }
     }
 }

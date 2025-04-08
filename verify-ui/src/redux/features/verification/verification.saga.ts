@@ -8,6 +8,7 @@ import {VcStatus} from "../../../types/data-types";
 import {select} from "redux-saga-test-plan/matchers";
 import {updateInternetConnectionStatus} from "../application-state/application-state.slice";
 import {extractRedirectUrlFromQrData, initiateOvpFlow} from "../../../utils/ovp-utils";
+import {decode} from "@mosip/pixelpass";
 
 function* handleVerification(data: any) {
     try {
@@ -16,8 +17,9 @@ function* handleVerification(data: any) {
             return;
         }
         const stringData = new TextDecoder("utf-8").decode(data as Uint8Array);
-        if (stringData.startsWith(OvpQrHeader)) {
-          yield call(handleOvpFlow, stringData);
+        const responseStringData = stringData.startsWith(OvpQrHeader) ? stringData : decode(stringData);
+        if ( responseStringData.startsWith(OvpQrHeader)) {
+          yield call(handleOvpFlow, responseStringData);
           return;
         }
         const vc: object = yield call(JSON.parse, yield call(decodeQrData, data as Uint8Array));
