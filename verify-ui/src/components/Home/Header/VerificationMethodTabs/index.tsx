@@ -84,9 +84,9 @@ function VerificationMethodTabs(props: any) {
             onClick={handlePrevious}
             className="focus:outline-none"
           >
-            <>
+            <span>
               <IoChevronBackOutline className="mx-auto"/>
-            </>
+            </span>
           </button>
         </div>
         <div
