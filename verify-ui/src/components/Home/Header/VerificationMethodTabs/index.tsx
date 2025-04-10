@@ -9,6 +9,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
+import {IoChevronBackOutline} from "react-icons/io5";
 
 const Tab = ({
   id,
@@ -84,7 +85,7 @@ function VerificationMethodTabs(props: any) {
             className="focus:outline-none"
           >
             <>
-              <MdArrowForwardIos className="mx-auto" style={{rotate:"180deg"}} />
+              <IoChevronBackOutline className="mx-auto"/>
             </>
           </button>
         </div>
