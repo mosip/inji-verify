@@ -159,6 +159,7 @@ export type VerifyState = {
   unVerifiedClaims: claim[];
   sharingType: VCShareType;
   isPartiallyShared: boolean;
+  presentationDefinition: PresentationDefinition;
 };
 
 export enum VCShareType {
