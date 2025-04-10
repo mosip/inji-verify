@@ -6,10 +6,10 @@ import { VerificationMethod } from "../../../../types/data-types";
 import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
 import { AlertMessages, Pages } from "../../../../utils/config";
 import { MdArrowForwardIos } from "react-icons/md";
+import { MdArrowBackIos } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
-import {IoChevronBackOutline} from "react-icons/io5";
 
 const Tab = ({
   id,
@@ -84,9 +84,9 @@ function VerificationMethodTabs(props: any) {
             onClick={handlePrevious}
             className="focus:outline-none"
           >
-            <span>
-              <IoChevronBackOutline className="mx-auto"/>
-            </span>
+            <>
+              <MdArrowBackIos className="mx-auto" />
+            </>
           </button>
         </div>
         <div
