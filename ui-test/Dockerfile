@@ -53,7 +53,7 @@ COPY --chown=${container_user_uid}:${container_user} --chmod=771 ./entrypoint.sh
 #COPY --chown=${container_user}:${container_user} ./src/test ${work_dir}/
 COPY --chown=${container_user}:${container_user} ./src/test/resources/TestNg.xml /home/mosip/TestNg.xml
 COPY --chown=${container_user}:${container_user} ./src/test/resources/featurefiles/ /home/mosip/featurefiles/
-COPY --chown=${container_user}:${container_user} ./src/test/resources/config/ /home/mosip/src/test/resources/config/
+COPY --chown=${container_user}:${container_user} ./src/test/resources/config.properties /home/mosip/src/test/resources/config.properties
 COPY --chown=${container_user}:${container_user} ./src/test/resources/extent.properties /home/mosip/src/test/resources/extent.properties
 COPY --chown=${container_user}:${container_user} ./src/main/java/utils/ /home/mosip/src/main/java/utils/
 COPY --chown=${container_user}:${container_user} ./screenshots/ /home/mosip/screenshots/
