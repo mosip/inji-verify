@@ -211,7 +211,7 @@ jobs:
     uses: anup-nehe/kattu/.github/workflows/maven-build-browserStack.yml@develop
     with:
       SERVICE_LOCATION: ./ui-test
-      BUILD_ARTIFACT: ui-test
+      BUILD_ARTIFACT: ui-test-verify
     secrets:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }} 
@@ -226,9 +226,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NAMESPACE: ${{ secrets.dev_namespace_docker_hub }}
-      SERVICE_NAME: ui-test
+      SERVICE_NAME: ui-test-verify
       SERVICE_LOCATION: ui-test
-      BUILD_ARTIFACT: ui-test-local
+      BUILD_ARTIFACT: ui-test-verify
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 21
@@ -277,13 +277,13 @@ jobs:
         if: failure() # Pick up events even if the job fails or is canceled.
 
   build-dockers-ui-test:
-    needs: build-ui-test-local
+    needs: build-ui-test-verify-local
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: 'ui-test'
-            SERVICE_NAME: 'ui-test'
-            BUILD_ARTIFACT: 'ui-test-local'
+          - SERVICE_LOCATION: 'ui-test-verify'
+            SERVICE_NAME: 'ui-test-verify'
+            BUILD_ARTIFACT: 'ui-test-verify-local'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
