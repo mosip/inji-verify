@@ -227,7 +227,7 @@ jobs:
     env:
       NAMESPACE: ${{ secrets.dev_namespace_docker_hub }}
       SERVICE_NAME: ui-test-verify
-      SERVICE_LOCATION: ui-test
+      SERVICE_LOCATION: ui-test-verify
       BUILD_ARTIFACT: ui-test-verify
     steps:
       - uses: actions/checkout@v3
