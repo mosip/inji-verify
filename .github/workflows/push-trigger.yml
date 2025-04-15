@@ -207,7 +207,7 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       
- build-maven-ui-test:
+  build-maven-ui-test:
     uses: anup-nehe/kattu/.github/workflows/maven-build-browserStack.yml@develop
     with:
       SERVICE_LOCATION: ./ui-test
