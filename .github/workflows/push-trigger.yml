@@ -221,7 +221,7 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-  build-ui-test-local:
+  build-ui-test-verify-local:
     needs: build-maven-ui-test
     runs-on: ubuntu-latest
     env:
