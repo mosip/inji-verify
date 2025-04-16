@@ -9,32 +9,32 @@ fi
 NS=injiverify
 CHART_VERSION=0.11.0
 
-DEFAULT_MOSIP_INJIVERIFY_HOST=$( kubectl get cm inji-stack-config -n config-server -o jsonpath={.data.mosip-injiverify-host} )
-# Check if MOSIP_INJIVERIFY_HOST is present under configmap/inji-stack-config of configserver
-if echo "$DEFAULT_MOSIP_INJIVERIFY_HOST" | grep -q "MOSIP_INJIVERIFY_HOST"; then
-    echo "MOSIP_INJIVERIFY_HOST is already present in configmap/inji-stack-config of configserver"
-    MOSIP_INJIVERIFY_HOST=DEFAULT_MOSIP_INJIVERIFY_HOST
+DEFAULT_INJIVERIFY_HOST=$( kubectl get cm inji-stack-config -n config-server -o jsonpath={.data.injiverify-host} )
+# Check if INJIVERIFY_HOST is present under configmap/inji-stack-config of configserver
+if echo "$DEFAULT_INJIVERIFY_HOST" | grep -q "INJIVERIFY_HOST"; then
+    echo "INJIVERIFY_HOST is already present in configmap/inji-stack-config of configserver"
+    MOSIP_INJIVERIFY_HOST=DEFAULT_INJIVERIFY_HOST
 else
-    read -p "Please provide injiverifyhost (eg: injiverify.sandbox.xyz.net ) : " MOSIP_INJIVERIFY_HOST
+    read -p "Please provide injiverifyhost (eg: injiverify.sandbox.xyz.net ) : " INJIVERIFY_HOST
 
-    if [ -z "MOSIP_INJIVERIFY_HOST" ]; then
+    if [ -z "INJIVERIFY_HOST" ]; then
     echo "INJIVERIFY Host not provided; EXITING;"
     exit 0;
     fi    
 fi   
 
-CHK_MOSIP_INJIVERIFY_HOST=$( nslookup "$MOSIP_INJIVERIFY_HOST" )
+CHK_INJIVERIFY_HOST=$( nslookup "$INJIVERIFY_HOST" )
 if [ $? -gt 0 ]; then
     echo "InjiVERIFY Host does not exists; EXITING;"
     exit 0;
 fi
 
-echo "MOSIP_INJIVERIFY_HOST is not present in configmap/inji-stack-config of configserver"
+echo "INJIVERIFY_HOST is not present in configmap/inji-stack-config of configserver"
     # Add injiverify host to inji-stack-config
-    kubectl patch configmap inji-stack-config -n config-server --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
-    kubectl patch configmap inji-stack-config -n default --type merge -p "{\"data\": {\"mosip-injiverify-host\": \"$MOSIP_INJIVERIFY_HOST\"}}"
+    kubectl patch configmap inji-stack-config -n config-server --type merge -p "{\"data\": {\"injiverify-host\": \"$INJIVERIFY_HOST\"}}"
+    kubectl patch configmap inji-stack-config -n default --type merge -p "{\"data\": {\"injiverify-host\": \"$INJIVERIFY_HOST\"}}"
     # Add the host
-    kubectl -n config-server set env --keys=mosip-injiverify-host --from configmap/inji-stack-config deployment/config-server --prefix=SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_
+    kubectl -n config-server set env --keys=injiverify-host --from configmap/inji-stack-config deployment/config-server --prefix=SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_
     # Restart the configserver deployment
     kubectl -n config-server get deploy -o name | xargs -n1 -t kubectl -n config-server rollout status
 
@@ -54,7 +54,7 @@ function installing_inji-verify-ui() {
   $COPY_UTIL configmap artifactory-share artifactory $NS
   $COPY_UTIL configmap config-server-share config-server $NS
 
-  INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.mosip-injiverify-host})
+  INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.injiverify-host})
   echo Installing INJIVERIFY
   helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
