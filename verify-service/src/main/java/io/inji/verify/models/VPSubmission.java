@@ -24,12 +24,14 @@ public class VPSubmission {
     @Id
     @JsonProperty("state")
     @SerializedName("state")
+    @Column(name = "request_id")
     String requestId;
 
     @JdbcTypeCode(SqlTypes.CLOB)
+    @Column(name = "vp_token")
     String vpToken;
 
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name = "presentation_submission")
     @JdbcTypeCode(SqlTypes.JSON)
     PresentationSubmissionDto presentationSubmission;
 }
