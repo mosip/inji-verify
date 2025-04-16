@@ -11,21 +11,22 @@ on:
   push:
     branches:
       - '!release-branch'
-      - release*
+      #- release*
       - master
       - 1.*
-      - develop
+      #- develop
 
 jobs:
   inji-verify-test:
+    if: false  # This disables the job from running
     uses: mosip/kattu/.github/workflows/browserstack-web.yml@master-java21
     with:
       SERVICE_LOCATION: ui-test
       BUILD_ARTIFACT: test-output
     secrets:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }} 
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }} 
+      AWS_REGION: ${{ secrets.AWS_REGION }}
       S3_BUCKET: ${{ secrets.S3_BUCKET }}       

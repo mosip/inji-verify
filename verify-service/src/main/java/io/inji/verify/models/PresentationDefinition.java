@@ -23,18 +23,21 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class PresentationDefinition {
     @Id
+    @Column(name="id")
     private final String id;
 
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name="input_descriptors")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<InputDescriptorDto> inputDescriptors;
 
+    @Column(name="name")
     private String name;
 
+    @Column(name="purpose")
     private String purpose;
 
 
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name="submission_requirements")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
 
