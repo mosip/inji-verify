@@ -1,35 +1,6 @@
 import { claim, credentialSubject, VCWrapper, QrData, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
-export const getPresentationDefinition = (data: QrData) => {
-  const params = new URLSearchParams();
-  params.set("client_id", data.authorizationDetails.clientId);
-  params.set("response_type", data.authorizationDetails.responseType);
-  params.set("response_mode", "direct_post");
-  params.set("nonce", data.authorizationDetails.nonce);
-  params.set("state", data.requestId);
-  params.set(
-    "response_uri",
-    window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.responseUri
-  );
-  if (data.authorizationDetails.presentationDefinitionUri) {
-    params.set(
-      "presentation_definition_uri",
-      window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.presentationDefinitionUri
-    );
-  } else {
-    params.set(
-      "presentation_definition",
-      JSON.stringify(data.authorizationDetails.presentationDefinition)
-    );
-  }
-  params.set(
-    "client_metadata",
-    JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
-  );
-  return params.toString();
-};
-
 export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
   const credential = vc.credentialSubject;
