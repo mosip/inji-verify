@@ -61,7 +61,7 @@ export const vcSubmission = async (credential: unknown, url: string) => {
   try {
     const response = await fetch(url + "/vc-submission", requestOptions);
     const data = await response.json();
-    return data;
+    return data.transactionId;
   } catch (error) {
     console.error("Error occurred:", error);
     if (error instanceof Error) {

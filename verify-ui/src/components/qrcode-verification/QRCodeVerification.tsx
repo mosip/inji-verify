@@ -243,12 +243,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       const scanResult: scanResult = await scanFilesForQr(file);
       if (scanResult.error) throw new Error(scanResult.error.message);
       if (!scanResult.data) throw new Error("No QR code detected in the file.");
-      console.log("set uploading...");
-
       setUploading(true);
       await processScanResult(scanResult.data);
     } catch (error) {
-      console.log("reset uploading...");
       setUploading(false);
       handleError(error);
     }
@@ -288,8 +285,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const triggerCallbacks = async (vc: any) => {
     try {
       if (onVCReceived) {
-        const uuid = await vcSubmission(vc, verifyServiceUrl);
-        onVCReceived(uuid);
+        const transactionId = await vcSubmission(vc, verifyServiceUrl);
+        onVCReceived(transactionId);
         setScanning(false);
         setUploading(false);
       } else if (onVCProcessed) {

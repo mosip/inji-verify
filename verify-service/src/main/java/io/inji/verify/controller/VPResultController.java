@@ -1,9 +1,12 @@
 package io.inji.verify.controller;
 
+import java.util.Optional;
+
 import io.inji.verify.dto.core.ErrorDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.services.VCSubmissionService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +22,13 @@ import java.util.List;
 @Slf4j
 public class VPResultController {
     final VerifiablePresentationRequestService verifiablePresentationRequestService;
+    final VCSubmissionService vcSubmissionService;
 
     final VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
-    public VPResultController(VerifiablePresentationRequestService verifiablePresentationRequestService, VerifiablePresentationSubmissionService verifiablePresentationSubmissionService) {
+    public VPResultController(VerifiablePresentationRequestService verifiablePresentationRequestService, VCSubmissionService vcSubmissionService, VerifiablePresentationSubmissionService verifiablePresentationSubmissionService) {
         this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+        this.vcSubmissionService = vcSubmissionService;
         this.verifiablePresentationSubmissionService = verifiablePresentationSubmissionService;
     }
 
@@ -39,7 +44,10 @@ public class VPResultController {
                 log.error(e.getMessage());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.NO_VP_SUBMISSION));
             }
+        } else {
+            return Optional.ofNullable(vcSubmissionService.getVcWithVerification(transactionId))
+                    .map(vc -> ResponseEntity.status(HttpStatus.OK).body((Object) vc))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID)));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID));
     }
 }
