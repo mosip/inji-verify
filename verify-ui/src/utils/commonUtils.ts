@@ -103,7 +103,7 @@ export const calculateVerifiedClaims = (
   verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => claim.type === vc.vc.credentialConfigurationId)
+    selectedClaims.some((claim) => claim.type.toLowerCase() === vc.vc.credentialConfigurationId.toLowerCase())
   );
 };
 
@@ -113,7 +113,7 @@ export const calculateUnverifiedClaims = (
 ) => {
   return selectedClaims.filter((claim) =>
     !verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId === claim.type
+      (vc) => vc.vc.credentialConfigurationId.toLowerCase() === claim.type.toLowerCase()
     )
   );
 };
