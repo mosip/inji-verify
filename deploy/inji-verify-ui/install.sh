@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.11.0
+CHART_VERSION=0.12.0-develop
 
 DEFAULT_INJIVERIFY_HOST=$( kubectl get cm inji-stack-config -n config-server -o jsonpath={.data.injiverify-host} )
 # Check if INJIVERIFY_HOST is present under configmap/inji-stack-config of configserver
@@ -51,8 +51,6 @@ function installing_inji-verify-ui() {
   echo Copy configmaps
   COPY_UTIL=../copy_cm_func.sh
   $COPY_UTIL configmap inji-stack-config default $NS
-  $COPY_UTIL configmap artifactory-share artifactory $NS
-  $COPY_UTIL configmap config-server-share config-server $NS
 
   INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.injiverify-host})
   echo Installing INJIVERIFY

@@ -23,6 +23,6 @@ These scripts are automatically run with below mentioned script in existing k8 c
   ```
   ./init_db.sh`
   ```
-
+*
 ## Install for developers
 Developers may run the SQLs using `<db name>/deploy.sh` script.
