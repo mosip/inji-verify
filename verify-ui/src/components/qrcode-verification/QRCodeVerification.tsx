@@ -351,7 +351,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
               <button
                 onClick={() => {
                   stopVideoStream();
-                  // dispatch(goToHomeScreen({})); // Assuming dispatch is available in context
                 }}
                 className="absolute top-2 right-2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none z-10"
                 aria-label="Close Scanner"

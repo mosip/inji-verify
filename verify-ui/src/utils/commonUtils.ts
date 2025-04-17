@@ -1,4 +1,4 @@
-import { claim, credentialSubject, VCWrapper, QrData, VcStatus } from "../types/data-types";
+import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 export const getDetailsOrder = (vc: any) => {

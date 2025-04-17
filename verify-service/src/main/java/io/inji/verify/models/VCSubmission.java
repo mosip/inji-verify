@@ -3,6 +3,7 @@ package io.inji.verify.models;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -20,8 +21,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VCSubmission {
     @Id
+    @Column(name = "transaction_id")
     String transactionId;
 
     @JdbcTypeCode(SqlTypes.CLOB)
+    @Column(name = "vc")
     String vc;
 }

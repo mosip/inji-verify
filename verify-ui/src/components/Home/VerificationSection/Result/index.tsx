@@ -26,7 +26,6 @@ const Result = () => {
     }
   };
 
-  // validate vc and show success/failure component
   return (
     <div id="result-section" className="relative mb-[100px]">
       <div className={`text-whiteText`}>
@@ -43,7 +42,6 @@ const Result = () => {
           <Button
             id="verify-another-qr-code-button"
             title={t("Common:Button.verifyAnotherQrCode")}
-            onClick={handleVerifyAnotherQrCode}
             onClick={handleVerifyAnotherQrCode}
             className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
           />
