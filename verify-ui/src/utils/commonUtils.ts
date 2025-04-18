@@ -1,34 +1,5 @@
-import { claim, credentialSubject, VCWrapper, QrData, VcStatus } from "../types/data-types";
+import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
-
-export const getPresentationDefinition = (data: QrData) => {
-  const params = new URLSearchParams();
-  params.set("client_id", data.authorizationDetails.clientId);
-  params.set("response_type", data.authorizationDetails.responseType);
-  params.set("response_mode", "direct_post");
-  params.set("nonce", data.authorizationDetails.nonce);
-  params.set("state", data.requestId);
-  params.set(
-    "response_uri",
-    window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.responseUri
-  );
-  if (data.authorizationDetails.presentationDefinitionUri) {
-    params.set(
-      "presentation_definition_uri",
-      window.location.origin + window._env_.VERIFY_SERVICE_API_URL + data.authorizationDetails.presentationDefinitionUri
-    );
-  } else {
-    params.set(
-      "presentation_definition",
-      JSON.stringify(data.authorizationDetails.presentationDefinition)
-    );
-  }
-  params.set(
-    "client_metadata",
-    JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
-  );
-  return params.toString();
-};
 
 export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
@@ -103,7 +74,7 @@ export const calculateVerifiedClaims = (
   verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => claim.type === vc.vc.credentialConfigurationId)
+    selectedClaims.some((claim) => claim.type.toLowerCase() === vc.vc.credentialConfigurationId.toLowerCase())
   );
 };
 
@@ -113,7 +84,16 @@ export const calculateUnverifiedClaims = (
 ) => {
   return selectedClaims.filter((claim) =>
     !verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId === claim.type
+      (vc) => vc.vc.credentialConfigurationId.toLowerCase() === claim.type.toLowerCase()
     )
   );
+};
+
+export const delayUploadQrCode = () => {
+  setTimeout(() => {
+    const uploadQrElement = document.getElementById("upload-qr");
+    if (uploadQrElement) {
+      uploadQrElement.click();
+    }
+  }, 10);
 };

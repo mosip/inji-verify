@@ -50,7 +50,7 @@ function MobileStepper() {
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
     };
-  }, [method]);
+  }, [isPartiallyShared, method]);
 
   return (
     <div className={`grid grid-cols-13 lg:hidden flex flex-column mx-auto items-center`}>

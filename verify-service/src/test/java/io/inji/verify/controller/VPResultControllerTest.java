@@ -6,6 +6,7 @@ import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.services.VCSubmissionService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,13 +30,15 @@ public class VPResultControllerTest {
 
     private final VerifiablePresentationSubmissionService verifiablePresentationSubmissionService = Mockito.mock(VerifiablePresentationSubmissionService.class);
 
+    private final VCSubmissionService vcSubmissionService = Mockito.mock(VCSubmissionService.class);
+
     private MockMvc mockMvc;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
-        VPResultController vpResultController = new VPResultController(verifiablePresentationRequestService, verifiablePresentationSubmissionService);
+        VPResultController vpResultController = new VPResultController(verifiablePresentationRequestService, vcSubmissionService, verifiablePresentationSubmissionService);
         mockMvc = MockMvcBuilders.standaloneSetup(vpResultController).build();
     }
 
@@ -45,13 +48,13 @@ public class VPResultControllerTest {
         List<String> requestIds = new ArrayList<>();
         requestIds.add("req456");
 
-        VPTokenResultDto resultDto = new VPTokenResultDto("tId", VPResultStatus.SUCCESS,new ArrayList<>());
+        VPTokenResultDto resultDto = new VPTokenResultDto("tId", VPResultStatus.SUCCESS, new ArrayList<>());
 
         when(verifiablePresentationRequestService.getLatestRequestIdFor(transactionId)).thenReturn(requestIds);
         when(verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId)).thenReturn(resultDto);
 
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(resultDto)));
 
@@ -67,7 +70,7 @@ public class VPResultControllerTest {
         when(verifiablePresentationRequestService.getLatestRequestIdFor(transactionId)).thenReturn(requestIds);
 
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID))));
 
@@ -86,7 +89,7 @@ public class VPResultControllerTest {
                 .thenThrow(new VPSubmissionNotFoundException());
 
         mockMvc.perform(get("/vp-result/{transactionId}", transactionId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.NO_VP_SUBMISSION))));
 

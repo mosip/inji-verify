@@ -18,18 +18,19 @@ import java.io.Serializable;
 @Table(name = "authorization_request_details")
 public class AuthorizationRequestCreateResponse implements Serializable {
     @Id
+    @Column(name="request_id")
     private final String requestId;
 
     @NotNull
-    @Column
+    @Column(name="transaction_id")
     private final String transactionId;
 
     @NotNull
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name="authorization_details")
     @JdbcTypeCode(SqlTypes.JSON)
     AuthorizationRequestResponseDto authorizationDetails;
 
     @NotNull
-    @Column
+    @Column(name="expires_at")
     long expiresAt;
 }

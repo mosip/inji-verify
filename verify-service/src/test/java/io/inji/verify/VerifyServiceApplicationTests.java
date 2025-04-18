@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = { "inji.vp-request.long-polling-timeout = 1000" })
+@TestPropertySource(properties = { "inji.vp-request.long-polling-timeout = 1000", "spring.datasource.url = jdbc:h2:mem:verifydb" })
 class VerifyServiceApplicationTests {
 
      @Test
