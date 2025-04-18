@@ -178,7 +178,7 @@ public class BaseTest {
 		executeLsCommand(System.getProperty("user.dir") + "/test-output/");
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
 		String name = InjiVerifyConfigManager.getapiEndUser() + "-"+timestamp + "-T-" + totalCount + "-P-" + passedCount + "-F-" + failedCount + ".html";
-		String newFileName = "InjiWebUi-" +name;
+		String newFileName = "InjiVerifyUi-" +name;
 		File originalReportFile = new File(System.getProperty("user.dir") + "/test-output/ExtentReport.html");
 		File newReportFile = new File(System.getProperty("user.dir") + "/test-output/" + newFileName);
 
