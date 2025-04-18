@@ -11,7 +11,7 @@
 -- ------------------------------------------------------------------------------------------
 -- ------------------------------------------------------------------------------------------
 CREATE TABLE vc_submission(
-                          transactionId character varying(40) NOT NULL,
+                          transaction_id character varying(40) NOT NULL,
                           vc jsonb NOT NULL
 );
 
