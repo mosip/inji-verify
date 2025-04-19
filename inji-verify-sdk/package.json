@@ -1,6 +1,6 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A react component libaray to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tw-mosip/inji-verify.git"
+    "url": "https://github.com/mosip/inji-verify.git"
   },
   "author": "MOSIP",
   "license": "MPL-2.0",
