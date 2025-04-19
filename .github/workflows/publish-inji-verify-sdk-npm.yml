@@ -2,17 +2,21 @@ name: inji-verify SDK NPM Publish
 
 on:
   release:
-    types: [published]
+    types: [ published ]
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message for manually triggering'
+        required: false
+        default: 'Triggered for NPM Publish'
+        type: string
   push:
     branches:
-      - '!release-branch'
       - release*
       - master
-      - 1.*
-      - develop
-      - MOSIP*
+      - develop*
 
 jobs:
   publish-inji-verify-sdk-to-npm-registry:
