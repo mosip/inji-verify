@@ -131,10 +131,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.3</version>
-<!--                <configuration>
-                    <executable>true</executable>
-                    <layout>ZIP</layout>
-                </configuration> -->
                 <executions>
                     <execution>
                         <goals>
