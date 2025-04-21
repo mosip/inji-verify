@@ -678,6 +678,8 @@ public class StepDef {
 		}
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
+	
+	@Then("User verify pdf is downloaded")
 	public void user_verify_pdf_is_downloaded() throws IOException, IOException {
 		try {
 			Thread.sleep(10000);
