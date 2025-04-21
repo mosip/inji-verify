@@ -1,6 +1,7 @@
 package io.inji.verify.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.shared.Constants;
@@ -23,21 +24,21 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class PresentationDefinition {
     @Id
-    @Column(name="id")
     private final String id;
 
-    @Column(columnDefinition = "json", name="input_descriptors")
+    @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<InputDescriptorDto> inputDescriptors;
 
-    @Column(name="name")
     private String name;
 
-    @Column(name="purpose")
     private String purpose;
 
+    @Column(columnDefinition = "json", name = "vp_format")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private FormatDto format;
 
-    @Column(columnDefinition = "json", name="submission_requirements")
+    @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
     private final List<SubmissionRequirementDto> submissionRequirements;
 

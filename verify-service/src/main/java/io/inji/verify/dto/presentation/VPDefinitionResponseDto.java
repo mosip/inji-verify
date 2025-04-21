@@ -24,6 +24,13 @@ public class VPDefinitionResponseDto {
     @SerializedName("input_descriptors")
     List<InputDescriptorDto> inputDescriptors;
 
+
+    private String name;
+
+    private String purpose;
+
+    private FormatDto format;
+
     @JsonProperty("submission_requirements")
     @SerializedName("submission_requirements")
     List<SubmissionRequirementDto> submissionRequirements;
