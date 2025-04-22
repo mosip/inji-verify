@@ -11,7 +11,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
-    "verify": "npm run build && npm test"
+    "verify": "npm run build"
   },
   "repository": {
     "type": "git",

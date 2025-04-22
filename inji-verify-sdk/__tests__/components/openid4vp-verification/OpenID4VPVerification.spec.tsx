@@ -7,7 +7,7 @@ import {
   fireEvent,
   act,
 } from "@testing-library/react";
-import OpenID4VPVerification from "../../../components/openid4vp-verification/OpenID4VPVerification";
+import OpenID4VPVerification from "../../../src/components/openid4vp-verification/OpenID4VPVerification";
 
 const mockFetchError = (message = "Failed to fetch") => {
   global.fetch = jest.fn(() => Promise.reject(new Error(message))) as jest.Mock;
