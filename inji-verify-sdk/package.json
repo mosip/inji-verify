@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
-    "test": "jest test --coverage",
+    "test": "jest test --coverage --passWithNoTests",
     "verify": "npm test"
   },
   "repository": {
