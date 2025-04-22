@@ -11,7 +11,14 @@ import org.springframework.context.ApplicationContext;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 
 @SpringBootTest
-@TestPropertySource(properties = {"inji.vp-request.long-polling-timeout = 1000", "spring.datasource.url = jdbc:h2:mem:verifydb"})
+@TestPropertySource(properties =
+        {
+                "inji.vp-request.long-polling-timeout = 1000",
+                "spring.datasource.url = jdbc:h2:mem:verifydb",
+                "spring.datasource.driverClassName = org.h2.Driver",
+                "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
+                "spring.jpa.hibernate.ddl-auto = create"
+        })
 public class AppConfigTest {
 
      @Autowired

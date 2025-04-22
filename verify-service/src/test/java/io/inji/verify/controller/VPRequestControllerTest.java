@@ -5,6 +5,7 @@ import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.core.ErrorDto;
+import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
@@ -45,7 +46,8 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_Success() throws Exception {
-        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), new ArrayList<>());
+        FormatDto formatDto = new FormatDto(null,null,null);
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purposr",formatDto, new ArrayList<>());
         VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
         VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(), 0L);
 
@@ -75,7 +77,8 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_NotFound() throws Exception {
-        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), new ArrayList<>());
+        FormatDto formatDto = new FormatDto(null,null,null);
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purposr",formatDto, new ArrayList<>());
 
         VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
 
