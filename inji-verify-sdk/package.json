@@ -11,8 +11,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
-    "verify": "npm test",
-    "publish": "npm unpublish @mosip/react-inji-verify-sdk@0.1.0 && npm run build && npm publish --access public --force"
+    "verify": "npm unpublish @mosip/react-inji-verify-sdk@0.1.0 && npm npm build && npm test",
   },
   "repository": {
     "type": "git",
