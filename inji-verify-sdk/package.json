@@ -1,6 +1,6 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A react component library to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
-    "verify": "npm unpublish @mosip/react-inji-verify-sdk@0.1.0 && npm npm build && npm test"
+    "verify": "npm npm build && npm test"
   },
   "repository": {
     "type": "git",
