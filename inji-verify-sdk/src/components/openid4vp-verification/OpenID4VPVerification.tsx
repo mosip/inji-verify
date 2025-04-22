@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import styles from "./OpenID4VPVerification.module.css";
 import {
   OpenID4VPVerificationProps,
   QrData,
@@ -8,6 +6,7 @@ import {
   VerificationStatus,
   VPRequestBody,
 } from "./OpenID4VPVerification.types";
+import React, { useCallback, useEffect, useState } from "react";
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   triggerElement,
@@ -31,96 +30,39 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     return btoa(Date.now().toString());
   };
 
-  const getPresentationDefinition = (data: QrData) => {
-    const params = new URLSearchParams();
-    params.set("client_id", data.authorizationDetails.clientId);
-    params.set("response_type", data.authorizationDetails.responseType);
-    params.set("response_mode", "direct_post");
-    params.set("nonce", data.authorizationDetails.nonce);
-    params.set("state", data.requestId);
-    params.set(
-      "response_uri",
-      verifyServiceUrl + data.authorizationDetails.responseUri
-    );
-    if (data.authorizationDetails.presentationDefinitionUri) {
+  const getPresentationDefinition = useCallback(
+    (data: QrData) => {
+      const params = new URLSearchParams();
+      params.set("client_id", data.authorizationDetails.clientId);
+      params.set("response_type", data.authorizationDetails.responseType);
+      params.set("response_mode", "direct_post");
+      params.set("nonce", data.authorizationDetails.nonce);
+      params.set("state", data.requestId);
       params.set(
-        "presentation_definition_uri",
-        verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+        "response_uri",
+        verifyServiceUrl + data.authorizationDetails.responseUri
       );
-    } else {
+      if (data.authorizationDetails.presentationDefinitionUri) {
+        params.set(
+          "presentation_definition_uri",
+          verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+        );
+      } else {
+        params.set(
+          "presentation_definition",
+          JSON.stringify(data.authorizationDetails.presentationDefinition)
+        );
+      }
       params.set(
-        "presentation_definition",
-        JSON.stringify(data.authorizationDetails.presentationDefinition)
+        "client_metadata",
+        JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
       );
-    }
-    params.set(
-      "client_metadata",
-      JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
-    );
-    return params.toString();
-  };
+      return params.toString();
+    },
+    [verifyServiceUrl]
+  );
 
-  const createVpRequest = async () => {
-    if(presentationDefinition?.input_descriptors.length !== 0) {
-      try {
-        setLoading(true);
-        const requestBody: VPRequestBody = {
-          clientId: window.location.origin,
-          nonce: generateNonce(),
-        };
-  
-        if (txnId) requestBody.transactionId = txnId;
-        if (presentationDefinitionId)
-          requestBody.presentationDefinitionId = presentationDefinitionId;
-        if (presentationDefinition)
-          requestBody.presentationDefinition = presentationDefinition;
-  
-        const response = await fetch(`${verifyServiceUrl}/vp-request`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestBody),
-        });
-  
-        if (response.status !== 201)
-          throw new Error("Failed to create VP request");
-        const data: QrData = await response.json();
-        const qrData = OPENID4VP_PROTOCOL + getPresentationDefinition(data);
-        setTxnId(data.transactionId);
-        setReqId(data.requestId);
-        setQrCodeData(qrData);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        onError(error as Error);
-      }
-    }
-  };
-
-  const fetchStatus = async () => {
-    try {
-      const response = await fetch(
-        `${verifyServiceUrl}/vp-request/${reqId}/status`
-      );
-      if (response.status !== 200) throw new Error("Failed to fetch status");
-      const data = await response.json();
-      if (data.status === "ACTIVE") {
-        fetchStatus();
-      }
-      if (data.status === "VP_SUBMITTED") {
-        fetchVpResult();
-      } else if (data.status === "EXPIRED") {
-        setTxnId(null);
-        setReqId(null);
-        setQrCodeData(null);
-        onQrCodeExpired();
-      }
-    } catch (error) {
-      setLoading(false);
-      onError(error as Error);
-    }
-  };
-
-  const fetchVpResult = async () => {
+  const fetchVpResult = useCallback(async () => {
     try {
       if (onVPProcessed) {
         const response = await fetch(`${verifyServiceUrl}/vp-result/${txnId}`);
@@ -156,7 +98,76 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       setQrCodeData(null);
       setLoading(false);
     }
-  };
+  }, [onVPProcessed, onVPReceived, onError, txnId, verifyServiceUrl]);
+
+  const createVpRequest = useCallback(async () => {
+    if (presentationDefinition?.input_descriptors.length !== 0) {
+      try {
+        addStylesheetRules();
+        setLoading(true);
+        const requestBody: VPRequestBody = {
+          clientId: window.location.origin,
+          nonce: generateNonce(),
+        };
+
+        if (txnId) requestBody.transactionId = txnId;
+        if (presentationDefinitionId)
+          requestBody.presentationDefinitionId = presentationDefinitionId;
+        if (presentationDefinition)
+          requestBody.presentationDefinition = presentationDefinition;
+
+        const response = await fetch(`${verifyServiceUrl}/vp-request`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (response.status !== 201)
+          throw new Error("Failed to create VP request");
+        const data: QrData = await response.json();
+        const qrData = OPENID4VP_PROTOCOL + getPresentationDefinition(data);
+        setTxnId(data.transactionId);
+        setReqId(data.requestId);
+        setQrCodeData(qrData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        onError(error as Error);
+      }
+    }
+  }, [
+    presentationDefinition,
+    txnId,
+    presentationDefinitionId,
+    verifyServiceUrl,
+    OPENID4VP_PROTOCOL,
+    getPresentationDefinition,
+    onError,
+  ]);
+
+  const fetchStatus = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${verifyServiceUrl}/vp-request/${reqId}/status`
+      );
+      if (response.status !== 200) throw new Error("Failed to fetch status");
+      const data = await response.json();
+      if (data.status === "ACTIVE") {
+        fetchStatus();
+      }
+      if (data.status === "VP_SUBMITTED") {
+        fetchVpResult();
+      } else if (data.status === "EXPIRED") {
+        setTxnId(null);
+        setReqId(null);
+        setQrCodeData(null);
+        onQrCodeExpired();
+      }
+    } catch (error) {
+      setLoading(false);
+      onError(error as Error);
+    }
+  }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVpResult]);
 
   useEffect(() => {
     if (!presentationDefinitionId && !presentationDefinition) {
@@ -176,7 +187,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     }
     if (onVPReceived && onVPProcessed) {
       throw new Error(
-        "Both onVpReceived and onVpProcessed cannot be provided simultaneously"
+        "Both onVPReceived and onVPProcessed cannot be provided simultaneously"
       );
     }
     if (!onQrCodeExpired) {
@@ -188,13 +199,30 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (!triggerElement) {
       createVpRequest();
     }
-  }, [onError, onQrCodeExpired, onVPProcessed, onVPReceived, presentationDefinition, presentationDefinitionId, triggerElement ]);
+  }, [
+    createVpRequest,
+    onError,
+    onQrCodeExpired,
+    onVPProcessed,
+    onVPReceived,
+    presentationDefinition,
+    presentationDefinitionId,
+    triggerElement,
+  ]);
 
   useEffect(() => {
     if (reqId) {
       fetchStatus();
     }
-  }, [reqId]);
+  }, [fetchStatus, reqId]);
+
+  function addStylesheetRules() {
+    let keyframes = `@keyframes spin {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}`;
+    var styleEl = document.createElement("style");
+    document.head.appendChild(styleEl);
+    var styleSheet = styleEl.sheet;
+    styleSheet?.insertRule(keyframes, 0);
+  }
 
   return (
     <div
@@ -211,9 +239,21 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           {triggerElement}
         </div>
       ) : null}
-      {loading && <div className={styles.loader}></div>}
+      {loading && (
+        <div
+          style={{
+            width: "40px",
+            height: "40px",
+            border: "4px solid #ccc",
+            borderTop: "4px solid #333",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            margin: "20px auto",
+          }}
+        ></div>
+      )}
       {!loading && qrCodeData && (
-        <div>
+        <div data-testid="qr-code">
           <QRCodeSVG
             value={qrCodeData}
             size={qrCodeStyles?.size || 200}

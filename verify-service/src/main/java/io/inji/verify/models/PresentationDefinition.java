@@ -1,6 +1,7 @@
 package io.inji.verify.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.shared.Constants;
@@ -33,6 +34,9 @@ public class PresentationDefinition {
 
     private String purpose;
 
+    @Column(columnDefinition = "json", name = "vp_format")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private FormatDto format;
 
     @Column(columnDefinition = "json")
     @JdbcTypeCode(SqlTypes.JSON)
