@@ -11,6 +11,10 @@ Inji Verify SDK is a library which exposes React components for integrating Inji
 
 [npm](https://www.npmjs.com/package/@mosip/react-inji-verify-sdk)
 
+## Local Publishing Guide
+
+We use [verdaccio](https://verdaccio.org/docs/what-is-verdaccio). `npm link` or `yarn link` won't work as we have peer dependencies.
+
 ## Integration Guide
 
 ### OpenID4VPVerification
