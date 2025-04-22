@@ -18,7 +18,7 @@ public class AuthorizationRequestResponseDtoTest {
         PresentationDefinition presentationDefinition = mock(PresentationDefinition.class);
         String nonce = "testNonce";
 
-        AuthorizationRequestResponseDto responseDto = new AuthorizationRequestResponseDto(clientId, null, new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getSubmissionRequirements()),nonce);
+        AuthorizationRequestResponseDto responseDto = new AuthorizationRequestResponseDto(clientId, null, new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getName(),presentationDefinition.getPurpose(),presentationDefinition.getFormat(),presentationDefinition.getSubmissionRequirements()),nonce);
 
         assertEquals(Constants.RESPONSE_TYPE, responseDto.getResponseType());
         assertEquals(clientId, responseDto.getClientId());

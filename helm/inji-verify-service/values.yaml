@@ -256,7 +256,7 @@ extraEnvVars: |
       configMapKeyRef:
         name: postgres-config
         key: database-username
-  - name: DB_DBUSER_PASSWORD
+  - name: DATABASE_PASSWORD
     valueFrom:
       secretKeyRef:
         name: db-common-secrets
