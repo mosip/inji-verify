@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.11.0
+CHART_VERSION=0.11.0-develop
 
 echo Create $NS namespace
 kubectl create ns $NS
@@ -21,7 +21,7 @@ function installing_inji-verify-service() {
 
   echo Copy configmaps
   COPY_UTIL=../copy_cm_func.sh
-  $COPY_UTIL configmap global default $NS
+  $COPY_UTIL configmap inji-stack-config default $NS
   $COPY_UTIL configmap artifactory-share artifactory $NS
   $COPY_UTIL configmap config-server-share config-server $NS
 
