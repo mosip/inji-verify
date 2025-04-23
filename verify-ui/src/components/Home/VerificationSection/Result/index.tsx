@@ -10,14 +10,12 @@ import { goToHomeScreen, qrReadInit } from "../../../../redux/features/verificat
 import { delayUploadQrCode } from "../../../../utils/commonUtils";
 
 const Result = () => {
-  const { vc, vcStatus } = useVerificationFlowSelector(
-    (state) => state.verificationResult ?? { vc: null, vcStatus: null }
-  );
+  const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
+  const { method } = useVerificationFlowSelector((state) => ({ method: state.method }));
   const [isModalOpen, setModalOpen] = useState(false);
   const credentialType: string = vc.type[1];
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { method } = useVerificationFlowSelector((state) => ({ method: state.method}));
   
   const handleVerifyAnotherQrCode = () => {
     if (method === "SCAN") {
