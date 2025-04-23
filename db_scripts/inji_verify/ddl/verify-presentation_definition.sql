@@ -15,6 +15,7 @@ CREATE TABLE presentation_definition(
                                                       input_descriptors jsonb NOT NULL,
                                                       name character varying(500),
                                                       purpose character varying(500),
+                                                      vp_format jsonb,
                                                       submission_requirements jsonb
 );
 
@@ -23,4 +24,5 @@ COMMENT ON COLUMN presentation_definition.id IS 'ID: The field should provide a 
 COMMENT ON COLUMN presentation_definition.input_descriptors IS 'Input Descriptors: Input Descriptors Objects are populated with properties describing what type of input data/Claim';
 COMMENT ON COLUMN presentation_definition.name IS 'Name: this should be a human-friendly string intended to constitute a distinctive designation of the Presentation Definition';
 COMMENT ON COLUMN presentation_definition.purpose IS 'Purpose: this describes the purpose for which the Presentation Definition inputs are being used for.';
+COMMENT ON COLUMN presentation_definition.vp_format IS 'Format: this describes which algorithms the Verifier supports for the format.';
 COMMENT ON COLUMN presentation_definition.submission_requirements IS 'Submission Requirements: express what combinations of inputs must be submitted to comply with its requirements for proceeding in a flow';

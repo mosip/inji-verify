@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import styles from "./OpenID4VPVerification.module.css";
 import {
   OpenID4VPVerificationProps,
   QrData,
@@ -8,6 +6,7 @@ import {
   VerificationStatus,
   VPRequestBody,
 } from "./OpenID4VPVerification.types";
+import React, { useCallback, useEffect, useState } from "react";
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   triggerElement,
@@ -104,24 +103,25 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const createVpRequest = useCallback(async () => {
     if (presentationDefinition?.input_descriptors.length !== 0) {
       try {
+        addStylesheetRules();
         setLoading(true);
         const requestBody: VPRequestBody = {
           clientId: window.location.origin,
           nonce: generateNonce(),
         };
-  
+
         if (txnId) requestBody.transactionId = txnId;
         if (presentationDefinitionId)
           requestBody.presentationDefinitionId = presentationDefinitionId;
         if (presentationDefinition)
           requestBody.presentationDefinition = presentationDefinition;
-  
+
         const response = await fetch(`${verifyServiceUrl}/vp-request`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestBody),
         });
-  
+
         if (response.status !== 201)
           throw new Error("Failed to create VP request");
         const data: QrData = await response.json();
@@ -187,7 +187,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     }
     if (onVPReceived && onVPProcessed) {
       throw new Error(
-        "Both onVpReceived and onVpProcessed cannot be provided simultaneously"
+        "Both onVPReceived and onVPProcessed cannot be provided simultaneously"
       );
     }
     if (!onQrCodeExpired) {
@@ -199,13 +199,30 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (!triggerElement) {
       createVpRequest();
     }
-  }, [createVpRequest, onError, onQrCodeExpired, onVPProcessed, onVPReceived, presentationDefinition, presentationDefinitionId, triggerElement]);
+  }, [
+    createVpRequest,
+    onError,
+    onQrCodeExpired,
+    onVPProcessed,
+    onVPReceived,
+    presentationDefinition,
+    presentationDefinitionId,
+    triggerElement,
+  ]);
 
   useEffect(() => {
     if (reqId) {
       fetchStatus();
     }
   }, [fetchStatus, reqId]);
+
+  function addStylesheetRules() {
+    let keyframes = `@keyframes spin {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}`;
+    var styleEl = document.createElement("style");
+    document.head.appendChild(styleEl);
+    var styleSheet = styleEl.sheet;
+    styleSheet?.insertRule(keyframes, 0);
+  }
 
   return (
     <div
@@ -222,9 +239,21 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           {triggerElement}
         </div>
       ) : null}
-      {loading && <div className={styles.loader}></div>}
+      {loading && (
+        <div
+          style={{
+            width: "40px",
+            height: "40px",
+            border: "4px solid #ccc",
+            borderTop: "4px solid #333",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            margin: "20px auto",
+          }}
+        ></div>
+      )}
       {!loading && qrCodeData && (
-        <div>
+        <div data-testid="qr-code">
           <QRCodeSVG
             value={qrCodeData}
             size={qrCodeStyles?.size || 200}

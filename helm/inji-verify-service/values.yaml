@@ -256,7 +256,7 @@ extraEnvVars: |
       configMapKeyRef:
         name: postgres-config
         key: database-username
-  - name: DB_DBUSER_PASSWORD
+  - name: DATABASE_PASSWORD
     valueFrom:
       secretKeyRef:
         name: db-common-secrets
@@ -265,7 +265,7 @@ extraEnvVars: |
 ## ConfigMap with extra environment variables that used
 ##
 extraEnvVarsCM:
-  - global
+  - inji-stack-config
   - config-server-share
   - artifactory-share
 

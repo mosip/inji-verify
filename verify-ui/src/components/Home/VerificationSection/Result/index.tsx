@@ -16,7 +16,7 @@ const Result = () => {
   const credentialType: string = vc.type[1];
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  
   const handleVerifyAnotherQrCode = () => {
     if (method === "SCAN") {
       dispatch(qrReadInit({ method: "SCAN" }));

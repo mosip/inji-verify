@@ -13,7 +13,7 @@ import {
 import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { AlertMessages } from "../../../utils/config";
-import OpenID4VPVerification from "../../openid4vp-verification/OpenID4VPVerification";
+import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
 

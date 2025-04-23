@@ -75,6 +75,15 @@ docker build -t <dockerImageName>:<tag> .
 docker run -it -d -p 3000:8000 --env-file ./.env --name inji-verify-service-dev <dockerImageName>:<tag>
 ```
 
+Inji verify backend is designed to run in local with in memory H2 DB also we have another spring profile to do same. This can
+be controlled by passing `active_profile_env` environment variable while building the docker image
+
+```shell
+mvn -U -B package
+docker build --build-arg active_profile=local -t <dockerImageName>:<tag> .
+docker run -it -d -p 3000:8000 --env-file ./.env --name inji-verify-service-dev <dockerImageName>:<tag>
+```
+
 To build the Docker image locally, use the following command. Ensure you are in the directory containing the Dockerfile:
 
 ```shell

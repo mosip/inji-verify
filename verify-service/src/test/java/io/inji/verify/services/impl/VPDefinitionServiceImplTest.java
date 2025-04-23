@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
@@ -22,7 +23,8 @@ class VPDefinitionServiceImplTest {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos,"name","purpose", mockSubmissionRequirementDtos);
+        FormatDto formatDto = new FormatDto(null,null,null);
+        PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos,"name","purpose",formatDto, mockSubmissionRequirementDtos);
         when(mockRepository.findById("test_id")).thenReturn(java.util.Optional.of(mockPresentationDefinition));
 
         VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
