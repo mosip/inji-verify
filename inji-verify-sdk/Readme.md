@@ -13,7 +13,15 @@ Inji Verify SDK is a library which exposes React components for integrating Inji
 
 ## Local Publishing Guide
 
-We use [verdaccio](https://verdaccio.org/docs/what-is-verdaccio). `npm link` or `yarn link` won't work as we have peer dependencies.
+Install the dependencies
+`npm install`
+
+Build the project
+`npm run build`
+
+Publish the npm package using Verdaccio
+We use [verdaccio](https://verdaccio.org/docs/what-is-verdaccio). `npm link` or `yarn link` won't work as we have peer dependencies. Follow the docs to setup Verdaccio. Then run
+`npm publish --registry http://localhost:<VERADACCIO_PORT>`
 
 ## Integration Guide
 
@@ -49,7 +57,7 @@ verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
 
 ##### Exclusive Verification Flows
 <br/>
->Only one of the following should be provided:
+> Only one of the following should be provided:
 
 
 | Prop                                         | Description                                       |
@@ -59,7 +67,7 @@ verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
 
 ##### Presentation Definition Options
 <br/>
->Only one of the following should be provided:
+> Only one of the following should be provided:
 
 | Prop                                         | Description                                       |
 |----------------------------------------------|---------------------------------------------------|
@@ -130,7 +138,7 @@ verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
 
 - **Simulate Wallet Scan** : Use a mobile wallet app that supports OpenID4VP, or use mock tools to scan the QR code.
 
-- **Trigger Expiry** : Don’t scan the QR and wait for expiry to ensure onQrCodeExpired fires.
+- **Trigger Expiry** : Don't scan the QR and wait for expiry to ensure onQrCodeExpired fires.
 
 - **Force Errors** :
     - Stop the backend or simulate a 500 error.
