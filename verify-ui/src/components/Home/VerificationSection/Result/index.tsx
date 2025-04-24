@@ -6,8 +6,8 @@ import DisplayVcDetailView from "./DisplayVcDetailView";
 import { Button } from "../commons/Button";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { goToHomeScreen, qrReadInit } from "../../../../redux/features/verification/verification.slice";
-import { delayUploadQrCode } from "../../../../utils/commonUtils";
+import { qrReadInit } from "../../../../redux/features/verification/verification.slice";
+import { acceptedFileTypes, handleFileUpload } from "../../../../utils/fileUploadUtils";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector(
@@ -23,8 +23,7 @@ const Result = () => {
     if (method === "SCAN") {
       dispatch(qrReadInit({ method: "SCAN" }));
     } else {
-      dispatch(goToHomeScreen({ method: "UPLOAD" }));
-      delayUploadQrCode();
+      document.getElementById("verify-another-qrcode")?.click();
     }
   };
 
@@ -46,6 +45,14 @@ const Result = () => {
             title={t("Common:Button.verifyAnotherQrCode")}
             onClick={handleVerifyAnotherQrCode}
             className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
+          />
+           <input
+            type="file"
+            id="verify-another-qrcode"
+            name="upload-qr"
+            accept={acceptedFileTypes}
+            className="mx-auto my-2 hidden h-0"
+            onChange={(e) => handleFileUpload(e, dispatch)}
           />
         </div>
       </div>
