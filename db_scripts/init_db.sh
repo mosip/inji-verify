@@ -23,6 +23,9 @@ while true; do
         echo Removing existing inji_verify DB installation
         helm -n $NS delete postgres-init-verify
 
+        echo Applying Postgres ConfigMap
+        kubectl apply -f postgres-config.yaml
+
         echo Copy Postgres secrets
         ./copy_cm_func.sh secret postgres-postgresql postgres $NS
 
