@@ -28,13 +28,9 @@ public class InjiVerifyConfigManager extends ConfigManager{
 		// Add module specific properties as well.
 		init(moduleSpecificPropertiesMap);
 	}
-	
-	
-//	public static Boolean IsDebugEnabled() { return getproperty("enableDebug").equalsIgnoreCase("yes"); }
-	
+
 	public static String getapiEndUser() { return getproperty("apiEnvUser"); }
-	
-	
+
 	public static String getSunbirdBaseURL() {
 		return InjiVerifyUtil.getValueFromMimotoActuator("overrides", "mosip.sunbird.url");
 		

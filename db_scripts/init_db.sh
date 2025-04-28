@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.0.1-develop
+CHART_VERSION=0.12.0-develop
 
 helm repo add mosip https://mosip.github.io/mosip-helm
 helm repo update
@@ -22,6 +22,9 @@ while true; do
 
         echo Removing existing inji_verify DB installation
         helm -n $NS delete postgres-init-verify
+
+        echo Applying Postgres ConfigMap
+        kubectl apply -f postgres-config.yaml
 
         echo Copy Postgres secrets
         ./copy_cm_func.sh secret postgres-postgresql postgres $NS

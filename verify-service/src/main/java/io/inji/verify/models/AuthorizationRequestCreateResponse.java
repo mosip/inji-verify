@@ -21,7 +21,6 @@ public class AuthorizationRequestCreateResponse implements Serializable {
     private final String requestId;
 
     @NotNull
-    @Column
     private final String transactionId;
 
     @NotNull
@@ -30,6 +29,5 @@ public class AuthorizationRequestCreateResponse implements Serializable {
     AuthorizationRequestResponseDto authorizationDetails;
 
     @NotNull
-    @Column
     long expiresAt;
 }

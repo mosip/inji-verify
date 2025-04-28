@@ -18,7 +18,7 @@ public class VPDefinitionServiceImpl implements VPDefinitionService {
     public VPDefinitionResponseDto getPresentationDefinition(String id) {
 
         return presentationDefinitionRepository.findById(id)
-                .map(presentationDefinition ->  new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getSubmissionRequirements()))
+                .map(presentationDefinition ->  new VPDefinitionResponseDto(presentationDefinition.getId(), presentationDefinition.getInputDescriptors(), presentationDefinition.getName(),presentationDefinition.getPurpose(),presentationDefinition.getFormat(), presentationDefinition.getSubmissionRequirements()))
                 .orElse(null);
     }
 }

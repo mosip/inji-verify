@@ -1,6 +1,7 @@
 package io.inji.verify.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.services.VPDefinitionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,8 @@ public class VPDefinitionControllerTest {
     @Test
     public void testGetPresentationDefinitionForFound() throws Exception {
         String id = "presentation123";
-        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto(id,new ArrayList<>(),new ArrayList<>());
+        FormatDto formatDto = new FormatDto(null,null,null);
+        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purpose",formatDto, new ArrayList<>());
 
         when(vpDefinitionService.getPresentationDefinition(id)).thenReturn(expectedResponse);
 
@@ -68,7 +70,7 @@ public class VPDefinitionControllerTest {
     @Test
     public void testGetPresentationDefinitionForControllerLogicFound() {
         String id = "presentation123";
-        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto(id,mock(),mock());
+        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto(id,mock(),"","",mock(),mock());
         when(vpDefinitionService.getPresentationDefinition(id)).thenReturn(expectedResponse);
 
         ResponseEntity<VPDefinitionResponseDto> responseEntity = vpDefinitionController.getPresentationDefinitionFor(id);

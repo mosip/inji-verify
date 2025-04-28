@@ -18,7 +18,7 @@ export const Upload = () => {
             <QrIcon className="w-[78px] lg:w-[100px]" />
           </div>
           <UploadQrCode
-            className="absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
+            className="absolute top-[130px] lg:top-[200px] lg:left-[5px]"
             displayMessage={t("Common:Button.upload")}
           />
         </div>
