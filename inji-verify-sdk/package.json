@@ -1,6 +1,6 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.12.2",
+  "version": "0.12.1",
   "description": "A react component library to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
   "main": "dist/index.js",
   "module": "dist/index.js",
