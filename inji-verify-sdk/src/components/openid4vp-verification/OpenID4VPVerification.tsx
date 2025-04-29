@@ -2,6 +2,7 @@ import { QRCodeSVG } from "qrcode.react";
 import {
   OpenID4VPVerificationProps,
   QrData,
+  VerificationResult,
   VerificationResults,
   VerificationStatus,
   VPRequestBody,
@@ -68,19 +69,21 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         const response = await fetch(`${verifyServiceUrl}/vp-result/${txnId}`);
         if (response.status !== 200)
           throw new Error("Failed to fetch VP result");
-        const VpVerificationResult = await response.json();
-        const VPResult: VerificationResults = [];
-        VpVerificationResult.vcResults.forEach(
+        const vpVerificationResult = await response.json();
+        const parsedVcResults: VerificationResult[] = vpVerificationResult.vcResults.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => {
-            const vc = JSON.parse(vcResult.vc);
-            const verificationStatus = vcResult.verificationStatus;
-            VPResult.push({
-              vc,
-              vcStatus: verificationStatus,
-            });
+            return {
+              vc: JSON.parse(vcResult.vc),
+              vcStatus: vcResult.verificationStatus,
+            };
           }
         );
-        onVPProcessed(VPResult);
+        
+        const vpResult: VerificationResults = {
+          vcResults: parsedVcResults,
+          vpResultStatus: vpVerificationResult.vpResultStatus,
+        };
+        onVPProcessed(vpResult);
         setTxnId(null);
         setReqId(null);
         setQrCodeData(null);

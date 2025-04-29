@@ -4,7 +4,9 @@ export type OpenID4VPError = {
   details?: unknown;
 };
 
-export type VerificationStatus = "valid" | "invalid" | "expired";
+export type VerificationStatus = "success" | "invalid" | "expired";
+
+type vpResultStatus = "SUCCESS" | "FAILED";
 
 export interface VerificationResult {
   /**
@@ -20,7 +22,10 @@ export interface VerificationResult {
   vcStatus: VerificationStatus;
 }
 
-export type VerificationResults = VerificationResult[];
+export interface VerificationResults {
+  vcResults: VerificationResult[];
+  vpResultStatus: vpResultStatus;
+}
 
 export interface QrData {
   transactionId: string;
@@ -71,7 +76,7 @@ type ExclusiveCallbacks =
    * Provides the verification result data.
    */
   | {
-      onVPProcessed: (VPResult: VerificationResults) => void;
+      onVPProcessed: (vpResult: VerificationResults) => void;
       onVPReceived?: never;
     };
 
