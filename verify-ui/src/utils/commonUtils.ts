@@ -88,12 +88,3 @@ export const calculateUnverifiedClaims = (
     )
   );
 };
-
-export const delayUploadQrCode = () => {
-  setTimeout(() => {
-    const uploadQrElement = document.getElementById("upload-qr");
-    if (uploadQrElement) {
-      uploadQrElement.click();
-    }
-  }, 10);
-};
