@@ -21,12 +21,14 @@ jobs:
         include:
           - SERVICE_LOCATION: "verify-ui"
             SERVICE_NAME: "inji-verify-ui"
+            PLATFORMS: "linux/amd64"
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master
     with:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+      PLATFORMS: ${{ matrix.PLATFORMS }}
     secrets:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
