@@ -11,6 +11,14 @@ Inji Verify SDK is a library which exposes React components for integrating Inji
 
 [npm](https://www.npmjs.com/package/@mosip/react-inji-verify-sdk)
 
+## Peer Dependencies
+
+| Name       | Version |
+|------------|---------|
+| React      | 18.2.0  |
+| TypeScript | 4.9.5   |
+
+
 ## Local Publishing Guide
 
 Install the dependencies
