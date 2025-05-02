@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { GradientUploadIcon, WhiteUploadIcon } from "../../../utils/theme-utils";
 import { RootState } from "../../../redux/store";
 import { isRTL } from "../../../utils/i18n";
-import QRCodeVerification from "../../qrcode-verification/QRCodeVerification";
+import {QRCodeVerification} from "@mosip/react-inji-verify-sdk";
 import { verificationComplete } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 

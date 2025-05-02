@@ -6,17 +6,25 @@ import DisplayVcDetailView from "./DisplayVcDetailView";
 import { Button } from "../commons/Button";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { qrReadInit } from "../../../../redux/features/verification/verification.slice";
-import { acceptedFileTypes, handleFileUpload } from "../../../../utils/fileUploadUtils";
+import {
+  qrReadInit,
+  verificationComplete,
+} from "../../../../redux/features/verification/verification.slice";
+import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
+import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 
 const Result = () => {
-  const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
-  const { method } = useVerificationFlowSelector((state) => ({ method: state.method }));
+  const { vc, vcStatus } = useVerificationFlowSelector(
+    (state) => state.verificationResult ?? { vc: null, vcStatus: null }
+  );
+  const { method } = useVerificationFlowSelector((state) => ({
+    method: state.method,
+  }));
   const [isModalOpen, setModalOpen] = useState(false);
   const credentialType: string = vc.type[1];
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  
+
   const handleVerifyAnotherQrCode = () => {
     if (method === "SCAN") {
       dispatch(qrReadInit({ method: "SCAN" }));
@@ -38,19 +46,24 @@ const Result = () => {
           className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
         />
         <div className="grid content-center justify-center">
-          <Button
-            id="verify-another-qr-code-button"
-            title={t("Common:Button.verifyAnotherQrCode")}
-            onClick={handleVerifyAnotherQrCode}
-            className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
-          />
-           <input
-            type="file"
-            id="verify-another-qrcode"
-            name="upload-qr"
-            accept={acceptedFileTypes}
-            className="mx-auto my-2 hidden h-0"
-            onChange={(e) => handleFileUpload(e, dispatch)}
+          <QRCodeVerification
+            triggerElement={
+              <Button
+                title={t("Common:Button.verifyAnotherQrCode")}
+                onClick={handleVerifyAnotherQrCode}
+                className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
+              />
+            }
+            verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
+            disableScan
+            onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
+              dispatch(verificationComplete({ verificationResult: data[0] }))
+            }
+            uploadButtonId={"verify-another-qr-code-button"}
+            uploadButtonStyle="hidden"
+            onError={(error) =>
+              raiseAlert({ message: error.message, severity: "error" })
+            }
           />
         </div>
       </div>

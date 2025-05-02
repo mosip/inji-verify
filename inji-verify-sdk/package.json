@@ -1,6 +1,6 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.12.0-beta",
+  "version": "0.12.33",
   "description": "A react component library to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -11,7 +11,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
-    "verify": "npm run build"
+    "verify": "npm run build",
+    "localPublish": "npm version patch && npm run build && npm publish --access public --registry http://localhost:4873"
   },
   "repository": {
     "type": "git",
@@ -56,10 +57,15 @@
     "webpack-cli": "^6.0.1"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "@mosip/pixelpass": "^0.6.0",
+    "@mosip/react-inji-verify-sdk": "file:",
+    "@mui/material": "^7.0.2",
+    "pdfjs-dist": "^3.11.174",
     "qrcode.react": "^4.1.0"
   }
 }
