@@ -32,7 +32,7 @@ export const getPresentationDefinition = (data: QrData) => {
 
 const getValue = (credentialElement: any)=> {
   if (Array.isArray(credentialElement)){
-    return credentialElement.filter(element => element.language == "eng")[0].value
+    return credentialElement.filter(element => element.language === "eng")[0].value
   }
   return credentialElement.value;
 }
