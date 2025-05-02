@@ -51,7 +51,7 @@ export const getDetailsOrder = (vc: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
-            return { key, value: credential[key as keyof credentialSubject][0].value || "N/A" };
+            return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
