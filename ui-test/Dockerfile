@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM openjdk:17-jdk-slim
 
 USER root
 RUN apt-get update && apt-get install -y git
