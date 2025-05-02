@@ -196,8 +196,8 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, ExpansionbuttonAfter);
 	}
 
-	public void verifyHelpOptionLinks() {
-		verifyHomePageLinks(driver, HelpOptionLinks);
+	public Boolean verifyHelpOptionLinks() {
+		return verifyHomePageLinks(driver, HelpOptionLinks);
 
 	}
 
