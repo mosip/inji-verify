@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome:123.0
+FROM openjdk:21
 
 USER root
 RUN apt-get update && apt-get install -y git
