@@ -31,6 +31,16 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     return btoa(Date.now().toString());
   };
 
+  const VPFormat = {
+    ldp_vp: {
+      proof_type: [
+        "Ed25519Signature2018",
+        "Ed25519Signature2020",
+        "RsaSignature2018",
+      ],
+    },
+  };
+
   const getPresentationDefinition = useCallback(
     (data: QrData) => {
       const params = new URLSearchParams();
@@ -56,7 +66,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       params.set(
         "client_metadata",
-        JSON.stringify({ client_name: window.location.origin, vp_formats: {} })
+        JSON.stringify({ client_name: window.location.origin, vp_formats: VPFormat })
       );
       return params.toString();
     },
