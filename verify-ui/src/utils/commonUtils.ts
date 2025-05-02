@@ -30,11 +30,7 @@ export const getPresentationDefinition = (data: QrData) => {
   return params.toString();
 };
 
-const getValue = (credential: any, key: string)=> {
-  const credentialElement =  credential[key as keyof credentialSubject];
-  if (credentialElement[0] !== undefined && credentialElement[0].hasKey("value"))
-    return credentialElement[0].value
-  console.log(credentialElement)
+const getValue = (credentialElement: any)=> {
   if (Array.isArray(credentialElement)){
     return credentialElement.filter(element => element.language == "eng")[0].value
   }
@@ -91,7 +87,7 @@ export const getDetailsOrder = (vc: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
-            return { key, value: getValue(credential,key) } ;
+            return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
