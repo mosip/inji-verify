@@ -99,7 +99,7 @@ release branches:
 - release-0.11.x
 
 tags : 
-- v0.11.0
+- v0.11.1
 
 active branches:
 - master
