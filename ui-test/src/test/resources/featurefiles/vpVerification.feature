@@ -16,5 +16,14 @@ Feature: Inji Verify vpVerification testing
     And Verify VP verification qr code step4 label
     And Verify VP verification qr code step4 description
     And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    And Verify click sort by button
+    And Verify click Sort AtoZ button
+    And Verify click sort by button
+    And Verify click Sort ZtoA button
+    And User enter the credential type "<credential type>"
+    And Verify click Back button
 
-
+    Examples:
+      | credential type |
+      | life    |

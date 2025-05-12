@@ -179,6 +179,7 @@ public class StepDef {
 	public void verify_that_scan_element_is_visible() {
 		Assert.assertTrue(homePage.isScanElementIsVisible());
 	}
+	
 
 	@Then("Verify that Upload icon visible")
 	public void verify_that_upload_icon_visible() {
@@ -254,6 +255,25 @@ public class StepDef {
 		Assert.assertTrue(uploadqrcode.isVisibleVerifyAnotherQRcodeButton());
 
 	}
+	
+	@Then("verify policy issued on value")
+	public void verify_policy_issued_on_value() {
+		Assert.assertTrue(uploadqrcode.isVisiblePolicyIssuedOnValue());
+
+	}
+	
+	@Then("verify policy expires on value")
+	public void verify_policy_expires_on_value() {
+		Assert.assertTrue(uploadqrcode.isVisiblePolicyExpiresOnValue());
+
+	}
+	
+	@Then("verify full name value")
+	public void verify_full_name_value() {
+		Assert.assertTrue(uploadqrcode.isVisibleFullNameValue());
+
+	}
+	
 
 	@Then("Verify click on another qr code button")
 	public void verify_clickOn_another_qr_code_button_on_successful_verification() {
@@ -534,6 +554,30 @@ public class StepDef {
 		uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Upload Large size not supported QR code file")
+	public void upload_large_size_not_supported_qr_code_file() {
+		uploadqrcode.ClickonUploadLargeSizeQRCode();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Upload blur QR code file")
+	public void upload_blur_qrcode_file() {
+		uploadqrcode.ClickonUploadBlurQRCode();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Upload multiple qr code in one image file")
+	public void upload_multiple_QR_code_in_one_image_file() {
+		uploadqrcode.ClickonUploadmultipleQRCode();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Upload invalid pdf")
+	public void upload_invalid_pdf() {
+		uploadqrcode.ClickonUploadInvalidPdf();
+		Assert.assertTrue(true);
+	}
 
 	@Then("Upload QR code file Expired jpg")
 	public void upload_qr_code_file_expired_jpg() {
@@ -561,6 +605,16 @@ public class StepDef {
 			throw new RuntimeException(e);
 		}
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
+	}
+	
+	@Then("Verify Large size alert message")
+	public void verify_message_for_large_size_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForLargeSizeQRCode(), UiConstants.ERROR_MESSAGE_LARGEFILE_QR);
+	}
+	
+	@Then("Verify MultiFormat alert message")
+	public void verify_message_for_blur_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForBlurQRCode(), UiConstants.ERROR_MULTI_FORMAT);
 	}
 
 	@Then("Verify message for expired QR code")
@@ -740,6 +794,12 @@ public class StepDef {
 		Thread.sleep(3000);
 		homePage.enterPolicyNumer(string);
 	}
+	
+	@Then("User enter the credential type {string}")
+	public void user_enter_the_credential_type(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		vpverification.enterCredentialType(string);
+	}
 
 	@Then("User enter the full name  {string}")
 	public void user_enter_the_full_name(String string) {
@@ -796,6 +856,11 @@ public class StepDef {
 	public void user_verify_alert_message() {
 		homePage.isErrorMessageVisible();
 	}
+	
+	@Then("Verify MOSIP type credential")
+	public void verify_mosip_type_credential() {
+		Assert.assertFalse(vpverification.isMosipTypeCredentialVisible());
+	}
 
 	@Then("Verify VP verification qr code step1 description")
 	public void verify_vp_verification_qr_code_step1_description() {
@@ -821,6 +886,7 @@ public class StepDef {
 	public void verify_vp_verification_qr_code_step3_label() {
 		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
 	}
+	
 
 	@Then("Verify VP verification qr code step3 description")
 	public void verify_vp_verification_qr_code_step3_description() {
@@ -848,9 +914,29 @@ public class StepDef {
 	}
 
 
-	@Then("verify Verifiable Credential Selection Panel")
+	@Then("Verify Verifiable Credential Panel label")
 	public void verify_Verifiable_Credential_Selection_Panel() {
 		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
+	}
+	
+	@Then("Verify click sort by button")
+	public void user_click_on_sort_button() {
+		vpverification.clickOnSortButton();
+	}
+	
+	@Then("Verify click Sort AtoZ button")
+	public void user_click_on_sort_a_z_button() {
+		vpverification.clickOnSortAtoZButton();
+	}
+	
+	@Then("Verify click Sort ZtoA button")
+	public void user_click_on_sort_z_a_button() {
+		vpverification.clickOnSortZtoAButton();
+	}
+	
+	@Then("Verify click Back button")
+	public void user_click_on_back_button() {
+		vpverification.clickOnBackButton();
 	}
 
 }
