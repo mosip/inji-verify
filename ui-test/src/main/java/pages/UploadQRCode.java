@@ -24,7 +24,7 @@ public class UploadQRCode extends BasePage {
 
 	@FindBy(id = "vc-result-display-message")
 	WebElement ErrorTextExpiredQRCode;
-	
+
 	@FindBy(id = "alert-message")
 	WebElement ErrorTextLargeSizeQRCode;
 
@@ -72,20 +72,20 @@ public class UploadQRCode extends BasePage {
 
 	@FindBy(id = "upload-qr-code-button")
 	WebElement UploadQRCodeButton;
-	
+
 	@FindBy(id = "policyissuedon-value")
 	WebElement PolicyIssuedOnValue;
-	
+
 	@FindBy(id = "policyexpireson-value")
 	WebElement PolicyExpiresOnValue;
-	
+
 	@FindBy(id = "fullname-value")
 	WebElement FullNameValue;
 
 	public void ClickonUploadQRCodePng() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
-	
+
 	public void ClickonAnotherUploadQRCodePng() {
 		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.png");
 	}
@@ -93,7 +93,7 @@ public class UploadQRCode extends BasePage {
 	public void ClickonUploadQRCodeJpg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
-	
+
 	public void ClickonAnotherUploadQRCodeJpg() {
 		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpg");
 	}
@@ -101,7 +101,7 @@ public class UploadQRCode extends BasePage {
 	public void ClickonUploadQRCodePdf() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
-	
+
 	public void ClickonAnotherUploadQRCodePdf() {
 		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential.pdf");
 	}
@@ -109,7 +109,7 @@ public class UploadQRCode extends BasePage {
 	public void ClickonUploadQRCodeJpeg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
-	
+
 	public void ClickonAnotherUploadQRCodeJpeg() {
 		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpeg");
 	}
@@ -130,22 +130,22 @@ public class UploadQRCode extends BasePage {
 		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
 
 	}
-	
+
 	public void ClickonUploadLargeSizeQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "largesize.PNG");
 
 	}
-	
+
 	public void ClickonUploadBlurQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "blur.PNG");
 
 	}
-	
+
 	public void ClickonUploadmultipleQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "multiple_image.jpg");
 
 	}
-	
+
 	public void ClickonUploadInvalidPdf() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "invalid.pdf");
 
@@ -219,17 +219,17 @@ public class UploadQRCode extends BasePage {
 		return isElementIsVisible(driver, VerifyAnotherQRcodeButton);
 
 	}
-	
+
 	public boolean isVisiblePolicyIssuedOnValue() {
 		return isElementIsVisible(driver, PolicyIssuedOnValue);
 
 	}
-	
+
 	public boolean isVisiblePolicyExpiresOnValue() {
 		return isElementIsVisible(driver, PolicyExpiresOnValue);
 
 	}
-	
+
 	public boolean isVisibleFullNameValue() {
 		return isElementIsVisible(driver, FullNameValue);
 
@@ -270,12 +270,12 @@ public class UploadQRCode extends BasePage {
 
 		return getText(driver, ErrorTextLargeSizeQRCode);
 	}
-	
+
 	public String getErrorMessageForBlurQRCode() {
 
 		return getText(driver, ErrorTextLargeSizeQRCode);
 	}
-	
+
 	public void browserBackButtonAfterVerification() {
 		browserBackButton(driver);
 	}
@@ -283,6 +283,5 @@ public class UploadQRCode extends BasePage {
 	public void clickOnPleaseTryAgain() {
 		clickOnElement(driver, PleaseTryAgain);
 	}
-
 
 }
