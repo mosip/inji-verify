@@ -182,10 +182,10 @@ public class Runner extends AbstractTestNGCucumberTests{
 
 		String path = null;
 		if (getRunType().equalsIgnoreCase("JAR")) {
-			path = new File(jarUrl).getParentFile().getAbsolutePath() + "/";
+			path = new File(jarUrl).getParentFile().getAbsolutePath() + "/MosipTestResource/MosipTemporaryTestResource";
 		} else if (getRunType().equalsIgnoreCase("IDE")) {
 			path = new File(Runner.class.getClassLoader().getResource("").getPath()).getAbsolutePath()
-					+ "/";
+					+ "/MosipTestResource/MosipTemporaryTestResource";
 			if (path.contains(GlobalConstants.TESTCLASSES))
 				path = path.replace(GlobalConstants.TESTCLASSES, "classes");
 		}
