@@ -65,7 +65,8 @@ public class Runner extends AbstractTestNGCucumberTests{
 				ExtractResource.copyCommonResources();
 			}
 			AdminTestUtil.init();
-			moveFilesToTarget();
+			moveFilesToTarget("MosipTestResource","target");
+			moveFilesToTarget("/src/main/resources/injiverify/","MosipTestResource/MosipTemporaryTestResource/");
 			InjiVerifyConfigManager.init();
 
 			suiteSetup(getRunType());
@@ -220,18 +221,18 @@ public class Runner extends AbstractTestNGCucumberTests{
 
 
 
-	public static void moveFilesToTarget() {
+	public static void moveFilesToTarget(String sourceDirName, String targetDirName) {
 		Path workingDir = Paths.get(System.getProperty("user.dir"));
-		Path sourceDir = workingDir.resolve("MosipTestResource");
-		Path targetDir = workingDir.resolve("target");
+		Path sourceDir = workingDir.resolve(sourceDirName);
+		Path targetDir = workingDir.resolve(targetDirName);
 
 		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
-			System.err.println("Error: 'MosipTestResource' directory does not exist.");
+			System.err.println("Error: Source directory '" + sourceDirName + "' does not exist.");
 			return;
 		}
 
 		if (!Files.exists(targetDir) || !Files.isDirectory(targetDir)) {
-			System.err.println("Error: 'target' directory does not exist.");
+			System.err.println("Error: Target directory '" + targetDirName + "' does not exist.");
 			return;
 		}
 
@@ -243,7 +244,7 @@ public class Runner extends AbstractTestNGCucumberTests{
 				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 					Path targetPath = destination.resolve(sourceDir.relativize(dir));
 					if (!Files.exists(targetPath)) {
-						Files.createDirectory(targetPath);
+						Files.createDirectories(targetPath);
 					}
 					return FileVisitResult.CONTINUE;
 				}
@@ -256,7 +257,7 @@ public class Runner extends AbstractTestNGCucumberTests{
 				}
 			});
 
-			System.out.println("Successfully copied 'MosipTestResource' to target/");
+			System.out.println("Successfully copied '" + sourceDirName + "' to '" + targetDirName + "'.");
 
 		} catch (IOException e) {
 			System.err.println("Error while copying directory: " + e.getMessage());
