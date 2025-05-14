@@ -22,6 +22,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +64,7 @@ public class Runner extends AbstractTestNGCucumberTests{
 				ExtractResource.copyCommonResources();
 			}
 			AdminTestUtil.init();
+			moveFilesToTarget();
 			InjiVerifyConfigManager.init();
 
 			suiteSetup(getRunType());
@@ -216,5 +219,28 @@ public class Runner extends AbstractTestNGCucumberTests{
 
 
 
+public  static void moveFilesToTarget(){
+	Path workingDir = Paths.get(System.getProperty("user.dir"));
+	Path sourceDir = workingDir.resolve("MosipTestResource");
+	Path targetDir = workingDir.resolve("target");
 
+	if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
+		System.err.println("Error: 'MosipTestResource' directory does not exist.");
+		return;
+	}
+
+	if (!Files.exists(targetDir) || !Files.isDirectory(targetDir)) {
+		System.err.println("Error: 'target' directory does not exist.");
+		return;
+	}
+
+	Path destination = targetDir.resolve(sourceDir.getFileName());
+
+	try {
+		Files.move(sourceDir, destination, StandardCopyOption.REPLACE_EXISTING);
+		System.out.println("Successfully moved 'MosipTestResource' to target/");
+	} catch (IOException e) {
+		System.err.println("Error while moving directory: " + e.getMessage());
+	}
+}
 }
