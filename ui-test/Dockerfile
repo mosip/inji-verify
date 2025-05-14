@@ -45,7 +45,7 @@ RUN chmod -R 777 /home/mosip/test-output
 RUN mkdir -p /home/mosip/screenshots/
 RUN chmod -R 777 /home/mosip/screenshots/
 
-RUN mkdir -p /home/mosip/MosipTestResource/MosipTemporaryTestResource/
+RUN mkdir -p /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify
 
 
 
@@ -60,7 +60,8 @@ COPY --chown=${container_user}:${container_user} ./src/test/resources/config.pro
 COPY --chown=${container_user}:${container_user} ./src/main/java/utils/ /home/mosip/src/main/java/utils/
 COPY --chown=${container_user}:${container_user} ./screenshots/ /home/mosip/screenshots/
 COPY --chown=${container_user}:${container_user} ./resource/ /home/mosip/resource/
-COPY --chown=${container_user}:${container_user} ./src/main/resources/injiverify /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify
+COPY --chown=${container_user}:${container_user} ./src/main/resources/injiverify/AddIdentity/ /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify/AddIdentity/
+COPY --chown=${container_user}:${container_user} ./src/main/resources/injiverify/SunBirdR/ /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify/SunBirdR/
 COPY --chown=${container_user}:${container_user} ./testNgXmlFiles/ /home/mosip/testNgXmlFiles/
 
 
