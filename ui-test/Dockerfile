@@ -45,11 +45,6 @@ RUN chmod -R 777 /home/mosip/test-output
 RUN mkdir -p /home/mosip/screenshots/
 RUN chmod -R 777 /home/mosip/screenshots/
 
-RUN mkdir -p /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify
-RUN chmod -R 777 /home/mosip/MosipTestResource/MosipTemporaryTestResource/injiverify
-
-
-
 # Copy files
 COPY --chown=${container_user_uid}:${container_user} --chmod=771 ./entrypoint.sh ${work_dir}/entrypoint.sh
 COPY --chown=${container_user}:${container_user} ./application.properties $work_dir/
@@ -60,13 +55,11 @@ COPY --chown=${container_user}:${container_user} ./src/test/resources/config.pro
 COPY --chown=${container_user}:${container_user} ./src/main/java/utils/ /home/mosip/src/main/java/utils/
 COPY --chown=${container_user}:${container_user} ./screenshots/ /home/mosip/screenshots/
 COPY --chown=${container_user}:${container_user} ./resource/ /home/mosip/resource/
-COPY --chown=${container_user}:${container_user} ./src/main/resources/injiverify/AddIdentity/ /home/mosip/injiverify/AddIdentity/
-COPY --chown=${container_user}:${container_user} ./src/main/resources/injiverify/SunBirdR/ /home/mosip/injiverify/SunBirdR/
 COPY --chown=${container_user}:${container_user} ./testNgXmlFiles/ /home/mosip/testNgXmlFiles/
 
 
 COPY --chown=${container_user_uid}:${container_user} ./browserstack.yml /home/mosip/
-COPY --chown=${container_user_uid}:${container_user} ./target /home/mosip/
+COPY --chown=${container_user_uid}:${container_user} ./target/*.jar ${work_dir}
 
 
 # Set working directory
