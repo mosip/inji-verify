@@ -65,8 +65,8 @@ public class Runner extends AbstractTestNGCucumberTests{
 				ExtractResource.copyCommonResources();
 			}
 			AdminTestUtil.init();
-			moveFilesToTarget("MosipTestResource","target");
-			moveFilesToTarget("/src/main/resources/injiverify/","MosipTestResource/MosipTemporaryTestResource/");
+//			moveFilesToTarget("MosipTestResource","target");
+//			moveFilesToTarget("/src/main/resources/injiverify/","MosipTestResource/MosipTemporaryTestResource/");
 			InjiVerifyConfigManager.init();
 
 			suiteSetup(getRunType());
@@ -106,9 +106,9 @@ public class Runner extends AbstractTestNGCucumberTests{
 			AuthTestsUtil.removeOldMosipTempTestResource();
 		}
 
-		BaseTestCase.currentModule = "injiweb";
-		BaseTestCase.certsForModule = "injiweb";
-		AdminTestUtil.copymoduleSpecificAndConfigFile("injiweb");
+		BaseTestCase.currentModule = "injiverify";
+		BaseTestCase.certsForModule = "injiverify";
+		AdminTestUtil.copymoduleSpecificAndConfigFile("injiverify");
 	}
 
 	public static void startTestRunner() {
