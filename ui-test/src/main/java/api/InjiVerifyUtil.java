@@ -136,19 +136,4 @@ public class InjiVerifyUtil extends AdminTestUtil {
 	public static String getSunbirdBaseURL() {
 		return InjiVerifyUtil.getValueFromMimotoActuator("overrides", "mosip.sunbird.url");
 	}
-
-	public static TestCaseDTO changeContextURLByFlag(TestCaseDTO testCaseDTO) {
-		if (!(System.getenv("useOldContextURL") == null) && !(System.getenv("useOldContextURL").isBlank())
-				&& System.getenv("useOldContextURL").equalsIgnoreCase("true")) {
-			if (testCaseDTO.getEndPoint().contains("/v1/mimoto/")) {
-				testCaseDTO.setEndPoint(testCaseDTO.getEndPoint().replace("/v1/mimoto/", "/residentmobileapp/"));
-			}
-			if (testCaseDTO.getInput().contains("/v1/mimoto/")) {
-				testCaseDTO.setInput(testCaseDTO.getInput().replace("/v1/mimoto/", "/residentmobileapp/"));
-			}
-		}
-
-		return testCaseDTO;
-	}
-
 }

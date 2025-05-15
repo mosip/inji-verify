@@ -65,8 +65,6 @@ public class Runner extends AbstractTestNGCucumberTests{
 				ExtractResource.copyCommonResources();
 			}
 			AdminTestUtil.init();
-//			moveFilesToTarget("MosipTestResource","target");
-//			moveFilesToTarget("/src/main/resources/injiverify/","MosipTestResource/MosipTemporaryTestResource/");
 			InjiVerifyConfigManager.init();
 
 			suiteSetup(getRunType());
@@ -202,8 +200,6 @@ public class Runner extends AbstractTestNGCucumberTests{
 			return "Global Resource File Path Not Found";
 		}
 	}
-
-
 	public static String getResourcePath() {
 		return getGlobalResourcePath();
 	}
@@ -217,51 +213,4 @@ public class Runner extends AbstractTestNGCucumberTests{
 		JWKKeyUtil.setLogLevel();
 		CertsUtil.setLogLevel();
 	}
-
-
-
-
-	public static void moveFilesToTarget(String sourceDirName, String targetDirName) {
-		Path workingDir = Paths.get(System.getProperty("user.dir"));
-		Path sourceDir = workingDir.resolve(sourceDirName);
-		Path targetDir = workingDir.resolve(targetDirName);
-
-		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
-			System.err.println("Error: Source directory '" + sourceDirName + "' does not exist.");
-			return;
-		}
-
-		if (!Files.exists(targetDir) || !Files.isDirectory(targetDir)) {
-			System.err.println("Error: Target directory '" + targetDirName + "' does not exist.");
-			return;
-		}
-
-		Path destination = targetDir.resolve(sourceDir.getFileName());
-
-		try {
-			Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-					Path targetPath = destination.resolve(sourceDir.relativize(dir));
-					if (!Files.exists(targetPath)) {
-						Files.createDirectories(targetPath);
-					}
-					return FileVisitResult.CONTINUE;
-				}
-
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					Path targetPath = destination.resolve(sourceDir.relativize(file));
-					Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
-					return FileVisitResult.CONTINUE;
-				}
-			});
-
-			System.out.println("Successfully copied '" + sourceDirName + "' to '" + targetDirName + "'.");
-
-		} catch (IOException e) {
-			System.err.println("Error while copying directory: " + e.getMessage());
-		}
-	}
-
 }

@@ -4,7 +4,6 @@
 	<suite name="Mimoto Pre-requisite API Test">
 	<test name="Adding Identity">
 		<parameter name="ymlFile" value="injiverify/AddIdentity/AddIdentity.yml" />
-		<parameter name="prerequisite" value="Yes" />
 		<classes>
 			<class name="io.mosip.testrig.apirig.injiverify.testscripts.AddIdentity" />
 		</classes>
@@ -13,7 +12,6 @@
 		<parameter name="ymlFile"
 			value="injiverify/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR.yml" />
 		<parameter name="idKeyName" value="osid" />
-		<parameter name="prerequisite" value="Yes" />
 		<classes>
 			<class name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
 		</classes>
@@ -21,7 +19,6 @@
 	<test name="GetPolicySunBirdR">
 		<parameter name="ymlFile"
 			value="injiverify/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdR.yml" />
-			<parameter name="prerequisite" value="Yes" />
 		<classes>
 			<class name="io.mosip.testrig.apirig.injiverify.testscripts.GetWithParam" />
 		</classes>
@@ -29,7 +26,6 @@
 	<test name="SearchPolicySunBirdR">
 		<parameter name="ymlFile"
 			value="injiverify/SunBirdR/SearchPolicySunBirdR/SearchPolicySunBirdR.yml" />
-			<parameter name="prerequisite" value="Yes" />
 		<classes>
 			<class name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePost" />
 		</classes>
