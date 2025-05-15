@@ -30,6 +30,7 @@ public class InjiVerifyConfigManager extends ConfigManager{
 	}
 
 	public static String getInjiWebUi() { return getproperty("injiWebUi"); }
+
 	public static String getapiEndUser() { return getproperty("apiEnvUser"); }
 
 	public static String getSunbirdBaseURL() {
