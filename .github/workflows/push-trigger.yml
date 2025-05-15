@@ -115,7 +115,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         
   build-maven-apitest-inji-verify:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: anup-nehe/kattu/.github/workflows/maven-build-browserStack.yml@develop
     with:
       SERVICE_LOCATION: ./api-test
       BUILD_ARTIFACT: apitest-inji-verify
