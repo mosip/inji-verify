@@ -80,9 +80,7 @@ public class SimplePostForAutoGenId extends InjiVerifyUtil implements ITest {
 	/**
 	 * Test method for OTP Generation execution
 	 * 
-	 * @param objTestParameters
-	 * @param testScenario
-	 * @param testcaseName
+
 	 * @throws AuthenticationTestException
 	 * @throws AdminTestException
 	 * @throws NoSuchAlgorithmException
@@ -103,7 +101,6 @@ public class SimplePostForAutoGenId extends InjiVerifyUtil implements ITest {
 		}
 
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
-		testCaseDTO = InjiVerifyUtil.changeContextURLByFlag(testCaseDTO);
 		String[] templateFields = testCaseDTO.getTemplateFields();
 		String inputJson = "";
 

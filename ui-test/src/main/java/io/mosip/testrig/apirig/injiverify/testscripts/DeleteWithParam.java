@@ -68,10 +68,7 @@ public class DeleteWithParam extends InjiVerifyUtil implements ITest {
 
 	/**
 	 * Test method for OTP Generation execution
-	 * 
-	 * @param objTestParameters
-	 * @param testScenario
-	 * @param testcaseName
+	 *
 	 * @throws AuthenticationTestException
 	 * @throws AdminTestException
 	 */
@@ -79,7 +76,6 @@ public class DeleteWithParam extends InjiVerifyUtil implements ITest {
 	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException {
 		testCaseName = testCaseDTO.getTestCaseName();
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
-		testCaseDTO = InjiVerifyUtil.changeContextURLByFlag(testCaseDTO);
 		if (HealthChecker.signalTerminateExecution) {
 			throw new SkipException(
 					GlobalConstants.TARGET_ENV_HEALTH_CHECK_FAILED + HealthChecker.healthCheckFailureMapS);

@@ -74,9 +74,7 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 	/**
 	 * Test method for OTP Generation execution
 	 * 
-	 * @param objTestParameters
-	 * @param testScenario
-	 * @param testcaseName
+
 	 * @throws AuthenticationTestException
 	 * @throws AdminTestException
 	 */
@@ -84,7 +82,6 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException {
 		testCaseName = testCaseDTO.getTestCaseName();
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
-		testCaseDTO = InjiVerifyUtil.changeContextURLByFlag(testCaseDTO);
 		auditLogCheck = testCaseDTO.isAuditLogCheck();
 		String[] templateFields = testCaseDTO.getTemplateFields();
 		if (HealthChecker.signalTerminateExecution) {

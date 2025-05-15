@@ -94,7 +94,6 @@ public class AddIdentity extends AdminTestUtil implements ITest {
 		
 
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
-		testCaseDTO = InjiVerifyUtil.changeContextURLByFlag(testCaseDTO);
 
 		DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		Calendar cal = Calendar.getInstance();

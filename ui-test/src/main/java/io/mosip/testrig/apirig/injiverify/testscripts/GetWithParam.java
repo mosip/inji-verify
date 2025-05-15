@@ -73,10 +73,7 @@ public class GetWithParam extends InjiVerifyUtil implements ITest {
 
 	/**
 	 * Test method for OTP Generation execution
-	 * 
-	 * @param objTestParameters
-	 * @param testScenario
-	 * @param testcaseName
+
 	 * @throws AuthenticationTestException
 	 * @throws AdminTestException
 	 */
