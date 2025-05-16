@@ -44,11 +44,14 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//svg[@role='img']")
 	WebElement verificationQrCode;
 
-	@FindBy(xpath = "//h1[@class='font-bold text-smallTextSize lg:text-lg sm:text-xl text-selectorPanelTitle']")
+	@FindBy(xpath = "(//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')])[2]")
 	WebElement verifiableCredentialPanel;
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='2'])")
 	WebElement VPverificationstep3LabelAfter;
+	
+	@FindBy(xpath = "(//span[contains(@class, 'text-smallTextSize') and contains(text(), 'MOSIP ID')])[2]")
+	WebElement MosipTypeCredential;
 
 	@FindBy(id ="initiate-vp-request-process-description")
 	WebElement VpVerificationQrCodeStep1Description;
@@ -73,6 +76,19 @@ public class VpVerification extends BasePage {
 
 	@FindBy(id = "view-verification-results-description")
 	WebElement vpVerificationQrCodeStep4Description;
+	
+	@FindBy(xpath = "(//span[@class='text-sortByText font-semibold text-smallTextSize ml-2' and text()='Sort by'])[2]")
+	WebElement SortButton;
+	
+	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (A-Z)')]")
+	WebElement SortAtoZButton;
+	
+	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (Z-A)')]")
+	WebElement SortZtoAButton;
+	
+	@FindBy(xpath = "(//*[@id='verification-back-button'])[3]")
+	WebElement backButton;
+
 
 	public String getVpVerificationQrCodeStep1Description() {
 		return getText(driver, VpVerificationQrCodeStep1Description);}
@@ -151,5 +167,30 @@ public class VpVerification extends BasePage {
 	public boolean isVisibleVPverificationstep3LabelAfter() {
 		return isElementIsVisible(driver, VPverificationstep3LabelAfter);
 	}
+	
+	public boolean isMosipTypeCredentialVisible() {
+		return isElementIsVisible(driver, MosipTypeCredential);
+	}
+	
+	public void clickOnSortButton() {
+		 clickOnElement(driver, SortButton);
+	}
+	
+	public void clickOnSortAtoZButton() {
+		 clickOnElement(driver, SortAtoZButton);
+	}
+	
+	public void clickOnSortZtoAButton() {
+		 clickOnElement(driver, SortZtoAButton);
+	}
+	
+	public void enterCredentialType(String string) {
+		enterText(driver, By.xpath("(//input[@placeholder='Search for the Verifiable Credential type' and contains(@class,'outline-none')])[2]"), string);
+	}
+	
+	public void clickOnBackButton() {
+		 clickOnElement(driver, backButton);
+	}
+
 
 }
