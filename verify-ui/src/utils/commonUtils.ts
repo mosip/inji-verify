@@ -1,6 +1,13 @@
 import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
+const getValue = (credentialElement: any)=> {
+  if (Array.isArray(credentialElement)){
+    return credentialElement.filter(element => element.language === "eng")[0].value
+  }
+  return credentialElement.value;
+}
+
 export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
   const credential = vc.credentialSubject;

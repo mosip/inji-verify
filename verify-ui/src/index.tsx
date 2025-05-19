@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {encodeData} from "./utils/qr-utils";
 import {Provider} from "react-redux";
 import store from "./redux/store";
 
@@ -13,8 +12,6 @@ import store from "./redux/store";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
-window.encodeData = (data: string) => encodeData(data);
 
 root.render(
   <React.StrictMode>

@@ -7,11 +7,9 @@ import { Button } from "../commons/Button";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
 import {
+  goToHomeScreen,
   qrReadInit,
-  verificationComplete,
 } from "../../../../redux/features/verification/verification.slice";
-import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
-import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector(
@@ -29,7 +27,10 @@ const Result = () => {
     if (method === "SCAN") {
       dispatch(qrReadInit({ method: "SCAN" }));
     } else {
-      document.getElementById("verify-another-qrcode")?.click();
+      dispatch(goToHomeScreen({}));
+      setTimeout(() => {
+        document.getElementById("upload-qr")?.click();
+      }, 50);
     }
   };
 
@@ -46,24 +47,10 @@ const Result = () => {
           className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
         />
         <div className="grid content-center justify-center">
-          <QRCodeVerification
-            triggerElement={
-              <Button
-                title={t("Common:Button.verifyAnotherQrCode")}
-                onClick={handleVerifyAnotherQrCode}
-                className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
-              />
-            }
-            verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
-            disableScan
-            onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
-              dispatch(verificationComplete({ verificationResult: data[0] }))
-            }
-            uploadButtonId={"verify-another-qr-code-button"}
-            uploadButtonStyle="hidden"
-            onError={(error) =>
-              raiseAlert({ message: error.message, severity: "error" })
-            }
+          <Button
+            title={t("Common:Button.verifyAnotherQrCode")}
+            onClick={handleVerifyAnotherQrCode}
+            className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
           />
         </div>
       </div>
