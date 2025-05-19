@@ -42,7 +42,7 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
   /**
    * Enable camera zoom (mobile).
    */
-  enableZoom?: boolean;
+  isEnableZoom?: boolean;
 
   /**
    * Enable upload functionality.

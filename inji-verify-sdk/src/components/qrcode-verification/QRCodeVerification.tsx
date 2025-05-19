@@ -34,11 +34,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   isEnableScan,
   uploadButtonId,
   uploadButtonStyle,
-  enableZoom,
+  isEnableZoom,
 }) => {
   isEnableUpload = isEnableUpload ?? true;
   isEnableScan = isEnableScan ?? true;
-  enableZoom = enableZoom ?? true;
+  isEnableZoom = isEnableZoom ?? true;
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(INITIAL_ZOOM_LEVEL);
@@ -47,7 +47,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamingRef = useRef(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
-  const shouldEnableZoom = enableZoom && isMobile;
+  const shouldEnableZoom = isEnableZoom && isMobile;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const clearTimer = () => {
     if (timerRef.current) {

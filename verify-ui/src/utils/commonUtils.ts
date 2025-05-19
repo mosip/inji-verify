@@ -1,6 +1,13 @@
 import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
+const getValue = (credentialElement: any)=> {
+  if (Array.isArray(credentialElement)){
+    return credentialElement.filter(element => element.language === "eng")[0].value
+  }
+  return credentialElement.value;
+}
+
 export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
   const credential = vc.credentialSubject;
@@ -51,7 +58,7 @@ export const getDetailsOrder = (vc: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
-            return { key, value: credential[key as keyof credentialSubject][0].value || "N/A" };
+            return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }

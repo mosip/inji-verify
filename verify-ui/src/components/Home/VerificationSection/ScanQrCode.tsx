@@ -21,7 +21,7 @@ const Scan = () => {
         icon={<ScanIcon />}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        className="mx-0 my-1.5 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[63px] lg:top-[231px]"
+        className="mx-0 my-1.5 text-center inline-flex absolute top-[160px] left-[33px] w-[205px] lg:w-[223px] lg:left-[70px] lg:top-[231px]"
         onClick={async () => {
           dispatch(
             updateInternetConnectionStatus({
