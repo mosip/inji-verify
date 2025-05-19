@@ -207,7 +207,7 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePng();
 		Assert.assertTrue(true);
 	}
-	
+
 	@Then("Upload another QR code file png")
 	public void Upload_another_QR_code_file() {
 		uploadqrcode.ClickonAnotherUploadQRCodePng();
@@ -255,6 +255,24 @@ public class StepDef {
 
 	}
 
+	@Then("verify policy issued on value")
+	public void verify_policy_issued_on_value() {
+		Assert.assertTrue(uploadqrcode.isVisiblePolicyIssuedOnValue());
+
+	}
+
+	@Then("verify policy expires on value")
+	public void verify_policy_expires_on_value() {
+		Assert.assertTrue(uploadqrcode.isVisiblePolicyExpiresOnValue());
+
+	}
+
+	@Then("verify full name value")
+	public void verify_full_name_value() {
+		Assert.assertTrue(uploadqrcode.isVisibleFullNameValue());
+
+	}
+
 	@Then("Verify click on another qr code button")
 	public void verify_clickOn_another_qr_code_button_on_successful_verification() {
 		uploadqrcode.clickOnAnotherQRcodeButton();
@@ -267,20 +285,19 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodePdf();
 		Assert.assertTrue(true);
 	}
-	
+
 	@Then("Upload another QR code file PDF")
 	public void UploadanotherQRcodefilepdf() {
 		uploadqrcode.ClickonAnotherUploadQRCodePdf();
 		Assert.assertTrue(true);
 	}
 
-
 	@Then("Upload QR code file JPG")
 	public void UploadQRcodefilejpg() {
 		uploadqrcode.ClickonUploadQRCodeJpg();
 		Assert.assertTrue(true);
 	}
-	
+
 	@Then("Upload another QR code file JPG")
 	public void UploadanotherQRcodefilejpg() {
 		uploadqrcode.ClickonAnotherUploadQRCodeJpg();
@@ -292,7 +309,7 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodeJpeg();
 		Assert.assertTrue(true);
 	}
-	
+
 	@Then("Upload another QR code file JPEG")
 	public void UploadanotherQRcodefilejpeg() {
 		uploadqrcode.ClickonAnotherUploadQRCodeJpeg();
@@ -535,6 +552,30 @@ public class StepDef {
 		Assert.assertTrue(true);
 	}
 
+	@Then("Upload Large size not supported QR code file")
+	public void upload_large_size_not_supported_qr_code_file() {
+		uploadqrcode.ClickonUploadLargeSizeQRCode();
+		Assert.assertTrue(true);
+	}
+
+	@Then("Upload blur QR code file")
+	public void upload_blur_qrcode_file() {
+		uploadqrcode.ClickonUploadBlurQRCode();
+		Assert.assertTrue(true);
+	}
+
+	@Then("Upload multiple qr code in one image file")
+	public void upload_multiple_QR_code_in_one_image_file() {
+		uploadqrcode.ClickonUploadmultipleQRCode();
+		Assert.assertTrue(true);
+	}
+
+	@Then("Upload invalid pdf")
+	public void upload_invalid_pdf() {
+		uploadqrcode.ClickonUploadInvalidPdf();
+		Assert.assertTrue(true);
+	}
+
 	@Then("Upload QR code file Expired jpg")
 	public void upload_qr_code_file_expired_jpg() {
 		uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
@@ -563,6 +604,16 @@ public class StepDef {
 		Assert.assertEquals(uploadqrcode.getErrorMessageForExpiredQRCode(), UiConstants.CONGRATULATIONS_MESSAGE);
 	}
 
+	@Then("Verify Large size alert message")
+	public void verify_message_for_large_size_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForLargeSizeQRCode(), UiConstants.ERROR_MESSAGE_LARGEFILE_QR);
+	}
+
+	@Then("Verify MultiFormat alert message")
+	public void verify_message_for_blur_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForBlurQRCode(), UiConstants.ERROR_MULTI_FORMAT);
+	}
+
 	@Then("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
 		try {
@@ -583,6 +634,7 @@ public class StepDef {
 		homePage.SwitchToVerifyTab();
 
 	}
+
 	@Given("User search the issuers with {string}")
 	public void user_search_the_issuers_with(String string) {
 		try {
@@ -607,16 +659,16 @@ public class StepDef {
 	public void user_click_on_download_StayProtected_Insurance_button() {
 		homePage.clickOnDownloadMosipCredentials();
 	}
-	
+
 	@Then("User search the issuers sunbird")
 	public void user_search_the_issuers_sunbird() throws Exception {
-	        String issuerText = System.getenv("Issuer_Text_sunbird");
-	        if (issuerText == null || issuerText.isEmpty()) {
-	            String[] string = baseTest.fetchIssuerTexts();
-	            issuerText = string[1];
-	        }
-	        homePage.enterIssuersInSearchBox(issuerText);
-	    }
+		String issuerText = System.getenv("Issuer_Text_sunbird");
+		if (issuerText == null || issuerText.isEmpty()) {
+			String[] string = baseTest.fetchIssuerTexts();
+			issuerText = string[1];
+		}
+		homePage.enterIssuersInSearchBox(issuerText);
+	}
 
 	@When("User click on get started button")
 	public void user_click_on_get_started_button() {
@@ -627,6 +679,7 @@ public class StepDef {
 	public void user_verify_mosip_national_id_by_e_signet_displayed() {
 		Assert.assertTrue(homePage.isMosipNationalIdDisplayed());
 	}
+
 	@When("User click on health insurance by e-signet button")
 	public void user_click_on_health_insurance_id_by_e_signet_button() {
 		homePage.clickOnMosipNationalId();
@@ -651,10 +704,12 @@ public class StepDef {
 	public void user_enter_the(String string) {
 		homePage.enterVid(string);
 	}
+
 	@When("User click on getOtp button")
 	public void user_click_on_get_otp_button() {
 		homePage.clickOnGetOtpButton();
 	}
+
 	@When("User enter the otp {string}")
 	public void user_enter_the_otp(String otpString) {
 		try {
@@ -664,6 +719,7 @@ public class StepDef {
 		}
 		homePage.enterOtp(otpString);
 	}
+
 	@When("User click on verify button")
 	public void user_click_on_verify_button() {
 		homePage.clickOnVerify();
@@ -678,7 +734,7 @@ public class StepDef {
 		}
 		Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
 	}
-	
+
 	@Then("User verify pdf is downloaded")
 	public void user_verify_pdf_is_downloaded() throws IOException, IOException {
 		try {
@@ -686,13 +742,16 @@ public class StepDef {
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println(BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"fileExists\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
+		System.out.println(BaseTest.getJse().executeScript(
+				"browserstack_executor: {\"action\": \"fileExists\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
 
 		// Get file properties
-		System.out.println(BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"getFileProperties\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
+		System.out.println(BaseTest.getJse().executeScript(
+				"browserstack_executor: {\"action\": \"getFileProperties\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}"));
 
 		// Get file content. The content is Base64 encoded
-		String base64EncodedFile = (String) BaseTest.getJse().executeScript("browserstack_executor: {\"action\": \"getFileContent\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}");
+		String base64EncodedFile = (String) BaseTest.getJse().executeScript(
+				"browserstack_executor: {\"action\": \"getFileContent\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}");
 
 		// Decode the content to Base64
 		byte[] data = Base64.getDecoder().decode(base64EncodedFile);
@@ -701,20 +760,21 @@ public class StepDef {
 
 		stream.close();
 
-		File pdfFile = new File(System.getProperty("user.dir")+"/InsuranceCredential.pdf");
+		File pdfFile = new File(System.getProperty("user.dir") + "/InsuranceCredential.pdf");
 		PDDocument document = PDDocument.load(pdfFile);
 
 		PDFTextStripper stripper = new PDFTextStripper();
 		String text = stripper.getText(document);
 
 	}
+
 	@Then("User verify go back button")
 	public void user_verify_go_back_button() {
 
 	}
 
-    @Then("Verify that user convert pdf into png")
-    public void verify_that_user_convert_pdf_into_png() throws IOException {
+	@Then("Verify that user convert pdf into png")
+	public void verify_that_user_convert_pdf_into_png() throws IOException {
 		String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
 		String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
 
@@ -726,26 +786,34 @@ public class StepDef {
 			PDPage page = document.getPage(i);
 			BufferedImage image = renderer.renderImage(i);
 
-			String outputFileNamepng = outputPath +(i) + ".png";
-			String outputFileNamejpg = outputPath +(i) + ".jpg";
-			String outputFileNamejpeg = outputPath +(i) + ".jpeg";
+			String outputFileNamepng = outputPath + (i) + ".png";
+			String outputFileNamejpg = outputPath + (i) + ".jpg";
+			String outputFileNamejpeg = outputPath + (i) + ".jpeg";
 			ImageIO.write(image, "png", new File(outputFileNamepng));
 			ImageIO.write(image, "jpg", new File(outputFileNamejpg));
 			ImageIO.write(image, "jpeg", new File(outputFileNamejpeg));
 		}
 
 		document.close();
-    }
+	}
+
 	@Then("User enter the policy number {string}")
 	public void user_enter_the_policy_number(String string) throws InterruptedException {
 		Thread.sleep(3000);
 		homePage.enterPolicyNumer(string);
 	}
 
+	@Then("User enter the credential type {string}")
+	public void user_enter_the_credential_type(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		vpverification.enterCredentialType(string);
+	}
+
 	@Then("User enter the full name  {string}")
 	public void user_enter_the_full_name(String string) {
 		homePage.enterFullName(string);
 	}
+
 	@Then("User enter the date of birth {string}")
 	public void user_enter_the_date_of_birth(String string) {
 		homePage.selectDateOfBirth();
@@ -776,8 +844,6 @@ public class StepDef {
 		vpverification.clickOnGenerateQRCodeButton();
 	}
 
-
-
 	@Then("User click on Life Insurance VC check box")
 	public void user_click_on_Life_Insurance_Check_Box() {
 		vpverification.clickOnLifeInsurance();
@@ -798,44 +864,57 @@ public class StepDef {
 		homePage.isErrorMessageVisible();
 	}
 
+	@Then("Verify MOSIP type credential")
+	public void verify_mosip_type_credential() {
+		Assert.assertFalse(vpverification.isMosipTypeCredentialVisible());
+	}
+
 	@Then("Verify VP verification qr code step1 description")
 	public void verify_vp_verification_qr_code_step1_description() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Description(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION);
 	}
 
 	@Then("Verify VP verification qr code step1 label")
 	public void verify_vp_verification_qr_code_step1_label() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_LABEL);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep1Label(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP1_LABEL);
 	}
 
 	@Then("Verify VP verification qr code step2 label")
 	public void verify_vp_verification_qr_code_step2_label() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_LABEL);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Label(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP2_LABEL);
 	}
 
 	@Then("Verify VP verification qr code step2 description")
 	public void verify_vp_verification_qr_code_step2_description() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Description(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION);
 	}
 
 	@Then("Verify VP verification qr code step3 label")
 	public void verify_vp_verification_qr_code_step3_label() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
 	}
 
 	@Then("Verify VP verification qr code step3 description")
 	public void verify_vp_verification_qr_code_step3_description() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Description(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION);
 	}
 
 	@Then("Verify VP verification qr code step4 label")
 	public void verify_vp_verification_qr_code_step4_label() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_LABEL);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Label(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP4_LABEL);
 	}
 
 	@Then("Verify VP verification qr code step4 description")
 	public void verify_vp_verification_qr_code_step4_description() {
-		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_DESCRIPTION);
+		Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Description(),
+				UiConstants.VP_VERIFICATION_QR_CODE_STEP4_DESCRIPTION);
 	}
 
 	@Then("verify request verifiable credentials button")
@@ -848,9 +927,30 @@ public class StepDef {
 		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
 	}
 
-	@Then("verify Verifiable Credential Selection Panel")
+	@Then("Verify Verifiable Credential Panel label")
 	public void verify_Verifiable_Credential_Selection_Panel() {
-		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
+		Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(),
+				UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
+	}
+
+	@Then("Verify click sort by button")
+	public void user_click_on_sort_button() {
+		vpverification.clickOnSortButton();
+	}
+
+	@Then("Verify click Sort AtoZ button")
+	public void user_click_on_sort_a_z_button() {
+		vpverification.clickOnSortAtoZButton();
+	}
+
+	@Then("Verify click Sort ZtoA button")
+	public void user_click_on_sort_z_a_button() {
+		vpverification.clickOnSortZtoAButton();
+	}
+
+	@Then("Verify click Back button")
+	public void user_click_on_back_button() {
+		vpverification.clickOnBackButton();
 	}
 
 }
