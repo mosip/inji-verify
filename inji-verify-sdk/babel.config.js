@@ -1,11 +1,7 @@
 module.exports = {
   presets: [
-    // Target modern browsers, not just Node.js
-    ["@babel/preset-env", {
-      targets: "> 0.25%, not dead",
-      modules: false, // let Webpack handle ES modules
-    }],
+    ["@babel/preset-env", { targets: { node: "current" } }],
     "@babel/preset-typescript",
-    ["@babel/preset-react", { runtime: "automatic" }] // enables new JSX transform
-  ]
+    "@babel/preset-react", // If your component uses JSX in tests or source
+  ],
 };
