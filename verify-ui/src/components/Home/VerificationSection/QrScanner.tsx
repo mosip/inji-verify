@@ -29,7 +29,6 @@ function QrScanner() {
         <QRCodeVerification
           verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
           disableUpload
-          enableZoom
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
           }
