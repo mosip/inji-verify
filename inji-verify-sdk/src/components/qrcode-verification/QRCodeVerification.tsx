@@ -11,14 +11,18 @@ import {
   CONSTRAINTS_IDEAL_HEIGHT,
   CONSTRAINTS_IDEAL_WIDTH,
   FRAME_PROCESS_INTERVAL_MS,
+  INITIAL_ZOOM_LEVEL,
   OvpQrHeader,
   ScanSessionExpiryTime,
   THROTTLE_FRAMES_PER_SEC,
+  ZOOM_STEP,
 } from "../../utils/constants";
 import { vcSubmission, vcVerification } from "../../utils/api";
-import { readBarcodes } from "zxing-wasm/full";
-import "./QRCodeVerification.css";
 import { decodeQrData, handleOvpFlow } from "../../utils/dataProcessor";
+import { readBarcodes } from "zxing-wasm/full";
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { Slider } from "@mui/material";
+import "./QRCodeVerification.css";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   triggerElement,
@@ -26,17 +30,24 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   onVCReceived,
   onVCProcessed,
   onError,
-  disableScan,
-  disableUpload,
+  isEnableUpload,
+  isEnableScan,
   uploadButtonId,
   uploadButtonStyle,
+  enableZoom,
 }) => {
+  isEnableUpload = isEnableUpload ?? true;
+  isEnableScan = isEnableScan ?? true;
+  enableZoom = enableZoom ?? true;
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(INITIAL_ZOOM_LEVEL);
+  const [isMobile, setIsMobile] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamingRef = useRef(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const shouldEnableZoom = enableZoom && isMobile;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const clearTimer = () => {
     if (timerRef.current) {
@@ -48,7 +59,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   if (!verifyServiceUrl) {
     throw new Error("verifyServiceUrl is required.");
   }
-  if (disableScan && disableUpload) {
+  if (!isEnableUpload && !isEnableScan) {
     throw new Error("Either scan or upload must be enabled.");
   }
   if (!onVCReceived && !onVCProcessed) {
@@ -108,7 +119,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   const startVideoStream = useCallback(() => {
-    if (disableScan || isCameraActive || streamingRef.current) return;
+    if (!isEnableScan || isCameraActive || streamingRef.current) return;
 
     navigator.mediaDevices
       .getUserMedia({
@@ -144,7 +155,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         };
       })
       .catch(onError);
-  }, [disableScan, isCameraActive, onError, processFrame]);
+  }, [isEnableScan, isCameraActive, onError, processFrame]);
 
   const stopVideoStream = () => {
     streamingRef.current = false;
@@ -237,9 +248,18 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     onError(err);
   };
 
+  const handleZoomChange = (value: number) => {
+    if (value >= 0 && value <= 10) setZoomLevel(value);
+  };
+
+  const handleSliderChange = (_: any, value: number | number[]) => {
+    if (typeof value === "number") handleZoomChange(value);
+  };
+
   useEffect(() => {
-    if (disableScan) return;
+    if (!isEnableScan) return;
     startVideoStream();
+    setIsCameraActive(true);
     timerRef.current = setTimeout(() => {
       stopVideoStream();
       onError(new Error("scanSessionExpired"));
@@ -249,7 +269,18 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       clearTimer();
       stopVideoStream();
     };
-  }, [disableScan, onError, startVideoStream]);
+  }, [isEnableScan, onError, startVideoStream, isUploading]);
+
+  useEffect(() => {
+    const resize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", resize);
+    resize();
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  const startScanning =
+    isCameraActive && isEnableScan && !isUploading && !isScanning;
+  console.log(shouldEnableZoom);
 
   return (
     <div className="qrcode-container">
@@ -258,21 +289,93 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       )}
       {(isUploading || isScanning) && <div className="loader"></div>}
 
-      <div className={`qr-wrapper`}>
-        {!disableScan && (
-          <div className="qr-preview">
+      <div className={`qr-wrapper ${!shouldEnableZoom ? "no-zoom" : ""}`}>
+        {startScanning && (
+          <div
+            className={`qr-preview ${
+              shouldEnableZoom ? "zoom-enabled" : "no-zoom"
+            }`}
+          >
+            {shouldEnableZoom && (
+              <button
+                onClick={() => {
+                  stopVideoStream();
+                }}
+                className="qr-close-button"
+                aria-label="Close Scanner"
+              >
+                ✕
+              </button>
+            )}
             <video
               ref={videoRef}
               className="qr-video"
+              style={{
+                transform: shouldEnableZoom
+                  ? `scale(${1 + zoomLevel / ZOOM_STEP})`
+                  : undefined,
+              }}
               playsInline
               autoPlay
               muted
             />
+            {shouldEnableZoom && (
+              <div className="qr-overlay">
+                <div className="centered-row">
+                  <MinusOutlined
+                    onClick={() => handleZoomChange(zoomLevel - 1)}
+                    className={`zoom-button-decrease${
+                      zoomLevel === 0 ? " disabled" : ""
+                    }`}
+                  />
+                  <div className="slider-container">
+                    <Slider
+                      key={`${zoomLevel}`}
+                      aria-label="Zoom Level"
+                      min={0}
+                      max={10}
+                      step={1}
+                      value={zoomLevel}
+                      onChange={handleSliderChange}
+                      onChangeCommitted={handleSliderChange}
+                      marks
+                      valueLabelDisplay="on"
+                      sx={{
+                        color: "#fff",
+                        ".MuiSlider-valueLabel": {
+                          backgroundColor:
+                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)",
+                          color: "white",
+                        },
+                        "& .MuiSlider-track": {
+                          background:
+                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
+                        },
+                        ".MuiSlider-rail": {
+                          background:
+                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
+                        },
+                      }}
+                    />
+                  </div>
+                  <PlusOutlined
+                    className={`zoom-button-increase${
+                      zoomLevel === 10 ? " disabled" : ""
+                    }`}
+                    onClick={() => handleZoomChange(zoomLevel + 1)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {!disableUpload && (
-          <div className={`upload-container`}>
+        {isEnableUpload && (
+          <div
+            className={`upload-container ${
+              shouldEnableZoom ? "fixed-enabled" : "default"
+            }`}
+          >
             <input
               type="file"
               id={uploadButtonId || "upload-qr"}

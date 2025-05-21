@@ -7,8 +7,6 @@ import {
 import { initiateOvpFlow } from "./dataProcessor";
 import { readBarcodes } from "zxing-wasm/full";
 import * as pdfjsLib from "pdfjs-dist";
-// @ts-ignore
-// eslint-disable-next-line
 import workerCode from "pdfjs-dist/build/pdf.worker.mjs";
 
 const blob = new Blob([workerCode], { type: "application/javascript" });
