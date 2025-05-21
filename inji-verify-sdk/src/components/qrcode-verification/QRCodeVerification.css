@@ -47,12 +47,15 @@
   margin-right: auto;
 }
 
-.video-container {
+.scan-container {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
+  margin: auto;
+  border-radius: 0.5rem;
 }
 
-.video-container.zoom-enabled {
+.scan-container.zoom-enabled {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -60,7 +63,7 @@
   z-index: 10;
 }
 
-.video-container.no-zoom {
+.scan-container.no-zoom {
   width: 100%;
   max-width: 28rem;
   margin-left: auto;
@@ -95,6 +98,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: inherit;
 }
 
 .qr-overlay {

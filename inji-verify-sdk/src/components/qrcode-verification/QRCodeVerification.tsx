@@ -280,7 +280,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   const startScanning =
     isCameraActive && isEnableScan && !isUploading && !isScanning;
-  console.log(shouldEnableZoom);
 
   return (
     <div className="qrcode-container">
@@ -292,7 +291,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       <div className={`qr-wrapper ${!shouldEnableZoom ? "no-zoom" : ""}`}>
         {startScanning && (
           <div
-            className={`qr-preview ${
+            className={`scan-container ${
               shouldEnableZoom ? "zoom-enabled" : "no-zoom"
             }`}
           >
