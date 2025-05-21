@@ -35,8 +35,6 @@ export const readQRcodeFromImageFile = async (
   format: string,
   isPDF?: boolean
 ): Promise<string | undefined> => {
-  console.log("reading QR code from image file...");
-
   const arrayBuffer = await file.arrayBuffer();
   const results = await readBarcodes(arrayBuffer);
 

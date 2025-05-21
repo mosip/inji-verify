@@ -1,24 +1,9 @@
-type ExclusiveDisableEvent =
-  /**
-   * ID of the presentation definition used for verification.
-   * Required for some verification flows.
-   */
-  | { disableUpload: boolean; disableScan?: never }
-  /**
-   * The full presentation definition JSON string.
-   * If provided, it will be used instead of fetching from the backend.
-   */
-  | {
-      disableScan?: boolean;
-      disableUpload?: never;
-    };
-
 type ExclusiveCallbacks =
   /**
    * Callback triggered when the verification presentation (VP) is received.
    * Provides the associated transaction ID.
    */
-  | { onVCReceived: (uuid: string) => void; onVCProcessed?: never }
+  | { onVCReceived: (txnId: string) => void; onVCProcessed?: never }
   /**
    * Callback triggered when the VP is successfully processed.
    * Provides the verification result data.
@@ -28,32 +13,49 @@ type ExclusiveCallbacks =
       onVCReceived?: never;
     };
 
-export type QRCodeVerificationProps = ExclusiveDisableEvent &
-  ExclusiveCallbacks & {
-    /**
-     * React element that triggers the verification process (e.g., a button).
-     * If not provided, the component may automatically start the process.
-     */
-    triggerElement?: React.ReactNode;
+export type QRCodeVerificationProps = ExclusiveCallbacks & {
+  /**
+   * React element that triggers the verification process (e.g., a button).
+   * If not provided, the component may automatically start the process.
+   */
+  triggerElement?: React.ReactNode;
 
-    /**
-     * The backend service URL where the verification request will be sent.
-     * This is a required field.
-     */
-    verifyServiceUrl: string;
+  /**
+   * The backend service URL where the verification request will be sent.
+   * This is a required field.
+   */
+  verifyServiceUrl: string;
 
-    /**
-     * Callback triggered when an error occurs during the verification process.
-     * This is a required field to ensure proper error handling.
-     */
-    onError: (error: Error) => void;
+  /**
+   * Callback triggered when an error occurs during the verification process.
+   * This is a required field to ensure proper error handling.
+   */
+  onError: (error: Error) => void;
 
-    uploadButtonId?: string;
+  /**
+   * Upload button config.
+   */
+  uploadButtonId?: string;
 
-    uploadButtonStyle?: string;
+  uploadButtonStyle?: string;
 
-    enableZoom?: boolean;
-  };
+  /**
+   * Enable camera zoom (mobile).
+   */
+  enableZoom?: boolean;
+
+  /**
+   * Enable upload functionality.
+   * Defaults to true.
+   */
+  isEnableUpload?: boolean;
+
+  /**
+   * Enable scan functionality.
+   * Defaults to true.
+   */
+  isEnableScan?: boolean;
+};
 
 interface VerificationResult {
   /**
@@ -69,7 +71,7 @@ interface VerificationResult {
 
 export type VerificationResults = VerificationResult[];
 
-export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
+export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED";
 
 export type scanResult = { data: any; error: Error | null };
 

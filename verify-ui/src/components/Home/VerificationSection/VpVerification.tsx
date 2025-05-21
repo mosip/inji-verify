@@ -44,8 +44,8 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
-  const handleOnVpProcessed = (vpResult: { vcResults: any }) => {
-      dispatch(verificationSubmissionComplete({ verificationResult: vpResult.vcResults }));
+  const handleOnVpProcessed = (VPResult: any) => {
+      dispatch(verificationSubmissionComplete({ verificationResult: VPResult }));
   };
 
   const handleOnQrExpired = () => {
