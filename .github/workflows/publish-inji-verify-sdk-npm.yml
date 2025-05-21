@@ -1,0 +1,30 @@
+name: inji-verify SDK NPM Publish
+
+on:
+  release:
+    types: [ published ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message for manually triggering'
+        required: false
+        default: 'Triggered for NPM Publish'
+        type: string
+  push:
+    branches:
+      - release*
+      - master
+      - develop*
+      - MOSIP*
+
+jobs:
+  publish-inji-verify-sdk-to-npm-registry:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' && github.event_name == 'workflow_dispatch' }}"
+    uses: mosip/kattu/.github/workflows/npm-publish-to-npm-registry.yml@master
+    with:
+      SERVICE_LOCATION: './inji-verify-sdk'
+    secrets:
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
