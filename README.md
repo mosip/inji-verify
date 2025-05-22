@@ -98,11 +98,11 @@ docker rm inji-verify-service-dev
 ```
 
 ## Environment variables
-- *DATABASE_HOST* : Hostname where the database is running 
-- *DATABASE_PORT* : Host port in which the database is running
-- *DATABASE_USERNAME* : Database username credential
-- *DATABASE_PASSWORD* : Database user password credential
-- *INJI_VP_REQUEST_LONG_POLLING_TIMEOUT* : The below configuration is set for VP request status long polling timeout set with env INJI_VP_REQUEST_LONG_POLLING_TIMEOUT, if not set the default value is 55000ms
+- *DATABASE_HOST* : Hostname of the database server
+- *DATABASE_PORT* : Port where the database service is accessible
+- *DATABASE_USERNAME* : Username for database access
+- *DATABASE_PASSWORD* : User password for database access
+- *INJI_VP_REQUEST_LONG_POLLING_TIMEOUT* : This configuration sets the VP request status long polling timeout using the INJI_VP_REQUEST_LONG_POLLING_TIMEOUT environment variable. If the variable is not set, the default timeout is 55,000 ms
 
 # Demo Setup:
 
