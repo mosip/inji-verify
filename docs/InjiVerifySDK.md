@@ -1,5 +1,8 @@
 ## Inji Verify SDK
-The below diagram illustrates the flow in which Relying party backend is directly fetching the result from verify backend.
+
+Inji Verify SDK provides different ways to integrate it to a relying party UI. If we data is to be consumed in the backend for any important decision making then they should use the flow of getting backend to backend since will be secure and avoids tampering. If data is required to be just shown in UI, first flow should be used.
+
+The below diagram illustrates the flow in which Relying party backend is directly fetching the result from verify backend
 ```mermaid 
 sequenceDiagram
     participant Relying Party Backend
