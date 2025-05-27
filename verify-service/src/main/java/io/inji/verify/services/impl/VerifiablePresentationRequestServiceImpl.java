@@ -36,16 +36,19 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
 
-    @Autowired
-    PresentationDefinitionRepository presentationDefinitionRepository;
-    @Autowired
-    AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
-    @Autowired
-    VPSubmissionRepository vpSubmissionRepository;
+    final PresentationDefinitionRepository presentationDefinitionRepository;
+    final AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
+    final VPSubmissionRepository vpSubmissionRepository;
     @Value("${inji.vp-request.long-polling-timeout}")
     Long defaultTimeout;
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
+
+    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository) {
+        this.presentationDefinitionRepository = presentationDefinitionRepository;
+        this.authorizationRequestCreateResponseRepository = authorizationRequestCreateResponseRepository;
+        this.vpSubmissionRepository = vpSubmissionRepository;
+    }
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
