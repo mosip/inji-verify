@@ -111,10 +111,9 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public void invokeVpRequestStatusListener(String requestId) {
-        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).map(vpRequestStatusDtoDeferredResult -> {
+        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).ifPresent(vpRequestStatusDtoDeferredResult -> {
             vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
             vpRequestStatusListeners.remove(requestId);
-            return null;
         });
     }
 
