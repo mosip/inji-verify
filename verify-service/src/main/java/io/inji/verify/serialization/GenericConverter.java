@@ -3,6 +3,7 @@ package io.inji.verify.serialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import io.inji.verify.exception.SerializationException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -29,7 +30,7 @@ public class GenericConverter<T> implements AttributeConverter<T, String> {
         try {
             return objectMapper.writeValueAsString(attribute);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting " + targetType.getSimpleName() + " to JSON string.", e);
+            throw new SerializationException("Error converting " + targetType.getSimpleName() + " to JSON string.");
         }
     }
 
@@ -41,7 +42,7 @@ public class GenericConverter<T> implements AttributeConverter<T, String> {
         try {
             return objectMapper.readValue(dbData, targetType);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting JSON string to " + targetType.getSimpleName() + ".", e);
+            throw new SerializationException("Error converting JSON string to " + targetType.getSimpleName() + ".");
         }
     }
 }

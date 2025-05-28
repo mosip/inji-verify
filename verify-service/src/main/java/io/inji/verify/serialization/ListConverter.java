@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
+import io.inji.verify.exception.SerializationException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -36,7 +37,7 @@ public class ListConverter<T> implements AttributeConverter<List<T>, String> {
         try {
             return objectMapper.writeValueAsString(attribute);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting List<AuditLogEntry> to JSON string.", e);
+            throw new SerializationException("Error converting List to JSON string.");
         }
     }
 
@@ -48,7 +49,7 @@ public class ListConverter<T> implements AttributeConverter<List<T>, String> {
         try {
             return objectMapper.readValue(dbData, TYPE_REFERENCE);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting JSON string to List<AuditLogEntry>.", e);
+            throw new SerializationException("Error converting JSON string to List.");
         }
     }
 }
