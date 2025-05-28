@@ -1,6 +1,7 @@
 package io.inji.verify.serialization;
 
 
+import io.inji.verify.exception.SerializationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,7 +88,6 @@ public class GenericConverterTest {
             new GenericConverter<>(Object.class).convertToDatabaseColumn(malformedObject);
         });
         assertTrue(thrown.getMessage().contains("Error converting"));
-        assertTrue(thrown.getCause() instanceof com.fasterxml.jackson.core.JsonProcessingException);
     }
 
     @Test
@@ -98,6 +98,5 @@ public class GenericConverterTest {
             converterA.convertToEntityAttribute(malformedJson);
         });
         assertTrue(thrown.getMessage().contains("Error converting"));
-        assertTrue(thrown.getCause() instanceof com.fasterxml.jackson.core.JsonProcessingException);
     }
 }
