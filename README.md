@@ -112,10 +112,10 @@ Once the repository is cloned, move into the inji-verify repository directory.
 Choose one of the branches that are currently available for the demo:
 
 release branches:
-- release-0.11.x
+- release-0.12.x
 
 tags : 
-- v0.11.0
+- v0.12.3
 
 active branches:
 - master
