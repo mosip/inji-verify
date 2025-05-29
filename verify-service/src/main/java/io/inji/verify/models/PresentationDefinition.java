@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
+import io.inji.verify.serialization.impl.FormatDtoConverter;
+import io.inji.verify.serialization.impl.ListInputDescriptorDtoConverter;
+import io.inji.verify.serialization.impl.ListSubmissionRequirementDtoConverter;
 import io.inji.verify.shared.Constants;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 
@@ -26,25 +24,25 @@ public class PresentationDefinition {
     @Id
     private final String id;
 
-    @Column(columnDefinition = "json")
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Convert(converter = ListInputDescriptorDtoConverter.class)
+    @Column(columnDefinition = "TEXT")
     private final List<InputDescriptorDto> inputDescriptors;
 
-    private String name;
+    private final String name;
 
-    private String purpose;
+    private final String purpose;
 
-    @Column(columnDefinition = "json", name = "vp_format")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private FormatDto format;
+    @Column(columnDefinition = "TEXT", name = "vp_format")
+    @Convert(converter = FormatDtoConverter.class)
+    private final FormatDto format;
 
-    @Column(columnDefinition = "json")
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Convert(converter = ListSubmissionRequirementDtoConverter.class)
+    @Column(columnDefinition = "TEXT")
     private final List<SubmissionRequirementDto> submissionRequirements;
 
     @JsonIgnore
-    public String getURL(){
-        return Constants.VP_DEFINITION_URI +this.id;
+    public String getURL() {
+        return Constants.VP_DEFINITION_URI + this.id;
     }
 
 }

@@ -10,10 +10,10 @@ import java.util.Map;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InputDescriptorDto {
-    String id;
-    String name;
-    String purpose;
-    List<String> group;
-    Map<String, Map<String, List<String>>> format;
-    ConstraintsDTO constraints;
+    private final String id;
+    private final String name;
+    private final String purpose;
+    private final List<String> group;
+    private final Map<String, Map<String, List<String>>> format;
+    private final ConstraintsDTO constraints;
 }

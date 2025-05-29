@@ -10,11 +10,11 @@ import lombok.Getter;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FormatDto {
-    private JwtDto jwt;
+    private final JwtDto jwt;
     @JsonProperty("jwt_vc")
     @SerializedName("jwt_vc")
-    private JwtVcDto jwtVC;
+    private final JwtVcDto jwtVC;
     @JsonProperty("ldp_vc")
     @SerializedName("ldp_vc")
-    private LdpVcDto ldpVC;
+    private final LdpVcDto ldpVC;
 }

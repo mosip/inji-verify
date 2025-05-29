@@ -27,8 +27,7 @@ class VPDefinitionServiceImplTest {
         PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos,"name","purpose",formatDto, mockSubmissionRequirementDtos);
         when(mockRepository.findById("test_id")).thenReturn(java.util.Optional.of(mockPresentationDefinition));
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
-        service.presentationDefinitionRepository = mockRepository;
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("test_id");
 
@@ -43,8 +42,7 @@ class VPDefinitionServiceImplTest {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         when(mockRepository.findById("non_existent_id")).thenReturn(java.util.Optional.empty());
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl();
-        service.presentationDefinitionRepository = mockRepository;
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("non_existent_id");
 
