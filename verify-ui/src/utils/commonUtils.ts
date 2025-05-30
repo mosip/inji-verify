@@ -1,4 +1,4 @@
-import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
+import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
 
 const getValue = (credentialElement: any)=> {
@@ -78,21 +78,22 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => claim.type.toLowerCase() === vc.vc.credentialConfigurationId.toLowerCase())
+    selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
   );
 };
 
 export const calculateUnverifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
 ) => {
-  return selectedClaims.filter((claim) =>
-    !verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId.toLowerCase() === claim.type.toLowerCase()
-    )
+  return selectedClaims.filter(
+    (claim) =>
+      !verificationSubmissionResult.some((vc) =>
+        vc.vc.type.includes(claim.type)
+      )
   );
 };
 
