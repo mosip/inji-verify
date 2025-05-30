@@ -10,3 +10,4 @@ data:
   database-port: "5432"
   database-username: "verifyuser"
   database-name: "inji_verify"
+  database-schema: "verify"

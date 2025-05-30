@@ -38,10 +38,7 @@ class VerifiablePresentationRequestServiceImplTest {
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
         mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
-        service = new VerifiablePresentationRequestServiceImpl();
-        service.presentationDefinitionRepository = mockPresentationDefinitionRepository;
-        service.authorizationRequestCreateResponseRepository = mockAuthorizationRequestCreateResponseRepository;
-        service.vpSubmissionRepository = mockVPSubmissionRepository;
+        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository);
 
     }
     @Test

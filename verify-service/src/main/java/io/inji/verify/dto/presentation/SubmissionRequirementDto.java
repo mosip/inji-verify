@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SubmissionRequirementDto {
-    String name;
-    String rule;
-    String count;
-    String from;
+    private final String name;
+    private final String rule;
+    private final String count;
+    private final String from;
 }
 

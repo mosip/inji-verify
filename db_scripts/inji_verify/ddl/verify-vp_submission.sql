@@ -13,7 +13,7 @@
 CREATE TABLE vp_submission(
                           request_id character varying(40) NOT NULL,
                           vp_token VARCHAR NOT NULL,
-                          presentation_submission jsonb NOT NULL
+                          presentation_submission text NOT NULL
 );
 
 COMMENT ON TABLE vp_submission IS 'VP Submission table: Store details of all the verifiable presentation submissions';

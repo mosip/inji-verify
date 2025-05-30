@@ -23,7 +23,6 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,14 +34,15 @@ import org.json.JSONTokener;
 @Slf4j
 public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePresentationSubmissionService {
 
-    @Autowired
-    VPSubmissionRepository vpSubmissionRepository;
+    final VPSubmissionRepository vpSubmissionRepository;
+    final CredentialsVerifier credentialsVerifier;
+    final VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
 
-    @Autowired
-    CredentialsVerifier credentialsVerifier;
-
-    @Autowired
-    VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
+    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService) {
+        this.vpSubmissionRepository = vpSubmissionRepository;
+        this.credentialsVerifier = credentialsVerifier;
+        this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+    }
 
     @Override
     public void submit(VPSubmissionDto vpSubmissionDto) {
