@@ -12,7 +12,7 @@
 -- ------------------------------------------------------------------------------------------
 CREATE TABLE vc_submission(
                           transaction_id character varying(40) NOT NULL,
-                          vc jsonb NOT NULL
+                          vc text NOT NULL
 );
 
 COMMENT ON TABLE vc_submission IS 'VC Submission table: Store details of all the verifiable credentials submissions';

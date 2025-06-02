@@ -140,7 +140,7 @@ export type VpRequestStatusApi = {
 };
 
 export type VpSubmissionResultInt = {
-  vc: VCWrapper;
+  vc: VC;
   vcStatus: VcStatus;
   view?: boolean;
 };

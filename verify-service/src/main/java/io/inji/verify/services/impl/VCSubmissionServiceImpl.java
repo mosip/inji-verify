@@ -19,10 +19,13 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 @Service
 public class VCSubmissionServiceImpl implements VCSubmissionService {
 
-    @Autowired
-    VCSubmissionRepository vcSubmissionRepository;
-    @Autowired
-    CredentialsVerifier credentialsVerifier;
+    final VCSubmissionRepository vcSubmissionRepository;
+    final CredentialsVerifier credentialsVerifier;
+
+    public VCSubmissionServiceImpl(VCSubmissionRepository vcSubmissionRepository, CredentialsVerifier credentialsVerifier) {
+        this.vcSubmissionRepository = vcSubmissionRepository;
+        this.credentialsVerifier = credentialsVerifier;
+    }
 
     @Override
     public VCSubmissionResponseDto submitVC(String vc) {

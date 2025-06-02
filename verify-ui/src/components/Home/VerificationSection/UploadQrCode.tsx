@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../redux/hooks";
 import { GradientUploadIcon, WhiteUploadIcon } from "../../../utils/theme-utils";
 import { RootState } from "../../../redux/store";
 import { isRTL } from "../../../utils/i18n";
-import QRCodeVerification from "../../qrcode-verification/QRCodeVerification";
-import { verificationComplete } from "../../../redux/features/verification/verification.slice";
-import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 
 export const UploadQrCode = ({
   displayMessage,
@@ -14,8 +11,6 @@ export const UploadQrCode = ({
   displayMessage: string;
   className?: string;
 }) => {
-  const dispatch = useAppDispatch();
-
   const [isHover, setHover] = useState(false);
 
   const UploadButton = ({ displayMessage }: { displayMessage: string }) => {
@@ -52,21 +47,9 @@ export const UploadQrCode = ({
 
   return (
     <div
-      className={`mx-auto my-1.5 flex flex-col content-center justify-center w-full ${className}`}
+      className={`mx-auto my-1.5 flex content-center justify-center ${className}`}
     >
-      <QRCodeVerification
-        triggerElement={<UploadButton displayMessage={displayMessage} />}
-        verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
-        disableScan
-        onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
-          dispatch(verificationComplete({ verificationResult: data[0] }))
-        }
-        uploadButtonId={"upload-qr"}
-        uploadButtonStyle="hidden"
-        onError={(error) =>
-          raiseAlert({ message: error.message, severity: "error" })
-        }
-      />
+      <UploadButton displayMessage={displayMessage} />
     </div>
   );
 };
