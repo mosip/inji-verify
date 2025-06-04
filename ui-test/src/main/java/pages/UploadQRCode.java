@@ -83,7 +83,7 @@ public class UploadQRCode extends BasePage {
 	WebElement FullNameValue;
 
 	public void ClickonUploadQRCodePng() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
 	public void ClickonAnotherUploadQRCodePng() {
@@ -91,11 +91,11 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeJpg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonAnotherUploadQRCodeJpg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpg");
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -107,7 +107,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
-		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential1.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonAnotherUploadQRCodeJpeg() {
@@ -123,7 +123,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeDownloadedFromPhone() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.jpg");
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
