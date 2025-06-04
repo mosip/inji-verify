@@ -2,7 +2,6 @@
 <suite name="Cucumber Test Suite">
     <test name="Cucumber Tests">
         <classes>
-
             <class name="runnerfiles.Runner"/>
         </classes>
     </test>
