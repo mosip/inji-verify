@@ -111,7 +111,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodeJpeg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential1.jpeg");
+		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
