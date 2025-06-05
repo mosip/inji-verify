@@ -6,7 +6,6 @@ export const Pages = {
     Scan:"/scan",
     VerifyCredentials: "/verify",
     Offline: "/offline",
-    Redirect: "/redirect",
     PageNotFound: "*"
 }
 
