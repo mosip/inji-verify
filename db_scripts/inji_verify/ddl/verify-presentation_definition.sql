@@ -15,8 +15,8 @@ CREATE TABLE presentation_definition(
                                                       input_descriptors jsonb NOT NULL,
                                                       name character varying(500),
                                                       purpose character varying(500),
-                                                      vp_format jsonb,
-                                                      submission_requirements jsonb
+                                                      vp_format text,
+                                                      submission_requirements text
 );
 
 COMMENT ON TABLE presentation_definition IS 'Presentation Definition table: Store details of predefined Presentation Definitions used in openID4VP sharing';

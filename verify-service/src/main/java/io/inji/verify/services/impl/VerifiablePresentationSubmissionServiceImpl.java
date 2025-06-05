@@ -26,7 +26,9 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import org.json.JSONTokener;
 
 @Service
 @Slf4j
@@ -50,28 +52,62 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
         log.info("Processing VP submission");
-        JSONObject vpProof = new JSONObject(vpSubmission.getVpToken()).getJSONObject(Constants.KEY_PROOF);
-        String keyType = vpProof.getString(Constants.KEY_TYPE);
-        List<VCResultDto> verificationResults = null;
+        List<VCResultDto> verificationResults = new ArrayList<>();
+
         try {
-            log.info("Processing VP verification");
-            switch (keyType) {
-                case Constants.RSA_SIGNATURE_2018:
-                    VerificationUtils.verifyRsaSignature2018(vpProof);
-                    break;
-                case Constants.ED25519_SIGNATURE_2018:
-                case Constants.ED25519_SIGNATURE_2020:
-                    VerificationUtils.verifyEd25519Signature(vpProof);
-                    break;
+            Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
+            List<JSONObject> vpTokens = new ArrayList<>();
+
+            if (vpTokenRaw instanceof String) {
+                String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
+                vpTokenRaw = new JSONTokener(decodedJson).nextValue();
             }
-            log.info("VP verification done");
+
+            if (vpTokenRaw instanceof JSONObject) {
+                vpTokens.add((JSONObject) vpTokenRaw);
+            } else if (vpTokenRaw instanceof JSONArray) {
+                JSONArray array = (JSONArray) vpTokenRaw;
+                for (int i = 0; i < array.length(); i++) {
+                    Object item = array.get(i);
+
+                    if (item instanceof String) {
+                        String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
+                        item = new JSONTokener(decodedJson).nextValue();
+                    }
+
+                    if (item instanceof JSONObject) {
+                        vpTokens.add((JSONObject) item);
+                    } else {
+                        throw new IllegalArgumentException("Invalid item in vp_token array");
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid vp_token format");
+            }
+
+            for (JSONObject vpToken : vpTokens) {
+                JSONObject vpProof = vpToken.getJSONObject(Constants.KEY_PROOF);
+                String keyType = vpProof.getString(Constants.KEY_TYPE);
+                log.info("Processing VP verification");
+                switch (keyType) {
+                    case Constants.RSA_SIGNATURE_2018:
+                        VerificationUtils.verifyRsaSignature2018(vpProof);
+                        break;
+                    case Constants.ED25519_SIGNATURE_2018:
+                    case Constants.ED25519_SIGNATURE_2020:
+                        VerificationUtils.verifyEd25519Signature(vpProof);
+                        break;
+                }
+                JSONArray verifiableCredentials = vpToken.getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
+                log.info("Processing VC verification");
+                List<VCResultDto> vcResults = getVCVerificationResults(verifiableCredentials);
+                verificationResults.addAll(vcResults);
+            }
             log.info("Processing VP token matching");
-            if (!isVPTokenMatching(vpSubmission,transactionId)){
+
+            if (!isVPTokenMatching(vpSubmission, transactionId)) {
                 throw new TokenMatchingFailedException();
             }
-            log.info("Processing VC verification");
-            JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
-            verificationResults = getVCVerificationResults(verifiableCredentials);
             boolean combinedVerificationStatus = true;
             for (VCResultDto verificationResult : verificationResults) {
                 combinedVerificationStatus = combinedVerificationStatus && (verificationResult.getVerificationStatus() == VerificationStatus.SUCCESS);
@@ -79,11 +115,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
             }
-            log.info("VC verification done");
             log.info("VP submission processing done");
             return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults);
         } catch (Exception e) {
-            log.error("Failed to verify", e);
+            log.error("Failed to verify VP submission", e);
             return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
         }
     }
@@ -102,21 +137,19 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     private List<VCResultDto> getVCVerificationResults(JSONArray verifiableCredentials) {
         List<VCResultDto> verificationResults = new ArrayList<>();
         for (Object verifiableCredential : verifiableCredentials) {
-            JSONObject fullVerifiableCredential = new JSONObject((String) verifiableCredential).getJSONObject(Constants.KEY_VERIFIABLE_CREDENTIAL);
-            JSONObject credential = fullVerifiableCredential.getJSONObject(Constants.KEY_CREDENTIAL);
-            VerificationResult verificationResult = credentialsVerifier.verify(credential.toString(), CredentialFormat.LDP_VC);
+            VerificationResult verificationResult = credentialsVerifier.verify(verifiableCredential.toString(), CredentialFormat.LDP_VC);
             VerificationStatus singleVCVerification = Utils.getVerificationStatus(verificationResult);
-            verificationResults.add(new VCResultDto(fullVerifiableCredential.toString(),singleVCVerification));
+            verificationResults.add(new VCResultDto(verifiableCredential.toString(), singleVCVerification));
         }
         return verificationResults;
     }
 
     private boolean isVPTokenMatching(VPSubmission vpSubmission, String transactionId) {
-        JSONArray verifiableCredentials = new JSONObject(vpSubmission.getVpToken()).getJSONArray(Constants.KEY_VERIFIABLE_CREDENTIAL);
+        Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
         List<DescriptorMapDto> descriptorMap = vpSubmission.getPresentationSubmission().getDescriptorMap();
         AuthorizationRequestCreateResponse request = verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId);
 
-        if(verifiableCredentials.isEmpty() || request == null || descriptorMap == null || descriptorMap.isEmpty()){
+        if (vpTokenRaw == null || request == null || descriptorMap == null || descriptorMap.isEmpty()) {
             log.info("Unable to perform token matching");
             return false;
         }
