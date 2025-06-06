@@ -168,14 +168,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     try {
       const vc = await extractVerifiableCredential(data);
       if (vc instanceof Error) throw vc;
-      if (
-        (typeof vc === "string" ? vc : JSON.stringify(vc)).endsWith(
-          BASE64_PADDING
-        )
-      ) {
-        throw new Error("VC Type Not Supported");
+      if (vc && vc.toString().endsWith(BASE64_PADDING)) {
+        throw Error("Vc Type Not Supported");
       }
-      await triggerCallbacks(vc);
+      if (vc) {
+        await triggerCallbacks(vc);
+      }
     } catch (error) {
       throw error;
     }
@@ -192,9 +190,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const encodedOrigin = encodeURIComponent(window.location.origin);
         const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
         window.location.href = url;
+      } else {
+        const decoded = await decodeQrData(new TextEncoder().encode(data));
+        return JSON.parse(decoded);
       }
-      const decoded = await decodeQrData(new TextEncoder().encode(data));
-      return JSON.parse(decoded);
     } catch (error) {
       return error;
     }
