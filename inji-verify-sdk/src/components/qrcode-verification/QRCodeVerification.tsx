@@ -18,7 +18,7 @@ import {
   ZOOM_STEP,
 } from "../../utils/constants";
 import { vcSubmission, vcVerification } from "../../utils/api";
-import { decodeQrData, handleOvpFlow } from "../../utils/dataProcessor";
+import { decodeQrData, extractRedirectUrlFromQrData } from "../../utils/dataProcessor";
 import { readBarcodes } from "zxing-wasm/full";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { Slider } from "@mui/material";
@@ -197,14 +197,13 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const processScanResult = async (data: any) => {
     try {
       const vc = await extractVerifiableCredential(data);
-      if (vc instanceof Error) throw new Error("Invalid QR code data.");
-      if (
-        (typeof vc === "string" ? vc : JSON.stringify(vc)).endsWith(
-          BASE64_PADDING
-        )
-      )
-        throw new Error("VC Type Not Supported");
-      await triggerCallbacks(vc);
+      if (vc instanceof Error) throw vc;
+      if (vc && vc.toString().endsWith(BASE64_PADDING)) {
+        throw Error("Vc Type Not Supported");
+      }
+      if (vc) {
+        await triggerCallbacks(vc);
+      }
     } catch (error) {
       throw new Error(error as string);
     }
@@ -213,9 +212,18 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const extractVerifiableCredential = async (data: any) => {
     try {
       if (data?.vpToken) return data.vpToken.verifiableCredential[0];
-      if (data.startsWith(OvpQrHeader)) return await handleOvpFlow(data);
-      const decoded = await decodeQrData(new TextEncoder().encode(data));
-      return JSON.parse(decoded);
+      if (data.startsWith(OvpQrHeader)) {
+        const redirectUrl = extractRedirectUrlFromQrData(data);
+        if (!redirectUrl)
+          throw new Error("Failed to extract redirect URL from QR data");
+
+        const encodedOrigin = encodeURIComponent(window.location.origin);
+        const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
+        window.location.href = url;
+      } else {
+        const decoded = await decodeQrData(new TextEncoder().encode(data));
+        return JSON.parse(decoded);
+      }
     } catch (error) {
       return error;
     }
