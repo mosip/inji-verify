@@ -18,7 +18,10 @@ import {
   ZOOM_STEP,
 } from "../../utils/constants";
 import { vcSubmission, vcVerification } from "../../utils/api";
-import { decodeQrData, extractRedirectUrlFromQrData } from "../../utils/dataProcessor";
+import {
+  decodeQrData,
+  extractRedirectUrlFromQrData,
+} from "../../utils/dataProcessor";
 import { readBarcodes } from "zxing-wasm/full";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { Slider } from "@mui/material";
@@ -30,25 +33,25 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   onVCReceived,
   onVCProcessed,
   onError,
-  isEnableUpload,
-  isEnableScan,
+  isEnableUpload = true,
+  isEnableScan = true,
   uploadButtonId,
   uploadButtonStyle,
-  isEnableZoom,
+  isEnableZoom = true,
 }) => {
-  isEnableUpload = isEnableUpload ?? true;
-  isEnableScan = isEnableScan ?? true;
-  isEnableZoom = isEnableZoom ?? true;
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(INITIAL_ZOOM_LEVEL);
   const [isMobile, setIsMobile] = useState(false);
+  const [isCameraActive, setIsCameraActive] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamingRef = useRef(false);
-  const [isCameraActive, setIsCameraActive] = useState(false);
-  const shouldEnableZoom = isEnableZoom && isMobile;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const shouldEnableZoom = isEnableZoom && isMobile;
+
   const clearTimer = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -56,42 +59,29 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }
   };
 
-  if (!verifyServiceUrl) {
-    throw new Error("verifyServiceUrl is required.");
-  }
-  if (!isEnableUpload && !isEnableScan) {
+  if (!verifyServiceUrl) throw new Error("verifyServiceUrl is required.");
+  if (!isEnableUpload && !isEnableScan)
     throw new Error("Either scan or upload must be enabled.");
-  }
-  if (!onVCReceived && !onVCProcessed) {
+  if (!onVCReceived && !onVCProcessed)
+    throw new Error("One of onVCReceived or onVCProcessed is required.");
+  if (onVCReceived && onVCProcessed)
     throw new Error(
-      "Either onVcReceived or onVcProcessed must be provided, but not both."
+      "Only one of onVCReceived or onVCProcessed can be provided."
     );
-  }
-  if (onVCReceived && onVCProcessed) {
-    throw new Error(
-      "Both onVcReceived and onVcProcessed cannot be provided simultaneously."
-    );
-  }
-  if (!onError) {
-    throw new Error("onError callback is required.");
-  }
+  if (!onError) throw new Error("onError callback is required.");
 
   const readBarcodeFromCanvas = useRef(async (canvas: HTMLCanvasElement) => {
-    if (!canvas) return;
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+    if (!imageData) return;
     try {
-      if (!imageData) return;
       const results = await readBarcodes(imageData);
-      if (results.length > 0 && results[0].text) {
+      if (results[0]?.text) {
         clearTimer();
         stopVideoStream();
         setScanning(true);
-        const decodedText = await decodeQrData(
-          new TextEncoder().encode(results[0].text)
-        );
-        const vc = JSON.parse(decodedText);
-        triggerCallbacks(vc);
+        const text = results[0].text;
+        processScanResult(text);
       }
     } catch (error) {
       handleError(error);
@@ -102,16 +92,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || !video.videoWidth || !video.videoHeight) return;
-
-    // Match canvas size exactly with video frame size
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
     readBarcodeFromCanvas.current(canvas);
-
     setTimeout(
       () => requestAnimationFrame(processFrame),
       THROTTLE_FRAMES_PER_SEC
@@ -120,7 +105,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   const startVideoStream = useCallback(() => {
     if (!isEnableScan || isCameraActive || streamingRef.current) return;
-
     navigator.mediaDevices
       .getUserMedia({
         video: {
@@ -134,24 +118,17 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         streamingRef.current = true;
         const video = videoRef.current;
         if (!video) return;
-
         video.srcObject = stream;
         video.disablePictureInPicture = true;
         video.playsInline = true;
         video.controls = false;
-
-        const playVideo = () => {
+        video.onloadedmetadata = () => {
           video
             .play()
             .then(() => {
               setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
             })
-            .catch((error) => {
-              onError(error);
-            });
-        };
-        video.onloadedmetadata = () => {
-          playVideo();
+            .catch(onError);
         };
       })
       .catch(onError);
@@ -161,18 +138,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     streamingRef.current = false;
     const video = videoRef.current;
     if (!video) return;
-
     const stream = video.srcObject as MediaStream | null;
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
-
-    if (video.srcObject) {
-      const stream = video.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      video.onloadedmetadata = null;
-      video.srcObject = null;
-    }
+    stream?.getTracks().forEach((track) => track.stop());
+    video.onloadedmetadata = null;
+    video.srcObject = null;
     setIsCameraActive(false);
   };
 
@@ -195,6 +164,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const processScanResult = async (data: any) => {
+    setLoading(true);
     try {
       const vc = await extractVerifiableCredential(data);
       if (vc instanceof Error) throw vc;
@@ -205,7 +175,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         await triggerCallbacks(vc);
       }
     } catch (error) {
-      throw new Error(error as string);
+      throw error;
     }
   };
 
@@ -238,22 +208,21 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const status = await vcVerification(vc, verifyServiceUrl);
         onVCProcessed([{ vc, vcStatus: status }]);
       }
-      setScanning(false);
-      setUploading(false);
     } catch (error) {
       handleError(error);
     } finally {
       setScanning(false);
       setUploading(false);
+      setLoading(false);
       setIsCameraActive(true);
       startVideoStream();
     }
   };
 
   const handleError = (error: unknown) => {
-    const err =
-      error instanceof Error ? error : new Error("Unknown error occurred");
-    onError(err);
+    onError(
+      error instanceof Error ? error : new Error("Unknown error occurred")
+    );
   };
 
   const handleZoomChange = (value: number) => {
@@ -264,6 +233,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     if (typeof value === "number") handleZoomChange(value);
   };
 
+  function base64UrlDecode(base64url: string): string {
+    // Convert base64url to base64
+    let base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
+    const pad = base64.length % 4;
+    if (pad) base64 += "=".repeat(4 - pad);
+    return atob(base64);
+  }
+
   useEffect(() => {
     if (!isEnableScan) return;
     startVideoStream();
@@ -272,7 +249,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       stopVideoStream();
       onError(new Error("scanSessionExpired"));
     }, ScanSessionExpiryTime);
-    startVideoStream();
     return () => {
       clearTimer();
       stopVideoStream();
@@ -286,16 +262,45 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     return () => window.removeEventListener("resize", resize);
   }, []);
 
+  useEffect(() => {
+    let vpToken, presentationSubmission, error;
+    try {
+      const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
+      const params = new URLSearchParams(hash.substring(1));
+      const vpTokenParam = params.get("vp_token");
+      const decoded = vpTokenParam && base64UrlDecode(vpTokenParam);
+      const parseVpToken = decoded && JSON.parse(decoded);
+      vpToken = vpTokenParam ? parseVpToken : null;
+      presentationSubmission = params.get("presentation_submission")
+        ? decodeURIComponent(params.get("presentation_submission") as string)
+        : undefined;
+      error = params.get("error");
+      if (vpToken && presentationSubmission) {
+        processScanResult({ vpToken, presentationSubmission });
+        window.history.replaceState(null, "", window.location.pathname);
+      } else if (!!error) {
+        onError(new Error(error));
+      }
+    } catch (error) {
+      console.error(
+        "Error occurred while reading params in redirect url, Error: ",
+        error
+      );
+      onError(error instanceof Error ? error : new Error("Unknown error"));
+    }
+  }, [onError, processScanResult]);
+
   const startScanning =
     isCameraActive && isEnableScan && !isUploading && !isScanning;
 
   return (
     <div className="qrcode-container">
-      {triggerElement && !isUploading && !isScanning && (
+      {triggerElement && !isUploading && !isScanning && !isLoading && (
         <div className="cursor-pointer">{triggerElement}</div>
       )}
-      {(isUploading || isScanning) && <div className="loader"></div>}
-
+      {(isUploading || isScanning || isLoading) && (
+        <div className="loader"></div>
+      )}
       <div className={`qr-wrapper ${!shouldEnableZoom ? "no-zoom" : ""}`}>
         {startScanning && (
           <div
@@ -305,9 +310,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           >
             {shouldEnableZoom && (
               <button
-                onClick={() => {
-                  stopVideoStream();
-                }}
+                onClick={stopVideoStream}
                 className="qr-close-button"
                 aria-label="Close Scanner"
               >
@@ -347,36 +350,19 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
                       onChangeCommitted={handleSliderChange}
                       marks
                       valueLabelDisplay="on"
-                      sx={{
-                        color: "#fff",
-                        ".MuiSlider-valueLabel": {
-                          backgroundColor:
-                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)",
-                          color: "white",
-                        },
-                        "& .MuiSlider-track": {
-                          background:
-                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
-                        },
-                        ".MuiSlider-rail": {
-                          background:
-                            "linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%)", // Gradient color for the track
-                        },
-                      }}
                     />
                   </div>
                   <PlusOutlined
+                    onClick={() => handleZoomChange(zoomLevel + 1)}
                     className={`zoom-button-increase${
                       zoomLevel === 10 ? " disabled" : ""
                     }`}
-                    onClick={() => handleZoomChange(zoomLevel + 1)}
                   />
                 </div>
               </div>
             )}
           </div>
         )}
-
         {isEnableUpload && (
           <div
             className={`upload-container ${
@@ -389,7 +375,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
               name={uploadButtonId || "upload-qr"}
               accept={acceptedFileTypes}
               className={`upload-button ${
-                uploadButtonStyle ? uploadButtonStyle : "upload-button-default"
+                uploadButtonStyle || "upload-button-default"
               }`}
               onChange={handleUpload}
               disabled={isUploading}

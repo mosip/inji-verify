@@ -4,7 +4,6 @@ import {
   SupportedFileTypes,
   UploadFileSizeLimits,
 } from "./constants";
-import { initiateOvpFlow } from "./dataProcessor";
 import { readBarcodes } from "zxing-wasm/full";
 import * as pdfjsLib from "pdfjs-dist";
 import workerCode from "pdfjs-dist/build/pdf.worker.mjs";
@@ -19,15 +18,6 @@ export const extractRedirectUrlFromQrData = (qrData: string) => {
   const regex = new RegExp(`^${OvpQrHeader}(.*)$`);
   const match = qrData.match(regex);
   return match ? match[1] : null;
-};
-
-export const handleOvpFlow = async (qrData: string) => {
-  const redirectUrl = extractRedirectUrlFromQrData(qrData);
-  if (redirectUrl) {
-    initiateOvpFlow(redirectUrl);
-  } else {
-    console.error("Failed to extract the redirect url from the qr data");
-  }
 };
 
 export const readQRcodeFromImageFile = async (
