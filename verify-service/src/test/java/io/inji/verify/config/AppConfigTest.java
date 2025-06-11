@@ -3,6 +3,7 @@ package io.inji.verify.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.Gson;
+import io.mosip.vercred.vcverifier.PresentationVerifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +31,14 @@ public class AppConfigTest {
          assertNotNull(credentialsVerifier);
      }
 
-     @Test
+    @Test
+    public void testPresentationVerifierBean() {
+        PresentationVerifier presentationVerifier = context.getBean(PresentationVerifier.class);
+        assertNotNull(presentationVerifier);
+    }
+
+
+    @Test
      public void testGsonBean() {
          Gson gson = context.getBean(Gson.class);
          assertNotNull(gson);
