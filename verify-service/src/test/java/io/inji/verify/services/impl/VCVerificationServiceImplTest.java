@@ -1,11 +1,11 @@
 package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
-import io.inji.verify.enums.VerificationStatus;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.constants.CredentialValidatorConstants;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

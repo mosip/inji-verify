@@ -1,6 +1,6 @@
 package io.inji.verify.dto.verification;
 
-import io.inji.verify.enums.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -2,7 +2,6 @@ package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.submission.VCSubmissionResponseDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
-import io.inji.verify.enums.VerificationStatus;
 import io.inji.verify.models.VCSubmission;
 import io.inji.verify.repository.VCSubmissionRepository;
 import io.inji.verify.shared.Constants;
@@ -11,6 +10,7 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.constants.CredentialValidatorConstants;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
