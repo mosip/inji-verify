@@ -2,7 +2,7 @@ package io.inji.verify.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
-import io.inji.verify.enums.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
