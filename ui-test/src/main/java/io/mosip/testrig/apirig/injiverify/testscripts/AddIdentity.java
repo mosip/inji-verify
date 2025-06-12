@@ -113,10 +113,14 @@ public class AddIdentity extends AdminTestUtil implements ITest {
 		}
 		inputJson = InjiVerifyUtil.inputstringKeyWordHandeler(inputJson, testCaseName);
 
-		response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
-				testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+        try {
+            response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
+                    testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+        } catch (SecurityXSSException e) {
+            throw new RuntimeException(e);
+        }
 
-		Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
+        Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 				response.asString(), getJsonFromTemplate(testCaseDTO.getOutput(), testCaseDTO.getOutputTemplate()),
 				testCaseDTO, response.getStatusCode());
 		Reporter.log(ReportUtil.getOutputValidationReport(ouputValid));

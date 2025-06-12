@@ -82,11 +82,15 @@ public class DeleteWithParam extends InjiVerifyUtil implements ITest {
 			ArrayList<JSONObject> outputtestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
 
 			for (int i = 0; i < languageList.size(); i++) {
-				response = deleteWithPathParamAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
-						getJsonFromTemplate(inputtestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
-						COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                try {
+                    response = deleteWithPathParamAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
+                            getJsonFromTemplate(inputtestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
+                            COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                } catch (SecurityXSSException e) {
+                    throw new RuntimeException(e);
+                }
 
-				Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
+                Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 						response.asString(),
 						getJsonFromTemplate(outputtestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
 						testCaseDTO, response.getStatusCode());
@@ -120,13 +124,21 @@ public class DeleteWithParam extends InjiVerifyUtil implements ITest {
 					testCaseDTO.setEndPoint(testCaseDTO.getEndPoint().replace("$SUNBIRDBASEURL$", ""));
 				}
 
-				response = deleteWithPathParamAndCookie(tempUrl + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
-						testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                try {
+                    response = deleteWithPathParamAndCookie(tempUrl + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
+                            testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                } catch (SecurityXSSException e) {
+                    throw new RuntimeException(e);
+                }
 
-			} else {
-				response = deleteWithPathParamAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
-						testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
-			}
+            } else {
+                try {
+                    response = deleteWithPathParamAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, COOKIENAME,
+                            testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                } catch (SecurityXSSException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 			Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 					response.asString(), getJsonFromTemplate(testCaseDTO.getOutput(), testCaseDTO.getOutputTemplate()),
 					testCaseDTO, response.getStatusCode());

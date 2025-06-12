@@ -98,11 +98,15 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 			ArrayList<JSONObject> inputtestCases = AdminTestUtil.getInputTestCase(testCaseDTO);
 			ArrayList<JSONObject> outputtestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
 			for (int i = 0; i < languageList.size(); i++) {
-				response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
-						getJsonFromTemplate(inputtestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
-						COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                try {
+                    response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
+                            getJsonFromTemplate(inputtestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
+                            COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
+                } catch (SecurityXSSException e) {
+                    throw new RuntimeException(e);
+                }
 
-				Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
+                Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 						response.asString(),
 						getJsonFromTemplate(outputtestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
 						testCaseDTO, response.getStatusCode());
@@ -129,15 +133,23 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 					if (InjiVerifyConfigManager.getSunbirdBaseURL() != null && !InjiVerifyConfigManager.getSunbirdBaseURL().isBlank())
 						tempUrl = InjiVerifyConfigManager.getSunbirdBaseURL();
 					testCaseDTO.setEndPoint(testCaseDTO.getEndPoint().replace("$SUNBIRDBASEURL$", ""));
-					
-					response = postWithBodyAndCookie(tempUrl + testCaseDTO.getEndPoint(), inputJson, auditLogCheck,
-							COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName(), sendEsignetToken);
-					
-				}
+
+                    try {
+                        response = postWithBodyAndCookie(tempUrl + testCaseDTO.getEndPoint(), inputJson, auditLogCheck,
+                                COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName(), sendEsignetToken);
+                    } catch (SecurityXSSException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
 			} else {
-				response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, auditLogCheck,
-						COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName(), sendEsignetToken);
-			}
+                try {
+                    response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(), inputJson, auditLogCheck,
+                            COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName(), sendEsignetToken);
+                } catch (SecurityXSSException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 			Map<String, List<OutputValidationDto>> ouputValid = null;
 			if (testCaseName.contains("_StatusCode")) {
 
