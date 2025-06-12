@@ -65,7 +65,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       params.set(
         "client_metadata",
-        JSON.stringify({ client_name: window.location.origin, vp_formats: VPFormat })
+        JSON.stringify({ client_name: window.location.host, vp_formats: VPFormat })
       );
       return params.toString();
     },
@@ -116,7 +116,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         addStylesheetRules();
         setLoading(true);
         const requestBody: VPRequestBody = {
-          clientId: window.location.origin,
+          clientId: window.location.host,
           nonce: generateNonce(),
         };
 
