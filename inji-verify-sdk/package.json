@@ -1,6 +1,6 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.13.0-beta.6",
+  "version": "0.13.0-beta.7",
   "description": "A react component library to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "CI=false webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
     "verify": "npm run build",
     "localPublish": "npm version patch && npm run build && npm publish --access public --registry http://localhost:4873"
