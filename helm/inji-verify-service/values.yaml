@@ -276,8 +276,6 @@ extraEnvVars: |
 ##
 extraEnvVarsCM:
   - inji-stack-config
-  - config-server-share
-  - artifactory-share
 
 ## Secret with extra environment variables
 ##
