@@ -28,8 +28,6 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const [showDetailView, setShowDetailView] = useState(view);
   const [isModalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("Verify");
-  const imgUrl = '';
-  const imgAlt = "Issuer Logo";
   const credential = vc;
   const credentialType: string = vc.type[1];
 
@@ -44,7 +42,6 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         onClick={view ? () => {} : () => setShowDetailView(!showDetailView)}
       >
         <div className="flex items-center">
-          {imgUrl&&<img src={imgUrl} alt={imgAlt} className="w-[50px] h-[50px] mr-1" />}
           <div
             className={`py-2.5 px-1 xs:col-end-13 lg:col-start-1 lg:col-end-6`}
             key={credentialType}
@@ -86,7 +83,6 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         vc={credential}
         status={vcStatus}
         vcType={credentialType}
-        logo={{ url: imgUrl, alt: imgAlt }}
       />
     </div>
   );
