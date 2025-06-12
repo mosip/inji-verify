@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "CI=false webpack --config webpack.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest test --coverage",
     "verify": "npm run build",
     "localPublish": "npm version patch && npm run build && npm publish --access public --registry http://localhost:4873"
