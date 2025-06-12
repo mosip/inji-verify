@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import CameraAccessDenied from "./CameraAccessDenied";
 import { useAppDispatch } from "../../../redux/hooks";
-import { goToHomeScreen, verificationComplete } from "../../../redux/features/verification/verification.slice";
+import {
+  goToHomeScreen,
+  verificationComplete,
+} from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import QRCodeVerification from "../../qrcode-verification/QRCodeVerification";
+import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 
 function QrScanner() {
   const dispatch = useAppDispatch();
@@ -15,27 +18,33 @@ function QrScanner() {
   }, []);
 
   return (
-    <div className="fixed inset-0 lg:inset-auto flex items-center justify-center h-full lg:w-[21rem] lg:h-auto lg:aspect-square lg:relative lg:overflow-visible z-[100000]">
+    <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black lg:relative lg:inset-auto lg:w-[21rem] lg:h-auto lg:aspect-square lg:bg-transparent">
       {!isCameraBlocked && (
         <div
           id="scanning-line"
           className={`hidden lg:${
             isScanning ? "block" : "hidden"
-          } scanning-line absolute flex items-center justify-center`}
+          } scanning-line absolute z-10`}
         />
       )}
 
-      <div className="h-screen lg:h-full w-full flex items-center justify-center">
+      <div className="w-full h-full lg:h-auto lg:w-full flex items-center justify-center rounded-lg overflow-hidden">
         <QRCodeVerification
-          verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
-          disableUpload
-          enableZoom
+          verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
+          isEnableUpload={false}
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
           }
-          onError={(error) =>
-            raiseAlert({ message: error.message, severity: "error" })
-          }
+          onError={(error) => {
+            if (error.name === "NotAllowedError") {
+              setIsCameraBlocked(true);
+            } else {
+              dispatch(goToHomeScreen({}));
+              dispatch(
+                raiseAlert({ message: error.message, severity: "error" })
+              );
+            }
+          }}
         />
       </div>
 

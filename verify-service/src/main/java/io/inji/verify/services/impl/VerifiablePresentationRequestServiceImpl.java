@@ -19,7 +19,6 @@ import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,16 +35,19 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class VerifiablePresentationRequestServiceImpl implements VerifiablePresentationRequestService {
 
-    @Autowired
-    PresentationDefinitionRepository presentationDefinitionRepository;
-    @Autowired
-    AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
-    @Autowired
-    VPSubmissionRepository vpSubmissionRepository;
+    final PresentationDefinitionRepository presentationDefinitionRepository;
+    final AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
+    final VPSubmissionRepository vpSubmissionRepository;
     @Value("${inji.vp-request.long-polling-timeout}")
     Long defaultTimeout;
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
+
+    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository) {
+        this.presentationDefinitionRepository = presentationDefinitionRepository;
+        this.authorizationRequestCreateResponseRepository = authorizationRequestCreateResponseRepository;
+        this.vpSubmissionRepository = vpSubmissionRepository;
+    }
 
     @Override
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
@@ -108,10 +110,9 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public void invokeVpRequestStatusListener(String requestId) {
-        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).map(vpRequestStatusDtoDeferredResult -> {
+        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).ifPresent(vpRequestStatusDtoDeferredResult -> {
             vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
             vpRequestStatusListeners.remove(requestId);
-            return null;
         });
     }
 

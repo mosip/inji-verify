@@ -8,10 +8,11 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.utils.VerificationUtils;
-import io.mosip.vercred.vcverifier.CredentialsVerifier;
-import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
-import lombok.extern.slf4j.Slf4j;
+import io.mosip.vercred.vcverifier.PresentationVerifier;
+import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
+import io.mosip.vercred.vcverifier.data.VCResult;
+import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -30,7 +31,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     private VPSubmissionRepository vpSubmissionRepository;
 
     @Mock
-    private CredentialsVerifier credentialsVerifier;
+    private PresentationVerifier presentationVerifier;
 
     @Mock
     private VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
@@ -56,12 +57,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     @Test
     public void testGetVPResult_Success() throws VPSubmissionNotFoundException, ParseException, JOSEException {
         List<String> requestIds = new ArrayList<>();
+        List<VCResult> vcResults = new ArrayList<>();
         requestIds.add("req123");
+        vcResults.add(new VCResult("", VerificationStatus.SUCCESS));
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", new PresentationSubmissionDto("id", "dId", Arrays.asList(new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
-        when(credentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(new VerificationResult(true, "", ""));
+
+        when(presentationVerifier.verify(anyString())).thenReturn(new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(new AuthorizationRequestCreateResponse());
         try (MockedStatic<VerificationUtils> utilities = Mockito.mockStatic(VerificationUtils.class)) {
 
@@ -71,7 +75,6 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
             assertNotNull(resultDto);
             assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
-            verify(credentialsVerifier, times(1)).verify(anyString(), any(CredentialFormat.class));
         }
     }
 
@@ -94,7 +97,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", new PresentationSubmissionDto("id", "dId", new ArrayList<>()));
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
-        when(credentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(new VerificationResult(false, "", ""));
+        when(presentationVerifier.verify(anyString())).thenReturn(new PresentationVerificationResult(VPVerificationStatus.INVALID, new ArrayList<>()));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);

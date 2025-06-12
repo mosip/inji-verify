@@ -15,15 +15,15 @@ public class  PresentationSubmissionDto {
     @NotNull(message = "Presentation Submission ID cannot be null")
     @NotBlank(message = "Presentation Submission ID cannot be blank")
     @NotEmpty(message = "Presentation Submission ID cannot be empty")
-    String id;
+    private final String id;
     @NotNull(message = "Definition ID cannot be null")
     @NotBlank(message = "Definition ID cannot be null")
     @NotEmpty(message = "Definition ID cannot be null")
     @JsonProperty("definition_id")
     @SerializedName("definition_id")
-    String definitionId;
+    private final String definitionId;
     @NotNull(message = "Descriptor Map cannot be null")
     @JsonProperty("descriptor_map")
     @SerializedName("descriptor_map")
-    List<DescriptorMapDto> descriptorMap;
+    private final List<DescriptorMapDto> descriptorMap;
 }

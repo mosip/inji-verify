@@ -13,7 +13,7 @@
 CREATE TABLE authorization_request_details(
                               request_id character varying(40) NOT NULL,
                               transaction_id character varying(40) NOT NULL,
-                              authorization_details jsonb NOT NULL,
+                              authorization_details text NOT NULL,
                               expires_at bigint NOT NULL
 );
 COMMENT ON TABLE authorization_request_details IS 'Authorization RequestCreate Response table: Store details of all the verifiable presentation authorization requests created';

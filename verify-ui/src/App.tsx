@@ -6,7 +6,6 @@ import { Scan } from "./pages/Scan";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AlertMessage from "./components/commons/AlertMessage";
 import PreloadImages from "./components/commons/PreloadImages";
-import OvpRedirect from "./pages/OvpRedirect";
 import PageNotFound404 from "./pages/PageNotFound404";
 import { Pages } from "./utils/config";
 import { useAppSelector } from "./redux/hooks";
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
     path: Pages.VerifyCredentials,
     element: <Verify />,
     loader: () => switchToVerificationMethod("VERIFY"),
-  },
-  {
-    path: Pages.Redirect,
-    element: <OvpRedirect />,
   },
   {
     path: Pages.Offline,

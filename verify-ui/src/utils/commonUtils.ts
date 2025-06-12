@@ -1,5 +1,12 @@
-import { claim, credentialSubject, VCWrapper, VcStatus } from "../types/data-types";
+import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
 import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
+
+const getValue = (credentialElement: any)=> {
+  if (Array.isArray(credentialElement)){
+    return credentialElement.filter(element => element.language === "eng")[0].value
+  }
+  return credentialElement.value;
+}
 
 export const getDetailsOrder = (vc: any) => {
   const type = vc.type[1];
@@ -51,7 +58,7 @@ export const getDetailsOrder = (vc: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
-            return { key, value: credential[key as keyof credentialSubject][0].value || "N/A" };
+            return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
@@ -71,21 +78,22 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => claim.type.toLowerCase() === vc.vc.credentialConfigurationId.toLowerCase())
+    selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
   );
 };
 
 export const calculateUnverifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VCWrapper; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
 ) => {
-  return selectedClaims.filter((claim) =>
-    !verificationSubmissionResult.some(
-      (vc) => vc.vc.credentialConfigurationId.toLowerCase() === claim.type.toLowerCase()
-    )
+  return selectedClaims.filter(
+    (claim) =>
+      !verificationSubmissionResult.some((vc) =>
+        vc.vc.type.includes(claim.type)
+      )
   );
 };
 

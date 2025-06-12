@@ -6,8 +6,10 @@ import DisplayVcDetailView from "./DisplayVcDetailView";
 import { Button } from "../commons/Button";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { goToHomeScreen, qrReadInit } from "../../../../redux/features/verification/verification.slice";
-import { delayUploadQrCode } from "../../../../utils/commonUtils";
+import {
+  goToHomeScreen,
+  qrReadInit,
+} from "../../../../redux/features/verification/verification.slice";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
@@ -21,8 +23,10 @@ const Result = () => {
     if (method === "SCAN") {
       dispatch(qrReadInit({ method: "SCAN" }));
     } else {
-      dispatch(goToHomeScreen({ method: "UPLOAD" }));
-      delayUploadQrCode();
+      dispatch(goToHomeScreen({}));
+      setTimeout(() => {
+        document.getElementById("upload-qr")?.click();
+      }, 50);
     }
   };
 
@@ -40,7 +44,6 @@ const Result = () => {
         />
         <div className="grid content-center justify-center">
           <Button
-            id="verify-another-qr-code-button"
             title={t("Common:Button.verifyAnotherQrCode")}
             onClick={handleVerifyAnotherQrCode}
             className="mx-auto mt-6 mb-20 lg:mb-6 lg:w-[339px]"
