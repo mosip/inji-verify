@@ -196,7 +196,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       
   build-maven-ui-test:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: anup-nehe/kattu/.github/workflows/maven-build-browserStack.yml@develop
     with:
       SERVICE_LOCATION: ./ui-test
       BUILD_ARTIFACT: ui-test
