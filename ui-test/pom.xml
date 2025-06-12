@@ -5,8 +5,8 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>io.mosip.uiautomation</groupId>
    <artifactId>uitest-injiverify</artifactId>
-   <version>0.10.0-SNAPSHOT</version>
-   <name>inji-web-verify</name>
+   <version>0.13.0-SNAPSHOT</version>
+   <name>inji-ui-verify</name>
    <description>Parent project of ui automation of inji-verify</description>
    <url>https://github.com/mosip/inji-verify</url>
 
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>io.mosip.testrig.apitest.commons</groupId>
             <artifactId>apitest-commons</artifactId>
-            <version>1.3.2</version>
+            <version>1.3.3-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
