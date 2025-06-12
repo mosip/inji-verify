@@ -1,6 +1,6 @@
 package io.inji.verify.dto.verification;
 
-import io.inji.verify.enums.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -2,7 +2,7 @@ package io.inji.verify.dto.submission;
 
 import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.enums.VPResultStatus;
-import io.inji.verify.enums.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
