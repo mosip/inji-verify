@@ -74,7 +74,7 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 	 * @throws AdminTestException
 	 */
 	@Test(dataProvider = "testcaselist")
-	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException, SecurityXSSException {
+	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException {
 		testCaseName = testCaseDTO.getTestCaseName();
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
 		auditLogCheck = testCaseDTO.isAuditLogCheck();

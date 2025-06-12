@@ -73,7 +73,7 @@ public class GetWithParam extends InjiVerifyUtil implements ITest {
 	 * @throws AdminTestException
 	 */
 	@Test(dataProvider = "testcaselist")
-	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException, SecurityXSSException {
+	public void test(TestCaseDTO testCaseDTO) throws AuthenticationTestException, AdminTestException {
 		testCaseName = testCaseDTO.getTestCaseName();
 		testCaseDTO = InjiVerifyUtil.isTestCaseValidForTheExecution(testCaseDTO);
 		if (HealthChecker.signalTerminateExecution) {
