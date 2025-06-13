@@ -125,7 +125,7 @@ public class MosipTestRunner {
 			LOGGER.info("IDE :" + homeDir);
 		} else {
 			File dir = new File(System.getProperty("user.dir"));
-			homeDir = new File(dir.getParent() + "/mosip/testNgXmlFiles");
+			homeDir = new File(dir.getParent() + "/testNgXmlFiles");
 			LOGGER.info("ELSE :" + homeDir);
 		}
 		File[] files = homeDir.listFiles();
