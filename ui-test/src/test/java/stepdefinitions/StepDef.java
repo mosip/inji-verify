@@ -375,6 +375,30 @@ public class StepDef {
 		uploadqrcode.ClickonUploadQRCodeLageFileSize();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("Verify Click on Generate QR Code button")
+	public void verify_click_on_generate_qr_code_button() {
+		vpverification.ClickOnGenerateQrCodeButton();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Uncheck MOSIP ID")
+	public void uncheck_mosip_id() {
+		vpverification.ClickOnMosipIdChecklist();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Select Land Registry ")
+	public void uncheck_land_registry() {
+		vpverification.ClickOnLandRegistryChecklist();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Select Health Insurance")
+	public void select_health_insurance() {
+		vpverification.ClickOnHealthInsuranceChecklist();
+		Assert.assertTrue(true);
+	}
 
 	@Then("Verify info message for QR code file LargeFileSize")
 	public void verify_info_message_largefilesize() {
@@ -405,6 +429,16 @@ public class StepDef {
 	public void verify_scan_qr_code_step1_label() {
 		Assert.assertEquals(scanqrcode.getScanQRCodeStep1Label(), UiConstants.SCAN_QR_CODE_STEP1_LABEL);
 
+	}
+	
+	@Then("Verify QR code generated")
+	public void verify_qr_code_generated() {
+		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	}
+	
+	@Then("Verify QR code is not precent")
+	public void verify_qr_code_is_not_precent() {
+		Assert.assertFalse(vpverification.isVpVerificationQrCodeGenerated());
 	}
 
 	@Then("Verify scan qr code step1 description")
@@ -670,9 +704,9 @@ public class StepDef {
 		homePage.enterIssuersInSearchBox(issuerText);
 	}
 
-	@When("User click on get started button")
-	public void user_click_on_get_started_button() {
-		homePage.clickOnGetStartedButton();
+	@When("User click on continue as guest")
+	public void user_click_on_continue_as_guest() {
+		homePage.clickOnContinueAsGuest();
 	}
 
 	@Then("User verify mosip national id by e-signet displayed")
