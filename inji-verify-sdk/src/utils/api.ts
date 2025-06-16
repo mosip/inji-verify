@@ -1,3 +1,14 @@
+import {
+  VPRequestBody,
+  PresentationDefinition,
+  QrData,
+} from "../components/openid4vp-verification/OpenID4VPVerification.types";
+import { vcSubmissionBody } from "../components/qrcode-verification/QRCodeVerification.types";
+
+const generateNonce = (): string => {
+  return btoa(Date.now().toString());
+};
+
 export const vcVerification = async (credential: unknown, url: string) => {
   const body = JSON.stringify(credential);
   const requestOptions = {
@@ -22,20 +33,83 @@ export const vcVerification = async (credential: unknown, url: string) => {
   }
 };
 
-export const vcSubmission = async (credential: unknown, url: string) => {
-  const body = JSON.stringify(credential);
+export const vcSubmission = async (
+  credential: unknown,
+  url: string,
+  txnId?: string
+) => {
+  const requestBody: vcSubmissionBody = {
+    vc: JSON.stringify(credential),
+  };
+  if (txnId) requestBody.transactionId = txnId;
   const requestOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: body,
+    body: JSON.stringify(requestBody),
   };
 
   try {
     const response = await fetch(url + "/vc-submission", requestOptions);
     const data = await response.json();
     return data.transactionId;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) {
+      throw Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};
+
+export const vpRequest = async (
+  url: string,
+  txnId?: string,
+  presentationDefinitionId?: string,
+  presentationDefinition?: PresentationDefinition
+) => {
+  const requestBody: VPRequestBody = {
+    clientId: window.location.host,
+    nonce: generateNonce(),
+  };
+
+  if (txnId) requestBody.transactionId = txnId;
+  if (presentationDefinitionId)
+    requestBody.presentationDefinitionId = presentationDefinitionId;
+  if (presentationDefinition)
+    requestBody.presentationDefinition = presentationDefinition;
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  };
+
+  try {
+    const response = await fetch(url + `${url}/vp-request`, requestOptions);
+    if (response.status !== 201) throw new Error("Failed to create VP request");
+    const data: QrData = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) {
+      throw Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};
+
+export const vpRequestStatus = async (url: string, reqId: string) => {
+  try {
+    const response = await fetch(url + `/vp-request/${reqId}/status`);
+    if (response.status !== 200) throw new Error("Failed to fetch status");
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(error);
     if (error instanceof Error) {

@@ -85,7 +85,7 @@ interface InputDescriptor {
   constraints?: {};
 }
 
-interface PresentationDefinition {
+export interface PresentationDefinition {
   id?: string;
   purpose: string;
   format?: {
