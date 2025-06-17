@@ -45,11 +45,14 @@ public class BaseTest {
 	public static WebDriver driver;
 
 	public static final String url = System.getenv("env") != null ? System.getenv("TEST_URL")
-			: InjiVerifyConfigManager.getInjiVerifyUi();
+			: "https://injiverify.qa-inji1.mosip.net/";
+	
 	public static JavascriptExecutor jse;
 	public String PdfNameForMosip = "MosipVerifiableCredential.pdf";
 	public String PdfNameForInsurance = "InsuranceCredential.pdf";
 	public String PdfNameForLifeInsurance = "InsuranceCredential.pdf";
+	String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	String buildName = "injiVerify_" + timeStamp;
 	private static ExtentReports extent;
 	private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
@@ -89,6 +92,7 @@ public class BaseTest {
 		browserstackOptions.put("os", "Windows");
 		browserstackOptions.put("local", true);
 		browserstackOptions.put("interactiveDebugging", true);
+		browserstackOptions.put("buildName", buildName);
 		capabilities.setCapability("bstack:options", browserstackOptions);
 
 		driver = new RemoteWebDriver(new URL(URL), capabilities);
