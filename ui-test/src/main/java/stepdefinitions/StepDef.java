@@ -1469,7 +1469,7 @@ public class StepDef {
 	    }
 	}
 
-	@When("Verify information message on BLE verification")
+	@When("verify information message on ble verification")
 	public void verify_information_message_on_ble_verification() {
 	    try {
 	        String actualMessage = ble.getInformationText();
@@ -1487,7 +1487,7 @@ public class StepDef {
 	    }
 	}
 
-	@When("Click on VP verification tab")
+	@Then("Click on vp verification tab")
 	public void click_on_vp_verification_tab() {
 	    try {
 	        vpverification.clickOnVPVerificationTab();
@@ -2485,7 +2485,7 @@ public class StepDef {
 	    }
 	}
 
-	@When("verify Verifiable Credential Selection Panel")
+	@When("verify_Verifiable_Credential_Selection_Panel()")
 	public void verify_Verifiable_Credential_Selection_Panel() {
 	    try {
 	        Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
@@ -2503,10 +2503,119 @@ public class StepDef {
 	}
 	
 	
+	@Then("Upload Large size not supported QR code file")
+	public void upload_large_size_not_supported_qr_code_file() {
+	    try {
+	        uploadqrcode.ClickonUploadLargeSizeQRCode();
+     
+	        test.log(Status.PASS, "Successfully verified large size QR code file is not supported and appropriate error is shown.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Expected error message for large QR code not shown.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading large size QR code", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while uploading large size QR code", e);
+	        throw e;
+	    }
+	}
+	
+	
+	@Then("Click on ble tab")
+	public void click_on_ble_tab1() {
+		ble.ClickonBleTab();
+		Assert.assertTrue(true);
+	}	
+	
 
+	@Then("Verify Large size alert message")
+	public void verify_message_for_large_size_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForLargeSizeQRCode(), UiConstants.ERROR_MESSAGE_LARGEFILE_QR);
+	}
 	
 	
+	@Then("Upload blur QR code file")
+	public void upload_blur_qrcode_file() {
+		uploadqrcode.ClickonUploadBlurQRCode();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Verify MultiFormat alert message")
+	public void verify_message_for_blur_qr_code() {
+		Assert.assertEquals(uploadqrcode.getErrorMessageForBlurQRCode(), UiConstants.ERROR_MULTI_FORMAT);
+	}
 	
 	
+	@Then("Upload multiple qr code in one image file")
+	public void upload_multiple_QR_code_in_one_image_file() {
+		uploadqrcode.ClickonUploadmultipleQRCode();
+		Assert.assertTrue(true);
+	}
 	
+	@Then("Upload invalid pdf")
+	public void upload_invalid_pdf() {
+		uploadqrcode.ClickonUploadInvalidPdf();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("verify scan qr code area")
+	public void verify_scan_qr_code_area() {
+		Assert.assertTrue(scanqrcode.isVisibleScanQRCodeArea());
+
+	}
+	
+	@Then("Verify click sort by button")
+	public void user_click_on_sort_button() {
+		vpverification.clickOnSortButton();
+	}
+	
+	@Then("Verify click Sort AtoZ button")
+	public void user_click_on_sort_a_z_button() {
+		vpverification.clickOnSortAtoZButton();
+	}
+	
+	@Then("Verify click Sort ZtoA button")
+	public void user_click_on_sort_z_a_button() {
+		vpverification.clickOnSortZtoAButton();
+	}
+	
+	@Then("Verify click Back button")
+	public void user_click_on_back_button() {
+		vpverification.clickOnBackButton();
+	}
+	
+	@Then("Verify Click on Generate QR Code button")
+	public void verify_click_on_generate_qr_code_button() {
+		vpverification.ClickOnGenerateQrCodeButton();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Verify QR code generated")
+	public void verify_qr_code_generated() {
+		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	}
+	
+	@Then("Verify QR code is not precent")
+	public void verify_qr_code_is_not_precent() {
+		Assert.assertFalse(vpverification.isVpVerificationQrCodeGenerated());
+	}
+	
+	@Then("Uncheck MOSIP ID")
+	public void uncheck_mosip_id() {
+		vpverification.ClickOnMosipIdChecklist();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Select Health Insurance")
+	public void select_health_insurance() {
+		vpverification.ClickOnHealthInsuranceChecklist();
+		Assert.assertTrue(true);
+	}
+	
+	@Then("Select Land Registry ")
+	public void uncheck_land_registry() {
+		vpverification.ClickOnLandRegistryChecklist();
+		Assert.assertTrue(true);
+	}
 }

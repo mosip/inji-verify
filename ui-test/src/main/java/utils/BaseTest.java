@@ -56,18 +56,26 @@ public class BaseTest {
 	String username = System.getenv("BROWSERSTACK_USERNAME");
 	String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
 	public final String URL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
-
+	private static Local bsLocal;
 	private Scenario scenario;
 
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
-		Local bsLocal = new Local();
-		HashMap<String, String> bsLocalArgs = new HashMap<>();
-		bsLocalArgs.put("key", accessKey);
+		this.scenario = scenario;
 		try {
-			bsLocal.start(bsLocalArgs);
+			if (bsLocal == null || !bsLocal.isRunning()) {
+				bsLocal = new Local();
+				HashMap<String, String> bsLocalArgs = new HashMap<>();
+				bsLocalArgs.put("key", accessKey);
+				try {
+					bsLocal.start(bsLocalArgs);
+					System.out.println("✅ BrowserStack Local tunnel started.");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		} catch (Exception e) {
-		
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		totalCount++;
@@ -119,6 +127,18 @@ public class BaseTest {
 		}
 
 		ExtentReportManager.flushReport();
+		try {
+			if (bsLocal != null && bsLocal.isRunning() && (passedCount + failedCount == totalCount)) {
+				try {
+					bsLocal.stop();
+					System.out.println("🛑 BrowserStack Local tunnel stopped.");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
