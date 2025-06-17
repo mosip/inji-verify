@@ -2485,7 +2485,7 @@ public class StepDef {
 	    }
 	}
 
-	@When("verify_Verifiable_Credential_Selection_Panel()")
+	@When("Verify Verifiable Credential Panel label")
 	public void verify_Verifiable_Credential_Selection_Panel() {
 	    try {
 	        Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
@@ -2521,17 +2521,43 @@ public class StepDef {
 	    }
 	}
 	
-	
 	@Then("Click on ble tab")
 	public void click_on_ble_tab1() {
-		ble.ClickonBleTab();
-		Assert.assertTrue(true);
-	}	
+	    try {
+	        ble.ClickonBleTab();
+	        test.log(Status.PASS, "Successfully clicked on BLE tab and verified it is active.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: BLE tab did not activate.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on BLE tab", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on BLE tab", e);
+	        throw e;
+	    }
+	}
 	
-
 	@Then("Verify Large size alert message")
 	public void verify_message_for_large_size_qr_code() {
-		Assert.assertEquals(uploadqrcode.getErrorMessageForLargeSizeQRCode(), UiConstants.ERROR_MESSAGE_LARGEFILE_QR);
+	    try {
+	        String actualMessage = uploadqrcode.getErrorMessageForLargeSizeQRCode();
+	        String expectedMessage = UiConstants.ERROR_MESSAGE_LARGEFILE_QR;
+
+	        Assert.assertEquals(actualMessage, expectedMessage, "Large size QR code alert message mismatch.");
+
+	        test.log(Status.PASS, "Successfully verified large size QR code alert message: '" + actualMessage + "'");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Alert message verification failed. Expected: '" + UiConstants.ERROR_MESSAGE_LARGEFILE_QR +
+	            "', Actual: '" + uploadqrcode.getErrorMessageForLargeSizeQRCode() + "'");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Error message element for large QR code not found", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying large QR code error message", e);
+	        throw e;
+	    }
 	}
 	
 	
@@ -2613,9 +2639,17 @@ public class StepDef {
 		Assert.assertTrue(true);
 	}
 	
-	@Then("Select Land Registry ")
+	@Then("Select Land Registry")
 	public void uncheck_land_registry() {
 		vpverification.ClickOnLandRegistryChecklist();
 		Assert.assertTrue(true);
 	}
+	
+	@Then("User enter the credential type {string}")
+	public void user_enter_the_credential_type(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		vpverification.enterCredentialType(string);
+	}
+	
+	
 }
