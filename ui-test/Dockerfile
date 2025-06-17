@@ -56,6 +56,8 @@ COPY --chown=${container_user}:${container_user} ./src/main/java/utils/ /home/mo
 COPY --chown=${container_user}:${container_user} ./screenshots/ /home/mosip/screenshots/
 COPY --chown=${container_user}:${container_user} ./resource/ /home/mosip/resource/
 COPY --chown=${container_user}:${container_user} ./testNgXmlFiles/ /home/mosip/testNgXmlFiles/
+COPY --chown=${container_user}:${container_user} ./InsuranceCredential.pdf /home/mosip/InsuranceCredential.pdf
+COPY --chown=${container_user}:${container_user} ./src/test/resources/QRCodes/ /home/mosip/QRCodes/
 
 
 COPY --chown=${container_user_uid}:${container_user} ./browserstack.yml /home/mosip/
