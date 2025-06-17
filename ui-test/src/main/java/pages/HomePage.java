@@ -152,6 +152,8 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//p[text() = 'Something went wrong with your request. Please check and try again.']")
 	WebElement errorMeassage;
 
+	@FindBy(xpath = "(//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Get Started')])[1]")
+	WebElement getStartedButton;
 
 	public Boolean isLogoDisplayed() {
 		return injiVerifyLogo.isDisplayed();
