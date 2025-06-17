@@ -107,7 +107,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
 
-	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
+	@FindBy(xpath = "//*[@data-testid='ItemBox-Text'][1]")
 	WebElement mosipCrdentials;
 
 	@FindBy(xpath = "//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Continue as Guest')]")
