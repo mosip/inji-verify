@@ -25,7 +25,7 @@ Feature: Inji Verify upload qr code testing
     And Verify click on another qr code button
     And Upload QR code unsupported file HTML
     And Verify Error message
- 
+
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with png
     When Open inji web in new tab
@@ -269,3 +269,6 @@ Feature: Inji Verify upload qr code testing
     And Upload invalid pdf 
     And Verify MultiFormat alert message
     
+ 
+
+ 

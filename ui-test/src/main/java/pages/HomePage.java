@@ -106,12 +106,12 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
-	
-	@FindBy(xpath = "(//h3[@data-testid='ItemBox-Text'])[1]")
+
+	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
 	WebElement mosipCrdentials;
 
-	@FindBy(xpath = "(//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Get Started')])[1]")
-	WebElement getStartedButton;
+	@FindBy(xpath = "//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Continue as Guest')]")
+	WebElement continueAsGuest;
 
 	@FindBy(xpath = "(//label[contains(@class, 'w-full h-full') and contains(text(), 'Once')])[1]")
 	WebElement getValidityDropdown;
@@ -145,7 +145,7 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//*[@data-testid='DownloadResult-Home-Button']")
 	WebElement HomeButton;
-	
+
 	@FindBy(xpath = "//*[@data-testid='HomeBanner-Guest-Login']")
 	WebElement guestLogin;
 

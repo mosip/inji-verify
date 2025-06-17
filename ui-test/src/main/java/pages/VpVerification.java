@@ -41,7 +41,7 @@ public class VpVerification extends BasePage {
 	@FindBy(id = "request-credentials-button")
 	WebElement verifiableCredentialsButton;
 
-	@FindBy(xpath = "//svg[@role='img']")
+	@FindBy(xpath = "//*[name()='path' and contains(@fill,'#000000')]")
 	WebElement verificationQrCode;
 
 	@FindBy(xpath = "(//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')])[2]")
@@ -79,6 +79,18 @@ public class VpVerification extends BasePage {
 	
 	@FindBy(xpath = "(//span[@class='text-sortByText font-semibold text-smallTextSize ml-2' and text()='Sort by'])[2]")
 	WebElement SortButton;
+	
+	@FindBy(xpath = "(//button[@id='camera-access-denied-okay-button'])[2]")
+	WebElement GenerateQrCodeButton;
+	
+	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
+	WebElement MosipIdChecklist;
+	
+	@FindBy(xpath = "(//label[@for='Health Insurance'])[2]")
+	WebElement HealthInsuranceChecklist;
+	
+	@FindBy(xpath = "(//label[@for='Land Registry'])[2]")
+	WebElement LandRegistryChecklist;
 	
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (A-Z)')]")
 	WebElement SortAtoZButton;
@@ -122,6 +134,7 @@ public class VpVerification extends BasePage {
 	public Boolean isVpVerificationQrCodeGenerated() {
 		return isElementIsVisible(driver, verificationQrCode);
 	}
+	
 
 	public void clickOnVerifiableCredentialsButton() {
 		 clickOnElement(driver, verifiableCredentialsButton);
@@ -174,6 +187,22 @@ public class VpVerification extends BasePage {
 	
 	public void clickOnSortButton() {
 		 clickOnElement(driver, SortButton);
+	}
+	
+	public void ClickOnGenerateQrCodeButton() {
+		 clickOnElement(driver, GenerateQrCodeButton);
+	}
+	
+	public void ClickOnMosipIdChecklist() {
+		 clickOnElement(driver, MosipIdChecklist);
+	}
+	
+	public void ClickOnHealthInsuranceChecklist() {
+		 clickOnElement(driver, HealthInsuranceChecklist);
+	}
+	
+	public void ClickOnLandRegistryChecklist() {
+		 clickOnElement(driver, LandRegistryChecklist);
 	}
 	
 	public void clickOnSortAtoZButton() {

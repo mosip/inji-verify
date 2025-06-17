@@ -44,4 +44,5 @@ public class UiConstants {
 	public static final String ERROR_MESSAGE_EXPIRED_QR = "The given credential is valid but expired!";
 	public static final String ERROR_UNSUPPORTED_FORMAT = "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf";
 	public static final String ERROR_MULTI_FORMAT = "No MultiFormat Readers were able to detect the QR code.";
+	
 }
