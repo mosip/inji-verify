@@ -30,7 +30,7 @@ import java.util.List;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = {"/home/mosip/featurefiles/"},
+		features = {"/home/mosip/featurefiles/BLE.feature"},
 		dryRun = !true,
 		glue = {"stepdefinitions", "utils"},
 		snippets = SnippetType.CAMELCASE,
@@ -78,15 +78,6 @@ public class Runner extends AbstractTestNGCucumberTests{
 			KeycloakUserManager.createUsers();
 			KeycloakUserManager.closeKeycloakInstance();
 			AdminTestUtil.getRequiredField();
-
-			// Generate device certificates to be consumed by Mock-MDS
-			PartnerRegistration.deleteCertificates();
-			AdminTestUtil.createAndPublishPolicy();
-			AdminTestUtil.createEditAndPublishPolicy();
-			PartnerRegistration.deviceGeneration();
-
-			// Generating biometric details with mock MDS
-			BiometricDataProvider.generateBiometricTestData("Registration");
 
 			startTestRunner();
 		} catch (Exception e) {
