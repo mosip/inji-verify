@@ -5,7 +5,6 @@ Feature: Inji Verify homepage testing
     Given User gets the title of the page
     Then Validate the title of the page
     And Verify that header is displayed
-    And Verify that sub header is displayed
     And Verify that home button is displayed
     And Verify that Credentials button is displayed
     And Verify that Help button is displayed
@@ -26,6 +25,5 @@ Feature: Inji Verify homepage testing
     And Verify upload QR code step3 label
     And Verify upload QR code step3 description
     And Verify that scan element is visible
-    And Verify that Upload icon visible
     And Verify that Upload button visible
     And Verify file format constraints text

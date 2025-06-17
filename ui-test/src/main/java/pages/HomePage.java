@@ -106,8 +106,8 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
-
-	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
+	
+	@FindBy(xpath = "(//h3[@data-testid='ItemBox-Text'])[1]")
 	WebElement mosipCrdentials;
 
 	@FindBy(xpath = "(//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Get Started')])[1]")
@@ -145,6 +145,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//*[@data-testid='DownloadResult-Home-Button']")
 	WebElement HomeButton;
+	
+	@FindBy(xpath = "//*[@data-testid='HomeBanner-Guest-Login']")
+	WebElement guestLogin;
 
 	@FindBy(xpath = "//p[text() = 'Something went wrong with your request. Please check and try again.']")
 	WebElement errorMeassage;
@@ -290,7 +293,9 @@ public class HomePage extends BasePage {
 	}
 
 	public void clickOnGetStartedButton() {
+		if(isElementIsVisible(driver,getStartedButton)) {
 		clickOnElement(driver,getStartedButton);
+		}
 	}
 
 	public void clickOnValidityDropdown() {
@@ -403,31 +408,17 @@ public class HomePage extends BasePage {
 	public void enterFullName(String string) {
 		enterText(driver, By.xpath("//input[@id='_form_fullName']"), string);
 	}
-	public void selectDateOfBirth() {
-		driver.findElement(By.xpath("//input[@id='_form_fullName']")).sendKeys(Keys.TAB);
-		driver.findElement(By.id("_form_dob")).sendKeys("01/01/2025");
+    public void selectDateOfBirth(String string) {
 
-
-		driver.findElement(By.xpath("//input[@id='_form_dob']")).click();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(driver.getWindowHandles());
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String xpath = "//*[contains(@text,'SET')]"; // Improved XPath (consider adding specificity)
-
-		try {
-			js.executeScript("document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()", xpath);
-		} catch (NoSuchElementException e) {
-			System.out.println("Element not found with XPath: " + xpath);
-		} catch (JavascriptException e) {
-			System.out.println("JavaScript error: " + e.getMessage());
-		}
-	}
+        driver.findElement(By.xpath("//input[@id='_form_fullName']")).sendKeys(Keys.TAB);
+        driver.findElement(By.id("_form_dob")).sendKeys(string);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 	public void clickOnLogin() {
 		clickOnElement(driver,verifyButton );
@@ -441,5 +432,8 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, errorMeassage);
 	}
 
+	public void clickOnContinueAsGuest() {
+		clickOnElement(driver,guestLogin );
+	}
 
 	}

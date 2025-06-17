@@ -1,7 +1,6 @@
 package constants;
 
 public class UiConstants {
-
 	public static final String PAGE_TITLE = "Inji Verify";
 	public static final String PAGE_HEADER = "Verify credentials with ease!";
 	public static final String PAGE_SUB_HEADER = "Effortlessly verify credentials with Inji Verify! Just scan the QR code or upload it for instant validation, following the steps below.";
@@ -45,5 +44,4 @@ public class UiConstants {
 	public static final String ERROR_MESSAGE_EXPIRED_QR = "The given credential is valid but expired!";
 	public static final String ERROR_UNSUPPORTED_FORMAT = "Unsupported file format. Allowed file formats are: png, jpeg, jpg, pdf";
 	public static final String ERROR_MULTI_FORMAT = "No MultiFormat Readers were able to detect the QR code.";
-
 }

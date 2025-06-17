@@ -7,8 +7,8 @@ GetPolicySunBirdR:
       restMethod: get
       checkErrorsOnlyInResponse: true
       validityCheckRequired: true
-      inputTemplate: injiweb/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdR
-      outputTemplate: injiweb/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdRResult
+      inputTemplate: injiverify/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdR
+      outputTemplate: injiverify/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdRResult
       input: '{
         "insuranceid": "$ID:ESignet_SunBirdR_CreatePolicy_NOAUTH_Valid_Smoke_Sid_osid$"
     }'

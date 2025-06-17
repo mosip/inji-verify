@@ -1,16 +1,25 @@
 package base;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 import static java.time.Duration.ofSeconds;
 import java.util.List;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import utils.BaseTest;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,26 +64,73 @@ public class BasePage {
 	public void browserBackButton(WebDriver driver) {
 		driver.navigate().back();
 	}
+		
+	
+  	public void uploadFile(WebDriver driver, WebElement fileInputTrigger, String filename) {
+  	    String filePath = System.getProperty("user.dir") + File.separator + filename;
+  	    File file = new File(filePath);
 
-	public void uploadFile(WebDriver driver, WebElement element, String filename) {
-		String filePath = System.getProperty("user.dir") + "/" + filename;
-		WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
-		WebElement spanElement = wait.until(ExpectedConditions.elementToBeClickable(element));
-		spanElement.click();
-		WebElement fileInput = wait
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='file']")));
-		fileInput.sendKeys(filePath);
-	}
+  	    if (!file.exists()) {
+  	        throw new RuntimeException("❌ File not found: " + filePath);
+  	    }
 
-	public void uploadFileForInvalid(WebDriver driver, WebElement element, String filename) {
+  	    By inputLocator = By.xpath("//input[@type='file']");
+  	    int retries = 3;
+  	    while (retries-- > 0) {
+  	        try {
+  	           
+  	            fileInputTrigger.click();
+  	            WebElement fileInputElement = driver.findElement(inputLocator);
+  	            if (fileInputElement instanceof RemoteWebElement) {
+  	                ((RemoteWebElement) fileInputElement).setFileDetector(new LocalFileDetector());
+  	            }
+
+  	            fileInputElement.sendKeys(file.getAbsolutePath());
+  	            System.out.println("✅ File uploaded successfully.");
+  	            return;
+
+  	        } catch (StaleElementReferenceException e) {
+  	            System.out.println("⚠️ Caught stale element exception, retrying...");
+  	            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+  	        }
+  	    }
+
+  	    throw new RuntimeException("❌ Failed to upload file due to repeated stale element exceptions.");
+  	}
+
+
+	public void uploadFileForInvalid(WebDriver driver, WebElement fileInputTrigger, String filename) {
 		String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\QRCodes\\" + filename;
-		WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
-		WebElement spanElement = wait.until(ExpectedConditions.elementToBeClickable(element));
-		spanElement.click();
-		WebElement fileInput = wait
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='file']")));
-		fileInput.sendKeys(filePath);
-	}
+		 File file = new File(filePath);
+
+	  	    if (!file.exists()) {
+	  	        throw new RuntimeException("❌ File not found: " + filePath);
+	  	    }
+
+	  	    By inputLocator = By.xpath("//input[@type='file']");
+	  	    int retries = 3;
+	  	    while (retries-- > 0) {
+	  	        try {
+	  	           
+	  	            fileInputTrigger.click();
+	  	            WebElement fileInputElement = driver.findElement(inputLocator);
+	  	            if (fileInputElement instanceof RemoteWebElement) {
+	  	                ((RemoteWebElement) fileInputElement).setFileDetector(new LocalFileDetector());
+	  	            }
+
+	  	            fileInputElement.sendKeys(file.getAbsolutePath());
+	  	            System.out.println("✅ File uploaded successfully.");
+	  	            return;
+
+	  	        } catch (StaleElementReferenceException e) {
+	  	            System.out.println("⚠️ Caught stale element exception, retrying...");
+	  	            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+	  	        }
+	  	    }
+
+	  	    throw new RuntimeException("❌ Failed to upload file due to repeated stale element exceptions.");
+	  	}
+	
 	public void waitForElementVisibleWithPolling(WebDriver driver, WebElement element) {
 		FluentWait<WebDriver> wait = new FluentWait<>(driver).withTimeout(ofSeconds(90))
 				.pollingEvery(Duration.ofMillis(300)).ignoring(NoSuchElementException.class);

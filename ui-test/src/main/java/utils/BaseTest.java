@@ -12,6 +12,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.browserstack.local.Local;
+
 import io.cucumber.java.Scenario;
 import io.cucumber.java.BeforeStep;
 import io.cucumber.plugin.event.PickleStepTestStep;
@@ -43,8 +45,7 @@ public class BaseTest {
 	public static WebDriver driver;
 
 	public static final String url = System.getenv("env") != null ? System.getenv("TEST_URL")
-			: InjiVerifyConfigManager.getInjiWebUi();
-	private long scenarioStartTime;
+			: InjiVerifyConfigManager.getInjiVerifyUi();
 	public static JavascriptExecutor jse;
 	public String PdfNameForMosip = "MosipVerifiableCredential.pdf";
 	public String PdfNameForInsurance = "InsuranceCredential.pdf";
@@ -60,18 +61,26 @@ public class BaseTest {
 
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
-
+		Local bsLocal = new Local();
+		HashMap<String, String> bsLocalArgs = new HashMap<>();
+		bsLocalArgs.put("key", accessKey);
+		try {
+			bsLocal.start(bsLocalArgs);
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
 		totalCount++;
-		ExtentReportManager.initReport();
-		ExtentReportManager.createTest(scenario.getName());
-		ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
-
+		   ExtentReportManager.initReport();
+	        ExtentReportManager.createTest(scenario.getName()); 
+	        ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("browserName", "Chrome");
 		capabilities.setCapability("browserVersion", "latest");
 		HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
 		browserstackOptions.put("os", "Windows");
-		browserstackOptions.put("osVersion", "10");
+		browserstackOptions.put("local", true);
+		browserstackOptions.put("interactiveDebugging", true);
 		capabilities.setCapability("bstack:options", browserstackOptions);
 
 		driver = new RemoteWebDriver(new URL(URL), capabilities);
@@ -261,6 +270,4 @@ public class BaseTest {
 		}
 		return new String[]{issuerSearchText, issuerSearchTextforSunbird};
 	}
-
-
 }

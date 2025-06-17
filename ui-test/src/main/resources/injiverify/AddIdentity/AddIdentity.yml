@@ -5,8 +5,8 @@ AddIdentity:
       uniqueIdentifier: TC_InjiWeb_AddIdentity_01
       role: idrepo
       restMethod: post
-      inputTemplate: injiweb/AddIdentity/addIdentity_$LANGNUMBER$
-      outputTemplate: injiweb/AddIdentity/addIdentityResult
+      inputTemplate: injiverify/AddIdentity/addIdentity_$LANGNUMBER$
+      outputTemplate: injiverify/AddIdentity/addIdentityResult
       input: '{
   "value": "$BIOVALUE$",
   "id": "mosip.id.create",

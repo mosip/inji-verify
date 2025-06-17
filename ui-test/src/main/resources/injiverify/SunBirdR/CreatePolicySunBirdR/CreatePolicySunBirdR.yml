@@ -7,8 +7,8 @@ CreatePolicySunBirdR:
       restMethod: post
       checkErrorsOnlyInResponse: true
       validityCheckRequired: true
-      inputTemplate: injiweb/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR
-      outputTemplate: injiweb/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdRResult
+      inputTemplate: injiverify/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR
+      outputTemplate: injiverify/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdRResult
       input: '{
         "policyNumber": "$POLICYNUMBERFORSUNBIRDRC$",
       	"policyName": "Start Insurance Gold Premium",
