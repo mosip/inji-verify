@@ -30,7 +30,7 @@ import java.util.List;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = {"/home/mosip/featurefiles/"},
+		features = {"src/test/resources/featurefiles/UploadQRCodepage.feature"},
 		dryRun = !true,
 		glue = {"stepdefinitions", "utils"},
 		snippets = SnippetType.CAMELCASE,
