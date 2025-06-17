@@ -46,20 +46,20 @@ LABEL build_time=${BUILD_TIME}
 ENV nginx_dir=/usr/share/nginx
 ENV work_dir=${nginx_dir}/html
 
-ADD configure_start.sh configure_start.sh
-ADD .env /usr/share/nginx/html/.env
+COPY configure_start.sh /configure_start.sh
+COPY .env ${nginx_dir}/html/.env
 
-RUN chmod +x configure_start.sh
+RUN chmod +x /configure_start.sh
 
 # Copy the built React app from the build container to the Nginx container
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build ${nginx_dir}/html
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 8000
 EXPOSE 8000
 
-ENTRYPOINT [ "./configure_start.sh" ]
+ENTRYPOINT ["/configure_start.sh"]
 
 # The main command to start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
