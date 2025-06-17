@@ -51,8 +51,6 @@ public class BaseTest {
 	public String PdfNameForMosip = "MosipVerifiableCredential.pdf";
 	public String PdfNameForInsurance = "InsuranceCredential.pdf";
 	public String PdfNameForLifeInsurance = "InsuranceCredential.pdf";
-	String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	String buildName = "injiVerify_" + timeStamp;
 	private static ExtentReports extent;
 	private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
@@ -64,7 +62,6 @@ public class BaseTest {
 
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
-		this.scenario = scenario;
 		try {
 			if (bsLocal == null || !bsLocal.isRunning()) {
 				bsLocal = new Local();
@@ -92,7 +89,6 @@ public class BaseTest {
 		browserstackOptions.put("os", "Windows");
 		browserstackOptions.put("local", true);
 		browserstackOptions.put("interactiveDebugging", true);
-		browserstackOptions.put("buildName", buildName);
 		capabilities.setCapability("bstack:options", browserstackOptions);
 
 		driver = new RemoteWebDriver(new URL(URL), capabilities);
