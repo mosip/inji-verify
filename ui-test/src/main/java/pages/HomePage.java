@@ -403,7 +403,7 @@ public class HomePage extends BasePage {
 	public void enterFullName(String string) {
 		enterText(driver, By.xpath("//input[@id='_form_fullName']"), string);
 	}
-	public void selectDateOfBirth() {
+	public void selectDateOfBirth(String string) {
 		driver.findElement(By.xpath("//input[@id='_form_fullName']")).sendKeys(Keys.TAB);
 		driver.findElement(By.id("_form_dob")).sendKeys("01/01/2025");
 

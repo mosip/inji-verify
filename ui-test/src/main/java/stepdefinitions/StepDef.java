@@ -12,6 +12,8 @@ import constants.UiConstants;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId;
+
 import java.io.IOException;
 import pages.BLE;
 import pages.HomePage;
@@ -21,6 +23,8 @@ import pages.VpVerification;
 import utils.BaseTest;
 import java.util.Base64;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.FileOutputStream;
 import java.io.File;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -53,8 +57,13 @@ public class StepDef {
 	private VpVerification vpverification;
 	private ScanQRCodePage scanqrcode;
 	private UploadQRCode uploadqrcode;
+    public static String policynumber =SimplePostForAutoGenId.policyNumber;
+    public static String fullname =SimplePostForAutoGenId.fullName;
+    public static String dob =SimplePostForAutoGenId.dob;
 	ExtentTest test = ExtentReportManager.getTest();
 	public static String screenshotPath = System.getProperty("user.dir")+"/test-output/screenshots";
+	static LocalDate date = LocalDate.parse(dob);
+	public static String formattedDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
 	public StepDef() {
 		this.baseTest =  new BaseTest();
@@ -98,7 +107,7 @@ public class StepDef {
         }
     }
 
-    @Then("Validate the title of the page")
+    @When("Validate the title of the page")
     public void validateTheTitleOfThePage() {
         try {
             String actualTitle = homePage.getPageTitle();
@@ -116,7 +125,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that inji verify logo is displayed")
+    @When("Verify that inji verify logo is displayed")
     public void verifyThatInjiVerifyLogoIsDisplayed() {
         try {
             boolean isLogoDisplayed = homePage.isLogoDisplayed();
@@ -134,7 +143,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that header is displayed")
+    @When("Verify that header is displayed")
     public void verifyThatHeaderIsDisplayed() {
         try {
             String actualHeader = homePage.getHeader();
@@ -152,7 +161,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that sub-header is displayed")
+    @When("Verify that sub-header is displayed")
     public void verifyThatSubHeaderIsDisplayed() {
         try {
             String actualSubHeader = homePage.getSubHeader();
@@ -170,7 +179,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that home button is displayed")
+    @When("Verify that home button is displayed")
     public void verifyThathomebuttonIsDisplayed() {
         try {
             boolean isHomeButtonVisible = homePage.isHomeButtonDisplayed();
@@ -188,7 +197,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that Credentials button is displayed")
+    @When("Verify that Credentials button is displayed")
     public void verifyThatCredentialsButtonIsDisplayed() {
         try {
             boolean isCredentialsButtonVisible = homePage.isVerifyCredentialsbuttonDisplayed();
@@ -206,7 +215,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that Help button is displayed")
+    @When("Verify that Help button is displayed")
     public void verifyThatHelpButtonIsDisplayed() {
         try {
             boolean isHelpButtonVisible = homePage.isHelpbuttonDisplayed();
@@ -224,7 +233,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that expansion button is displayed before expansion")
+    @When("Verify that expansion button is displayed before expansion")
     public void verifyThatExpansionButtonIsDisplayedBeforeExpansion() {
         try {
             boolean isExpansionButtonVisible = homePage.isExpansionbuttonDisplayedBefore();
@@ -242,7 +251,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify click on home button")
+    @When("Verify click on home button")
     public void verifyClickOnHomeButton() {
         try {
             homePage.ClickonHomeButton();
@@ -260,7 +269,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that expansion button is displayed after expansion")
+    @When("Verify that expansion button is displayed after expansion")
     public void verifyThatExpansionButtonIsDisplayedAfterExpansion() {
         try {
             boolean isExpansionButtonVisible = homePage.isExpansionbuttonDisplayedAfter();
@@ -278,7 +287,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that links are valid under help")
+    @When("Verify that links are valid under help")
     public void VerifyThatLinksAreValidUnderHelp() {
         try {
             boolean areLinksValid = homePage.verifyHelpOptionLinks();
@@ -296,7 +305,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify minimize help option")
+    @When("Verify minimize help option")
     public void verifyMinimizeHelpOption() {
         try {
             homePage.minimizeHelpButton();
@@ -317,7 +326,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that upload QR Code tab is visible")
+    @When("Verify that upload QR Code tab is visible")
     public void verifyThatUploadQRCodeTabIsVisible() {
         try {
             boolean isUploadTabVisible = homePage.isUploadQRButtonVisible();
@@ -335,7 +344,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that scan QR Code tab is visible")
+    @When("Verify that scan QR Code tab is visible")
     public void verifyThatScanQRCodeTabIsVisible() {
         try {
             boolean isScanTabVisible = homePage.isScanQRCodeButtonVisible();
@@ -353,7 +362,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that VP Verification tab is visible")
+    @When("Verify that VP Verification tab is visible")
     public void verifyThatVPVerificationTabIsVisible() {
         try {
             boolean isVPVerificationTabVisible = homePage.isVerifyCredentialsbuttonDisplayed();
@@ -371,7 +380,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that BLE tab is visible")
+    @When("Verify that BLE tab is visible")
     public void verifyThatBLETabIsVisible() {
         try {
             boolean isBLETabVisible = homePage.isBLEButtonVisible();
@@ -389,7 +398,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify copyright text")
+    @When("Verify copyright text")
     public void verifyCopyrightText() {
         try {
             String actualCopyrightText = homePage.getVerifyCopyrightText();
@@ -410,7 +419,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step1 label")
+    @When("Verify upload QR code step1 label")
     public void verifyUploadQRCodeStep1Label() {
         try {
             String actualLabel = homePage.getUploadQRCodeStep1Label();
@@ -431,7 +440,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step1 description")
+    @When("Verify upload QR code step1 description")
     public void verifyUploadQRCodeStep1Description() {
         try {
             String actualDescription = homePage.getUploadQRCodeStep1Description();
@@ -452,7 +461,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step2 label")
+    @When("Verify upload QR code step2 label")
     public void verifyUploadQRCodeStep2Label() {
         try {
             String actualLabel = homePage.getUploadQRCodeStep2Label();
@@ -473,7 +482,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step2 description")
+    @When("Verify upload QR code step2 description")
     public void verifyUploadQRCodeStep2Description() {
         try {
             String actualDescription = homePage.getUploadQRCodeStep2Description();
@@ -494,7 +503,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step3 label")
+    @When("Verify upload QR code step3 label")
     public void verifyUploadQRCodeStep3Label() {
         try {
             String actualLabel = homePage.getUploadQRCodeStep3Label();
@@ -515,7 +524,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step3 description")
+    @When("Verify upload QR code step3 description")
     public void verifyUploadQRCodeStep3Description() {
         try {
             String actualDescription = homePage.getUploadQRCodeStep3Description();
@@ -536,7 +545,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that scan element is visible")
+    @When("Verify that scan element is visible")
     public void verifyThatScanElementIsVisible() {
         try {
             boolean isScanElementVisible = homePage.isScanElementIsVisible();
@@ -551,7 +560,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that Upload icon is visible")
+    @When("Verify that Upload icon is visible")
     public void verifyThatUploadIconIsVisible() {
         try {
             boolean isUploadIconVisible = homePage.isUploadIconIsVisible();
@@ -566,7 +575,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify that Upload button is visible")
+    @When("Verify that Upload button is visible")
     public void verifyThatUploadButtonIsVisible() {
         try {
             boolean isUploadButtonVisible = homePage.isUploadButtonIsVisible();
@@ -581,7 +590,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify file format constraints text")
+    @When("Verify file format constraints text")
     public void verifyFileFormatConstraintsText() {
         try {
             String actualText = homePage.getFormatConstraintText();
@@ -602,7 +611,7 @@ public class StepDef {
         }
     }
 
-    @Then("Click on Upload button")
+    @When("Click on Upload button")
     public void clickOnUploadButton() {
         try {
             homePage.ClickonQRUploadButton();
@@ -616,7 +625,7 @@ public class StepDef {
         }
     }
 
-    @Then("Upload QR code file png")
+    @When("Upload QR code file png")
     public void uploadQRCodeFile() {
         try {
             uploadqrcode.ClickonUploadQRCodePng();
@@ -630,7 +639,7 @@ public class StepDef {
         }
     }
 	
-    @Then("Upload another QR code file png")
+    @When("Upload another QR code file png")
     public void uploadAnotherQRCodeFile() {
         try {
             uploadqrcode.ClickonAnotherUploadQRCodePng();
@@ -644,7 +653,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step2 description after")
+    @When("Verify upload QR code step2 description after")
     public void verifyUploadQRCodeStep2DescriptionAfter() {
         try {
             boolean isStep2DescriptionVisible = uploadqrcode.isVisibleUploadQRCodeStep2LabelAfter();
@@ -659,7 +668,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify upload QR code step3 description after")
+    @When("Verify upload QR code step3 description after")
     public void verifyUploadQRCodeStep3DescriptionAfter() {
         try {
             boolean isStep3DescriptionVisible = uploadqrcode.isVisibleUploadQRCodeStep3LabelAfter();
@@ -674,7 +683,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify tick icon is visible on successful verification")
+    @When("Verify tick icon is visible on successful verification")
     public void verifyTickIconIsVisibleForSuccessfulVerification() {
         try {
             boolean isTickIconVisible = uploadqrcode.isTickIconVisible();
@@ -689,7 +698,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify congratulations message on successful verification")
+    @When("Verify congratulations message on successful verification")
     public void verifyCongratulationsMessageOnSuccessfulVerification() {
         try {
             String actualMessage = uploadqrcode.getCongratulationtext();
@@ -709,7 +718,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify toast message")
+    @When("Verify toast message")
     public void verifyToastMessage() {
         try {
             String actualToastMessage = uploadqrcode.getQRCodeUploadedSuccessToastMessage();
@@ -729,7 +738,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify 'Verify Another QR Code' button on successful verification")
+    @When("Verify 'Verify Another QR Code' button on successful verification")
     public void verifyVerifyAnotherQRCodeButtonOnSuccessfulVerification() {
         try {
             boolean isButtonVisible = uploadqrcode.isVisibleVerifyAnotherQRcodeButton();
@@ -744,7 +753,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify click on 'Verify Another QR Code' button")
+    @When("Verify click on 'Verify Another QR Code' button")
     public void verifyClickOnAnotherQRCodeButtonOnSuccessfulVerification() {
         try {
             uploadqrcode.clickOnAnotherQRcodeButton();
@@ -758,7 +767,7 @@ public class StepDef {
         }
     }
 
-    @Then("Upload QR code file PDF")
+    @When("Upload QR code file PDF")
     public void uploadQRCodeFilePdf() {
         try {
             uploadqrcode.ClickonUploadQRCodePdf();
@@ -772,7 +781,7 @@ public class StepDef {
         }
     }
 	
-    @Then("Upload another QR code file PDF")
+    @When("Upload another QR code file PDF")
     public void uploadAnotherQRCodeFilePdf() {
         try {
             uploadqrcode.ClickonAnotherUploadQRCodePdf();
@@ -787,7 +796,7 @@ public class StepDef {
     }
 
 
-    @Then("Upload QR code file JPG")
+    @When("Upload QR code file JPG")
     public void uploadQRCodeFileJpg() {
         try {
             uploadqrcode.ClickonUploadQRCodeJpg();
@@ -801,7 +810,7 @@ public class StepDef {
         }
     }
 	
-    @Then("Upload another QR code file JPG")
+    @When("Upload another QR code file JPG")
     public void uploadAnotherQRCodeFileJpg() {
         try {
             uploadqrcode.ClickonAnotherUploadQRCodeJpg();
@@ -815,7 +824,7 @@ public class StepDef {
         }
     }
 
-    @Then("Upload QR code file JPEG")
+    @When("Upload QR code file JPEG")
     public void uploadQRCodeFileJpeg() {
         try {
             uploadqrcode.ClickonUploadQRCodeJpeg();
@@ -829,7 +838,7 @@ public class StepDef {
         }
     }
 
-    @Then("Upload another QR code file JPEG")
+    @When("Upload another QR code file JPEG")
     public void uploadAnotherQRCodeFileJpeg() {
         try {
             uploadqrcode.ClickonAnotherUploadQRCodeJpeg();
@@ -843,7 +852,7 @@ public class StepDef {
         }
     }
 
-    @Then("Click on Home button")
+    @When("Click on Home button")
     public void clickOnHomeButton() {
         try {
             uploadqrcode.ClickonHomeButton();
@@ -857,7 +866,7 @@ public class StepDef {
         }
     }
 
-    @Then("Click on Verify Credential button")
+    @When("Click on Verify Credential button")
     public void clickOnVerifyCredentialButton() {
         try {
             uploadqrcode.clickVerifyCredentialsbutton();
@@ -871,7 +880,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify browser refresh")
+    @When("Verify browser refresh")
     public void verifyBrowserRefresh() {
         try {
             uploadqrcode.refreshBrowserAfterVerification();
@@ -882,7 +891,7 @@ public class StepDef {
         }
     }
 
-    @Then("Upload QR code unsupported file HTML")
+    @When("Upload QR code unsupported file HTML")
     public void uploadQRCodeUnsupportedFileHtml() {
         try {
             uploadqrcode.ClickonUploadQRCodeHtml();
@@ -896,7 +905,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify QR code file invalid")
+    @When("Verify QR code file invalid")
     public void verifyQRCodeFileInvalid() {
         try {
             uploadqrcode.ClickonUploadQRCodeInvalid();
@@ -924,7 +933,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify Error logo for invalid QR code")
+    @When("Verify Error logo for invalid QR code")
     public void verifyErrorLogoForInvalidQRCode() {
         try {
             Assert.assertTrue(uploadqrcode.isVisibleErrorIcon(), "Error logo is not displayed for invalid QR code.");
@@ -941,7 +950,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify Error message for invalid QR code")
+    @When("Verify Error message for invalid QR code")
     public void verifyErrorMessageForInvalidQRCode() {
         try {
             String actualErrorMessage = uploadqrcode.getErrorTextInvalidQRCode();
@@ -962,7 +971,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify Error message")
+    @When("Verify Error message")
     public void verifyErrorMessage() {
         try {
             String actualErrorMessage = uploadqrcode.getErromessageForUnSupportedFromat();
@@ -983,7 +992,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify QR code file LargeFileSize")
+    @When("Verify QR code file LargeFileSize")
     public void verifyQRCodeFileLargeFileSize() {
         try {
             uploadqrcode.ClickonUploadQRCodeLageFileSize();
@@ -998,7 +1007,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify info message for QR code file LargeFileSize")
+    @When("Verify info message for QR code file LargeFileSize")
     public void verifyInfoMessageLargeFileSize() {
         try {
             String actualMessage = uploadqrcode.getErrorMessageLargerFileSize();
@@ -1019,7 +1028,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify browser back button after verification")
+    @When("Verify browser back button after verification")
     public void verifyBrowserBackButtonAfterVerification() {
         try {
             uploadqrcode.browserBackButton(driver);
@@ -1031,7 +1040,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify click on please try again button")
+    @When("Verify click on please try again button")
     public void verifyClickOnPleaseTryAgainButton() {
         try {
             uploadqrcode.clickOnPleaseTryAgain();
@@ -1046,7 +1055,7 @@ public class StepDef {
         }
     }
 
-    @Then("verify click on scan the qr tab")
+    @When("verify click on scan the qr tab")
     public void verifyClickOnScanTheQrTab() {
         try {
             scanqrcode.ClickonScanQRButtonTab();
@@ -1060,7 +1069,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step1 label")
+    @When("Verify scan qr code step1 label")
     public void verifyScanQRCodeStep1Label() {
         try {
             String actualLabel = scanqrcode.getScanQRCodeStep1Label();
@@ -1080,7 +1089,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step1 description")
+    @When("Verify scan qr code step1 description")
     public void verifyScanQRCodeStep1Description() {
         try {
             String actualDescription = scanqrcode.getScanQRCodeStep1Description();
@@ -1100,7 +1109,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step2 label")
+    @When("Verify scan qr code step2 label")
     public void verifyScanQRCodeStep2Label() {
         try {
             String actualLabel = scanqrcode.getScanQRCodeStep2Label();
@@ -1120,7 +1129,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step2 description")
+    @When("Verify scan qr code step2 description")
     public void verifyScanQRCodeStep2Description() {
         try {
             String actualDescription = scanqrcode.getScanQRCodeStep2Description();
@@ -1140,7 +1149,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step3 label")
+    @When("Verify scan qr code step3 label")
     public void verifyScanQRCodeStep3Label() {
         try {
             String actualLabel = scanqrcode.getScanQRCodeStep3Label();
@@ -1160,7 +1169,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step3 description")
+    @When("Verify scan qr code step3 description")
     public void verifyScanQRCodeStep3Description() {
         try {
             String actualDescription = scanqrcode.getScanQRCodeStep3Description();
@@ -1181,7 +1190,7 @@ public class StepDef {
     }
 
 
-    @Then("Verify scan qr code step4 label")
+    @When("Verify scan qr code step4 label")
     public void verifyScanQRCodeStep4Label() {
         try {
             String actualLabel = scanqrcode.getScanQRCodeStep4Label();
@@ -1201,7 +1210,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step4 description")
+    @When("Verify scan qr code step4 description")
     public void verifyScanQRCodeStep4Description() {
         try {
             String actualDescription = scanqrcode.getScanQRCodeStep4Description();
@@ -1221,7 +1230,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code area")
+    @When("Verify scan qr code area")
     public void verifyScanQRCodeArea() {
         try {
             Assert.assertTrue(scanqrcode.isVisibleScanQRCodeArea(), "Scan QR Code area is not visible.");
@@ -1238,7 +1247,7 @@ public class StepDef {
         }
     }
 
-    @Then("verify scan qr code icon")
+    @When("verify scan qr code icon")
     public void verifyScanQRCodeIcon() {
         try {
             Assert.assertTrue(scanqrcode.isVisibleScanQRCodeIcon(), "Scan QR Code icon is not visible.");
@@ -1255,7 +1264,7 @@ public class StepDef {
         }
     }
 
-    @Then("verify scan qr code button")
+    @When("verify scan qr code button")
     public void verifyScanQRCodeButton() {
         try {
             Assert.assertTrue(scanqrcode.isVisibleScanQRCodeButton(), "Scan QR Code button is not visible.");
@@ -1272,7 +1281,7 @@ public class StepDef {
         }
     }
 
-    @Then("verify click on scan qr code button")
+    @When("verify click on scan qr code button")
     public void verifyClickOnScanQRCodeButton() {
         try {
             scanqrcode.ClickonScanQRButtonButton();
@@ -1286,7 +1295,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify scan qr code step2 label after")
+    @When("Verify scan qr code step2 label after")
     public void verifyScanQRCodeStep2LabelAfter() {
         try {
             Assert.assertTrue(scanqrcode.isVisibleScanQRCodeStep2LabelAfter(), "Scan QR Code Step 2 label is not visible after.");
@@ -1303,7 +1312,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify VP verification step3 label after")
+    @When("Verify VP verification step3 label after")
     public void verifyVPVerificationStep3LabelAfter() {
         try {
             Assert.assertTrue(vpverification.isVisibleVPverificationstep3LabelAfter(), "VP Verification Step 3 label is not visible after.");
@@ -1320,7 +1329,7 @@ public class StepDef {
         }
     }
 
-    @Then("Verify click on request verifiable credentials button")
+    @When("Verify click on request verifiable credentials button")
     public void verifyClickRequestVerifiableCredentialsButton() {
         try {
             vpverification.clickOnVerifiableCredentialsButton();
@@ -1348,7 +1357,7 @@ public class StepDef {
         }
     }
 
-    @Then("verify click on back button")
+    @When("verify click on back button")
     public void verifyClickOnBackButton() {
         try {
             scanqrcode.ClickonBackButton();
@@ -1365,7 +1374,7 @@ public class StepDef {
 
 
 
-	@Then("Click on BLE tab")
+	@When("Click on BLE tab")
 	public void click_on_ble_tab() {
 	    try {
 	        ble.ClickonBleTab();
@@ -1380,7 +1389,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify information message on BLE verification")
+	@When("Verify information message on BLE verification")
 	public void verify_information_message_on_ble_verification() {
 	    try {
 	        String actualMessage = ble.getInformationText();
@@ -1398,7 +1407,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Click on VP verification tab")
+	@When("Click on VP verification tab")
 	public void click_on_vp_verification_tab() {
 	    try {
 	        vpverification.clickOnVPVerificationTab();
@@ -1413,7 +1422,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify information message on VP verification")
+	@When("Verify information message on VP verification")
 	public void verify_information_message_on_vp_verification() {
 	    try {
 	        String actualMessage = vpverification.getInformationMessage();
@@ -1431,7 +1440,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify scan line on scanning area")
+	@When("Verify scan line on scanning area")
 	public void verify_scan_line_on_scanning_area() {
 	    try {
 	        boolean isScanLineVisible = scanqrcode.isVisibleScanLine();
@@ -1449,7 +1458,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify idle timeout message for scan QR code")
+	@When("Verify idle timeout message for scan QR code")
 	public void verify_idle_timeout_message_for_scan_qr_code() {
 	    try {
 	        String actualMessage = scanqrcode.getTextScannerTimeoutMessage();
@@ -1467,7 +1476,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify close button on timeout message")
+	@When("Verify close button on timeout message")
 	public void verify_close_button_on_timeout_message() {
 	    try {
 	        boolean isCloseButtonVisible = scanqrcode.isVisibleCloseIconTimeoutMessage();
@@ -1485,7 +1494,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify click on close button on timeout message")
+	@When("Verify click on close button on timeout message")
 	public void verify_click_on_close_button_on_timeout_message() {
 	    try {
 	        scanqrcode.clickOnCloseIconTimeoutMessage();
@@ -1503,7 +1512,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Upload QR code file Expired PNG")
+	@When("Upload QR code file Expired PNG")
 	public void upload_qr_code_file_expired_png() {
 	    try {
 	        uploadqrcode.ClickonUploadExpiredQRCodepngExpired();
@@ -1521,7 +1530,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Upload QR code file Expired JPG")
+	@When("Upload QR code file Expired JPG")
 	public void upload_qr_code_file_expired_jpg() {
 	    try {
 	        uploadqrcode.ClickonUploadExpiredQRCodeJpgExpired();
@@ -1540,7 +1549,7 @@ public class StepDef {
 	}
 
 	
-	@Then("Upload QR code file Expired jpeg")
+	@When("Upload QR code file Expired jpeg")
 	public void uploadQrCodeFileExpiredJpeg() {
 	    try {
 	        uploadqrcode.ClickonUploadExpiredQRCodeJpgExpired(); 
@@ -1556,7 +1565,7 @@ public class StepDef {
 	}
 
 	
-	@Then("Upload QR code file Expired pdf")
+	@When("Upload QR code file Expired pdf")
 	public void uploadQrCodeFileExpiredPdf() {
 	    try {
 	        uploadqrcode.ClickonUploadExpiredQRCodepngExpired(); 
@@ -1571,7 +1580,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify message for valid QR code")
+	@When("Verify message for valid QR code")
 	public void verify_message_for_valid_qr_code() {
 	    try {
 	        String actualMessage = uploadqrcode.getErrorMessageForExpiredQRCode();
@@ -1589,7 +1598,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify message for expired QR code")
+	@When("Verify message for expired QR code")
 	public void verify_message_for_expired_qr_code() {
 	    try {
 	        String actualMessage = uploadqrcode.getErrorMessageForExpiredQRCode();
@@ -1608,7 +1617,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Open Inji web in new tab")
+	@Given("Open Inji web in new tab")
 	public void openInjiWebInNewTab() {
 	    try {
 	        homePage.openNewTab();
@@ -1651,7 +1660,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User search the VC with {string}")
+	@When("User search the VC with {string}")
 	public void user_search_the_Vc_with(String string) {
 	    try {
 	        Thread.sleep(6000);
@@ -1669,6 +1678,33 @@ public class StepDef {
 	        throw e;
 	    }
 	}
+	
+	
+    @When("User search the issuers sunbird")
+    public void user_search_the_issuers_sunbird() throws Exception {
+        try {
+            String issuerText = System.getenv("Issuer_Text_sunbird");
+            if (issuerText == null || issuerText.isEmpty()) {
+                String[] string = baseTest.fetchIssuerTexts();
+                issuerText = string[1];
+            }
+            homePage.enterIssuersInSearchBox(issuerText);
+            Thread.sleep(6000);
+            test.log(Status.PASS, "Searched issuers with: " + issuerText);
+        } catch (NoSuchElementException e) {
+            test.log(Status.FAIL, "Element not found while searching issuers: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Unexpected error: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        }
+    }
+    
+    
 
 	@When("User click on StayProtected Insurance credentials button")
 	public void user_click_on_download_StayProtected_Insurance_button() {
@@ -1698,7 +1734,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User verify mosip national id by e-signet displayed")
+	@When("User verify mosip national id by e-signet displayed")
 	public void user_verify_mosip_national_id_by_e_signet_displayed() {
 	    try {
 	        Assert.assertTrue(homePage.isMosipNationalIdDisplayed());
@@ -1831,7 +1867,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User verify Download Success text displayed")
+	@When("User verify Download Success text displayed")
 	public void user_verify_download_success_text_displayed() {
 	    try {
 	        Assert.assertEquals(homePage.isSuccessMessageDisplayed(), "Success!");
@@ -1847,7 +1883,7 @@ public class StepDef {
 	        throw e;
 	    }
 	}
-	@Then("User verify pdf is downloaded")
+	@When("User verify pdf is downloaded")
 	public void user_verify_pdf_is_downloaded() throws IOException {
 	    try {
 	        Thread.sleep(10000);
@@ -1883,12 +1919,12 @@ public class StepDef {
 	        throw e;
 	    }
 	}
-	@Then("User verify go back button")
+	@When("User verify go back button")
 	public void user_verify_go_back_button() {
 
 	}
 
-	@Then("Verify that user convert pdf into png")
+	@When("Verify that user convert pdf into png")
 	public void verify_that_user_convert_pdf_into_png() throws IOException {
 	    String pdfPath = System.getProperty("user.dir") + "/InsuranceCredential.pdf";
 	    String outputPath = System.getProperty("user.dir") + "/InsuranceCredential";
@@ -1932,7 +1968,7 @@ public class StepDef {
 	        throw e;
 	    }
 	}
-	@Then("User enter the policy number {string}")
+	@When("User enter the policy number {string}")
 	public void user_enter_the_policy_number(String string) {
 	    try {
 	        Thread.sleep(3000);
@@ -1951,7 +1987,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User enter the full name {string}")
+	@When("User enter the full name {string}")
 	public void user_enter_the_full_name(String string) {
 	    try {
 	        homePage.enterFullName(string);
@@ -1964,19 +2000,59 @@ public class StepDef {
 	        throw e;
 	    }
 	}
-	@Then("User enter the date of birth {string}")
-	public void user_enter_the_date_of_birth(String string) {
-	    try {
-	        homePage.selectDateOfBirth();
-	        test.log(Status.PASS, "Successfully selected date of birth.");
-	    } catch (NoSuchElementException e) {
-	        logFailure(test, driver, "Element not found while selecting date of birth", e);
-	        throw e;
-	    } catch (Exception e) {
-	        logFailure(test, driver, "Unexpected error while selecting date of birth", e);
-	        throw e;
-	    }
-	}
+	
+    @When("User enter the full name")
+    public void user_enter_the_full_name() {
+        try {
+        	homePage.enterFullName(fullname);
+            test.log(Status.PASS, "User successfully entered the full name: " + fullname);
+        } catch (NoSuchElementException e) {
+            test.log(Status.FAIL, "Element not found while entering the full name: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Unexpected error while entering the full name: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        }
+    }
+    @When("User enter the date of birth")
+    public void user_enter_the_date_of_birth() {
+        try {
+        	homePage.selectDateOfBirth(formattedDate);
+            test.log(Status.PASS, "User successfully entered the date of birth: " + formattedDate);
+        } catch (NoSuchElementException e) {
+            test.log(Status.FAIL, "Element not found while entering the date of birth: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Unexpected error while entering the date of birth: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        }
+    }
+	
+    @When("User enter the date of birth {string}")
+    public void user_enter_the_date_of_birth1(String dateOfBirth) {
+        try {
+        	homePage.selectDateOfBirth(dateOfBirth);
+            test.log(Status.PASS, "User successfully entered the date of birth: " + dateOfBirth);
+        } catch (NoSuchElementException e) {
+            test.log(Status.FAIL, "Element not found while entering the date of birth: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Unexpected error while entering the date of birth: " + e.getMessage());
+            test.log(Status.FAIL, ExceptionUtils.getStackTrace(e));
+            ScreenshotUtil.attachScreenshot(driver, "FailureScreenshot");
+            throw e;
+        }
+    }
 
 	@When("User click on login button")
 	public void user_click_on_login_button() {
@@ -1992,7 +2068,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User click on Go Back button")
+	@When("User click on Go Back button")
 	public void user_click_on_Go_Back_Button() {
 	    try {
 	        vpverification.clickOnGoBack();
@@ -2006,7 +2082,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify uncheck Mosip VC check box")
+	@When("Verify uncheck Mosip VC check box")
 	public void user_click_on_Mosip_Vc_Check_Box() {
 	    try {
 	        vpverification.clickOnMosipVC();
@@ -2020,7 +2096,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User click on Health Insurance check box")
+	@When("User click on Health Insurance check box")
 	public void user_click_on_Health_Insurance_Check_Box() {
 	    try {
 	        vpverification.clickOnHealthInsurance();
@@ -2034,7 +2110,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User click on Generate QR Code button")
+	@When("User click on Generate QR Code button")
 	public void user_click_on_Generate_Qr_Code_Button() {
 	    try {
 	        vpverification.clickOnGenerateQRCodeButton();
@@ -2048,7 +2124,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("User click on Life Insurance VC check box")
+	@When("User click on Life Insurance VC check box")
 	public void user_click_on_Life_Insurance_Check_Box() {
 	    try {
 	        vpverification.clickOnLifeInsurance();
@@ -2062,7 +2138,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Open inji web in tab")
+	@When("Open inji web in tab")
 	public void user_Open_inji_web_in_tab() {
 	    try {
 	        homePage.SwitchToWebTab();
@@ -2076,7 +2152,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("verify click on home button")
+	@When("verify click on home button")
 	public void user_click_on_home_button() {
 	    try {
 	        homePage.clickOnHomebutton();
@@ -2090,7 +2166,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("verify alert message")
+	@When("verify alert message")
 	public void user_verify_alert_message() {
 	    try {
 	        assertTrue("Error message is not visible.", homePage.isErrorMessageVisible());
@@ -2107,7 +2183,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step1 description")
+	@When("Verify VP verification qr code step1 description")
 	public void verify_vp_verification_qr_code_step1_description() {
 	    try {
 	        assertEquals(vpverification.getVpVerificationQrCodeStep1Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION);
@@ -2124,7 +2200,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step1 label")
+	@When("Verify VP verification qr code step1 label")
 	public void verify_vp_verification_qr_code_step1_label() {
 	    try {
 	        assertEquals(vpverification.getVpVerificationQrCodeStep1Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP1_LABEL);
@@ -2141,7 +2217,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step2 label")
+	@When("Verify VP verification qr code step2 label")
 	public void verify_vp_verification_qr_code_step2_label() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_LABEL);
@@ -2158,7 +2234,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step2 description")
+	@When("Verify VP verification qr code step2 description")
 	public void verify_vp_verification_qr_code_step2_description() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep2Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION);
@@ -2175,7 +2251,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step3 label")
+	@When("Verify VP verification qr code step3 label")
 	public void verify_vp_verification_qr_code_step3_label() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_LABEL);
@@ -2192,7 +2268,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step3 description")
+	@When("Verify VP verification qr code step3 description")
 	public void verify_vp_verification_qr_code_step3_description() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep3Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION);
@@ -2209,7 +2285,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step4 label")
+	@When("Verify VP verification qr code step4 label")
 	public void verify_vp_verification_qr_code_step4_label() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Label(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_LABEL);
@@ -2226,7 +2302,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification qr code step4 description")
+	@When("Verify VP verification qr code step4 description")
 	public void verify_vp_verification_qr_code_step4_description() {
 	    try {
 	        Assert.assertEquals(vpverification.getVpVerificationQrCodeStep4Description(), UiConstants.VP_VERIFICATION_QR_CODE_STEP4_DESCRIPTION);
@@ -2243,7 +2319,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("verify request verifiable credentials button")
+	@When("verify request verifiable credentials button")
 	public void verify_request_verifiable_credentials_button() {
 	    try {
 	        assertTrue("Request verifiable credentials button is not visible.", vpverification.isVisibleVerifiableCredentialsButton());
@@ -2260,7 +2336,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("Verify VP verification QR code generated")
+	@When("Verify VP verification QR code generated")
 	public void verify_VP_verifiable_QR_code_generated() {
 	    try {
 	        assertTrue("VP verification QR code is not generated.", vpverification.isVpVerificationQrCodeGenerated());
@@ -2277,7 +2353,7 @@ public class StepDef {
 	    }
 	}
 
-	@Then("verify Verifiable Credential Selection Panel")
+	@When("verify Verifiable Credential Selection Panel")
 	public void verify_Verifiable_Credential_Selection_Panel() {
 	    try {
 	        Assert.assertEquals(vpverification.isVerifiableCredentialSelectionPannelDisplayed(), UiConstants.VERIFIABLE_VERIFICATION_PANNEL);
@@ -2293,5 +2369,7 @@ public class StepDef {
 	        throw e;
 	    }
 	}
+	
+	
 
 }

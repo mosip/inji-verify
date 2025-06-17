@@ -29,7 +29,7 @@ public class InjiVerifyConfigManager extends ConfigManager{
 		init(moduleSpecificPropertiesMap);
 	}
 
-	public static String getInjiWebUi() { return getproperty("injiWebUi"); }
+	public static String getInjiWebUi() { return getproperty("injiverify"); }
 
 	public static String getapiEndUser() { return getproperty("apiEnvUser"); }
 
