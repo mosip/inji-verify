@@ -91,7 +91,7 @@ public class InjiVerifyUtil extends AdminTestUtil {
 	public static JSONArray mimotoActuatorResponseArray = null;
 
 	public static String getValueFromMimotoActuator(String section, String key) {
-		String url = ApplnURI + ConfigManager.getproperty("actuatorMimotoEndpoint");
+		String url = ApplnURI + System.getenv("actuatorMimotoEndpoint");
 		if (!(System.getenv("useOldContextURL") == null)
 				&& !(System.getenv("useOldContextURL").isBlank())
 				&& System.getenv("useOldContextURL").equalsIgnoreCase("true")) {
