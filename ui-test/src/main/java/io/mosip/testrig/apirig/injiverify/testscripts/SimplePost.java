@@ -96,7 +96,7 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 
 		if (testCaseDTO.getTemplateFields() != null && templateFields.length > 0) {
 			ArrayList<JSONObject> inputTestCases = AdminTestUtil.getInputTestCase(testCaseDTO);
-			ArrayList<JSONObject> outputTestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
+			ArrayList<JSONObject> outputtestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
 			for (int i = 0; i < languageList.size(); i++) {
                 try {
                     response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
@@ -108,7 +108,7 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 
                 Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 						response.asString(),
-						getJsonFromTemplate(outputTestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
+						getJsonFromTemplate(outputtestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
 						testCaseDTO, response.getStatusCode());
 				Reporter.log(ReportUtil.getOutputValidationReport(ouputValid));
 
