@@ -69,14 +69,6 @@ public class Runner extends AbstractTestNGCucumberTests{
 			suiteSetup(getRunType());
 			setLogLevels();
 
-//			HealthChecker healthcheck = new HealthChecker();
-//			healthcheck.setCurrentRunningModule(BaseTestCase.currentModule);
-//			Thread trigger = new Thread(healthcheck);
-//			trigger.start();
-
-//			KeycloakUserManager.removeUser();
-//			KeycloakUserManager.createUsers();
-//			KeycloakUserManager.closeKeycloakInstance();
 			AdminTestUtil.getRequiredField();
 
 			startTestRunner();

@@ -95,12 +95,12 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 		inputJson = InjiVerifyUtil.inputstringKeyWordHandeler(inputJson, testCaseName);
 
 		if (testCaseDTO.getTemplateFields() != null && templateFields.length > 0) {
-			ArrayList<JSONObject> inputtestCases = AdminTestUtil.getInputTestCase(testCaseDTO);
-			ArrayList<JSONObject> outputtestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
+			ArrayList<JSONObject> inputTestCases = AdminTestUtil.getInputTestCase(testCaseDTO);
+			ArrayList<JSONObject> outputTestcase = AdminTestUtil.getOutputTestCase(testCaseDTO);
 			for (int i = 0; i < languageList.size(); i++) {
                 try {
                     response = postWithBodyAndCookie(ApplnURI + testCaseDTO.getEndPoint(),
-                            getJsonFromTemplate(inputtestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
+                            getJsonFromTemplate(inputTestCases.get(i).toString(), testCaseDTO.getInputTemplate()),
                             COOKIENAME, testCaseDTO.getRole(), testCaseDTO.getTestCaseName());
                 } catch (SecurityXSSException e) {
                     throw new RuntimeException(e);
@@ -108,7 +108,7 @@ public class SimplePost extends InjiVerifyUtil implements ITest {
 
                 Map<String, List<OutputValidationDto>> ouputValid = OutputValidationUtil.doJsonOutputValidation(
 						response.asString(),
-						getJsonFromTemplate(outputtestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
+						getJsonFromTemplate(outputTestcase.get(i).toString(), testCaseDTO.getOutputTemplate()),
 						testCaseDTO, response.getStatusCode());
 				Reporter.log(ReportUtil.getOutputValidationReport(ouputValid));
 
