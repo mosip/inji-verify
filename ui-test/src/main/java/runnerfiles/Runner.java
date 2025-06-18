@@ -195,4 +195,14 @@ public class Runner extends AbstractTestNGCucumberTests{
 		JWKKeyUtil.setLogLevel();
 		CertsUtil.setLogLevel();
 	}
+	
+	public static void updateFeaturesPath() {
+		File homeDir = null;
+	    String os = System.getProperty("os.name").toLowerCase();
+	    if (os.contains("windows")) {
+	        System.setProperty("cucumber.features", "src\\test\\resources\\featurefiles\\");
+	    } else {
+	        System.setProperty("cucumber.features", "/home/mosip/featurefiles/");
+	    }
+	} 
 }

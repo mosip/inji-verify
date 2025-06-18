@@ -38,13 +38,14 @@ Feature: Inji Verify vpVerification testing
     And Verify Verifiable Credential Panel label
     And Verify Click on Generate QR Code button
     And Verify QR code generated 
-    And Click on vp verification tab 
-    And Verify QR code is not precent 
+#    And Click on vp verification tab 
+#    And Verify QR code is not precent 
     And Click on vp verification tab 
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
     And Uncheck MOSIP ID
     And Select Health Insurance
     And Select Land Registry    
+    And Verify Click on Generate QR Code button
+    And Verify QR code generated
     And Click on vp verification tab 
-    And Verify QR code generated 

@@ -373,7 +373,7 @@ public class HomePage extends BasePage {
 	}
 
 	public  void openNewTab(){
-		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji1.mosip.net/')");
+		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji1.mosip.net/issuers')");
 		Set<String> allWindowHandles = driver.getWindowHandles();
 		System.out.println(allWindowHandles);
 		if (allWindowHandles.size() >= 2) {

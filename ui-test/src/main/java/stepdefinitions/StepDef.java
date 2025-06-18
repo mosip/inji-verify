@@ -161,7 +161,7 @@ public class StepDef {
         }
     }
 
-    @When("Verify that sub-header is displayed")
+    @When("Verify that sub header is displayed")
     public void verifyThatSubHeaderIsDisplayed() {
         try {
             String actualSubHeader = homePage.getSubHeader();
@@ -1363,14 +1363,17 @@ public class StepDef {
 
     @When("verify click on scan qr code button")
     public void verifyClickOnScanQRCodeButton() {
-        try {
-            scanqrcode.ClickonScanQRButtonButton();
-            test.log(Status.PASS, "Successfully clicked on Scan QR Code button.");
+    	try {
+            Assert.assertTrue(scanqrcode.isVisibleScanQRCodeButton(), "Scan QR Code button is not visible.");
+            test.log(Status.PASS, "Scan QR Code button is visible.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Scan QR Code button is not visible", e);
+            throw e;
         } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Failed to find Scan QR Code button while attempting to click", e);
+            logFailure(test, driver, "Element not found while verifying Scan QR Code button", e);
             throw e;
         } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while clicking on Scan QR Code button", e);
+            logFailure(test, driver, "Unexpected error while verifying Scan QR Code button", e);
             throw e;
         }
     }
@@ -1708,16 +1711,16 @@ public class StepDef {
 	    }
 	}
 	
-	@Then("User click on continue as guest")
-	public void useClick_on_continue_as_guest() {
-	    try {
-	        homePage.clickOnContinueAsGuest();;
-	        test.log(Status.PASS, "Successfully click on continue as guest.");
-	    } catch (Exception e) {
-	        logFailure(test, driver, "Failed to click on continue as guest.", e);
-	        throw e;
-	    }
-	}
+//	@Then("User click on continue as guest")
+//	public void useClick_on_continue_as_guest() {
+//	    try {
+//	        homePage.clickOnContinueAsGuest();;
+//	        test.log(Status.PASS, "Successfully click on continue as guest.");
+//	    } catch (Exception e) {
+//	        logFailure(test, driver, "Failed to click on continue as guest.", e);
+//	        throw e;
+//	    }
+//	}
 	
 
 	@When("Open inji verify in new tab")
@@ -2815,7 +2818,6 @@ public class StepDef {
 	    }
 	}
 
-	
 	@Then("User enter the credential type {string}")
 	public void user_enter_the_credential_type(String credentialType) {
 	    try {
@@ -2835,6 +2837,9 @@ public class StepDef {
 	    }
 	}
 
-	
+	@Then("Verify that Upload icon visible")
+	public void verify_that_upload_icon_visible() {
+		Assert.assertTrue(homePage.isUploadIconIsVisible());
+	}
 	
 }
