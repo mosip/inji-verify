@@ -57,11 +57,13 @@ public class BaseTest {
 	String username = System.getenv("BROWSERSTACK_USERNAME");
 	String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
 	public final String URL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
-	private static Local bsLocal;
+	
 	private Scenario scenario;
+	Local bsLocal = null;
 
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
+		
 		try {
 			if (bsLocal == null || !bsLocal.isRunning()) {
 				bsLocal = new Local();

@@ -2492,6 +2492,7 @@ public class StepDef {
 	        test.log(Status.PASS, "Successfully verified Verifiable Credential Selection Panel is displayed with correct text.");
 	    } catch (AssertionError e) {
 	        test.log(Status.FAIL, "Verification failed: Verifiable Credential Selection Panel text mismatch. Expected: '" + UiConstants.VERIFIABLE_VERIFICATION_PANNEL + "', Actual: '" + vpverification.isVerifiableCredentialSelectionPannelDisplayed() + "'");
+	        logFailure(test, driver, "Verification failed: Verifiable Credential Selection Panel text mismatch. Expected: '" + UiConstants.VERIFIABLE_VERIFICATION_PANNEL + "', Actual: '" + vpverification.isVerifiableCredentialSelectionPannelDisplayed() + "'", e);
 	        throw e;
 	    } catch (NoSuchElementException e) {
 	        logFailure(test, driver, "Element not found while verifying Verifiable Credential Selection Panel", e);
@@ -2560,96 +2561,280 @@ public class StepDef {
 	    }
 	}
 	
-	
 	@Then("Upload blur QR code file")
 	public void upload_blur_qrcode_file() {
-		uploadqrcode.ClickonUploadBlurQRCode();
-		Assert.assertTrue(true);
+	    try {
+	        uploadqrcode.ClickonUploadBlurQRCode();
+	        test.log(Status.PASS, "Successfully uploaded blur QR code file.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Blur QR code file upload failed.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading blur QR code file", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while uploading blur QR code file", e);
+	        throw e;
+	    }
 	}
-	
+
 	@Then("Verify MultiFormat alert message")
 	public void verify_message_for_blur_qr_code() {
-		Assert.assertEquals(uploadqrcode.getErrorMessageForBlurQRCode(), UiConstants.ERROR_MULTI_FORMAT);
+	    try {
+	        Assert.assertEquals(uploadqrcode.getErrorMessageForBlurQRCode(), UiConstants.ERROR_MULTI_FORMAT);
+	        test.log(Status.PASS, "Successfully verified MultiFormat alert message for blur QR code.");
+	    } catch (AssertionError e) {
+	    	test.log(Status.FAIL, "Verification failed: MultiFormat alert message does not match the expected value.");
+	    	logFailure(test, driver, "Verification failed: MultiFormat alert message does not match the expected value.", e);
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying MultiFormat alert message", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying MultiFormat alert message", e);
+	        throw e;
+	    }
 	}
-	
-	
+
+
 	@Then("Upload multiple qr code in one image file")
 	public void upload_multiple_QR_code_in_one_image_file() {
-		uploadqrcode.ClickonUploadmultipleQRCode();
-		Assert.assertTrue(true);
+	    try {
+	        uploadqrcode.ClickonUploadmultipleQRCode();
+	        test.log(Status.PASS, "Successfully uploaded image with multiple QR codes.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Upload of multiple QR codes in one image did not behave as expected.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading image with multiple QR codes", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while uploading image with multiple QR codes", e);
+	        throw e;
+	    }
 	}
-	
+
 	@Then("Upload invalid pdf")
 	public void upload_invalid_pdf() {
-		uploadqrcode.ClickonUploadInvalidPdf();
-		Assert.assertTrue(true);
+	    try {
+	        uploadqrcode.ClickonUploadInvalidPdf();
+	        test.log(Status.PASS, "Successfully attempted to upload an invalid PDF file.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Upload of invalid PDF file did not behave as expected.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading invalid PDF file", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while uploading invalid PDF file", e);
+	        throw e;
+	    }
 	}
+
+
 	
 	@Then("verify scan qr code area")
 	public void verify_scan_qr_code_area() {
-		Assert.assertTrue(scanqrcode.isVisibleScanQRCodeArea());
-
+	    try {
+	        Assert.assertTrue(scanqrcode.isVisibleScanQRCodeArea());
+	        test.log(Status.PASS, "Successfully verified that the Scan QR Code area is visible.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Scan QR Code area is not visible.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying Scan QR Code area", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying Scan QR Code area", e);
+	        throw e;
+	    }
 	}
-	
+
 	@Then("Verify click sort by button")
 	public void user_click_on_sort_button() {
-		vpverification.clickOnSortButton();
+	    try {
+	        vpverification.clickOnSortButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Sort By' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Sort By' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Sort By' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Sort By' button", e);
+	        throw e;
+	    }
 	}
 	
 	@Then("Verify click Sort AtoZ button")
 	public void user_click_on_sort_a_z_button() {
-		vpverification.clickOnSortAtoZButton();
+	    try {
+	        vpverification.clickOnSortAtoZButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Sort A to Z' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Sort A to Z' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Sort A to Z' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Sort A to Z' button", e);
+	        throw e;
+	    }
 	}
-	
+
 	@Then("Verify click Sort ZtoA button")
 	public void user_click_on_sort_z_a_button() {
-		vpverification.clickOnSortZtoAButton();
+	    try {
+	        vpverification.clickOnSortZtoAButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Sort Z to A' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Sort Z to A' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Sort Z to A' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Sort Z to A' button", e);
+	        throw e;
+	    }
 	}
-	
+
+
 	@Then("Verify click Back button")
 	public void user_click_on_back_button() {
-		vpverification.clickOnBackButton();
+	    try {
+	        vpverification.clickOnBackButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Back' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Back' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Back' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Back' button", e);
+	        throw e;
+	    }
 	}
-	
+
+
 	@Then("Verify Click on Generate QR Code button")
 	public void verify_click_on_generate_qr_code_button() {
-		vpverification.ClickOnGenerateQrCodeButton();
-		Assert.assertTrue(true);
+	    try {
+	        vpverification.ClickOnGenerateQrCodeButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Generate QR Code' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Generate QR Code' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Generate QR Code' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Generate QR Code' button", e);
+	        throw e;
+	    }
 	}
-	
+
+
 	@Then("Verify QR code generated")
 	public void verify_qr_code_generated() {
-		Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	    try {
+	        Assert.assertTrue(vpverification.isVpVerificationQrCodeGenerated());
+	        test.log(Status.PASS, "Successfully verified that the QR code was generated.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying QR code generation", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying QR code generation", e);
+	        throw e;
+	    }
 	}
-	
+
 	@Then("Verify QR code is not precent")
-	public void verify_qr_code_is_not_precent() {
-		Assert.assertFalse(vpverification.isVpVerificationQrCodeGenerated());
+	public void verify_qr_code_is_not_present() {
+	    try {
+	        Assert.assertFalse(vpverification.isVpVerificationQrCodeGenerated());
+	        test.log(Status.PASS, "Successfully verified that the QR code is not present.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: QR code is unexpectedly present.");
+	        logFailure(test, driver, "Verification failed: QR code is unexpectedly present.", e);
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying absence of QR code", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying absence of QR code", e);
+	        throw e;
+	    }
 	}
+
 	
 	@Then("Uncheck MOSIP ID")
 	public void uncheck_mosip_id() {
-		vpverification.ClickOnMosipIdChecklist();
-		Assert.assertTrue(true);
+	    try {
+	        vpverification.ClickOnMosipIdChecklist();
+	        test.log(Status.PASS, "Successfully unchecked the MOSIP ID option.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while unchecking the MOSIP ID option", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while unchecking the MOSIP ID option", e);
+	        throw e;
+	    }
 	}
+
 	
 	@Then("Select Health Insurance")
 	public void select_health_insurance() {
-		vpverification.ClickOnHealthInsuranceChecklist();
-		Assert.assertTrue(true);
+	    try {
+	        vpverification.ClickOnHealthInsuranceChecklist();
+	        test.log(Status.PASS, "Successfully selected the Health Insurance option.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while selecting the Health Insurance option", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while selecting the Health Insurance option", e);
+	        throw e;
+	    }
 	}
+
 	
 	@Then("Select Land Registry")
 	public void uncheck_land_registry() {
-		vpverification.ClickOnLandRegistryChecklist();
-		Assert.assertTrue(true);
+	    try {
+	        vpverification.ClickOnLandRegistryChecklist();
+	        test.log(Status.PASS, "Successfully selected the Land Registry option.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while selecting the Land Registry option", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while selecting the Land Registry option", e);
+	        throw e;
+	    }
 	}
+
 	
 	@Then("User enter the credential type {string}")
-	public void user_enter_the_credential_type(String string) throws InterruptedException {
-		Thread.sleep(3000);
-		vpverification.enterCredentialType(string);
+	public void user_enter_the_credential_type(String credentialType) {
+	    try {
+	        Thread.sleep(3000); 
+	        vpverification.enterCredentialType(credentialType);
+	        test.log(Status.PASS, "Successfully entered credential type: " + credentialType);
+	    } catch (InterruptedException e) {
+	        Thread.currentThread().interrupt(); // Restore interrupt status
+	        logFailure(test, driver, "Thread was interrupted while entering credential type", e);
+	        throw new RuntimeException(e);
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while entering credential type: " + credentialType, e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while entering credential type: " + credentialType, e);
+	        throw e;
+	    }
 	}
+
 	
 	
 }

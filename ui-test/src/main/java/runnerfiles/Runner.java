@@ -54,7 +54,7 @@ public class Runner extends AbstractTestNGCucumberTests{
 
 	public static void main(String[] args) {
 		try {
-			LOGGER.info("** ------------- Inji web ui Run Started for prerequisite creation---------------------------- **");
+			LOGGER.info("** ------------- Inji verify ui Run Started for prerequisite creation---------------------------- **");
 
 			BaseTestCase.setRunContext(getRunType(), jarUrl);
 			ExtractResource.removeOldMosipTestTestResource();
@@ -69,14 +69,14 @@ public class Runner extends AbstractTestNGCucumberTests{
 			suiteSetup(getRunType());
 			setLogLevels();
 
-			HealthChecker healthcheck = new HealthChecker();
-			healthcheck.setCurrentRunningModule(BaseTestCase.currentModule);
-			Thread trigger = new Thread(healthcheck);
-			trigger.start();
+//			HealthChecker healthcheck = new HealthChecker();
+//			healthcheck.setCurrentRunningModule(BaseTestCase.currentModule);
+//			Thread trigger = new Thread(healthcheck);
+//			trigger.start();
 
-			KeycloakUserManager.removeUser();
-			KeycloakUserManager.createUsers();
-			KeycloakUserManager.closeKeycloakInstance();
+//			KeycloakUserManager.removeUser();
+//			KeycloakUserManager.createUsers();
+//			KeycloakUserManager.closeKeycloakInstance();
 			AdminTestUtil.getRequiredField();
 
 			startTestRunner();
