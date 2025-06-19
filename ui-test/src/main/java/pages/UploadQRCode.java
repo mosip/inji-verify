@@ -47,7 +47,7 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//p[@id='vc-result-display-message']")
 	WebElement Congratulationtext;
 
-	@FindBy(xpath = "//span[@id='verify-another-qr-code-button']")
+	@FindBy(xpath = "//span[text()='Verify Another QR code']")
 	WebElement VerifyAnotherQRcodeButton;
 
 	@FindBy(xpath = "//a[@id='home-button']")
