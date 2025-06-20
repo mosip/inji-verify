@@ -137,7 +137,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//button[@id='verify_otp']")
 	WebElement verifyOtp;
 
-	@FindBy(xpath = "//p[@data-testid='DownloadResult-Title']")
+	@FindBy(xpath = "//p[@data-testid='title-download-result']")
 	WebElement succsessMessage;
 
 	@FindBy(xpath = "//label[text() = 'Enter Full Name']")
