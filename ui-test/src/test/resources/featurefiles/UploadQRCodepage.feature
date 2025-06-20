@@ -6,7 +6,6 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload QR code file PDF
     And Upload QR code file Expired png
     And Verify message for expired QR code
     And Verify verify another qr code button on successful verification

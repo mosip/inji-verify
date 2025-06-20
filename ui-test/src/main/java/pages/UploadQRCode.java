@@ -128,7 +128,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
-		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 
 	}
 
@@ -194,8 +194,8 @@ public class UploadQRCode extends BasePage {
 
 	public boolean isVisibleUploadQRCodeStep2LabelAfter() {
 		return isElementIsVisible(driver, UploadQRCodeStep2LabelAfter);
-
 	}
+	
 
 	public boolean isVisibleUploadQRCodeStep3LabelAfter() {
 		return isElementIsVisible(driver, UploadQRCodeStep3LabelAfter);
