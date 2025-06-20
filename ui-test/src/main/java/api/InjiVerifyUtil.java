@@ -58,7 +58,7 @@ public class InjiVerifyUtil extends AdminTestUtil {
 		if (jsonString.contains(GlobalConstants.TIMESTAMP)) {
 			jsonString = replaceKeywordWithValue(jsonString, GlobalConstants.TIMESTAMP, generateCurrentUTCTimeStamp());
 		}
-//
+
 		if (jsonString.contains("$POLICYNUMBERFORSUNBIRDRC$")) {
 			jsonString = replaceKeywordWithValue(jsonString, "$POLICYNUMBERFORSUNBIRDRC$", policyNumberForSunBirdR);
 		}
@@ -119,7 +119,6 @@ public class InjiVerifyUtil extends AdminTestUtil {
 					value = eachJson.getJSONObject(GlobalConstants.PROPERTIES).getJSONObject(key)
 							.get(GlobalConstants.VALUE).toString();
 					if (ConfigManager.IsDebugEnabled())
-//						logger.info("Actuator: " + url + " key: " + key + " value: " + value);
 					break;
 				}
 			}
@@ -136,19 +135,5 @@ public class InjiVerifyUtil extends AdminTestUtil {
 	public static String getSunbirdBaseURL() {
 		return InjiVerifyUtil.getValueFromMimotoActuator("overrides", "mosip.sunbird.url");
 	}
-
-//	public static TestCaseDTO changeContextURLByFlag(TestCaseDTO testCaseDTO) {
-//		if (!(System.getenv("useOldContextURL") == null) && !(System.getenv("useOldContextURL").isBlank())
-//				&& System.getenv("useOldContextURL").equalsIgnoreCase("true")) {
-//			if (testCaseDTO.getEndPoint().contains("/v1/mimoto/")) {
-//				testCaseDTO.setEndPoint(testCaseDTO.getEndPoint().replace("/v1/mimoto/", "/residentmobileapp/"));
-//			}
-//			if (testCaseDTO.getInput().contains("/v1/mimoto/")) {
-//				testCaseDTO.setInput(testCaseDTO.getInput().replace("/v1/mimoto/", "/residentmobileapp/"));
-//			}
-//		}
-//
-//		return testCaseDTO;
-//	}
 
 }

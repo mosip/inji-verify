@@ -1711,18 +1711,6 @@ public class StepDef {
 	    }
 	}
 	
-//	@Then("User click on continue as guest")
-//	public void useClick_on_continue_as_guest() {
-//	    try {
-//	        homePage.clickOnContinueAsGuest();;
-//	        test.log(Status.PASS, "Successfully click on continue as guest.");
-//	    } catch (Exception e) {
-//	        logFailure(test, driver, "Failed to click on continue as guest.", e);
-//	        throw e;
-//	    }
-//	}
-	
-
 	@When("Open inji verify in new tab")
 	public void open_inji_verify_in_new_tab() {
 	    try {

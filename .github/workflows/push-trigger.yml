@@ -212,7 +212,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NAMESPACE: ${{ secrets.dev_namespace_docker_hub }}
-      SERVICE_NAME: ui-test-verify
+      SERVICE_NAME: uitest-verify
       SERVICE_LOCATION: ui-test
       BUILD_ARTIFACT: ui-test-local
     steps:
@@ -268,7 +268,7 @@ jobs:
       matrix:
         include:
           - SERVICE_LOCATION: 'ui-test'
-            SERVICE_NAME: 'ui-test-verify'
+            SERVICE_NAME: 'uitest-verify'
             BUILD_ARTIFACT: 'ui-test-local'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
