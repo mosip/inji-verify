@@ -29,7 +29,20 @@ public class BasePage {
 	public WebDriver driver;
 
 	public void waitForElementVisible(WebDriver driver, WebElement element, long seconds) {
-		new WebDriverWait(driver, ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
+	    int attempts = 0;
+	    while (attempts < 3) { 
+	        try {
+	            new WebDriverWait(driver, Duration.ofSeconds(seconds))
+	                    .ignoring(StaleElementReferenceException.class)
+	                    .until(ExpectedConditions.visibilityOf(element));
+	            break; 
+	        } catch (StaleElementReferenceException e) {
+	            attempts++;
+	            if (attempts == 3) {
+	                throw e; 
+	            }
+	        }
+	    }
 	}
 
 	public void clickOnElement(WebDriver driver, WebElement element) {

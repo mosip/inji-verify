@@ -365,15 +365,27 @@ public class HomePage extends BasePage {
 	}
 
 	public String isSuccessMessageDisplayed() {
-		try {
-			Thread.sleep(9000);
-			;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return getText(driver, succsessMessage);
+	    String message = "";
+	    int retryCount = 0;
+
+	    while (retryCount < 2) {
+	        try {
+	            Thread.sleep(9000);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+	        message = getText(driver, succsessMessage);
+	        if ("Success!".equalsIgnoreCase(message.trim())) {
+	            break;
+	        } else {
+	            retryCount++;
+	        }
+	    }
+
+	    return message;
 	}
+
 
 	public  void openNewTab(){
 		String url = InjiVerifyConfigManager.getInjiWebUi();

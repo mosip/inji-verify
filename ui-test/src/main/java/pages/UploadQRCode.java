@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import java.time.Duration;
 import org.openqa.selenium.support.PageFactory;
 
 public class UploadQRCode extends BasePage {
@@ -128,8 +129,8 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
-
 	}
 
 	public void ClickonUploadLargeSizeQRCode() {
@@ -237,6 +238,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void clickOnAnotherQRcodeButton() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		clickOnElement(driver, VerifyAnotherQRcodeButton);
 
 	}
