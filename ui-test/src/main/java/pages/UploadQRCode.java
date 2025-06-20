@@ -128,7 +128,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
+		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
 
 	}
 
