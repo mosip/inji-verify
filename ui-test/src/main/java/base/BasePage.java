@@ -38,9 +38,23 @@ public class BasePage {
 	}
 
 	public boolean isElementIsVisible(WebDriver driver, WebElement element) {
-		waitForElementVisible(driver, element, 10);
-		return element.isDisplayed();
+	    int attempts = 0;
+	    while (attempts < 2) {
+	        try {
+	            waitForElementVisible(driver, element, 10);
+	            return element.isDisplayed();
+	        } catch (StaleElementReferenceException e) {
+	            attempts++;
+	            try {
+	                Thread.sleep(500); // short wait before retry
+	            } catch (InterruptedException ignored) {}
+	        } catch (NoSuchElementException e) {
+	            return false;
+	        }
+	    }
+	    return false;
 	}
+
 
 	public String getText(WebDriver driver, WebElement element) {
 		waitForElementVisible(driver, element, 10);
