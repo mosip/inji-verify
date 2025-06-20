@@ -119,7 +119,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "(//label[contains(@data-testid, 'DataShareContent-Validity-Times-DropDown-NoLimit') and contains(text(), 'No Limit')])[1]")
 	WebElement getOnNoLimit;
 
-	@FindBy(xpath = "(//button[contains(@data-testid, 'DataShareFooter-Success-Button') and contains(text(), 'Proceed')])[1]")
+	@FindBy(xpath = "//button[contains(@data-testid, 'DataShareFooter-Success-Button')]")
 	WebElement getOnOnProceed;
 
 	@FindBy(xpath = "//div[@data-testid='ItemBox-Outer-Container-0']")
@@ -363,7 +363,7 @@ public class HomePage extends BasePage {
 
 	public String isSuccessMessageDisplayed() {
 		try {
-			Thread.sleep(6000);
+			Thread.sleep(9000);
 			;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
