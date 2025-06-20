@@ -1,4 +1,5 @@
 ## Inji Verify SDK
+### OpenID4VP Component
 The below diagram illustrates the flow in which Relaying party backend is directly fetching the result from verify backend.
 ```mermaid 
 sequenceDiagram
@@ -44,7 +45,7 @@ Relying Party UI initiates the process: The user interacts with the Relying Part
 
 8. **Wallet authenticates the user and submits the VP Token:** The user authenticates themselves within their wallet application. Following authentication, the wallet constructs a Verifiable Presentation (VP) Token containing the necessary VCs and submits it to the Verify Backend (via a direct post to verifyService/vp-submission/direct-post).
 
-9. **Verify Backend sends a Status update to the OPENID4VP UI Component:** Based on the validation result, the Verify Backend sends a status update to the OPENHVP UI Component. This status could indicate success (VP_SUBMITTED), ongoing processing (ACTIVE), or failure (EXPIRED).
+9. **Verify Backend sends a Status update to the OPENID4VP UI Component:** Based on the validation result, the Verify Backend sends a status update to the OPENID4VP UI Component. This status could indicate success (VP_SUBMITTED), ongoing processing (ACTIVE), or failure (EXPIRED).
 
 10. **Flow Ends and Control is passed to the Relying Party UI:** The core verification flow concludes, and the Relying Party UI now has the status of the verification.
 
@@ -95,7 +96,7 @@ sequenceDiagram
 
 9. **Wallet authenticates the user and submits the VP Token:** The user authenticates themselves within their wallet application. Following authentication, the wallet constructs a Verifiable Presentation (VP) Token containing the necessary VCs and submits it to the Verify Backend (via a direct post to verifyService/vp-submission/direct-post).
 
-10. **Verify Backend sends a Status update to the OPENID4VP UI Component:** Based on the validation result, the Verify Backend sends a status update to the OPENHVP UI Component. This status could indicate success (VP_SUBMITTED), ongoing processing (ACTIVE), or failure (EXPIRED).
+10. **Verify Backend sends a Status update to the OPENID4VP UI Component:** Based on the validation result, the Verify Backend sends a status update to the OPENID4VP UI Component. This status could indicate success (VP_SUBMITTED), ongoing processing (ACTIVE), or failure (EXPIRED).
 
 11. **OPENID4VP UI Component triggers 'onProcessed' callback with the result:** When the status indicates VP_SUBMITTED and the onProcessed callback is passed, the OPENID4VP UI Component triggers this callback, providing the result of the initial submission.
 
@@ -103,7 +104,7 @@ sequenceDiagram
 
 13. **Flow Ends and Control is passed to the Relying Party UI:** The complete verification flow concludes, and the Relying Party UI can now use the validated claims to proceed with the application logic.
 
-The below diagram illustrates the flow in which a authorization request gets expired.
+The below diagram illustrates the flow in which an authorization request gets expired.
 ```mermaid 
 sequenceDiagram
     participant Verify Backend
