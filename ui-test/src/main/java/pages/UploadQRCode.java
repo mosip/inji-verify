@@ -90,7 +90,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodePng() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
@@ -98,7 +98,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodeJpg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -106,7 +106,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodePdf() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential.pdf");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
@@ -114,11 +114,11 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodeJpeg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
-		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "QRCode_UnsupportedHtml.html");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
 	public void ClickonUploadQRCodeInvalid() {
@@ -131,7 +131,7 @@ public class UploadQRCode extends BasePage {
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 	}
 
 	public void ClickonUploadLargeSizeQRCode() {

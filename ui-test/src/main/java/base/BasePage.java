@@ -29,7 +29,11 @@ public class BasePage {
 	public WebDriver driver;
 
 	public void waitForElementVisible(WebDriver driver, WebElement element, long seconds) {
-		new WebDriverWait(driver, ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
+	    new WebDriverWait(driver, ofSeconds(seconds)).until(
+	        ExpectedConditions.refreshed(
+	            ExpectedConditions.visibilityOf(element)
+	        )
+	    );
 	}
 
 	public void clickOnElement(WebDriver driver, WebElement element) {
@@ -41,7 +45,6 @@ public class BasePage {
 		waitForElementVisible(driver, element, 10);
 		return element.isDisplayed();
 	}
-
 
 	public String getText(WebDriver driver, WebElement element) {
 		waitForElementVisible(driver, element, 10);
