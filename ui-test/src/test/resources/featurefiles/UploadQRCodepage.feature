@@ -1,29 +1,6 @@
 Feature: Inji Verify upload qr code testing
 
-  @smoke @verifyuploadInValidqrcode
-  Scenario: Verify upload qr code for invalid
-    And Verify browser refresh
-    And Verify upload QR code step2 label
-    And Verify upload QR code step3 label
-    And Verify that Upload button visible
-    And Upload QR code file Expired png
-    And Verify message for expired QR code
-    And Verify verify another qr code button on successful verification
-    And Verify click on another qr code button
-    And Upload QR code file Expired jpg
-    And Verify message for expired QR code
-    And Verify verify another qr code button on successful verification
-    And Verify click on another qr code button
-    And Upload QR code file Expired jpeg
-    And Verify message for expired QR code
-    And Verify verify another qr code button on successful verification
-    And Verify click on another qr code button
-    And Upload QR code file Expired pdf
-    And Verify message for expired QR code
-    And Verify verify another qr code button on successful verification
-    And Verify click on another qr code button
-    And Upload QR code unsupported file HTML
-    And Verify Error message
+
 
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with png
@@ -74,9 +51,35 @@ Feature: Inji Verify upload qr code testing
     Examples:
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
+      
+      
+  @smoke @verifyuploadInValidqrcode
+  Scenario: Verify upload qr code for invalid
+    And Verify browser refresh
+    And Verify upload QR code step2 label
+    And Verify upload QR code step3 label
+    And Verify that Upload button visible
+    And Upload QR code file PDF
+    And Verify message for expired QR code
+    And Verify verify another qr code button on successful verification
+    And Verify click on another qr code button
+    And Upload QR code file Expired jpg
+    And Verify message for expired QR code
+    And Verify verify another qr code button on successful verification
+    And Verify click on another qr code button
+    And Upload QR code file Expired jpeg
+    And Verify message for expired QR code
+    And Verify verify another qr code button on successful verification
+    And Verify click on another qr code button
+    And Upload QR code file Expired pdf
+    And Verify message for expired QR code
+    And Verify verify another qr code button on successful verification
+    And Verify click on another qr code button
+    And Upload QR code unsupported file HTML
+    And Verify Error message
 
 
-      @smoke @verifyuploadqrcode
+  @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with PDF
     And Open inji web in new tab
     Then User search the issuers sunbird
