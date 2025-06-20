@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
 
 public class BasePage {
 
@@ -40,11 +41,35 @@ public class BasePage {
 		waitForElementVisible(driver, element, 10);
 		element.click();
 	}
-
+	
 	public boolean isElementIsVisible(WebDriver driver, WebElement element) {
-		waitForElementVisible(driver, element, 10);
-		return element.isDisplayed();
+	    int maxRetries = 2;
+	    int attempts = 0;
+	    long waitTimeInSeconds = 10;
+
+	    while (attempts < maxRetries) {
+	        try {
+	            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
+	            wait.until(ExpectedConditions.visibilityOf(element));
+	            return element.isDisplayed();
+	        } catch (StaleElementReferenceException e) {
+	            System.out.println("⚠️ Attempt " + (attempts + 1) + ": Element went stale. Retrying...");
+	            attempts++;
+	            try {
+	                Thread.sleep(500); 
+	            } catch (InterruptedException ie) {
+	                Thread.currentThread().interrupt();
+	                return false;
+	            }
+	        } catch (TimeoutException e) {
+	            System.out.println("⏰ Timeout waiting for element to be visible.");
+	            return false;
+	        }
+	    }
+	    return false;
 	}
+
+
 
 	public String getText(WebDriver driver, WebElement element) {
 		waitForElementVisible(driver, element, 10);
