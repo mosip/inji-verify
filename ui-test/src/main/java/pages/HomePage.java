@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import api.InjiVerifyConfigManager;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.JavascriptException;
@@ -373,7 +376,8 @@ public class HomePage extends BasePage {
 	}
 
 	public  void openNewTab(){
-		((JavascriptExecutor) driver).executeScript("window.open('https://injiweb.qa-inji1.mosip.net/issuers')");
+		String url = InjiVerifyConfigManager.getInjiWebUi();
+		((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", url);
 		Set<String> allWindowHandles = driver.getWindowHandles();
 		System.out.println(allWindowHandles);
 		if (allWindowHandles.size() >= 2) {

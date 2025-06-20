@@ -30,6 +30,7 @@ public class InjiVerifyConfigManager extends ConfigManager{
 	}
 
 	public static String getInjiVerifyUi() { return getproperty("injiverify"); }
+	public static String getInjiWebUi() { return getproperty("injiweb"); }
 	public static String getEsignetBaseUrl() { return getproperty("eSignetbaseurl");}
 
 	public static String getapiEndUser() { return getproperty("apiEnvUser"); }
