@@ -30,6 +30,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const vcStatus = verifiedVcs.length > 0 ? verifiedVcs[0].vcStatus : "INVALID";
   const selectedClaims: claim[] = useVerifyFlowSelector((state) => state.selectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
+  const showResult = useVerifyFlowSelector((state) => state.isShowResult );
 
   const renderRequestCredentialsButton = (propClasses = "") => (
     <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
@@ -79,7 +80,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       )}
       <div className="relative">
         <div className="flex flex-col items-center space-y-4 lg:space-y-6 mt-[-60px] lg:mt-[-70px]">
-          {verifiedVcs.length > 0 && verifiedVcs.map(({ vc, vcStatus }, index) => (
+          {showResult && verifiedVcs.map(({ vc, vcStatus }, index) => (
             <DisplayVcCardView
               key={index}
               vc={vc}
