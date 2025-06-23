@@ -29,7 +29,7 @@ const DisplayActiveStep = () => {
   const presentationDefinition = useVerifyFlowSelector((state) => state.presentationDefinition );
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
   const activeScreen = useVerifyFlowSelector((state) => state.activeScreen );
-
+  const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const dispatch = useAppDispatch();
 
   const handleRequestCredentials = () => {
@@ -77,11 +77,11 @@ const DisplayActiveStep = () => {
     unverifiedClaims.length === 1 &&
     isSingleVc
   ) {
+    dispatch(resetVpRequest());
     dispatch(
       raiseAlert({ ...AlertMessages().incorrectCredential, open: true })
     );
-    dispatch(resetVpRequest());
-  } else if (verifiedVcs.length > 0 || unverifiedClaims.length > 0) {
+  } else if (showResult) {
     return (
       <div className="w-[100vw] lg:w-[50vw] display-flex flex-col items-center justify-center">
         <VpSubmissionResult
