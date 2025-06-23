@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.13.0-develop
+CHART_VERSION=0.0.1-develop
 
 echo Create $NS namespace
 kubectl create ns $NS
@@ -22,8 +22,6 @@ function installing_inji-verify-service() {
   echo Copy configmaps
   COPY_UTIL=../copy_cm_func.sh
   $COPY_UTIL configmap inji-stack-config default $NS
-  $COPY_UTIL configmap artifactory-share artifactory $NS
-  $COPY_UTIL configmap config-server-share config-server $NS
 
   echo "Do you have public domain & valid SSL? (Y/n) "
   echo "Y: if you have public domain & valid ssl certificate"

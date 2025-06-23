@@ -4,7 +4,7 @@
       "logo": "/assets/cert.png",
       "name": "MOSIP ID",
       "type": "MOSIPVerifiableCredential",
-      "essential": true,
+      "essential": false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
