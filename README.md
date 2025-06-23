@@ -1,3 +1,4 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=mosip_inji-verify=alert_status)](https://sonarcloud.io/dashboard?branch=develop&id=mosip_inji-verify)
 # Inji Verify
 
 Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
