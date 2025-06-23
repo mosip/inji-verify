@@ -66,6 +66,9 @@ This guide walks you through integrating the OpenID4VPVerification component int
 ```ts
 type vpResultStatus = "SUCCESS" | "FAILED";
 
+/*
+ * Individual VC verification result
+ */
 interface VerificationResult {
   /**
    * Verified credential data (structured per implementation).
@@ -78,6 +81,9 @@ interface VerificationResult {
   vcStatus: VerificationStatus;
 }
 
+/*
+ * Individual VP verification result
+ */
 interface VerificationResults {
     /**
      * Array of individual VC verification results.
