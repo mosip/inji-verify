@@ -27,7 +27,6 @@ We use [verdaccio](https://verdaccio.org/docs/what-is-verdaccio). `npm link` or 
 ### Prerequisites
 
 - React Project Setup
-- Proper permissions for camera access (mobile/web) (QRCodeVerification)
 
 > **NOTE**
 The component does not support other frontend frameworks like Angular, Vue, or React Native.
