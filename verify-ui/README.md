@@ -1,6 +1,6 @@
 # Inji Verify
 
-Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
+Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primarily 4 key actions - Scan, Validate, Fetch, Display.
 
 # Contents:
 
@@ -35,9 +35,15 @@ Prerequisites:
 
 # Configuration:
 
-The configuration to the Inji Verify application can be passed using the .env file which is present inside the **verify-ui** folder.
+### `.env`
+The configuration to the Inji Verify application can be passed using the `.env` file which is present inside the **verify-ui** folder.
+It accepts `INTERNET_CONNECTIVITY_CHECK_ENDPOINT` and `INTERNET_CONNECTIVITY_CHECK_TIMEOUT` variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the `.env` file.
 
-It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_TIMEOUT variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the .env file.
+
+###  `config.json` 
+Inji verify needs one internal config to work with OpenID4VP flow the details on config and the sample `config.json`
+can be found [here](../docker-compose/README.md#openid4vp-config). This config needs to be copied into `public/assets` directory
+for the OpenID4VP flow to pick and show the VC selection panel in UI.
 
 ---
 
