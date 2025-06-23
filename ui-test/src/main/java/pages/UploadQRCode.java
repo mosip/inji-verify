@@ -1,10 +1,13 @@
 package pages;
 
 import base.BasePage;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import java.time.Duration;
 import org.openqa.selenium.support.PageFactory;
 
 public class UploadQRCode extends BasePage {
@@ -46,7 +49,7 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//p[@id='vc-result-display-message']")
 	WebElement Congratulationtext;
 
-	@FindBy(xpath = "//span[@id='verify-another-qr-code-button']")
+	@FindBy(xpath = "//span[text()='Verify Another QR code']")
 	WebElement VerifyAnotherQRcodeButton;
 
 	@FindBy(xpath = "//a[@id='home-button']")
@@ -87,7 +90,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodePng() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.png");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
 	public void ClickonUploadQRCodeJpg() {
@@ -95,7 +98,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodeJpg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -103,7 +106,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodePdf() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential.pdf");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
 
 	public void ClickonUploadQRCodeJpeg() {
@@ -111,11 +114,11 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonAnotherUploadQRCodeJpeg() {
-		uploadFile(driver, VerifyAnotherQRcodeButton, "InsuranceCredential0.jpeg");
+		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
 	public void ClickonUploadQRCodeHtml() {
-		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "QRCode_UnsupportedHtml.html");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
 	public void ClickonUploadQRCodeInvalid() {
@@ -127,8 +130,8 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
-		uploadFileForInvalid(driver, VerifyAnotherQRcodeButton, "Expired_QRCode.png");
-
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 	}
 
 	public void ClickonUploadLargeSizeQRCode() {
@@ -193,8 +196,8 @@ public class UploadQRCode extends BasePage {
 
 	public boolean isVisibleUploadQRCodeStep2LabelAfter() {
 		return isElementIsVisible(driver, UploadQRCodeStep2LabelAfter);
-
 	}
+	
 
 	public boolean isVisibleUploadQRCodeStep3LabelAfter() {
 		return isElementIsVisible(driver, UploadQRCodeStep3LabelAfter);
