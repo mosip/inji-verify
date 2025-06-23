@@ -70,7 +70,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     );
   if (!onError) throw new Error("onError callback is required.");
 
-  const readBarcodeFromCanvas = useRef(async (canvas: HTMLCanvasElement) => {
+  const readQrCodeFromCanvas = useRef(async (canvas: HTMLCanvasElement) => {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
     if (!imageData) return;
@@ -96,7 +96,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-    readBarcodeFromCanvas.current(canvas);
+    readQrCodeFromCanvas.current(canvas);
     setTimeout(
       () => requestAnimationFrame(processFrame),
       THROTTLE_FRAMES_PER_SEC
