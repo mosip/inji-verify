@@ -82,7 +82,7 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
 
 ### Run Using Docker Compose:
 
-Navigate to the docker-compose directory and create the .env file:
+Navigate to the docker-compose directory: 
 
 ```shell
 cd docker-compose
