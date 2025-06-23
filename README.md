@@ -35,13 +35,20 @@ Once the repo is cloned, following folders can be found under the inji-verify re
 - **deploy:** folder contains deployment scripts required to deploy on K8S
 - **helm:** folder contains helm charts required to deploy on K8S
 - **samples:** folder contains sample QR codes for testing
+- **docker-compose** : folder containing setup for docker compose
+  - config
+  - db-init
+  - docker-compose.yml
+  - [Readme.md](./docker-compose/README.md)
 - **ui:** contains the application source code for web UI, Dockerfile and docker-compose.yml files
   - src (source code)
   - Dockerfile
-  - docker-compose.yml
   - [Readme.md](./verify-ui/README.md)
 - **ui-test:** contains the ui automation tests
 - **verify-service:** contains source code for the verify backend service
+  - src (source code)
+  - Dockerfile
+  - [Readme.md](./verify-service/README.md)
 - **verify-service-bom:** contains BOM for the verify backend service dependencies
 
 ---
