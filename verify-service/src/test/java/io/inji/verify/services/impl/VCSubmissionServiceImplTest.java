@@ -63,6 +63,20 @@ public class VCSubmissionServiceImplTest {
     }
 
     @Test
+    void submitVC_shouldUseProvidedTransactionId() {
+        VCSubmissionDto submissionDto = new VCSubmissionDto(TEST_VC_STRING, TEST_TRANSACTION_ID);
+        VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
+        when(vcSubmissionRepository.save(any(VCSubmission.class))).thenReturn(expectedVCSubmission);
+        VCSubmissionResponseDto response = vcSubmissionService.submitVC(submissionDto);
+        assertNotNull(response);
+        assertEquals(TEST_TRANSACTION_ID, response.getTransactionId());
+        verify(vcSubmissionRepository, times(1)).save(argThat(vc
+                -> vc.getTransactionId().equals(TEST_TRANSACTION_ID)
+                && vc.getVc().equals(TEST_VC_STRING)
+        ));
+    }
+
+    @Test
     void getVcWithVerification_shouldReturnSuccessStatus_whenVerificationPasses() {
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));

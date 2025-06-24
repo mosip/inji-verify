@@ -23,8 +23,8 @@ public class VCSubmissionController {
     }
 
     @PostMapping(path = "vc-submission", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VCSubmissionResponseDto> submitVC(@RequestBody VCSubmissionDto vcSubmitted){
-        return new ResponseEntity<>(vcSubmissionService.submitVC(vcSubmitted), HttpStatus.OK);
+    public ResponseEntity<VCSubmissionResponseDto> submitVC(@RequestBody VCSubmissionDto vcSubmissionDto){
+        return new ResponseEntity<>(vcSubmissionService.submitVC(vcSubmissionDto), HttpStatus.OK);
     }
 
 }

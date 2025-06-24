@@ -9,6 +9,6 @@ import jakarta.validation.constraints.NotNull;
 @Getter
 public class VCSubmissionDto {
     @NotNull
-    String vc;
-    private String transactionId;
+    private final String vc;
+    private final String transactionId;
 }
