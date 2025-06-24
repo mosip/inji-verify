@@ -122,6 +122,46 @@ paths:
                     errorDescription: unsupported%20client_id_scheme
       x-stoplight:
         id: vq0lhhd3rj7hp
+  /vc-submission:
+    post:
+      summary: Submit Verifiable Credential (VC)
+      description: API to submit a VC token for verification.
+      operationId: submitVCResponse
+      tags:
+        - VC Submission
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthorizationResponse"
+            example:
+              vp_token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...
+              state: state_abcde
+              presentation_submission:
+                id: submission_12345
+                definition_id: age_verification_1
+                descriptor_map:
+                  - id: age_credential
+                    format: jwt_vc
+                    path: "$.verifiableCredential[0]"
+      responses:
+        "200":
+          description: Response processed successfully or error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseAcknowledgement"
+              examples:
+                success:
+                  value:
+                    redirectUri: "https://verify.dev1.mosip.net/"
+                error:
+                  value:
+                    error: invalid_request
+                    errorDescription: unsupported%20client_id_scheme
+      x-stoplight:
+        id: updated-vc-submission-id
   "/vp-result/{transactionId}":
     parameters:
       - schema:
