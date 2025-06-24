@@ -1,151 +1,276 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>io.mosip.uiautomation</groupId>
-    <artifactId>uitest-injiverify</artifactId>
-    <version>0.13.0-SNAPSHOT</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>io.inji.verify</groupId>
+   <artifactId>uitest-injiverify</artifactId>
+   <version>0.13.0-SNAPSHOT</version>
+   <name>inji-ui-verify</name>
+   <description>Parent project of ui automation of inji-verify</description>
+   <url>https://github.com/mosip/inji-verify</url>
+
+   <licenses>
+      <license>
+         <name>MPL 2.0</name>
+         <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+      </license>
+   </licenses>
+
+   <developers>
+      <developer>
+         <name>Mosip</name>
+         <email>mosip.emailnotifier@gmail.com</email>
+         <organization>io.mosip</organization>
+         <organizationUrl>https://github.com/mosip/inji-verify</organizationUrl>
+      </developer>
+   </developers>
 
     <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <maven.compiler.target>21</maven.compiler.target>
-       <cucumber.version>7.17.0</cucumber.version>
-       <maven.compiler.source>21</maven.compiler.source>
-       <selenium.version>4.14.1</selenium.version>
-       <cucumber.testing.version>7.2.3</cucumber.testing.version>
-       <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
-       <!-- Lombok -->
-       <lombok.version>1.18.30</lombok.version>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <cucumber.version>7.2.3</cucumber.version>
+    <gherkin.version>22.0.0</gherkin.version>
+    <selenium.version>4.17.0</selenium.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
+    <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <cucumber.testng.version>7.2.3</cucumber.testng.version>
+    <cucumber.picocontainer.version>7.14.0</cucumber.picocontainer.version>
+    <cucumber.junit.version>7.17.0</cucumber.junit.version>
+    <extentreports.adapter.version>1.13.0</extentreports.adapter.version>
+    <extentreports.version>5.1.0</extentreports.version>
+    <json.simple.version>1.1.1</json.simple.version>
+    <jackson.version>2.15.2</jackson.version>
+    <pdfbox.version>2.0.31</pdfbox.version>
+    <browserstack.local.version>1.1.5</browserstack.local.version>
+    <browserstack.sdk.version>1.31.1</browserstack.sdk.version>
+    <commons.lang.version>2.6</commons.lang.version>
+    <aws.sdk.s3.version>1.12.597</aws.sdk.s3.version>
     </properties>
 
     <dependencies>
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.mosip.testrig.apitest.commons</groupId>
+            <artifactId>apitest-commons</artifactId>
+            <version>1.3.3-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
        <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-java</artifactId>
-          <version>${selenium.version}</version>
-       </dependency>
-
-       <dependency>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok</artifactId>
-          <version>${lombok.version}</version>
-          <scope>provided</scope>
-       </dependency>
-
-       <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-          <version>2.0.7</version>
-       </dependency>
-
-       <!-- SLF4J No-Op Logger -->
-       <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-nop</artifactId>
-          <version>2.0.7</version>
-       </dependency>
-
-       <!-- https://mvnrepository.com/artifact/io.cucumber/gherkin -->
-       <dependency>
-          <groupId>io.cucumber</groupId>
-          <artifactId>gherkin</artifactId>
-          <version>22.0.0</version>
-       </dependency>
-
-       <dependency>
-          <groupId>tech.grasshopper</groupId>
-          <artifactId>extentreports-cucumber7-adapter</artifactId>
-          <version>1.13.0</version>
-       </dependency>
-
-       <dependency>
-          <groupId>com.aventstack</groupId>
-          <artifactId>extentreports</artifactId>
-          <version>5.1.0</version>
-       </dependency>
-
-       <dependency>
-          <groupId>org.json</groupId>
-          <artifactId>json</artifactId>
-          <version>20240303</version>
-       </dependency>
-
-       <dependency>
-          <groupId>org.apache.pdfbox</groupId>
-          <artifactId>pdfbox</artifactId>
-          <version>2.0.31</version>
-       </dependency>
-
-       <dependency>
-          <groupId>io.cucumber</groupId>
-          <artifactId>cucumber-java</artifactId>
-          <version>${cucumber.testing.version}</version>
-       </dependency>
-
-       <dependency>
-          <groupId>io.cucumber</groupId>
-          <artifactId>cucumber-junit</artifactId>
-          <version>${cucumber.version}</version>
-          <scope>test</scope>
-       </dependency>
-
-       <dependency>
-          <groupId>io.cucumber</groupId>
-          <artifactId>cucumber-testng</artifactId>
-          <version>${cucumber.testing.version}</version>
-       </dependency>
-
-       <dependency>
-          <groupId>io.cucumber</groupId>
-          <artifactId>cucumber-picocontainer</artifactId>
-          <version>${cucumber.version}</version>
-       </dependency>
-
-       <dependency>
-          <groupId>org.testng</groupId>
-          <artifactId>testng</artifactId>
-          <version>7.7.1</version>
-       </dependency>
-
-       <dependency>
-      <groupId>com.browserstack</groupId>
-      <artifactId>browserstack-java-sdk</artifactId>
-      <version>LATEST</version>
-      <scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
     </dependency>
+
+    <!-- Cucumber -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>gherkin</artifactId>
+        <version>${gherkin.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>${cucumber.version}</version>
+    </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber.testng.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${cucumber.picocontainer.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>${extentreports.adapter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json.simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- JSON & REST API Testing -->
+
+        <!-- PDFBox for PDF Handling -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+<!-- https://mvnrepository.com/artifact/com.browserstack/browserstack-local-java -->
+<dependency>
+    <groupId>com.browserstack</groupId>
+    <artifactId>browserstack-local-java</artifactId>
+    <version>${browserstack.local.version}</version>
+</dependency>
+        <!-- BrowserStack SDK -->
+        <dependency>
+            <groupId>com.browserstack</groupId>
+            <artifactId>browserstack-java-sdk</artifactId>
+            <version>${browserstack.sdk.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                	<groupId>org.json</groupId>
+                	<artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws.sdk.s3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.17.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
-       <plugins>
-          <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-compiler-plugin</artifactId>
-             <version>3.10.1</version>
-             <configuration>
-                <source>${maven.compiler.source}</source>
-                <target>${maven.compiler.target}</target>
-             </configuration>
-          </plugin>
-          <plugin>
-             <artifactId>maven-dependency-plugin</artifactId>
-             <version>3.3.0</version>
-             <executions>
-                <execution>
-                   <id>getClasspathFilenames</id>
-                   <goals>
-                      <goal>properties</goal>
-                   </goals>
-                </execution>
-             </executions>
-          </plugin>
-          <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-surefire-plugin</artifactId>
-             <version>2.12.4</version>
-             <configuration>
-                <suiteXmlFiles>
-                   <suiteXmlFile>${testngXmlFile}</suiteXmlFile>
-                </suiteXmlFiles><argLine>-javaagent:"${com.browserstack:browserstack-java-sdk:jar}"</argLine>
-             </configuration>
-          </plugin>
-       </plugins>
+        <plugins>
+			<!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<!-- Surefire Plugin for Running Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+
+			<!-- Maven Shade Plugin for Creating an Executable JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven.shade.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<finalName>${fileName}</finalName>
+							<transformers>
+								<!-- need this to merge the services files
+								properly -->
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<!-- add Main-Class to manifest file -->
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>runnerfiles.Runner</mainClass>
+								</transformer>
+							</transformers>
+							<!-- add this to prevent some security issues when
+							merging everything together -->
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
     </build>
 </project>

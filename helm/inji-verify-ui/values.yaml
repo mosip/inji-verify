@@ -52,7 +52,7 @@ service:
 image:
   registry: docker.io
   repository: mosipqa/inji-verify-ui
-  tag: 0.13.x
+  tag: develop
 
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -246,8 +246,6 @@ extraEnvVars: []
 ##
 extraEnvVarsCM:
   - inji-stack-config
-  - config-server-share
-  - artifactory-share
 
 ## Secret with extra environment variables
 ##

@@ -1,5 +1,11 @@
 # inji verify services
 
+## Initialise pre-requisites
+* Update values file for postgres init [here](../db_scripts/init_values.yaml) and postgres config [here](../db_scripts/postgres-config.yaml).
+  ```
+   cd db_scripts
+  ./init_db.sh
+  
 ## Install
 * Run `install-all.sh` to deploy inji verify services.
   ```
@@ -18,5 +24,5 @@
 * Run `restart-all.sh` to restart inji verify services.
   ```
   cd deploy
-  ./restart.sh
+  ./restart-all.sh
   ```

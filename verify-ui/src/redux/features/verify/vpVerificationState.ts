@@ -14,10 +14,12 @@ const PreloadedState: VerifyState = {
   SelectionPanel: false,
   verificationSubmissionResult: [],
   selectedClaims: verifiableClaims?.filter((claim) => claim.essential),
+  originalSelectedClaims: verifiableClaims?.filter((claim) => claim.essential),
   unVerifiedClaims: [],
   sharingType: VCShareType.SINGLE,
   isPartiallyShared: false,
-  presentationDefinition:{
+  isShowResult: false,
+  presentationDefinition: {
     id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
     purpose:
       "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -57,14 +59,26 @@ const vpVerificationState = createSlice({
       const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
       state.presentationDefinition.input_descriptors = [...inputDescriptors];
       state.SelectionPanel = false;
+      state.isShowResult = false;
       state.activeScreen = VerificationSteps[state.method].ScanQrCode;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
     },
     verificationSubmissionComplete: (state, action) => {
-      const verifiedVCs = calculateVerifiedClaims(state.selectedClaims, action.payload.verificationResult);
-      state.verificationSubmissionResult.push(...verifiedVCs);
-      state.unVerifiedClaims = calculateUnverifiedClaims(state.selectedClaims, state.verificationSubmissionResult);
+      const newlyVerified = calculateVerifiedClaims(state.selectedClaims, action.payload.verificationResult);
+
+      const uniqueResult = [
+        ...state.verificationSubmissionResult,
+        ...newlyVerified.filter(
+          (vc) =>
+            !state.verificationSubmissionResult.some(
+              (existing) => existing.vc.type[1] === vc.vc.type[1]
+            )
+        ),
+      ];
+      state.verificationSubmissionResult = uniqueResult;
+      state.isShowResult = true;
+      state.unVerifiedClaims = calculateUnverifiedClaims(state.originalSelectedClaims, state.verificationSubmissionResult);
       state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
@@ -88,6 +102,7 @@ const vpVerificationState = createSlice({
       state.status = "ACTIVE";
       state.sharingType = VCShareType.SINGLE;
       state.isPartiallyShared = false;
+      state.isShowResult = false;
       state.presentationDefinition.input_descriptors = [];
     },
   },
