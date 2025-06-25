@@ -23,6 +23,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import io.inji.verify.dto.submission.VCSubmissionDto;
+
 @ExtendWith(MockitoExtension.class)
 public class VCSubmissionServiceImplTest {
 
@@ -44,10 +46,11 @@ public class VCSubmissionServiceImplTest {
             mockedUtils.when(() -> Utils.generateID(Constants.TRANSACTION_ID_PREFIX))
                     .thenReturn(TEST_TRANSACTION_ID);
 
+            VCSubmissionDto submissionDto = new VCSubmissionDto(TEST_VC_STRING, null);
             VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
             when(vcSubmissionRepository.save(any(VCSubmission.class))).thenReturn(expectedVCSubmission);
 
-            VCSubmissionResponseDto response = vcSubmissionService.submitVC(TEST_VC_STRING);
+            VCSubmissionResponseDto response = vcSubmissionService.submitVC(submissionDto);
 
             assertNotNull(response);
             assertEquals(TEST_TRANSACTION_ID, response.getTransactionId());
@@ -57,6 +60,20 @@ public class VCSubmissionServiceImplTest {
                             vc.getVc().equals(TEST_VC_STRING)
             ));
         }
+    }
+
+    @Test
+    void submitVC_shouldUseProvidedTransactionId() {
+        VCSubmissionDto submissionDto = new VCSubmissionDto(TEST_VC_STRING, TEST_TRANSACTION_ID);
+        VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
+        when(vcSubmissionRepository.save(any(VCSubmission.class))).thenReturn(expectedVCSubmission);
+        VCSubmissionResponseDto response = vcSubmissionService.submitVC(submissionDto);
+        assertNotNull(response);
+        assertEquals(TEST_TRANSACTION_ID, response.getTransactionId());
+        verify(vcSubmissionRepository, times(1)).save(argThat(vc
+                -> vc.getTransactionId().equals(TEST_TRANSACTION_ID)
+                && vc.getVc().equals(TEST_VC_STRING)
+        ));
     }
 
     @Test

@@ -3,6 +3,7 @@ package io.inji.verify.services.impl;
 import io.mosip.vercred.vcverifier.utils.Util;
 import org.springframework.stereotype.Service;
 
+import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionResponseDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
 import io.inji.verify.models.VCSubmission;
@@ -26,8 +27,9 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    public VCSubmissionResponseDto submitVC(String vc) {
-        String transactionId = Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
+    public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
+        String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
+        String vc = vcSubmitted.getVc();
         VCSubmission vcSubmission = new VCSubmission(transactionId, vc);
         vcSubmissionRepository.save(vcSubmission);
         return new VCSubmissionResponseDto(vcSubmission.getTransactionId());
@@ -38,7 +40,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
             VerificationResult verificationResult = credentialsVerifier.verify(vcJSON, CredentialFormat.LDP_VC);
-            return new VCSubmissionVerificationStatusDto(vcJSON,Util.Companion.getVerificationStatus(verificationResult));
+            return new VCSubmissionVerificationStatusDto(vcJSON, Util.Companion.getVerificationStatus(verificationResult));
         }).orElse(null);
     }
 }

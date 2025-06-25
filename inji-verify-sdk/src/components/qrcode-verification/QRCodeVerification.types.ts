@@ -27,6 +27,12 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
   verifyServiceUrl: string;
 
   /**
+  
+  * A unique identifier for the transaction.
+  */
+  transactionId?: string;
+
+  /**
    * Callback triggered when an error occurs during the verification process.
    * This is a required field to ensure proper error handling.
    */
@@ -75,40 +81,7 @@ export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED";
 
 export type scanResult = { data: any; error: Error | null };
 
-export interface QrData {
-  /**
-   * Unique transaction identifier.
-   */
-  transactionId: string;
-
-  /**
-   * Request identifier associated with the verification.
-   */
-  requestId: string;
-
-  /**
-   * Authorization details required for verification.
-   */
-  authorizationDetails: {
-    responseType: string;
-    clientId: string;
-    presentationDefinition: Record<string, unknown>; // More precise than 'object'
-    presentationDefinitionUri?: string;
-    responseUri: string;
-    nonce: string;
-    iat: number;
-  };
-
-  /**
-   * Expiration timestamp of the QR code.
-   */
-  expiresAt: number;
-}
-
-export interface vpRequestBody {
-  clientId: string;
-  nonce: string;
+export interface vcSubmissionBody {
+  vc: any;
   transactionId?: string;
-  presentationDefinitionId?: string;
-  presentationDefinition?: Record<string, unknown>;
 }

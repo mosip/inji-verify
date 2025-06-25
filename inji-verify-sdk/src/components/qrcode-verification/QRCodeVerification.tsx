@@ -30,6 +30,7 @@ import "./QRCodeVerification.css";
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   triggerElement,
   verifyServiceUrl,
+  transactionId,
   onVCReceived,
   onVCProcessed,
   onError,
@@ -202,8 +203,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const triggerCallbacks = async (vc: any) => {
     try {
       if (onVCReceived) {
-        const id = await vcSubmission(vc, verifyServiceUrl);
-        onVCReceived(id);
+        const txnId = await vcSubmission(vc, verifyServiceUrl, transactionId);
+        onVCReceived(txnId);
       } else if (onVCProcessed) {
         const status = await vcVerification(vc, verifyServiceUrl);
         onVCProcessed([{ vc, vcStatus: status }]);
