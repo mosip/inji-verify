@@ -39,6 +39,7 @@ const vpVerificationState = createSlice({
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
       state.selectedClaims = verifiableClaims.filter((claim) => claim.essential );
+      state.originalSelectedClaims = [...state.selectedClaims];
       state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
       const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
       state.presentationDefinition.input_descriptors = [...inputDescriptors];
@@ -54,14 +55,17 @@ const vpVerificationState = createSlice({
       state.verificationSubmissionResult = [];
     },
     getVpRequest: (state, actions) => {
-      state.selectedClaims = actions.payload.selectedClaims;
-      state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
+      if (state.isPartiallyShared && state.unVerifiedClaims.length > 0) {
+        state.selectedClaims = state.unVerifiedClaims;
+      } else {
+        state.selectedClaims = actions.payload.selectedClaims;
+        state.originalSelectedClaims = actions.payload.selectedClaims;
+      }
       const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
       state.presentationDefinition.input_descriptors = [...inputDescriptors];
       state.SelectionPanel = false;
       state.isShowResult = false;
       state.activeScreen = VerificationSteps[state.method].ScanQrCode;
-      state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
     },
     verificationSubmissionComplete: (state, action) => {
@@ -79,7 +83,7 @@ const vpVerificationState = createSlice({
       state.verificationSubmissionResult = uniqueResult;
       state.isShowResult = true;
       state.unVerifiedClaims = calculateUnverifiedClaims(state.originalSelectedClaims, state.verificationSubmissionResult);
-      state.isPartiallyShared = state.unVerifiedClaims.length > 0 && state.sharingType === VCShareType.MULTIPLE;
+      state.isPartiallyShared = state.unVerifiedClaims.length > 0;
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
