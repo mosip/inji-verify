@@ -41,7 +41,6 @@ public class BaseTest {
 	private static int passedCount = 0;
 	private static int failedCount = 0;
 	private static int totalCount = 0;
-
 	public static WebDriver driver;
 
 	public static final String url = System.getenv("env") != null ? System.getenv("TEST_URL")
