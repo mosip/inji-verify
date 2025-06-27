@@ -14,7 +14,6 @@ export function Verify() {
   const openSelection = useVerifyFlowSelector((state) => state.SelectionPanel);
   const dispatch = useAppDispatch();
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
-  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
   const activeScreen = useVerifyFlowSelector((state) => state.activeScreen );
 
   const handleRequestCredentials = () => {
@@ -64,7 +63,7 @@ export function Verify() {
       <div className="grid grid-cols-13">
         <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] lg:pb-[100px]">
           <VerificationProgressTracker />
-          {isPartiallyShared ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
+          {unverifiedClaims.length > 0 ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
           {openSelection && <SelectionPanel />}
         </div>
         <div className="col-start-1 col-end-13 lg:col-start-7 xs:w-[100vw] lg:max-w-[50vw]">
