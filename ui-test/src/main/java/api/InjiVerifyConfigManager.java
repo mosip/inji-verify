@@ -16,7 +16,7 @@ public class InjiVerifyConfigManager extends ConfigManager{
 		Map<String, Object> moduleSpecificPropertiesMap = new HashMap<>();
 		// Load scope specific properties
 		try {
-			String path = Runner.getGlobalResourcePath() + "/config/injiweb.properties";
+			String path = Runner.getGlobalResourcePath() + "/config/injiVerify.properties";
 			Properties props = getproperties(path);
 			// Convert Properties to Map and add to moduleSpecificPropertiesMap
 			for (String key : props.stringPropertyNames()) {
