@@ -2,8 +2,7 @@
 
 ### Scan/Upload Component
 
-The below diagram illustrates the flow in which Relaying party UI is directly fetching the result from verify backend. Which is the current implementation
-of Inji Verify UI.
+The diagram below illustrates the current implementation of Inji Verify UI, where the Relaying Party UI directly retrieves the result from the Verify backend.
 ```mermaid
 sequenceDiagram
     participant Verify Backend
@@ -95,7 +94,7 @@ sequenceDiagram
 
    3. **Triggers `onVcProcessed` with the verification result (Relying Party UI):** The `onVcProcessed` callback on the `Relying Party UI` is triggered with the `vc` and `status`.
 
-The below diagram illustrates the flow in which an error occurs
+The below diagram illustrates the flow when an error occurs
 ```mermaid
 sequenceDiagram
     participant Verify Backend
@@ -127,8 +126,8 @@ sequenceDiagram
    1. **Trigger `onError` callback (with error details):** When the error is encountered, the component or module where the error occurred is responsible for triggering an `onError` callback function. This callback is directed towards the `Relying Party UI`.
 
 
-There is an alternate flow available to implement if the Relaying party has a backend and the results needs to be fetched in the backend.
-The below diagram illustrates the flow in which Relaying party backend is directly fetching the result from verify backend.
+There is an alternate flow available which is called server to server communication. In that flow, the Relaying party has its own backend and want results to be processed there only.
+The below diagram illustrates this flow where Relaying party backend is directly interacting with verify backend to process the result.
 ```mermaid
 sequenceDiagram
     participant Relying Party Backend
