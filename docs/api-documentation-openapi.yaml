@@ -122,17 +122,33 @@ paths:
                     errorDescription: unsupported%20client_id_scheme
       x-stoplight:
         id: vq0lhhd3rj7hp
+  /vc-submission:
+    post:
+      summary: Submit VC
+      description: API to submit the VC to save it in backend for future reference
+      operationId: submitVC
+      tags:
+        - VC Submission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VCSubmissionRequest"
+      responses:
+        "200":
+          description: Response processed successfully
   "/vp-result/{transactionId}":
     parameters:
       - schema:
           type: string
         name: transactionId
-        description: Transaction Id for which you want to get the Vp token for
+        description: Transaction Id for which you want to get the VP/VC submission result for
         in: path
         required: true
     get:
-      summary: Get the VP token for a request
-      description: API to get the VP token for given transaction id
+      summary: Get theVP/VC submission result for a request
+      description: API to get the VP/VC submission result for given transaction id
       tags:
         - VP Request Management
       responses:
@@ -141,7 +157,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VpTokenResult"
+                oneOf:
+                  - $ref: "#/components/schemas/VpTokenResult"
+                  - $ref: "#/components/schemas/VcResult"
         "404":
           description: No result found for given transaction id or Given transaction ID is invalid.
       operationId: get-vp-result-requestId-presentations
@@ -501,6 +519,19 @@ components:
           type: string
           description: "Proof verification status for the VC"
           $ref: "#/components/schemas/verificationStatus"
+    VCSubmissionRequest:
+      title: VCSubmissionRequest
+      type: object
+      description: "VC string and optional transactionID for submission"
+      properties:
+        vc:
+          type: string
+          required: true
+          description: "VC as a JSON string"
+        transactionID:
+          type: string
+          required: false
+          description: "transactionID for submission"
   securitySchemes:
     ClientIdSecret:
       type: http

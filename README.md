@@ -1,7 +1,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=release-0.13.x&project=mosip_inji-verify=alert_status)](https://sonarcloud.io/dashboard?branch=release-0.13.x&id=mosip_inji-verify)
 # Inji Verify
 
-Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
+Inji Verify offers a seamless credential verification experience through QR code scanning, upload functionality, and Pixel Pass SDK integration for accurate decoding. Utilizing a robust Verification SDK ensures the authenticity and integrity of credentials. The portal displays credentials accurately based on issuer configurations and handles errors effectively. With a user-friendly, responsive interface, real-time verification, and scalable performance, Inji Verify provides an efficient and flexible verification solution
 
 # Contents:
 
@@ -34,14 +34,21 @@ Once the repo is cloned, following folders can be found under the inji-verify re
 
 - **deploy:** folder contains deployment scripts required to deploy on K8S
 - **helm:** folder contains helm charts required to deploy on K8S
-- **samples:** folder contains sample QR codes for testing
-- **ui:** contains the application source code for web UI, Dockerfile and docker-compose.yml files
+- **utilities:** folder contains sample QR code variation generation utility for testing
+- **docker-compose** : folder containing setup for docker compose
+  - config
+  - db-init
+  - docker-compose.yml
+  - [Readme.md](./docker-compose/README.md)
+- **verify-ui:** contains the application source code for web UI, Dockerfile and docker-compose.yml files
   - src (source code)
   - Dockerfile
-  - docker-compose.yml
   - [Readme.md](./verify-ui/README.md)
 - **ui-test:** contains the ui automation tests
 - **verify-service:** contains source code for the verify backend service
+  - src (source code)
+  - Dockerfile
+  - [Readme.md](./verify-service/README.md)
 - **verify-service-bom:** contains BOM for the verify backend service dependencies
 
 ---
