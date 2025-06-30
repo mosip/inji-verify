@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-	<suite name="Mimoto Pre-requisite API Test">
+	<suite name="Create sunbird Test">
 	<test name="CreatePolicySunBirdR">
 		<parameter name="ymlFile"
 			value="injiverify/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR.yml" />
