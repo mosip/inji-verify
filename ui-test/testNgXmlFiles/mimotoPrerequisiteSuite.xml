@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+	<suite name="Inji Verify Pre-requisite tests">
+	<test name="CreatePolicySunBirdR">
+		<parameter name="ymlFile"
+			value="injiverify/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR.yml" />
+		<parameter name="idKeyName" value="osid" />
+		<classes>
+			<class name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
+		</classes>
+	</test>
+	<test name="GetPolicySunBirdR">
+		<parameter name="ymlFile"
+			value="injiverify/SunBirdR/GetPolicySunBirdR/GetPolicySunBirdR.yml" />
+		<classes>
+			<class name="io.mosip.testrig.apirig.injiverify.testscripts.GetWithParam" />
+		</classes>
+	</test>
+	<test name="SearchPolicySunBirdR">
+		<parameter name="ymlFile"
+			value="injiverify/SunBirdR/SearchPolicySunBirdR/SearchPolicySunBirdR.yml" />
+		<classes>
+			<class name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePost" />
+		</classes>
+	</test>
+	
+</suite>
