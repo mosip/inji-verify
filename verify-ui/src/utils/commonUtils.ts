@@ -86,15 +86,15 @@ export const calculateVerifiedClaims = (
 };
 
 export const calculateUnverifiedClaims = (
-  selectedClaims: claim[],
+  originalSelectedClaims: claim[],
   verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
-) => {
-  return selectedClaims.filter(
-    (claim) =>
-      !verificationSubmissionResult.some((vc) =>
-        vc.vc.type.includes(claim.type)
-      )
-  );
+): claim[] => {
+  return originalSelectedClaims.filter((claim) => {
+    return !verificationSubmissionResult.some((vcResult) => {
+      const vcTypes = vcResult.vc?.type || [];
+      return vcTypes.includes(claim.type);
+    });
+  });
 };
 
 export const delayUploadQrCode = () => {
