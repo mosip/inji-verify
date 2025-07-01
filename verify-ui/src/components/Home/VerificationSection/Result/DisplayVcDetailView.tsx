@@ -82,13 +82,13 @@ function DisplayVcDetailView({
                 label={t("expand")}
                 onClick={onExpand}
                 icon={<VectorExpand />}
-                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[60px]"
+                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[215px] bottom-[60px]"
               />
               <ActionButton
                 label={t("download")}
                 onClick={() => saveData(vc)}
                 icon={<VectorDownload />}
-                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[241px] bottom-[10px]"
+                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[215px] bottom-[10px]"
               />
             </div>
           </div>

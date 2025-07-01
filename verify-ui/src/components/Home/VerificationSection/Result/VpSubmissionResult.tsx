@@ -50,14 +50,14 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       <Button
         id="missing-credentials-button"
         title={t("missingCredentials")}
-        className={`w-[339px] mt-5`}
+        className={`w-[300px] mt-5`}
         fill
         onClick={reGenerateQr}
       />
       <Button
         id="restart-process-button"
         title={t("restartProcess")}
-        className={`w-[341px] mt-5`}
+        className={`w-[300px] mt-5`}
         onClick={restart}
       />
     </div>
