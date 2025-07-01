@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { useVerificationFlowSelector, useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import { convertToId, fetchVerificationSteps, getRangeOfNumbers } from "../../../utils/misc";
 import { VerificationMethod } from "../../../types/data-types";
@@ -33,16 +33,14 @@ function MobileStepper() {
   }
 
   const stepperLine = "flex-grow border-t-2 border-transparent";
-  const VerificationStepsContent = fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
+  const [VerificationStepsContent,setVerificationStepsContent] = useState(() => fetchVerificationSteps(method as VerificationMethod, isPartiallyShared));
   const stepCount = VerificationStepsContent.length;
   const label = VerificationStepsContent[activeScreen - 1].label;
   const description: string = VerificationStepsContent[activeScreen - 1].description as string;
 
   useEffect(() => {
-    fetchVerificationSteps(method as VerificationMethod, isPartiallyShared);
-
     const handleLanguageChange = () => {
-      fetchVerificationSteps(method, isPartiallyShared);
+      setVerificationStepsContent(fetchVerificationSteps(method, isPartiallyShared));
     };
 
     i18n.on("languageChanged", handleLanguageChange);
