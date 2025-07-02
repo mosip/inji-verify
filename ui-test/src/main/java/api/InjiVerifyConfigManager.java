@@ -10,8 +10,9 @@ import io.mosip.testrig.apirig.utils.ConfigManager;
 import runnerfiles.Runner;
 
 public class InjiVerifyConfigManager extends ConfigManager{
+
 	private static final Logger LOGGER = Logger.getLogger(InjiVerifyConfigManager.class);
-	
+
 	public static void init() {
 		Map<String, Object> moduleSpecificPropertiesMap = new HashMap<>();
 		// Load scope specific properties
@@ -35,9 +36,16 @@ public class InjiVerifyConfigManager extends ConfigManager{
 
 	public static String getapiEndUser() { return getproperty("apiEnvUser"); }
 
+	public static String getInjiVerifyUiBaseUrl() {
+		String url = getproperty("injiverify");
+		String  temp =url.replaceFirst("https?://", "");
+		String  baseurl =temp.replaceFirst("/", "");
+		return baseurl;
+	}
+
 	public static String getSunbirdBaseURL() {
 		return InjiVerifyUtil.getValueFromMimotoActuator("overrides", "mosip.sunbird.url");
-		
+
 	}
 
 }

@@ -19,9 +19,10 @@ Ensure the following software is installed on the machine from where the automat
 
 ## Configurations
 
-1. Update `resources>>featurefile>>UploadQRCodepage.feature` to modify data in examples section.
+1. update `src\main\resources\config\injiVerify.properties`
+2. update `src\test\resources\config.properties`
 
 
 ## Reports
 
-After test execution, the test reports can be found in the `test-output/ExtentReports/SparkReports` directory.
+After test execution, the test reports can be found in the `test-output` directory.
