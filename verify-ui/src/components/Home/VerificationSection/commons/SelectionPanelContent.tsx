@@ -14,6 +14,7 @@ import { storage } from "../../../../utils/storage";
 import { Button } from "./Button";
 import { FilterLinesIcon, SearchIcon } from "../../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
+import SameDeviceVPFlow from "../../../openid4vp/SameDeviceVPFlow";
 
 function SelectionPanelContent() {
   const { t } = useTranslation("Verify");
@@ -25,6 +26,7 @@ function SelectionPanelContent() {
   language = language ?? window._env_.DEFAULT_LANG;
   const rtl = isRTL(language);
   const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
+  const presentationDefinition = useVerifyFlowSelector((state) => state.presentationDefinition );
 
   const filteredClaims = verifiableClaims
     .filter((claim) => claim.name.toLowerCase().includes(search.toLowerCase()))
@@ -41,18 +43,22 @@ function SelectionPanelContent() {
     });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target.value);
-    };
+    setSearch(event.target.value);
+  };
 
   const toggleClaimSelection = (claim: claim) => {
     if (selectedClaims.includes(claim)) {
       dispatch(
-        setSelectedClaims(
-         { selectedClaims: selectedClaims.filter((c: claim) => claim.name !== c.name)}
-        )
+        setSelectedClaims({
+          selectedClaims: selectedClaims.filter(
+            (c: claim) => claim.name !== c.name
+          ),
+        })
       );
     } else {
-      dispatch(setSelectedClaims({selectedClaims : [...selectedClaims, claim]}));
+      dispatch(
+        setSelectedClaims({ selectedClaims: [...selectedClaims, claim] })
+      );
     }
   };
 
@@ -64,9 +70,14 @@ function SelectionPanelContent() {
   const handleGenerateQR = () => {
     setSearch("");
     dispatch(getVpRequest({ selectedClaims }));
-    const triggerElement = document.getElementById("OpenID4VPVerification_trigger");    
+    const triggerElement = document.getElementById(
+      "OpenID4VPVerification_trigger"
+    );
     if (triggerElement) {
-      const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      });
       triggerElement.dispatchEvent(event);
     }
   };
@@ -77,9 +88,9 @@ function SelectionPanelContent() {
       storage.setItem(storage.ESSENTIAL_CLAIM, claim)
     );
   }, [selectedClaims]);
-  
+
   return (
-    <div className="fill-primary grid gap-6 p-3 lg:p-0">
+    <div className="fill-primary grid gap-6 p-3 lg:p-0 rounded h-[500px]">
       <div className="hidden lg:block text-center sm:text-left">
         <h1 className="font-bold text-smallTextSize lg:text-lg sm:text-xl text-selectorPanelTitle">
           {t("selectorTitle")}
@@ -131,14 +142,14 @@ function SelectionPanelContent() {
         </div>
       </div>
 
-      <div>
+      <div className="h-[210px] overflow-y-auto custom-scrollbar">
         <h2 className="text-smallTextSize lg:text-sm font-bold text-gray-700 mb-2">
           {t("listHeader")}
         </h2>
         {filteredClaims.length > 0 ? (
-          <ul className="grid gap-4 max-h-[120px] lg:max-h-[250px] overflow-y-auto custom-scrollbar pr-4">
+          <ul className="grid gap-4 max-h-[120px] lg:max-h-[250px] pr-4">
             {filteredClaims.map((claim, index) => {
-              const isSelectedClaim = selectedClaims.includes(claim)
+              const isSelectedClaim = selectedClaims.includes(claim);
               return (
                 <li
                   key={index}
@@ -203,20 +214,24 @@ function SelectionPanelContent() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 lg:flex lg:justify-end gap-2">
-        <Button
-          id="verification-back-button"
-          className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
-          onClick={handleBack}
-          title={t("goBack")}
-        />
+      <div>
         <Button
           id="camera-access-denied-okay-button"
           title={t("generateQrCodeBtn")}
           onClick={handleGenerateQR}
-          className="w-full lg:w-[147px] text-smallTextSize lg:text-sm"
+          className="w-full text-smallTextSize lg:text-sm"
           disabled={selectedClaims.length <= 0}
           fill
+        />
+        <SameDeviceVPFlow
+          verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
+          presentationDefinition={presentationDefinition}
+        />
+        <Button
+          id="verification-back-button"
+          className="w-full text-smallTextSize lg:text-sm"
+          onClick={handleBack}
+          title={t("goBack")}
         />
       </div>
     </div>

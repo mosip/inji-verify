@@ -241,3 +241,11 @@ export type Detail = {
   key: string;
   value: string;
 };
+
+export interface VPRequestBody {
+  clientId: string;
+  nonce: string;
+  transactionId?: string;
+  presentationDefinitionId?: string;
+  presentationDefinition?: PresentationDefinition;
+}
