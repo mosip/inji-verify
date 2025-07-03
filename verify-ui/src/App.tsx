@@ -54,6 +54,7 @@ function App() {
 
     useEffect(() => {
         document.body.classList.toggle('rtl', rtl);
+        document.documentElement.classList.add('default_theme');
     }, [rtl]);
     
   return (
