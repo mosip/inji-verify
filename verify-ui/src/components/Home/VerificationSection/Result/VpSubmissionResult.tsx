@@ -27,7 +27,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   restart,
   isSingleVc,
 }) => {
-  const vcStatus = verifiedVcs.length > 0 ? verifiedVcs[0].vcStatus : "INVALID";
+  const vcStatus = verifiedVcs.length === 1 ? verifiedVcs[0].vcStatus : "INVALID";
   const originalSelectedClaims: claim[] = useVerifyFlowSelector((state) => state.originalSelectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
@@ -94,7 +94,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
           ))}
         </div>
       </div>
-
       {isPartiallyShared
         ? renderMissingAndResetButton()
         : renderRequestCredentialsButton()}
