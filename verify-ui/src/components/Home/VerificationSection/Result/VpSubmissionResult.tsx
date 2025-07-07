@@ -27,11 +27,17 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   restart,
   isSingleVc,
 }) => {
-  const vcStatus = verifiedVcs.length > 0 ? verifiedVcs[0].vcStatus : "INVALID";
+  const vcStatus = verifiedVcs.length === 1 ? verifiedVcs[0].vcStatus : "INVALID";
   const originalSelectedClaims: claim[] = useVerifyFlowSelector((state) => state.originalSelectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const { t } = useTranslation("Verify");
+  const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
+    originalSelectedClaims.some((selectedVc) =>
+      verifiedVc.vc.type.includes(selectedVc.type)
+    )
+  );
+
   const renderRequestCredentialsButton = (propClasses = "") => (
     <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
       <Button
@@ -62,11 +68,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       />
     </div>
   );
-  const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
-    originalSelectedClaims.some((selectedVc) =>
-      verifiedVc.vc.type.includes(selectedVc.type)
-    )
-  );
 
   return (
     <div className="space-y-6 mb-[100px] lg:mb-0">
@@ -93,7 +94,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
           ))}
         </div>
       </div>
-
       {isPartiallyShared
         ? renderMissingAndResetButton()
         : renderRequestCredentialsButton()}

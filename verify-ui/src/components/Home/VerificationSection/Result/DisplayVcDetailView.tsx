@@ -13,6 +13,7 @@ import {
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
+import {isRTL} from "../../../../utils/i18n";
 import { VC } from "../../../../types/data-types";
 
 function DisplayVcDetailView({
@@ -24,8 +25,12 @@ function DisplayVcDetailView({
   onExpand: any;
   className?: string;
 }) {
-  const { t } = useTranslation("Verify");
+  const { t,i18n } = useTranslation("Verify");
   const orderedDetails = getDetailsOrder(vc);
+  const isRtl = isRTL(i18n.language);
+  const positionLeft = "left-[250px] lg:left-[328px] lg:hover:left-[215px]";
+  const positionRight = "right-[250px] lg:right-[328px] lg:hover:right-[215px]";
+  const buttonPosition = isRtl ? positionRight : positionLeft;
 
   return (
     <div>
@@ -82,13 +87,13 @@ function DisplayVcDetailView({
                 label={t("expand")}
                 onClick={onExpand}
                 icon={<VectorExpand />}
-                positionClasses="hidden lg:flex left-[250px] lg:left-[328px] lg:hover:left-[215px] bottom-[60px]"
+                positionClasses={`hidden lg:flex ${buttonPosition} bottom-[60px]`}
               />
               <ActionButton
                 label={t("download")}
                 onClick={() => saveData(vc)}
                 icon={<VectorDownload />}
-                positionClasses="left-[250px] lg:left-[328px] lg:hover:left-[215px] bottom-[10px]"
+                positionClasses={`${buttonPosition} bottom-[10px]`}
               />
             </div>
           </div>
