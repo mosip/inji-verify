@@ -8,6 +8,11 @@
       "sizes": "48x48"
     },
     {
+      "src": "favicon180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
         "src": "favicon192.png",
         "type": "image/png",
         "sizes": "192x192"
@@ -16,11 +21,6 @@
       "src": "favicon512.png",
       "type": "image/png",
       "sizes": "512x512"
-    },
-    {
-      "src": "faviconAppleTouch.png",
-      "type": "image/png",
-      "sizes": "180x180"
     }
   ],
   "start_url": ".",
