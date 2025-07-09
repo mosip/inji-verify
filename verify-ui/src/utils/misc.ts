@@ -1,4 +1,5 @@
 // match fot the occurrence of an uppercase letter
+import i18next from "i18next";
 import { VerificationMethod, VerificationStepsContentType } from "../types/data-types";
 import {
   InternetConnectivityCheckTimeout,
@@ -31,25 +32,65 @@ export const getDisplayValue = (data: any): string => {
     return data?.toString();
 }
 
-export const fetchVerificationSteps = (method: VerificationMethod,isPartiallyShared:boolean) => {
+export const fetchVerificationSteps = (
+  method: VerificationMethod,
+  isPartiallyShared: boolean,
+  flowType?: "sameDevice" | "crossDevice",
+  activeScreen: number = 1 // default to first step if not passed
+) => {
+  
   let VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
-  if (method === "VERIFY") {
-    VerificationStepsContent = {
-            ...VerificationStepsContent,
-            [method]: VerificationStepsContent[method as VerificationMethod].filter(
-              (_, index: number) => {
-                if (isPartiallyShared && index === 1) {
-                  return false;
-                }
-                if (!isPartiallyShared && index === 2) {
-                  return false;
-                }
-                return true;
-              }
-            ),
-          };
+
+  if (method !== "VERIFY") {
+    return VerificationStepsContent[method].map((step, index) => ({
+      ...step,
+      stepNumber: index + 1,
+      isCompleted: index + 1 < activeScreen,
+      isActive: index + 1 === activeScreen,
+    }));
   }
-  return VerificationStepsContent[method];
+
+  const verifySteps = VerificationStepsContent.VERIFY;
+  const stepMap = Object.fromEntries(verifySteps.map((step) => [step.label, step]));
+
+  const selectedSteps = [];
+
+  selectedSteps.push(
+    stepMap[i18next.t("VerificationStepsContent:VERIFY.InitiateVpRequest.label")]
+  );
+
+  if (isPartiallyShared) {
+    selectedSteps.push(
+      stepMap[i18next.t("VerificationStepsContent:VERIFY.RequestMissingCredential.label")]
+    );
+  } else {
+    selectedSteps.push(
+      stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectCredential.label")]
+    );
+  }
+
+  if (flowType === "sameDevice") {
+    selectedSteps.push(
+      stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectWallet.label")]
+    );
+  } else {
+    selectedSteps.push(
+      stepMap[i18next.t("VerificationStepsContent:VERIFY.ScanQrCode.label")]
+    );
+  }
+
+  selectedSteps.push(
+    stepMap[i18next.t("VerificationStepsContent:VERIFY.DisplayResult.label")]
+  );
+
+  return selectedSteps
+    .filter(Boolean)
+    .map((step, index) => ({
+      ...step,
+      stepNumber: index + 1,
+      isCompleted: index + 1 < activeScreen,
+      isActive: index + 1 === activeScreen,
+    }));
 };
 
 export const getRangeOfNumbers = (length: number): number[] => {

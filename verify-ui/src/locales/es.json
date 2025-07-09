@@ -81,24 +81,28 @@
     },
     "VERIFY": {
       "InitiateVpRequest": {
-        "label": "Iniciar proceso de solicitud de vicepresidente",
-        "description": "Hacer clic <span> Solicitar credenciales verificables <span> para comenzar el proceso de verificación."
+        "label": "Iniciar el proceso de solicitud de VP",
+        "description": "Hacer clic <span> Solicitar credenciales verificables <span> Para iniciar el proceso de verificación de credenciales"
       },
       "SelectCredential": {
-        "label": "Seleccione Credenciales y Generar Código QR",
-        "description": "Elija las credenciales verificables requeridas y haga clic <span>Generar código QR<span>."
+        "label": "Seleccionar tipos de credenciales",
+        "description": "Elija las credenciales verificables (VC) de la lista que se solicitará en la billetera móvil."
       },
       "RequestMissingCredential": {
         "label": "Solicitar credenciales faltantes y generar código QR",
         "description": "Hacer clic en <span>Solicitar credenciales faltantes<span> para continuar con la verificación del VC que falta, o haga clic en <span>Reiniciar el proceso<span> para comenzar todo el proceso nuevamente."
       },
       "ScanQrCode": {
-        "label": "Escanear código QR (use un dispositivo diferente)",
-        "description": "Utilice una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de códigos QR para escanear el código QR (¡Próximamente se admitirá el escaneo en el mismo dispositivo!)"
+        "label": "Escanear el código QR (use un dispositivo diferente)",
+        "description": "Use una billetera que contenga credenciales verificables en un dispositivo diferente con capacidades de escaneo de código QR para escanear el código QR (el soporte para el escaneo del mismo dispositivo llegará pronto!)"
+      },
+      "SelectWallet": {
+        "label": "Compartir credenciales verificables de la billetera",
+        "description": "Elija una billetera móvil de la lista de billeteras disponibles en el mismo dispositivo y continúe con el intercambio de credenciales."
       },
       "DisplayResult": {
         "label": "Ver resultados de verificación",
-        "description": "Verifique los resultados de la verificación de las credenciales verificables compartidas desde la billetera."
+        "description": "Verifique los resultados de verificación para las credenciales verificables compartidas desde la billetera."
       }
     }
   },
@@ -123,7 +127,7 @@
     "scanSessionExpired": "La sesión de escaneo ha caducado debido a inactividad. Inicie un nuevo análisis.",
     "partialCredentialShared": "Verificación completada con credenciales parciales. Tenga en cuenta que faltan algunas credenciales solicitadas.",
     "validationFailure": "No pudimos validar la respuesta de verificación. Asegúrese de que la respuesta sea correcta y vuelva a intentarlo.",
-    "incorrectCredential":"Las credenciales compartidas no coinciden con las solicitadas. Proporcione las credenciales correctas e inténtelo de nuevo."
+    "incorrectCredential": "Las credenciales compartidas no coinciden con las solicitadas. Proporcione las credenciales correctas e inténtelo de nuevo."
   },
   "OvpErrors": {
     "invalidScope": "Alcance no válido",

@@ -35,6 +35,14 @@ const WalletSelectionModal: React.FC<WalletSelectionModalProps> = ({
     );
   }, [wallets, searchTerm]);
 
+  const handleSelect = (wallet: Wallet) => {
+    if (selectedWallet?.name === wallet.name) {
+      onSelect(null);
+    } else {
+      onSelect(wallet);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
       <div
@@ -72,27 +80,41 @@ const WalletSelectionModal: React.FC<WalletSelectionModalProps> = ({
             <div className="loader border-4 border-t-4 border-blue-600 border-t-transparent rounded-full w-12 h-12 animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {filteredWallets.map((wallet) => (
-              <button
-                key={wallet.name}
-                onClick={() => onSelect(wallet)}
-                className={`border p-4 rounded-md flex items-start gap-4 text-left transition hover:shadow-md ${
+          <ul className="grid gap-4 max-h-[120px] lg:max-h-[250px] pr-4">
+            {filteredWallets.map((wallet, index) => (
+              <li
+                key={index}
+                className={`grid mb-2 p-px ${
                   selectedWallet?.name === wallet.name
-                    ? "border-blue-600"
-                    : "border-gray-200"
+                    ? `bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat rounded-[5px] bg-opacity-95`
+                    : ""
                 }`}
+                onClick={() => handleSelect(wallet)}
               >
-                {wallet.icon &&  <img src={wallet.icon} alt={wallet.name} className="w-10 h-10 rounded" />}
-                <div>
-                  <h3 className="text-lg font-medium mb-1">{wallet.name}</h3>
-                  <p className="text-sm text-gray-600 leading-tight">
-                    {wallet.description}
-                  </p>
+                <div
+                  className={`flex items-center justify-between w-full p-2 lg:p-4 shadow rounded-md ${
+                    selectedWallet?.name === wallet.name
+                      ? `bg-white bg-opacity-95`
+                      : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-center w-10 h-10 bg-white border-2 border-[#D8D8D8] rounded-md">
+                      <img
+                        src={wallet.icon}
+                        alt={wallet.name}
+                        className="w-8 h-6 rounded"
+                      />
+                    </div>
+
+                    <span className="text-smallTextSize lg:text-sm">
+                      {wallet.name}
+                    </span>
+                  </div>
                 </div>
-              </button>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
 
         <div className="flex flex-col-reverse lg:flex-row lg:justify-end gap-4 items-center">
@@ -110,7 +132,6 @@ const WalletSelectionModal: React.FC<WalletSelectionModalProps> = ({
             fill
           />
         </div>
-
       </div>
     </div>
   );

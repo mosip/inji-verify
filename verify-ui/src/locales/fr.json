@@ -82,11 +82,11 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Lancer le processus de demande de vice-président",
-        "description": "Cliquez <span> Demander des informations d'identification vérifiables <span> pour commencer le processus de vérification."
+        "description": "Faire un clic <span> Demander des informations d'identification vérifiables <span> Pour initier le processus de vérification des informations d'identification"
       },
       "SelectCredential": {
-        "label": "Sélectionnez les informations d'identification et générez un code QR",
-        "description": "Choisissez les informations d'identification vérifiables requises et cliquez sur <span>Générer un code QR<span>."
+        "label": "Sélectionnez des types d'identification",
+        "description": "Choisissez les informations d'identification vérifiables (VC) dans la liste à demander au portefeuille mobile."
       },
       "RequestMissingCredential": {
         "label": "Demander les informations d'identification manquantes et générer un code QR",
@@ -95,6 +95,10 @@
       "ScanQrCode": {
         "label": "Scannez le code QR (utilisez un autre appareil)",
         "description": "Utilisez un portefeuille contenant des informations d'identification vérifiables sur un autre appareil doté de capacités de numérisation de code QR pour scanner le code QR. (La prise en charge de l'analyse sur le même appareil sera bientôt disponible !)"
+      },
+      "SelectWallet": {
+        "label": "Partagez des informations d'identification vérifiables de Wallet",
+        "description": "Choisissez un portefeuille mobile dans la liste des portefeuilles disponibles sur le même appareil et procédez par le partage des informations d'identification."
       },
       "DisplayResult": {
         "label": "Afficher les résultats de la vérification",

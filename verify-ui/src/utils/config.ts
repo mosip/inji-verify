@@ -34,6 +34,7 @@ export const VerificationSteps: any = {
         SelectCredential: 2,
         RequestMissingCredential: 2,
         ScanQrCode: 3,
+        SelectWallet:3,
         DisplayResult: 4
     }
 }
@@ -88,6 +89,10 @@ export const getVerificationStepsContent = (): VerificationStepsContentType => {
             {
                 label: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.label'),
                 description: i18next.t('VerificationStepsContent:VERIFY.ScanQrCode.description'),
+            },
+            {
+                label: i18next.t('VerificationStepsContent:VERIFY.SelectWallet.label'),
+                description: i18next.t('VerificationStepsContent:VERIFY.SelectWallet.description'),
             },
             {
                 label: i18next.t('VerificationStepsContent:VERIFY.DisplayResult.label'),

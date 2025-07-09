@@ -82,11 +82,11 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Iniciar processo de solicitação de VP",
-        "description": "Clique <span> Solicite credenciais verificáveis <span> para iniciar o processo de verificação."
+        "description": "Clique <span> Solicitar credenciais verificáveis <span> Para iniciar o processo de verificação de credenciais"
       },
       "SelectCredential": {
-        "label": "Selecione credenciais e gere código QR",
-        "description": "Escolha as credenciais verificáveis ​​necessárias e clique em <span>Gerar código QR<span>."
+        "label": "Selecione tipos de credenciais",
+        "description": "Escolha as credenciais verificáveis ​​(VCs) da lista a ser solicitada na carteira móvel."
       },
       "RequestMissingCredential": {
         "label": "Solicitar credenciais ausentes e gerar código QR",
@@ -95,6 +95,10 @@
       "ScanQrCode": {
         "label": "Digitalize o código QR (use um dispositivo diferente)",
         "description": "Use uma carteira contendo credenciais verificáveis ​​em um dispositivo diferente com recursos de leitura de código QR para ler o código QR (O suporte para verificação no mesmo dispositivo estará disponível em breve!)"
+      },
+      "SelectWallet": {
+        "label": "Compartilhar credenciais verificáveis ​​da carteira",
+        "description": "Escolha uma carteira móvel na lista de carteiras disponíveis no mesmo dispositivo e prossiga com o compartilhamento de credenciais."
       },
       "DisplayResult": {
         "label": "Ver resultados da verificação",
@@ -123,7 +127,7 @@
     "scanSessionExpired": "A sessão de verificação expirou devido à inatividade. Por favor, inicie uma nova verificação.",
     "partialCredentialShared": "Verificação concluída com credenciais parciais. Observe que algumas credenciais solicitadas estão faltando.",
     "validationFailure": "Não foi possível validar a resposta de verificação. Certifique-se de que a resposta está correta e tente novamente.",
-    "incorrectCredential":"As credenciais compartilhadas não correspondem às solicitadas. Forneça as credenciais corretas e tente novamente."
+    "incorrectCredential": "As credenciais compartilhadas não correspondem às solicitadas. Forneça as credenciais corretas e tente novamente."
   },
   "OvpErrors": {
     "invalidScope": "Escopo inválido",
