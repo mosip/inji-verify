@@ -6,7 +6,7 @@ import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../uti
 const PreloadedState: VerifyState = {
   isLoading: false,
   status: "ACTIVE",
-  flowType: "cross-device",
+  flowType: "crossDevice",
   qrData: "",
   txnId: "",
   reqId: "",
@@ -59,7 +59,7 @@ const vpVerificationState = createSlice({
     },
     setFlowType:(state)=>{
       state.SelectionPanel = false;
-      state.flowType = "same-device";
+      state.flowType = "sameDevice";
       state.activeScreen = VerificationSteps[state.method].SelectWallet;
     },
     getVpRequest: (state, actions) => {
@@ -112,7 +112,7 @@ const vpVerificationState = createSlice({
       state.qrData = "";
       state.reqId = "";
       state.status = "ACTIVE";
-      state.flowType = "cross-device";
+      state.flowType = "crossDevice";
       state.sharingType = VCShareType.SINGLE;
       state.isPartiallyShared = false;
       state.isShowResult = false;

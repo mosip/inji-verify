@@ -96,7 +96,7 @@ const DisplayActiveStep = () => {
         />
       </div>
     );
-  } else if (flowType === "cross-device") {
+  } else if (flowType === "crossDevice") {
     return (
       <div className="flex flex-col mt-10 lg:mt-0 pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
         <div className="xs:col-end-13">
@@ -130,7 +130,7 @@ const DisplayActiveStep = () => {
         </div>
       </div>
     );
-  } else if (flowType === "same-device") {
+  } else if (flowType === "sameDevice") {
     return (
       <div className="flex flex-col mt-10 lg:mt-0 pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
         <div className="xs:col-end-13">

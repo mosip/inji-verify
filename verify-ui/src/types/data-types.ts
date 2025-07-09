@@ -147,7 +147,7 @@ export type VpSubmissionResultInt = {
 
 export type VerifyState = {
   isLoading: boolean;
-  flowType: "same-device" | "cross-device";
+  flowType: "crossDevice" | "sameDevice";
   status: string;
   qrData: string;
   txnId: string;
