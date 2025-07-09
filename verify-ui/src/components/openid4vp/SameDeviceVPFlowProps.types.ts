@@ -1,5 +1,40 @@
 import { FunctionComponent, SVGProps } from "react";
 
+export type VerificationStatus = "valid" | "invalid" | "expired";
+
+
+export interface VerificationResult {
+  /**
+  
+  Verified credential data (structured per implementation).
+  */
+  vc: Record<string, unknown>;
+
+  /**
+  
+  The status of the verification.
+  */
+  vcStatus: VerificationStatus;
+}
+
+export type VerificationResults = VerificationResult[];
+
+type ExclusiveCallbacks =
+  /**
+   * Callback triggered when the verification presentation (VP) is received.
+   * Provides the associated transaction ID.
+   */
+  | { onVPReceived: (transactionId: string) => void; onVPProcessed?: never }
+  /**
+   * Callback triggered when the VP is successfully processed.
+   * Provides the verification result data.
+   */
+  | {
+      onVPProcessed: (VPResult: VerificationResults) => void;
+      onVPReceived?: never;
+    };
+
+
 export interface Wallet {
   name: string;
   scheme: string;
@@ -28,11 +63,11 @@ export interface PresentationDefinition {
   input_descriptors: InputDescriptor[];
 }
 
-export interface SameDeviceVPFlowProps {
+export type SameDeviceVPFlowProps = ExclusiveCallbacks & {
+  triggerElement?: React.ReactNode;
   verifyServiceUrl: string;
   transactionId?: string;
   presentationDefinition: PresentationDefinition;
   presentationDefinitionId?: string;
-  fallbackUrl?: string;
-  onError?: (message: string) => void;
-}
+  onError: (error: Error) => void;
+};

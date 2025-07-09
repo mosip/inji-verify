@@ -13,7 +13,7 @@ type VpSubmissionResultProps = {
   unverifiedClaims: claim[];
   txnId: string;
   requestCredentials: () => void;
-  reGenerateQr: () => void;
+  requestMissingCredentials: () => void;
   restart: () => void;
   isSingleVc: boolean;
 };
@@ -23,11 +23,11 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   unverifiedClaims,
   txnId,
   requestCredentials,
-  reGenerateQr,
+  requestMissingCredentials,
   restart,
   isSingleVc,
 }) => {
-  const vcStatus = verifiedVcs.length > 0 ? verifiedVcs[0].vcStatus : "INVALID";
+  const vcStatus = isSingleVc ? verifiedVcs[0].vcStatus : "INVALID";
   const originalSelectedClaims: claim[] = useVerifyFlowSelector((state) => state.originalSelectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
@@ -52,7 +52,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
         title={t("missingCredentials")}
         className={`w-[300px] mt-5`}
         fill
-        onClick={reGenerateQr}
+        onClick={requestMissingCredentials}
       />
       <Button
         id="restart-process-button"

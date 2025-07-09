@@ -1,45 +1,37 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { SameDeviceVPFlowProps, Wallet } from "./SameDeviceVPFlowProps.types";
-import { QrData } from "../../types/data-types";
+import React, { useCallback, useEffect, useMemo, useRef, useState} from "react";
+import { SameDeviceVPFlowProps, VerificationResults, Wallet} from "./SameDeviceVPFlowProps.types";
 import { vpRequest } from "../../utils/api";
-import { OPENID4VP_PROTOCOL } from "../../utils/config";
 import WalletSelectionModal from "./WalletSelectionModal";
-import { Button } from "../Home/VerificationSection/commons/Button";
 import { InjiLogo } from "../../utils/theme-utils";
+import { useAppDispatch } from "../../redux/hooks";
+import { resetVpRequest } from "../../redux/features/verify/vpVerificationState";
 
-const SUPPORTED_WALLETS: Wallet[] = [
+const SUPPORTED_WALLETS = [
   {
     name: "Inji Wallet",
-    scheme: "injiwallet://vp-request",
+    scheme: "openid4vp://authorize",
     icon: InjiLogo,
-    description:
-      "Lorem ipsum dolor sit abet consectetur. Aliquot nils place rat.",
-  },
-  {
-    name: "Talao Wallet",
-    scheme: "talaowallet://vp-request",
-    icon: InjiLogo,
-    description:
-      "Lorem ipsum dolor sit abet consectetur. Aliquot nils place rat.",
+    description: "Use Inji wallet to present your credentials.",
   },
 ];
 
-const isMobileDevice = (): boolean =>
-  /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-
 const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
+  triggerElement,
   verifyServiceUrl,
+  onVPReceived,
+  onVPProcessed,
   transactionId,
   presentationDefinition,
   presentationDefinitionId,
-  fallbackUrl = "https://injiweb.dev-int-inji.mosip.net/",
   onError,
 }) => {
-  const [txnId, setTxnId] = useState<string | null>(transactionId || null);
-  const [showWallets, setShowWallets] = useState(false);
-  const [launched, setLaunched] = useState(false);
   const [authRequestUri, setAuthRequestUri] = useState<string | null>(null);
+  const [showWallets, setShowWallets] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const hasFetchedRef = useRef(false);
+
+  const dispatch = useAppDispatch();
 
   const VPFormat = useMemo(
     () => ({
@@ -54,17 +46,93 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
     []
   );
 
-  const getPresentationDefinition = useCallback(
-    (data: QrData) => {
+  const fetchVPResult = useCallback(
+    async (txnId: string) => {
+      if (!txnId) {
+        onError(new Error("Transaction ID is null, cannot fetch VP result."));
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        if (onVPProcessed) {
+          const response = await fetch(
+            `${verifyServiceUrl}/vp-result/${txnId}`
+          );
+          if (!response.ok) throw new Error("Failed to fetch VP result");
+          const result = await response.json();
+          const VPResult: VerificationResults = result.vcResults.map(
+            (vcResult: any) => ({
+              vc: JSON.parse(vcResult.vc),
+              vcStatus: vcResult.verificationStatus,
+            })
+          );
+          onVPProcessed(VPResult);
+          setIsLoading(false);
+          setShowWallets(false);
+          setAuthRequestUri(null);
+          setSelectedWallet(null);
+        } else {
+          onVPReceived?.(txnId!);
+          setIsLoading(false);
+          setShowWallets(false);
+          setAuthRequestUri(null);
+          setSelectedWallet(null);
+        }
+      } catch (error) {
+        onError(error as Error);
+        setIsLoading(false);
+        setShowWallets(false);
+        setAuthRequestUri(null);
+        setSelectedWallet(null);
+      }
+    },
+    [onVPProcessed, verifyServiceUrl, onVPReceived, onError]
+  );
+
+  const fetchVPStatus = useCallback(
+    (txnId: string, reqId: string) => {
+      let cancelled = false;
+      const poll = async () => {
+        try {
+          const res = await fetch(
+            `${verifyServiceUrl}/vp-request/${reqId}/status`
+          );
+          if (!res.ok) throw new Error("Failed to fetch status");
+          const status = await res.json();
+          if (cancelled) return;
+          if (status.status === "VP_SUBMITTED") {
+            fetchVPResult(txnId);
+          } else if (status.status === "ACTIVE") {
+            fetchVPStatus(txnId, reqId);
+          } else if (status.status === "EXPIRED") {
+            setIsLoading(false);
+          }
+        } catch (err) {
+          onError(err as Error);
+          setIsLoading(false);
+        }
+      };
+      poll();
+      return () => {
+        cancelled = true;
+      };
+    },
+    [verifyServiceUrl, fetchVPResult, onError]
+  );
+
+  const getPresentationDefinitionParams = useCallback(
+    (data: any) => {
       const params = new URLSearchParams();
       params.set("client_id", data.authorizationDetails.clientId);
       params.set("response_type", data.authorizationDetails.responseType);
-      params.set("response_mode", "fragment");
+      params.set("response_mode", "direct_post");
       params.set("nonce", data.authorizationDetails.nonce);
       params.set("state", data.requestId);
-      params.set("redirect_uri", encodeURIComponent(window.location.origin));
-      params.set("client_id_scheme", "redirect_uri");
-
+      params.set(
+        "response_uri",
+        verifyServiceUrl + data.authorizationDetails.responseUri
+      );
       if (data.authorizationDetails.presentationDefinitionUri) {
         params.set(
           "presentation_definition_uri",
@@ -76,7 +144,6 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
           JSON.stringify(data.authorizationDetails.presentationDefinition)
         );
       }
-
       params.set(
         "client_metadata",
         JSON.stringify({
@@ -84,99 +151,139 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
           vp_formats: VPFormat,
         })
       );
-
       return params.toString();
     },
     [VPFormat, verifyServiceUrl]
   );
 
-  const fetchData = async () => {
+  const fetchVPRequest = useCallback(async () => {
+    setIsLoading(true);
     try {
       const data = await vpRequest(
         verifyServiceUrl,
-        txnId && txnId !== "null" ? txnId : undefined,
+        transactionId ?? undefined,
         presentationDefinitionId,
         presentationDefinition
       );
-      const qrData =
-        verifyServiceUrl +
-        "/openid4vp/auth-request?" +
-        getPresentationDefinition(data);
-      setAuthRequestUri(qrData);
-      setTxnId(data.transactionId);
-    } catch (err) {
-      onError?.("Failed to fetch presentation request.");
-    }
-  };
 
-  const handleOpenWallet = () => {
-    setShowWallets(true);
-    fetchData();
-  };
+      setAuthRequestUri(
+        `openid4vp://authorize?${getPresentationDefinitionParams(data)}`
+      );
+
+      const supportsDigitalAPI =
+        typeof navigator !== "undefined" &&
+        "credentials" in navigator &&
+        typeof navigator.credentials.get === "function";
+
+      if (supportsDigitalAPI) {
+        try {
+          const controller = new AbortController();
+          const vp = await (navigator as any).credentials.get({
+            signal: controller.signal,
+            mediation: "required",
+            digital: {
+              requests: [
+                {
+                  protocol: "openid4vp",
+                  data: data.authorizationDetails.presentationDefinition,
+                },
+              ],
+            },
+          });
+          if (vp) {
+            await fetch(`${verifyServiceUrl}/vp-submission/direct-post`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: new URLSearchParams(vp),
+            });
+          } else {
+            fetchVPStatus(data.transactionId, data.requestId);
+            setShowWallets(true);
+          }
+        } catch {
+          fetchVPStatus(data.transactionId, data.requestId);
+          setShowWallets(true);
+        }
+      } else {
+        fetchVPStatus(data.transactionId, data.requestId);
+        setShowWallets(true);
+      }
+    } catch (err) {
+      onError(err as Error);
+      setIsLoading(false);
+    }
+  }, [
+    verifyServiceUrl,
+    transactionId,
+    presentationDefinitionId,
+    presentationDefinition,
+    getPresentationDefinitionParams,
+    fetchVPStatus,
+    onError,
+  ]);
 
   const handleProceed = () => {
-    // console.log("authRequestUri: ", encodeURIComponent(authRequestUri));
-
-    if (!selectedWallet) return;
-
-    // if (!isMobileDevice()) {
-    //   window.location.href = fallbackUrl;
-    //   onError?.(
-    //     "This feature is only supported on mobile devices. Redirecting to wallet website."
-    //   );
-    //   return;
-    // }
-
-    if (!authRequestUri) {
-      onError?.("Authorization request URI not ready yet.");
-      return;
+    if (authRequestUri) {
+      window.location.href = authRequestUri;
     }
-
-    // 👇 encode and set full deeplink
-    const deepLink = `${selectedWallet.scheme}?request_uri=${encodeURIComponent(authRequestUri)}`;
-
-    console.log("Deep Link: ", deepLink);
-
-    const timeout = setTimeout(() => {
-      if (!launched) {
-        // window.location.href = fallbackUrl;
-        onError?.(
-          `Wallet (${selectedWallet.name}) not detected, redirecting to download page.`
-        );
-      }
-    }, 2000);
-
-    try {
-      // window.location.href = deepLink;
-      setLaunched(true);
-    } catch (err) {
-      clearTimeout(timeout);
-      onError?.(
-        `Failed to initiate wallet redirect for ${selectedWallet.name}.`
-      );
-    }
+    setShowWallets(false);
   };
 
+  const handleCancel = () => {
+    setShowWallets(false);
+    setIsLoading(false);
+    setAuthRequestUri(null);
+    setSelectedWallet(null);
+    dispatch(resetVpRequest());
+  };
+
+  useEffect(() => {
+    if (!triggerElement && !hasFetchedRef.current) {
+      hasFetchedRef.current = true;
+      fetchVPRequest();
+    }
+  }, [fetchVPRequest, triggerElement]);
+
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="text-center">
-        <Button
-          id="verification-back-button"
-          title={"Open Wallet"}
-          className="w-full text-smallTextSize lg:text-sm"
-          onClick={handleOpenWallet}
-          disabled={presentationDefinition.input_descriptors.length === 0}
-          fill
-        />
-      </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minWidth: "100%",
+      }}
+    >
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <div className="loader" />
+        </div>
+      )}
+
+      {triggerElement && (
+        <div
+          onClick={() => {
+            if (!hasFetchedRef.current) {
+              hasFetchedRef.current = true;
+              fetchVPRequest();
+            }
+          }}
+          className="cursor-pointer"
+        >
+          {triggerElement}
+        </div>
+      )}
 
       {showWallets && (
         <WalletSelectionModal
           wallets={SUPPORTED_WALLETS}
           selectedWallet={selectedWallet}
           onSelect={setSelectedWallet}
-          onCancel={() => setShowWallets(false)}
+          onCancel={handleCancel}
           onProceed={handleProceed}
+          proceedDisabled={!authRequestUri}
         />
       )}
     </div>

@@ -16,9 +16,10 @@ import { AlertMessages } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
+import SameDeviceVPFlow from "../../openid4vp/SameDeviceVPFlow";
 
 const DisplayActiveStep = () => {
-  const { t } = useTranslation("Verify");	
+  const { t } = useTranslation("Verify");
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
   const txnId = useVerifyFlowSelector((state) => state.txnId);
   const sharingType = useVerifyFlowSelector((state) => state.sharingType);
@@ -30,14 +31,17 @@ const DisplayActiveStep = () => {
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
   const activeScreen = useVerifyFlowSelector((state) => state.activeScreen );
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
+  const flowType = useVerifyFlowSelector((state) => state.flowType);
+  const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
+
   const dispatch = useAppDispatch();
 
   const handleRequestCredentials = () => {
       dispatch(setSelectCredential());
   };
 
-  const handleRegenerateQr = () => {
-    dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
+  const handleMissingCredentials = () => {
+      dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
 
   const handleRestartProcess = () => {
@@ -72,15 +76,12 @@ const DisplayActiveStep = () => {
 
   if (isLoading) {
     return <Loader className={`absolute lg:top-[200px] right-[100px]`} />;
-  } else if (
-    selectedClaims.length === 1 &&
-    unverifiedClaims.length === 1 &&
-    isSingleVc
-  ) {
+  } else if (incorrectCredentialShared) {
     dispatch(resetVpRequest());
     dispatch(
       raiseAlert({ ...AlertMessages().incorrectCredential, open: true })
     );
+    return null;
   } else if (showResult) {
     return (
       <div className="w-[100vw] lg:w-[50vw] display-flex flex-col items-center justify-center">
@@ -89,13 +90,13 @@ const DisplayActiveStep = () => {
           unverifiedClaims={unverifiedClaims}
           txnId={txnId}
           requestCredentials={handleRequestCredentials}
-          reGenerateQr={handleRegenerateQr}
+          requestMissingCredentials={handleMissingCredentials}
           restart={handleRestartProcess}
           isSingleVc={isSingleVc}
         />
       </div>
     );
-  } else {
+  } else if (flowType === "cross-device") {
     return (
       <div className="flex flex-col mt-10 lg:mt-0 pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
         <div className="xs:col-end-13">
@@ -124,6 +125,29 @@ const DisplayActiveStep = () => {
                 onClick={handleRequestCredentials}	
                 disabled={activeScreen === 3 }	
               />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else if (flowType === "same-device") {
+    return (
+      <div className="flex flex-col mt-10 lg:mt-0 pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
+        <div className="xs:col-end-13">
+          <div
+            className={`relative grid content-center justify-center w-[275px] h-auto lg:w-[360px] aspect-square my-1.5 mx-auto`}
+          >
+            <div className="flex flex-col items-center">
+              <div
+                className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[300px] lg:w-[350px] aspect-square content-center justify-center`}
+              >
+                <SameDeviceVPFlow
+                  verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
+                  onVPProcessed={handleOnVpProcessed}
+                  presentationDefinition={presentationDefinition}
+                  onError={handleOnError}
+                />
+              </div>
             </div>
           </div>
         </div>

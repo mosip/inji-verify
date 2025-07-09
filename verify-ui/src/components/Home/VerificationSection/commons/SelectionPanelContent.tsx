@@ -4,17 +4,17 @@ import { claim } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
-import { verifiableClaims } from "../../../../utils/config";
+import { isMobileDevice, verifiableClaims } from "../../../../utils/config";
 import {
   getVpRequest,
   resetVpRequest,
+  setFlowType,
   setSelectedClaims,
 } from "../../../../redux/features/verify/vpVerificationState";
 import { storage } from "../../../../utils/storage";
 import { Button } from "./Button";
 import { FilterLinesIcon, SearchIcon } from "../../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
-import SameDeviceVPFlow from "../../../openid4vp/SameDeviceVPFlow";
 
 function SelectionPanelContent() {
   const { t } = useTranslation("Verify");
@@ -27,6 +27,7 @@ function SelectionPanelContent() {
   const rtl = isRTL(language);
   const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
   const presentationDefinition = useVerifyFlowSelector((state) => state.presentationDefinition );
+  const isMobile = isMobileDevice();
 
   const filteredClaims = verifiableClaims
     .filter((claim) => claim.name.toLowerCase().includes(search.toLowerCase()))
@@ -80,6 +81,10 @@ function SelectionPanelContent() {
       });
       triggerElement.dispatchEvent(event);
     }
+  };
+
+  const handleOpenWallet = () => {
+    dispatch(setFlowType());
   };
 
   useEffect(() => {
@@ -219,14 +224,20 @@ function SelectionPanelContent() {
           id="camera-access-denied-okay-button"
           title={t("generateQrCodeBtn")}
           onClick={handleGenerateQR}
-          className="w-full text-smallTextSize lg:text-sm"
+          className="w-full text-smallTextSize lg:text-sm lg:mb-2"
           disabled={selectedClaims.length <= 0}
           fill
         />
-        <SameDeviceVPFlow
-          verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
-          presentationDefinition={presentationDefinition}
-        />
+        {isMobile && (
+          <Button
+            id="verification-back-button"
+            title={"Open Wallet"}
+            className="w-full text-smallTextSize lg:text-sm my-2"
+            onClick={handleOpenWallet}
+            disabled={presentationDefinition.input_descriptors.length === 0}
+            fill
+          />
+        )}
         <Button
           id="verification-back-button"
           className="w-full text-smallTextSize lg:text-sm"

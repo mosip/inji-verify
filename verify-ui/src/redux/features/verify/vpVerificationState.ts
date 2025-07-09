@@ -6,6 +6,7 @@ import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../uti
 const PreloadedState: VerifyState = {
   isLoading: false,
   status: "ACTIVE",
+  flowType: "cross-device",
   qrData: "",
   txnId: "",
   reqId: "",
@@ -46,6 +47,7 @@ const vpVerificationState = createSlice({
       state.SelectionPanel = true;
       state.verificationSubmissionResult = [];
       state.unVerifiedClaims = [];
+      state.isShowResult = false;
     },
     setSelectedClaims: (state, actions) => {
       state.selectedClaims = actions.payload.selectedClaims;
@@ -53,6 +55,12 @@ const vpVerificationState = createSlice({
       const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
       state.presentationDefinition.input_descriptors = [...inputDescriptors];
       state.verificationSubmissionResult = [];
+      state.originalSelectedClaims = [...state.selectedClaims];
+    },
+    setFlowType:(state)=>{
+      state.SelectionPanel = false;
+      state.flowType = "same-device";
+      state.activeScreen = VerificationSteps[state.method].SelectWallet;
     },
     getVpRequest: (state, actions) => {
       if (state.isPartiallyShared && state.unVerifiedClaims.length > 0) {
@@ -104,6 +112,7 @@ const vpVerificationState = createSlice({
       state.qrData = "";
       state.reqId = "";
       state.status = "ACTIVE";
+      state.flowType = "cross-device";
       state.sharingType = VCShareType.SINGLE;
       state.isPartiallyShared = false;
       state.isShowResult = false;
@@ -115,6 +124,7 @@ const vpVerificationState = createSlice({
 export const {
   getVpRequest,
   setSelectCredential,
+  setFlowType,
   resetVpRequest,
   verificationSubmissionComplete,
   setSelectedClaims,
