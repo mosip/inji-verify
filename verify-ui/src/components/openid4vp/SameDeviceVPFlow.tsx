@@ -2,18 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState} from "react";
 import { SameDeviceVPFlowProps, VerificationResults, Wallet} from "./SameDeviceVPFlowProps.types";
 import { vpRequest } from "../../utils/api";
 import WalletSelectionModal from "./WalletSelectionModal";
-import { InjiLogo } from "../../utils/theme-utils";
 import { useAppDispatch } from "../../redux/hooks";
 import { resetVpRequest } from "../../redux/features/verify/vpVerificationState";
-
-const SUPPORTED_WALLETS = [
-  {
-    name: "Inji Wallet",
-    scheme: "openid4vp://authorize",
-    icon: InjiLogo,
-    description: "Use Inji wallet to present your credentials.",
-  },
-];
+import { SupportedWallets } from "../../utils/config";
 
 const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
   triggerElement,
@@ -278,7 +269,7 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
 
       {showWallets && (
         <WalletSelectionModal
-          wallets={SUPPORTED_WALLETS}
+          wallets={SupportedWallets}
           selectedWallet={selectedWallet}
           onSelect={setSelectedWallet}
           onCancel={handleCancel}

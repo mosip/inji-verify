@@ -38,7 +38,7 @@ type ExclusiveCallbacks =
 export interface Wallet {
   name: string;
   scheme: string;
-  icon: FunctionComponent<SVGProps<SVGSVGElement>>;
+  icon: string;
   description?: string;
 }
 

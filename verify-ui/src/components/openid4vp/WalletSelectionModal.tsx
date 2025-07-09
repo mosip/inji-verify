@@ -83,7 +83,7 @@ const WalletSelectionModal: React.FC<WalletSelectionModalProps> = ({
                     : "border-gray-200"
                 }`}
               >
-                {wallet.icon && <wallet.icon className="w-10 h-10" />}
+                {wallet.icon &&  <img src={wallet.icon} alt={wallet.name} className="w-10 h-10 rounded" />}
                 <div>
                   <h3 className="text-lg font-medium mb-1">{wallet.name}</h3>
                   <p className="text-sm text-gray-600 leading-tight">

@@ -60,7 +60,6 @@ const vpVerificationState = createSlice({
     setFlowType:(state)=>{
       state.SelectionPanel = false;
       state.flowType = "sameDevice";
-      state.activeScreen = VerificationSteps[state.method].SelectWallet;
     },
     getVpRequest: (state, actions) => {
       if (state.isPartiallyShared && state.unVerifiedClaims.length > 0) {
@@ -95,6 +94,7 @@ const vpVerificationState = createSlice({
       state.activeScreen = state.isPartiallyShared
         ? VerificationSteps[state.method].RequestMissingCredential
         : VerificationSteps[state.method].DisplayResult;
+      state.flowType = state.isPartiallyShared && state.flowType === "sameDevice" ? "sameDevice" : "crossDevice";
       state.txnId = "";
       state.qrData = "";
       state.reqId = "";
