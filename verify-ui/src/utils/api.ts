@@ -1,4 +1,5 @@
-import { ApiRequest, VpRequestStatusApi } from "../types/data-types";
+import { PresentationDefinition } from "../components/openid4vp/SameDeviceVPFlowProps.types";
+import { ApiRequest, QrData, VPRequestBody, VpRequestStatusApi } from "../types/data-types";
 
 const generateNonce = (): string => {
   const dateTimeString = Date.now().toString();
@@ -67,3 +68,43 @@ export class api {
     },
   };
 }
+
+export const vpRequest = async (
+  url: string,
+  txnId?: string,
+  presentationDefinitionId?: string,
+  presentationDefinition?: PresentationDefinition
+) => {
+  const requestBody: VPRequestBody = {
+    clientId: window.location.host,
+    nonce: generateNonce(),
+  };
+
+  if (txnId) requestBody.transactionId = txnId;
+  if (presentationDefinitionId)
+    requestBody.presentationDefinitionId = presentationDefinitionId;
+  if (presentationDefinition)
+    requestBody.presentationDefinition = presentationDefinition;
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  };
+
+  try {
+    const response = await fetch(url + "/vp-request", requestOptions);
+    if (response.status !== 201) throw new Error("Failed to create VP request");
+    const data: QrData = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) {
+      throw Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};

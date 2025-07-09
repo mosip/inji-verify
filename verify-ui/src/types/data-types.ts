@@ -147,6 +147,7 @@ export type VpSubmissionResultInt = {
 
 export type VerifyState = {
   isLoading: boolean;
+  flowType: "crossDevice" | "sameDevice";
   status: string;
   qrData: string;
   txnId: string;
@@ -241,3 +242,11 @@ export type Detail = {
   key: string;
   value: string;
 };
+
+export interface VPRequestBody {
+  clientId: string;
+  nonce: string;
+  transactionId?: string;
+  presentationDefinitionId?: string;
+  presentationDefinition?: PresentationDefinition;
+}

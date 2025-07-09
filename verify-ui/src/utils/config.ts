@@ -1,5 +1,6 @@
 import {AlertInfo, claim, VerificationStepsContentType} from "../types/data-types";
 import i18next from 'i18next';
+import { Wallet } from "../components/openid4vp/SameDeviceVPFlowProps.types";
 
 export const Pages = {
     Home: "/",
@@ -163,6 +164,7 @@ export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
 export let verifiableClaims: claim[] = [];
+export let SupportedWallets: Wallet[] =[];
 export const initializeClaims = async () => {
   try {
     const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
@@ -171,6 +173,7 @@ export const initializeClaims = async () => {
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
+    SupportedWallets = data.supportedWallets as Wallet[];
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
   }
@@ -247,3 +250,7 @@ export const MosipVerifiableCredentialRenderOrder = [
 ];
 
 export const BASE64_PADDING = "=="
+
+export const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
