@@ -4,9 +4,9 @@ import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
 import VpVerifyResultSummary from "./VpVerifyResultSummary";
 import DisplayVcCardView from "./DisplayVcCardView";
 import { Button } from "../commons/Button";
-import { t } from "i18next";
 import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
+import {useTranslation} from "react-i18next";
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
@@ -31,6 +31,12 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const originalSelectedClaims: claim[] = useVerifyFlowSelector((state) => state.originalSelectedClaims) || [];
   const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
+  const { t } = useTranslation("Verify");
+  const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
+    originalSelectedClaims.some((selectedVc) =>
+      verifiedVc.vc.type.includes(selectedVc.type)
+    )
+  );
 
   const renderRequestCredentialsButton = (propClasses = "") => (
     <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
@@ -62,11 +68,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       />
     </div>
   );
-  const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
-    originalSelectedClaims.some((selectedVc) =>
-      verifiedVc.vc.type.includes(selectedVc.type)
-    )
-  );
 
   return (
     <div className="space-y-6 mb-[100px] lg:mb-0">
@@ -93,7 +94,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
           ))}
         </div>
       </div>
-
       {isPartiallyShared
         ? renderMissingAndResetButton()
         : renderRequestCredentialsButton()}

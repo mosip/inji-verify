@@ -46,14 +46,14 @@ const router = createBrowserRouter([
   },
 ]);
 
-const preloadImages = ['/assets/images/under_construction.svg', '/assets/images/inji-logo.svg'];
-
 function App() {
-    const language = useAppSelector((state: RootState) => state.common.language);
-    const rtl = isRTL(language)
+  const language = useAppSelector((state: RootState) => state.common.language);
+  const rtl = isRTL(language);
+  const preloadImages = ['/assets/images/under_construction.svg', '/assets/images/inji-logo.svg'];
 
     useEffect(() => {
         document.body.classList.toggle('rtl', rtl);
+        document.documentElement.classList.add('default_theme');
     }, [rtl]);
     
   return (
