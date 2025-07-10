@@ -60,8 +60,8 @@ export function Verify() {
 
   return (
     <PageTemplate>
-      <div className="grid grid-cols-13">
-        <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] lg:pb-[100px]">
+      <div className="grid grid-cols-13 gap-y-8 lg:gap-0">
+        <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor w-full lg:max-w-[50vw] lg:pb-[100px] flex flex-col items-center">
           <VerificationProgressTracker />
           {unverifiedClaims.length > 0 ? renderMissingAndResetButton() : renderRequestCredentialsButton() }
           {openSelection && <SelectionPanel />}
