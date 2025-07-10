@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "បន្ទះជ្រើសរើសអត្តសញ្ញាណដែលអាចផ្ទៀងផ្ទាត់បាន។",
     "selectorSubTitle": "សូមជ្រើសរើសលិខិតបញ្ជាក់ដែលអាចផ្ទៀងផ្ទាត់បានដែលអ្នកចង់ទទួលបានពីកាបូបរបស់អ្នកប្រើ",
-    "searchPlaceholder": "ស្វែងរកប្រភេទលិខិតសម្គាល់ដែលអាចផ្ទៀងផ្ទាត់បាន។",
+    "searchPlaceholder": "ស្វែងរកប្រភេទ VC",
     "listHeader": "ជ្រើសរើសលិខិតបញ្ជាក់ដែលអាចផ្ទៀងផ្ទាត់បានដែលត្រូវការ",
     "sortAtoZ": "តម្រៀប (A-Z)",
     "sortZtoA": "តម្រៀប (Z-A)",
@@ -44,7 +44,10 @@
     "SUCCESS": "មានសុពលភាព",
     "EXPIRED": "មានសុពលភាព ប៉ុន្តែផុតកំណត់",
     "INVALID": "មិនត្រឹមត្រូវ",
-    "credentialsRequested": "លិខិតសម្គាល់ត្រូវបានស្នើសុំ"
+    "credentialsRequested": "លិខិតសម្គាល់ត្រូវបានស្នើសុំ",
+    "walletSelectorTitle": "បន្ទះជ្រើសរើសកាបូប",
+    "walletSelectorDescription": "សូមជ្រើសរើសកាបូបដើម្បីបន្តការធ្វើបទបង្ហាញដែលអាចផ្ទៀងផ្ទាត់បាន។",
+    "walletSearchPlaceholder": "ស្វែងរកកាបូប"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -164,7 +167,10 @@
       "upload": "ផ្ទុកឡើង",
       "scan": "ស្កេន",
       "back": "ថយក្រោយ",
-      "verifyAnotherQrCode": "ផ្ទៀងផ្ទាត់កូដ QR ផ្សេងទៀត"
+      "verifyAnotherQrCode": "ផ្ទៀងផ្ទាត់កូដ QR ផ្សេងទៀត",
+      "openWallet": "បើកកាបូប",
+      "proceed": "ចាត់ចេង",
+      "cancel": "លប់ចោល"
     }
   }
 }

@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "Panel de selección de credenciales verificables",
     "selectorSubTitle": "Seleccione las Credenciales Verificables que desea recibir de la billetera del usuario",
-    "searchPlaceholder": "Busque el tipo de credencial verificable",
+    "searchPlaceholder": "Buscar tipo VC",
     "listHeader": "Seleccione las credenciales verificables requeridas",
     "sortAtoZ": "Ordenar (A-Z)",
     "sortZtoA": "Ordenar (Z-A)",
@@ -44,7 +44,10 @@
     "SUCCESS": "Válido",
     "EXPIRED": "Válido pero caducado",
     "INVALID": "Inválido",
-    "credentialsRequested": "Se solicitaron credenciales"
+    "credentialsRequested": "Se solicitaron credenciales",
+    "walletSelectorTitle": "Panel de selección de billetera",
+    "walletSelectorDescription": "Seleccione una billetera para continuar con una presentación verificable.",
+    "walletSearchPlaceholder": "Billeteras de búsqueda"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -164,7 +167,10 @@
       "upload": "Subir",
       "scan": "Escanear",
       "back": "Atrás",
-      "verifyAnotherQrCode": "Verificar otro código QR"
+      "verifyAnotherQrCode": "Verificar otro código QR",
+      "openWallet": "Billetera abierta",
+      "proceed": "Proceder",
+      "cancel": "Cancelar"
     }
   }
 }

@@ -44,7 +44,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
         id="request-credentials-button"
         title={t("Verify:rqstButton")}
         className={`w-[339px] mt-5`}
-        fill
+        variant="fill"
         onClick={requestCredentials}
         disabled={txnId !== ""}
       />
@@ -57,7 +57,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
         id="missing-credentials-button"
         title={t("missingCredentials")}
         className={`w-[300px] mt-5`}
-        fill
+        variant="fill"
         onClick={requestMissingCredentials}
       />
       <Button

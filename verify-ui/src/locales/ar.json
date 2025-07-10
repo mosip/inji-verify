@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "لوحة اختيار بيانات الاعتماد التي يمكن التحقق منها",
     "selectorSubTitle": "يرجى تحديد بيانات الاعتماد التي يمكن التحقق منها والتي ترغب في الحصول عليها من محفظة المستخدم",
-    "searchPlaceholder": "ابحث عن نوع بيانات الاعتماد التي يمكن التحقق منها",
+    "searchPlaceholder": "البحث عن نوع VC",
     "listHeader": "حدد بيانات الاعتماد المطلوبة التي يمكن التحقق منها",
     "sortAtoZ": "فرز (من الألف إلى الياء)",
     "sortZtoA": "فرز (ي-أ)",
@@ -44,7 +44,10 @@
     "SUCCESS": "صالح",
     "EXPIRED": "صالحة ولكن منتهية الصلاحية",
     "INVALID": "غير صالح",
-    "credentialsRequested": "تم طلب أوراق الاعتماد"
+    "credentialsRequested": "تم طلب أوراق الاعتماد",
+    "walletSelectorTitle": "لوحة اختيار المحفظة",
+    "walletSelectorDescription": "يرجى تحديد محفظة للمتابعة مع عرض تقديمي يمكن التحقق منه.",
+    "walletSearchPlaceholder": "محافظ البحث"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -164,7 +167,10 @@
       "upload": "رفع",
       "scan": "مسح",
       "back": "خلف",
-      "verifyAnotherQrCode": "التحقق من رمز QR آخر"
+      "verifyAnotherQrCode": "التحقق من رمز QR آخر",
+      "openWallet": "فتح محفظة",
+      "proceed": "يتابع",
+      "cancel": "يلغي"
     }
   }
 }

@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "Panel de sélection des titres de compétences vérifiables",
     "selectorSubTitle": "Veuillez sélectionner les informations d'identification vérifiables que vous souhaitez recevoir du portefeuille de l'utilisateur.",
-    "searchPlaceholder": "Recherchez le type d'informations d'identification vérifiables",
+    "searchPlaceholder": "Rechercher le type VC",
     "listHeader": "Sélectionnez les informations d'identification vérifiables requises",
     "sortAtoZ": "Trier (A-Z)",
     "sortZtoA": "Trier (Z-A)",
@@ -44,7 +44,10 @@
     "SUCCESS": "Valide",
     "EXPIRED": "Valide mais expiré",
     "INVALID": "Invalide",
-    "credentialsRequested": "Des informations d'identification ont été demandées"
+    "credentialsRequested": "Des informations d'identification ont été demandées",
+    "walletSelectorTitle": "Panneau de sélection du portefeuille",
+    "walletSelectorDescription": "Veuillez sélectionner un portefeuille pour procéder avec une présentation vérifiable.",
+    "walletSearchPlaceholder": "Portefeuilles de recherche"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -164,7 +167,10 @@
       "upload": "Télécharger",
       "scan": "Balayage",
       "back": "Dos",
-      "verifyAnotherQrCode": "Vérifier un autre code QR"
+      "verifyAnotherQrCode": "Vérifier un autre code QR",
+      "openWallet": "Portefeuille ouvert",
+      "proceed": "Procéder",
+      "cancel": "Annuler"
     }
   }
 }

@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "सत्यापन योग्य क्रेडेंशियल चयन पैनल",
     "selectorSubTitle": "कृपया वे सत्यापन योग्य क्रेडेंशियल चुनें जिन्हें आप उपयोगकर्ता के वॉलेट से प्राप्त करना चाहते हैं",
-    "searchPlaceholder": "सत्यापन योग्य क्रेडेंशियल प्रकार खोजें",
+    "searchPlaceholder": "वीसी प्रकार खोजें",
     "listHeader": "आवश्यक सत्यापन योग्य क्रेडेंशियल का चयन करें",
     "sortAtoZ": "क्रमबद्ध करें (ए-जेड)",
     "sortZtoA": "क्रमबद्ध करें (जेड-ए)",
@@ -44,7 +44,10 @@
     "SUCCESS": "वैध",
     "EXPIRED": "वैध लेकिन समाप्त हो गया",
     "INVALID": "अमान्य",
-    "credentialsRequested": "प्रमाणपत्रों का अनुरोध किया गया था"
+    "credentialsRequested": "प्रमाणपत्रों का अनुरोध किया गया था",
+    "walletSelectorTitle": "बटुए चयन पैनल",
+    "walletSelectorDescription": "कृपया सत्यापन योग्य प्रस्तुति के साथ आगे बढ़ने के लिए एक वॉलेट का चयन करें।",
+    "walletSearchPlaceholder": "खोज बटुए"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -164,7 +167,10 @@
       "upload": "अपलोड करें",
       "scan": "स्कैन",
       "back": "पीछे",
-      "verifyAnotherQrCode": "अन्य QR कोड सत्यापित करें"
+      "verifyAnotherQrCode": "अन्य QR कोड सत्यापित करें",
+      "openWallet": "खुला बटुआ",
+      "proceed": "आगे बढ़ना",
+      "cancel": "रद्द करना"
     }
   }
 }

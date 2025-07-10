@@ -106,18 +106,18 @@ function SelectionPanelContent() {
       </div>
 
       <div className="flex justify-around lg:gap-4 box-border">
-        <div className="w-[200px] lg:w-[483px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
+        <div className="w-[250px] lg:w-[483px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
           <SearchIcon />
           <input
             type="text"
-            className="ml-2 outline-none w-full text-smallTextSize lg:text-sm placeholder:text-[8px] lg:placeholder:text-sm"
+            className="ml-2 outline-none w-full text-smallTextSize lg:text-sm placeholder:text-[14px] lg:placeholder:text-sm"
             placeholder={t("searchPlaceholder")}
             onChange={handleSearchChange}
           />
         </div>
         <div
           onClick={() => setShowMenu(!showMenu)}
-          className="lg:w-[106px] relative flex items-center rounded-lg p-2 cursor-pointer border border-sortByBorder"
+          className="w-[120px] relative flex items-center rounded-lg p-2 cursor-pointer border border-sortByBorder"
         >
           <FilterLinesIcon />
           <span className="text-sortByText font-semibold text-smallTextSize ml-2">
@@ -175,7 +175,7 @@ function SelectionPanelContent() {
                         alt={claim.type}
                         className="w-10 h-10 rounded"
                       />
-                      <span className="truncate text-smallTextSize lg:text-sm">
+                      <span className="truncate font-semibold text-smallTextSize lg:text-sm">
                         {claim.name}
                       </span>
                     </div>
@@ -226,16 +226,16 @@ function SelectionPanelContent() {
           onClick={handleGenerateQR}
           className="w-full text-smallTextSize lg:text-sm lg:mb-2"
           disabled={selectedClaims.length <= 0}
-          fill
+          variant="fill"
         />
         {isMobile && (
           <Button
             id="verification-back-button"
-            title={"Open Wallet"}
+            title={t("Common:Button.openWallet")}
             className="w-full text-smallTextSize lg:text-sm my-2"
             onClick={handleOpenWallet}
             disabled={presentationDefinition.input_descriptors.length === 0}
-            fill
+            variant="fill"
           />
         )}
         <Button
@@ -243,6 +243,7 @@ function SelectionPanelContent() {
           className="w-full text-smallTextSize lg:text-sm"
           onClick={handleBack}
           title={t("goBack")}
+          variant="clear"
         />
       </div>
     </div>
