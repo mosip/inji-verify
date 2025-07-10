@@ -34,7 +34,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   return (
     <div>
       <div
-        className={`flex items-center justify-between bg-white w-[320px] lg:w-[410px] py-[5px] px-[15px] shadow-lg ${
+        className={`flex items-center justify-between bg-white w-[339px] lg:w-[410px] py-[5px] px-[15px] shadow-lg ${
           showDetailView
             ? "m-auto rounded-t-[12px] h-[82px]"
             : "rounded-[12px]"

@@ -60,6 +60,7 @@ const vpVerificationState = createSlice({
     setFlowType:(state)=>{
       state.SelectionPanel = false;
       state.flowType = "sameDevice";
+      state.activeScreen = VerificationSteps[state.method].SelectWallet;
     },
     getVpRequest: (state, actions) => {
       if (state.isPartiallyShared && state.unVerifiedClaims.length > 0) {

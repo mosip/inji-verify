@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import { useVerificationFlowSelector, useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
-import { convertToId, fetchVerificationSteps, getRangeOfNumbers } from "../../../utils/misc";
+import { convertToId, fetchVerificationSteps } from "../../../utils/misc";
 import { VerificationMethod } from "../../../types/data-types";
 import i18n from "i18next";
 
-const Step = ({ stepNumber, activeOrCompleted }: { stepNumber: number; activeOrCompleted: boolean; }) => {
-  const stepperStep = "flex items-center";
-  const stepperActiveOrCompleted = `rounded-full bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat text-white`; // Keep only gradient here
-  const stepperUpcomingStep = `bg-${window._env_.DEFAULT_THEME}-gradient bg-no-repeat rounded-full text-primary p-[2px]`;
-  const stepperBackgroundTheme = activeOrCompleted ? `bg-${window._env_.DEFAULT_THEME}-gradient` : "bg-white";
+const Step = ({ stepNumber, isCompleted, isActive }: { stepNumber: number; isCompleted: boolean; isActive: boolean }) => {
+  const theme = window._env_.DEFAULT_THEME;
+  const activeOrCompleted = isCompleted || isActive;
+  const base = "flex items-center";
+  const activeClass = `rounded-full bg-${theme}-gradient bg-no-repeat text-white`;
+  const upcomingClass = `bg-${theme}-gradient bg-no-repeat rounded-full text-primary p-[2px]`;
+  const stepperBackgroundTheme = activeOrCompleted ? `bg-${theme}-gradient` : "bg-white";
   const stepperCircle = `${stepperBackgroundTheme} bg-no-repeat flex items-center justify-center w-9 h-9 rounded-full border-[1px] border-transparent`;
 
   return (
-    <div className={`${stepperStep} ${ activeOrCompleted ? stepperActiveOrCompleted : stepperUpcomingStep }`} data-step="1" >
+    <div className={`${base} ${activeOrCompleted ? activeClass : upcomingClass}`} >
       <div className={stepperCircle}>{stepNumber}</div>
     </div>
   );
@@ -23,57 +25,74 @@ function MobileStepper() {
     mainActiveScreen: state.activeScreen,
     method: state.method,
   }));
-  const VerifyActiveScreen = useVerifyFlowSelector((state) => state.activeScreen );
-  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared );
+  const VerifyActiveScreen = useVerifyFlowSelector((state) => state.activeScreen);
+  const flow = useVerifyFlowSelector((state) => state.flowType);
+  const isPartiallyShared = useVerifyFlowSelector((state) => state.isPartiallyShared);
   const activeScreen = (method === "VERIFY") ? VerifyActiveScreen : mainActiveScreen;
-  const stepperLine = "flex-grow border-t-2 border-transparent";
-  const [VerificationStepsContent,setVerificationStepsContent] = useState(() => fetchVerificationSteps(method as VerificationMethod, isPartiallyShared));
-  const stepCount = VerificationStepsContent.length;
-  const label = VerificationStepsContent[activeScreen - 1].label;
-  const description: string = VerificationStepsContent[activeScreen - 1].description as string;
+
+  const [VerificationStepsContent, setVerificationStepsContent] = useState(() =>
+    fetchVerificationSteps(
+      method as VerificationMethod,
+      isPartiallyShared,
+      flow,
+      activeScreen
+    )
+  );
 
   useEffect(() => {
-    const handleLanguageChange = () => {
-      setVerificationStepsContent(fetchVerificationSteps(method, isPartiallyShared));
-    };
+    if (!flow) return;
 
-    i18n.on("languageChanged", handleLanguageChange);
+  const updateSteps = () => {
+    const updatedSteps = fetchVerificationSteps(
+      method as VerificationMethod,
+      isPartiallyShared,
+      flow,
+      activeScreen
+    );
+    setVerificationStepsContent(updatedSteps);
+  };
 
-    return () => {
-      i18n.off("languageChanged", handleLanguageChange);
-    };
-  }, [isPartiallyShared, method]);
+  updateSteps();
+  i18n.on("languageChanged", updateSteps);
+  return () => i18n.off("languageChanged", updateSteps);
+  }, [method, isPartiallyShared, flow, activeScreen]);
+
+  const theme = window._env_.DEFAULT_THEME;
+  const activeStep = VerificationStepsContent.find((step) => step.isActive);
+  const label = activeStep?.label as string;
+  const description = activeStep?.description as string;
 
   return (
-    <div className={`grid grid-cols-13 lg:hidden flex-column mx-auto items-center`}>
+    <div className="grid grid-cols-13 lg:hidden flex-column mx-auto items-center">
       <div
         className="col-start-1 col-end-13 flex items-center mx-auto p-4"
         id="stepper"
       >
-        {getRangeOfNumbers(stepCount).map((value, index) => (
+        {VerificationStepsContent.map((step, index) => (
           <div key={index} className="flex flex-column items-center">
             <Step
-              stepNumber={value}
-              activeOrCompleted={value <= activeScreen}
+              stepNumber={step.stepNumber}
+              isCompleted={step.isCompleted}
+              isActive={step.isActive}
             />
-            {value < stepCount && (
-              <div className={`bg-${ window._env_.DEFAULT_THEME }-gradient p-[1px] w-[44px] h-[1px] ${ value >= activeScreen ? "opacity-20" : "" }`} >
-                <div className={stepperLine} />
+            {index < VerificationStepsContent.length - 1 && (
+              <div className={`bg-${theme}-gradient p-[1px] w-[44px] h-[1px] ${ !VerificationStepsContent[index].isCompleted ? "opacity-20" : "" }`} >
+                <div className="flex-grow border-t-2 border-transparent" />
               </div>
             )}
           </div>
         ))}
       </div>
       <div className="col-start-1 col-end-13 text-center px-4">
-        <p id={convertToId(label)} className="font-bold text-stepperLabel md:text-smallTextSize text-normalTextSize my-1">
+        <p id={convertToId(label)} className={`font-bold md:text-smallTextSize text-normalTextSize my-1 ${activeStep?.isActive ? "text-black" : "text-stepperLabel"}`}>
           {label}
         </p>
         <p
           id={`${convertToId(label)}-description`}
           className="text-stepperDescription text-smallTextSize md:text-normalTextSize"
         >
-          {description.split("<span>").map((text: string, index: number) =>
-              index % 2 === 1 ? <span style={{ fontStyle: "italic" }}>"{text.trim()}"</span> : text
+          {description.split("<span>").map((text, index) =>
+              index % 2 === 1 ? <span key={index} style={{ fontStyle: "italic" }}> &quot;{text.trim()}&quot;</span> : text
           )}
         </p>
       </div>

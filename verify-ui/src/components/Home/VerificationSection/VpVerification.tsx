@@ -121,7 +121,7 @@ const DisplayActiveStep = () => {
                 id="request-credentials-button"	
                 title={t("rqstButton")}	
                 className={`w-[300px] mx-auto lg:ml-[76px] mt-10 lg:hidden`}	
-                fill	
+                variant="fill"	
                 onClick={handleRequestCredentials}	
                 disabled={activeScreen === 3 }	
               />

@@ -24,7 +24,7 @@
   "Verify": {
     "selectorTitle": "Verifiable Credential Selection Panel",
     "selectorSubTitle": "Please select the Verifiable Credentials that you wish to receive from the user’s wallet",
-    "searchPlaceholder": "Search for the Verifiable Credential type",
+    "searchPlaceholder": "Search VC Type",
     "listHeader": "Select the required Verifiable Credentials",
     "sortAtoZ": "Sort (A-Z)",
     "sortZtoA": "Sort (Z-A)",
@@ -44,7 +44,10 @@
     "SUCCESS": "Valid",
     "EXPIRED": "Valid But Expired",
     "INVALID": "Invalid",
-    "credentialsRequested": "Credentials were requested"
+    "credentialsRequested": "Credentials were requested",
+    "walletSelectorTitle": "Wallet Selection Panel",
+    "walletSelectorDescription": "Please select a wallet to proceed with Verifiable Presentation.",
+    "walletSearchPlaceholder": "Search Wallets"
   },
   "VerificationStepsContent": {
     "SCAN": {
@@ -82,11 +85,11 @@
     "VERIFY": {
       "InitiateVpRequest": {
         "label": "Initiate VP Request Process",
-        "description": "Click <span> Request Verifiable Credentials <span> to begin the verification process."
+        "description": "Click <span> Request Verifiable Credentials <span> to initiate the credential verification process"
       },
       "SelectCredential": {
-        "label": "Select Credentials & Generate QR Code",
-        "description": "Choose the required verifiable credentials and click <span>Generate QR Code<span>."
+        "label": "Select Credential Types",
+        "description": "Choose the Verifiable Credentials (VCs) from the list to be requested from the mobile wallet."
       },
       "RequestMissingCredential": {
         "label": "Request Missing Credentials & Generate QR Code",
@@ -95,6 +98,10 @@
       "ScanQrCode": {
         "label": "Scan QR Code (Use a Different Device)",
         "description": "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)"
+      },
+      "SelectWallet": {
+        "label": "Share Verifiable Credentials from Wallet",
+        "description": "Choose a mobile wallet from the list of available wallets on the same device and proceed with credential sharing."
       },
       "DisplayResult": {
         "label": "View Verification Results",
@@ -160,7 +167,10 @@
       "upload": "Upload",
       "scan": "Scan",
       "back": "Back",
-      "verifyAnotherQrCode": "Verify Another QR code"
+      "verifyAnotherQrCode": "Verify Another QR code",
+      "openWallet":"Open Wallet",
+      "proceed": "Proceed",
+      "cancel": "Cancel"
     }
   }
 }

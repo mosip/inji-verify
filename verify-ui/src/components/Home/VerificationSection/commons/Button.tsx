@@ -4,44 +4,94 @@ import React, {
   ButtonHTMLAttributes,
 } from "react";
 
+type ButtonVariant = "fill" | "outline" | "clear";
+
 type ButtonProps = HTMLAttributes<HTMLButtonElement> &
   ButtonHTMLAttributes<HTMLButtonElement> & {
-    title: String;
+    title: string;
     icon?: ReactElement;
-    fill?: boolean;
+    variant?: ButtonVariant;
     disabled?: boolean;
   };
 
-export const Button = (props: ButtonProps) => {
+export const Button = ({
+  title,
+  icon,
+  variant = "fill",
+  disabled = false,
+  className = "",
+  id,
+  ...rest
+}: ButtonProps) => {
+  const theme = window._env_?.DEFAULT_THEME || "primary";
+  const gradient = `bg-${theme}-gradient`;
+  const textGradient = `bg-${theme}-gradient bg-clip-text text-transparent`;
+
+  const isOutline = variant === "outline";
+  const isClear = variant === "clear";
+  const isFill = variant === "fill";
+
+  const wrapperClass = [
+    "rounded-[5px]",
+    "transition-all duration-200",
+    disabled
+      ? "bg-disabledButtonBg"
+      : isOutline || isFill
+      ? `${gradient}`
+      : "", // clear → no border
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const buttonBaseClass = [
+    "h-[40px]",
+    "w-full",
+    "rounded-[5px]",
+    "flex",
+    "items-center",
+    "justify-center",
+    "group",
+  ];
+
+  const buttonStateClass = disabled
+    ? "bg-disabledButtonBg text-white"
+    : isFill
+    ? `${gradient} text-white`
+    : isOutline
+    ? "bg-white"
+    : "bg-transparent"; // clear
+
+  const hoverClass = disabled
+    ? ""
+    : isOutline || isClear
+    ? `hover:${gradient} hover:text-white`
+    : "";
+
+  const textClass = [
+    "font-bold normal-case transition-all duration-200",
+    disabled
+      ? "text-white"
+      : isFill
+      ? "text-white"
+      : textGradient, // for outline/clear
+    (isOutline || isClear) && !disabled
+      ? "group-hover:text-white"
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={`${
-        props.disabled ? "bg-disabledButtonBg" : `bg-${window._env_.DEFAULT_THEME}-gradient`
-      } p-px bg-no-repeat rounded-[5px] ${props.className}`}
-    >
+    <div className={wrapperClass}>
       <button
-        {...props}
-        className={`group ${
-          props.disabled
-            ? "bg-disabledButtonBg"
-            : props.fill
-            ? `bg-${window._env_.DEFAULT_THEME}-gradient`
-            : `bg-white hover:bg-${window._env_.DEFAULT_THEME}-gradient`
-        } h-[40px] w-full rounded-[5px] flex items-center justify-center`}
+        {...rest}
+        id={id}
+        disabled={disabled}
+        className={[...buttonBaseClass, buttonStateClass, hoverClass].join(" ")}
       >
-        {props.icon && <span className="mr-1.5">{props.icon}</span>}
-        <span
-          id={props.id}
-          className={`font-bold ${
-            props.disabled
-              ? "text-white"
-              : props.fill
-              ? "text-white"
-              : `bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent group-hover:text-white`
-          } normal-case`}
-        >
-          {props.title}
-        </span>
+        {icon && <span className="mr-1.5">{icon}</span>}
+        <span className={textClass}>{title}</span>
       </button>
     </div>
   );

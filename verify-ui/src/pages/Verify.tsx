@@ -33,7 +33,7 @@ export function Verify() {
       id="request-credentials-button"
       title={t("rqstButton")}
       className={`w-[300px] mx-auto lg:ml-[76px] mt-10 hidden lg:block`}
-      fill
+      variant="fill"
       onClick={handleRequestCredentials}
       disabled={activeScreen === 3 }
     />
@@ -45,7 +45,6 @@ export function Verify() {
         id="missing-credentials-button"
         title={t("missingCredentials")}
         className={`w-[250px]`}
-        fill
         onClick={HandelGenerateQr}
       />
       <Button
@@ -53,6 +52,7 @@ export function Verify() {
         title={t("restartProcess")}
         className={`w-[200px]`}
         onClick={HandelRestartProcess}
+        variant="outline"
       />
     </div>
   );

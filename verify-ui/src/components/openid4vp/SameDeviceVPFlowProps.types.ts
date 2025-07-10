@@ -1,5 +1,3 @@
-import { FunctionComponent, SVGProps } from "react";
-
 export type VerificationStatus = "valid" | "invalid" | "expired";
 
 
@@ -39,7 +37,6 @@ export interface Wallet {
   name: string;
   scheme: string;
   icon: string;
-  description?: string;
 }
 
 interface InputDescriptor {
