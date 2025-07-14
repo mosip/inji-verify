@@ -24,9 +24,9 @@ const DisplayActiveStep = () => {
 
 const VerificationSection = () => {
     return (
-        <div>
+        <>
             <DisplayActiveStep/>
-        </div>
+        </>
     );
 }
 
