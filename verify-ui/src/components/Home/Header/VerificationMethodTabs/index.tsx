@@ -30,7 +30,6 @@ const Tab = ({
   const disabledTab = "text-disableTabText bg-disableTabBackground";
   const enabledTab = active ? activeTab : inactiveTab;
   return (
-    <div>
       <button
         id={id}
         className={`min-w-[214px] py-4 px-4 focus:outline-none self-end rounded-t-xl shadow-xl shadow-[0_2px_6px_0] ${
@@ -40,7 +39,6 @@ const Tab = ({
       >
         {label}
       </button>
-    </div>
   );
 };
 
@@ -49,6 +47,7 @@ function VerificationMethodTabs(props: any) {
   const navigate = useNavigate();
   const method = useVerificationFlowSelector((state) => state.method);
   const {t} = useTranslation('Tab')
+  const carouselRef: any = useRef<HTMLDivElement>();
 
   function switchToVerificationMethod(method: VerificationMethod) {
     dispatch(goToHomeScreen({ method }));
@@ -60,8 +59,6 @@ function VerificationMethodTabs(props: any) {
       raiseAlert({ ...AlertMessages().verificationMethodComingSoon, open: true })
     );
   }
-
-  const carouselRef: any = useRef<HTMLDivElement>();
 
   const handlePrevious = () => {
     if (carouselRef.current) {

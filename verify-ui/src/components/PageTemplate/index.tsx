@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Copyrights from "./Copyrights";
 import CheckingForInternetConnectivity from "../misc/CheckingForInternetConnectivity";
 import Header from '../Home/Header';
+import {Outlet} from "react-router-dom";
 
 const PageTemplate = (props: any) => {
     return (
@@ -11,7 +12,7 @@ const PageTemplate = (props: any) => {
             <div className="w-full bg-pageBackGroundColor text-center">
                 <Header/>
             </div>
-            {props.children}
+            <Outlet/>
             <Copyrights/>
             <CheckingForInternetConnectivity/>
         </div>
