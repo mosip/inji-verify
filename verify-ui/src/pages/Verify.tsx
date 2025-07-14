@@ -59,7 +59,6 @@ export function Verify() {
 
 
   return (
-    <PageTemplate>
       <div className="grid grid-cols-13 gap-y-8 lg:gap-0">
         <div className="col-start-1 col-end-13 lg:col-end-6 lg:bg-pageBackGroundColor w-full lg:max-w-[50vw] lg:pb-[100px] flex flex-col items-center">
           <VerificationProgressTracker />
@@ -70,6 +69,5 @@ export function Verify() {
           <VpVerification />
         </div>
       </div>
-    </PageTemplate>
   );
 }

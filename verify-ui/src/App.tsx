@@ -14,6 +14,7 @@ import { isRTL } from "./utils/i18n";
 import { VerificationMethod } from "./types/data-types";
 import { goToHomeScreen } from "./redux/features/verification/verification.slice";
 import { Verify } from "./pages/Verify";
+import PageTemplate from "./components/PageTemplate";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   store.dispatch(goToHomeScreen({ method }));
@@ -22,28 +23,34 @@ function switchToVerificationMethod(method: VerificationMethod) {
 
 const router = createBrowserRouter([
   {
-    path: Pages.Home,
-    element: <Home />,
-    loader: () => switchToVerificationMethod("UPLOAD"),
-  },
-  {
-    path: Pages.Scan,
-    element: <Scan />,
-    loader: () => switchToVerificationMethod("SCAN"),
-  },
-  {
-    path: Pages.VerifyCredentials,
-    element: <Verify />,
-    loader: () => switchToVerificationMethod("VERIFY"),
-  },
-  {
-    path: Pages.Offline,
-    element: <Offline />,
-  },
-  {
-    path: Pages.PageNotFound,
-    element: <PageNotFound404 />,
-  },
+    path: "/",
+    element: <PageTemplate />,
+    children: [
+      {
+        path: Pages.Home,
+        element: <Home/>,
+        loader: () => switchToVerificationMethod("UPLOAD"),
+      },
+      {
+        path: Pages.Scan,
+        element: <Scan/>,
+        loader: () => switchToVerificationMethod("SCAN"),
+      },
+      {
+        path: Pages.VerifyCredentials,
+        element: <Verify/>,
+        loader: () => switchToVerificationMethod("VERIFY"),
+      },
+      {
+        path: Pages.Offline,
+        element: <Offline/>,
+      },
+      {
+        path: Pages.PageNotFound,
+        element: <PageNotFound404/>,
+      },
+    ]
+  }
 ]);
 
 function App() {
@@ -51,16 +58,16 @@ function App() {
   const rtl = isRTL(language);
   const preloadImages = ['/assets/images/under_construction.svg', '/assets/images/inji-logo.svg'];
 
-    useEffect(() => {
-        document.body.classList.toggle('rtl', rtl);
-        document.documentElement.classList.add('default_theme');
-    }, [rtl]);
-    
+  useEffect(() => {
+    document.body.classList.toggle('rtl', rtl);
+    document.documentElement.classList.add('default_theme');
+  }, [rtl]);
+
   return (
     <div className="font-base">
-      <RouterProvider router={router} />
-      <AlertMessage isRtl={rtl}  />
-      <PreloadImages imageUrls={preloadImages} />
+      <RouterProvider router={router}/>
+      <AlertMessage isRtl={rtl}/>
+      <PreloadImages imageUrls={preloadImages}/>
     </div>
   );
 }

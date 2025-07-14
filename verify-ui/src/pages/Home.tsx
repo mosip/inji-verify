@@ -7,7 +7,6 @@ import VerificationProgressTracker from "../components/Home/VerificationProgress
 function Home() {
 
   return (
-    <PageTemplate>
       <div className="grid grid-cols-12">
         <div className="col-start-1 col-end-13 lg:col-start-1 lg:col-span-6 lg:bg-pageBackGroundColor xs:w-[100vw] lg:max-w-[50vw] pb-[100px]">
           <VerificationProgressTracker />
@@ -16,7 +15,6 @@ function Home() {
           <VerificationSection />
         </div>
       </div>
-    </PageTemplate>
   );
 }
 
