@@ -1,5 +1,4 @@
 import React from "react";
-import PageTemplate from "../components/PageTemplate";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 import { VpVerification } from "../components/Home/VerificationSection/VpVerification";
 import SelectionPanel from "../components/Home/VerificationSection/commons/SelectionPanel";

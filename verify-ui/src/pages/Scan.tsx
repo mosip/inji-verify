@@ -1,5 +1,4 @@
 import React from "react";
-import PageTemplate from "../components/PageTemplate";
 import VerificationSection from "../components/Home/VerificationSection";
 import VerificationProgressTracker from "../components/Home/VerificationProgressTracker";
 
