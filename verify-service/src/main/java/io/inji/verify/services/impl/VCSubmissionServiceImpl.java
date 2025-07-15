@@ -1,8 +1,8 @@
 package io.inji.verify.services.impl;
 
 import io.mosip.vercred.vcverifier.utils.Util;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
 import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionResponseDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
@@ -27,6 +27,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
+    @Cacheable(value = "vcSubmissionCache", key = "#vcSubmitted.transactionId")
     public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
         String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String vc = vcSubmitted.getVc();
@@ -36,6 +37,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
+    @Cacheable(value = "vcVerificationCache", key = "#transactionId")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
