@@ -27,7 +27,6 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    @Cacheable(value = "vcSubmissionCache", key = "#vcSubmitted.transactionId")
     public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
         String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String vc = vcSubmitted.getVc();
