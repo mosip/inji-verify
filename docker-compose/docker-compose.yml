@@ -55,3 +55,8 @@ services:
       - "5432:5432"
     volumes:
       - ./db-init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-apine
+    ports:
+      - "6379:6379"
