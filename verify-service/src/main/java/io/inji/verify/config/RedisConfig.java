@@ -32,7 +32,7 @@ public class RedisConfig {
                 .withCacheConfiguration("vcSubmission",
                         RedisCacheConfiguration.defaultCacheConfig()
                                 .entryTtl(java.time.Duration.ofHours(24)))
-                .withCacheConfiguration("vcVerification",
+                .withCacheConfiguration("vpSubmission",
                         RedisCacheConfiguration.defaultCacheConfig()
                                 .entryTtl(java.time.Duration.ofHours(24)))
                 .withCacheConfiguration("authRequest",

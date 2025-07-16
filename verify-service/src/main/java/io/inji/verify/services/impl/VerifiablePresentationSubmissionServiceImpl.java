@@ -12,6 +12,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
@@ -21,6 +22,7 @@ import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,9 +38,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     final VPSubmissionRepository vpSubmissionRepository;
     final CredentialsVerifier credentialsVerifier;
     final PresentationVerifier presentationVerifier;
-    final VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
+    final VerifiablePresentationRequestService verifiablePresentationRequestService;
 
-    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService) {
+    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestService verifiablePresentationRequestService) {
         this.vpSubmissionRepository = vpSubmissionRepository;
         this.credentialsVerifier = credentialsVerifier;
         this.presentationVerifier = presentationVerifier;
@@ -116,6 +118,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     @Override
+    @Cacheable(value = "vpSubmissionCache", key = "#requestIds[0]")
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
