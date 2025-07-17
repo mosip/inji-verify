@@ -1,24 +1,17 @@
 package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
-import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
-import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
-import io.inji.verify.utils.VerificationUtils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
-import io.mosip.vercred.vcverifier.data.VCResult;
-import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.CacheManager;
@@ -27,11 +20,9 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -104,7 +95,7 @@ public class VPSubmissionServiceImplCachingTest {
     }
 
     @Test
-    void getVPResult_CachingTest() throws VPSubmissionNotFoundException {
+    void getVPResult_shouldUseCacheForSameRequestIdAndTransactionId() throws VPSubmissionNotFoundException {
         String TEST_VP_TOKEN = "vpToken123";
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
@@ -130,6 +121,37 @@ public class VPSubmissionServiceImplCachingTest {
 
         // Verify that the second call uses the cache
         verify(vpSubmissionRepository, times(1)).findAllById(requestIds);
+        assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
+    }
+
+    @Test
+    void getVPResult_shouldNotUseCacheForDifferentTransactionId() throws VPSubmissionNotFoundException {
+        String TEST_VP_TOKEN = "vpToken123";
+        List<String> requestIds = List.of("req123");
+        String transactionId1 = "tx123";
+        String transactionId2 = "tx456";
+
+        PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
+                "id",
+                "dId",// Assuming no descriptor map for simplicity
+                new ArrayList<>()  // Assuming no input descriptors for simplicity
+        );
+
+        VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
+        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        VPTokenResultDto result1 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId1);
+
+        assertNotNull(result1);
+
+        VPTokenResultDto result2 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId2);
+
+        assertNotNull(result2);
+
+        // Verify that the second call uses the cache
+        verify(vpSubmissionRepository, times(2)).findAllById(requestIds);
         assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
     }
 }

@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-
 import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
@@ -24,11 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
 import org.json.JSONTokener;
 
 @Service
@@ -118,7 +115,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     @Override
-    @Cacheable(value = "vpSubmissionCache", key = "#requestIds[0]")
+    @Cacheable(value = "vpSubmissionCache", key = "#transactionId")
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
