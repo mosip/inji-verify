@@ -32,6 +32,7 @@ function QrScanner() {
         <QRCodeVerification
           verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
           isEnableUpload={false}
+          isEnableScan={false}
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
           }
