@@ -4,6 +4,7 @@ import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.services.VPDefinitionService;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class VPDefinitionServiceImpl implements VPDefinitionService {
     }
 
     @Override
+    @Cacheable(value = "presentationDefinitionCache", key = "#id")
     public VPDefinitionResponseDto getPresentationDefinition(String id) {
 
         return presentationDefinitionRepository.findById(id)
