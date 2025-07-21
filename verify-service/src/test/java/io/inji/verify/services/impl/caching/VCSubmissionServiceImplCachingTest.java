@@ -1,10 +1,11 @@
-package io.inji.verify.services.impl;
+package io.inji.verify.services.impl.caching;
 
 import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
 import io.inji.verify.models.VCSubmission;
 import io.inji.verify.repository.VCSubmissionRepository;
 import io.inji.verify.services.VCSubmissionService;
+import io.inji.verify.services.impl.VCSubmissionServiceImpl;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;

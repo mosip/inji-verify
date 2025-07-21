@@ -1,8 +1,9 @@
-package io.inji.verify.services.impl;
+package io.inji.verify.services.impl.caching;
 
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
+import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

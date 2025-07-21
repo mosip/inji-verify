@@ -1,4 +1,4 @@
-package io.inji.verify.services.impl;
+package io.inji.verify.services.impl.caching;
 
 import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
@@ -7,6 +7,7 @@ import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.services.VPDefinitionService;
+import io.inji.verify.services.impl.VPDefinitionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

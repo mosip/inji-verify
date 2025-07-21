@@ -1,4 +1,4 @@
-package io.inji.verify.services.impl;
+package io.inji.verify.services.impl.caching;
 
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
@@ -7,6 +7,7 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import io.inji.verify.services.impl.VerifiablePresentationSubmissionServiceImpl;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import org.junit.jupiter.api.BeforeEach;
