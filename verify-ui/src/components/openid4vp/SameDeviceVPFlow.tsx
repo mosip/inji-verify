@@ -4,7 +4,9 @@ import { vpRequest } from "../../utils/api";
 import WalletSelectionModal from "./WalletSelectionModal";
 import { useAppDispatch } from "../../redux/hooks";
 import { resetVpRequest } from "../../redux/features/verify/vpVerificationState";
-import { SupportedWallets } from "../../utils/config";
+import { VPRequests, SupportedWallets } from "../../utils/config";
+import { decode } from "cbor-web";
+import { decodeIssuerSignedNameSpaces } from "../../utils/cbore";
 
 const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
   triggerElement,
@@ -33,6 +35,21 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
           "RsaSignature2018",
         ],
       },
+    }),
+    []
+  );
+
+  const presentationSubmission = useMemo(
+    () => ({
+      id: "dummy-submission",
+      definition_id: "mDL-request-demo",
+      descriptor_map: [
+        {
+          id: "org.iso.18013.5.1.mDL",
+          path: "$",
+          format: "mso_mdoc",
+        },
+      ],
     }),
     []
   );
@@ -173,22 +190,52 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
             signal: controller.signal,
             mediation: "required",
             digital: {
-              requests: [
-                {
-                  protocol: "openid4vp",
-                  data: data.authorizationDetails.presentationDefinition,
-                },
-              ],
+              requests: VPRequests,
             },
           });
           if (vp) {
+            const base64url = vp.data.vp_token.cred1;
+            const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
+            const binary = Uint8Array.from(atob(base64), (c) =>
+              c.charCodeAt(0)
+            );
+            const decoded = decode(binary);
+            const decodedVP =
+              decoded instanceof Map ? Object.fromEntries(decoded) : decoded;
+
+            const doc = decodedVP.documents?.[0];
+            const claims = decodeIssuerSignedNameSpaces(doc);
+            console.log("Decoded mDL Claims:", claims);
+            const reconstructedVP = {
+              "@context": ["https://www.w3.org/2018/credentials/v1"],
+              type: ["VerifiablePresentation"],
+              verifiableCredential: { ...claims },
+              proof: {
+                type: "Ed25519Signature2020",
+                created: "2025-07-17T00:00:00Z",
+                proofPurpose: "authentication",
+                verificationMethod: "did:web:...#key-0",
+                proofValue: "zBase58EncodedSignature",
+              },
+            };
+
+            const body = new URLSearchParams();
+
+            body.append("vp_token", JSON.stringify(reconstructedVP));
+            body.append(
+              "presentation_submission",
+              JSON.stringify(presentationSubmission)
+            );
+            body.append("state", data.requestId);
+
             await fetch(`${verifyServiceUrl}/vp-submission/direct-post`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
               },
-              body: new URLSearchParams(vp),
+              body,
             });
+            fetchVPStatus(data.transactionId, data.requestId);
           } else {
             fetchVPStatus(data.transactionId, data.requestId);
             setShowWallets(true);
@@ -211,6 +258,7 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
     presentationDefinitionId,
     presentationDefinition,
     getPresentationDefinitionParams,
+    presentationSubmission,
     fetchVPStatus,
     onError,
   ]);

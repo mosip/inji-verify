@@ -169,6 +169,7 @@ export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
 export let verifiableClaims: claim[] = [];
+export let VPRequests:[] = [];
 export let SupportedWallets: Wallet[] =[];
 export const initializeClaims = async () => {
   try {
@@ -178,6 +179,7 @@ export const initializeClaims = async () => {
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
+    VPRequests = data.vpRequests as [];
     SupportedWallets = data.supportedWallets as Wallet[];
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
