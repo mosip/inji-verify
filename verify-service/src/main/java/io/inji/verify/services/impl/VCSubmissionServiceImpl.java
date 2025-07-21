@@ -38,7 +38,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    @Cacheable(value = "vcSubmissionCache", key = "#transactionId")
+    @Cacheable(value = "vcSubmissionCache", key = "#transactionId", unless = "#result == null")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
