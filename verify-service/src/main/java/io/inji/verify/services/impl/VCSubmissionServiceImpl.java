@@ -1,6 +1,7 @@
 package io.inji.verify.services.impl;
 
 import io.mosip.vercred.vcverifier.utils.Util;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import io.inji.verify.dto.submission.VCSubmissionDto;
@@ -27,6 +28,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
+    @CacheEvict(value = "vcSubmissionCache", key = "#vcSubmitted.transactionId")
     public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
         String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String vc = vcSubmitted.getVc();

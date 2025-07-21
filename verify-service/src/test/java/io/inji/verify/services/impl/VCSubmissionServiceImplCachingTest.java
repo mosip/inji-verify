@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
 import io.inji.verify.models.VCSubmission;
 import io.inji.verify.repository.VCSubmissionRepository;
@@ -20,8 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.util.Objects;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -34,7 +35,7 @@ public class VCSubmissionServiceImplCachingTest {
 
         @Bean
         public CacheManager cacheManager() {
-            return new ConcurrentMapCacheManager("vcVerificationCache");
+            return new ConcurrentMapCacheManager("vcSubmissionCache");
         }
 
         @Bean
@@ -71,7 +72,7 @@ public class VCSubmissionServiceImplCachingTest {
     @BeforeEach
     public void setUp() {
         // Clear the cache before each test
-        Objects.requireNonNull(cacheManager.getCache("vcVerificationCache")).clear();
+        Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).clear();
 
         reset(vcSubmissionRepository, credentialsVerifier);
     }
@@ -112,4 +113,32 @@ public class VCSubmissionServiceImplCachingTest {
         assertEquals(result1.getVerificationStatus(), result2.getVerificationStatus(),
                      "The verification status should be the same for both calls.");
     }
+
+    @Test
+    void shouldEvictCacheOnSubmitVc() {
+        String TEST_VC_STRING = "{\"VC\":\"testVCString\"}";
+        String TEST_TRANSACTION_ID = "transactionId12345";
+        VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
+        when(vcSubmissionRepository.save(expectedVCSubmission)).thenReturn(expectedVCSubmission);
+        when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID))
+            .thenReturn(Optional.of(expectedVCSubmission));
+        VerificationResult successResult = new VerificationResult(
+            true,
+            "Verification successful",
+            ""
+        );
+        when(credentialsVerifier.verify(TEST_VC_STRING, CredentialFormat.LDP_VC))
+            .thenReturn(successResult);
+
+        //populate cache
+        vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
+
+        assertNotNull(Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(TEST_TRANSACTION_ID));
+
+        //simulate cache Evict
+        vcSubmissionService.submitVC(new VCSubmissionDto(TEST_VC_STRING, TEST_TRANSACTION_ID));
+
+        assertNull(Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(TEST_TRANSACTION_ID));
+    }
+
 }
