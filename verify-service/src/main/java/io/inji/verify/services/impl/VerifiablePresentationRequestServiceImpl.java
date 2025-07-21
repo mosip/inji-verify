@@ -22,6 +22,7 @@ import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -111,6 +112,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
+    @Cacheable(value = "authorizationRequestCache", key = "#transactionId")
     public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
         String requestId = getLatestRequestIdFor(transactionId).getFirst();
         if (requestId == null) {
