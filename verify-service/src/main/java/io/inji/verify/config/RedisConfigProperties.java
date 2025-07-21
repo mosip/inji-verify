@@ -13,7 +13,7 @@ public class RedisConfigProperties {
     private boolean authRequestCacheEnabled = true;
     private boolean presentationDefinitionCacheEnabled = true;
 
-    private int ttlHours = 24;
+    private int ttlHours = 1;
     private int maxSize = 100;
     private String host = "localhost";
     private int port = 6379;

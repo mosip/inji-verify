@@ -18,7 +18,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(java.time.Duration.ofHours(24))
+                .entryTtl(java.time.Duration.ofHours(1))
                 .disableCachingNullValues()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new StringRedisSerializer()))
@@ -29,18 +29,18 @@ public class RedisConfig {
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                .withCacheConfiguration("vcSubmission",
+                .withCacheConfiguration("vcSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(24)))
-                .withCacheConfiguration("vpSubmission",
+                                .entryTtl(java.time.Duration.ofHours(1)))
+                .withCacheConfiguration("vpSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(24)))
-                .withCacheConfiguration("authRequest",
+                                .entryTtl(java.time.Duration.ofHours(1)))
+                .withCacheConfiguration("authorizationRequestCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(24)))
-                .withCacheConfiguration("presentationDefinition",
+                                .entryTtl(java.time.Duration.ofHours(1)))
+                .withCacheConfiguration("presentationDefinitionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(24)));
+                                .entryTtl(java.time.Duration.ofHours(1)));
     }
 
     @Bean
