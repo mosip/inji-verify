@@ -15,10 +15,16 @@ import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCust
 @EnableCaching
 public class RedisConfig {
 
+    private final RedisConfigProperties redisConfigProperties;
+
+    public RedisConfig(RedisConfigProperties redisConfigProperties) {
+        this.redisConfigProperties = redisConfigProperties;
+    }
+
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(java.time.Duration.ofHours(1))
+                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours()))
                 .disableCachingNullValues()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new StringRedisSerializer()))
@@ -28,19 +34,28 @@ public class RedisConfig {
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
-        return (builder) -> builder
-                .withCacheConfiguration("vcSubmissionCache",
+        return (builder) -> {
+            if (redisConfigProperties.isVcSubmissionCacheEnabled()) {
+                builder.withCacheConfiguration("vcSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(1)))
-                .withCacheConfiguration("vpSubmissionCache",
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+            }
+            if (redisConfigProperties.isVpSubmissionCacheEnabled()) {
+                builder.withCacheConfiguration("vpSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(1)))
-                .withCacheConfiguration("authorizationRequestCache",
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+            }
+            if (redisConfigProperties.isAuthRequestCacheEnabled()) {
+                builder.withCacheConfiguration("authorizationRequestCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(1)))
-                .withCacheConfiguration("presentationDefinitionCache",
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+            }
+            if (redisConfigProperties.isPresentationDefinitionCacheEnabled()) {
+                builder.withCacheConfiguration("presentationDefinitionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(1)));
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+            }
+        };
     }
 
     @Bean

@@ -14,7 +14,7 @@ public class RedisConfigProperties {
     private boolean presentationDefinitionCacheEnabled = true;
 
     private int ttlHours = 1;
-    private int maxSize = 100;
+    private int maxSize = 1000;
     private String host = "localhost";
     private int port = 6379;
     private String password = "";
