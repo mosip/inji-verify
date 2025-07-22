@@ -18,5 +18,5 @@ public class RedisConfigProperties {
     private String host = "localhost";
     private int port = 6379;
     private String password = "";
-    private boolean ssl = true;
+    private boolean ssl = false;
 }
