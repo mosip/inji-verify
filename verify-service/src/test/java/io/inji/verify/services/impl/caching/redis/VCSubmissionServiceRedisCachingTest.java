@@ -94,7 +94,6 @@ public class VCSubmissionServiceRedisCachingTest {
         System.out.println("✔ Spring Redis cache contains key: vcSubmissionCache::" + transactionId);
     }
 
-
     @Test
     void shouldReturnNullForNonExistentTransactionId() {
         // Arrange
