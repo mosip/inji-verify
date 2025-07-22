@@ -14,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VPDefinitionResponseDto {
+public class VPDefinitionResponseDto implements java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
     @NotNull(message = "ID cannot be null")
     @NotBlank(message = "ID cannot be blank")
     @NotEmpty(message = "ID cannot be empty")

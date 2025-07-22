@@ -9,7 +9,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InputDescriptorDto {
+public class InputDescriptorDto implements java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
     private final String id;
     private final String name;
     private final String purpose;
