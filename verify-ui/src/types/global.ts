@@ -13,6 +13,7 @@ declare global {
             INTERNET_CONNECTIVITY_CHECK_TIMEOUT: string,
             VERIFY_SERVICE_API_URL: string,
             VERIFIABLE_CLAIMS_CONFIG_URL: string,
+            CLIENT_ID: string;
         }
     }
 }
