@@ -6,12 +6,15 @@ import io.inji.verify.dto.result.VCResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serial;
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VPTokenResultDto {
+public class VPTokenResultDto implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     String transactionId;
     VPResultStatus vpResultStatus;
     List<VCResultDto> vcResults;

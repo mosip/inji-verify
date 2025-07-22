@@ -7,11 +7,15 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.io.Serial;
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class  PresentationSubmissionDto {
+public class  PresentationSubmissionDto implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     @NotNull(message = "Presentation Submission ID cannot be null")
     @NotBlank(message = "Presentation Submission ID cannot be blank")
     @NotEmpty(message = "Presentation Submission ID cannot be empty")
