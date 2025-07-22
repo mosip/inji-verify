@@ -12,4 +12,5 @@ public class VPRequestResponseDto {
     String requestId;
     AuthorizationRequestResponseDto authorizationDetails;
     Long expiresAt;
+    String requestUri;
 }

@@ -11,14 +11,15 @@ public class VPRequestResponseDtoTest {
     public void testConstructor() {
         String transactionId = "tx123";
         String requestId = "req123";
-        AuthorizationRequestResponseDto authorizationDetails = new AuthorizationRequestResponseDto("client123", "",new VPDefinitionResponseDto("pd123", mock(),"name","purpose",mock(), mock()), "nonce123");
+        AuthorizationRequestResponseDto authorizationDetails = new AuthorizationRequestResponseDto("client123", "",new VPDefinitionResponseDto("pd123", mock(),"name","purpose",mock(), mock()), "nonce123","url");
         long expiresAt = 1687318740000L;
 
-        VPRequestResponseDto vpRequestResponseDto = new VPRequestResponseDto(transactionId, requestId, authorizationDetails, expiresAt);
+        VPRequestResponseDto vpRequestResponseDto = new VPRequestResponseDto(transactionId, requestId, authorizationDetails, expiresAt ,"url");
 
         assertEquals(transactionId, vpRequestResponseDto.getTransactionId());
         assertEquals(requestId, vpRequestResponseDto.getRequestId());
         assertEquals(authorizationDetails, vpRequestResponseDto.getAuthorizationDetails());
         assertEquals(expiresAt, vpRequestResponseDto.getExpiresAt());
+        assertEquals("url", vpRequestResponseDto.authorizationDetails.getResponseUri());
     }
 }
