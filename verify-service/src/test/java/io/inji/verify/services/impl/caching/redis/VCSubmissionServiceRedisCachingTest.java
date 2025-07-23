@@ -1,11 +1,13 @@
 package io.inji.verify.services.impl.caching.redis;
 
 import io.inji.verify.dto.submission.VCSubmissionDto;
+import io.inji.verify.dto.submission.VCSubmissionResponseDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
 import io.inji.verify.models.VCSubmission;
 import io.inji.verify.repository.VCSubmissionRepository;
 import io.inji.verify.services.VCSubmissionService;
 import io.inji.verify.services.impl.VCSubmissionServiceImpl;
+import io.inji.verify.config.RedisConfigProperties;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
@@ -36,8 +38,9 @@ public class VCSubmissionServiceRedisCachingTest {
         @Bean
         public VCSubmissionService vcSubmissionService(
                 VCSubmissionRepository vcSubmissionRepository,
-                CredentialsVerifier credentialsVerifier) {
-            return new VCSubmissionServiceImpl(vcSubmissionRepository, credentialsVerifier);
+                CredentialsVerifier credentialsVerifier,
+                RedisConfigProperties redisConfigProperties) {
+            return new VCSubmissionServiceImpl(vcSubmissionRepository, credentialsVerifier, redisConfigProperties);
         }
     }
 
@@ -50,124 +53,123 @@ public class VCSubmissionServiceRedisCachingTest {
     @MockBean
     private CredentialsVerifier credentialsVerifier;
 
+    @MockBean
+    private RedisConfigProperties redisConfigProperties;
+
     @SpyBean
     private CacheManager cacheManager;
 
     @BeforeEach
-    void setUp() {
-        // Clear the cache before each test to ensure isolation
+    void clearCaches() {
         Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).clear();
+        Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).clear();
     }
 
     @Test
-    void shouldCacheGetVcWithVerificationResult() {
-        // Arrange
-        String transactionId = "txn-12345";
-        VCSubmission mockSubmission = new VCSubmission();
-        mockSubmission.setTransactionId(transactionId);
-        mockSubmission.setVc("{\"credential\":\"test\"}");
+    void shouldCacheSubmitVC_whenCachingEnabled() {
+        String transactionId = "txn-1234";
+        String vc = "{\"vc\":\"payload\"}";
+        VCSubmissionDto dto = new VCSubmissionDto(vc, transactionId);
 
-        when(vcSubmissionRepository.findById(transactionId))
-                .thenReturn(Optional.of(mockSubmission));
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(false);
 
-        VerificationResult mockVerificationResult = mock(VerificationResult.class);
-        when(credentialsVerifier.verify(any(), eq(CredentialFormat.LDP_VC)))
-                .thenReturn(mockVerificationResult);
+        VCSubmissionResponseDto response = vcSubmissionService.submitVC(dto);
 
-        when(mockVerificationResult.getVerificationStatus()).thenReturn(true);
+        assertNotNull(response);
+        assertEquals(transactionId, response.getTransactionId());
 
-        // Act
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(transactionId);
+        assertNotNull(cached);
+        VCSubmissionResponseDto cachedValue = (VCSubmissionResponseDto) cached.get();
+        assertNotNull(cachedValue);
+        assertEquals(transactionId, cachedValue.getTransactionId());
+    }
+
+    @Test
+    void shouldCacheGetVcWithVerification_whenCachingEnabled() {
+        String transactionId = "txn-5678";
+        String vc = "{\"vc\":\"test\"}";
+        VCSubmission submission = new VCSubmission(transactionId, vc);
+
+        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(false);
+        when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.of(submission));
+
+        VerificationResult mockResult = mock(VerificationResult.class);
+        when(mockResult.getVerificationStatus()).thenReturn(true);
+        when(credentialsVerifier.verify(any(), eq(CredentialFormat.LDP_VC))).thenReturn(mockResult);
+
+        // First call populates cache
         VCSubmissionVerificationStatusDto result1 = vcSubmissionService.getVcWithVerification(transactionId);
-        VCSubmissionVerificationStatusDto result2 = vcSubmissionService.getVcWithVerification(transactionId);
-
-        // Assert
         assertNotNull(result1);
+
+        // The second call should hit cache (DB should not be called again)
+        VCSubmissionVerificationStatusDto result2 = vcSubmissionService.getVcWithVerification(transactionId);
         assertNotNull(result2);
+
         verify(vcSubmissionRepository, times(1)).findById(transactionId);
 
-        // ✅ Check cache via Spring CacheManager (Redis-backed)
-        Cache cache = cacheManager.getCache("vcSubmissionCache");
-        assertNotNull(cache);
-
-        Cache.ValueWrapper cached = cache.get(transactionId);
-        assertNotNull(cached, "Expected Redis cache to contain value for key: " + transactionId);
-        System.out.println("✔ Spring Redis cache contains key: vcSubmissionCache::" + transactionId);
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).get(transactionId);
+        assertNotNull(cached);
     }
 
     @Test
-    void shouldReturnNullForNonExistentTransactionId() {
-        // Arrange
-        String nonExistentTransactionId = "txn-nonexistent";
-        when(vcSubmissionRepository.findById(nonExistentTransactionId))
-                .thenReturn(Optional.empty());
+    void shouldNotCacheSubmitVC_whenCachingDisabled() {
+        String transactionId = "txn-nocache";
+        VCSubmissionDto dto = new VCSubmissionDto("{\"vc\":\"test\"}", transactionId);
 
-        // Act
-        VCSubmissionVerificationStatusDto result = vcSubmissionService.getVcWithVerification(nonExistentTransactionId);
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(false);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(false);
 
-        // Assert
+        VCSubmissionResponseDto response = vcSubmissionService.submitVC(dto);
+        assertNotNull(response);
+
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(transactionId);
+        assertNull(cached);
+    }
+
+    @Test
+    void shouldReturnNull_whenPersistenceFlagTrue_getVcWithVerification() {
+        String transactionId = "txn-persisted";
+
+        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+
+        VCSubmissionVerificationStatusDto result = vcSubmissionService.getVcWithVerification(transactionId);
         assertNull(result);
     }
 
     @Test
-    void shouldEvictCacheOnSubmitVC() {
-        // Arrange
-        String TEST_VC_STRING = "{\"VC\":\"testVCString\"}";
-        String TEST_TRANSACTION_ID = "transactionId12345";
-        VCSubmission mockSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
-//        mockSubmission.setTransactionId("txn-12345");
-//        mockSubmission.setVc("{\"credential\":\"test\"}");
+    void shouldGenerateTransactionIdAndPersistVC_whenIdIsNullAndPersistenceEnabled() {
+        String vc = "{\"vc\":\"auto-gen\"}";
+        VCSubmissionDto dto = new VCSubmissionDto(vc, null);
 
-        // Stub repository and verifier
-        when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(mockSubmission));
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
 
-        VerificationResult mockVerificationResult = mock(VerificationResult.class);
-        when(credentialsVerifier.verify(any(), eq(CredentialFormat.LDP_VC)))
-                .thenReturn(mockVerificationResult);
-        when(mockVerificationResult.getVerificationStatus()).thenReturn(true);
-        when(mockVerificationResult.getVerificationErrorCode()).thenReturn(null);
-        when(mockVerificationResult.getVerificationMessage()).thenReturn(null);
+        VCSubmissionResponseDto response = vcSubmissionService.submitVC(dto);
 
-        // Call method to cache
-        vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
+        assertNotNull(response);
+        assertNotNull(response.getTransactionId());
+        verify(vcSubmissionRepository).save(any(VCSubmission.class));
 
-        // Verify that the cache contains the entry
-        assertNotNull(Objects.requireNonNull(cacheManager.getCache(
-                "vcSubmissionCache")).get(TEST_TRANSACTION_ID));
-
-        // Stub save
-        when(vcSubmissionRepository.save(mockSubmission)).thenReturn(mockSubmission);
-
-        // Act: should evict the cache
-        vcSubmissionService.submitVC(new VCSubmissionDto(TEST_VC_STRING, TEST_TRANSACTION_ID));
-
-        // Assert: cache should be evicted
-        assertNull(Objects.requireNonNull(cacheManager.getCache(
-                "vcSubmissionCache")).get(TEST_TRANSACTION_ID));
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(response.getTransactionId());
+        assertNotNull(cached);
     }
 
     @Test
-    void shouldRepopulateCacheAfterEviction() {
-        String transactionId = "txn-evict";
-        String vc = "{\"vc\":\"testVC\"}";
-        VCSubmission submission = new VCSubmission(transactionId, vc);
+    void shouldReturnNull_whenVcSubmissionNotFound() {
+        String transactionId = "txn-missing";
 
-        VerificationResult mockResult = mock(VerificationResult.class);
-        when(mockResult.getVerificationStatus()).thenReturn(true);
-        when(credentialsVerifier.verify(any(), eq(CredentialFormat.LDP_VC)))
-                .thenReturn(mockResult);
+        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(false);
+        when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.empty());
 
-        when(vcSubmissionRepository.findById(transactionId))
-                .thenReturn(Optional.of(submission));
+        VCSubmissionVerificationStatusDto result = vcSubmissionService.getVcWithVerification(transactionId);
+        assertNull(result);
 
-        // 1. Cache the value
-        vcSubmissionService.getVcWithVerification(transactionId);
-        verify(vcSubmissionRepository, times(1)).findById(transactionId);
-
-        // 2. Submit VC to evict
-        vcSubmissionService.submitVC(new VCSubmissionDto(vc, transactionId));
-
-        // 3. Call again – should repopulate from repo
-        vcSubmissionService.getVcWithVerification(transactionId);
-        verify(vcSubmissionRepository, times(2)).findById(transactionId); // second hit
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).get(transactionId);
+        assertNull(cached); // because result was null
     }
 }
