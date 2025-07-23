@@ -50,12 +50,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const hasInitializedRef = useRef(false);
 
   const shouldShowQRCode =
-    !loading &&
-    qrCodeData &&
-    !showWallets &&
-    !showActionButtons &&
-    isMobileDevice() &&
-    isEnableSameDeviceFlow;
+    !loading && qrCodeData && !showWallets && !showActionButtons;
 
   const VPFormat = useMemo(
     () => ({
@@ -223,7 +218,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         setShowActionButtons(true);
       }
     } else if (!triggerElement) {
-      createVPRequest();
+      handleGenerateQRCode();
     }
   }, []);
 
@@ -246,7 +241,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (isEnableSameDeviceFlow && isMobileDevice()) {
       setShowActionButtons(true);
     } else {
-      createVPRequest();
+      handleGenerateQRCode();
     }
   };
 
@@ -272,8 +267,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     const pdParams = await createVPRequest();
     const qrData = `${protocol || "openid4vp://"}authorize?${pdParams}`;
     setQrCodeData(qrData);
-    fetchVPStatus();
     setLoading(false);
+    fetchVPStatus();
   };
 
   const handleOpenWallet = () => {

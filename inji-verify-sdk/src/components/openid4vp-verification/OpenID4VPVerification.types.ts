@@ -84,13 +84,13 @@ type ExclusiveCallbacks =
 // When same device flow is enabled: supportedWallets is required
 type SameDeviceFlowEnabledProps = {
   isEnableSameDeviceFlow: true;
-  supportedWallets: Wallet[]; // ✅ required now
+  supportedWallets: Wallet[];
 };
 
 // When same device flow is disabled or not passed: supportedWallets is optional
 type SameDeviceFlowDisabledProps = {
   isEnableSameDeviceFlow?: false | undefined;
-  supportedWallets?: Wallet[]; // ✅ optional now
+  supportedWallets?: Wallet[];
 };
 
 interface InputDescriptor {
