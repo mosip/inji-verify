@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.config.RedisConfigProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.JOSEException;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
@@ -40,13 +41,22 @@ class VerifiablePresentationRequestServiceImplTest {
     static VPSubmissionRepository mockVPSubmissionRepository;
     static JwtService mockJwtService;
     @BeforeAll
-    public static void beforeAll(){
+    public static void beforeAll() {
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
         mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
+        RedisConfigProperties mockRedisConfig = mock(RedisConfigProperties.class);
+        when(mockRedisConfig.isAuthRequestPersisted()).thenReturn(false);
+        when(mockRedisConfig.isAuthRequestCacheEnabled()).thenReturn(false);
         mockJwtService = mock(JwtService.class);
-        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository,mockJwtService);
 
+        service = new VerifiablePresentationRequestServiceImpl(
+                mockPresentationDefinitionRepository,
+                mockAuthorizationRequestCreateResponseRepository,
+                mockVPSubmissionRepository,
+                mockRedisConfig,
+                mockJwtService
+        );
     }
     @Test
     public void shouldCreateNewAuthorizationRequest() throws PresentationDefinitionNotFoundException {

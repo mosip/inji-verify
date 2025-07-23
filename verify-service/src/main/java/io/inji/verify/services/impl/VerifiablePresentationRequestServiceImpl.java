@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.config.RedisConfigProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.JOSEException;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
@@ -22,6 +23,7 @@ import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +46,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     final PresentationDefinitionRepository presentationDefinitionRepository;
     final AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     final VPSubmissionRepository vpSubmissionRepository;
+    final RedisConfigProperties redisConfigProperties;
     final JwtService jwtService;
 
     @Value("${inji.vp-request.long-polling-timeout}")
@@ -54,14 +57,19 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
-    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, JwtService jwtService) {
+    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, RedisConfigProperties redisConfigProperties,JwtService jwtService) {
         this.presentationDefinitionRepository = presentationDefinitionRepository;
         this.authorizationRequestCreateResponseRepository = authorizationRequestCreateResponseRepository;
         this.vpSubmissionRepository = vpSubmissionRepository;
         this.jwtService = jwtService;
+        this.redisConfigProperties = redisConfigProperties;
     }
 
     @Override
+    @CachePut(value = "authorizationRequestCache",
+            key = "#result.transactionId",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.authRequestCacheEnabled")
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
         log.info("Creating authorization request");
         String transactionId = vpRequestCreate.getTransactionId() != null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
@@ -80,7 +88,11 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                 .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce, responseUri));
 
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
-        authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+
+        if (redisConfigProperties.isAuthRequestPersisted()) {
+            authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
+        }
+
         log.info("Authorization request created");
         if(vpRequestCreate.getClientId().startsWith("did")){
             return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(VP_REQUEST_URI, authorizationRequestCreateResponse.getRequestId()));
@@ -93,16 +105,13 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public VPRequestStatusDto getCurrentRequestStatus(String requestId) {
         VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
 
-        if (vpSubmission != null) {
-            return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
-        }
+        if (vpSubmission != null) return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
+
         Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
-        if (expiresAt == null) {
-            return null;
-        }
-        if (Instant.now().toEpochMilli() > expiresAt) {
-            return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
-        }
+        if (expiresAt == null) return null;
+
+        if (Instant.now().toEpochMilli() > expiresAt) return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
+
         return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
     }
 
@@ -112,13 +121,19 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    @Cacheable(value = "authorizationRequestCache", key = "#transactionId")
+    @Cacheable(value = "authorizationRequestCache",
+            key = "#transactionId",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.authRequestCacheEnabled")
     public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
         String requestId = getLatestRequestIdFor(transactionId).getFirst();
-        if (requestId == null) {
-            return null;
+        if (requestId == null) return null;
+
+        if (redisConfigProperties.isAuthRequestPersisted()) {
+            return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
         }
-        return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
+
+        return null;
     }
 
     private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {

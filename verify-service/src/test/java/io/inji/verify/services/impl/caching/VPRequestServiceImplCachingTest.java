@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl.caching;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
@@ -37,13 +38,25 @@ class VPRequestServiceImplCachingTest {
         }
 
         @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties properties = new RedisConfigProperties();
+            // Enable persistence for testing
+            properties.setAuthRequestPersisted(true);
+            // Enable caching for testing
+            properties.setAuthRequestCacheEnabled(true);
+            return properties;
+        }
+
+        @Bean
         @Primary
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
-                AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository) {
+                AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository,
+                RedisConfigProperties redisConfigProperties) {
             return new VerifiablePresentationRequestServiceImpl(
                     null,
                     authorizationRequestCreateResponseRepository,
-                    null
+                    null,
+                    redisConfigProperties
             );
         }
     }
@@ -61,7 +74,7 @@ class VPRequestServiceImplCachingTest {
     void shouldCacheAuthorizationRequest() {
         AuthorizationRequestCreateResponse mockResponse = mock(AuthorizationRequestCreateResponse.class);
         List<AuthorizationRequestCreateResponse> responses = Collections.singletonList(mockResponse);
-        
+
         when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
                 .thenReturn(responses);
         when(mockResponse.getRequestId()).thenReturn(REQUEST_ID);
@@ -79,7 +92,7 @@ class VPRequestServiceImplCachingTest {
 
         // Assert second call
         assertNotNull(secondResult);
-        
+
         // Verify repository calls
         verify(authorizationRequestCreateResponseRepository, times(1))
                 .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);

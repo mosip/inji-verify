@@ -7,13 +7,16 @@ import io.inji.verify.shared.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthorizationRequestResponseDto {
-
+public class AuthorizationRequestResponseDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String responseType = Constants.RESPONSE_TYPE;
     private final long issuedAt = Instant.now().toEpochMilli();
     private final String clientId;
