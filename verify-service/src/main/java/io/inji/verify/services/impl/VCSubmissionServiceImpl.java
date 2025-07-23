@@ -1,9 +1,6 @@
 package io.inji.verify.services.impl;
 
-import io.mosip.vercred.vcverifier.utils.Util;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionResponseDto;
 import io.inji.verify.dto.submission.VCSubmissionVerificationStatusDto;
@@ -15,31 +12,48 @@ import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
+import io.mosip.vercred.vcverifier.utils.Util;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class VCSubmissionServiceImpl implements VCSubmissionService {
 
     final VCSubmissionRepository vcSubmissionRepository;
     final CredentialsVerifier credentialsVerifier;
+    final RedisConfigProperties redisConfigProperties;
 
-    public VCSubmissionServiceImpl(VCSubmissionRepository vcSubmissionRepository, CredentialsVerifier credentialsVerifier) {
+    public VCSubmissionServiceImpl(VCSubmissionRepository vcSubmissionRepository, CredentialsVerifier credentialsVerifier, RedisConfigProperties redisConfigProperties) {
         this.vcSubmissionRepository = vcSubmissionRepository;
         this.credentialsVerifier = credentialsVerifier;
+        this.redisConfigProperties = redisConfigProperties;
     }
 
     @Override
-    @CacheEvict(value = "vcSubmissionCache", key = "#vcSubmitted.transactionId")
+    @CachePut(value = "vcSubmissionCache",
+            key = "#result.transactionId",
+            condition = "@redisConfigProperties.vcSubmissionCacheEnabled()")
     public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
         String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String vc = vcSubmitted.getVc();
         VCSubmission vcSubmission = new VCSubmission(transactionId, vc);
-        vcSubmissionRepository.save(vcSubmission);
+
+        if (redisConfigProperties.isVcSubmissionPersisted()) {
+            vcSubmissionRepository.save(vcSubmission);
+        }
+
         return new VCSubmissionResponseDto(vcSubmission.getTransactionId());
     }
 
     @Override
-    @Cacheable(value = "vcSubmissionCache", key = "#transactionId", unless = "#result == null")
+    @Cacheable(value = "vcWithVerificationCache", key = "#transactionId",
+            condition = "@redisConfigProperties.vcWithVerificationCacheEnabled()")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
+        if (redisConfigProperties.isVcWithVerificationPersisted()) {
+            return null;
+        }
+
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
             VerificationResult verificationResult = credentialsVerifier.verify(vcJSON, CredentialFormat.LDP_VC);

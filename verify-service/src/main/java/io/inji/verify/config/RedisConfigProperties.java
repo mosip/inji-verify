@@ -8,10 +8,23 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "inji.verify.redis")
 @Data
 public class RedisConfigProperties {
-    private boolean vcSubmissionCacheEnabled = true;
-    private boolean vpSubmissionCacheEnabled = true;
-    private boolean authRequestCacheEnabled = true;
-    private boolean presentationDefinitionCacheEnabled = true;
+    private boolean vcSubmissionCacheEnabled;
+    private boolean vcWithVerificationCacheEnabled;
+    private boolean vpSubmissionCacheEnabled;
+    private boolean authRequestCacheEnabled;
+    private boolean presentationDefinitionCacheEnabled;
+
+    private boolean vcSubmissionPersisted;
+    private boolean vcWithVerificationPersisted;
+    private boolean vpSubmissionPersisted;
+    private boolean authRequestPersisted;
+    private boolean presentationDefinitionPersisted;
+
+    private int vcSubmissionCacheTtlHours;
+    private int vcWithVerificationCacheTtlHours;
+    private int vpSubmissionCacheTtlHours;
+    private int authRequestCacheTtlHours;
+    private int presentationDefinitionCacheTtlHours;
 
     private int ttlHours = 1;
     private int maxSize = 1000;

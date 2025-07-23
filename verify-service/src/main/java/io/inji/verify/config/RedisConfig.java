@@ -38,22 +38,27 @@ public class RedisConfig {
             if (redisConfigProperties.isVcSubmissionCacheEnabled()) {
                 builder.withCacheConfiguration("vcSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVcSubmissionCacheTtlHours())));
+            }
+            if (redisConfigProperties.isVcWithVerificationCacheEnabled()) {
+                builder.withCacheConfiguration("vcWithVerificationCache",
+                        RedisCacheConfiguration.defaultCacheConfig()
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVcWithVerificationCacheTtlHours())));
             }
             if (redisConfigProperties.isVpSubmissionCacheEnabled()) {
                 builder.withCacheConfiguration("vpSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVpSubmissionCacheTtlHours())));
             }
             if (redisConfigProperties.isAuthRequestCacheEnabled()) {
                 builder.withCacheConfiguration("authorizationRequestCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getAuthRequestCacheTtlHours())));
             }
             if (redisConfigProperties.isPresentationDefinitionCacheEnabled()) {
                 builder.withCacheConfiguration("presentationDefinitionCache",
                         RedisCacheConfiguration.defaultCacheConfig()
-                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getTtlHours())));
+                                .entryTtl(java.time.Duration.ofHours(redisConfigProperties.getPresentationDefinitionCacheTtlHours())));
             }
         };
     }
