@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl.caching;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
@@ -17,9 +18,15 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +54,13 @@ public class VPDefinitionServiceImplCachingTest {
         @Bean
         public VPDefinitionService vpDefinitionServiceImpl(PresentationDefinitionRepository repository) {
             return new VPDefinitionServiceImpl(repository);
+        }
+
+        @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
+            when(mockProps.isPresentationDefinitionCacheEnabled()).thenReturn(true);
+            return mockProps;
         }
     }
 

@@ -18,7 +18,10 @@ public class VPDefinitionServiceImpl implements VPDefinitionService {
     }
 
     @Override
-    @Cacheable(value = "presentationDefinitionCache", key = "#id")
+    @Cacheable(value = "presentationDefinitionCache",
+            key = "#id",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.presentationDefinitionCacheEnabled")
     public VPDefinitionResponseDto getPresentationDefinition(String id) {
 
         return presentationDefinitionRepository.findById(id)
