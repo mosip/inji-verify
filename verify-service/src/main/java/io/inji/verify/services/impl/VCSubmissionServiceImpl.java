@@ -33,7 +33,8 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     @Override
     @CachePut(value = "vcSubmissionCache",
             key = "#result.transactionId",
-            condition = "@redisConfigProperties.vcSubmissionCacheEnabled()")
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vcSubmissionCacheEnabled")
     public VCSubmissionResponseDto submitVC(VCSubmissionDto vcSubmitted) {
         String transactionId = vcSubmitted.getTransactionId() != null ? vcSubmitted.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
         String vc = vcSubmitted.getVc();
@@ -47,8 +48,10 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    @Cacheable(value = "vcWithVerificationCache", key = "#transactionId",
-            condition = "@redisConfigProperties.vcWithVerificationCacheEnabled()")
+    @Cacheable(value = "vcWithVerificationCache",
+            key = "#transactionId",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vcWithVerificationCacheEnabled")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
         if (redisConfigProperties.isVcWithVerificationPersisted()) {
             return null;
