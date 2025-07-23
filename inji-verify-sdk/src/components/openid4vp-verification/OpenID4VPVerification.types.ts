@@ -45,6 +45,12 @@ export interface VPRequestBody {
   presentationDefinition?: PresentationDefinition;
 }
 
+export interface Wallet {
+  name: string;
+  scheme: string;
+  icon: string;
+}
+
 type ExclusivePresentationDefinition =
   /**
    * ID of the presentation definition used for verification.
@@ -75,6 +81,18 @@ type ExclusiveCallbacks =
       onVPReceived?: never;
     };
 
+// When same device flow is enabled: supportedWallets is required
+type SameDeviceFlowEnabledProps = {
+  isEnableSameDeviceFlow: true;
+  supportedWallets: Wallet[]; // ✅ required now
+};
+
+// When same device flow is disabled or not passed: supportedWallets is optional
+type SameDeviceFlowDisabledProps = {
+  isEnableSameDeviceFlow?: false | undefined;
+  supportedWallets?: Wallet[]; // ✅ optional now
+};
+
 interface InputDescriptor {
   id: string;
   format?: {
@@ -96,7 +114,7 @@ export interface PresentationDefinition {
   input_descriptors: InputDescriptor[];
 }
 
-export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
+type BaseProps = ExclusivePresentationDefinition &
   ExclusiveCallbacks & {
     /**
   
@@ -148,3 +166,8 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      */
     onError: (error: Error) => void;
   };
+
+// Combine with base props
+export type OpenID4VPVerificationProps =
+  | (BaseProps & SameDeviceFlowEnabledProps)
+  | (BaseProps & SameDeviceFlowDisabledProps);

@@ -119,3 +119,12 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
     }
   }
 };
+
+export const vpResult = async (url: string, txnId: string) => {
+  try {
+    const response = await fetch(url + `/vp-result/${txnId}`);
+    if (response.status !== 200) throw new Error("Failed to fetch VP result");
+    const data = await response.json();
+    return data.vcResults;
+  } catch (error) {}
+};
