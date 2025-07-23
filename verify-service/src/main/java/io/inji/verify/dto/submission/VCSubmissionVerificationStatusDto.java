@@ -10,6 +10,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class VCSubmissionVerificationStatusDto implements Serializable {
+
+    public VCSubmissionVerificationStatusDto() {
+    }
+
     @Serial
     private static final long serialVersionUID = 1L;
 

@@ -9,6 +9,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class VCSubmissionResponseDto implements Serializable {
+
+    public VCSubmissionResponseDto() {
+    }
+
     @Serial
     private static final long serialVersionUID = 1L;
     private String transactionId;
