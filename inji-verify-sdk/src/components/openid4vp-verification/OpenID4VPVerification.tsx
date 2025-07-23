@@ -355,7 +355,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         isEnableSameDeviceFlow &&
         isMobileDevice() && (
           <SlideModal>
-            <div className="flex flex-col bg-white gap-4 mt-4 px-4">
+            <div className="flex flex-col bg-white gap-4 mt-4 px-4 mb-4 py-6 rounded-lg shadow-lg">
               <Button
                 title={"Generate QR Code"}
                 onClick={handleGenerateQRCode}
