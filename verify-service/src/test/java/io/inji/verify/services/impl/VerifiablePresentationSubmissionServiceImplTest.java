@@ -1,6 +1,7 @@
 package io.inji.verify.services.impl;
 
 import com.nimbusds.jose.JOSEException;
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
@@ -8,6 +9,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.utils.VerificationUtils;
+import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VCResult;
@@ -38,10 +40,20 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
     @InjectMocks
     private VerifiablePresentationSubmissionServiceImpl verifiablePresentationSubmissionService;
+    RedisConfigProperties redisConfigProperties;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        redisConfigProperties = new RedisConfigProperties();
+        redisConfigProperties.setVpSubmissionPersisted(true);
+        redisConfigProperties.setVpSubmissionCacheEnabled(true);
+        verifiablePresentationSubmissionService = new VerifiablePresentationSubmissionServiceImpl(
+                vpSubmissionRepository,
+                mock(CredentialsVerifier.class),
+                presentationVerifier,
+                verifiablePresentationRequestService,
+                redisConfigProperties);
     }
 
     @Test

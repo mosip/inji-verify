@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl.caching;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
@@ -65,17 +66,28 @@ public class VPSubmissionServiceImplCachingTest {
         }
 
         @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties properties = new RedisConfigProperties();
+            properties.setVpSubmissionPersisted(true);
+            properties.setVpSubmissionCacheEnabled(true);
+            return properties;
+        }
+
+        @Bean
         public VerifiablePresentationSubmissionService verifiablePresentationSubmissionService(
                 VPSubmissionRepository vpSubmissionRepository,
                 CredentialsVerifier credentialsVerifier,
                 PresentationVerifier presentationVerifier,
-                VerifiablePresentationRequestService verifiablePresentationRequestService
+                VerifiablePresentationRequestService verifiablePresentationRequestService,
+                RedisConfigProperties redisConfigProperties
         ) {
             return new VerifiablePresentationSubmissionServiceImpl(
                     vpSubmissionRepository,
                     credentialsVerifier,
                     presentationVerifier,
-                    verifiablePresentationRequestService);
+                    verifiablePresentationRequestService,
+                    redisConfigProperties
+            );
         }
 
     }

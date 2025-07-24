@@ -1,6 +1,8 @@
 package io.inji.verify.services.impl.caching.redis;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
+import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.models.VPSubmission;
@@ -33,22 +35,6 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 public class VPSubmissionServiceRedisCachingTest {
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public VerifiablePresentationSubmissionService verifiablePresentationSubmissionService(
-                VPSubmissionRepository vpSubmissionRepository,
-                CredentialsVerifier credentialsVerifier,
-                PresentationVerifier presentationVerifier,
-                VerifiablePresentationRequestService verifiablePresentationRequestService) {
-            return new VerifiablePresentationSubmissionServiceImpl(
-                    vpSubmissionRepository,
-                    credentialsVerifier,
-                    presentationVerifier,
-                    verifiablePresentationRequestService);
-        }
-    }
-
     @Autowired
     private VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
@@ -58,9 +44,17 @@ public class VPSubmissionServiceRedisCachingTest {
     @SpyBean
     private CacheManager cacheManager;
 
+    @MockBean
+    private RedisConfigProperties redisConfigProperties;
+
+    @MockBean
+    private VerifiablePresentationRequestService verifiablePresentationRequestService;
+
     @BeforeEach
     void clearCache() {
         Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).clear();
+        when(redisConfigProperties.isVpSubmissionPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(true);
     }
 
     @Test
@@ -115,4 +109,59 @@ public class VPSubmissionServiceRedisCachingTest {
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(transactionId);
         assertNull(cached, "Expected cache miss for non-existent submission.");
     }
+
+    @Test
+    void shouldNotPersistSubmissionWhenPersistenceDisabled() {
+        PresentationSubmissionDto submissionDto = new PresentationSubmissionDto("id", "dId", new ArrayList<>());
+        String state = "state-002";
+        VPSubmissionDto dto = new VPSubmissionDto("vpToken", submissionDto, state);
+
+        when(redisConfigProperties.isVpSubmissionPersisted()).thenReturn(false);
+        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(true);
+
+        verifiablePresentationSubmissionService.submit(dto);
+
+        verify(vpSubmissionRepository, never()).save(any());
+        verify(verifiablePresentationRequestService, times(1)).invokeVpRequestStatusListener(state);
+
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(state);
+        assertNotNull(cached, "Expected cache entry to be present when cache enabled");
+    }
+
+    @Test
+    void shouldNotCacheWhenCacheDisabled() {
+        PresentationSubmissionDto submissionDto = new PresentationSubmissionDto("id", "dId", new ArrayList<>());
+        String state = "state-003";
+        VPSubmissionDto dto = new VPSubmissionDto("vpToken", submissionDto, state);
+
+        when(redisConfigProperties.isVpSubmissionPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(false);  // ❌ caching disabled
+
+        verifiablePresentationSubmissionService.submit(dto);
+
+        verify(vpSubmissionRepository, times(1)).save(any());
+        verify(verifiablePresentationRequestService, times(1)).invokeVpRequestStatusListener(state);
+
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(state);
+        assertNull(cached, "Expected no cache entry when cache disabled");
+    }
+
+    @Test
+    void shouldNotCacheOrPersistWhenBothDisabled() {
+        PresentationSubmissionDto submissionDto = new PresentationSubmissionDto("id", "dId", new ArrayList<>());
+        String state = "state-004";
+        VPSubmissionDto dto = new VPSubmissionDto("vpToken", submissionDto, state);
+
+        when(redisConfigProperties.isVpSubmissionPersisted()).thenReturn(false);
+        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(false);
+
+        verifiablePresentationSubmissionService.submit(dto);
+
+        verify(vpSubmissionRepository, never()).save(any());
+        verify(verifiablePresentationRequestService, times(1)).invokeVpRequestStatusListener(state);
+
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(state);
+        assertNull(cached, "Expected no cache entry when both cache and persistence disabled");
+    }
+
 }
