@@ -64,7 +64,7 @@ class VCSubmissionServiceImplCachingTest {
             props.setVcSubmissionCacheEnabled(true);
             props.setVcWithVerificationCacheEnabled(true);
             props.setVcSubmissionPersisted(true);
-            props.setVcWithVerificationPersisted(false);
+            props.setVcWithVerificationPersisted(true); // ✅ IMPORTANT FIX
             return props;
         }
 

@@ -13,11 +13,13 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.utils.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class VCSubmissionServiceImpl implements VCSubmissionService {
 
     final VCSubmissionRepository vcSubmissionRepository;
@@ -41,7 +43,12 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
         VCSubmission vcSubmission = new VCSubmission(transactionId, vc);
 
         if (redisConfigProperties.isVcSubmissionPersisted()) {
+            // If the submission is persisted, we save it to the repository
+            log.info("Persisting VC submission with transaction ID: {}", transactionId);
             vcSubmissionRepository.save(vcSubmission);
+        } else {
+            // If not persisted, we only cache it
+            log.info("Caching VC submission with transaction ID: {}", transactionId);
         }
 
         return new VCSubmissionResponseDto(vcSubmission.getTransactionId());
@@ -53,7 +60,9 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
             unless = "#result == null",
             condition = "@redisConfigProperties.vcWithVerificationCacheEnabled")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
-        if (redisConfigProperties.isVcWithVerificationPersisted()) {
+        if (!redisConfigProperties.isVcWithVerificationPersisted()) {
+            log.warn("VC with verification is not persisted, cannot retrieve " +
+                    "for transaction ID from repository: {}", transactionId);
             return null;
         }
 

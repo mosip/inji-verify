@@ -92,8 +92,10 @@ public class VCSubmissionServiceRedisCachingTest {
         String vc = "{\"vc\":\"test\"}";
         VCSubmission submission = new VCSubmission(transactionId, vc);
 
+        // ✅ Both must be true to enter caching logic
         when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(false);
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true); // ✅ FIXED
+
         when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.of(submission));
 
         VerificationResult mockResult = mock(VerificationResult.class);
@@ -110,7 +112,8 @@ public class VCSubmissionServiceRedisCachingTest {
 
         verify(vcSubmissionRepository, times(1)).findById(transactionId);
 
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).get(transactionId);
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache"))
+                .get(transactionId);
         assertNotNull(cached);
     }
 
@@ -170,6 +173,6 @@ public class VCSubmissionServiceRedisCachingTest {
         assertNull(result);
 
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).get(transactionId);
-        assertNull(cached); // because result was null
+        assertNull(cached);
     }
 }
