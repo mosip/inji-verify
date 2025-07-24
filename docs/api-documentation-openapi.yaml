@@ -54,6 +54,32 @@ paths:
         "404":
           description: VP Request not created due to PresentationDefinition not found for given ID.
 
+  "/vp-request/{requestId}":
+    get:
+      summary: Get VP Request JWT
+      description: This API returns the JWT for the VP request created.
+      operationId: getVPRequestJwt
+      tags:
+        - VP Request Management
+      parameters:
+        - name: requestId
+          description: Request Id for which you want to get the JWT for
+          in: path
+          required: true
+          schema:
+            type: string
+          example: req_12345
+      responses:
+        "200":
+          description: VP Request JWT retrieved successfully
+          content:
+            application/oauth-authz-req+jwt:
+              schema:
+                type: string
+                format: jwt
+                example: eyJhbGciOiJFRERTQSIsInR5cCI6Im9hdXRoLWF1dGh6LXJlcStqd3QiLCJraWQiOiJkaWQ6ZXhhbXBsZTppc3N1ZXItZGVmYXVsdC1rZXkifQ.eyJjbGllbnRfaWQiOiJkaWQ6ZXhhbXBsZTpjbGllbnQiLCJpc3MiOiJkaWQ6ZXhhbXBsZTpjbGllbnQiLCJyZXNwb25zZV90eXBlIjoidnBfdG9rZW4iLCJyZXNwb25zZV9tb2RlIjoiZGlyZWN0X3Bvc3QiLCJub25jZSI6ImFzaGRmamFoZHNmbGprYXNkZiIsImV4cCI6MTY3ODkzMDQwMCwiaWF0IjoxNjc4OTI5ODAwfQ.EXAMPLE_EDDSA_SIGNATURE_HERE
+        "404":
+          description: VP Request not found for given request id
   "/vp-request/{requestId}/status":
     get:
       summary: Get VP Request status
