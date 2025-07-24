@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
@@ -9,6 +10,7 @@ import io.inji.verify.models.PresentationDefinition;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -17,17 +19,22 @@ import static org.mockito.Mockito.when;
 
 class VPDefinitionServiceImplTest {
 
-
     @Test
     public void shouldReturnValidPresentationDefinitionForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
+        RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
+        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true); // or false, based on logic
+
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
-        FormatDto formatDto = new FormatDto(null,null,null);
-        PresentationDefinition mockPresentationDefinition = new PresentationDefinition("test_id", mockInputDescriptorDtos,"name","purpose",formatDto, mockSubmissionRequirementDtos);
-        when(mockRepository.findById("test_id")).thenReturn(java.util.Optional.of(mockPresentationDefinition));
+        FormatDto formatDto = new FormatDto(null, null, null);
+        PresentationDefinition mockPresentationDefinition = new PresentationDefinition(
+                "test_id", mockInputDescriptorDtos, "name", "purpose", formatDto, mockSubmissionRequirementDtos
+        );
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
+        when(mockRepository.findById("test_id")).thenReturn(Optional.of(mockPresentationDefinition));
+
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository, mockConfig);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("test_id");
 
@@ -40,9 +47,12 @@ class VPDefinitionServiceImplTest {
     @Test
     public void shouldReturnNullIfPresentationDefinitionIsNotFoundForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
-        when(mockRepository.findById("non_existent_id")).thenReturn(java.util.Optional.empty());
+        RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
+        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true); // or false
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
+        when(mockRepository.findById("non_existent_id")).thenReturn(Optional.empty());
+
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository, mockConfig);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("non_existent_id");
 
