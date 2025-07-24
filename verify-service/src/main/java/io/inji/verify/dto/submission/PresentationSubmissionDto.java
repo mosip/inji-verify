@@ -1,17 +1,16 @@
 package io.inji.verify.dto.submission;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.io.Serial;
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
 public class  PresentationSubmissionDto implements java.io.Serializable {
     @Serial
@@ -30,4 +29,15 @@ public class  PresentationSubmissionDto implements java.io.Serializable {
     @JsonProperty("descriptor_map")
     @SerializedName("descriptor_map")
     private final List<DescriptorMapDto> descriptorMap;
+
+    @JsonCreator
+    public PresentationSubmissionDto(
+            @JsonProperty("id") String id,
+            @JsonProperty("definition_id") String definitionId,
+            @JsonProperty("descriptor_map") List<DescriptorMapDto> descriptorMap
+    ) {
+        this.id = id;
+        this.definitionId = definitionId;
+        this.descriptorMap = descriptorMap;
+    }
 }

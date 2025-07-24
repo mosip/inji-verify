@@ -13,6 +13,9 @@ import java.util.List;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VPTokenResultDto implements java.io.Serializable {
+    public VPTokenResultDto() {
+    }
+
     @Serial
     private static final long serialVersionUID = 1L;
     String transactionId;
