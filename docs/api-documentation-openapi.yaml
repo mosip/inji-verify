@@ -492,8 +492,7 @@ components:
           type: string
           description: Either presentationDefinitionId or presentationDefinition should be passed. A predefined presentation definition Id so that the user does not need to pass the presentation definition
         presentationDefinition:
-          type: string
-          description: Either presentationDefinitionId or presentationDefinition should be passed. Verifiable Presentation definition for getting the credential
+          $ref: "#/components/schemas/PresentationDefinition"
         transactionId:
           description: A unique id of the verifiable presentation request transaction. This is optional and will be generated on server if not passed.
           type: string
@@ -642,10 +641,8 @@ components:
         nonce:
           type: string
           description: Nonce for encryption. It is used to securely bind the Verifiable Presentation(s) provided by the Wallet to the particular transaction
-        presentationDefinitionUri:
-          type: string
-          format: uri
-          description: A string containing a Presentation Definition JSON object
+        presentationDefinition:
+            $ref: "#/components/schemas/PresentationDefinition"
         iat:
           type: integer
           format: unixtime
