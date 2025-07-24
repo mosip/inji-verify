@@ -90,6 +90,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
 
         if (redisConfigProperties.isAuthRequestPersisted()) {
+            log.info("Persisting authorization request with transaction ID: {}", transactionId);
             authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         }
 
@@ -130,6 +131,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         if (requestId == null) return null;
 
         if (redisConfigProperties.isAuthRequestPersisted()) {
+            log.info("Fetching persisted authorization request with transaction ID: {}", transactionId);
             return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
         }
 
