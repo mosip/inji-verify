@@ -7,7 +7,7 @@ import io.inji.verify.exception.VPSubmissionNotFoundException;
 import java.util.List;
 
 public interface VerifiablePresentationSubmissionService {
-    void submit(VPSubmissionDto vpSubmissionDto);
+    VPSubmissionDto submit(VPSubmissionDto vpSubmissionDto);
 
     VPTokenResultDto getVPResult(List<String> requestId, String transactionId) throws VPSubmissionNotFoundException;
 }

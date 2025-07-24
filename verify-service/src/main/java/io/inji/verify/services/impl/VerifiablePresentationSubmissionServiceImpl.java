@@ -1,5 +1,6 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
@@ -21,6 +22,7 @@ import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -36,18 +38,38 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     final CredentialsVerifier credentialsVerifier;
     final PresentationVerifier presentationVerifier;
     final VerifiablePresentationRequestService verifiablePresentationRequestService;
+    private final RedisConfigProperties redisConfigProperties;
 
-    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestService verifiablePresentationRequestService) {
+    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestService verifiablePresentationRequestService, RedisConfigProperties redisConfigProperties) {
         this.vpSubmissionRepository = vpSubmissionRepository;
         this.credentialsVerifier = credentialsVerifier;
         this.presentationVerifier = presentationVerifier;
         this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+        this.redisConfigProperties = redisConfigProperties;
     }
 
     @Override
-    public void submit(VPSubmissionDto vpSubmissionDto) {
-        vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
+    @CachePut(value = "vpSubmissionCache", key = "#vpSubmissionDto.state",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
+    public VPSubmissionDto submit(VPSubmissionDto vpSubmissionDto) {
+        boolean persist = redisConfigProperties.isVpSubmissionPersisted();
+        boolean cache = redisConfigProperties.isVpSubmissionCacheEnabled();
+
+        if (!persist && !cache) {
+            log.warn("VP submission is neither being persisted to DB nor cached. State = {}", vpSubmissionDto.getState());
+        }
+
+        if (redisConfigProperties.isVpSubmissionPersisted()) {
+            log.info("Persisting VP submission to database");
+            vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
+        } else {
+            log.info("Skipping VP submission persistence to database");
+        }
+
         verifiablePresentationRequestService.invokeVpRequestStatusListener(vpSubmissionDto.getState());
+
+        return vpSubmissionDto;
     }
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
@@ -115,7 +137,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     @Override
-    @Cacheable(value = "vpSubmissionCache", key = "#transactionId")
+    @Cacheable(value = "vpSubmissionCache", key = "#transactionId",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
