@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="Mimoto API Test Rig Master Suite">
+<suite name="Master Suite">
 	<suite-files>
-		<suite-file path="mimotoPrerequisiteSuite.xml" />
+		<suite-file path="InjiVerifyPrerequisiteSuite.xml" />
 		<suite-file path="TestNg.xml" />
-		<suite-file path="mimotoPostrequisiteSuite.xml" />
+		<suite-file path="InjiVerifyPostrequisiteSuite.xml" />
 	</suite-files>
 </suite>
