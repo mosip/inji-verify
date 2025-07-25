@@ -71,12 +71,13 @@ export class api {
 
 export const vpRequest = async (
   url: string,
+  clientId: string,
   txnId?: string,
   presentationDefinitionId?: string,
   presentationDefinition?: PresentationDefinition
 ) => {
   const requestBody: VPRequestBody = {
-    clientId: window.location.host,
+    clientId: clientId,
     nonce: generateNonce(),
   };
 

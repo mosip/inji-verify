@@ -1,6 +1,7 @@
 package io.inji.verify.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class VCSubmissionController {
     }
 
     @PostMapping(path = "vc-submission", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VCSubmissionResponseDto> submitVC(@RequestBody VCSubmissionDto vcSubmissionDto){
+    public ResponseEntity<VCSubmissionResponseDto> submitVC(@Valid @RequestBody VCSubmissionDto vcSubmissionDto){
         return new ResponseEntity<>(vcSubmissionService.submitVC(vcSubmissionDto), HttpStatus.OK);
     }
 

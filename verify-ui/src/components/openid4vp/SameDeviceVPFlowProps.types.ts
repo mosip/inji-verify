@@ -63,6 +63,7 @@ export interface PresentationDefinition {
 export type SameDeviceVPFlowProps = ExclusiveCallbacks & {
   triggerElement?: React.ReactNode;
   verifyServiceUrl: string;
+  clientId: string;
   transactionId?: string;
   presentationDefinition: PresentationDefinition;
   presentationDefinitionId?: string;
