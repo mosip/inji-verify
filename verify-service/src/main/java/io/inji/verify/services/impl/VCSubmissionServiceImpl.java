@@ -48,7 +48,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
             vcSubmissionRepository.save(vcSubmission);
         } else {
             // If not persisted, we only cache it
-            log.info("Caching VC submission with transaction ID: {}", transactionId);
+            log.info("VC submission is not persisted");
         }
 
         return new VCSubmissionResponseDto(vcSubmission.getTransactionId());
