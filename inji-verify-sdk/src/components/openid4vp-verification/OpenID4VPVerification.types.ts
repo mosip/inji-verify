@@ -25,7 +25,7 @@ export type VerificationResults = VerificationResult[];
 export interface QrData {
   transactionId: string;
   requestId: string;
-  authorizationDetails: {
+  authorizationDetails?: {
     responseType: string;
     clientId: string;
     presentationDefinition: Record<string, unknown>;
@@ -35,6 +35,7 @@ export interface QrData {
     iat: number;
   };
   expiresAt: number;
+  requestUri?: string;
 }
 
 export interface VPRequestBody {
@@ -129,6 +130,12 @@ type BaseProps = ExclusivePresentationDefinition &
   The backend service URL where the verification request will be sent.
   */
     verifyServiceUrl: string;
+
+  /**
+
+   The client identifier for relaying party.
+   */
+  clientId: string;
 
     /**
   

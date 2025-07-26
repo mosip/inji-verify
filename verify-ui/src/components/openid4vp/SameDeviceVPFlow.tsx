@@ -9,6 +9,7 @@ import { SupportedWallets } from "../../utils/config";
 const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
   triggerElement,
   verifyServiceUrl,
+  clientId,
   onVPReceived,
   onVPProcessed,
   transactionId,
@@ -115,36 +116,40 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
   const getPresentationDefinitionParams = useCallback(
     (data: any) => {
       const params = new URLSearchParams();
-      params.set("client_id", data.authorizationDetails.clientId);
-      params.set("response_type", data.authorizationDetails.responseType);
-      params.set("response_mode", "direct_post");
-      params.set("nonce", data.authorizationDetails.nonce);
-      params.set("state", data.requestId);
-      params.set(
-        "response_uri",
-        verifyServiceUrl + data.authorizationDetails.responseUri
-      );
-      if (data.authorizationDetails.presentationDefinitionUri) {
+      if (data.requestUri) {
+        params.set("request_uri",  verifyServiceUrl + data.requestUri);
+      }else if(data.authorizationDetails) {
+        params.set("client_id", data.authorizationDetails.clientId);
+        params.set("state", data.requestId);
+        params.set("response_mode", "direct_post");
+        params.set("response_type", data.authorizationDetails.responseType);
+        params.set("nonce", data.authorizationDetails.nonce);
         params.set(
-          "presentation_definition_uri",
-          verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+            "response_uri",
+            verifyServiceUrl + data.authorizationDetails.responseUri
         );
-      } else {
+        if (data.authorizationDetails.presentationDefinitionUri) {
+          params.set(
+              "presentation_definition_uri",
+              verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+          );
+        } else {
+          params.set(
+              "presentation_definition",
+              JSON.stringify(data.authorizationDetails.presentationDefinition)
+          );
+        }
         params.set(
-          "presentation_definition",
-          JSON.stringify(data.authorizationDetails.presentationDefinition)
+            "client_metadata",
+            JSON.stringify({
+              client_name: clientId,
+              vp_formats: VPFormat,
+            })
         );
       }
-      params.set(
-        "client_metadata",
-        JSON.stringify({
-          client_name: window.location.host,
-          vp_formats: VPFormat,
-        })
-      );
       return params.toString();
     },
-    [VPFormat, verifyServiceUrl]
+    [VPFormat, verifyServiceUrl, clientId]
   );
 
   const fetchVPRequest = useCallback(async () => {
@@ -152,6 +157,7 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
     try {
       const data = await vpRequest(
         verifyServiceUrl,
+        clientId,
         transactionId ?? undefined,
         presentationDefinitionId,
         presentationDefinition
@@ -207,6 +213,7 @@ const SameDeviceVPFlow: React.FC<SameDeviceVPFlowProps> = ({
     }
   }, [
     verifyServiceUrl,
+    clientId,
     transactionId,
     presentationDefinitionId,
     presentationDefinition,

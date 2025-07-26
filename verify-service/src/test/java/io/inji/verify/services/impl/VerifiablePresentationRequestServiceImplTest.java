@@ -1,5 +1,8 @@
 package io.inji.verify.services.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.nimbusds.jose.JOSEException;
+import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
@@ -14,8 +17,10 @@ import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.JwtService;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +38,14 @@ class VerifiablePresentationRequestServiceImplTest {
     static AuthorizationRequestCreateResponseRepository mockAuthorizationRequestCreateResponseRepository;
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
     static VPSubmissionRepository mockVPSubmissionRepository;
+    static JwtService mockJwtService;
     @BeforeAll
     public static void beforeAll(){
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
         mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
-        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository);
+        mockJwtService = mock(JwtService.class);
+        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository,mockJwtService);
 
     }
     @Test
@@ -119,4 +126,31 @@ class VerifiablePresentationRequestServiceImplTest {
 
         assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) result.getResult()).getStatus());
     }
+    @Test
+    @DisplayName("Should return JWT string when authorization request and details are valid")
+    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException, JsonProcessingException {
+        String requestId = "testRequestId123";
+        String verifierDid = "did:example:verifier123";
+        String expectedJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0In0.signature";
+
+        AuthorizationRequestResponseDto authzDetailsDto = new AuthorizationRequestResponseDto(verifierDid,null,null,null,null);
+
+        AuthorizationRequestCreateResponse authzResponse = new AuthorizationRequestCreateResponse(requestId,null,authzDetailsDto,0L);
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId))
+                .thenReturn(Optional.of(authzResponse));
+
+        when(mockJwtService.createAndSignAuthorizationRequestJwt(
+                eq(verifierDid), eq(authzDetailsDto), eq(requestId)))
+                .thenReturn(expectedJwt);
+
+        String actualJwt = service.getVPRequestJwt(requestId);
+
+        assertNotNull(actualJwt);
+        assertEquals(expectedJwt, actualJwt);
+
+        verify(mockAuthorizationRequestCreateResponseRepository, times(1)).findById(requestId);
+        verify(mockJwtService, times(1)).createAndSignAuthorizationRequestJwt(
+                eq(verifierDid), eq(authzDetailsDto), eq(requestId));
+    }
+
 }

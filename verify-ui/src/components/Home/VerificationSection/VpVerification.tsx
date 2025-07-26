@@ -115,6 +115,7 @@ const DisplayActiveStep = () => {
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   qrCodeStyles={{ size: qrSize }}
+                  clientId={window._env_.CLIENT_ID}
                 />
               </div>
               <Button	
@@ -146,6 +147,7 @@ const DisplayActiveStep = () => {
                   onVPProcessed={handleOnVpProcessed}
                   presentationDefinition={presentationDefinition}
                   onError={handleOnError}
+                  clientId={window._env_.CLIENT_ID}
                 />
               </div>
             </div>
