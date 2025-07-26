@@ -14,9 +14,7 @@ import {
   Wallet,
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
-import WalletSelectionModal from "./WalletSelectionModal";
-import { on } from "events";
-import { Button } from "../Button/Button";
+import WalletSelectionModal from "../WalletSelectionModal/WalletSelectionModal";
 
 const isMobileDevice = () => {
   if (typeof navigator === "undefined") return false;
@@ -46,11 +44,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [showWallets, setShowWallets] = useState<boolean>(false);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
-  const [showActionButtons, setShowActionButtons] = useState(false);
   const hasInitializedRef = useRef(false);
 
-  const shouldShowQRCode =
-    !loading && qrCodeData && !showWallets && !showActionButtons;
+  const shouldShowQRCode = !loading && qrCodeData && !showWallets;
 
   const VPFormat = useMemo(
     () => ({
@@ -215,7 +211,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
       if (!triggerElement) {
-        setShowActionButtons(true);
+        setShowWallets(true);
       }
     } else if (!triggerElement) {
       handleGenerateQRCode();
@@ -234,12 +230,11 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setQrCodeData(null);
     setShowWallets(false);
     setLoading(false);
-    setShowActionButtons(false);
   };
 
   const handleTriggerClick = () => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
-      setShowActionButtons(true);
+      setShowWallets(true);
     } else {
       handleGenerateQRCode();
     }
@@ -263,29 +258,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   const handleGenerateQRCode = async () => {
-    setShowActionButtons(false);
     const pdParams = await createVPRequest();
     const qrData = `${protocol || "openid4vp://"}authorize?${pdParams}`;
     setQrCodeData(qrData);
     setLoading(false);
     fetchVPStatus();
   };
-
-  const handleOpenWallet = () => {
-    setShowWallets(true);
-    setShowActionButtons(false);
-  };
-
-  const SlideModal: React.FC<{ children: React.ReactNode }> = ({
-    children,
-  }) => (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="absolute bottom-0 w-full min-h-[500px]">
-        <div className="slide-up-container">{children}</div>
-      </div>
-    </div>
-  );
 
   return (
     <div
@@ -311,7 +289,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         />
       )}
 
-      {!loading && triggerElement && !qrCodeData && !showActionButtons && (
+      {!loading && triggerElement && !qrCodeData && (
         <div onClick={handleTriggerClick} style={{ cursor: "pointer" }}>
           {triggerElement}
         </div>
@@ -341,30 +319,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
             onCancel={handleWalletOnCancel}
             onProceed={handleWalletOnProceed}
           />
-        )}
-
-      {!loading &&
-        !qrCodeData &&
-        !showWallets &&
-        showActionButtons &&
-        isEnableSameDeviceFlow &&
-        isMobileDevice() && (
-          <SlideModal>
-            <div className="flex flex-col bg-white gap-4 mt-4 px-4 mb-4 py-6 rounded-lg shadow-lg">
-              <Button
-                title={"Generate QR Code"}
-                onClick={handleGenerateQRCode}
-                className="w-full lg:w-[120px] text-smallTextSize lg:text-sm"
-                variant="fill"
-              />
-              <Button
-                title={"Open Wallet"}
-                onClick={handleOpenWallet}
-                className="w-full lg:w-[120px] text-smallTextSize lg:text-sm"
-                variant="fill"
-              />
-            </div>
-          </SlideModal>
         )}
     </div>
   );
