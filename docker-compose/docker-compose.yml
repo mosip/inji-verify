@@ -3,7 +3,7 @@ version: '3.8'
 services:
   verify-service:
     container_name: verify-service
-    image: mosipdev/inji-verify-service:develop
+    image: mosipid/inji-verify-service:0.13.0
     user: root
     ports:
       - "8080:8080"
@@ -25,7 +25,7 @@ services:
 
   verify-ui:
     container_name: verify-ui
-    image: mosipdev/inji-verify-ui:develop
+    image: mosipid/inji-verify-ui:0.13.0
     ports:
       - "3000:8000"
     build:

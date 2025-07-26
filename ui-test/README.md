@@ -30,8 +30,6 @@ actuatorMimotoEndpoint=/v1/mimoto/actuator/dev
 eSignetbaseurl=https://esignet-mosipid.dev.mosip.net
 ```
 
-
-
 Note:- all are config properties has to be updated by replacing the 'dev' with  actual env name/url
 
 2. update `src\test\resources\config.properties`
@@ -40,7 +38,6 @@ issuerSearchText=`National Identity Department (Released)
 issuerSearchTextforSunbird=`StayProtected Insurance
 
 Note :- update as per the env ex. if it needs to select the for dev use it as 'National Identity Department (dev)'
-
 
 ## Run with JAR
 
@@ -52,7 +49,6 @@ Note :- update as per the env ex. if it needs to select the for dev use it as 'N
 6. Then use `java -DBROWSERSTACK_USERNAME="username" -DBROWSERSTACK_ACCESS_KEY="accessKey" -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-*-SNAPSHOT.jar` to run the automation 
 
 Note:- in above command please replace the userName,accessKey and actual env url.
-
 
 ## Run with IDE
 # Using Eclipse IDE
