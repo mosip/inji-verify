@@ -12,11 +12,10 @@ import {
 } from "../../../redux/features/verify/vpVerificationState";
 import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages } from "../../../utils/config";
+import { AlertMessages, SupportedWallets } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
-import SameDeviceVPFlow from "../../openid4vp/SameDeviceVPFlow";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -116,6 +115,7 @@ const DisplayActiveStep = () => {
                   onError={handleOnError}
                   qrCodeStyles={{ size: qrSize }}
                   clientId={window._env_.CLIENT_ID}
+                  isEnableSameDeviceFlow={false}
                 />
               </div>
               <Button	
@@ -142,12 +142,15 @@ const DisplayActiveStep = () => {
               <div
                 className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[300px] lg:w-[350px] aspect-square content-center justify-center`}
               >
-                <SameDeviceVPFlow
+                <OpenID4VPVerification
+                  triggerElement={ <QrIcon id="OpenID4VPVerification_trigger" className="w-[78px] lg:w-[100px]" aria-disabled={presentationDefinition.input_descriptors.length === 0 } /> }
                   verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
-                  onVPProcessed={handleOnVpProcessed}
                   presentationDefinition={presentationDefinition}
+                  onVPProcessed={handleOnVpProcessed}
+                  onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   clientId={window._env_.CLIENT_ID}
+                  supportedWallets={SupportedWallets}
                 />
               </div>
             </div>

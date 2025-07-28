@@ -1,6 +1,5 @@
-import {AlertInfo, claim, VerificationStepsContentType} from "../types/data-types";
+import {AlertInfo, claim, VerificationStepsContentType, Wallet} from "../types/data-types";
 import i18next from 'i18next';
-import { Wallet } from "../components/openid4vp/SameDeviceVPFlowProps.types";
 
 export const Pages = {
     Home: "/",

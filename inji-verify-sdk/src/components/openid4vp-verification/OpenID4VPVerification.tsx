@@ -63,42 +63,39 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   );
 
   const getPresentationDefinitionParams = useCallback(
-      (data: QrData) => {
-        const params = new URLSearchParams();
-        params.set("client_id", clientId);
-        if (data.requestUri) {
-          params.set("request_uri",  verifyServiceUrl + data.requestUri);
-        }else if(data.authorizationDetails) {
-          params.set("state", data.requestId);
-          params.set("response_mode", "direct_post");
-          params.set("response_type", data.authorizationDetails.responseType);
-          params.set("nonce", data.authorizationDetails.nonce);
+    (data: QrData) => {
+      const params = new URLSearchParams();
+      params.set("client_id", clientId);
+      if (data.requestUri) {
+        params.set("request_uri", verifyServiceUrl + data.requestUri);
+      } else if (data.authorizationDetails) {
+        params.set("state", data.requestId);
+        params.set("response_mode", "direct_post");
+        params.set("response_type", data.authorizationDetails.responseType);
+        params.set("nonce", data.authorizationDetails.nonce);
+        params.set("response_uri", data.authorizationDetails.responseUri);
+        if (data.authorizationDetails.presentationDefinitionUri) {
           params.set(
-              "response_uri",
-              verifyServiceUrl + data.authorizationDetails.responseUri
+            "presentation_definition_uri",
+            verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
           );
-          if (data.authorizationDetails.presentationDefinitionUri) {
-            params.set(
-                "presentation_definition_uri",
-                verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
-            );
-          } else {
-            params.set(
-                "presentation_definition",
-                JSON.stringify(data.authorizationDetails.presentationDefinition)
-            );
-          }
+        } else {
           params.set(
-              "client_metadata",
-              JSON.stringify({
-                client_name: clientId,
-                vp_formats: VPFormat,
-              })
+            "presentation_definition",
+            JSON.stringify(data.authorizationDetails.presentationDefinition)
           );
         }
-        return params.toString();
-      },
-      [verifyServiceUrl]
+        params.set(
+          "client_metadata",
+          JSON.stringify({
+            client_name: clientId,
+            vp_formats: VPFormat,
+          })
+        );
+      }
+      return params.toString();
+    },
+    [verifyServiceUrl]
   );
 
   const fetchVPResult = useCallback(async () => {
@@ -136,8 +133,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         if (response.status === "VP_SUBMITTED") {
           fetchVPResult();
         } else if (response.status === "EXPIRED") {
-          onQrCodeExpired();
           resetState();
+          onQrCodeExpired();
         }
       }
     } catch (error) {
