@@ -5,14 +5,14 @@ import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.dto.result.VCResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VPTokenResultDto implements java.io.Serializable {
+public class VPTokenResultDto implements Serializable {
     public VPTokenResultDto() {
     }
 

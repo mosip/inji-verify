@@ -19,9 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -72,9 +70,9 @@ public class VCSubmissionServiceImplTest {
         VCSubmissionDto submissionDto = new VCSubmissionDto(TEST_VC_STRING, TEST_TRANSACTION_ID);
         VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.save(any(VCSubmission.class))).thenReturn(expectedVCSubmission);
-        
+
         VCSubmissionResponseDto response = vcSubmissionService.submitVC(submissionDto);
-        
+
         assertNotNull(response);
         assertEquals(TEST_TRANSACTION_ID, response.getTransactionId());
         verify(vcSubmissionRepository, times(1)).save(argThat(vc ->
@@ -85,7 +83,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnSuccessStatus_whenVerificationPasses() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true); // fix here ✅
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
@@ -108,7 +106,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnExpiredStatus_whenVerificationPassesButVCIsExpired() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true); // fix here ✅
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
@@ -135,17 +133,15 @@ public class VCSubmissionServiceImplTest {
 
         VCSubmissionVerificationStatusDto resultDto =
                 vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
-
         assertNull(resultDto);
 
-        // Optional but recommended:
         verify(vcSubmissionRepository, never()).findById(any());
         verify(credentialsVerifier, never()).verify(any(), any());
     }
 
     @Test
     void getVcWithVerification_shouldReturnNull_whenVCSubmissionNotFound() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true); // fix here ✅
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.empty());
 
         VCSubmissionVerificationStatusDto resultDto = vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);

@@ -26,12 +26,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,6 +39,7 @@ class VerifiablePresentationRequestServiceImplTest {
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
     static VPSubmissionRepository mockVPSubmissionRepository;
     static JwtService mockJwtService;
+
     @BeforeAll
     public static void beforeAll() {
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
@@ -59,6 +58,7 @@ class VerifiablePresentationRequestServiceImplTest {
                 mockJwtService
         );
     }
+
     @Test
     public void shouldCreateNewAuthorizationRequest() throws PresentationDefinitionNotFoundException {
         when(mockPresentationDefinitionRepository.save(any(PresentationDefinition.class))).thenReturn(null);
@@ -79,6 +79,7 @@ class VerifiablePresentationRequestServiceImplTest {
         assertNotNull(responseDto.getAuthorizationDetails());
         assertTrue(responseDto.getExpiresAt() > Instant.now().toEpochMilli());
     }
+
     @Test
     public void shouldCreateAuthorizationRequestWithMissingTransactionId() throws PresentationDefinitionNotFoundException {
 
@@ -116,6 +117,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         assertNull(vpRequestStatusDto);
     }
+
     @Test
     void getStatus_requestIdNotFound_returnsNotFoundError() {
         when(mockAuthorizationRequestCreateResponseRepository.findById("req_id")).thenReturn(Optional.empty());
@@ -137,6 +139,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) Objects.requireNonNull(result.getResult())).getStatus());
     }
+
     @Test
     @DisplayName("Should return JWT string when authorization request and details are valid")
     void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException, JsonProcessingException {

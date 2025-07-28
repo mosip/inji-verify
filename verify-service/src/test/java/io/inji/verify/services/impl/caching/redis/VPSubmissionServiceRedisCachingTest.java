@@ -20,11 +20,9 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -138,7 +136,7 @@ public class VPSubmissionServiceRedisCachingTest {
         VPSubmissionDto dto = new VPSubmissionDto("vpToken", submissionDto, state);
 
         when(redisConfigProperties.isVpSubmissionPersisted()).thenReturn(true);
-        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(false);  // ❌ caching disabled
+        when(redisConfigProperties.isVpSubmissionCacheEnabled()).thenReturn(false);
 
         verifiablePresentationSubmissionService.submit(dto);
 

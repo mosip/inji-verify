@@ -27,13 +27,11 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.test.context.ActiveProfiles;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +51,7 @@ public class VPRequestServiceRedisCachingTest {
 
         @Bean
         public RedisConnectionFactory redisConnectionFactory() {
-            return new LettuceConnectionFactory("localhost", 6379); // Assumes Redis is running locally
+            return new LettuceConnectionFactory("localhost", 6379);
         }
 
         @Bean
@@ -115,11 +113,9 @@ public class VPRequestServiceRedisCachingTest {
         when(mockResponse.getRequestId()).thenReturn(REQUEST_ID);
         when(repository.findById(REQUEST_ID)).thenReturn(Optional.of(mockResponse));
 
-        // First call
         AuthorizationRequestCreateResponse result1 = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
         assertNotNull(result1);
 
-        // Second call (should hit Redis cache)
         AuthorizationRequestCreateResponse result2 = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
         assertNotNull(result2);
 
@@ -146,16 +142,13 @@ public class VPRequestServiceRedisCachingTest {
                         nonce,null);
         AuthorizationRequestCreateResponse expectedEntity = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
 
-        // Mock persistence behavior
         when(redisConfigProperties.isAuthRequestPersisted()).thenReturn(true);
         when(authorizationRequestCreateResponseRepository.save(any())).thenReturn(expectedEntity);
         when(redisConfigProperties.isAuthRequestCacheEnabled()).thenReturn(true);
 
-        // Create Authorization Request (triggers @CachePut)
         VPRequestResponseDto response = service.createAuthorizationRequest(createDto);
         assertEquals(transactionId, response.getTransactionId());
 
-        // Cache should now contain this transactionId
         Cache.ValueWrapper wrapper = Objects.requireNonNull(cacheManager.getCache("authorizationRequestCache")).get(transactionId);
         assertNotNull(wrapper);
         assertTrue(wrapper.get() instanceof VPRequestResponseDto || wrapper.get() instanceof AuthorizationRequestCreateResponse);
@@ -172,17 +165,14 @@ public class VPRequestServiceRedisCachingTest {
                                 "client", null, null, "nonce", null),
                         Instant.now().plusSeconds(600).toEpochMilli());
 
-        // Mock database + config
         when(redisConfigProperties.isAuthRequestCacheEnabled()).thenReturn(true);
         when(redisConfigProperties.isAuthRequestPersisted()).thenReturn(true);
         when(repository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID)).thenReturn(Collections.singletonList(mockEntity));
         when(repository.findById(REQUEST_ID)).thenReturn(Optional.of(mockEntity));
 
-        // The first call will fetch from repo and populate the cache
         AuthorizationRequestCreateResponse result1 = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
         assertNotNull(result1);
 
-        // The second call should hit Redis cache (repository methods not called again)
         AuthorizationRequestCreateResponse result2 = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
         assertNotNull(result2);
 

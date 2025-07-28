@@ -25,11 +25,9 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
@@ -95,7 +93,6 @@ class VPDefinitionServiceRedisCachingTest {
     void shouldCacheGetPresentationDefinition() {
         String testId = "test_id";
 
-        // ✅ Ensure conditions are true
         when(redisConfigProperties.isPresentationDefinitionCacheEnabled()).thenReturn(true);
         when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(true);
 
@@ -115,8 +112,8 @@ class VPDefinitionServiceRedisCachingTest {
         Cache cache = cacheManager.getCache("presentationDefinitionCache");
         assertNotNull(cache);
 
-        VPDefinitionResponseDto cached = cache.get(testId, VPDefinitionResponseDto.class); // 👈 safer
-        assertNotNull(cached); // ✅ Should pass now
+        VPDefinitionResponseDto cached = cache.get(testId, VPDefinitionResponseDto.class);
+        assertNotNull(cached);
     }
 
     @Test
@@ -169,7 +166,6 @@ class VPDefinitionServiceRedisCachingTest {
 
     @Test
     void shouldCacheOnlyWhenBothFlagsEnabled() {
-        // Explicitly make both enabled
         when(redisConfigProperties.isPresentationDefinitionCacheEnabled()).thenReturn(true);
         when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(true);
 

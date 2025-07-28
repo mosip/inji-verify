@@ -12,9 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class DescriptorMapDto implements Serializable {
-    public DescriptorMapDto() {
-    }
-
     @Serial
     private static final long serialVersionUID = 1L;
     String id;

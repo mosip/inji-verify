@@ -41,9 +41,7 @@ class VPRequestServiceImplCachingTest {
         @Bean
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties properties = new RedisConfigProperties();
-            // Enable persistence for testing
             properties.setAuthRequestPersisted(true);
-            // Enable caching for testing
             properties.setAuthRequestCacheEnabled(true);
             return properties;
         }
@@ -87,19 +85,12 @@ class VPRequestServiceImplCachingTest {
         when(authorizationRequestCreateResponseRepository.findById(REQUEST_ID))
                 .thenReturn(Optional.of(mockResponse));
 
-        // Act - First call
         AuthorizationRequestCreateResponse firstResult = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-
-        // Assert first call
         assertNotNull(firstResult);
 
-        // Act - Second call (should be from cache)
         AuthorizationRequestCreateResponse secondResult = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-
-        // Assert second call
         assertNotNull(secondResult);
 
-        // Verify repository calls
         verify(authorizationRequestCreateResponseRepository, times(1))
                 .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
         verify(authorizationRequestCreateResponseRepository, times(1))
@@ -112,17 +103,14 @@ class VPRequestServiceImplCachingTest {
         when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
                 .thenReturn(emptyList);
 
-        // First call should throw
         assertThrows(NoSuchElementException.class, () ->
                 service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
         );
 
-        // Second call should also throw (no caching of empty)
         assertThrows(NoSuchElementException.class, () ->
                 service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
         );
 
-        // Verify both calls hit the repository
         verify(authorizationRequestCreateResponseRepository, times(2))
                 .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
     }

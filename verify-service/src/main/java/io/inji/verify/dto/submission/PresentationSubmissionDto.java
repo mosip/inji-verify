@@ -9,10 +9,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
-public class  PresentationSubmissionDto implements java.io.Serializable {
+public class  PresentationSubmissionDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @NotNull(message = "Presentation Submission ID cannot be null")

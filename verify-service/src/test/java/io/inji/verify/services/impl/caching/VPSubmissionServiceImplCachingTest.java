@@ -115,8 +115,8 @@ public class VPSubmissionServiceImplCachingTest {
 
         PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
                 "id",
-                "dId",// Assuming no descriptor map for simplicity
-                new ArrayList<>()  // Assuming no input descriptors for simplicity
+                "dId",
+                new ArrayList<>()
         );
 
         VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
@@ -132,7 +132,6 @@ public class VPSubmissionServiceImplCachingTest {
 
         assertNotNull(result2);
 
-        // Verify that the second call uses the cache
         verify(vpSubmissionRepository, times(1)).findAllById(requestIds);
         assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
     }
@@ -146,8 +145,8 @@ public class VPSubmissionServiceImplCachingTest {
 
         PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
                 "id",
-                "dId",// Assuming no descriptor map for simplicity
-                new ArrayList<>()  // Assuming no input descriptors for simplicity
+                "dId",
+                new ArrayList<>()
         );
 
         VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
@@ -163,7 +162,6 @@ public class VPSubmissionServiceImplCachingTest {
 
         assertNotNull(result2);
 
-        // Verify that the second call uses the cache
         verify(vpSubmissionRepository, times(2)).findAllById(requestIds);
         assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
     }

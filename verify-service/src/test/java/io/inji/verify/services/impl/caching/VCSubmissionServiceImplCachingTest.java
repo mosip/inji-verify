@@ -23,10 +23,8 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -64,7 +62,7 @@ class VCSubmissionServiceImplCachingTest {
             props.setVcSubmissionCacheEnabled(true);
             props.setVcWithVerificationCacheEnabled(true);
             props.setVcSubmissionPersisted(true);
-            props.setVcWithVerificationPersisted(true); // ✅ IMPORTANT FIX
+            props.setVcWithVerificationPersisted(true);
             return props;
         }
 
@@ -139,7 +137,7 @@ class VCSubmissionServiceImplCachingTest {
     void submitVC_shouldNotCacheWhenResultIsNull() {
         VCSubmissionDto dto = new VCSubmissionDto(null, null);
         VCSubmissionResponseDto result = vcSubmissionService.submitVC(dto);
-        assertNotNull(result); // still has transactionId
+        assertNotNull(result);
 
         VCSubmissionResponseDto cached = cache("vcSubmissionCache")
                 .get(result.getTransactionId(), VCSubmissionResponseDto.class);

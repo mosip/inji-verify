@@ -8,14 +8,11 @@ import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.models.PresentationDefinition;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 class VPDefinitionServiceImplTest {
 

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -25,17 +24,12 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -123,9 +117,8 @@ class VCSubmissionServiceRedisCachingTest {
         String vc = "{\"vc\":\"test\"}";
         VCSubmission submission = new VCSubmission(transactionId, vc);
 
-        // ✅ Both must be true to enter caching logic
         when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true); // ✅ FIXED
+        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
 
         when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.of(submission));
 
@@ -133,11 +126,9 @@ class VCSubmissionServiceRedisCachingTest {
         when(mockResult.getVerificationStatus()).thenReturn(true);
         when(credentialsVerifier.verify(any(), eq(CredentialFormat.LDP_VC))).thenReturn(mockResult);
 
-        // First call populates cache
         VCSubmissionVerificationStatusDto result1 = vcSubmissionService.getVcWithVerification(transactionId);
         assertNotNull(result1);
 
-        // The second call should hit cache (DB should not be called again)
         VCSubmissionVerificationStatusDto result2 = vcSubmissionService.getVcWithVerification(transactionId);
         assertNotNull(result2);
 

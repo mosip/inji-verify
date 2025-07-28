@@ -12,25 +12,16 @@ import io.inji.verify.services.impl.VPDefinitionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -56,7 +47,7 @@ public class VPDefinitionServiceImplCachingTest {
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
             when(mockProps.isPresentationDefinitionCacheEnabled()).thenReturn(true);
-            when(mockProps.isPresentationDefinitionPersisted()).thenReturn(true); // <-- ADD THIS
+            when(mockProps.isPresentationDefinitionPersisted()).thenReturn(true);
             return mockProps;
         }
 
@@ -90,18 +81,15 @@ public class VPDefinitionServiceImplCachingTest {
         when(presentationDefinitionRepository.findById(testId))
                 .thenReturn(Optional.of(mockPresentationDefinition));
 
-        // First call
         VPDefinitionResponseDto firstCall = vpDefinitionService.getPresentationDefinition(testId);
         assertNotNull(firstCall, "First call should not return null");
 
-        // Second call (from cache)
         VPDefinitionResponseDto secondCall = vpDefinitionService.getPresentationDefinition(testId);
         assertNotNull(secondCall, "Second call should not return null");
 
         assertEquals(firstCall.getId(), secondCall.getId());
-        assertEquals(firstCall, secondCall); // optional, make sure equals() is implemented correctly
+        assertEquals(firstCall, secondCall);
 
-        // Repository called only once
         verify(presentationDefinitionRepository, times(1)).findById(testId);
     }
 
@@ -117,11 +105,9 @@ public class VPDefinitionServiceImplCachingTest {
         Cache cache = cacheManager.getCache("presentationDefinitionCache");
         assertNotNull(cache, "Cache should not be null");
 
-        // First call to populate the cache
         assertNull(cache.get(testId), "Cache should be empty before the first call");
         vpDefinitionService.getPresentationDefinition(testId);
 
-        // Verify that the cache now contains the entry
         assertNotNull(cache, "Cache should not be null");
     }
 }
