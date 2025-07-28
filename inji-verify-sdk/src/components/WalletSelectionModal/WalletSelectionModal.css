@@ -1,0 +1,322 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 50;
+}
+
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  cursor: default;
+}
+
+.modalContent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  max-width: 64rem; /* max-w-4xl */
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  max-height: 95vh;
+  overflow-y: auto;
+}
+
+.expanded {
+  height: 95vh;
+}
+
+.handle {
+  width: 3rem;
+  height: 0.375rem;
+  background-color: #404653;
+  border-radius: 9999px;
+  margin: 0 auto 1rem;
+  cursor: pointer;
+}
+
+.headerSection {
+  margin-bottom: 1rem;
+}
+
+.searchSortContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  width: 244px;
+  height: 44px;
+}
+
+.searchInput {
+  width: 100%;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  outline: none;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+.sortWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  width: 106px;
+  height: 44px;
+}
+
+.sortIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.sortText {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+  color: #4b5563;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 40;
+  font-weight: 400;
+  height: 100px;
+}
+
+.dropdownItem {
+  width: 106px;
+  height: 44px;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.5rem;
+}
+
+.dropdownContent {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.dropdownContentText {
+  font-weight: 400;
+  color: #0A0A0A;
+}
+
+.selected {
+  background: linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%);
+  opacity: 0.5;
+}
+
+.walletListWrapper {
+  margin-bottom: 1rem;
+  min-height: 300px;
+  max-height: 500px;
+}
+
+.walletList {
+  display: grid;
+  gap: 0.75rem;
+  padding-right: 0.25rem;
+  max-height: 200px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.walletList.scrollable {
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.walletItem {
+  position: relative;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  height: 84px;
+  padding: 4px;
+}
+
+.walletSelectedBorder {
+  background: linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%);
+  background-repeat: no-repeat;
+  opacity: 0.95;
+}
+
+.walletBorder {
+  border: 2px solid #B2B2B2;
+}
+
+.walletCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4px;
+  border-radius: 0.5rem;
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  height: 76px;
+}
+
+.walletSelectedBg {
+  background-color: #fef2f2;
+  opacity: 0.95;
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.walletIconWrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: white;
+}
+
+.walletIcon {
+  width: 2rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+.walletName {
+  font-size: 0.875rem;
+}
+
+.radioWrapper {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radioCircle {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+}
+
+.radioSelected {
+  background: linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%);
+  padding: 2px;
+}
+
+.radioUnselected {
+  border: 2px solid #9ca3af;
+  background-color: white;
+}
+
+.radioInner {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: white;
+  z-index: 10;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.proceedButton {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 1px;
+  height: 44px;
+  min-width: 20rem;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%);
+  background-repeat: no-repeat;
+}
+
+.cancelButton {
+  position: relative;
+  min-width: 20rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: white;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-image: linear-gradient(90deg, #FF5300 0%, #FB5103 16%, #F04C0F 31%, #DE4322 46%, #C5363C 61%, #A4265F 75%, #7C1389 90%, #5B03AD 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cancelButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  padding: 2px; /* thickness of border */
+  background: linear-gradient(90deg, #FF5300 0%, #FB5103 10%, #F04C0F 25%, #DE4322 30%, #C5363C 45%, #A4265F 50%, #7C1389 70%, #5B03AD 100%);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  pointer-events: none;
+}

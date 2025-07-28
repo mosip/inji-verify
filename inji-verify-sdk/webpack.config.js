@@ -22,11 +22,11 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/, // optional: only apply to imports from TS/JS files
+        issuer: /\.[jt]sx?$/,
         use: [
           {
             loader: "@svgr/webpack",
