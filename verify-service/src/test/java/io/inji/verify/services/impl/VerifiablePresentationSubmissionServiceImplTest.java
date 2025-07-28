@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-import com.nimbusds.jose.JOSEException;
 import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
@@ -18,9 +17,7 @@ import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -65,14 +62,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success() throws VPSubmissionNotFoundException, ParseException, JOSEException {
+    public void testGetVPResult_Success() throws VPSubmissionNotFoundException {
         List<String> requestIds = new ArrayList<>();
         List<VCResult> vcResults = new ArrayList<>();
         requestIds.add("req123");
         vcResults.add(new VCResult("", VerificationStatus.SUCCESS));
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", new PresentationSubmissionDto("id", "dId", Arrays.asList(new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+        VPSubmission vpSubmission = new VPSubmission("state123", "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", new PresentationSubmissionDto("id", "dId", List.of(new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path")))));
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
 
         when(presentationVerifier.verify(anyString())).thenReturn(new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
