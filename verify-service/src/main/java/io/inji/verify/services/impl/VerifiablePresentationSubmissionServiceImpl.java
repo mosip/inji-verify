@@ -60,7 +60,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             log.warn("VP submission is neither being persisted to DB nor cached. State = {}", vpSubmissionDto.getState());
         }
 
-        if (redisConfigProperties.isVpSubmissionPersisted()) {
+        if (persist) {
             log.info("Persisting VP submission to database");
             vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
         } else {
