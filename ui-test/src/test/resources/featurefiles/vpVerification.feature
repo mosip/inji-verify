@@ -1,7 +1,7 @@
 Feature: Inji Verify vpVerification testing
 
   @smoke @verifyingVpVerification
-  Scenario: Verify the Inji web homepage
+  Scenario: Verify the Inji verify homepage
     Given User gets the title of the page
     Then Validate the title of the page
     And Click on vp verification tab
@@ -29,7 +29,7 @@ Feature: Inji Verify vpVerification testing
       
       
   @smoke @verifyingVpVerification
-  Scenario: Verify the Inji web homepage
+  Scenario: Verify the Inji verify homepage
 
     Given User gets the title of the page
     Then Validate the title of the page
