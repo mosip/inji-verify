@@ -2,8 +2,6 @@ package io.inji.verify.services.impl.caching.redis;
 
 import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.presentation.FormatDto;
-import io.inji.verify.dto.presentation.InputDescriptorDto;
-import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.PresentationDefinitionRepository;
@@ -11,15 +9,22 @@ import io.inji.verify.services.VPDefinitionService;
 import io.inji.verify.services.impl.VPDefinitionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,20 +34,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = VPDefinitionServiceRedisCachingTest.CachingTestConfig.class)
 @ActiveProfiles("test")
 class VPDefinitionServiceRedisCachingTest {
 
     @TestConfiguration
+    @EnableCaching
     static class CachingTestConfig {
 
         @Bean
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
-            // Default behavior; can be overridden in individual tests
             when(mockProps.isPresentationDefinitionCacheEnabled()).thenReturn(true);
             when(mockProps.isPresentationDefinitionPersisted()).thenReturn(true);
             return mockProps;
+        }
+
+        @Bean
+        public RedisConnectionFactory redisConnectionFactory() {
+            return new LettuceConnectionFactory("localhost", 6379);
+        }
+
+        @Bean
+        public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+            RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
+            return RedisCacheManager.builder(redisConnectionFactory)
+                    .cacheDefaults(config)
+                    .build();
         }
 
         @Bean
@@ -174,7 +193,7 @@ class VPDefinitionServiceRedisCachingTest {
         assertNotNull(call1);
         assertNotNull(call2);
 
-        Cache.ValueWrapper cached = cacheManager.getCache("presentationDefinitionCache").get(testId);
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("presentationDefinitionCache")).get(testId);
         assertNotNull(cached);
     }
 }

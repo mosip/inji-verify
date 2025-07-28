@@ -13,6 +13,8 @@ import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -20,8 +22,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -29,18 +39,39 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class VCSubmissionServiceRedisCachingTest {
+@ExtendWith(SpringExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Import(VCSubmissionServiceRedisCachingTest.CachingTestConfig.class)
+@EnableCaching
+class VCSubmissionServiceRedisCachingTest {
 
     @TestConfiguration
+    @EnableCaching
     static class CachingTestConfig {
+        @Bean
+        public RedisConnectionFactory redisConnectionFactory() {
+            return new LettuceConnectionFactory("localhost", 6379);
+        }
+
+        @Bean
+        public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+            return RedisCacheManager.builder(redisConnectionFactory).build();
+        }
+
+        @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties props = new RedisConfigProperties();
+            props.setVcSubmissionCacheEnabled(true);
+            return props;
+        }
+
         @Bean
         public VCSubmissionService vcSubmissionService(
                 VCSubmissionRepository vcSubmissionRepository,
-                CredentialsVerifier credentialsVerifier,
-                RedisConfigProperties redisConfigProperties) {
-            return new VCSubmissionServiceImpl(vcSubmissionRepository, credentialsVerifier, redisConfigProperties);
+                CredentialsVerifier verifier,
+                RedisConfigProperties redisProps
+        ) {
+            return new VCSubmissionServiceImpl(vcSubmissionRepository, verifier, redisProps);
         }
     }
 

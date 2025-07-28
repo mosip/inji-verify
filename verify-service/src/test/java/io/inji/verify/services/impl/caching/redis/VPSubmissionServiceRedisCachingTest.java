@@ -9,9 +9,8 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
-import io.inji.verify.services.impl.VerifiablePresentationSubmissionServiceImpl;
-import io.mosip.vercred.vcverifier.CredentialsVerifier;
-import io.mosip.vercred.vcverifier.PresentationVerifier;
+import io.inji.verify.services.JwtService;
+import io.inji.verify.services.impl.P12FileKeyManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -49,6 +46,12 @@ public class VPSubmissionServiceRedisCachingTest {
 
     @MockBean
     private VerifiablePresentationRequestService verifiablePresentationRequestService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private P12FileKeyManagementServiceImpl p12FileKeyManagementService;
 
     @BeforeEach
     void clearCache() {
@@ -163,5 +166,4 @@ public class VPSubmissionServiceRedisCachingTest {
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(state);
         assertNull(cached, "Expected no cache entry when both cache and persistence disabled");
     }
-
 }
