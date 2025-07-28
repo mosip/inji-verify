@@ -3,17 +3,18 @@ package io.inji.verify.services.impl.caching;
 import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
+import io.inji.verify.services.JwtService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -51,12 +52,14 @@ class VPRequestServiceImplCachingTest {
         @Primary
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
                 AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository,
-                RedisConfigProperties redisConfigProperties) {
+                RedisConfigProperties redisConfigProperties,
+                JwtService jwtService) {
             return new VerifiablePresentationRequestServiceImpl(
                     null,
                     authorizationRequestCreateResponseRepository,
                     null,
-                    redisConfigProperties
+                    redisConfigProperties,
+                    jwtService
             );
         }
     }
@@ -66,6 +69,9 @@ class VPRequestServiceImplCachingTest {
 
     @MockBean
     private AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
+
+    @MockBean
+    private JwtService jwtService;
 
     private static final String TRANSACTION_ID = "test-transaction-id";
     private static final String REQUEST_ID = "test-request-id";
@@ -106,23 +112,17 @@ class VPRequestServiceImplCachingTest {
         when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
                 .thenReturn(emptyList);
 
-        try {
-            // Act - First call
-            service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-            fail("Expected NoSuchElementException was not thrown");
-        } catch (NoSuchElementException ignored) {}
+        // First call should throw
+        assertThrows(NoSuchElementException.class, () ->
+                service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
+        );
 
-        // Verify the first call
-        verify(authorizationRequestCreateResponseRepository, times(1))
-                .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
+        // Second call should also throw (no caching of empty)
+        assertThrows(NoSuchElementException.class, () ->
+                service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
+        );
 
-        try {
-            // Act - Second call
-            service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-            fail("Expected NoSuchElementException was not thrown");
-        } catch (NoSuchElementException ignored) {}
-
-        // Verify the second call (should not be cached)
+        // Verify both calls hit the repository
         verify(authorizationRequestCreateResponseRepository, times(2))
                 .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
     }

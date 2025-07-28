@@ -8,6 +8,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.JwtService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +73,8 @@ public class VPRequestServiceRedisCachingTest {
                     mock(PresentationDefinitionRepository.class),
                     repo,
                     mock(VPSubmissionRepository.class),
-                    redisConfigProperties
+                    redisConfigProperties,
+                    mock(JwtService.class)
             );
         }
 
@@ -139,7 +141,9 @@ public class VPRequestServiceRedisCachingTest {
 
         VPRequestCreateDto createDto = new VPRequestCreateDto(clientId, transactionId, null, nonce, null);
 
-        AuthorizationRequestResponseDto authorizationRequestResponseDto = new AuthorizationRequestResponseDto(clientId, null, null, nonce);
+        AuthorizationRequestResponseDto authorizationRequestResponseDto =
+                new AuthorizationRequestResponseDto(clientId, null, null,
+                        nonce,null);
         AuthorizationRequestCreateResponse expectedEntity = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
 
         // Mock persistence behavior
@@ -165,7 +169,7 @@ public class VPRequestServiceRedisCachingTest {
                 new AuthorizationRequestCreateResponse(REQUEST_ID,
                         TRANSACTION_ID,
                         new AuthorizationRequestResponseDto(
-                                "client", null, null, "nonce"),
+                                "client", null, null, "nonce", null),
                         Instant.now().plusSeconds(600).toEpochMilli());
 
         // Mock database + config

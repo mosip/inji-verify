@@ -29,6 +29,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -121,7 +122,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         DeferredResult<VPRequestStatusDto> result = service.getStatus("req_id");
 
-        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity) result.getResult()).getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity<?>) Objects.requireNonNull(result.getResult())).getStatusCode());
     }
 
     @Test()
@@ -134,7 +135,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         DeferredResult<VPRequestStatusDto> result = service.getStatus(requestId);
 
-        assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) result.getResult()).getStatus());
+        assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) Objects.requireNonNull(result.getResult())).getStatus());
     }
     @Test
     @DisplayName("Should return JWT string when authorization request and details are valid")
@@ -143,7 +144,9 @@ class VerifiablePresentationRequestServiceImplTest {
         String verifierDid = "did:example:verifier123";
         String expectedJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0In0.signature";
 
-        AuthorizationRequestResponseDto authzDetailsDto = new AuthorizationRequestResponseDto(verifierDid,null,null,null,null);
+        AuthorizationRequestResponseDto authzDetailsDto =
+                new AuthorizationRequestResponseDto(verifierDid,null,null,
+                        null,null);
 
         AuthorizationRequestCreateResponse authzResponse = new AuthorizationRequestCreateResponse(requestId,null,authzDetailsDto,0L);
         when(mockAuthorizationRequestCreateResponseRepository.findById(requestId))
