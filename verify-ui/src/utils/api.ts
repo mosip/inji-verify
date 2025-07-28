@@ -1,5 +1,4 @@
-import { PresentationDefinition } from "../components/openid4vp/SameDeviceVPFlowProps.types";
-import { ApiRequest, QrData, VPRequestBody, VpRequestStatusApi } from "../types/data-types";
+import { ApiRequest, PresentationDefinition, QrData, VPRequestBody, VpRequestStatusApi } from "../types/data-types";
 
 const generateNonce = (): string => {
   const dateTimeString = Date.now().toString();
