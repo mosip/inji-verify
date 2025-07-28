@@ -9,8 +9,6 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
-import io.inji.verify.services.JwtService;
-import io.inji.verify.services.impl.P12FileKeyManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +42,6 @@ public class VPSubmissionServiceRedisCachingTest {
 
     @MockBean
     private VerifiablePresentationRequestService verifiablePresentationRequestService;
-
-    @MockBean
-    private JwtService jwtService;
-
-    @MockBean
-    private P12FileKeyManagementServiceImpl p12FileKeyManagementService;
 
     @BeforeEach
     void clearCache() {
