@@ -30,6 +30,6 @@ public class RedisConfigProperties {
     private int maxSize = 1000;
     private String host = "localhost";
     private int port = 6379;
-    private String password = "";
+    private String password;
     private boolean ssl = false;
 }
