@@ -12,6 +12,7 @@ import com.nimbusds.jose.crypto.Ed25519Signer;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.inji.verify.services.KeyManagementService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class JwtServiceImpl implements JwtService {
 
     @Value("${inji.did.issuer.public.key.uri}")
@@ -69,6 +71,7 @@ public class JwtServiceImpl implements JwtService {
             signedJWT.sign(signer);
             return signedJWT.serialize();
         } catch (ParseException | JOSEException | JsonProcessingException e) {
+            log.error("Error generating JWT: {}", e.getMessage());
             throw new JWTCreationException();
         }
     }
