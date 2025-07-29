@@ -9,5 +9,5 @@ INTERNET_CONNECTIVITY_CHECK_ENDPOINT: "https://dns.google/",
 INTERNET_CONNECTIVITY_CHECK_TIMEOUT: "10000",
 VERIFY_SERVICE_API_URL: "/v1/verify",
 VERIFIABLE_CLAIMS_CONFIG_URL: "/assets/config.json",
-CLIENT_ID: "injiverify.dev-int-inji.mosip.net/",
+CLIENT_ID: "did:web:verify",
 }
