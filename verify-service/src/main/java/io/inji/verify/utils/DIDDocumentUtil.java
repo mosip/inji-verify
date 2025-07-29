@@ -1,7 +1,12 @@
 package io.inji.verify.utils;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.interfaces.EdECPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +17,10 @@ import io.inji.verify.exception.DidGenerationException;
 
 import io.ipfs.multibase.Multibase;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey;
+
+import static io.ipfs.multibase.Base16.bytesToHex;
 
 @Slf4j
 public class DIDDocumentUtil {
@@ -40,9 +49,11 @@ public class DIDDocumentUtil {
         return didDocument;
     }
 
-    private static Map<String, Object> generateEd25519VerificationMethod(PublicKey publicKey, String issuerURI, String issuerPublicKeyURI) {
-        EdECPublicKey edKey = (EdECPublicKey) publicKey;
-        byte[] rawBytes = edKey.getPoint().getY().toByteArray();
+    private static Map<String, Object> generateEd25519VerificationMethod(PublicKey publicKey, String issuerURI, String issuerPublicKeyURI) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+        X509EncodedKeySpec pkSpec = new X509EncodedKeySpec(publicKey.getEncoded());
+        BCEdDSAPublicKey bcEdDSAPublicKey = (BCEdDSAPublicKey) KeyFactory.getInstance("EdDSA", "BC").generatePublic(pkSpec);
+
+        byte[] rawBytes = bcEdDSAPublicKey.getPointEncoding();
         byte[] multicodecBytes = HexFormat.of().parseHex(MULTICODEC_PREFIX);
         byte[] finalBytes = new byte[multicodecBytes.length + rawBytes.length];
         System.arraycopy(multicodecBytes, 0, finalBytes, 0, multicodecBytes.length);
