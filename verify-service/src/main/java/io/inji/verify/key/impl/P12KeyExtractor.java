@@ -13,6 +13,9 @@ import io.inji.verify.key.Extractor;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class P12KeyExtractor implements Extractor {
@@ -23,16 +26,21 @@ public class P12KeyExtractor implements Extractor {
     @Value("${inji.keystore.file.pass}")
     private String keysStorePassword;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
 
     public KeyPair extractKeyPair() {
 
-        try  {
-            FileInputStream p12InputStream = new FileInputStream(p12FilePath);
+        try {
+            Resource resource = resourceLoader.getResource(p12FilePath);
             KeyStore p12Keystore = KeyStore.getInstance("PKCS12");
-            p12Keystore.load(p12InputStream, keysStorePassword.toCharArray());
+            try (FileInputStream inputStream = new FileInputStream(resource.getFile())) {
+                p12Keystore.load(inputStream, keysStorePassword.toCharArray());
+            }
 
             String targetAlias = null;
             Enumeration<String> aliases = p12Keystore.aliases();
