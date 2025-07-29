@@ -73,7 +73,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         params.set("response_mode", "direct_post");
         params.set("response_type", data.authorizationDetails.responseType);
         params.set("nonce", data.authorizationDetails.nonce);
-        params.set("response_uri", data.authorizationDetails.responseUri);
+        params.set("response_uri", verifyServiceUrl + data.authorizationDetails.responseUri);
         if (data.authorizationDetails.presentationDefinitionUri) {
           params.set(
             "presentation_definition_uri",
