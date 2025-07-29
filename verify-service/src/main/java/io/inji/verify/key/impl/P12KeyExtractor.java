@@ -1,6 +1,6 @@
 package io.inji.verify.key.impl;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -38,7 +38,7 @@ public class P12KeyExtractor implements Extractor {
         try {
             Resource resource = resourceLoader.getResource(p12FilePath);
             KeyStore p12Keystore = KeyStore.getInstance("PKCS12");
-            try (FileInputStream inputStream = new FileInputStream(resource.getFile())) {
+            try (InputStream inputStream = resource.getInputStream()) {
                 p12Keystore.load(inputStream, keysStorePassword.toCharArray());
             }
 
