@@ -20,7 +20,7 @@ class VPDefinitionServiceImplTest {
     public void shouldReturnValidPresentationDefinitionForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
-        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true); // or false, based on logic
+        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true);
 
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
@@ -45,7 +45,7 @@ class VPDefinitionServiceImplTest {
     public void shouldReturnNullIfPresentationDefinitionIsNotFoundForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
         RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
-        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true); // or false
+        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true);
 
         when(mockRepository.findById("non_existent_id")).thenReturn(Optional.empty());
 
