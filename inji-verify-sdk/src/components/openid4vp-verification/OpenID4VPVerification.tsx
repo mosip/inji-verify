@@ -233,6 +233,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setQrCodeData(null);
     setShowWallets(false);
     setLoading(false);
+    setSelectedWallet(null);
+    hasInitializedRef.current = false;
   };
 
   const handleTriggerClick = () => {
