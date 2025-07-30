@@ -98,22 +98,20 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         if(vpRequestCreate.getClientId().startsWith("did")){
             return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(VP_REQUEST_URI, authorizationRequestCreateResponse.getRequestId()));
         }
-        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(),null);
 
+        return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(),null);
     }
 
     @Override
     public VPRequestStatusDto getCurrentRequestStatus(String requestId) {
-        VPSubmission vpSubmission = vpSubmissionRepository.findById(requestId).orElse(null);
-
-        if (vpSubmission != null) return new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED);
-
-        Long expiresAt = authorizationRequestCreateResponseRepository.findById(requestId).map(AuthorizationRequestCreateResponse::getExpiresAt).orElse(null);
-        if (expiresAt == null) return null;
-
-        if (Instant.now().toEpochMilli() > expiresAt) return new VPRequestStatusDto(VPRequestStatus.EXPIRED);
-
-        return new VPRequestStatusDto(VPRequestStatus.ACTIVE);
+        return vpSubmissionRepository.findById(requestId)
+                .map(vpSubmission -> new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED))
+                .or(() -> authorizationRequestCreateResponseRepository.findById(requestId)
+                        .map(AuthorizationRequestCreateResponse::getExpiresAt)
+                        .map(expiresAt -> Instant.now().toEpochMilli() > expiresAt
+                                ? new VPRequestStatusDto(VPRequestStatus.EXPIRED)
+                                : new VPRequestStatusDto(VPRequestStatus.ACTIVE)))
+                .orElse(null);
     }
 
     @Override
