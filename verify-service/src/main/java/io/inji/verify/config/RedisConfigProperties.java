@@ -9,19 +9,16 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class RedisConfigProperties {
     private boolean vcSubmissionCacheEnabled;
-    private boolean vcWithVerificationCacheEnabled;
     private boolean vpSubmissionCacheEnabled;
     private boolean authRequestCacheEnabled;
     private boolean presentationDefinitionCacheEnabled;
 
     private boolean vcSubmissionPersisted;
-    private boolean vcWithVerificationPersisted;
     private boolean vpSubmissionPersisted;
     private boolean authRequestPersisted;
     private boolean presentationDefinitionPersisted;
 
     private int vcSubmissionCacheTtlHours;
-    private int vcWithVerificationCacheTtlHours;
     private int vpSubmissionCacheTtlHours;
     private int authRequestCacheTtlHours;
     private int presentationDefinitionCacheTtlHours;

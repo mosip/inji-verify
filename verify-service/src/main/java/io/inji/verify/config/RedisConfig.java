@@ -37,10 +37,6 @@ public class RedisConfig {
                 builder.withCacheConfiguration("vcSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig().entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVcSubmissionCacheTtlHours())));
             }
-            if (redisConfigProperties.isVcWithVerificationCacheEnabled()) {
-                builder.withCacheConfiguration("vcWithVerificationCache",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVcWithVerificationCacheTtlHours())));
-            }
             if (redisConfigProperties.isVpSubmissionCacheEnabled()) {
                 builder.withCacheConfiguration("vpSubmissionCache",
                         RedisCacheConfiguration.defaultCacheConfig().entryTtl(java.time.Duration.ofHours(redisConfigProperties.getVpSubmissionCacheTtlHours())));
