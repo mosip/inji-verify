@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @Slf4j
 @CrossOrigin(origins = "*")
-public class WellKnownController {
+public class DidWebController {
 
     @Value("${inji.did.issuer.uri}")
     String issuerURI;
@@ -30,31 +30,19 @@ public class WellKnownController {
 
     Extractor extractor;
 
-    public WellKnownController(Extractor extractor) {
+    public DidWebController(Extractor extractor) {
         this.extractor = extractor;
     }
 
     @GetMapping(path = "/did.json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> wellKnown() {
+    public ResponseEntity<Object> generateDid() {
 
         try {
             KeyPair keyPair = extractor.extractKeyPair();
-            // return ResponseEntity
-            //         .status(HttpStatus.OK)
-            //         .body(DIDDocumentUtil.generateDIDDocument(keyPair.getPublic(), issuerURI, issuerPublicKeyURI));
-            return ResponseEntity.ok("""
-        {
-          "@context": "https://www.w3.org/ns/did/v1",
-          "id": "did:web:injiverify.dev-int-inji.mosip.net:v1:verify",
-          "verificationMethod": [{
-            "id": "did:web:injiverify.dev-int-inji.mosip.net:v1:verify#key-1",
-            "type": "Ed25519VerificationKey2018",
-            "controller": "did:web:injiverify.dev-int-inji.mosip.net:v1:verify",
-            "publicKeyBase58": "..."
-          }],
-          "authentication": ["did:web:injiverify.dev-int-inji.mosip.net:v1:verify#key-1"]
-        }
-        """);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(DIDDocumentUtil.generateDIDDocument(keyPair.getPublic(), issuerURI, issuerPublicKeyURI));
+
         } catch (Exception e) {
             log.error("Error extracting KeyPair: {}", e.getMessage());
         }
