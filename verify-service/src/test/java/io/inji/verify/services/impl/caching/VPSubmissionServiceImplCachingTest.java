@@ -137,11 +137,11 @@ public class VPSubmissionServiceImplCachingTest {
     }
 
     @Test
-    void getVPResult_shouldNotUseCacheForDifferentTransactionId() throws VPSubmissionNotFoundException {
+    void getVPResult_shouldNotUseCacheForDifferentRequestIds() throws VPSubmissionNotFoundException {
         String TEST_VP_TOKEN = "vpToken123";
-        List<String> requestIds = List.of("req123");
-        String transactionId1 = "tx123";
-        String transactionId2 = "tx456";
+        List<String> requestIds1 = List.of("req123");
+        List<String> requestIds2 = List.of("req123");
+        String transactionId = "tx123";
 
         PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
                 "id",
@@ -150,19 +150,21 @@ public class VPSubmissionServiceImplCachingTest {
         );
 
         VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
-        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+        when(vpSubmissionRepository.findAllById(requestIds1)).thenReturn(List.of(vpSubmission));
+        when(vpSubmissionRepository.findAllById(requestIds2)).thenReturn(List.of(vpSubmission));
 
         VPTokenResultDto result1 =
-                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId1);
+                verifiablePresentationSubmissionService.getVPResult(requestIds1, transactionId);
 
         assertNotNull(result1);
 
         VPTokenResultDto result2 =
-                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId2);
+                verifiablePresentationSubmissionService.getVPResult(requestIds2, transactionId);
 
         assertNotNull(result2);
 
-        verify(vpSubmissionRepository, times(2)).findAllById(requestIds);
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds1);
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds2);
         assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
     }
 }

@@ -53,7 +53,7 @@ public class VPSubmissionServiceRedisCachingTest {
     }
 
     @Test
-    void shouldCacheVPResultByTransactionId() throws VPSubmissionNotFoundException {
+    void shouldCacheVPResultByFirstRequestId() throws VPSubmissionNotFoundException {
         String transactionId = "tx-001";
         List<String> requestIds = List.of("req-001");
 
@@ -70,25 +70,28 @@ public class VPSubmissionServiceRedisCachingTest {
 
         verify(vpSubmissionRepository, times(1)).findAllById(requestIds);
 
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(transactionId);
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(requestIds.getFirst());
         assertNotNull(cached);
-        System.out.println("✔ Redis cache contains key: vpSubmissionCache::" + transactionId);
+        System.out.println("✔ Redis cache contains key: vpSubmissionCache::" + requestIds.getFirst());
     }
 
     @Test
-    void shouldCallRepoForDifferentTransactionIds() throws VPSubmissionNotFoundException {
-        String tx1 = "tx-111", tx2 = "tx-222";
-        List<String> requestIds = List.of("req-002");
+    void shouldCallRepoForDifferentRequestIds() throws VPSubmissionNotFoundException {
+        String tx1 = "tx-111";
+        List<String> requestIds1 = List.of("req-001", "req-002");
+        List<String> requestIds2 = List.of("req-003", "req-004");
 
         PresentationSubmissionDto submissionDto = new PresentationSubmissionDto("id", "dId", new ArrayList<>());
         VPSubmission mockSubmission = new VPSubmission("state", "vpToken", submissionDto);
 
-        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(mockSubmission));
+        when(vpSubmissionRepository.findAllById(requestIds1)).thenReturn(List.of(mockSubmission));
+        when(vpSubmissionRepository.findAllById(requestIds2)).thenReturn(List.of(mockSubmission));
 
-        verifiablePresentationSubmissionService.getVPResult(requestIds, tx1);
-        verifiablePresentationSubmissionService.getVPResult(requestIds, tx2);
+        verifiablePresentationSubmissionService.getVPResult(requestIds1, tx1);
+        verifiablePresentationSubmissionService.getVPResult(requestIds2, tx1);
 
-        verify(vpSubmissionRepository, times(2)).findAllById(requestIds);
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds1);
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds2);
     }
 
     @Test
@@ -101,7 +104,8 @@ public class VPSubmissionServiceRedisCachingTest {
         assertThrows(VPSubmissionNotFoundException.class, () ->
                 verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId));
 
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(transactionId);
+        Cache.ValueWrapper cached =
+                Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(requestIds.getFirst());
         assertNull(cached, "Expected cache miss for non-existent submission.");
     }
 
