@@ -55,14 +55,13 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    @Cacheable(value = "vcWithVerificationCache",
+    @Cacheable(value = "vcSubmissionCache",
             key = "#transactionId",
             unless = "#result == null",
-            condition = "@redisConfigProperties.vcWithVerificationCacheEnabled")
+            condition = "@redisConfigProperties.vcSubmissionCacheEnabled")
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
-        if (!redisConfigProperties.isVcWithVerificationPersisted()) {
-            log.warn("VC with verification is not persisted, cannot retrieve " +
-                    "for transaction ID from repository: {}", transactionId);
+        if (!redisConfigProperties.isVcSubmissionPersisted()) {
+            log.warn("VC submission is not persisted, cannot retrieve verification status for transaction ID: {}", transactionId);
             return null;
         }
 
