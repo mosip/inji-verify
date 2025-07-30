@@ -48,6 +48,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         this.redisConfigProperties = redisConfigProperties;
     }
 
+    @Override
     @CachePut(value = "vpSubmissionCache", key = "#vpSubmissionDto.state",
             unless = "#result == null",
             condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
@@ -60,10 +61,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
 
         VPSubmission vpSubmission = new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission());
-
-        log.info("Processing VP submission with state: {}", vpSubmissionDto.getState());
-        log.info("Processing VP submission with token: {}", vpSubmissionDto.getVpToken());
-        log.info("Processing VP submission with presentationSubmission: {}", vpSubmissionDto.getPresentationSubmission());
 
         if (persist) {
             log.info("Persisting VP submission to database");
@@ -147,9 +144,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
-
-        log.info("Retrieving VP submission for transactionId: {}", transactionId);
-        log.info("Retrieving VP submission for requestIds: {}", requestIds);
 
         if (vpSubmissions.isEmpty()) {
             throw new VPSubmissionNotFoundException();
