@@ -3,11 +3,12 @@ package io.inji.verify.services;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.models.VPSubmission;
 
 import java.util.List;
 
 public interface VerifiablePresentationSubmissionService {
-    VPSubmissionDto submit(VPSubmissionDto vpSubmissionDto);
+    VPSubmission submit(VPSubmissionDto vpSubmissionDto);
 
     VPTokenResultDto getVPResult(List<String> requestId, String transactionId) throws VPSubmissionNotFoundException;
 }
