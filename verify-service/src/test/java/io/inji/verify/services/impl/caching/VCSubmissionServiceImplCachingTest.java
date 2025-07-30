@@ -40,10 +40,7 @@ class VCSubmissionServiceImplCachingTest {
     static class CachingTestConfig {
         @Bean
         public CacheManager cacheManager() {
-            return new ConcurrentMapCacheManager(
-                    "vcSubmissionCache",
-                    "vcWithVerificationCache"
-            );
+            return new ConcurrentMapCacheManager("vcSubmissionCache");
         }
 
         @Bean
@@ -60,9 +57,7 @@ class VCSubmissionServiceImplCachingTest {
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties props = new RedisConfigProperties();
             props.setVcSubmissionCacheEnabled(true);
-            props.setVcWithVerificationCacheEnabled(true);
             props.setVcSubmissionPersisted(true);
-            props.setVcWithVerificationPersisted(true);
             return props;
         }
 
@@ -90,13 +85,12 @@ class VCSubmissionServiceImplCachingTest {
 
     @BeforeEach
     void setUp() {
-        cache("vcSubmissionCache").clear();
-        cache("vcWithVerificationCache").clear();
+        cache().clear();
         reset(vcSubmissionRepository, credentialsVerifier);
     }
 
-    private Cache cache(String name) {
-        return Objects.requireNonNull(cacheManager.getCache(name), "Cache should not be null: " + name);
+    private Cache cache() {
+        return Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache"), "Cache should not be null: " + "vcSubmissionCache");
     }
 
     @Test
@@ -139,7 +133,7 @@ class VCSubmissionServiceImplCachingTest {
         VCSubmissionResponseDto result = vcSubmissionService.submitVC(dto);
         assertNotNull(result);
 
-        VCSubmissionResponseDto cached = cache("vcSubmissionCache")
+        VCSubmissionResponseDto cached = cache()
                 .get(result.getTransactionId(), VCSubmissionResponseDto.class);
         assertNotNull(cached);
     }

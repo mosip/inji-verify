@@ -87,7 +87,6 @@ class VCSubmissionServiceRedisCachingTest {
     @BeforeEach
     void clearCaches() {
         Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).clear();
-        Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).clear();
     }
 
     @Test
@@ -117,8 +116,8 @@ class VCSubmissionServiceRedisCachingTest {
         String vc = "{\"vc\":\"test\"}";
         VCSubmission submission = new VCSubmission(transactionId, vc);
 
-        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
 
         when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.of(submission));
 
@@ -134,7 +133,7 @@ class VCSubmissionServiceRedisCachingTest {
 
         verify(vcSubmissionRepository, times(1)).findById(transactionId);
 
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache"))
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache"))
                 .get(transactionId);
         assertNotNull(cached);
     }
@@ -158,8 +157,8 @@ class VCSubmissionServiceRedisCachingTest {
     void shouldReturnNull_whenPersistenceFlagTrue_getVcWithVerification() {
         String transactionId = "txn-persisted";
 
-        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
 
         VCSubmissionVerificationStatusDto result = vcSubmissionService.getVcWithVerification(transactionId);
         assertNull(result);
@@ -187,14 +186,14 @@ class VCSubmissionServiceRedisCachingTest {
     void shouldReturnNull_whenVcSubmissionNotFound() {
         String transactionId = "txn-missing";
 
-        when(redisConfigProperties.isVcWithVerificationCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(false);
+        when(redisConfigProperties.isVcSubmissionCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(false);
         when(vcSubmissionRepository.findById(transactionId)).thenReturn(Optional.empty());
 
         VCSubmissionVerificationStatusDto result = vcSubmissionService.getVcWithVerification(transactionId);
         assertNull(result);
 
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcWithVerificationCache")).get(transactionId);
+        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vcSubmissionCache")).get(transactionId);
         assertNull(cached);
     }
 }

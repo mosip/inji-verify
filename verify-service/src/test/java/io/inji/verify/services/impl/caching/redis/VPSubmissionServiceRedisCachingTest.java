@@ -9,6 +9,7 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Slf4j
 public class VPSubmissionServiceRedisCachingTest {
 
     @Autowired
@@ -118,6 +120,8 @@ public class VPSubmissionServiceRedisCachingTest {
         verify(verifiablePresentationRequestService, times(1)).invokeVpRequestStatusListener(state);
 
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).get(state);
+        log.info("Cache state: {}", cached);
+        System.out.println("Cache state: {}" + cached);
         assertNotNull(cached, "Expected cache entry to be present when cache enabled");
     }
 

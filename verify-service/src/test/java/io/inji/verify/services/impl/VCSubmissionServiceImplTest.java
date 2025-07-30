@@ -83,7 +83,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnSuccessStatus_whenVerificationPasses() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
@@ -106,7 +106,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnExpiredStatus_whenVerificationPassesButVCIsExpired() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
@@ -129,7 +129,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnNull_whenPersistenceIsDisabled() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(false);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(false);
 
         VCSubmissionVerificationStatusDto resultDto =
                 vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
@@ -141,7 +141,7 @@ public class VCSubmissionServiceImplTest {
 
     @Test
     void getVcWithVerification_shouldReturnNull_whenVCSubmissionNotFound() {
-        when(redisConfigProperties.isVcWithVerificationPersisted()).thenReturn(true);
+        when(redisConfigProperties.isVcSubmissionPersisted()).thenReturn(true);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.empty());
 
         VCSubmissionVerificationStatusDto resultDto = vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
