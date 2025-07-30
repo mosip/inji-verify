@@ -24,6 +24,7 @@ public class VPDefinitionServiceImpl implements VPDefinitionService {
     @Override
     @Cacheable(value = "presentationDefinitionCache",
             key = "#id",
+            unless = "#result == null",
             condition = "@redisConfigProperties.presentationDefinitionCacheEnabled")
     public VPDefinitionResponseDto getPresentationDefinition(String id) {
         if (!redisConfigProperties.isPresentationDefinitionPersisted()) {
