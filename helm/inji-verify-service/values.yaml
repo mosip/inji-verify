@@ -241,6 +241,12 @@ updateStrategy:
 ##     value: "bar"
 ##
 extraEnvVars: |
+  - name: INJI_VP_SUBMISSION_BASE_URL
+    value: "https://injiverify.dev-int-inji.mosip.net/v1/verify"
+  - name: INJI_DID_ISSUER_URI
+    value: "did:web:injiverify.dev-int-inji.mosip.net:v1:verify"
+  - name: INJI_DID_ISSUER_PUBLIC_KEY_URI
+    value: "did:web:injiverify.dev-int-inji.mosip.net:v1:verify#key-0"
   - name: DATABASE_HOST
     valueFrom:
       configMapKeyRef:
@@ -460,7 +466,7 @@ metrics:
   prometheusRule:
     enabled: false
     additionalLabels: {}
-    namespace: ''
+    namespace: ""
     ## List of rules, used as template by Helm.
     ## These are just examples rules inspired from https://awesome-prometheus-alerts.grep.to/rules.html
     # rules:
