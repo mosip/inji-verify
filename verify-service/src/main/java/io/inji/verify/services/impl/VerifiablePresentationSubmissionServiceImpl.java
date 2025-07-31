@@ -20,6 +20,7 @@ import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.cache.annotation.CachePut;
@@ -87,34 +88,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 throw new TokenMatchingFailedException();
             }
 
-            Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
-            List<JSONObject> vpTokens = new ArrayList<>();
-
-            if (vpTokenRaw instanceof String) {
-                String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
-                vpTokenRaw = new JSONTokener(decodedJson).nextValue();
-            }
-
-            if (vpTokenRaw instanceof JSONObject) {
-                vpTokens.add((JSONObject) vpTokenRaw);
-            } else if (vpTokenRaw instanceof JSONArray array) {
-                for (int i = 0; i < array.length(); i++) {
-                    Object item = array.get(i);
-
-                    if (item instanceof String) {
-                        String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
-                        item = new JSONTokener(decodedJson).nextValue();
-                    }
-
-                    if (item instanceof JSONObject) {
-                        vpTokens.add((JSONObject) item);
-                    } else {
-                        throw new IllegalArgumentException("Invalid item in vp_token array");
-                    }
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid vp_token format");
-            }
+            List<JSONObject> vpTokens = parseVpTokens(vpSubmission);
 
             log.info("Processing VP verification");
             for (JSONObject vpToken : vpTokens) {
@@ -136,6 +110,39 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             log.error("Failed to verify VP submission", e);
             return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
         }
+    }
+
+    @NotNull
+    private static List<JSONObject> parseVpTokens(VPSubmission vpSubmission) {
+        Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
+        List<JSONObject> vpTokens = new ArrayList<>();
+
+        if (vpTokenRaw instanceof String) {
+            String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
+            vpTokenRaw = new JSONTokener(decodedJson).nextValue();
+        }
+
+        if (vpTokenRaw instanceof JSONObject) {
+            vpTokens.add((JSONObject) vpTokenRaw);
+        } else if (vpTokenRaw instanceof JSONArray array) {
+            for (int i = 0; i < array.length(); i++) {
+                Object item = array.get(i);
+
+                if (item instanceof String) {
+                    String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
+                    item = new JSONTokener(decodedJson).nextValue();
+                }
+
+                if (item instanceof JSONObject) {
+                    vpTokens.add((JSONObject) item);
+                } else {
+                    throw new IllegalArgumentException("Invalid item in vp_token array");
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid vp_token format");
+        }
+        return vpTokens;
     }
 
     @Override
