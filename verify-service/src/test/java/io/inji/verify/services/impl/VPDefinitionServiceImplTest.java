@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
@@ -19,8 +18,6 @@ class VPDefinitionServiceImplTest {
     @Test
     public void shouldReturnValidPresentationDefinitionForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
-        RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
-        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true);
 
         List<InputDescriptorDto> mockInputDescriptorDtos = mock();
         List<SubmissionRequirementDto> mockSubmissionRequirementDtos = mock();
@@ -31,7 +28,7 @@ class VPDefinitionServiceImplTest {
 
         when(mockRepository.findById("test_id")).thenReturn(Optional.of(mockPresentationDefinition));
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository, mockConfig);
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("test_id");
 
@@ -44,12 +41,10 @@ class VPDefinitionServiceImplTest {
     @Test
     public void shouldReturnNullIfPresentationDefinitionIsNotFoundForGivenId() {
         PresentationDefinitionRepository mockRepository = mock(PresentationDefinitionRepository.class);
-        RedisConfigProperties mockConfig = mock(RedisConfigProperties.class);
-        when(mockConfig.isPresentationDefinitionPersisted()).thenReturn(true);
 
         when(mockRepository.findById("non_existent_id")).thenReturn(Optional.empty());
 
-        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository, mockConfig);
+        VPDefinitionServiceImpl service = new VPDefinitionServiceImpl(mockRepository);
 
         VPDefinitionResponseDto result = service.getPresentationDefinition("non_existent_id");
 

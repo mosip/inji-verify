@@ -45,7 +45,6 @@ class VPDefinitionServiceRedisCachingTest {
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
             when(mockProps.isPresentationDefinitionCacheEnabled()).thenReturn(true);
-            when(mockProps.isPresentationDefinitionPersisted()).thenReturn(true);
             return mockProps;
         }
 
@@ -63,11 +62,8 @@ class VPDefinitionServiceRedisCachingTest {
         }
 
         @Bean
-        public VPDefinitionService vpDefinitionService(
-                PresentationDefinitionRepository repo,
-                RedisConfigProperties redisConfigProperties
-        ) {
-            return new VPDefinitionServiceImpl(repo, redisConfigProperties);
+        public VPDefinitionService vpDefinitionService(PresentationDefinitionRepository repo) {
+            return new VPDefinitionServiceImpl(repo);
         }
     }
 
@@ -94,7 +90,6 @@ class VPDefinitionServiceRedisCachingTest {
         String testId = "test_id";
 
         when(redisConfigProperties.isPresentationDefinitionCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(true);
 
         PresentationDefinition pd = new PresentationDefinition(
                 testId, List.of(), "name", "purpose",
@@ -117,16 +112,6 @@ class VPDefinitionServiceRedisCachingTest {
     }
 
     @Test
-    void shouldReturnNullIfPersistenceDisabled() {
-        when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(false);
-
-        VPDefinitionResponseDto response = vpDefinitionService.getPresentationDefinition("any_id");
-        assertNull(response);
-
-        verify(presentationDefinitionRepository, never()).findById(anyString());
-    }
-
-    @Test
     void shouldReturnNullIfNotFoundInRepository() {
         String id = "missing_id";
         when(presentationDefinitionRepository.findById(id)).thenReturn(Optional.empty());
@@ -139,7 +124,6 @@ class VPDefinitionServiceRedisCachingTest {
     void shouldNotCacheWhenCacheIsDisabled() {
         String testId = "non_cached_id";
         when(redisConfigProperties.isPresentationDefinitionCacheEnabled()).thenReturn(false);
-        when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(true);
 
         FormatDto formatDto = new FormatDto(null, null, null);
         PresentationDefinition pd = new PresentationDefinition(
@@ -162,34 +146,5 @@ class VPDefinitionServiceRedisCachingTest {
 
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("presentationDefinitionCache")).get(testId);
         assertNull(cached);
-    }
-
-    @Test
-    void shouldCacheOnlyWhenBothFlagsEnabled() {
-        when(redisConfigProperties.isPresentationDefinitionCacheEnabled()).thenReturn(true);
-        when(redisConfigProperties.isPresentationDefinitionPersisted()).thenReturn(true);
-
-        String testId = "conditional_id";
-        FormatDto formatDto = new FormatDto(null, null, null);
-        PresentationDefinition pd = new PresentationDefinition(
-                testId,
-                List.of(),
-                "name",
-                "purpose",
-                formatDto,
-                List.of()
-        );
-
-        when(presentationDefinitionRepository.findById(testId)).thenReturn(Optional.of(pd));
-
-        VPDefinitionResponseDto call1 = vpDefinitionService.getPresentationDefinition(testId);
-        VPDefinitionResponseDto call2 = vpDefinitionService.getPresentationDefinition(testId);
-
-        verify(presentationDefinitionRepository, times(1)).findById(testId);
-        assertNotNull(call1);
-        assertNotNull(call2);
-
-        Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("presentationDefinitionCache")).get(testId);
-        assertNotNull(cached);
     }
 }

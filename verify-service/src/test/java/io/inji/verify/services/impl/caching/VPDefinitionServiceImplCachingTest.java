@@ -47,15 +47,12 @@ public class VPDefinitionServiceImplCachingTest {
         public RedisConfigProperties redisConfigProperties() {
             RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
             when(mockProps.isPresentationDefinitionCacheEnabled()).thenReturn(true);
-            when(mockProps.isPresentationDefinitionPersisted()).thenReturn(true);
             return mockProps;
         }
 
         @Bean
-        public VPDefinitionService vpDefinitionServiceImpl(
-                PresentationDefinitionRepository repository,
-                RedisConfigProperties redisConfigProperties) {
-            return new VPDefinitionServiceImpl(repository, redisConfigProperties);
+        public VPDefinitionService vpDefinitionServiceImpl(PresentationDefinitionRepository repository) {
+            return new VPDefinitionServiceImpl(repository);
         }
     }
 
