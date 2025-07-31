@@ -1,7 +1,8 @@
-package io.inji.verify.services;
+package io.inji.verify.services.impl.caching;
 
 import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
+import io.inji.verify.services.AuthorizationRequestCacheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
