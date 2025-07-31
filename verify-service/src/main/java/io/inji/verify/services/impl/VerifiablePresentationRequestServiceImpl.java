@@ -124,14 +124,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             condition = "@redisConfigProperties.authRequestCacheEnabled")
     public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
         String requestId = getLatestRequestIdFor(transactionId).getFirst();
-        if (requestId == null) return null;
+        if (requestId == null || !redisConfigProperties.isAuthRequestPersisted()) return null;
 
-        if (redisConfigProperties.isAuthRequestPersisted()) {
-            log.info("Fetching persisted authorization request with transaction ID: {}", transactionId);
-            return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
-        }
-
-        return null;
+        log.info("Fetching persisted authorization request with transaction ID: {}", transactionId);
+        return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
     }
 
     private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
