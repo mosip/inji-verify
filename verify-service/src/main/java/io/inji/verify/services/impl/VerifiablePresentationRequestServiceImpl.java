@@ -13,17 +13,16 @@ import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
-import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.AuthorizationRequestCacheService;
 import io.inji.verify.services.JwtService;
 import io.inji.verify.shared.Constants;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.utils.SecurityUtils;
 import io.inji.verify.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +46,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     final AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     final VPSubmissionRepository vpSubmissionRepository;
     final RedisConfigProperties redisConfigProperties;
+    final AuthorizationRequestCacheService authorizationRequestCacheService;
     final JwtService jwtService;
 
     @Value("${inji.vp-request.long-polling-timeout}")
@@ -57,19 +57,16 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
-    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, RedisConfigProperties redisConfigProperties,JwtService jwtService) {
+    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, RedisConfigProperties redisConfigProperties,JwtService jwtService, AuthorizationRequestCacheService authorizationRequestCacheService) {
         this.presentationDefinitionRepository = presentationDefinitionRepository;
         this.authorizationRequestCreateResponseRepository = authorizationRequestCreateResponseRepository;
         this.vpSubmissionRepository = vpSubmissionRepository;
         this.jwtService = jwtService;
         this.redisConfigProperties = redisConfigProperties;
+        this.authorizationRequestCacheService = authorizationRequestCacheService;
     }
 
     @Override
-    @CachePut(value = "authorizationRequestCache",
-            key = "#result.transactionId",
-            unless = "#result == null",
-            condition = "@redisConfigProperties.authRequestCacheEnabled")
     public VPRequestResponseDto createAuthorizationRequest(VPRequestCreateDto vpRequestCreate) throws PresentationDefinitionNotFoundException {
         log.info("Creating authorization request");
         String transactionId = vpRequestCreate.getTransactionId() != null ? vpRequestCreate.getTransactionId() : Utils.generateID(Constants.TRANSACTION_ID_PREFIX);
@@ -88,6 +85,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                 .orElseGet(() -> new AuthorizationRequestResponseDto(vpRequestCreate.getClientId(), null, vpRequestCreate.getPresentationDefinition(), nonce, responseUri));
 
         AuthorizationRequestCreateResponse authorizationRequestCreateResponse = new AuthorizationRequestCreateResponse(requestId, transactionId, authorizationRequestResponseDto, expiresAt);
+        authorizationRequestCacheService.cacheAuthorizationRequest(authorizationRequestCreateResponse);
 
         if (redisConfigProperties.isAuthRequestPersisted()) {
             log.info("Persisting authorization request with transaction ID: {}", transactionId);
