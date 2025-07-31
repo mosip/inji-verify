@@ -16,7 +16,6 @@ public class RedisConfigProperties {
     private boolean vcSubmissionPersisted;
     private boolean vpSubmissionPersisted;
     private boolean authRequestPersisted;
-    private boolean presentationDefinitionPersisted;
 
     private int vcSubmissionCacheTtlHours;
     private int vpSubmissionCacheTtlHours;
