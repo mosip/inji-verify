@@ -18,6 +18,7 @@ import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.AuthorizationRequestCacheService;
 import io.inji.verify.services.JwtService;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,6 +40,7 @@ class VerifiablePresentationRequestServiceImplTest {
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
     static VPSubmissionRepository mockVPSubmissionRepository;
     static JwtService mockJwtService;
+    static AuthorizationRequestCacheService mockCacheService;
 
     @BeforeAll
     public static void beforeAll() {
@@ -49,13 +51,15 @@ class VerifiablePresentationRequestServiceImplTest {
         when(mockRedisConfig.isAuthRequestPersisted()).thenReturn(false);
         when(mockRedisConfig.isAuthRequestCacheEnabled()).thenReturn(false);
         mockJwtService = mock(JwtService.class);
+        mockCacheService = mock(AuthorizationRequestCacheService.class);
 
         service = new VerifiablePresentationRequestServiceImpl(
                 mockPresentationDefinitionRepository,
                 mockAuthorizationRequestCreateResponseRepository,
                 mockVPSubmissionRepository,
                 mockRedisConfig,
-                mockJwtService
+                mockJwtService,
+                mockCacheService
         );
     }
 

@@ -3,6 +3,7 @@ package io.inji.verify.services.impl.caching;
 import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
+import io.inji.verify.services.AuthorizationRequestCacheService;
 import io.inji.verify.services.JwtService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
@@ -17,12 +18,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -51,13 +50,15 @@ class VPRequestServiceImplCachingTest {
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
                 AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository,
                 RedisConfigProperties redisConfigProperties,
-                JwtService jwtService) {
+                JwtService jwtService,
+                AuthorizationRequestCacheService authorizationRequestCacheService) {
             return new VerifiablePresentationRequestServiceImpl(
                     null,
                     authorizationRequestCreateResponseRepository,
                     null,
                     redisConfigProperties,
-                    jwtService
+                    jwtService,
+                    authorizationRequestCacheService
             );
         }
     }
@@ -70,6 +71,9 @@ class VPRequestServiceImplCachingTest {
 
     @MockBean
     private JwtService jwtService;
+
+    @MockBean
+    private AuthorizationRequestCacheService authorizationRequestCacheService;
 
     private static final String TRANSACTION_ID = "test-transaction-id";
     private static final String REQUEST_ID = "test-request-id";
@@ -99,9 +103,8 @@ class VPRequestServiceImplCachingTest {
 
     @Test
     void shouldHandleEmptyResponse() {
-        List<AuthorizationRequestCreateResponse> emptyList = Collections.emptyList();
         when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
-                .thenReturn(emptyList);
+                .thenReturn(Collections.emptyList());
 
         assertThrows(NoSuchElementException.class, () ->
                 service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
