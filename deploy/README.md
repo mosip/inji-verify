@@ -10,6 +10,7 @@
   ```
    cd db_scripts
   ./init_db.sh
+  ```
   
 ## Install
 * Run `install-all.sh` to deploy inji verify services.
