@@ -31,12 +31,12 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringJUnitConfig
-@EnableCaching
 class VCSubmissionServiceImplCachingTest {
 
     private final String TEST_TRANSACTION_ID = "transactionId12345";
 
     @TestConfiguration
+    @EnableCaching
     static class CachingTestConfig {
         @Bean
         public CacheManager cacheManager() {

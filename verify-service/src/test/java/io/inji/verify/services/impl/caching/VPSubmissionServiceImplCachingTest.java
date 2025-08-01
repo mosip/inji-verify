@@ -31,13 +31,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringJUnitConfig
-@EnableCaching
 public class VPSubmissionServiceImplCachingTest {
 
     @Autowired
     private VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
 
     @TestConfiguration
+    @EnableCaching
     static class CachingTestConfig {
 
         @Bean

@@ -27,10 +27,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringJUnitConfig
-@EnableCaching
 public class VPDefinitionServiceImplCachingTest {
 
     @TestConfiguration
+    @EnableCaching
     static class CachingTestConfig {
 
         @Bean
