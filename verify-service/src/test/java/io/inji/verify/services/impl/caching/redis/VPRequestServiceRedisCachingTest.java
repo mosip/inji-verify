@@ -27,19 +27,15 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.test.context.ActiveProfiles;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class VPRequestServiceRedisCachingTest {
 
     @Autowired

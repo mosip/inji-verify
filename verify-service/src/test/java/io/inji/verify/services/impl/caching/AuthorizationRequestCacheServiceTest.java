@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl.caching;
 
-import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.services.AuthorizationRequestCacheService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ActiveProfiles;
-
+import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class AuthorizationRequestCacheServiceTest {
 
     @Autowired
@@ -22,12 +19,9 @@ public class AuthorizationRequestCacheServiceTest {
     @Autowired
     private AuthorizationRequestCacheService cacheService;
 
-    @Autowired
-    private RedisConfigProperties redisConfigProperties;
-
     @BeforeEach
     void clearCache() {
-        cacheManager.getCache("authorizationRequestCache").clear();
+        Objects.requireNonNull(cacheManager.getCache("authorizationRequestCache")).clear();
     }
 
     @Test
@@ -38,7 +32,7 @@ public class AuthorizationRequestCacheServiceTest {
 
         cacheService.cacheAuthorizationRequest(response);
 
-        Object cached = cacheManager.getCache("authorizationRequestCache").get("txn-id").get();
+        Object cached = Objects.requireNonNull(Objects.requireNonNull(cacheManager.getCache("authorizationRequestCache")).get("txn-id")).get();
         assertNotNull(cached);
         assertEquals("txn-id", ((AuthorizationRequestCreateResponse) cached).getTransactionId());
     }

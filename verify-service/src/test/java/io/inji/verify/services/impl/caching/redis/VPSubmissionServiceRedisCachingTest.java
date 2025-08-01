@@ -18,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @Slf4j
 public class VPSubmissionServiceRedisCachingTest {
 

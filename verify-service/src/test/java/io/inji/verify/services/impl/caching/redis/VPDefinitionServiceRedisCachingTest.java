@@ -22,7 +22,6 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
@@ -34,7 +33,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = VPDefinitionServiceRedisCachingTest.CachingTestConfig.class)
-@ActiveProfiles("test")
 class VPDefinitionServiceRedisCachingTest {
 
     @TestConfiguration
