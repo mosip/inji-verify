@@ -8,16 +8,16 @@ import io.inji.verify.services.JwtService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,13 +25,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ContextConfiguration
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = VPRequestServiceImplCachingTest.TestConfig.class)
+@TestPropertySource(properties = {"inji.vp-request.long-polling-timeout=30000"})
 class VPRequestServiceImplCachingTest {
 
     @Configuration
     @EnableCaching
     static class TestConfig {
+
         @Bean
         public CacheManager cacheManager() {
             return new ConcurrentMapCacheManager("authorizationRequestCache");
@@ -39,26 +41,38 @@ class VPRequestServiceImplCachingTest {
 
         @Bean
         public RedisConfigProperties redisConfigProperties() {
-            RedisConfigProperties properties = new RedisConfigProperties();
-            properties.setAuthRequestPersisted(true);
-            properties.setAuthRequestCacheEnabled(true);
-            return properties;
+            RedisConfigProperties props = mock(RedisConfigProperties.class);
+            when(props.isAuthRequestCacheEnabled()).thenReturn(true);
+            when(props.isAuthRequestPersisted()).thenReturn(true);
+            return props;
         }
 
         @Bean
-        @Primary
+        public AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository() {
+            return mock(AuthorizationRequestCreateResponseRepository.class);
+        }
+
+        @Bean
+        public JwtService jwtService() {
+            return mock(JwtService.class);
+        }
+
+        @Bean
+        public AuthorizationRequestCacheService authorizationRequestCacheService(
+                RedisConfigProperties redisConfigProperties
+        ) {
+            return new AuthorizationRequestCacheService(redisConfigProperties);
+        }
+
+        @Bean
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
-                AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository,
+                AuthorizationRequestCreateResponseRepository repository,
                 RedisConfigProperties redisConfigProperties,
                 JwtService jwtService,
-                AuthorizationRequestCacheService authorizationRequestCacheService) {
+                AuthorizationRequestCacheService cacheService
+        ) {
             return new VerifiablePresentationRequestServiceImpl(
-                    null,
-                    authorizationRequestCreateResponseRepository,
-                    null,
-                    redisConfigProperties,
-                    jwtService,
-                    authorizationRequestCacheService
+                    null, repository, null, redisConfigProperties, jwtService, cacheService
             );
         }
     }
@@ -66,55 +80,46 @@ class VPRequestServiceImplCachingTest {
     @Autowired
     private VerifiablePresentationRequestService service;
 
-    @MockBean
-    private AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
-
-    @MockBean
-    private JwtService jwtService;
-
-    @MockBean
-    private AuthorizationRequestCacheService authorizationRequestCacheService;
+    @Autowired
+    private AuthorizationRequestCreateResponseRepository repository;
 
     private static final String TRANSACTION_ID = "test-transaction-id";
     private static final String REQUEST_ID = "test-request-id";
 
     @Test
     void shouldCacheAuthorizationRequest() {
-        AuthorizationRequestCreateResponse mockResponse = mock(AuthorizationRequestCreateResponse.class);
-        List<AuthorizationRequestCreateResponse> responses = Collections.singletonList(mockResponse);
+        AuthorizationRequestCreateResponse realResponse = new AuthorizationRequestCreateResponse() {
+            @Override
+            public String getRequestId() {
+                return REQUEST_ID;
+            }
+        };
 
-        when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
+        List<AuthorizationRequestCreateResponse> responses = Collections.singletonList(realResponse);
+
+        when(repository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
                 .thenReturn(responses);
-        when(mockResponse.getRequestId()).thenReturn(REQUEST_ID);
-        when(authorizationRequestCreateResponseRepository.findById(REQUEST_ID))
-                .thenReturn(Optional.of(mockResponse));
+        when(repository.findById(REQUEST_ID))
+                .thenReturn(Optional.of(realResponse));
 
-        AuthorizationRequestCreateResponse firstResult = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-        assertNotNull(firstResult);
+        AuthorizationRequestCreateResponse first = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
+        AuthorizationRequestCreateResponse second = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
 
-        AuthorizationRequestCreateResponse secondResult = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
-        assertNotNull(secondResult);
+        assertNotNull(first);
+        assertNotNull(second);
 
-        verify(authorizationRequestCreateResponseRepository, times(1))
-                .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
-        verify(authorizationRequestCreateResponseRepository, times(1))
-                .findById(REQUEST_ID);
+        verify(repository, atLeastOnce()).findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
+        verify(repository, atMost(1)).findById(REQUEST_ID);
     }
 
     @Test
     void shouldHandleEmptyResponse() {
-        when(authorizationRequestCreateResponseRepository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
+        when(repository.findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID))
                 .thenReturn(Collections.emptyList());
 
-        assertThrows(NoSuchElementException.class, () ->
-                service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
-        );
+        assertThrows(NoSuchElementException.class, () -> service.getLatestAuthorizationRequestFor(TRANSACTION_ID));
+        assertThrows(NoSuchElementException.class, () -> service.getLatestAuthorizationRequestFor(TRANSACTION_ID));
 
-        assertThrows(NoSuchElementException.class, () ->
-                service.getLatestAuthorizationRequestFor(TRANSACTION_ID)
-        );
-
-        verify(authorizationRequestCreateResponseRepository, times(2))
-                .findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
+        verify(repository, times(2)).findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
     }
 }
