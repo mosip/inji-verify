@@ -1,7 +1,9 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -19,6 +21,9 @@ public class VpVerification extends BasePage {
 
 	@FindBy(id = "vp-verification-tab")
 	WebElement vpVerificationTab;
+
+	@FindBy(id = "tabs-carousel-right-icon")
+	WebElement rightArrow;
 
 	@FindBy(xpath = "//span[@id='verification-back-button']")
 	WebElement vpGoBack;
@@ -38,11 +43,14 @@ public class VpVerification extends BasePage {
 	@FindBy(id = "camera-access-denied-okay-button")
 	WebElement generateQRCodeButton;
 
-	@FindBy(id = "request-credentials-button")
+	@FindBy(xpath = "(//button[@id='request-credentials-button'])[2]")
 	WebElement verifiableCredentialsButton;
 
 	@FindBy(xpath = "//*[name()='path' and contains(@fill,'#000000')]")
 	WebElement verificationQrCode;
+
+	@FindBy(xpath = "//div[contains(@style,'animation') and contains(@style,'spin') and contains(@style,'border-radius: 50%')]")
+	WebElement loadingScreen;
 
 	@FindBy(xpath = "(//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')])[2]")
 	WebElement verifiableCredentialPanel;
@@ -88,6 +96,12 @@ public class VpVerification extends BasePage {
 	
 	@FindBy(xpath = "(//label[@for='Health Insurance'])[2]")
 	WebElement HealthInsuranceChecklist;
+
+	@FindBy(xpath = "(//span[@class='walletName' and text()='Inji Wallet'])[1]")
+	WebElement WalletButton;
+
+	@FindBy(xpath = "//button[@class='proceedButton' and text()='Proceed']")
+	WebElement ProceedButton;
 	
 	@FindBy(xpath = "(//label[@for='Land Registry'])[2]")
 	WebElement LandRegistryChecklist;
@@ -101,9 +115,18 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "(//*[@id='verification-back-button'])[3]")
 	WebElement backButton;
 
+	@FindBy(xpath = "(//button[contains(@class,'cancelButton') and contains(text(),'Cancel')])")
+	WebElement cancelButton;
+
+	@FindBy(xpath = "(//*[@id='verification-back-button'])[1]")
+	WebElement openWalletButton;
+
 
 	public String getVpVerificationQrCodeStep1Description() {
 		return getText(driver, VpVerificationQrCodeStep1Description);}
+
+	public String getTransactionTerminatedText() {
+		return getText(driver, vpVerificationAlertMsg);}
 
 	public String getVpVerificationQrCodeStep1Label() {
 		return getText(driver, vpVerificationQrCodeStep1Label);}
@@ -134,10 +157,49 @@ public class VpVerification extends BasePage {
 	public Boolean isVpVerificationQrCodeGenerated() {
 		return isElementIsVisible(driver, verificationQrCode);
 	}
+
+	public Boolean isLoadingScreenDisplayed() {
+		return isElementIsVisible(driver, loadingScreen);
+	}
 	
 
 	public void clickOnVerifiableCredentialsButton() {
-		 clickOnElement(driver, verifiableCredentialsButton);
+		try {
+			// Set viewport and prevent zooming
+			((JavascriptExecutor) driver).executeScript(
+				"document.querySelector('meta[name=viewport]').setAttribute('content', " +
+				"'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');"
+			);
+			
+			// Remove the copyright element temporarily to prevent interference
+			((JavascriptExecutor) driver).executeScript(
+				"var copyright = document.getElementById('copyrights-content');" +
+				"if(copyright) { copyright.style.display = 'none'; }"
+			);
+
+			// Wait a bit for the viewport changes to take effect
+			Thread.sleep(500);
+
+			// Scroll the button into view
+			((JavascriptExecutor) driver).executeScript(
+				"arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
+				verifiableCredentialsButton
+			);
+
+			// Wait for scroll
+			Thread.sleep(500);
+
+			// Click the button
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", verifiableCredentialsButton);
+
+			// Restore the copyright element
+			((JavascriptExecutor) driver).executeScript(
+				"var copyright = document.getElementById('copyrights-content');" +
+				"if(copyright) { copyright.style.display = ''; }"
+			);
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to click verifiable credentials button: " + e.getMessage());
+		}
 	}
 
 	public String isVerifiableCredentialSelectionPannelDisplayed() {
@@ -148,6 +210,10 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, vpVerificationTab);
 	}
 
+
+	public void clickOnRightArrow() {
+		clickOnElement(driver, rightArrow);
+	}
 	public void clickOnGoBack() {
 		clickOnElement(driver, vpGoBack);
 	}
@@ -200,6 +266,14 @@ public class VpVerification extends BasePage {
 	public void ClickOnHealthInsuranceChecklist() {
 		 clickOnElement(driver, HealthInsuranceChecklist);
 	}
+
+	public void ClickOnWalletButton() {
+		 clickOnElement(driver, WalletButton);
+	}
+
+	public void ClickOnProceedButton() {
+		 clickOnElement(driver, ProceedButton);
+	}
 	
 	public void ClickOnLandRegistryChecklist() {
 		 clickOnElement(driver, LandRegistryChecklist);
@@ -219,6 +293,25 @@ public class VpVerification extends BasePage {
 	
 	public void clickOnBackButton() {
 		 clickOnElement(driver, backButton);
+	}
+
+	public void clickOnCancelButton() {
+		 clickOnElement(driver, cancelButton);
+	}
+
+		public void clickOnOpenWalletButton() {
+		 clickOnElement(driver, openWalletButton);
+	}
+
+
+		public void scrollToBottom() {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			Thread.sleep(500); // Small delay to let the scroll complete
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 
