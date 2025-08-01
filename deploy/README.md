@@ -1,9 +1,10 @@
-# inji verify services
+# inji verify
 
 ## Pre-requisites
 * Postgres installation [steps](https://github.com/mosip/mosip-infra/tree/v1.2.0.2/deployment/v3/external/postgres) 
 
 ## Initialise pre-requisites
+### [DB init](../db_scripts)
 * Update values file for postgres init [here](../db_scripts/init_values.yaml) and postgres config [here](../db_scripts/postgres-config.yaml).
   ```
    cd db_scripts
@@ -29,3 +30,4 @@
   cd deploy
   ./restart-all.sh
   ```
+## [inji verify Apitestrig](injiverify-apitestrig)
