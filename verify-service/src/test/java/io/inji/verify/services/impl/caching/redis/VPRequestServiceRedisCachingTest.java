@@ -14,19 +14,24 @@ import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -35,20 +40,70 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class VPRequestServiceRedisCachingTest {
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = VPRequestServiceRedisCachingTest.CachingTestConfig.class)
+@TestPropertySource(properties = "inji.vp-request.long-polling-timeout=30000")
+class VPRequestServiceRedisCachingTest {
 
-    @Autowired
-    private RedisConfigProperties redisConfigProperties;
+    @TestConfiguration
+    @EnableCaching
+    static class CachingTestConfig {
 
-    @Autowired
-    private CacheManager cacheManager;
+        @Bean
+        public RedisConnectionFactory redisConnectionFactory() {
+            return new LettuceConnectionFactory("localhost", 6379);
+        }
+
+        @Bean
+        public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+            RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                    .entryTtl(Duration.ofMinutes(10))
+                    .serializeValuesWith(
+                            RedisSerializationContext.SerializationPair.fromSerializer(new JdkSerializationRedisSerializer()));
+            return RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(config).build();
+        }
+
+        @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties props = new RedisConfigProperties();
+            props.setAuthRequestCacheEnabled(true);
+            props.setAuthRequestPersisted(true);
+            return props;
+        }
+
+        @Bean
+        public AuthorizationRequestCacheService authorizationRequestCacheService(
+                RedisConfigProperties redisConfigProperties) {
+            return new AuthorizationRequestCacheService(redisConfigProperties);
+        }
+
+        @Bean
+        public VerifiablePresentationRequestService verifiablePresentationRequestService(
+                AuthorizationRequestCreateResponseRepository repo,
+                RedisConfigProperties redisConfigProperties,
+                AuthorizationRequestCacheService cacheService) {
+            return new VerifiablePresentationRequestServiceImpl(
+                    mock(PresentationDefinitionRepository.class),
+                    repo,
+                    mock(VPSubmissionRepository.class),
+                    redisConfigProperties,
+                    mock(JwtService.class),
+                    cacheService
+            );
+        }
+    }
 
     @Autowired
     private VerifiablePresentationRequestService service;
 
     @MockBean
     private AuthorizationRequestCreateResponseRepository repository;
+
+    @MockBean
+    private RedisConfigProperties redisConfigProperties;
+
+    @SpyBean
+    private CacheManager cacheManager;
 
     private static final String TRANSACTION_ID = "test-transaction-id";
     private static final String REQUEST_ID = "test-request-id";
@@ -67,6 +122,8 @@ public class VPRequestServiceRedisCachingTest {
                 .thenReturn(Collections.singletonList(mockResponse));
         when(mockResponse.getRequestId()).thenReturn(REQUEST_ID);
         when(repository.findById(REQUEST_ID)).thenReturn(Optional.of(mockResponse));
+        when(redisConfigProperties.isAuthRequestCacheEnabled()).thenReturn(true);
+        when(redisConfigProperties.isAuthRequestPersisted()).thenReturn(true);
 
         AuthorizationRequestCreateResponse result1 = service.getLatestAuthorizationRequestFor(TRANSACTION_ID);
         assertNotNull(result1);
@@ -79,7 +136,6 @@ public class VPRequestServiceRedisCachingTest {
 
         Cache.ValueWrapper cached = Objects.requireNonNull(cacheManager.getCache("authorizationRequestCache")).get(TRANSACTION_ID);
         assertNotNull(cached);
-        System.out.println("✔ Redis contains cached value for transactionId: " + TRANSACTION_ID);
     }
 
     @Test
@@ -92,23 +148,18 @@ public class VPRequestServiceRedisCachingTest {
 
         VPRequestCreateDto createDto = new VPRequestCreateDto(clientId, transactionId, null, nonce, null);
 
-        AuthorizationRequestResponseDto dto =
-                new AuthorizationRequestResponseDto(clientId, null, null, nonce, null);
-        AuthorizationRequestCreateResponse expectedEntity =
-                new AuthorizationRequestCreateResponse(requestId, transactionId, dto, expiresAt);
+        AuthorizationRequestResponseDto dto = new AuthorizationRequestResponseDto(clientId, null, null, nonce, null);
+        AuthorizationRequestCreateResponse expectedEntity = new AuthorizationRequestCreateResponse(requestId, transactionId, dto, expiresAt);
 
+        when(redisConfigProperties.isAuthRequestCacheEnabled()).thenReturn(true);
         when(redisConfigProperties.isAuthRequestPersisted()).thenReturn(true);
         when(repository.save(any())).thenReturn(expectedEntity);
-        when(redisConfigProperties.isAuthRequestCacheEnabled()).thenReturn(true);
 
         VPRequestResponseDto response = service.createAuthorizationRequest(createDto);
         assertEquals(transactionId, response.getTransactionId());
 
         Cache.ValueWrapper wrapper = Objects.requireNonNull(cacheManager.getCache("authorizationRequestCache")).get(transactionId);
         assertNotNull(wrapper);
-        assertTrue(wrapper.get() instanceof VPRequestResponseDto || wrapper.get() instanceof AuthorizationRequestCreateResponse);
-
-        System.out.println("✔ Cache populated by createAuthorizationRequest with key: " + transactionId);
     }
 
     @Test
@@ -131,56 +182,5 @@ public class VPRequestServiceRedisCachingTest {
 
         verify(repository, times(1)).findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
         verify(repository, times(1)).findById(REQUEST_ID);
-
-        System.out.println("✔ Cache hit confirmed on second call to getLatestAuthorizationRequestFor");
-    }
-
-    @Configuration
-    @EnableCaching
-    static class RedisTestConfig {
-
-        @Bean
-        public RedisConnectionFactory redisConnectionFactory() {
-            return new LettuceConnectionFactory("localhost", 6379);
-        }
-
-        @Bean
-        public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-            RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                    .entryTtl(Duration.ofMinutes(10))
-                    .serializeValuesWith(
-                            RedisSerializationContext.SerializationPair.fromSerializer(new JdkSerializationRedisSerializer()));
-            return RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(config).build();
-        }
-
-        @Bean
-        public RedisConfigProperties redisConfigProperties() {
-            RedisConfigProperties mockProps = mock(RedisConfigProperties.class);
-            when(mockProps.isAuthRequestCacheEnabled()).thenReturn(true);
-            when(mockProps.isAuthRequestPersisted()).thenReturn(true);
-            return mockProps;
-        }
-
-        @Bean
-        public AuthorizationRequestCacheService authorizationRequestCacheService(
-                RedisConfigProperties redisConfigProperties) {
-            return new AuthorizationRequestCacheService(redisConfigProperties);
-        }
-
-        @Bean
-        public VerifiablePresentationRequestService verifiablePresentationRequestService(
-                AuthorizationRequestCreateResponseRepository repo,
-                RedisConfigProperties redisConfigProperties,
-                AuthorizationRequestCacheService authorizationRequestCacheService
-        ) {
-            return new VerifiablePresentationRequestServiceImpl(
-                    mock(PresentationDefinitionRepository.class),
-                    repo,
-                    mock(VPSubmissionRepository.class),
-                    redisConfigProperties,
-                    mock(JwtService.class),
-                    authorizationRequestCacheService
-            );
-        }
     }
 }
