@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
-
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
