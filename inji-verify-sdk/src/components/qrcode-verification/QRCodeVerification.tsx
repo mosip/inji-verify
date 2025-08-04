@@ -50,6 +50,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamingRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const scanSessionCompletedRef = useRef(false);
 
   const shouldEnableZoom = isEnableZoom && isMobile;
 
@@ -105,7 +106,16 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   const startVideoStream = useCallback(() => {
-    if (!isEnableScan || isCameraActive || streamingRef.current) return;
+    if (
+      !isEnableScan ||
+      isCameraActive ||
+      streamingRef.current ||
+      scanSessionCompletedRef.current
+    ) {
+      console.log("startVideoStream aborted");
+      return;
+    }
+    console.log("startVideoStream");
     navigator.mediaDevices
       .getUserMedia({
         video: {
@@ -116,7 +126,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         },
       })
       .then((stream) => {
-        streamingRef.current = true;
         const video = videoRef.current;
         if (!video) return;
         video.srcObject = stream;
@@ -124,25 +133,43 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         video.playsInline = true;
         video.controls = false;
         video.onloadedmetadata = () => {
+          console.log("video loaded metadata", video.videoWidth, video.videoHeight);
           video
             .play()
             .then(() => {
+              console.log("video started playing");
+              streamingRef.current = true;
               setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
             })
             .catch(onError);
         };
+        stream?.getVideoTracks().forEach((track) => {
+          console.log(`Starting ${track.kind} track with id ${track.id}`);
+        });
       })
       .catch(onError);
   }, [isEnableScan, isCameraActive, onError, processFrame]);
 
   const stopVideoStream = () => {
-    streamingRef.current = false;
     const video = videoRef.current;
-    if (!video) return;
+    console.log("video Reference in stopVideoStram", video)
+    if (!video) {
+      console.warn("stopVideoStream: videoRef is null");
+      return;
+    }
     const stream = video.srcObject as MediaStream | null;
-    stream?.getTracks().forEach((track) => track.stop());
+    console.log("stopVideoStream: stream", stream);
+    stream?.getVideoTracks().forEach((track) => {
+      console.log(`Stopping ${track.kind} track with id ${track.id}`);
+      track.stop();
+    });
     video.onloadedmetadata = null;
     video.srcObject = null;
+    video.removeAttribute("srcObject")
+    video.removeAttribute("src");
+    video.load();
+
+    streamingRef.current = false;
     setIsCameraActive(false);
   };
 
@@ -212,11 +239,13 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     } catch (error) {
       handleError(error);
     } finally {
+      scanSessionCompletedRef.current = true;
+      clearTimer();
+      stopVideoStream();
       setScanning(false);
       setUploading(false);
       setLoading(false);
-      setIsCameraActive(true);
-      startVideoStream();
+      setIsCameraActive(false);
     }
   };
 
@@ -243,7 +272,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }
 
   useEffect(() => {
-    if (!isEnableScan) return;
+    if (!isEnableScan || scanSessionCompletedRef.current) return;
     startVideoStream();
     setIsCameraActive(true);
     timerRef.current = setTimeout(() => {
@@ -252,9 +281,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }, ScanSessionExpiryTime);
     return () => {
       clearTimer();
-      stopVideoStream();
+      if (videoRef.current) stopVideoStream();
     };
-  }, [isEnableScan, onError, startVideoStream, isUploading]);
+  }, [isEnableScan, onError, startVideoStream]);
 
   useEffect(() => {
     const resize = () => setIsMobile(window.innerWidth < 768);
@@ -290,6 +319,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       onError(error instanceof Error ? error : new Error("Unknown error"));
     }
   }, [onError, processScanResult]);
+
+  useEffect(() => {
+    return () => {
+      scanSessionCompletedRef.current = false;
+    };
+  }, []);
 
   const startScanning =
     isCameraActive && isEnableScan && !isUploading && !isScanning;
