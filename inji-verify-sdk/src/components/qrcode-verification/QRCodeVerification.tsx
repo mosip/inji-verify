@@ -162,9 +162,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     stream?.getVideoTracks().forEach((track) => {
       console.log(`Stopping ${track.kind} track with id ${track.id}`);
       track.stop();
+      track.enabled = false;
     });
-    video.onloadedmetadata = null;
+    video.pause();
     video.srcObject = null;
+    video.onloadedmetadata = null;
     video.removeAttribute("srcObject")
     video.removeAttribute("src");
     video.load();
@@ -246,6 +248,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       setUploading(false);
       setLoading(false);
       setIsCameraActive(false);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+        videoRef.current.load();
+      }
     }
   };
 
