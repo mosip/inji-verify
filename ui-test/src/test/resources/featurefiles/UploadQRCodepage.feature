@@ -51,7 +51,7 @@ Feature: Inji Verify upload qr code testing
       | 9991    | hello     | 01-01-2025   |
 
 
-      @smoke @verifyuploadqrcode
+  @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with PDF
     And Open inji web in new tab
     Then User search the issuers sunbird

@@ -25,7 +25,7 @@ export type VerificationResults = VerificationResult[];
 export interface QrData {
   transactionId: string;
   requestId: string;
-  authorizationDetails: {
+  authorizationDetails?: {
     responseType: string;
     clientId: string;
     presentationDefinition: Record<string, unknown>;
@@ -35,6 +35,7 @@ export interface QrData {
     iat: number;
   };
   expiresAt: number;
+  requestUri?: string;
 }
 
 export interface VPRequestBody {
@@ -43,6 +44,12 @@ export interface VPRequestBody {
   transactionId?: string;
   presentationDefinitionId?: string;
   presentationDefinition?: PresentationDefinition;
+}
+
+export interface Wallet {
+  name: string;
+  scheme: string;
+  icon: string;
 }
 
 type ExclusivePresentationDefinition =
@@ -75,6 +82,18 @@ type ExclusiveCallbacks =
       onVPReceived?: never;
     };
 
+// When same device flow is enabled: supportedWallets is required
+type SameDeviceFlowEnabledProps = {
+  isEnableSameDeviceFlow: true;
+  supportedWallets: Wallet[];
+};
+
+// When same device flow is disabled or not passed: supportedWallets is optional
+type SameDeviceFlowDisabledProps = {
+  isEnableSameDeviceFlow?: false | undefined;
+  supportedWallets?: Wallet[];
+};
+
 interface InputDescriptor {
   id: string;
   format?: {
@@ -96,7 +115,7 @@ export interface PresentationDefinition {
   input_descriptors: InputDescriptor[];
 }
 
-export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
+type BaseProps = ExclusivePresentationDefinition &
   ExclusiveCallbacks & {
     /**
   
@@ -111,6 +130,12 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   The backend service URL where the verification request will be sent.
   */
     verifyServiceUrl: string;
+
+  /**
+
+   The client identifier for relaying party.
+   */
+  clientId: string;
 
     /**
   
@@ -148,3 +173,8 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      */
     onError: (error: Error) => void;
   };
+
+// Combine with base props
+export type OpenID4VPVerificationProps =
+  | (BaseProps & SameDeviceFlowEnabledProps)
+  | (BaseProps & SameDeviceFlowDisabledProps);

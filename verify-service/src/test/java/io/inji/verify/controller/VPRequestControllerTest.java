@@ -49,7 +49,7 @@ public class VPRequestControllerTest {
         FormatDto formatDto = new FormatDto(null,null,null);
         VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purposr",formatDto, new ArrayList<>());
         VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
-        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(), 0L);
+        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(), 0L,"");
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any())).thenReturn(responseDto);
 

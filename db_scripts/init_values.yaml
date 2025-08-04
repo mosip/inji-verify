@@ -1,3 +1,6 @@
+dbUserPasswords:
+  dbuserPassword: ""
+
 databases:
   inji_verify:
     enabled: true

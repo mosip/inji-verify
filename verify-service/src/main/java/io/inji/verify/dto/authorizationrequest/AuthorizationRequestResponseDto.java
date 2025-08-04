@@ -15,10 +15,10 @@ import java.time.Instant;
 public class AuthorizationRequestResponseDto {
 
     private final String responseType = Constants.RESPONSE_TYPE;
-    private final String responseUri = Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI;
     private final long issuedAt = Instant.now().toEpochMilli();
     private final String clientId;
     private final String presentationDefinitionUri;
     private final VPDefinitionResponseDto presentationDefinition;
     private final String nonce;
+    private final String responseUri;
 }

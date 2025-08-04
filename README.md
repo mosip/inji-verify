@@ -119,3 +119,5 @@ active branches:
 cd ./inji-verify # repository folder
 git checkout branchName/tagname # choose from any of the above branches
 ```
+
+## [Deployment in K8 cluster](deploy/README.md)

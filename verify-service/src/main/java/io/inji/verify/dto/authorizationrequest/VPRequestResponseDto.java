@@ -1,7 +1,6 @@
 package io.inji.verify.dto.authorizationrequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.inji.verify.enums.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,4 +12,5 @@ public class VPRequestResponseDto {
     String requestId;
     AuthorizationRequestResponseDto authorizationDetails;
     Long expiresAt;
+    String requestUri;
 }

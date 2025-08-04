@@ -2,14 +2,16 @@ openapi: 3.0.0
 tags:
   - name: Presentation Definition Management
     description: APIs for Presentation Definition related operations
+  - name: VC Submission
+    description: APIs for Verifiable Credential submission related operations
   - name: VC verification API
     description: APIs for Verifiable Credential Verification related operations
   - name: VP Request Management
     description: APIs for Verifiable Presentation Authorization Request related operations
   - name: VP Submission
     description: APIs for Verifiable Presentation submission related operations
-x-stoplight:
-  id: exiu5fepecoj7
+  - name: Well Known
+    description: API for did discovery through well known endpoint
 info:
   title: OpenID4VP Verifier API - Inji Verify
   version: 1.0.2
@@ -44,18 +46,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VPRequestResponse"
-              example:
-                transactionId: txn_12345
-                requestId: req_12345
-                authorizationDetails: {}
-                expiresAt: 123456789876
+                oneOf:
+                  - $ref: "#/components/schemas/VPRequestResponse"
+                  - $ref: "#/components/schemas/VPRequestResponseByReference"
         "400":
-          description: VP Request not created due to bad request. Fields missing or type missmatch in body sent.
+          description: VP Request not created due to bad request. Fields missing or type mismatch in body sent.
         "404":
-          description: VP Request not created due to PresentationDefiniton not found for given ID.
-      x-stoplight:
-        id: xs9xoxyyqg5qj
+          description: VP Request not created due to PresentationDefinition not found for given ID.
+
+  "/vp-request/{requestId}":
+    get:
+      summary: Get VP Request JWT
+      description: This API returns the JWT for the VP request created.
+      operationId: getVPRequestJwt
+      tags:
+        - VP Request Management
+      parameters:
+        - name: requestId
+          description: Request Id for which you want to get the JWT for
+          in: path
+          required: true
+          schema:
+            type: string
+          example: req_12345
+      responses:
+        "200":
+          description: VP Request JWT retrieved successfully
+          content:
+            application/oauth-authz-req+jwt:
+              schema:
+                type: string
+                format: jwt
+                example: eyJhbGciOiJFRERTQSIsInR5cCI6Im9hdXRoLWF1dGh6LXJlcStqd3QiLCJraWQiOiJkaWQ6ZXhhbXBsZTppc3N1ZXItZGVmYXVsdC1rZXkifQ.eyJjbGllbnRfaWQiOiJkaWQ6ZXhhbXBsZTpjbGllbnQiLCJpc3MiOiJkaWQ6ZXhhbXBsZTpjbGllbnQiLCJyZXNwb25zZV90eXBlIjoidnBfdG9rZW4iLCJyZXNwb25zZV9tb2RlIjoiZGlyZWN0X3Bvc3QiLCJub25jZSI6ImFzaGRmamFoZHNmbGprYXNkZiIsImV4cCI6MTY3ODkzMDQwMCwiaWF0IjoxNjc4OTI5ODAwfQ.EXAMPLE_EDDSA_SIGNATURE_HERE
+        "404":
+          description: VP Request not found for given request id
   "/vp-request/{requestId}/status":
     get:
       summary: Get VP Request status
@@ -80,8 +104,6 @@ paths:
                 $ref: "#/components/schemas/status"
         "404":
           description: VP Request not found for given request id
-      x-stoplight:
-        id: fnqvm2pbdv6wy
   /vp-submission/direct-post:
     post:
       summary: Submit authorization response
@@ -107,7 +129,7 @@ paths:
                     path: "$.verifiableCredential[0]"
       responses:
         "200":
-          description: Response processed successfully / Error occured
+          description: Response processed successfully / Error occurred
           content:
             application/json:
               schema:
@@ -120,8 +142,6 @@ paths:
                   value:
                     error: invalid_request
                     errorDescription: unsupported%20client_id_scheme
-      x-stoplight:
-        id: vq0lhhd3rj7hp
   /vc-submission:
     post:
       summary: Submit Verifiable Credential (VC)
@@ -137,8 +157,8 @@ paths:
               $ref: "#/components/schemas/VCSubmissionRequest"
             example:
               vc:
-                "@context": ["https://www.w3.org/2018/credentials/v1"]
-                type: ["VerifiableCredential"]
+                "@context": [ "https://www.w3.org/2018/credentials/v1" ]
+                type: [ "VerifiableCredential" ]
                 issuer: "https://example.org/issuers/123"
                 issuanceDate: "2023-01-01T00:00:00Z"
                 credentialSubject:
@@ -183,8 +203,6 @@ paths:
         "404":
           description: No result found for given transaction id or Given transaction ID is invalid.
       operationId: get-vp-result-requestId-presentations
-      x-stoplight:
-        id: 86ppr30yg1nm3
   "/vp-definition/{id}":
     parameters:
       - schema:
@@ -208,8 +226,6 @@ paths:
         "404":
           description: Presentation definition is not found
       operationId: get-presentation-id
-      x-stoplight:
-        id: supt4xjki8o27
   /vc-verification:
     post:
       summary: Get the submitted VC verified
@@ -231,10 +247,233 @@ paths:
               schema:
                 $ref: "#/components/schemas/VCVerificationResult"
       operationId: post-verify-vc
-      x-stoplight:
-        id: 1r4yxmahkmbm9
+  /well-known/did.json:
+    post:
+      summary: Get the did document
+      description: API to get the did document for the given did
+      tags:
+        - Well Known
+      responses:
+        "200":
+          description: did document found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DIDDocument"
+      operationId: get-did-json
 components:
   schemas:
+    DIDDocument:
+      type: object
+      description: |
+        A DID Document is a JSON-LD document that describes a Decentralized Identifier (DID),
+        including its associated public keys, authentication methods, services, and other
+        relevant information. It enables trust and verifiable interactions.
+      properties:
+        '@context':
+          type: array
+          items:
+            type: string
+          description: >
+            The JSON-LD context for the DID Document. This specifies the terms and
+            their definitions used within the document, often including
+            "https://www.w3.org/ns/did/v1" and other relevant contexts (e.g., for security vocabularies).
+          example:
+            - https://www.w3.org/ns/did/v1
+            - https://w3id.org/security/suites/jws-2020/v1
+            - https://w3id.org/security/suites/ed25519-2020/v1
+        id:
+          type: string
+          description: The Decentralized Identifier (DID) that this DID Document describes.
+          pattern: '^did:[a-z0-9]+:.*$'
+          example: did:example:123456789
+        verificationMethod:
+          type: array
+          items:
+            $ref: "#/components/schemas/VerificationMethod"
+          description: A set of verification methods (e.g., public keys) that can be used to verify digital signatures and other proofs made by the DID subject.
+        authentication:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                description: Reference to a verification method by its ID.
+              - $ref: '#/components/schemas/VerificationMethod'
+          description: >
+            A set of verification methods used to authenticate the DID subject.
+            Typically, these are used for proving control over the DID.
+            Can be a full `VerificationMethod` object or a string reference to one.
+        assertionMethod:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                description: Reference to a verification method by its ID.
+              - $ref: '#/components/schemas/VerificationMethod'
+          description: >
+            A set of verification methods used to assert claims about the DID subject.
+            Can be a full `VerificationMethod` object or a string reference to one.
+        keyAgreement:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                description: Reference to a verification method by its ID.
+              - $ref: '#/components/schemas/VerificationMethod'
+          description: >
+            A set of verification methods used for key agreement (e.g., establishing
+            confidential communication). Can be a full `VerificationMethod` object or a string reference to one.
+        capabilityInvocation:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                description: Reference to a verification method by its ID.
+              - $ref: '#/components/schemas/VerificationMethod'
+          description: >
+            A set of verification methods used to invoke capabilities delegated by
+            the DID subject. Can be a full `VerificationMethod` object or a string reference to one.
+        capabilityDelegation:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                description: Reference to a verification method by its ID.
+              - $ref: '#/components/schemas/VerificationMethod'
+          description: >
+            A set of verification methods used to delegate capabilities to other parties.
+            Can be a full `VerificationMethod` object or a string reference to one.
+        service:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          description: >
+            A set of services that can be used to interact with the DID subject.
+            These might include endpoints for messaging, identity hubs, etc.
+        controller:
+          oneOf:
+            - type: string
+              description: The DID of a controller that can manage this DID Document.
+            - type: array
+              items:
+                type: string
+              description: An array of DIDs of controllers that can manage this DID Document.
+          description: >
+            A DID (or set of DIDs) that are authorized to manage this DID Document.
+            If not present, the DID itself is assumed to be the controller.
+          example: did:example:controller123
+        alsoKnownAs:
+          type: array
+          items:
+            type: string
+          description: >
+            Other DIDs or URIs that this DID is known by. Used for linking related identifiers.
+          example:
+            - did:another:alias456
+            - https://example.com/alice/profile
+
+    VerificationMethod:
+      type: object
+      description: >
+        A verification method represents a public key or other cryptographic material
+        that can be used for various verification purposes.
+      required:
+        - id
+        - type
+        - controller
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the verification method within the DID Document.
+          example: did:example:123#keys-1
+        type:
+          type: string
+          description: >
+            The type of verification method, indicating the cryptographic suite.
+            Examples include "Ed25519VerificationKey2020", "JsonWebKey2020", "Secp256k1VerificationKey2018".
+          example: Ed25519VerificationKey2020
+        controller:
+          type: string
+          description: The DID that is authorized to use this verification method.
+          example: did:example:123
+        publicKeyMultibase:
+          type: string
+          description: >
+            The public key expressed in Multibase format. This is a common way to
+            encode public keys for different cryptographic curves.
+          example: z6MkhPCXw1tV8wR2rWqC2kF7zX9b2D9M9m3yD5rN2J2F7zW
+        publicKeyJwk:
+          type: object
+          description: >
+            The public key expressed as a JSON Web Key (JWK) object.
+            This is suitable for various cryptographic algorithms.
+          properties:
+            kty: { type: string, description: "Key Type (e.g., 'OKP' for Octet Key Pair, 'EC' for Elliptic Curve)" }
+            crv: { type: string, description: "Curve (e.g., 'Ed25519', 'P-256', 'secp256k1')" }
+            x: { type: string, description: "x coordinate for EC keys, or public key for OKP (Multibase encoded)" }
+            y: { type: string, description: "y coordinate for EC keys" }
+          example:
+            kty: OKP
+            crv: Ed25519
+            x: 'VCx2-2S5m0d_n0SgN84G2z2c5J1L0x0W0t0P0A0E0C0M'
+        blockchainAccountId:
+          type: string
+          description: A reference to a blockchain account ID (e.g., an Ethereum address).
+          example: eip155:1:0xab16a96f399d9b6a12b87f0b9f0e1f2e3d4c
+        ethereumAddress:
+          type: string
+          description: An Ethereum address.
+          pattern: '^0x[a-fA-F0-9]{40}$'
+          example: "0xab16a96f399d9b6a12b87f0b9f0e1f2e3d4c1234"
+    Service:
+      type: object
+      description: >
+        A service endpoint for interacting with the DID subject.
+        Services provide ways for others to discover and communicate with the DID.
+      required:
+        - id
+        - type
+        - serviceEndpoint
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the service within the DID Document.
+          example: did:example:123#service-1
+        type:
+          type: string
+          description: The type of service (e.g., "DIDCommMessaging", "CredentialRepository", "IdentityHub").
+          example: DIDCommMessaging
+        serviceEndpoint:
+          oneOf:
+            - type: string
+              format: uri
+              description: The URI of the service endpoint.
+            - type: array
+              items:
+                type: string
+                format: uri
+              description: An array of URIs for the service endpoint.
+            - type: object
+              description: A JSON object representing a more complex service endpoint.
+          description: >
+            The endpoint for the service. Can be a single URI, an array of URIs,
+            or a JSON object for more complex service definitions.
+          example: https://example.com/didcomm
+        routingKeys:
+          type: array
+          items:
+            type: string
+          description: For DIDCommMessaging, a list of routing keys.
+          example:
+            - 'did:example:123#key-agreements-1'
+        accept:
+          type: array
+          items:
+            type: string
+          description: For DIDCommMessaging, a list of supported message protocols.
+          example:
+            - 'didcomm/v2'
+            - 'didcomm/aip2;env=rfc587'
     VPRequestCreate:
       type: object
       required:
@@ -253,14 +492,31 @@ components:
           type: string
           description: Either presentationDefinitionId or presentationDefinition should be passed. A predefined presentation definition Id so that the user does not need to pass the presentation definition
         presentationDefinition:
-          type: string
-          description: Either presentationDefinitionId or presentationDefinition should be passed. Verifiable Presentation definition for getting the credential
+          $ref: "#/components/schemas/PresentationDefinition"
         transactionId:
           description: A unique id of the verifiable presentation request transaction. This is optional and will be generated on server if not passed.
           type: string
-      x-stoplight:
-        id: ayf2p7ofmj2g1
-      title: ""
+    VPRequestResponseByReference:
+      type: object
+      properties:
+        transactionId:
+          description: A unique id of the verifiable presentation request transaction
+          type: string
+          example: urn:uuid:f82f281e-8d96-419b-b413-5a0459739a7b
+        requestId:
+          type: string
+          description: A unique id of the verifiable presentation request
+          example: urn:uuid:6d538e1b-2615-4927-bfd2-094e9f73f2a1
+        requestUri:
+          description: The URL to fetch the verifiable presentation request
+          type: string
+          format: uri
+          example: https://example.com/vp-requests/6d538e1b-2615-4927-bfd2-094e9f73f2a1
+        expiresAt:
+          type: integer
+          format: int64
+          description: Expiry of a transaction as a Unix timestamp (seconds since epoch).
+          example: 1752838929
     VPRequestResponse:
       type: object
       properties:
@@ -271,14 +527,10 @@ components:
           type: string
           description: A unique id of the verifiable presentation request
         authorizationDetails:
-          type: object
-          description: The authorization request object with entire presentation_definition
           $ref: "#/components/schemas/AuthorizationRequestResponse"
         expiresAt:
           type: integer
           description: Expiry of a transaction. Defaults to 5 minutes from creation of auth request.
-      x-stoplight:
-        id: wkbn3jolevhw7
     status:
       type: object
       description: Status of the verifiable presentation request transaction
@@ -319,17 +571,15 @@ components:
           properties:
             id:
               type: string
-              description: Unique ID for mapping vefifiable presentation
+              description: Unique ID for mapping verifiable presentation
             definitionId:
-              description: Unique ID for mapping vefifiable presentation definition
+              description: Unique ID for mapping verifiable presentation definition
               type: string
             descriptorMap:
               type: array
-              description: Contains details on VC type and path details for fetching the required feild.
+              description: Contains details on VC type and path details for fetching the required field.
               items:
                 $ref: "#/components/schemas/DescriptorMap"
-      x-stoplight:
-        id: t1vy6b6cd273t
     DescriptorMap:
       type: object
       required:
@@ -348,8 +598,6 @@ components:
           description: Root path of the verifiable presentation
         path_nested:
           $ref: "#/components/schemas/PathNested"
-      x-stoplight:
-        id: xr9gftlbvszfn
     PathNested:
       type: object
       description: Contains nested path for each verifiable presentation
@@ -363,8 +611,6 @@ components:
         path:
           type: string
           description: Path of the field in the verifiable presentation
-      x-stoplight:
-        id: 6dwp727e51ft5
     ResponseAcknowledgement:
       type: object
       properties:
@@ -378,12 +624,8 @@ components:
         errorDescription:
           type: string
           description: Error description for submission request
-      x-stoplight:
-        id: kuaiv78t0mx54
     AuthorizationRequestResponse:
       title: AuthorizationRequestResponse
-      x-stoplight:
-        id: qiiayk4b5xbsu
       type: object
       properties:
         responseUri:
@@ -399,10 +641,8 @@ components:
         nonce:
           type: string
           description: Nonce for encryption. It is used to securely bind the Verifiable Presentation(s) provided by the Wallet to the particular transaction
-        presentationDefinitionUri:
-          type: string
-          format: uri
-          description: A string containing a Presentation Definition JSON object
+        presentationDefinition:
+            $ref: "#/components/schemas/PresentationDefinition"
         iat:
           type: integer
           format: unixtime
@@ -428,28 +668,11 @@ components:
         transactionId:
           type: string
           description: Unique transaction ID assigned to the VC submission
-    PresentationResponse:
-      title: PresentationResponse
-      x-stoplight:
-        id: 8ose07cofc83j
-      type: object
-      properties:
-        transactionId:
-          type: string
-        vpToken:
-          type: string
-          x-stoplight:
-            id: uetof6mlsvvhw
-        verificationStatus:
-          type: string
-          $ref: "#/components/schemas/verificationStatus"
     PresentationDefinition:
       title: PresentationDefinition
       required:
         - id
         - input_descriptors
-      x-stoplight:
-        id: 0fbx5yroozjr2
       type: object
       properties:
         id:
@@ -457,19 +680,15 @@ components:
         input_descriptors:
           type: array
           items:
-            type: object
             $ref: "#/components/schemas/InputDescriptors"
         submission_requirements:
           type: array
           items:
-            type: object
             $ref: "#/components/schemas/SubmissionRequirements"
     SubmissionRequirements:
       title: SubmissionRequirements
       required:
         - id
-      x-stoplight:
-        id: fnmdzlczuf9ja
       type: object
       properties:
         name:
@@ -482,8 +701,6 @@ components:
           type: string
     InputDescriptors:
       title: InputDescriptors
-      x-stoplight:
-        id: jvynvx3picklp
       type: object
       properties:
         id:
@@ -515,22 +732,15 @@ components:
                         type: string
     VCVerificationResult:
       title: VCVerificationResult
-      x-stoplight:
-        id: dy5qt5sekvm09
       type: object
       properties:
         verificationStatus:
-          type: string
           $ref: "#/components/schemas/verificationStatus"
     VCVerificationRequest:
       title: VCVerificationRequest
-      x-stoplight:
-        id: mbfm9slzvrs3d
       type: object
     VpTokenResult:
       title: VpTokenResult
-      x-stoplight:
-        id: a129jjchw95sj
       type: object
       properties:
         transactionId:
@@ -548,8 +758,6 @@ components:
             $ref: "#/components/schemas/VcResult"
     VcResult:
       title: VcResult
-      x-stoplight:
-        id: 8te0cgwgjfu4g
       type: object
       description: "Array of VC and its proof verification results"
       properties:
@@ -557,8 +765,6 @@ components:
           type: string
           description: "VC as a JSON string"
         verificationStatus:
-          type: string
-          description: "Proof verification status for the VC"
           $ref: "#/components/schemas/verificationStatus"
   securitySchemes:
     ClientIdSecret:

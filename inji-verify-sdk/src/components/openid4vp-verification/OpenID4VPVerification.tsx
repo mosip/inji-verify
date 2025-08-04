@@ -1,12 +1,27 @@
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
   VerificationStatus,
+  Wallet,
 } from "./OpenID4VPVerification.types";
-import React, { useCallback, useEffect, useState } from "react";
-import { vpRequest, vpRequestStatus } from "../../utils/api";
+import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
+import WalletSelectionModal from "../WalletSelectionModal/WalletSelectionModal";
+
+const isMobileDevice = () => {
+  if (typeof navigator === "undefined") return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   triggerElement,
@@ -20,147 +35,143 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   qrCodeStyles,
   onQrCodeExpired,
   onError,
+  isEnableSameDeviceFlow = true,
+  supportedWallets = [],
+  clientId,
 }) => {
   const [txnId, setTxnId] = useState<string | null>(transactionId || null);
   const [reqId, setReqId] = useState<string | null>(null);
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const OPENID4VP_PROTOCOL = `${protocol || "openid4vp://"}authorize?`;
+  const [showWallets, setShowWallets] = useState<boolean>(false);
+  const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+  const hasInitializedRef = useRef(false);
 
-  const VPFormat = {
-    ldp_vp: {
-      proof_type: [
-        "Ed25519Signature2018",
-        "Ed25519Signature2020",
-        "RsaSignature2018",
-      ],
-    },
-  };
+  const shouldShowQRCode = !loading && qrCodeData && !showWallets;
 
-  const getPresentationDefinition = useCallback(
+  const VPFormat = useMemo(
+    () => ({
+      ldp_vp: {
+        proof_type: [
+          "Ed25519Signature2018",
+          "Ed25519Signature2020",
+          "RsaSignature2018",
+        ],
+      },
+    }),
+    []
+  );
+
+  const getPresentationDefinitionParams = useCallback(
     (data: QrData) => {
       const params = new URLSearchParams();
-      params.set("client_id", data.authorizationDetails.clientId);
-      params.set("response_type", data.authorizationDetails.responseType);
-      params.set("response_mode", "direct_post");
-      params.set("nonce", data.authorizationDetails.nonce);
-      params.set("state", data.requestId);
-      params.set(
-        "response_uri",
-        verifyServiceUrl + data.authorizationDetails.responseUri
-      );
-      if (data.authorizationDetails.presentationDefinitionUri) {
+      params.set("client_id", clientId);
+      if (data.requestUri) {
+        params.set("request_uri", verifyServiceUrl + data.requestUri);
+      } else if (data.authorizationDetails) {
+        params.set("state", data.requestId);
+        params.set("response_mode", "direct_post");
+        params.set("response_type", data.authorizationDetails.responseType);
+        params.set("nonce", data.authorizationDetails.nonce);
+        params.set("response_uri", data.authorizationDetails.responseUri);
+        if (data.authorizationDetails.presentationDefinitionUri) {
+          params.set(
+            "presentation_definition_uri",
+            verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
+          );
+        } else {
+          params.set(
+            "presentation_definition",
+            JSON.stringify(data.authorizationDetails.presentationDefinition)
+          );
+        }
         params.set(
-          "presentation_definition_uri",
-          verifyServiceUrl + data.authorizationDetails.presentationDefinitionUri
-        );
-      } else {
-        params.set(
-          "presentation_definition",
-          JSON.stringify(data.authorizationDetails.presentationDefinition)
+          "client_metadata",
+          JSON.stringify({
+            client_name: clientId,
+            vp_formats: VPFormat,
+          })
         );
       }
-      params.set(
-        "client_metadata",
-        JSON.stringify({
-          client_name: window.location.host,
-          vp_formats: VPFormat,
-        })
-      );
       return params.toString();
     },
     [verifyServiceUrl]
   );
 
-  const fetchVpResult = useCallback(async () => {
+  const fetchVPResult = useCallback(async () => {
+    setLoading(true);
     try {
-      if (onVPProcessed) {
-        const response = await fetch(`${verifyServiceUrl}/vp-result/${txnId}`);
-        if (response.status !== 200)
-          throw new Error("Failed to fetch VP result");
-        const VpVerificationResult = await response.json();
-        const VPResult: VerificationResults = [];
-        VpVerificationResult.vcResults.forEach(
-          (vcResult: { vc: any; verificationStatus: VerificationStatus }) => {
-            const vc = JSON.parse(vcResult.vc);
-            const verificationStatus = vcResult.verificationStatus;
-            VPResult.push({
-              vc,
-              vcStatus: verificationStatus,
-            });
-          }
+      if (onVPProcessed && txnId) {
+        const vcResults = await vpResult(verifyServiceUrl, txnId);
+        const VPResult: VerificationResults = vcResults.map(
+          (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
+            vc: JSON.parse(vcResult.vc),
+            vcStatus: vcResult.verificationStatus,
+          })
         );
-        onVPProcessed(VPResult);
-        setTxnId(null);
-        setReqId(null);
-        setQrCodeData(null);
+        onVPProcessed?.(VPResult);
+        resetState();
       }
       if (onVPReceived && txnId) {
         onVPReceived(txnId);
-        setTxnId(null);
-        setReqId(null);
-        setQrCodeData(null);
+        resetState();
       }
     } catch (error) {
       onError(error as Error);
-      setTxnId(null);
-      setReqId(null);
-      setQrCodeData(null);
-      setLoading(false);
+      resetState();
     }
-  }, [onVPProcessed, onVPReceived, onError, txnId, verifyServiceUrl]);
+  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
 
-  const createVpRequest = useCallback(async () => {
-    if (presentationDefinition?.input_descriptors.length !== 0) {
-      try {
-        addStylesheetRules();
-        setLoading(true);
-        const data = await vpRequest(
-          verifyServiceUrl,
-          txnId && txnId !== "null" ? txnId : undefined,
-          presentationDefinitionId,
-          presentationDefinition
-        );
-        const qrData = OPENID4VP_PROTOCOL + getPresentationDefinition(data);
-        setTxnId(data.transactionId);
-        setReqId(data.requestId);
-        setQrCodeData(qrData);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        onError(error as Error);
+  const fetchVPStatus = useCallback(async () => {
+    try {
+      if (reqId) {
+        const response = await vpRequestStatus(verifyServiceUrl, reqId);
+
+        if (response.status === "ACTIVE") {
+          fetchVPStatus();
+        }
+        if (response.status === "VP_SUBMITTED") {
+          fetchVPResult();
+        } else if (response.status === "EXPIRED") {
+          resetState();
+          onQrCodeExpired();
+        }
       }
+    } catch (error) {
+      setLoading(false);
+      resetState();
+      onError(error as Error);
+    }
+  }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
+
+  const createVPRequest = useCallback(async () => {
+    if (hasInitializedRef.current) return;
+    hasInitializedRef.current = true;
+    setLoading(true);
+    try {
+      const data = await vpRequest(
+        verifyServiceUrl,
+        clientId,
+        txnId ?? undefined,
+        presentationDefinitionId,
+        presentationDefinition
+      );
+      setTxnId(data.transactionId);
+      setReqId(data.requestId);
+      const params = getPresentationDefinitionParams(data);
+      return params;
+    } catch (error) {
+      onError(error as Error);
+      resetState();
     }
   }, [
-    presentationDefinition,
+    verifyServiceUrl,
     txnId,
     presentationDefinitionId,
-    verifyServiceUrl,
-    OPENID4VP_PROTOCOL,
-    getPresentationDefinition,
+    presentationDefinition,
+    getPresentationDefinitionParams,
     onError,
   ]);
-
-  const fetchStatus = useCallback(async () => {
-    try {
-      const response = reqId && await vpRequestStatus(verifyServiceUrl, reqId);
-
-      if (response.status === "ACTIVE") {
-        fetchStatus();
-      }
-      if (response.status === "VP_SUBMITTED") {
-        fetchVpResult();
-      } else if (response.status === "EXPIRED") {
-        setTxnId(null);
-        setReqId(null);
-        setQrCodeData(null);
-        onQrCodeExpired();
-      }
-    } catch (error) {
-      setLoading(false);
-      onError(error as Error);
-    }
-  }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVpResult]);
 
   useEffect(() => {
     if (!presentationDefinitionId && !presentationDefinition) {
@@ -189,11 +200,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     if (!onError) {
       throw new Error("onError callback is required");
     }
-    if (!triggerElement) {
-      createVpRequest();
-    }
   }, [
-    createVpRequest,
+    createVPRequest,
     onError,
     onQrCodeExpired,
     onVPProcessed,
@@ -204,18 +212,63 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   ]);
 
   useEffect(() => {
-    if (reqId) {
-      fetchStatus();
+    if (isEnableSameDeviceFlow && isMobileDevice()) {
+      if (!triggerElement) {
+        setShowWallets(true);
+      }
+    } else if (!triggerElement) {
+      handleGenerateQRCode();
     }
-  }, [fetchStatus, reqId]);
+  }, []);
 
-  function addStylesheetRules() {
-    let keyframes = `@keyframes spin {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}`;
-    var styleEl = document.createElement("style");
-    document.head.appendChild(styleEl);
-    var styleSheet = styleEl.sheet;
-    styleSheet?.insertRule(keyframes, 0);
-  }
+  useEffect(() => {
+    if (reqId) {
+      fetchVPStatus();
+    }
+  }, [fetchVPStatus, reqId]);
+
+  const resetState = () => {
+    setTxnId(null);
+    setReqId(null);
+    setQrCodeData(null);
+    setShowWallets(false);
+    setLoading(false);
+    setSelectedWallet(null);
+    hasInitializedRef.current = false;
+  };
+
+  const handleTriggerClick = () => {
+    if (isEnableSameDeviceFlow && isMobileDevice()) {
+      setShowWallets(true);
+    } else {
+      handleGenerateQRCode();
+    }
+  };
+
+  const handleWalletOnCancel = () => {
+    setSelectedWallet(null);
+    setShowWallets(false);
+    resetState();
+    onError(new Error("Transaction Terminated"));
+  };
+
+  const handleWalletOnProceed = async () => {
+    if (selectedWallet) {
+      setShowWallets(false);
+      const pdParams = await createVPRequest();
+      const openidUrl = `${selectedWallet.scheme}authorize?${pdParams}`;
+      window.location.href = openidUrl;
+      fetchVPStatus();
+    }
+  };
+
+  const handleGenerateQRCode = async () => {
+    const pdParams = await createVPRequest();
+    const qrData = `${protocol || "openid4vp://"}authorize?${pdParams}`;
+    setQrCodeData(qrData);
+    setLoading(false);
+    fetchVPStatus();
+  };
 
   return (
     <div
@@ -227,37 +280,51 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         minWidth: "100%",
       }}
     >
-      {triggerElement && !qrCodeData && !loading ? (
-        <div onClick={createVpRequest} style={{ cursor: "pointer" }}>
-          {triggerElement}
-        </div>
-      ) : null}
       {loading && (
         <div
           style={{
-            width: "40px",
-            height: "40px",
+            width: 40,
+            height: 40,
             border: "4px solid #ccc",
             borderTop: "4px solid #333",
             borderRadius: "50%",
             animation: "spin 1s linear infinite",
             margin: "20px auto",
           }}
-        ></div>
+        />
       )}
-      {!loading && qrCodeData && (
-        <div data-testid="qr-code">
-          <QRCodeSVG
-            value={qrCodeData}
-            size={qrCodeStyles?.size || 200}
-            level={qrCodeStyles?.level || "L"}
-            bgColor={qrCodeStyles?.bgColor || "#ffffff"}
-            fgColor={qrCodeStyles?.fgColor || "#000000"}
-            marginSize={qrCodeStyles?.margin || 10}
-            style={{ borderRadius: qrCodeStyles?.borderRadius || 10 }}
-          />
+
+      {!loading && triggerElement && !qrCodeData && (
+        <div onClick={handleTriggerClick} style={{ cursor: "pointer" }}>
+          {triggerElement}
         </div>
       )}
+
+      {shouldShowQRCode && (
+        <QRCodeSVG
+          value={qrCodeData}
+          size={qrCodeStyles?.size || 200}
+          level={qrCodeStyles?.level || "L"}
+          bgColor={qrCodeStyles?.bgColor || "#ffffff"}
+          fgColor={qrCodeStyles?.fgColor || "#000000"}
+          marginSize={qrCodeStyles?.margin || 10}
+          style={{ borderRadius: qrCodeStyles?.borderRadius || 10 }}
+        />
+      )}
+
+      {!loading &&
+        showWallets &&
+        isEnableSameDeviceFlow &&
+        isMobileDevice() && (
+          <WalletSelectionModal
+            isOpen={showWallets}
+            wallets={supportedWallets}
+            selectedWallet={selectedWallet}
+            onSelect={setSelectedWallet}
+            onCancel={handleWalletOnCancel}
+            onProceed={handleWalletOnProceed}
+          />
+        )}
     </div>
   );
 };

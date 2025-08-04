@@ -22,4 +22,6 @@ public interface VerifiablePresentationRequestService {
     void invokeVpRequestStatusListener(@NotNull String state);
 
     DeferredResult<VPRequestStatusDto> getStatus(@NotNull String requestId);
+
+    String getVPRequestJwt(String requestId);
 }

@@ -22,10 +22,8 @@
 - Verifiable Presentation proofs supported are `ED25519Signature2018`, `ED25519Signature2020` and `RSASignature2018`
 
 Out of scope items are
-- Same Device Flow
 - `response_type` with `vp_token id_token`
-- `response mode` with `direct_post.jwt`
-
+- `response mode` with `direct_post.jwt
 ##### Setup Guide
 
 The link to set up guide can be found [here](../Readme.md).

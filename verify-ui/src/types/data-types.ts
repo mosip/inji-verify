@@ -107,7 +107,7 @@ interface InputDescriptor {
   constraints?: {};
 }
 
-interface PresentationDefinition {
+export interface PresentationDefinition {
   id?: string;
   purpose: string;
   format?: {
@@ -249,4 +249,10 @@ export interface VPRequestBody {
   transactionId?: string;
   presentationDefinitionId?: string;
   presentationDefinition?: PresentationDefinition;
+}
+
+export type Wallet = {
+  name: string;
+  scheme: string; // e.g. "openid4vp://",
+  icon: string; // wallet icon path
 }

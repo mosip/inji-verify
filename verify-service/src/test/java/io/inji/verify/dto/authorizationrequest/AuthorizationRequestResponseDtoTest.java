@@ -17,13 +17,14 @@ public class AuthorizationRequestResponseDtoTest {
         String clientId = "testClientId";
         PresentationDefinition presentationDefinition = mock(PresentationDefinition.class);
         String nonce = "testNonce";
+        String responseUri = "testUri";
 
-        AuthorizationRequestResponseDto responseDto = new AuthorizationRequestResponseDto(clientId, null, new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getName(),presentationDefinition.getPurpose(),presentationDefinition.getFormat(),presentationDefinition.getSubmissionRequirements()),nonce);
+        AuthorizationRequestResponseDto responseDto = new AuthorizationRequestResponseDto(clientId, null, new VPDefinitionResponseDto(presentationDefinition.getId(),presentationDefinition.getInputDescriptors(),presentationDefinition.getName(),presentationDefinition.getPurpose(),presentationDefinition.getFormat(),presentationDefinition.getSubmissionRequirements()),nonce,responseUri);
 
         assertEquals(Constants.RESPONSE_TYPE, responseDto.getResponseType());
         assertEquals(clientId, responseDto.getClientId());
         assertEquals(presentationDefinition.getURL(), responseDto.getPresentationDefinitionUri());
-        assertEquals(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI, responseDto.getResponseUri());
+        assertEquals(responseUri, responseDto.getResponseUri());
         assertEquals(nonce, responseDto.getNonce());
         assertTrue(Instant.now().toEpochMilli() >= responseDto.getIssuedAt()); // Ensure issuedAt is in the past
     }

@@ -66,12 +66,13 @@ export const vcSubmission = async (
 
 export const vpRequest = async (
   url: string,
+  clientId: string,
   txnId?: string,
   presentationDefinitionId?: string,
   presentationDefinition?: PresentationDefinition
 ) => {
   const requestBody: VPRequestBody = {
-    clientId: window.location.host,
+    clientId: clientId,
     nonce: generateNonce(),
   };
 
@@ -118,4 +119,13 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
       throw new Error("An unknown error occurred");
     }
   }
+};
+
+export const vpResult = async (url: string, txnId: string) => {
+  try {
+    const response = await fetch(url + `/vp-result/${txnId}`);
+    if (response.status !== 200) throw new Error("Failed to fetch VP result");
+    const data = await response.json();
+    return data.vcResults;
+  } catch (error) {}
 };
