@@ -240,9 +240,7 @@ updateStrategy:
 ##   - name: FOO
 ##     value: "bar"
 ##
-extraEnvVars:
-  - name: CLIENT_ID
-    value: "injiverify.dev-int-inji.mosip.net/"
+extraEnvVars: []
 
 ## ConfigMap with extra environment variables
 ##
