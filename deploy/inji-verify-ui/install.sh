@@ -51,8 +51,6 @@ function installing_inji-verify-ui() {
   echo Copy configmaps
   COPY_UTIL=../copy_cm_func.sh
   $COPY_UTIL configmap inji-stack-config default $NS
-  $COPY_UTIL configmap artifactory-share artifactory $NS
-  $COPY_UTIL configmap config-server-share config-server $NS
 
   INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.injiverify-host})
   echo Installing INJIVERIFY
