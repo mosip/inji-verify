@@ -57,11 +57,11 @@ public class VpVerification extends BasePage {
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='2'])")
 	WebElement VPverificationstep3LabelAfter;
-	
+
 	@FindBy(xpath = "(//span[contains(@class, 'text-smallTextSize') and contains(text(), 'MOSIP ID')])[2]")
 	WebElement MosipTypeCredential;
 
-	@FindBy(id ="initiate-vp-request-process-description")
+	@FindBy(id = "initiate-vp-request-process-description")
 	WebElement VpVerificationQrCodeStep1Description;
 
 	@FindBy(id = "initiate-vp-request-process")
@@ -84,16 +84,16 @@ public class VpVerification extends BasePage {
 
 	@FindBy(id = "view-verification-results-description")
 	WebElement vpVerificationQrCodeStep4Description;
-	
+
 	@FindBy(xpath = "(//span[@class='text-sortByText font-semibold text-smallTextSize ml-2' and text()='Sort by'])[2]")
 	WebElement SortButton;
-	
+
 	@FindBy(xpath = "(//button[@id='camera-access-denied-okay-button'])[2]")
 	WebElement GenerateQrCodeButton;
-	
+
 	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
 	WebElement MosipIdChecklist;
-	
+
 	@FindBy(xpath = "(//label[@for='Health Insurance'])[2]")
 	WebElement HealthInsuranceChecklist;
 
@@ -102,16 +102,16 @@ public class VpVerification extends BasePage {
 
 	@FindBy(xpath = "//button[@class='proceedButton' and text()='Proceed']")
 	WebElement ProceedButton;
-	
+
 	@FindBy(xpath = "(//label[@for='Land Registry'])[2]")
 	WebElement LandRegistryChecklist;
-	
+
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (A-Z)')]")
 	WebElement SortAtoZButton;
-	
+
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (Z-A)')]")
 	WebElement SortZtoAButton;
-	
+
 	@FindBy(xpath = "(//*[@id='verification-back-button'])[3]")
 	WebElement backButton;
 
@@ -121,34 +121,41 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "(//*[@id='verification-back-button'])[1]")
 	WebElement openWalletButton;
 
-
 	public String getVpVerificationQrCodeStep1Description() {
-		return getText(driver, VpVerificationQrCodeStep1Description);}
+		return getText(driver, VpVerificationQrCodeStep1Description);
+	}
 
 	public String getTransactionTerminatedText() {
-		return getText(driver, vpVerificationAlertMsg);}
+		return getText(driver, vpVerificationAlertMsg);
+	}
 
 	public String getVpVerificationQrCodeStep1Label() {
-		return getText(driver, vpVerificationQrCodeStep1Label);}
+		return getText(driver, vpVerificationQrCodeStep1Label);
+	}
 
 	public String getVpVerificationQrCodeStep2Label() {
-		return getText(driver, vpVerificationQrCodeStep2Label);}
+		return getText(driver, vpVerificationQrCodeStep2Label);
+	}
 
 	public String getVpVerificationQrCodeStep2Description() {
-		return getText(driver, vpVerificationQrCodeStep2Description);}
+		return getText(driver, vpVerificationQrCodeStep2Description);
+	}
 
 	public String getVpVerificationQrCodeStep3Label() {
-		return getText(driver, vpVerificationQrCodeStep3Label);}
+		return getText(driver, vpVerificationQrCodeStep3Label);
+	}
 
 	public String getVpVerificationQrCodeStep3Description() {
-		return getText(driver, vpVerificationQrCodeStep3Description);}
+		return getText(driver, vpVerificationQrCodeStep3Description);
+	}
 
 	public String getVpVerificationQrCodeStep4Label() {
-		return getText(driver, vpVerificationQrCodeStep4Label);}
+		return getText(driver, vpVerificationQrCodeStep4Label);
+	}
 
 	public String getVpVerificationQrCodeStep4Description() {
-		return getText(driver, vpVerificationQrCodeStep4Description);}
-
+		return getText(driver, vpVerificationQrCodeStep4Description);
+	}
 
 	public Boolean isVisibleVerifiableCredentialsButton() {
 		return isElementIsVisible(driver, verifiableCredentialsButton);
@@ -161,30 +168,24 @@ public class VpVerification extends BasePage {
 	public Boolean isLoadingScreenDisplayed() {
 		return isElementIsVisible(driver, loadingScreen);
 	}
-	
 
 	public void clickOnVerifiableCredentialsButton() {
 		try {
 			// Set viewport and prevent zooming
-			((JavascriptExecutor) driver).executeScript(
-				"document.querySelector('meta[name=viewport]').setAttribute('content', " +
-				"'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');"
-			);
-			
+			((JavascriptExecutor) driver)
+					.executeScript("document.querySelector('meta[name=viewport]').setAttribute('content', "
+							+ "'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');");
+
 			// Remove the copyright element temporarily to prevent interference
-			((JavascriptExecutor) driver).executeScript(
-				"var copyright = document.getElementById('copyrights-content');" +
-				"if(copyright) { copyright.style.display = 'none'; }"
-			);
+			((JavascriptExecutor) driver).executeScript("var copyright = document.getElementById('copyrights-content');"
+					+ "if(copyright) { copyright.style.display = 'none'; }");
 
 			// Wait a bit for the viewport changes to take effect
 			Thread.sleep(500);
 
 			// Scroll the button into view
 			((JavascriptExecutor) driver).executeScript(
-				"arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
-				verifiableCredentialsButton
-			);
+					"arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", verifiableCredentialsButton);
 
 			// Wait for scroll
 			Thread.sleep(500);
@@ -193,10 +194,8 @@ public class VpVerification extends BasePage {
 			((JavascriptExecutor) driver).executeScript("arguments[0].click();", verifiableCredentialsButton);
 
 			// Restore the copyright element
-			((JavascriptExecutor) driver).executeScript(
-				"var copyright = document.getElementById('copyrights-content');" +
-				"if(copyright) { copyright.style.display = ''; }"
-			);
+			((JavascriptExecutor) driver).executeScript("var copyright = document.getElementById('copyrights-content');"
+					+ "if(copyright) { copyright.style.display = ''; }");
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to click verifiable credentials button: " + e.getMessage());
 		}
@@ -210,10 +209,10 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, vpVerificationTab);
 	}
 
-
 	public void clickOnRightArrow() {
 		clickOnElement(driver, rightArrow);
 	}
+
 	public void clickOnGoBack() {
 		clickOnElement(driver, vpGoBack);
 	}
@@ -239,79 +238,72 @@ public class VpVerification extends BasePage {
 	}
 
 	public void enterVcInSearchBox(String string) {
-		enterText(driver, By.xpath("//input[@type='text' and contains(@placeholder, 'Search for the Verifiable Credential type')]"), string);
+		enterText(driver, By
+				.xpath("//input[@type='text' and contains(@placeholder, 'Search for the Verifiable Credential type')]"),
+				string);
 
 	}
 
 	public boolean isVisibleVPverificationstep3LabelAfter() {
 		return isElementIsVisible(driver, VPverificationstep3LabelAfter);
 	}
-	
+
 	public boolean isMosipTypeCredentialVisible() {
 		return isElementIsVisible(driver, MosipTypeCredential);
 	}
-	
+
 	public void clickOnSortButton() {
-		 clickOnElement(driver, SortButton);
+		clickOnElement(driver, SortButton);
 	}
-	
+
 	public void ClickOnGenerateQrCodeButton() {
-		 clickOnElement(driver, GenerateQrCodeButton);
+		clickOnElement(driver, GenerateQrCodeButton);
 	}
-	
+
 	public void ClickOnMosipIdChecklist() {
-		 clickOnElement(driver, MosipIdChecklist);
+		clickOnElement(driver, MosipIdChecklist);
 	}
-	
+
 	public void ClickOnHealthInsuranceChecklist() {
-		 clickOnElement(driver, HealthInsuranceChecklist);
+		clickOnElement(driver, HealthInsuranceChecklist);
 	}
 
 	public void ClickOnWalletButton() {
-		 clickOnElement(driver, WalletButton);
+		clickOnElement(driver, WalletButton);
 	}
 
 	public void ClickOnProceedButton() {
-		 clickOnElement(driver, ProceedButton);
+		clickOnElement(driver, ProceedButton);
 	}
-	
+
 	public void ClickOnLandRegistryChecklist() {
-		 clickOnElement(driver, LandRegistryChecklist);
+		clickOnElement(driver, LandRegistryChecklist);
 	}
-	
+
 	public void clickOnSortAtoZButton() {
-		 clickOnElement(driver, SortAtoZButton);
+		clickOnElement(driver, SortAtoZButton);
 	}
-	
+
 	public void clickOnSortZtoAButton() {
-		 clickOnElement(driver, SortZtoAButton);
+		clickOnElement(driver, SortZtoAButton);
 	}
-	
+
 	public void enterCredentialType(String string) {
-		enterText(driver, By.xpath("(//input[@placeholder='Search for the Verifiable Credential type' and contains(@class,'outline-none')])[2]"), string);
+		enterText(driver, By.xpath(
+				"(//input[@placeholder='Search for the Verifiable Credential type' and contains(@class,'outline-none')])[2]"),
+				string);
 	}
-	
+
 	public void clickOnBackButton() {
-		 clickOnElement(driver, backButton);
+		clickOnElement(driver, backButton);
 	}
 
 	public void clickOnCancelButton() {
-		 clickOnElement(driver, cancelButton);
+		clickOnElement(driver, cancelButton);
 	}
 
-		public void clickOnOpenWalletButton() {
-		 clickOnElement(driver, openWalletButton);
-	}
-
-
-		public void scrollToBottom() {
-		try {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-			Thread.sleep(500); // Small delay to let the scroll complete
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+	public void clickOnOpenWalletButton() {
+		clickOnElement(driver, openWalletButton);
 	}
 
 

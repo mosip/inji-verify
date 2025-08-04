@@ -1,5 +1,7 @@
 package utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import api.InjiVerifyConfigManager;
 import io.cucumber.java.*;
 import org.openqa.selenium.JavascriptExecutor;
@@ -32,6 +34,8 @@ import java.util.Properties;
 
 
 public class BaseTest {
+	private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+	
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -71,13 +75,13 @@ public class BaseTest {
 	            bsLocalArgs.put("key", accessKey);
 	            try {
 	                bsLocal.start(bsLocalArgs);
-	                System.out.println("✅ BrowserStack Local tunnel started.");
+	                logger.info("✅ BrowserStack Local tunnel started.");
 	            } catch (Exception e) {
-	                e.printStackTrace();
+	                logger.error("Failed to start BrowserStack Local tunnel", e);
 	            }
 	        }
 	    } catch (Exception e) {
-	        e.printStackTrace();
+	        logger.error("Failed to initialize BrowserStack Local", e);
 	    }
 
 	    totalCount++;
@@ -89,7 +93,7 @@ public class BaseTest {
 	    HashMap<String, Object> browserstackOptions = new HashMap<>();
 
 	    if (scenario.getSourceTagNames().contains("@mobileView")) {
-        System.out.println("🚀 Launching test in MOBILE VIEW (Desktop Emulation) via BrowserStack");
+        logger.info("📱 Launching test in MOBILE VIEW (Desktop Emulation) via BrowserStack");
 
         capabilities.setCapability("browserName", "Chrome");
         capabilities.setCapability("browserVersion", "latest");
@@ -114,7 +118,7 @@ public class BaseTest {
         capabilities.setCapability("goog:chromeOptions", chromeOptions);
     }
     else {
-        System.out.println("🖥️ Launching test in DESKTOP mode");
+        logger.info("🖥️ Launching test in DESKTOP mode");
 
         capabilities.setCapability("browserName", "Chrome");
         capabilities.setCapability("browserVersion", "latest");
@@ -128,7 +132,7 @@ public class BaseTest {
     // ✅ Common step — attach the bstack:options finally
     capabilities.setCapability("bstack:options", browserstackOptions);
 
-    System.out.println("Final capabilities: " + capabilities);
+    logger.info("Final capabilities: {}", capabilities);
 
     // Setup driver (only once)
     driver = new RemoteWebDriver(new URL(URL), capabilities);
@@ -177,13 +181,12 @@ public class BaseTest {
 			if (bsLocal != null && bsLocal.isRunning() && (passedCount + failedCount == totalCount)) {
 				try {
 					bsLocal.stop();
-					System.out.println("🛑 BrowserStack Local tunnel stopped.");
+					logger.info("🛑 BrowserStack Local tunnel stopped.");
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error("Failed to stop BrowserStack Local tunnel", e);
 				}}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error in afterScenario", e);
 		}
 	}
 
@@ -222,7 +225,7 @@ public class BaseTest {
 	@AfterAll
 	public static void afterAll() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			System.out.println("Shutdown hook triggered. Uploading report...");
+			logger.info("Shutdown hook triggered. Uploading report...");
 			if (extent != null) {
 				extent.flush();
 			}
@@ -259,9 +262,9 @@ public class BaseTest {
 
 		// Rename the file
 		if (originalReportFile.renameTo(newReportFile)) {
-			System.out.println("Report renamed to: " + newFileName);
+			logger.info("Report renamed to: {}", newFileName);
 		} else {
-			System.out.println("Failed to rename the report file.");
+			logger.error("Failed to rename the report file");
 		}
 
 		executeLsCommand(newReportFile.getAbsolutePath());
@@ -277,10 +280,10 @@ public class BaseTest {
 						newFileName,
 						newReportFile
 				);
-				System.out.println("isStoreSuccess:: " + isStoreSuccess);
+				logger.info("isStoreSuccess:: {}", isStoreSuccess);
 			} catch (Exception e) {
-				System.out.println("Error occurred while pushing the object: " + e.getLocalizedMessage());
-				System.out.println(e.getMessage());
+				logger.error("Error occurred while pushing the object: {}", e.getLocalizedMessage());
+				logger.error("Error details: {}", e.getMessage());
 			}
 		}
 	}
@@ -301,24 +304,24 @@ public class BaseTest {
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
-			System.out.println("--- Directory listing for " + directoryPath + " ---");
+			logger.info("--- Directory listing for {} ---", directoryPath);
 			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
+				logger.info(line);
 			}
 
 			int exitCode = process.waitFor();
 			if (exitCode != 0) {
 				BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 				String errorLine;
-				System.err.println("--- Directory listing error ---");
+				logger.error("--- Directory listing error ---");
 				while ((errorLine = errorReader.readLine()) != null) {
-					System.err.println(errorLine);
+					logger.error(errorLine);
 				}
 			}
-			System.out.println("--- End directory listing ---");
+			logger.info("--- End directory listing ---");
 
 		} catch (IOException | InterruptedException e) {
-			System.err.println("Error executing directory listing command: " + e.getMessage());
+			logger.error("Error executing directory listing command: {}", e.getMessage());
 		}
 	}
 	public static String[] fetchIssuerTexts() {
