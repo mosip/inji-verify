@@ -7,7 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiverify
-CHART_VERSION=0.0.1-develop
+CHART_VERSION=0.14.0-develop
 
 helm repo add mosip https://mosip.github.io/mosip-helm
 helm repo update
