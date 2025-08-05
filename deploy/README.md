@@ -1,4 +1,4 @@
-# inji verify
+# Deployment
 
 ## Pre-requisites
 * Base infrastructure setup
