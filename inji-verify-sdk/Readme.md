@@ -1,105 +1,124 @@
 # INJI VERIFY SDK
 
-Inji Verify SDK is a library which exposes React components for integrating Inji Verify features seamlessly into any relaying party application.
+Inji Verify SDK provides ready-to-use **React components** to integrate [OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)-based **Verifiable Credential (VC) verification** into any React TypeScript web application.
 
-## Features
+---
 
-- OpenId4VP component that creates QR code and performs OpenId4Vp sharing backend flow.
+## 📦 Installation
 
-## Usage
-`npm i @mosip/react-inji-verify-sdk`
+```bash
+npm install @mosip/react-inji-verify-sdk
+```
 
-[npm](https://www.npmjs.com/package/@mosip/react-inji-verify-sdk)
+[npm package link](https://www.npmjs.com/package/@mosip/react-inji-verify-sdk)
 
-## Local Publishing Guide
+---
 
-Install the dependencies
-`npm install`
+## ⚙️ Backend Requirements (Prerequisite)
 
-Build the project
-`npm run build`
+To use the SDK components, you must host a backend that implements the **OpenID4VP protocol**.
 
-Publish the npm package using Verdaccio
-We use [verdaccio](https://verdaccio.org/docs/what-is-verdaccio). `npm link` or `yarn link` won't work as we have peer dependencies. Follow the docs to setup Verdaccio. Then run
-`npm publish --registry http://localhost:<VERADACCIO_PORT>`
+You can either:
 
-## Integration Guide
+- Use the official [`inji-verify-service`](../Readme.md), or  
+- Build your own service that adheres to the [OpenAPI spec](../docs/api-documentation-openapi.yaml)
 
-### OpenID4VPVerification
-
-This guide walks you through integrating the OpenID4VPVerification component into your React TypeScript project. It facilitates Verifiable Presentation (VP) verification using the OpenID4VP protocol and supports flexible workflows, including client-side and backend-to-backend verification.
-
-#### Prerequisites
-
-- Ract Project Setup
-
-> **NOTE**
-The component does not support other frontend frameworks like Angular, Vue, or React Native.
-The component is written in React + TypeScript
-
-
-#### Backend Requirements
-
-To use the component, you must host a verification backend that implements the OpenID4VP protocol. This backend is referred to as the [inji-verify-service]("../Readme.md"). It also needs to  adehere to the OpenAPI spec defined [here]("../docs/api-documentation-openapi.yaml") in case if the backend service is not inji-verify-service.
-
-> ⚠️ Important: The component expects these endpoints to be accessible via a base URL (verifyServiceUrl).
-Example:
-If you deploy the inji-verify/verify-service at:
-https://injiverify-service.example.com
-Then use this as the verifyServiceUrl in the component:
-verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
-
-#### Installation
-
-`npm i @mosip/react-inji-verify-sdk`
-
-#### Component Props
-
-##### Exclusive Verification Flows
-<br/>
-> Only one of the following should be provided:
-
-
-| Prop                                         | Description                                       |
-|----------------------------------------------|---------------------------------------------------|
-| `onVPReceived(txnId: string)`                  | Use when your backend fetches the VP result later |
-| `onVPProcessed(vpResult: VerificationResults)` | Use when the frontend needs the result directly   |
-
-##### Presentation Definition Options
-<br/>
-> Only one of the following should be provided:
-
-| Prop                                         | Description                                       |
-|----------------------------------------------|---------------------------------------------------|
-| `presentationDefinitionId`                  | Fetch a predefined definition from the backend |
-| `presentationDefinition` | Provide the full definition inline as a JSON object   |
-
-
-##### Required Props
-<br/>
-
-| Prop             | Type                 | Description                            |
-|------------------|----------------------|----------------------------------------|
-| `verifyServiceUrl` | `string`               | Base URL for your verification backend |
-| `protocol`        | `string`               | Protocol for QR (e.g.: `"openid4vp://"`) |
-| `onQrCodeExpired`  | `() => void`           | Callback when QR expires               |
-| `onError`          | `(err: Error) => void` | Error handler callback                 |
-
-##### Optional Props
-<br/>
-
-| Prop           | Type            | Description                                         |
-|----------------|-----------------|-----------------------------------------------------|
-| `triggerElement` | `React.ReactNode` | Element that triggers verification (e.g., a button) |
-| `transactionId`  | `string`          | Optional external tracking ID                       |
-| `qrCodeStyles`   | `object`          | Customize QR appearance (size, color, margin, etc.) |
-
-#### Integration Examples
-
-##### VP Result via UI (frontend receives result)
-<br/>
+The backend should expose the following base URL:
 
 ```
+https://your-backend.com/v1/verify
+```
+
+This becomes the `verifyServiceUrl` prop in both components.
+
+> ⚠️ Note: These components are only compatible with React projects (not Angular, Vue, or React Native).
+
+---
+
+## 🚀 Usage Guide
+
+### 🔐 OpenID4VPVerification Component
+
+This component generates a **QR code** for VP request and supports:
+
+- Backend-to-backend mode (`onVPReceived`)
+- Frontend verification mode (`onVPProcessed`)
+
+#### ✅ Required Props
+
+| Prop                | Type                           | Description                                    |
+|---------------------|--------------------------------|------------------------------------------------|
+| `verifyServiceUrl`  | `string`                       | Backend base URL (e.g., `/v1/verify`)          |
+| `onError`           | `(err: Error) => void`         | Error handler                                  |
+| `onQrCodeExpired`   | `() => void`                   | Callback when QR code expires                  |
+
+#### 🧩 Callback Mode (Choose Only One)
+
+| Prop                   | Description                                           |
+|------------------------|-------------------------------------------------------|
+| `onVPProcessed`        | Gets VP verification result on frontend               |
+| `onVPReceived`         | Gets txnId for backend to fetch VP result             |
+
+#### 📄 Presentation Definition (Choose One)
+
+| Prop                        | Description                                         |
+|-----------------------------|-----------------------------------------------------|
+| `presentationDefinitionId` | ID to fetch PD from backend                         |
+| `presentationDefinition`    | Inline PD as JSON object                            |
+
+#### ✍️ Example — Inline presentationDefinition Usage
+If you want to directly provide a presentationDefinition instead of fetching it by ID, you can pass it like this:
+
+```ts
+const presentationDefinition = {
+  id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
+  purpose:
+    "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+  format: {
+    ldp_vc: {
+      proof_type: ["Ed25519Signature2020"],
+    },
+  },
+  input_descriptors: [
+    {
+      id: "id card credential",
+      format: {
+        ldp_vc: {
+          proof_type: ["Ed25519Signature2020"],
+        },
+      },
+      constraints: {
+        fields: [
+          {
+            path: ["$.type"],
+            filter: {
+              type: "object",
+              pattern: "LifeInsuranceCredential",
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+```
+⚡ Tip: If you use presentationDefinition, do not pass presentationDefinitionId, and vice versa.
+
+
+#### 🧩 Optional Props
+
+| Prop               | Type               | Default           | Description                                       |
+|--------------------|--------------------|--------------------|---------------------------------------------------|
+| `protocol`         | `string`           | `"openid4vp://"`   | URI scheme used in the QR code                   |
+| `triggerElement`   | `React.ReactNode`  | -                  | UI element to trigger verification               |
+| `transactionId`    | `string`           | -                  | Optional tracking ID                             |
+| `qrCodeStyles`     | `object`           | -                  | Customize QR appearance (size, color, etc.)      |
+
+> 💡 If `protocol` is not provided, the component will default to `"openid4vp://"`.
+
+#### 🔧 Example 1: Handle VP on Frontend
+
+```tsx
 <OpenID4VPVerification
   triggerElement={<button>Start VP Verification</button>}
   protocol="openid4vp://"
@@ -113,10 +132,9 @@ verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
 />
 ```
 
-##### VP Result via Backend (frontend just gets txnId)
-<br/>
+#### 🔧 Example 2: Handle VP on Backend
 
-```
+```tsx
 <OpenID4VPVerification
   triggerElement={<button>Verify using Wallet</button>}
   protocol="openid4vp://"
@@ -127,149 +145,111 @@ verifyServiceUrl="https://injiverify-service.example.com/v1/verify"
   }}
   onVPReceived={(txnId) => {
     // Send txnId to your backend to fetch the result later
-    console.log("VP submission received, txn ID:", txnId);
+    console.log("txn ID:", txnId);
   }}
   onQrCodeExpired={() => alert("QR expired")}
   onError={(err) => console.error("Verification error:", err)}
 />
 ```
 
-#### Testing the Component (for QA)
+---
 
-- **Simulate Wallet Scan** : Use a mobile wallet app that supports OpenID4VP, or use mock tools to scan the QR code.
+### 📷 QRCodeVerification Component
 
-- **Trigger Expiry** : Don't scan the QR and wait for expiry to ensure onQrCodeExpired fires.
+Use this to **scan or upload QR codes** that contain Verifiable Credentials and verify them.
 
-- **Force Errors** :
-    - Stop the backend or simulate a 500 error.
-    - Try missing required props or using both callbacks to see validation.
+#### ✅ Required Props
 
-### QRCodeVerification
+| Prop              | Type                         | Description                                         |
+|-------------------|------------------------------|-----------------------------------------------------|
+| `verifyServiceUrl`| `string`                     | Backend URL for VC verification                     |
+| `onError`         | `(err: Error) => void`       | Error callback                                      |
 
-This guide walks you through integrating the QRCodeVerification component into your React TypeScript project. It facilitates QR code scanning and image upload to verify Verifiable Credentials (VCs) in your React application, including client-side and backend-to-backend verification. 
+#### 🧩 Callback Mode (Choose One)
 
-#### Component Props
-✅ Required Props
-<br/> 
+| Callback          | Type                                     | Description                                     |
+|-------------------|------------------------------------------|-------------------------------------------------|
+| `onVCProcessed`   | `(vpResult: VerificationResults) => void`| Get VC + verification status directly           |
+| `onVCReceived`    | `(txnId: string) => void`                | Get only txnId after VC submission              |
 
-| Prop   | Type | Description |
-|--------|------| ------------|
-| `verifyServiceUrl` | string | Backend service URL for VC submission or verification.|
-| `onError` | (error: Error) => void | Callback triggered on errors during scanning/upload.|
-|`onVCReceived or onVCProcessed` | See below |See below
+#### 🔧 Example: With `onVCProcessed`
 
-Only one of these callbacks should be provided.
-
-#### 📌 Callback Types
-Use one of the following:
-
-##### onVCReceived
-
-```onVCReceived: (txnId: string) => void; ```
-
-Called when a Verifiable Presentation (VP) is received and submitted to the backend, returning the transaction ID
-
-##### onVCProcessed
-
-``` onVCProcessed: (vpResult: VerificationResults) => void; ```
-
-Called when the VP is verified, returning an array of verification result objects:
-
-```type VerificationResult = {   vc: unknown;   vcStatus: "SUCCESS" | "INVALID" | "EXPIRED"; }; ```
-
-``` type VerificationResults = VerificationResult[]; ```
-
-**⚠️ onVCReceived and onVCProcessed cannot be used simultaneously.**
-
-#### 🛠️ Optional Props
-<br/>
-
-| Prop             | Type               | Default         | Description                                         |
-|------------------|--------------------|-----------------|-----------------------------------------------------|
-| `triggerElement` | `React.ReactNode`  |      null       | Optional trigger to initiate the scan/upload (e.g., a button or label). |
-| `transactionId` | string | null | Optional external tracking ID |
-| `uploadButtonId`  | `string`           |    "upload-qr"             | Custom ID for upload button.                       |
-| `uploadButtonStyle`   | `React.CSSProperties`           |  "upload-button-default"               | Inline style object to apply custom styling to the upload button. |
-| `isEnableUpload` | boolean | true | Enables/disables QR-CODE image upload. |
-| `isEnableScan` | boolean | true | Enables/disables camera scanning. | 
-| `isEnableZoom` | boolean | true | Enables camera zoom on mobile devices. |
-
-#### Upload Support
-Upload supports the following image types:
-
-- PNG
-
-- JPEG
-
-- JPG
-
-- PDF
-
-You can customize the upload button’s style using uploadButtonStyle, and control its placement with uploadButtonId.
-
-#### Callback Behaviour
-
-**onVCReceived** : Used when you want the VC sent to a backend and just need a txnId response.
-
-**onVCProcessed** : Used for apps that handle VC verification client-side and want full VC + status.
-
-**onError** : Handles all runtime, parsing, and scanning errors.
-
-The component will clean up camera streams and timers on unmount.
-
-#### Example with onVCProcessed
-
-```
+```tsx
 <QRCodeVerification 
-    verifyServiceUrl="https://your-api/verify"
-    onVCProcessed={(vpResult) => { console.log("VC + Status:", vpResult)}}
-    onError={(e) => console.error("Error:", e.message)} 
-    triggerElement={<div className="btn-primary">Verify Now</div>} 
+  verifyServiceUrl="https://your-api/verify"
+  onVCProcessed={(vpResult) => {
+    console.log("VC + Status:", vpResult);
+  }}
+  onError={(e) => console.error("Error:", e.message)} 
+  triggerElement={<div className="btn-primary">Verify Now</div>} 
 />
 ```
 
-#### Basic Usage
+#### 🎨 Optional Props
 
-```
-import {QRCodeVerification} from "@mosip/react-inji-verify-sdk";
-const App = () => {
-  const handleVCReceived = (txnId: string) => {
-    console.log("txnId received from VC submission:", txnId);
-  };
-  const handleError = (error: Error) => {
-    console.error("Verification Error:", error.message);
-  };
-  return (
-    <QRCodeVerification
-      verifyServiceUrl="https://your-backend/verify"
-      onVCReceived={handleVCReceived}
-      onError={handleError}
-      triggerElement={<button>Start Verification</button>}
-    />
-  );
-};
-```
+| Prop                | Type                    | Default     | Description                                     |
+|---------------------|-------------------------|-------------|-------------------------------------------------|
+| `triggerElement`    | `React.ReactNode`       | `null`      | UI to trigger scan/upload                       |
+| `transactionId`     | `string`                | `null`      | Optional tracking ID                            |
+| `uploadButtonId`    | `string`                | `"upload-qr"` | ID for upload button                          |
+| `uploadButtonStyle` | `React.CSSProperties`   | -           | Inline style for upload button                  |
+| `isEnableUpload`    | `boolean`               | `true`      | Enable/disable QR image upload                  |
+| `isEnableScan`      | `boolean`               | `true`      | Enable/disable live camera scan                 |
+| `isEnableZoom`      | `boolean`               | `true`      | Enable pinch-zoom for mobile devices            |
 
-#### Redirect Behavior
-When using Online Share QR Code, the user is redirected to the client (issuer) server for processing, and then sent back to the RP’s root path (/) with the vp_token in the URL fragment:
+#### 🖼️ Supported Upload Types
 
+- PNG
+- JPEG
+- JPG
+- PDF
+
+---
+
+## 📥 Redirect Behavior (Online Share)
+
+If using **Online Share QR Code**, the wallet redirects to your RP app:
 
 ```
 https://your-rp-domain.com/#vp_token=<base64url-encoded-token> 
 ```
 
-### Compatibility & Scope
+You must extract and process the `vp_token` from the URL.
 
-##### Supported
+---
 
-- ✅ ReactJS (with TypeScript)
+## 🔬 Testing
 
-- ✅ Modern React projects (17+)
+| Case                | How to Test                                                 |
+|---------------------|-------------------------------------------------------------|
+| **Wallet Scan**     | Use an OpenID4VP-compatible wallet to scan the QR           |
+| **QR Expiry**       | Wait until the QR expires (no scan)                         |
+| **Error Handling**  | Use missing props, simulate 500 errors, stop backend server |
 
-##### Not Supported
+---
 
-- ❌ React Native
+## 🛠 Local Development / Publishing
 
-- ❌ Angular, Vue, or other frontend frameworks
+> Only needed for contributors to the SDK
 
-- ❌ SSR frameworks like Next.js without customization
+```bash
+npm install      # Install dependencies
+npm run build    # Build the project
+```
+
+For local publishing (using Verdaccio):
+
+```bash
+npm publish --registry http://localhost:<VERDACCIO_PORT>
+```
+
+---
+
+## ✅ Compatibility
+
+| Framework           | Supported |
+|---------------------|-----------|
+| React (17+)         | ✅ Yes     |
+| React Native        | ❌ No      |
+| Angular / Vue       | ❌ No      |
+| SSR (Next.js)       | ⚠️ Only with customization |
