@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping
 @RestController
 @Slf4j
-@CrossOrigin(origins = "*")
 public class DidWebController {
 
     @Value("${inji.did.issuer.uri}")
