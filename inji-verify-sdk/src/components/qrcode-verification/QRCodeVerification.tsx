@@ -28,6 +28,7 @@ import { Slider } from "@mui/material";
 import "./QRCodeVerification.css";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
+  isActive,
   triggerElement,
   verifyServiceUrl,
   transactionId,
@@ -114,9 +115,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   const stopVideoStream = useCallback(() => {
     frameProcessingRef.current = false;
-    const video = videoRef.current;
-
     try {
+      const anyWindow = window as any;
+      const video = videoRef.current;
       if (video) {
         video.pause()
         const stream = video.srcObject as MediaStream | null;
@@ -131,12 +132,110 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         video.onplay = null;
         video.onerror = null;
       }
+
+      if (anyWindow.__inji_all_streams && anyWindow.__inji_all_streams.length) {
+        anyWindow.__inji_all_streams.forEach((mediaStream: MediaStream) => {
+          try {
+            mediaStream.getTracks().forEach((t: MediaStreamTrack) => {
+              try { t.stop(); } catch (e) {}
+            });
+          } catch (e) {
+            console.warn("[stopVideoStream] error stopping registry stream", e);
+          }
+        });
+        anyWindow.__inji_all_streams = [];
+      }
+
     } catch (err) {
-      console.error("Error while stopping video stream:", err);
+      console.error("[stopVideoStream] unexpected error:", err);
     } finally {
       streamingRef.current = false;
+      startingRef.current = false;
     }
   }, []);
+
+  const stopTracks = (stream: MediaStream | null | undefined) => {
+    if (!stream) return;
+      stream.getTracks().forEach((track) => track.stop());
+  };
+
+  const registerStream = (stream: MediaStream) => {
+    const anyWindow = window as any;
+    anyWindow.__inji_all_streams = anyWindow.__inji_all_streams || [];
+    anyWindow.__inji_all_streams.push(stream);
+    anyWindow.__inji_current_stream = stream;
+  };
+
+  const startSessionTimer = (
+    clearTimer: () => void,
+    timerRef: React.MutableRefObject<any>,
+    stopVideoStream: () => void,
+    onError?: (err: Error) => void
+  ) => {
+    clearTimer();
+    timerRef.current = setTimeout(() => {
+      stopVideoStream();
+      onError?.(new Error("scanSessionExpired"));
+    }, ScanSessionExpiryTime);
+  };
+
+  const startFrameProcessing = (
+    frameProcessingRef: React.MutableRefObject<boolean>,
+    processFrame: () => void
+  ) => {
+    frameProcessingRef.current = true;
+    setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
+  };
+
+  const attachStreamToVideoElement = (
+    stream: MediaStream,
+    videoRef: React.MutableRefObject<HTMLVideoElement | null>,
+    startingRef: React.MutableRefObject<boolean>,
+    streamingRef: React.MutableRefObject<boolean>,
+    frameProcessingRef: React.MutableRefObject<boolean>,
+    clearTimer: () => void,
+    timerRef: React.MutableRefObject<any>,
+    stopVideoStream: () => void,
+    onError: ((err: Error) => void) | undefined,
+    processFrame: () => void
+  ) => {
+    const video = videoRef.current;
+    if (!video) {
+      stopTracks(stream);
+      startingRef.current = false;
+      return;
+    }
+
+    video.srcObject = stream;
+    video.disablePictureInPicture = true;
+    video.playsInline = true;
+    video.controls = false;
+    video.muted = true;
+
+    video.onloadedmetadata = () => {
+      video
+        .play()
+        .then(() => {
+          streamingRef.current = true;
+          startingRef.current = false;
+          startSessionTimer(clearTimer, timerRef, stopVideoStream, onError);
+          startFrameProcessing(frameProcessingRef, processFrame);
+        })
+        .catch((error) => {
+          startingRef.current = false;
+          stopVideoStream();
+          onError?.(error);
+        });
+    };
+
+    video.onerror = () => {
+      startingRef.current = false;
+      stopVideoStream();
+      onError?.(new Error("Video stream error"));
+    };
+
+    return;
+  };
 
   const startVideoStream = useCallback(() => {
     if (
@@ -147,6 +246,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     ) return;
 
     startingRef.current = true;
+
     navigator.mediaDevices
       .getUserMedia({
         video: {
@@ -157,47 +257,39 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         },
       })
       .then((stream) => {
-        const video = videoRef.current;
-        if (!video) {
-          stream.getTracks().forEach((t) => t.stop());
+        const anyWindow = window as any;
+        anyWindow.__inji_all_streams = anyWindow.__inji_all_streams || [];
+
+        const existing = anyWindow.__inji_all_streams.find(
+          (stream: MediaStream) => stream && stream.active
+        );
+
+        if (existing) {
+          stopTracks(stream);
+          const video = videoRef.current;
+          if (video) video.srcObject = existing;
+          streamingRef.current = true;
           startingRef.current = false;
+          startSessionTimer(clearTimer, timerRef, stopVideoStream, onError);
+          startFrameProcessing(frameProcessingRef, processFrame);
           return;
         }
 
-        video.srcObject = stream;
-        video.disablePictureInPicture = true;
-        video.playsInline = true;
-        video.controls = false;
-        video.muted = true;
-        video.onloadedmetadata = () => {
-          video.play().then(() => {
-            streamingRef.current = true;
-            startingRef.current = false;
-            frameProcessingRef.current = true;
-            clearTimer();
-            timerRef.current = setTimeout(() => {
-              stopVideoStream();
-              onError?.(new Error("scanSessionExpired"));
-            }, ScanSessionExpiryTime);
-
-            setTimeout(processFrame, FRAME_PROCESS_INTERVAL_MS);
-          }).catch((error) => {
-            console.error("Error playing video:", error);
-            startingRef.current = false;
-            stopVideoStream();
-            onError?.(error);
-          });
-        };
-
-        video.onerror = (error) => {
-          console.error("Video element error:", error);
-          startingRef.current = false;
-          stopVideoStream();
-          onError?.(new Error("Video stream error"));
-        };
+        registerStream(stream);
+        attachStreamToVideoElement(
+          stream,
+          videoRef,
+          startingRef,
+          streamingRef,
+          frameProcessingRef,
+          clearTimer,
+          timerRef,
+          stopVideoStream,
+          onError,
+          processFrame
+        );
       })
       .catch((error) => {
-        console.error("Error accessing camera:", error);
         startingRef.current = false;
         onError?.(error);
       });
@@ -286,7 +378,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       error instanceof Error ? error : new Error("Unknown error occurred")
     );
   };
-
   const handleZoomChange = (value: number) => {
     if (value >= 0 && value <= 10) setZoomLevel(value);
   };
@@ -304,16 +395,21 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }
 
   const startScanning =
-    isEnableScan && !isUploading && !isScanning && !scanSessionCompletedRef.current;
+    Boolean(isActive) &&
+    isEnableScan &&
+    !isUploading &&
+    !isScanning &&
+    !scanSessionCompletedRef.current;
 
   useEffect(() => {
-    if (!startScanning) return;
-    startVideoStream();
-    return () => {
+    if (isActive) {
+      if (startScanning) startVideoStream();
+    } else {
+      frameProcessingRef.current = false;
       clearTimer();
       stopVideoStream();
-    };
-  }, [startScanning, startVideoStream, stopVideoStream]);
+    }
+  }, [isActive, startScanning, startVideoStream, stopVideoStream]);
 
   useEffect(() => {
     const resize = () => setIsMobile(window.innerWidth < 768);
