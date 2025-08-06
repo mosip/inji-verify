@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import constants.UiConstants;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -1490,6 +1491,24 @@ public class StepDef {
 	    }
 	}
 
+    	@When("verify Transaction Terminated error message")
+	public void verify_transaction_terminated_error_message() {
+	    try {
+	        String actualMessage = vpverification.getTransactionTerminatedText();
+	        Assert.assertEquals(actualMessage, UiConstants.TRANSACTION_TERMINATED_MESSAGE, "Information message does not match the expected value.");
+	        test.log(Status.PASS, "Information message verification successful. Expected: " + UiConstants.TRANSACTION_TERMINATED_MESSAGE + ", Actual: " + actualMessage);
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Information message verification failed. Expected: " + UiConstants.TRANSACTION_TERMINATED_MESSAGE + ", but found: " + vpverification.getTransactionTerminatedText());
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying information message", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while verifying information message", e);
+	        throw e;
+	    }
+	}
+
 	@Then("Click on vp verification tab")
 	public void click_on_vp_verification_tab() {
 	    try {
@@ -1501,6 +1520,21 @@ public class StepDef {
 	        throw e;
 	    } catch (Exception e) {
 	        logFailure(test, driver, "Unexpected error while clicking on the VP verification tab", e);
+	        throw e;
+	    }
+	}
+
+    @Then("Click on right arrow")
+	public void click_on_right_arrow() {
+	    try {
+	        vpverification.clickOnRightArrow();
+	        test.log(Status.PASS, "Successfully clicked on the right arrow.");
+	        test.log(Status.PASS, "Right arrow is active after clicking.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the right arrow", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while clicking on the right arrow", e);
 	        throw e;
 	    }
 	}
@@ -2710,6 +2744,40 @@ public class StepDef {
 	    }
 	}
 
+    @Then("Verify Click on cancel")
+	public void user_click_on_cancel_button() {
+	    try {
+	        vpverification.clickOnCancelButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Cancel' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Cancel' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Cancel' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Cancel' button", e);
+	        throw e;
+	    }
+	}
+
+    @Then("Verify Click on open wallet button")
+	public void user_click_on_open_wallet_button() {
+	    try {
+	        vpverification.clickOnOpenWalletButton();
+	        test.log(Status.PASS, "Successfully clicked on the 'Open Wallet' button.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Unable to click on the 'Open Wallet' button.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the 'Open Wallet' button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the 'Open Wallet' button", e);
+	        throw e;
+	    }
+	}
+
 
 	@Then("Verify Click on Generate QR Code button")
 	public void verify_click_on_generate_qr_code_button() {
@@ -2739,6 +2807,20 @@ public class StepDef {
 	        throw e;
 	    } catch (Exception e) {
 	        logFailure(test, driver, "Unexpected error occurred while verifying QR code generation", e);
+	        throw e;
+	    }
+	}
+
+    @Then("verify loading screen")
+	public void verify_loading_screen() {
+	    try {
+	        Assert.assertTrue(vpverification.isLoadingScreenDisplayed());
+	        test.log(Status.PASS, "Successfully verified that the loading screen is displayed.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying loading screen", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while verifying loading screen", e);
 	        throw e;
 	    }
 	}
@@ -2791,6 +2873,34 @@ public class StepDef {
 	    }
 	}
 
+    @Then("Verify Click on wallet")
+	public void verify_click_on_wallet() {
+	    try {
+	        vpverification.ClickOnWalletButton();
+	        test.log(Status.PASS, "Successfully clicked on the Wallet button.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the Wallet button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the Wallet button", e);
+	        throw e;
+	    }
+	}
+
+    @Then("Verify Click on Proceed")
+	public void verify_click_on_proceed() {
+	    try {
+	        vpverification.ClickOnProceedButton();
+	        test.log(Status.PASS, "Successfully clicked on the Proceed button.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while clicking on the Proceed button", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while clicking on the Proceed button", e);
+	        throw e;
+	    }
+	}
+
 	
 	@Then("Select Land Registry")
 	public void uncheck_land_registry() {
@@ -2824,6 +2934,7 @@ public class StepDef {
 	        throw e;
 	    }
 	}
+
 
 	@Then("Verify that Upload icon visible")
 	public void verify_that_upload_icon_visible() {

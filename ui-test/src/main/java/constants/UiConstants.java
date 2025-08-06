@@ -39,6 +39,7 @@ public class UiConstants {
 	public static final String CONGRATULATIONS_MESSAGE = "Congratulations, the given credential is valid!";
 	public static final String SUCCESS_TOAST_MESSAGE = "QR code uploaded successfully!";
 	public static final String INFO_MESSAGE = "Coming soon";
+	public static final String TRANSACTION_TERMINATED_MESSAGE = "Transaction Terminated";
 	public static final String ERROR_MESSAGE_INVALID_QR = "Unfortunately, the given credential is invalid!";
 	public static final String ERROR_MESSAGE_LARGEFILE_QR = "File size not supported. The file size should be between 10 KB and 5 MB.";
 	public static final String ERROR_MESSAGE_SCAN_TIMEOUT = "The scan session has expired due to inactivity. Please initiate a new scan.";
