@@ -8,7 +8,10 @@ import {
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 
-function QrScanner() {
+function QrScanner({ onClose, isActive }: {
+  onClose: () => void;
+  isActive: boolean;
+}) {
   const dispatch = useAppDispatch();
   const [isCameraBlocked, setIsCameraBlocked] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -30,11 +33,13 @@ function QrScanner() {
 
       <div className="w-full h-full lg:h-auto lg:w-full flex items-center justify-center rounded-lg overflow-hidden">
         <QRCodeVerification
+          scannerActive={isActive}
           verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
           isEnableUpload={false}
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
           }
+          onClose={onClose}
           onError={(error) => {
             if (error.name === "NotAllowedError") {
               setIsCameraBlocked(true);
