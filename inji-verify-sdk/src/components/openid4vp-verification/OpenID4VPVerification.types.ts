@@ -82,18 +82,6 @@ type ExclusiveCallbacks =
       onVPReceived?: never;
     };
 
-// When same device flow is enabled: supportedWallets is required
-type SameDeviceFlowEnabledProps = {
-  isEnableSameDeviceFlow: true;
-  supportedWallets: Wallet[];
-};
-
-// When same device flow is disabled or not passed: supportedWallets is optional
-type SameDeviceFlowDisabledProps = {
-  isEnableSameDeviceFlow?: false | undefined;
-  supportedWallets?: Wallet[];
-};
-
 interface InputDescriptor {
   id: string;
   format?: {
@@ -115,7 +103,7 @@ export interface PresentationDefinition {
   input_descriptors: InputDescriptor[];
 }
 
-type BaseProps = ExclusivePresentationDefinition &
+export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   ExclusiveCallbacks & {
     /**
   
@@ -131,11 +119,11 @@ type BaseProps = ExclusivePresentationDefinition &
   */
     verifyServiceUrl: string;
 
-  /**
+    /**
 
    The client identifier for relaying party.
    */
-  clientId: string;
+    clientId: string;
 
     /**
   
@@ -148,6 +136,12 @@ type BaseProps = ExclusivePresentationDefinition &
   A unique identifier for the transaction.
   */
     transactionId?: string;
+
+    /** 
+  Indicates whether the same device flow is enabled.
+  Defaults to true, allowing verification on the same device.
+  */
+    isEnableSameDeviceFlow?: boolean;
 
     /**
   
@@ -173,8 +167,3 @@ type BaseProps = ExclusivePresentationDefinition &
      */
     onError: (error: Error) => void;
   };
-
-// Combine with base props
-export type OpenID4VPVerificationProps =
-  | (BaseProps & SameDeviceFlowEnabledProps)
-  | (BaseProps & SameDeviceFlowDisabledProps);
