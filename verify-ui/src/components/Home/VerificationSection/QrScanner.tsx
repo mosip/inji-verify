@@ -34,7 +34,7 @@ function QrScanner({ onClose, isActive }: {
       <div className="w-full h-full lg:h-auto lg:w-full flex items-center justify-center rounded-lg overflow-hidden">
         <QRCodeVerification
           isActive={isActive}
-          verifyServiceUrl={"https://ready-doors-win.loca.lt" + window._env_.VERIFY_SERVICE_API_URL}
+          verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
           isEnableUpload={false}
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
