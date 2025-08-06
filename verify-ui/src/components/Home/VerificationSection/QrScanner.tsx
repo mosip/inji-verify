@@ -35,6 +35,7 @@ function QrScanner() {
           onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
             dispatch(verificationComplete({ verificationResult: data[0] }))
           }
+          onClose={() => dispatch(goToHomeScreen({}))}
           onError={(error) => {
             if (error.name === "NotAllowedError") {
               setIsCameraBlocked(true);

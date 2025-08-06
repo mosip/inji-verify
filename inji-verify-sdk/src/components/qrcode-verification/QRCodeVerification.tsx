@@ -33,6 +33,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   transactionId,
   onVCReceived,
   onVCProcessed,
+  onClose,
   onError,
   isEnableUpload = true,
   isEnableScan = true,
@@ -375,7 +376,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           >
             {shouldEnableZoom && (
               <button
-                onClick={stopVideoStream}
+                onClick={() => {
+                  stopVideoStream();
+                  onClose?.();
+                }}
                 className="qr-close-button"
                 aria-label="Close Scanner"
               >
