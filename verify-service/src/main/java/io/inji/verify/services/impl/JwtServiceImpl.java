@@ -6,6 +6,7 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.util.JSONObjectUtils;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
+import io.inji.verify.dto.client.ClientMetadataDto;
 import io.inji.verify.exception.JWTCreationException;
 import io.inji.verify.services.JwtService;
 import com.nimbusds.jose.crypto.Ed25519Signer;
@@ -20,6 +21,8 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
+
+import static io.inji.verify.shared.Constants.VP_FORMATS;
 
 @Service
 @Slf4j
@@ -49,6 +52,7 @@ public class JwtServiceImpl implements JwtService {
                     .claim("nonce", authorizationRequest.getNonce())
                     .claim("state", state)
                     .claim("response_uri", authorizationRequest.getResponseUri())
+                    .claim("client_metadata", new ClientMetadataDto(verifierDid,VP_FORMATS))
                     .build();
             if (authorizationRequest.getPresentationDefinitionUri() != null) {
                 claimsSet = new JWTClaimsSet.Builder(claimsSet)
