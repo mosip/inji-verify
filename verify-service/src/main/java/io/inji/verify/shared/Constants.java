@@ -1,5 +1,10 @@
 package io.inji.verify.shared;
 
+import io.inji.verify.dto.client.LdpVp;
+import io.inji.verify.dto.client.VpFormats;
+
+import java.util.Arrays;
+
 public class Constants {
 
     public static final int DEFAULT_EXPIRY =  300;
@@ -14,6 +19,11 @@ public class Constants {
     public static final String RSA_SIGNATURE_2018 = "RsaSignature2018";
     public static final String ED25519_SIGNATURE_2018 = "Ed25519Signature2018";
     public static final String ED25519_SIGNATURE_2020 = "Ed25519Signature2020";
+    public static final VpFormats VP_FORMATS = new VpFormats(new LdpVp(Arrays.asList(
+            "Ed25519Signature2018",
+            "Ed25519Signature2020",
+            "RsaSignature2018"
+    )));
 
     //JSON KEYS
     public static final String KEY_PROOF = "proof";
