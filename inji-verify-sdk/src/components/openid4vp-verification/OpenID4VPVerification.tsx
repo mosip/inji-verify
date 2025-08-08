@@ -11,12 +11,10 @@ import {
   QrData,
   VerificationResults,
   VerificationStatus,
-  Wallet,
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
-import WalletSelectionModal from "../WalletSelectionModal/WalletSelectionModal";
 
-const isMobileDevice = () => {
+const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
@@ -36,7 +34,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   onQrCodeExpired,
   onError,
   isEnableSameDeviceFlow = true,
-  supportedWallets = [],
   clientId,
 }) => {
   const [txnId, setTxnId] = useState<string | null>(transactionId || null);
@@ -44,10 +41,11 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showWallets, setShowWallets] = useState<boolean>(false);
-  const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
   const hasInitializedRef = useRef(false);
 
   const shouldShowQRCode = !loading && qrCodeData && !showWallets;
+
+  const DEFAULT_PROTOCOL = "openid4vp://";
 
   const VPFormat = useMemo(
     () => ({
@@ -214,7 +212,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
       if (!triggerElement) {
-        setShowWallets(true);
+        startVerification();
       }
     } else if (!triggerElement) {
       handleGenerateQRCode();
@@ -233,41 +231,32 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setQrCodeData(null);
     setShowWallets(false);
     setLoading(false);
-    setSelectedWallet(null);
     hasInitializedRef.current = false;
   };
 
   const handleTriggerClick = () => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
-      setShowWallets(true);
+      startVerification();
     } else {
       handleGenerateQRCode();
     }
   };
 
-  const handleWalletOnCancel = () => {
-    setSelectedWallet(null);
-    setShowWallets(false);
-    resetState();
-    onError(new Error("Transaction Terminated"));
-  };
-
-  const handleWalletOnProceed = async () => {
-    if (selectedWallet) {
-      setShowWallets(false);
-      const pdParams = await createVPRequest();
-      const openidUrl = `${selectedWallet.scheme}authorize?${pdParams}`;
-      window.location.href = openidUrl;
-      fetchVPStatus();
+  const handleGenerateQRCode = async () => {
+    const pdParams = await createVPRequest();
+    if (pdParams) {
+      const qrData = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
+      setQrCodeData(qrData);
+      setLoading(false);
     }
   };
 
-  const handleGenerateQRCode = async () => {
+  const startVerification = async () => {
     const pdParams = await createVPRequest();
-    const qrData = `${protocol || "openid4vp://"}authorize?${pdParams}`;
-    setQrCodeData(qrData);
-    setLoading(false);
-    fetchVPStatus();
+    if (pdParams) {
+      const openidUrl = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
+      window.location.href = openidUrl;
+    }
   };
 
   return (
@@ -311,20 +300,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           style={{ borderRadius: qrCodeStyles?.borderRadius || 10 }}
         />
       )}
-
-      {!loading &&
-        showWallets &&
-        isEnableSameDeviceFlow &&
-        isMobileDevice() && (
-          <WalletSelectionModal
-            isOpen={showWallets}
-            wallets={supportedWallets}
-            selectedWallet={selectedWallet}
-            onSelect={setSelectedWallet}
-            onCancel={handleWalletOnCancel}
-            onProceed={handleWalletOnProceed}
-          />
-        )}
     </div>
   );
 };
