@@ -10,32 +10,38 @@
 -- Date           : 
 -- -------------------------------------------------------------------------------------------------
 
--- -------------------------------------------------------------------------------------------------
--- SECTION 1: Revert column types back to JSONB
--- -------------------------------------------------------------------------------------------------
-
-ALTER TABLE authorization_request_details 
-ALTER COLUMN authorization_details 
-TYPE JSONB 
-USING authorization_details::JSONB;
-
-ALTER TABLE presentation_definition 
-ALTER COLUMN vp_format 
-TYPE JSONB 
-USING vp_format::JSONB;
-
-ALTER TABLE presentation_definition 
-ALTER COLUMN submission_requirements 
-TYPE JSONB 
-USING submission_requirements::JSONB;
-
-ALTER TABLE vp_submission 
-ALTER COLUMN presentation_submission 
-TYPE JSONB 
-USING presentation_submission::JSONB;
+\c inji_verify
 
 -- -------------------------------------------------------------------------------------------------
--- SECTION 2: Drop vc_submission table
+-- SECTION 1: Revert column types (from TEXT back to JSONB)
 -- -------------------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS vc_submission;
+ALTER TABLE verify.authorization_request_details 
+  ALTER COLUMN authorization_details 
+  TYPE JSONB 
+  USING authorization_details::JSONB;
+
+ALTER TABLE verify.presentation_definition 
+  ALTER COLUMN vp_format 
+  TYPE JSONB 
+  USING vp_format::JSONB;
+
+ALTER TABLE verify.presentation_definition 
+  ALTER COLUMN submission_requirements 
+  TYPE JSONB 
+  USING submission_requirements::JSONB;
+
+ALTER TABLE verify.vp_submission 
+  ALTER COLUMN presentation_submission 
+  TYPE JSONB 
+  USING presentation_submission::JSONB;
+
+-- -------------------------------------------------------------------------------------------------
+-- SECTION 2: Drop new tables
+-- -------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS verify.vc_submission;
+
+-- -------------------------------------------------------------------------------------------------
+-- END OF SCRIPT
+-- -------------------------------------------------------------------------------------------------
