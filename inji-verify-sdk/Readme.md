@@ -85,7 +85,7 @@ Your backend must support the OpenID4VP protocol. You can either:
 
 **Important:** Your backend URL should look like:
 ```
-https://your-backend.com/v1/verify
+https://your-backend.com
 ```
 
 ## 📖 Detailed Component Guide
@@ -97,7 +97,7 @@ https://your-backend.com/v1/verify
 #### Basic Setup:
 ```javascript
 <QRCodeVerification
-  verifyServiceUrl="https://your-backend.com/v1/verify"
+  verifyServiceUrl="https://your-backend.com"
   onVCProcessed={(result) => handleResult(result)}
   onError={(error) => handleError(error)}
   triggerElement={<button>Start Verification</button>}
@@ -108,13 +108,13 @@ https://your-backend.com/v1/verify
 ```javascript
 <QRCodeVerification
   // Required
-  verifyServiceUrl="https://your-backend.com/verify"
+  verifyServiceUrl="https://your-backend.com"
   onVCProcessed={(result) => console.log(result)}  // OR use onVCReceived
   onError={(error) => console.log(error)}
 
   // Optional
   triggerElement={<button>Custom Trigger</button>}
-  transactionId="your-tracking-id"
+  transactionId="your-tracking-id"  //Optional
   uploadButtonId="my-upload-btn"
   uploadButtonStyle={{ backgroundColor: 'blue' }}
   isEnableUpload={true}        // Allow file uploads
@@ -134,7 +134,7 @@ https://your-backend.com/v1/verify
 #### Basic Setup:
 ```javascript
 <OpenID4VPVerification
-  verifyServiceUrl="https://your-backend.com/v1/verify"
+  verifyServiceUrl="https://your-backend.com"
   presentationDefinitionId="what-you-want-to-verify"
   onVpProcessed={(result) => handleResult(result)}
   onQrCodeExpired={() => alert("Please try again")}
@@ -142,36 +142,11 @@ https://your-backend.com/v1/verify
 />
 ```
 
-#### Advanced Setup with Custom Presentation Definition:
+#### With Presentation Definition:
 ```javascript
 <OpenID4VPVerification
-  verifyServiceUrl="https://your-backend.com/v1/verify"
-  presentationDefinition={{
-    id: "driver-license-verification",
-    purpose: "We need to verify your driver's license",
-    format: {
-      ldp_vc: {
-        proof_type: ["Ed25519Signature2020"],
-      },
-    },
-    input_descriptors: [
-      {
-        id: "driver-license-check",
-        constraints: {
-          fields: [
-            {
-              path: ["$.type"],
-              filter: {
-                type: "object",
-                pattern: "DriverLicenseCredential",
-              },
-            },
-          ],
-        },
-      },
-    ],
-  }}
-  
+  verifyServiceUrl="https://your-backend.com"
+  presentationDefinition={"Refer Option 2 below"}
   onVpProcessed={(result) => console.log(result)}
   onQrCodeExpired={() => alert("QR expired")}
   onError={(error) => console.error(error)}
@@ -250,36 +225,7 @@ presentationDefinition={{
 | `isEnableSameDeviceFlow` | boolean | true | Enable same-device flow (optional) |
 | `qrCodeStyles` | object | - | Customize QR code appearance |
 
-## 🔍 Testing Your Integration
-
-1. **Test QR Scanning:** Use a QR code generator to create test codes
-2. **Test File Upload:** Try uploading PNG, JPEG, or PDF files
-3. **Test Error Handling:** Disconnect your backend and see if errors are handled
-4. **Test Expiration:** Let QR codes expire to test timeout handling
-5. **Test Mobile:** Ensure camera permissions work on mobile devices
-
 ## ⚠️ Important Limitations
 
 - **React Only:** Won't work with Angular, Vue, or React Native
 - **Backend Required:** You must have a verification service running
-
-## 📦 Installation for Development
-
-If you want to contribute or modify the SDK:
-
-```bash
-# Clone and install dependencies
-npm install
-
-# Build the project
-npm run build
-
-# Publish locally with Verdaccio
-npm publish --registry http://localhost:4873
-```
-
-## 🤝 Support
-
-- For technical questions: Check the [OpenAPI specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html)
-- For backend setup: See the `inji-verify-service` documentation
-- For React help: Refer to React's official documentation
