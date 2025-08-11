@@ -23,7 +23,6 @@ spec:
         {{- if or .Values.podAnnotations .Values.metrics.enabled }}
         {{- include "inji-verify-service.podAnnotations" . | nindent 8 }}
         {{- end }}
-       
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
@@ -94,6 +93,9 @@ spec:
               value: {{ .Values.containerSecurityContext.runAsUser }}
             - name: JDK_JAVA_OPTIONS
               value: {{ .Values.additionalResources.javaOpts }}
+            {{- if .Values.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
             {{- if .Values.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -113,7 +115,6 @@ spec:
           ports:
             - name: spring-service
               containerPort: {{ .Values.springServicePort }}
-           
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
