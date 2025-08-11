@@ -36,7 +36,7 @@ const Verification = () => {
         {activeScreen === VerificationSteps[method].Verifying ? (
           <Loader innerBg="bg-white"/>
         ) : (
-          <QrScanner isActive={scannerActive} onClose={handleBack}/>
+          <QrScanner scannerActive={scannerActive} onClose={handleBack}/>
         )}
       </div>
       <div className="col-span-12">
