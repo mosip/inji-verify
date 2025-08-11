@@ -171,17 +171,5 @@
         ]
       }
     }
-  ],
-  "supportedWallets": [
-    {
-      "name": "Inji Wallet",
-      "scheme": "openid4vp://",
-      "icon": "/assets/inji.png"
-    },
-    {
-      "name": "Inji Wallet 2",
-      "scheme": "openid4vp://",
-      "icon": "/assets/inji.png"
-    }
   ]
 }
