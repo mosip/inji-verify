@@ -1,4 +1,4 @@
-import {AlertInfo, claim, VerificationStepsContentType, Wallet} from "../types/data-types";
+import {AlertInfo, claim, VerificationStepsContentType } from "../types/data-types";
 import i18next from 'i18next';
 
 export const Pages = {
@@ -168,7 +168,6 @@ export const CONSTRAINTS_IDEAL_FRAME_RATE = 30;
 export const FRAME_PROCESS_INTERVAL_MS = 100;
 export const THROTTLE_FRAMES_PER_SEC = 500; // Throttle frame processing to every 500ms (~2 frames per second)
 export let verifiableClaims: claim[] = [];
-export let SupportedWallets: Wallet[] =[];
 export const initializeClaims = async () => {
   try {
     const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
@@ -177,7 +176,6 @@ export const initializeClaims = async () => {
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
-    SupportedWallets = data.supportedWallets as Wallet[];
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
   }
