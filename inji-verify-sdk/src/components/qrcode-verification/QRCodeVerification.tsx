@@ -28,7 +28,7 @@ import { Slider } from "@mui/material";
 import "./QRCodeVerification.css";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
-  isActive,
+  scannerActive = true,
   triggerElement,
   verifyServiceUrl,
   transactionId,
@@ -395,21 +395,21 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }
 
   const startScanning =
-    Boolean(isActive) &&
+    Boolean(scannerActive) &&
     isEnableScan &&
     !isUploading &&
     !isScanning &&
     !scanSessionCompletedRef.current;
 
   useEffect(() => {
-    if (isActive) {
+    if (scannerActive) {
       if (startScanning) startVideoStream();
     } else {
       frameProcessingRef.current = false;
       clearTimer();
       stopVideoStream();
     }
-  }, [isActive, startScanning, startVideoStream, stopVideoStream]);
+  }, [scannerActive, startScanning, startVideoStream, stopVideoStream]);
 
   useEffect(() => {
     const resize = () => setIsMobile(window.innerWidth < 768);
