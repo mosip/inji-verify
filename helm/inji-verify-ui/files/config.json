@@ -137,13 +137,5 @@
         ]
       }
     }
-  ],
-  "supportedWallets": [
-    {
-      "name": "Inji Wallet",
-      "scheme": "openid4vp://authorize",
-      "icon": "/assets/inji.png",
-      "description": "Use Inji wallet to present your credentials."
-    }
   ]
 }
