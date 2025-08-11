@@ -94,6 +94,8 @@ spec:
               value: {{ .Values.container_user }}
             - name: JDK_JAVA_OPTIONS
               value: {{ .Values.additionalResources.javaOpts }}
+            - name: CLIENT_ID
+              value: "{{ index .Values.istio.hosts 0 }}/"
             {{- if .Values.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
