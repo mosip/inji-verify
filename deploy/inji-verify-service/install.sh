@@ -37,8 +37,38 @@ function installing_inji-verify-service() {
     ENABLE_INSECURE='--set enable_insecure=true';
   fi
 
+  DEFAULT_INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -n config-server -o jsonpath={.data.injiverify-host})
+
+  # Check if INJIVERIFY_HOST is present under configmap/inji-stack-config of configserver
+  if echo "$DEFAULT_INJIVERIFY_HOST" | grep -q "INJIVERIFY_HOST"; then
+    echo "INJIVERIFY_HOST is already present in configmap/inji-stack-config of configserver"
+    MOSIP_INJIVERIFY_HOST=$DEFAULT_INJIVERIFY_HOST
+  else
+    read -p "Please provide injiverifyhost (eg: injiverify.sandbox.xyz.net): " INJIVERIFY_HOST
+
+    if [ -z "$INJIVERIFY_HOST" ]; then
+      echo "INJIVERIFY Host not provided; EXITING;"
+      exit 0
+    fi    
+  fi   
+
+  CHK_INJIVERIFY_HOST=$(nslookup "$INJIVERIFY_HOST")
+  if [ $? -gt 0 ]; then
+    echo "InjiVERIFY Host does not exist; EXITING;"
+    exit 0
+  fi
+
+  INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.injiverify-host})
+
   echo Installing inji-verify-service
-  helm -n $NS install inji-verify-service mosip/inji-verify-service --version $CHART_VERSION $ENABLE_INSECURE
+  helm -n $NS install inji-verify-service mosip/inji-verify-service \
+    --version $CHART_VERSION $ENABLE_INSECURE \
+    --set extraEnv[0].name=INJI_VP_SUBMISSION_BASE_URL \
+    --set extraEnv[0].value="https://${INJIVERIFY_HOST}/v1/verify" \
+    --set extraEnv[1].name=INJI_DID_ISSUER_URI \
+    --set extraEnv[1].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify" \
+    --set extraEnv[2].name=INJI_DID_ISSUER_PUBLIC_KEY_URI \
+    --set extraEnv[2].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify#key-0"
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
