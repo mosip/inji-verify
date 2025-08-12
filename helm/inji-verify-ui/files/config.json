@@ -137,5 +137,61 @@
         ]
       }
     }
-  ]
+  ],
+  "renderOrders": {
+    "InsuranceCredentialRenderOrder": [
+      "fullName",
+      "gender",
+      "dob",
+      "benefits",
+      "policyName",
+      "policyNumber",
+      "policyIssuedOn",
+      "policyExpiresOn",
+      "mobile",
+      "email"
+    ],
+    "farmerLandCredentialRenderOrder": [
+      "id",
+      "farmerId",
+      "dvcType",
+      {
+        "farmerLandDetails": ["farmId", "district", "surveyNumber"]
+      }
+    ],
+    "farmerCredentialRenderOrder": [
+      "farmerID",
+      "landOwnershipType",
+      "fullName",
+      "mobileNumber",
+      "dateOfBirth",
+      "gender",
+      "villageOrTown",
+      "district",
+      "state",
+      "postalCode",
+      "landArea",
+      "primaryCropType",
+      "secondaryCropType"
+    ],
+    "MosipVerifiableCredentialRenderOrder": [
+      "face",
+      "UIN",
+      "fullName",
+      "dateOfBirth",
+      "gender",
+      "phone",
+      "email",
+      "addressLine1",
+      "city"
+    ],
+    "IncomeTaxAccountCredentialRenderOrder": [
+      "fullName",
+      "tan",
+      "gender",
+      "dateOfBirth",
+      "issuedOn",
+      "expiresOn"
+    ]
+  }
 }
