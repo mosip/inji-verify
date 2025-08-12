@@ -193,7 +193,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                     .claim("client_id", verifierDid)
                     .jwtID(UUID.randomUUID().toString())
                     .claim("response_type", authorizationRequest.getResponseType())
-                    .claim("response_mode", "direct_post")
+                    .claim("response_mode", Constants.RESPONSE_MODE)
                     .claim("nonce", authorizationRequest.getNonce())
                     .claim("state", state)
                     .claim("response_uri", authorizationRequest.getResponseUri())

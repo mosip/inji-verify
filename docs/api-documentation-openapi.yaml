@@ -635,6 +635,9 @@ components:
         responseType:
           type: string
           description: Response type of the verifiable presentation
+        responseMode:
+            type: string
+            description: Response mode of the verifiable presentation submission
         clientId:
           type: string
           description: Client id of the verifier
