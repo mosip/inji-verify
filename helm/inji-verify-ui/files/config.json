@@ -3,7 +3,7 @@
     {
       "logo": "/assets/cert.png",
       "name": "MOSIP ID",
-      "type": "MosipVerifiableCredential",
+      "type": "MOSIPVerifiableCredential",
       "essential": true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -136,14 +136,6 @@
           }
         ]
       }
-    }
-  ],
-  "supportedWallets": [
-    {
-      "name": "Inji Wallet",
-      "scheme": "openid4vp://authorize",
-      "icon": "/assets/inji.png",
-      "description": "Use Inji wallet to present your credentials."
     }
   ]
 }
