@@ -1,5 +1,7 @@
 openapi: 3.0.0
 tags:
+  - name: ./well-known
+    description: API for did discovery through ./well-known endpoint
   - name: Presentation Definition Management
     description: APIs for Presentation Definition related operations
   - name: VC Submission
@@ -10,8 +12,6 @@ tags:
     description: APIs for Verifiable Presentation Authorization Request related operations
   - name: VP Submission
     description: APIs for Verifiable Presentation submission related operations
-  - name: Well Known
-    description: API for did discovery through well known endpoint
 info:
   title: OpenID4VP Verifier API - Inji Verify
   version: 1.0.2
@@ -252,7 +252,7 @@ paths:
       summary: Get the did document
       description: API to get the did document for the given did
       tags:
-        - Well Known
+        - ./well-known
       responses:
         "200":
           description: did document found
@@ -642,7 +642,7 @@ components:
           type: string
           description: Nonce for encryption. It is used to securely bind the Verifiable Presentation(s) provided by the Wallet to the particular transaction
         presentationDefinition:
-            $ref: "#/components/schemas/PresentationDefinition"
+          $ref: "#/components/schemas/PresentationDefinition"
         iat:
           type: integer
           format: unixtime
