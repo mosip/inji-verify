@@ -250,9 +250,3 @@ export interface VPRequestBody {
   presentationDefinitionId?: string;
   presentationDefinition?: PresentationDefinition;
 }
-
-export type Wallet = {
-  name: string;
-  scheme: string; // e.g. "openid4vp://",
-  icon: string; // wallet icon path
-}

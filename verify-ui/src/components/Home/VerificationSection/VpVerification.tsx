@@ -12,7 +12,7 @@ import {
 } from "../../../redux/features/verify/vpVerificationState";
 import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages, SupportedWallets } from "../../../utils/config";
+import { AlertMessages } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
@@ -150,7 +150,6 @@ const DisplayActiveStep = () => {
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   clientId={window._env_.CLIENT_ID}
-                  supportedWallets={SupportedWallets}
                 />
               </div>
             </div>
