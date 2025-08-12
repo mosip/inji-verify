@@ -55,6 +55,11 @@ public class InjiVerifyUtil extends AdminTestUtil {
 					InjiVerifyConfigManager.getproperty(InjiVerifyConstants.PRESENTATION_DEFINITION_ID));
 		}
 
+		if (jsonString.contains("$INJIVERIFYBASEURL$")) {
+			jsonString = replaceKeywordWithValue(jsonString, "$INJIVERIFYBASEURL$",
+					InjiVerifyConfigManager.getproperty(InjiVerifyConstants.INJI_VERIFY_BASE_URL));
+		}
+
 		return jsonString;
 
 	}
