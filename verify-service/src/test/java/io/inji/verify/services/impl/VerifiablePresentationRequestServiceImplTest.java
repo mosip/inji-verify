@@ -1,7 +1,9 @@
 package io.inji.verify.services.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.Curve;
+import com.nimbusds.jose.jwk.OctetKeyPair;
+import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
@@ -17,7 +19,7 @@ import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
-import io.inji.verify.services.JwtService;
+import io.inji.verify.services.KeyManagementService;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -38,14 +40,14 @@ class VerifiablePresentationRequestServiceImplTest {
     static AuthorizationRequestCreateResponseRepository mockAuthorizationRequestCreateResponseRepository;
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
     static VPSubmissionRepository mockVPSubmissionRepository;
-    static JwtService mockJwtService;
+    static KeyManagementService<OctetKeyPair> mockKeyManagementService;
     @BeforeAll
     public static void beforeAll(){
         mockPresentationDefinitionRepository = mock(PresentationDefinitionRepository.class);
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
         mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
-        mockJwtService = mock(JwtService.class);
-        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository,mockJwtService);
+        mockKeyManagementService = mock(KeyManagementService.class);
+        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository, mockKeyManagementService);
 
     }
     @Test
@@ -128,29 +130,27 @@ class VerifiablePresentationRequestServiceImplTest {
     }
     @Test
     @DisplayName("Should return JWT string when authorization request and details are valid")
-    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException, JsonProcessingException {
+    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException {
         String requestId = "testRequestId123";
         String verifierDid = "did:example:verifier123";
-        String expectedJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0In0.signature";
+        String expectedJwtHeader = "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRWREU0EifQ.";
 
         AuthorizationRequestResponseDto authzDetailsDto = new AuthorizationRequestResponseDto(verifierDid,null,null,null,null);
 
         AuthorizationRequestCreateResponse authzResponse = new AuthorizationRequestCreateResponse(requestId,null,authzDetailsDto,0L);
         when(mockAuthorizationRequestCreateResponseRepository.findById(requestId))
                 .thenReturn(Optional.of(authzResponse));
+        OctetKeyPair mockOKP = new OctetKeyPairGenerator(Curve.Ed25519).generate();
 
-        when(mockJwtService.createAndSignAuthorizationRequestJwt(
-                eq(verifierDid), eq(authzDetailsDto), eq(requestId)))
-                .thenReturn(expectedJwt);
+
+        when(mockKeyManagementService.getKeyPair()).thenReturn(mockOKP);
 
         String actualJwt = service.getVPRequestJwt(requestId);
 
         assertNotNull(actualJwt);
-        assertEquals(expectedJwt, actualJwt);
+        assertTrue(actualJwt.startsWith(expectedJwtHeader));
 
         verify(mockAuthorizationRequestCreateResponseRepository, times(1)).findById(requestId);
-        verify(mockJwtService, times(1)).createAndSignAuthorizationRequestJwt(
-                eq(verifierDid), eq(authzDetailsDto), eq(requestId));
     }
 
 }
