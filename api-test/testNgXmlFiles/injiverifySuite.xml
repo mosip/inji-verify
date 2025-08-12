@@ -17,6 +17,15 @@
 				name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
 		</classes>
 	</test>
+	<test name="CreateNewVerificationRequestWithDID">
+		<parameter name="ymlFile"
+			value="injiverify/CreateNewVerificationRequestWithDID/CreateNewVerificationRequestWithDID.yml" />
+		<parameter name="idKeyName" value="transactionId,requestId,id" />
+		<classes>
+			<class
+				name="io.mosip.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
+		</classes>
+	</test>
 	<test name="VpSubmission">
 		<parameter name="ymlFile"
 			value="injiverify/VpSubmission/VpSubmission.yml" />
