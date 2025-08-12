@@ -251,6 +251,15 @@ export const MosipVerifiableCredentialRenderOrder = [
   "city",
 ];
 
+export const IncomeTaxAccountCredentialRenderOrder = [
+  "fullName",
+  "tan",
+  "gender",
+  "dateOfBirth",
+  "issuedOn",
+  "expiresOn",
+]
+
 export const BASE64_PADDING = "=="
 
 export const isMobileDevice = () => {

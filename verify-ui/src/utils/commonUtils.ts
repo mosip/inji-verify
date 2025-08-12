@@ -1,5 +1,11 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
-import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
+import {
+  InsuranceCredentialRenderOrder,
+  farmerLandCredentialRenderOrder,
+  farmerCredentialRenderOrder,
+  MosipVerifiableCredentialRenderOrder,
+  IncomeTaxAccountCredentialRenderOrder
+} from "./config";
 
 const getValue = (credentialElement: any)=> {
   if (Array.isArray(credentialElement)){
@@ -61,6 +67,16 @@ export const getDetailsOrder = (vc: any) => {
             return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
+        }
+        return { key, value: "N/A" };
+      });
+    case "IncomeTaxAccountCredential":
+      return IncomeTaxAccountCredentialRenderOrder.map((key) => {
+        if (key in credential) {
+          return {
+            key,
+            value: credential[key as keyof credentialSubject] || "N/A",
+          };
         }
         return { key, value: "N/A" };
       });
