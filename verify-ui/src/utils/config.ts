@@ -141,7 +141,7 @@ export const initializeClaims = async () => {
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
-    RenderOrders = data.renderOrders as any;
+    RenderOrders = data.VCRenderOrders as any;
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
   }

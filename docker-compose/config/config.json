@@ -172,7 +172,7 @@
       }
     }
   ],
-  "renderOrders": {
+  "VCRenderOrders": {
     "InsuranceCredentialRenderOrder": [
       "fullName",
       "gender",
