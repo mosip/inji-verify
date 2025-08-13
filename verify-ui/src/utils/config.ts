@@ -131,7 +131,7 @@ export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._en
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
-export let RenderOrders: any = {};
+export let VCRenderOrders: any = {};
 export let verifiableClaims: claim[] = [];
 export const initializeClaims = async () => {
   try {
@@ -141,7 +141,7 @@ export const initializeClaims = async () => {
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
-    RenderOrders = data.VCRenderOrders as any;
+    VCRenderOrders = data.VCRenderOrders as any;
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
   }

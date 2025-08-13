@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
-import { RenderOrders } from "./config";
+import { VCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any)=> {
   if (Array.isArray(credentialElement)){
@@ -14,7 +14,7 @@ export const getDetailsOrder = (vc: any) => {
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
-      return RenderOrders.InsuranceCredentialRenderOrder.map((key:any) => {
+      return VCRenderOrders.InsuranceCredentialRenderOrder.map((key:any) => {
         if (key in credential) {
           return {
             key,
@@ -24,7 +24,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "farmer":
-      return RenderOrders.farmerLandCredentialRenderOrder.flatMap((key:any) => {
+      return VCRenderOrders.farmerLandCredentialRenderOrder.flatMap((key:any) => {
         if (typeof key === "string") {
           return {
             key,
@@ -46,7 +46,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "FarmerCredential":
-      return RenderOrders.farmerCredentialRenderOrder.map((key:any) => {
+      return VCRenderOrders.farmerCredentialRenderOrder.map((key:any) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
@@ -54,7 +54,7 @@ export const getDetailsOrder = (vc: any) => {
       });
     case "MOSIPVerifiableCredential":
     case "MockVerifiableCredential":
-      return RenderOrders.MosipVerifiableCredentialRenderOrder.map((key: any) => {
+      return VCRenderOrders.MosipVerifiableCredentialRenderOrder.map((key: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
@@ -65,7 +65,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "IncomeTaxAccountCredential":
-      return RenderOrders.IncomeTaxAccountCredentialRenderOrder.map((key: any) => {
+      return VCRenderOrders.IncomeTaxAccountCredentialRenderOrder.map((key: any) => {
         if (key in credential) {
           return {
             key,
