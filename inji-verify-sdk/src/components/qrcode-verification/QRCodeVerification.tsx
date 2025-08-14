@@ -1,9 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {
-  QRCodeVerificationProps,
-  scanResult,
-} from "./QRCodeVerification.types";
-import {doFileChecks, scanFilesForQr} from "../../utils/uploadQRCodeUtils";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { QRCodeVerificationProps, scanResult } from "./QRCodeVerification.types";
+import { doFileChecks, scanFilesForQr } from "../../utils/uploadQRCodeUtils";
 import {
   acceptedFileTypes,
   BASE64_PADDING,
@@ -17,14 +14,11 @@ import {
   THROTTLE_FRAMES_PER_SEC,
   ZOOM_STEP,
 } from "../../utils/constants";
-import {vcSubmission, vcVerification} from "../../utils/api";
-import {
-  decodeQrData,
-  extractRedirectUrlFromQrData,
-} from "../../utils/dataProcessor";
-import {readBarcodes} from "zxing-wasm/full";
-import {MinusOutlined, PlusOutlined} from "@ant-design/icons";
-import {Slider} from "@mui/material";
+import { vcSubmission, vcVerification } from "../../utils/api";
+import { decodeQrData, extractRedirectUrlFromQrData } from "../../utils/dataProcessor";
+import { readBarcodes } from "zxing-wasm/full";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { Slider } from "@mui/material";
 import "./QRCodeVerification.css";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
