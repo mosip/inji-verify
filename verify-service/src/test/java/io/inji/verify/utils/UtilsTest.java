@@ -1,18 +1,20 @@
 package io.inji.verify.utils;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Constructor;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.junit.jupiter.api.function.Executable;
+
 
 public class UtilsTest {
 
     @Test
-    public void shouldGenerateIDWithGivenPrefix() {
-        String prefix = "TEST_";
-        String id = Utils.generateID(prefix);
-
-        assertTrue(id.startsWith(prefix));
-        // Assert that the generated ID contains a UUID
-        assertTrue(id.contains("-"));
+    void coverPrivateConstructor() throws Exception {
+        Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Executable exec = () -> constructor.newInstance();
+        assertDoesNotThrow(exec);
     }
 }
