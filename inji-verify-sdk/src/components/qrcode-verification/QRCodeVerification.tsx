@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
   QRCodeVerificationProps,
   scanResult,
-} from "../../components/qrcode-verification/QRCodeVerification.types";
-import { doFileChecks, scanFilesForQr } from "../../utils/uploadQRCodeUtils";
+} from "./QRCodeVerification.types";
+import {doFileChecks, scanFilesForQr} from "../../utils/uploadQRCodeUtils";
 import {
   acceptedFileTypes,
   BASE64_PADDING,
@@ -17,14 +17,14 @@ import {
   THROTTLE_FRAMES_PER_SEC,
   ZOOM_STEP,
 } from "../../utils/constants";
-import { vcSubmission, vcVerification } from "../../utils/api";
+import {vcSubmission, vcVerification} from "../../utils/api";
 import {
   decodeQrData,
   extractRedirectUrlFromQrData,
 } from "../../utils/dataProcessor";
-import { readBarcodes } from "zxing-wasm/full";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { Slider } from "@mui/material";
+import {readBarcodes} from "zxing-wasm/full";
+import {MinusOutlined, PlusOutlined} from "@ant-design/icons";
+import {Slider} from "@mui/material";
 import "./QRCodeVerification.css";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
@@ -88,7 +88,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         stopVideoStream();
         setScanning(true);
         const text = results[0].text;
-        processScanResult(text);
+        await processScanResult(text);
       }
     } catch (error) {
       handleError(error);
@@ -339,8 +339,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           throw new Error("Failed to extract redirect URL from QR data");
 
         const encodedOrigin = encodeURIComponent(window.location.origin);
-        const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
-        window.location.href = url;
+        window.location.href = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
       } else {
         const decoded = await decodeQrData(new TextEncoder().encode(data));
         return JSON.parse(decoded);
@@ -440,7 +439,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         : undefined;
       error = params.get("error");
       if (vpToken && presentationSubmission) {
-        processScanResult({ vpToken, presentationSubmission });
+        processScanResult({vpToken, presentationSubmission}).then();
         window.history.replaceState(null, "", window.location.pathname);
       } else if (!!error) {
         onError(new Error(error));
