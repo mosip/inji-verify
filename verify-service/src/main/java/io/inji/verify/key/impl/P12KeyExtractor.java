@@ -15,22 +15,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class P12KeyExtractor implements Extractor {
 
-    @Value("${inji.keystore.file.path}")
-    private String p12FilePath;
-
-    @Value("${inji.keystore.file.pass}")
-    private String keysStorePassword;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
+    private final String p12FilePath;
+    private final String keysStorePassword;
+    private final ResourceLoader resourceLoader;
 
     static {
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    public P12KeyExtractor(@Value("${inji.keystore.file.path}") String p12FilePath,
+                          @Value("${inji.keystore.file.pass}") String keysStorePassword,
+                          ResourceLoader resourceLoader) {
+        this.p12FilePath = p12FilePath;
+        this.keysStorePassword = keysStorePassword;
+        this.resourceLoader = resourceLoader;
     }
 
     public KeyPair extractKeyPair() {
