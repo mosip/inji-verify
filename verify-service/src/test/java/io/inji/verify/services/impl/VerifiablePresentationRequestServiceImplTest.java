@@ -1,7 +1,9 @@
 package io.inji.verify.services.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.Curve;
+import com.nimbusds.jose.jwk.OctetKeyPair;
+import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import io.inji.verify.dto.authorizationrequest.AuthorizationRequestResponseDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestCreateDto;
 import io.inji.verify.dto.authorizationrequest.VPRequestResponseDto;
@@ -21,7 +23,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
-import io.inji.verify.services.JwtService;
+import io.inji.verify.services.KeyManagementService;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -386,10 +388,10 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("Should return JWT string when authorization request and details are valid")
-    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException, JsonProcessingException {
+    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException {
         String requestId = "testRequestId123";
         String verifierDid = "did:example:verifier123";
-        String expectedJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0In0.signature";
+        String expectedJwtHeader = "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRWREU0EifQ.";
 
         AuthorizationRequestResponseDto authzDetailsDto = new AuthorizationRequestResponseDto(verifierDid, null, null, null, null);
         AuthorizationRequestCreateResponse authzResponse = new AuthorizationRequestCreateResponse(requestId, null, authzDetailsDto, 0L);
