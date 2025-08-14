@@ -1,9 +1,9 @@
 # INJI VERIFY SDK
 
-Inji Verify SDK provides ready-to-use **React components** to integrate [OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)-based **Verifiable Credential (VC) verification** into any React TypeScript web application.
+Inji Verify SDK provides ready-to-use **React components** to integrate [OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)-based **Verifiable Credential (VC) and Verifiable Presentation (VP) verification** into any React TypeScript web application.
 
 
-## 🚀 Usage Guide
+## Usage Guide
 
 ### Step 1: Install the Package
 ```bash
@@ -36,7 +36,7 @@ function MyApp() {
 }
 ```
 
-**Option B: Digital Wallet Verification**
+**Option B: OpenID4VP Verification**
 ```javascript
 function MyApp() {
   return (
@@ -55,9 +55,9 @@ function MyApp() {
 }
 ```
 
-## 📋 What You'll Get Back
+## Response Received
 
-When verification is complete, you'll receive results like this:
+When verification is completed, the response received is as below:
 
 ```javascript
 {
@@ -70,8 +70,13 @@ When verification is complete, you'll receive results like this:
   vpResultStatus: "SUCCESS" // Overall verification status
 }
 ```
+>**Security Recommendation**
+>
+>Avoid consuming results directly from VPProcessed or VCProcessed.
+Instead, use VPReceived or VCReceived events to capture the txnId, then retrieve the verification results securely from your backend's verification service endpoint.
+This ensures data integrity and prevents reliance on client-side verification data for final decisions.
 
-## 🔧 Before You Start
+## Pre-requisites
 
 ### What You Need:
 1. **A React project** (TypeScript recommended)
@@ -194,36 +199,36 @@ presentationDefinition={{
 
 ### Common Props (Both Components)
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `verifyServiceUrl` | string | ✅ | Your backend verification URL |
-| `onError` | function | ✅ | What to do when something goes wrong |
-| `triggerElement` | React element | ❌ | Custom button/element to start verification |
-| `transactionId` | string | ❌ | Your own tracking ID |
+| Property           | Type          | Required | Description                                 |
+|--------------------|---------------|----------|---------------------------------------------|
+| `verifyServiceUrl` | string        | ✅        | Your backend verification URL               |
+| `onError`          | function      | ✅        | What to do when something goes wrong        |
+| `triggerElement`   | React element | ❌        | Custom button/element to start verification |
+| `transactionId`    | string        | ❌        | Your own tracking ID                        |
 
 ### QRCodeVerification Specific
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `onVCProcessed` | function | - | Get full results immediately |
-| `onVCReceived` | function | - | Get transaction ID only |
-| `isEnableUpload` | boolean | true | Allow file uploads |
-| `isEnableScan` | boolean | true | Allow camera scanning |
-| `isEnableZoom` | boolean | true | Allow camera zoom |
-| `uploadButtonStyle` | object | - | Custom upload button styling |
+| Property            | Type     | Default | Description                  |
+|---------------------|----------|---------|------------------------------|
+| `onVCProcessed`     | function | -       | Get full results immediately |
+| `onVCReceived`      | function | -       | Get transaction ID only      |
+| `isEnableUpload`    | boolean  | true    | Allow file uploads           |
+| `isEnableScan`      | boolean  | true    | Allow camera scanning        |
+| `isEnableZoom`      | boolean  | true    | Allow camera zoom            |
+| `uploadButtonStyle` | object   | -       | Custom upload button styling |
 
 ### OpenID4VPVerification Specific
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `protocol` | string | "openid4vp://" | Protocol for QR codes (optional) |
-| `presentationDefinitionId` | string | - | Predefined verification template |
-| `presentationDefinition` | object | - | Custom verification rules |
-| `onVpProcessed` | function | - | Get full results immediately |
-| `onVpReceived` | function | - | Get transaction ID only |
-| `onQrCodeExpired` | function | - | Handle QR code expiration |
-| `isEnableSameDeviceFlow` | boolean | true | Enable same-device flow (optional) |
-| `qrCodeStyles` | object | - | Customize QR code appearance |
+| Property                   | Type     | Default        | Description                        |
+|----------------------------|----------|----------------|------------------------------------|
+| `protocol`                 | string   | "openid4vp://" | Protocol for QR codes (optional)   |
+| `presentationDefinitionId` | string   | -              | Predefined verification template   |
+| `presentationDefinition`   | object   | -              | Custom verification rules          |
+| `onVpProcessed`            | function | -              | Get full results immediately       |
+| `onVpReceived`             | function | -              | Get transaction ID only            |
+| `onQrCodeExpired`          | function | -              | Handle QR code expiration          |
+| `isEnableSameDeviceFlow`   | boolean  | true           | Enable same-device flow (optional) |
+| `qrCodeStyles`             | object   | -              | Customize QR code appearance       |
 
 ## ⚠️ Important Limitations
 
