@@ -34,14 +34,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   transactionId,
   onVCReceived,
   onVCProcessed,
-  onReset,
-  sessionAutoResetDelay = 20000,
   onError,
-  isEnableUpload = true,
-  isEnableScan = true,
   uploadButtonId,
   uploadButtonStyle,
+  onReset,
+  isEnableUpload = true,
+  isEnableScan = true,
   isEnableZoom = true,
+  sessionAutoResetDelay = 20000,
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
