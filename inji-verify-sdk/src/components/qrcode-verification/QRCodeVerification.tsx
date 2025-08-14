@@ -34,7 +34,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   transactionId,
   onVCReceived,
   onVCProcessed,
-  onClose,
+  onReset,
+  sessionAutoResetDelay = 20000,
   onError,
   isEnableUpload = true,
   isEnableScan = true,
@@ -349,6 +350,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }
   };
 
+  const scheduleSessionAutoReset = ()=> {
+    setTimeout(() => {
+      onReset?.();
+    }, sessionAutoResetDelay);
+  };
+
   const triggerCallbacks = async (vc: any) => {
     try {
       if (onVCReceived) {
@@ -357,6 +364,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       } else if (onVCProcessed) {
         const status = await vcVerification(vc, verifyServiceUrl);
         onVCProcessed([{ vc, vcStatus: status }]);
+        scheduleSessionAutoReset();
       }
     } catch (error) {
       handleError(error);
@@ -474,7 +482,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
               <button
                 onClick={() => {
                   stopVideoStream();
-                  onClose?.();
+                  onReset?.();
                 }}
                 className="qr-close-button"
                 aria-label="Close Scanner"

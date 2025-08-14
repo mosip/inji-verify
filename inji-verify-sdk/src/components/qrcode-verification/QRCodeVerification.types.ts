@@ -62,9 +62,11 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    */
   isEnableScan?: boolean;
 
-  onClose?: () => void;
+  onReset?: () => void;
 
   scannerActive?: boolean;
+
+  sessionAutoResetDelay?: number;
 };
 
 interface VerificationResult {
