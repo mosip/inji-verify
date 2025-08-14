@@ -88,8 +88,7 @@ function SelectionPanelContent() {
   };
 
   useEffect(() => {
-    const essentialClaims = selectedClaims;
-    essentialClaims.forEach((claim: claim) =>
+    selectedClaims.forEach((claim: claim) =>
       storage.setItem(storage.ESSENTIAL_CLAIM, claim)
     );
   }, [selectedClaims]);

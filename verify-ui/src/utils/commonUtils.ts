@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
-import { InsuranceCredentialRenderOrder, farmerLandCredentialRenderOrder, farmerCredentialRenderOrder, MosipVerifiableCredentialRenderOrder } from "./config";
+import { VCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any)=> {
   if (Array.isArray(credentialElement)){
@@ -14,7 +14,7 @@ export const getDetailsOrder = (vc: any) => {
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
-      return InsuranceCredentialRenderOrder.map((key) => {
+      return VCRenderOrders.InsuranceCredentialRenderOrder.map((key:any) => {
         if (key in credential) {
           return {
             key,
@@ -24,7 +24,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "farmer":
-      return farmerLandCredentialRenderOrder.flatMap((key) => {
+      return VCRenderOrders.farmerLandCredentialRenderOrder.flatMap((key:any) => {
         if (typeof key === "string") {
           return {
             key,
@@ -36,7 +36,7 @@ export const getDetailsOrder = (vc: any) => {
             farmKey in credential &&
             typeof credential[farmKey] === "object"
           ) {
-            return farmOrder.map((farmField) => ({
+            return (farmOrder as string[]).map((farmField: any) => ({
               key: farmField,
               value: credential[farmKey][farmField] || "N/A",
             }));
@@ -46,7 +46,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "FarmerCredential":
-      return farmerCredentialRenderOrder.map((key) => {
+      return VCRenderOrders.farmerCredentialRenderOrder.map((key:any) => {
         if (key in credential) {
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
         }
@@ -54,13 +54,23 @@ export const getDetailsOrder = (vc: any) => {
       });
     case "MOSIPVerifiableCredential":
     case "MockVerifiableCredential":
-      return MosipVerifiableCredentialRenderOrder.map((key) => {
+      return VCRenderOrders.MosipVerifiableCredentialRenderOrder.map((key: any) => {
         if (key in credential) {
           
           if(typeof(credential[key])=="object"){
             return { key, value: getValue(credential[key]) } ;
           }
           return { key, value: credential[key as keyof credentialSubject] || "N/A" };
+        }
+        return { key, value: "N/A" };
+      });
+    case "IncomeTaxAccountCredential":
+      return VCRenderOrders.IncomeTaxAccountCredentialRenderOrder.map((key: any) => {
+        if (key in credential) {
+          return {
+            key,
+            value: credential[key as keyof credentialSubject] || "N/A",
+          };
         }
         return { key, value: "N/A" };
       });
@@ -95,13 +105,4 @@ export const calculateUnverifiedClaims = (
       return vcTypes.includes(claim.type);
     });
   });
-};
-
-export const delayUploadQrCode = () => {
-  setTimeout(() => {
-    const uploadQrElement = document.getElementById("upload-qr");
-    if (uploadQrElement) {
-      uploadQrElement.click();
-    }
-  }, 10);
 };
