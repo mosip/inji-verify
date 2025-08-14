@@ -15,6 +15,8 @@ npm publish --registry http://localhost:4873
 
 ## 🔍 Testing Your Integration
 
+Follow the steps from [here](./Readme.md#-usage-guide) to inegrate and test the Inji Verify SDK in your React application.
+
 1. **Test QR Scanning:** Use a QR code generator to create test codes
 2. **Test File Upload:** Try uploading PNG, JPEG, or PDF files
 3. **Test Error Handling:** Disconnect your backend and see if errors are handled

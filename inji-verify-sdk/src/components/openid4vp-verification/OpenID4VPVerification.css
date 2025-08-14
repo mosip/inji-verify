@@ -1,0 +1,17 @@
+.ovp-root-div-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+}
+
+.ovp-loader{
+    width: 40;
+    height: 40;
+    border: 4px solid #CCCCCC;
+    border-top: 4px solid #333333;
+    border-radius: 50%;
+    animation: "spin 1s linear infinite";
+    margin: 20px auto;
+}

@@ -13,6 +13,7 @@ public class Constants {
     public static final String VP_DEFINITION_URI = "/vp-definition/";
     public static final String VP_REQUEST_URI = "/vp-request";
     public static final String RESPONSE_TYPE =  "vp_token";
+    public static final String RESPONSE_MODE =  "direct_post";
 
     public static final String TRANSACTION_ID_PREFIX = "txn";
     public static final String REQUEST_ID_PREFIX = "req";

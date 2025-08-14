@@ -15,6 +15,7 @@ import java.time.Instant;
 public class AuthorizationRequestResponseDto {
 
     private final String responseType = Constants.RESPONSE_TYPE;
+    private final String responseMode = Constants.RESPONSE_MODE;
     private final long issuedAt = Instant.now().toEpochMilli();
     private final String clientId;
     private final String presentationDefinitionUri;
