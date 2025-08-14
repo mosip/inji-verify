@@ -44,6 +44,8 @@ Note :- update as per the env ex. if it needs to select the for dev use it as 'N
 
 ## Run with JAR
 
+### **Option A: Run on BrowserStack (Cloud)**
+
 1. Sign up for BrowserStack and retrieve your userName and accessKey from the homepage on BrowserStack.
 2. Update the userName and accessKey from browserstack.yml
 3. Update the device from tag `platforms` from `https://www.browserstack.com/list-of-browsers-and-platforms/automate` (Windows, Mac)
@@ -52,6 +54,30 @@ Note :- update as per the env ex. if it needs to select the for dev use it as 'N
 6. Then use `java -DBROWSERSTACK_USERNAME="username" -DBROWSERSTACK_ACCESS_KEY="accessKey" -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-*-SNAPSHOT.jar` to run the automation 
 
 Note:- in above command please replace the userName,accessKey and actual env url.
+
+### **Option B: Run Locally**
+
+1. **Prerequisites for Local Execution:**
+   - Install Chrome/Firefox browser on your local machine
+   - Ensure WebDriver is available (ChromeDriver/GeckoDriver) or use WebDriverManager for automatic driver management
+
+2. **Code Changes Required:**
+   - **Runner File** (`src/test/java/runnerfiles/Runner.java` - Line 33):
+     ```java
+     features = {"classpath:featurefiles"},
+     ```
+   - **BaseTest File** (`src/test/java/basetest/BaseTest.java` - Lines 57-58):
+     ```java
+     String username = "browserstack credential";  // Comment this line for local execution
+     String accessKey = "browserstack password";   // Comment this line for local execution
+     ```
+
+3. **Build and Run:**
+   - Open command prompt and change directory by using command 'cd ../inji-verify'
+   - Hit the command `mvn clean package -DskipTests` to build the jar.
+   - Then use `java -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-*-SNAPSHOT.jar` to run the automation locally
+
+Note:- Remove the BrowserStack credentials from the command when running locally.
 
 
 ## Run with IDE
@@ -79,7 +105,9 @@ To execute the tests using Eclipse IDE, use the following steps:
 
 ## 4. **Run the Tests**
 
-   To execute the test automation suite, you need to configure the run parameters in Eclipse:
+### **Option A: Run on BrowserStack (Cloud)**
+
+   To execute the test automation suite on BrowserStack, you need to configure the run parameters in Eclipse:
 
    - Go to `Run` > `Run Configurations`.
    - In the **Run Configurations** window, create a new configuration for your tests:
@@ -88,7 +116,38 @@ To execute the tests using Eclipse IDE, use the following steps:
    - In the **Arguments** tab, add the necessary **VM arguments**:
      - **VM Arguments**:
        ```
-       -DBROWSERSTACK_USERNAME="usename" -DBROWSERSTACK_ACCESS_KEY="accesskey"  -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression```
+       -DBROWSERSTACK_USERNAME="username" -DBROWSERSTACK_ACCESS_KEY="accesskey" -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression
+       ```
+
+### **Option B: Run Locally**
+
+   To execute the tests on your local machine instead of BrowserStack:
+
+   #### **Prerequisites for Local Execution:**
+   - Install Chrome/Firefox browser on your local machine
+   - Ensure WebDriver is available (ChromeDriver/GeckoDriver) or use WebDriverManager for automatic driver management
+
+   #### **Code Changes Required:**
+
+   1. **Update Runner File** (`src/test/java/runnerfiles/Runner.java` - Line 33):
+      ```java
+      features = {"classpath:featurefiles"},
+      ```
+
+   2. **Update BaseTest File** (`src/test/java/basetest/BaseTest.java` - Lines 57-58):
+      ```java
+      String username = "browserstack credential";  // Comment this line for local execution
+      String accessKey = "browserstack password";   // Comment this line for local execution
+      ```
+      
+      Or replace with local driver initialization code.
+
+   #### **VM Arguments for Local Execution:**
+   ```
+   -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression
+   ```
+
+   **Note**: Remove the `-DBROWSERSTACK_USERNAME` and `-DBROWSERSTACK_ACCESS_KEY` parameters when running locally.
 
 ## 5. **Run the Configuration**
 
