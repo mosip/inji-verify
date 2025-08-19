@@ -3,36 +3,18 @@
 -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 -- -------------------------------------------------------------------------------------------------
--- Rollback Script: v0.13.0 to v0.12.3
+-- Rollback Script: v0.13.1 to v0.13.0
 -- Database       : inji_verify
--- Purpose        : Revert schema changes introduced in version 0.13.0
+-- Purpose        : Revert schema changes introduced in version 0.13.1
 -- -------------------------------------------------------------------------------------------------
 
 \c inji_verify
 
 -- -------------------------------------------------------------------------------------------------
--- SECTION 1: Revert column types (from TEXT back to JSONB)
+-- SECTION 1: Drop new tables
 -- -------------------------------------------------------------------------------------------------
 
-ALTER TABLE verify.authorization_request_details 
-  ALTER COLUMN authorization_details 
-  TYPE JSONB 
-  USING authorization_details::JSONB;
-
-ALTER TABLE verify.presentation_definition 
-  ALTER COLUMN vp_format 
-  TYPE JSONB 
-  USING vp_format::JSONB;
-
-ALTER TABLE verify.presentation_definition 
-  ALTER COLUMN submission_requirements 
-  TYPE JSONB 
-  USING submission_requirements::JSONB;
-
-ALTER TABLE verify.vp_submission 
-  ALTER COLUMN presentation_submission 
-  TYPE JSONB 
-  USING presentation_submission::JSONB;
+DROP TABLE IF EXISTS verify.vc_submission;
 
 -- -------------------------------------------------------------------------------------------------
 -- END OF SCRIPT
