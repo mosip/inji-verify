@@ -166,4 +166,8 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      * This is a required field to ensure proper error handling.
      */
     onError: (error: Error) => void;
+
+    onReset?: () => void;
+
+    sessionAutoResetDelay?: number;
   };

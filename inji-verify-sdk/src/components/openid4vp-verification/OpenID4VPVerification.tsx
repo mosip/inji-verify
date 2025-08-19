@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  useRef,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
   OpenID4VPVerificationProps,
@@ -30,11 +24,13 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   transactionId,
   onVPReceived,
   onVPProcessed,
+  onReset,
   qrCodeStyles,
   onQrCodeExpired,
   onError,
-  isEnableSameDeviceFlow = true,
   clientId,
+  isEnableSameDeviceFlow = true,
+  sessionAutoResetDelay = 20000,
 }) => {
   const [txnId, setTxnId] = useState<string | null>(transactionId || null);
   const [reqId, setReqId] = useState<string | null>(null);
@@ -126,10 +122,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         const response = await vpRequestStatus(verifyServiceUrl, reqId);
 
         if (response.status === "ACTIVE") {
-          fetchVPStatus();
+          await fetchVPStatus();
         }
         if (response.status === "VP_SUBMITTED") {
-          fetchVPResult();
+          await fetchVPResult();
         } else if (response.status === "EXPIRED") {
           resetState();
           onQrCodeExpired();
@@ -156,8 +152,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       );
       setTxnId(data.transactionId);
       setReqId(data.requestId);
-      const params = getPresentationDefinitionParams(data);
-      return params;
+      return getPresentationDefinitionParams(data);
     } catch (error) {
       onError(error as Error);
       resetState();
@@ -212,18 +207,24 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
       if (!triggerElement) {
-        startVerification();
+        startVerification().then();
       }
     } else if (!triggerElement) {
-      handleGenerateQRCode();
+      handleGenerateQRCode().then();
     }
   }, []);
 
   useEffect(() => {
     if (reqId) {
-      fetchVPStatus();
+      fetchVPStatus().then();
     }
   }, [fetchVPStatus, reqId]);
+
+  const scheduleSessionAutoReset = ()=> {
+    setTimeout(() => {
+      onReset?.();
+    }, sessionAutoResetDelay);
+  };
 
   const resetState = () => {
     setTxnId(null);
@@ -232,13 +233,14 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setShowWallets(false);
     setLoading(false);
     hasInitializedRef.current = false;
+    scheduleSessionAutoReset();
   };
 
   const handleTriggerClick = () => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
-      startVerification();
+      startVerification().then();
     } else {
-      handleGenerateQRCode();
+      handleGenerateQRCode().then();
     }
   };
 
@@ -254,8 +256,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const startVerification = async () => {
     const pdParams = await createVPRequest();
     if (pdParams) {
-      const openidUrl = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
-      window.location.href = openidUrl;
+      window.location.href = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
     }
   };
 
