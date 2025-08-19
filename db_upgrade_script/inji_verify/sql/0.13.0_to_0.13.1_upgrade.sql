@@ -3,36 +3,30 @@
 -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 -- -------------------------------------------------------------------------------------------------
--- Rollback Script: v0.13.0 to v0.12.3
+-- Upgrade Script : v0.13.1 to v0.13.0
 -- Database       : inji_verify
--- Purpose        : Revert schema changes introduced in version 0.13.0
+-- Purpose        : Apply schema changes introduced in version 0.13.1
 -- -------------------------------------------------------------------------------------------------
 
 \c inji_verify
 
 -- -------------------------------------------------------------------------------------------------
--- SECTION 1: Revert column types (from TEXT back to JSONB)
+-- SECTION 1: Create vc_submission table
 -- -------------------------------------------------------------------------------------------------
 
-ALTER TABLE verify.authorization_request_details 
-  ALTER COLUMN authorization_details 
-  TYPE JSONB 
-  USING authorization_details::JSONB;
+CREATE TABLE IF NOT EXISTS verify.vc_submission (
+  transaction_id VARCHAR(40) NOT NULL,
+  vc TEXT NOT NULL
+);
 
-ALTER TABLE verify.presentation_definition 
-  ALTER COLUMN vp_format 
-  TYPE JSONB 
-  USING vp_format::JSONB;
+COMMENT ON TABLE verify.vc_submission IS 
+  'VC Submission table: Stores details of all verifiable credentials submissions';
 
-ALTER TABLE verify.presentation_definition 
-  ALTER COLUMN submission_requirements 
-  TYPE JSONB 
-  USING submission_requirements::JSONB;
+COMMENT ON COLUMN verify.vc_submission.transaction_id IS 
+  'Transaction ID: Unique identifier for the VC submission transaction';
 
-ALTER TABLE verify.vp_submission 
-  ALTER COLUMN presentation_submission 
-  TYPE JSONB 
-  USING presentation_submission::JSONB;
+COMMENT ON COLUMN verify.vc_submission.vc IS 
+  'VC: Base64-encoded verifiable credential submission result';
 
 -- -------------------------------------------------------------------------------------------------
 -- END OF SCRIPT
