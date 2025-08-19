@@ -312,15 +312,19 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     setLoading(true);
     try {
       const vc = await extractVerifiableCredential(data);
-      if (vc instanceof Error) throw vc;
+      if (vc instanceof Error) {
+        handleError(vc);
+        return;
+      }
       if (vc && vc.toString().endsWith(BASE64_PADDING)) {
-        throw Error("Vc Type Not Supported");
+        handleError(new Error("Vc Type Not Supported"));
+        return;
       }
       if (vc) {
         await triggerCallbacks(vc);
       }
     } catch (error) {
-      throw error;
+      handleError(error);
     }
   };
 
@@ -330,7 +334,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       if (data.startsWith(OvpQrHeader)) {
         const redirectUrl = extractRedirectUrlFromQrData(data);
         if (!redirectUrl)
-          throw new Error("Failed to extract redirect URL from QR data");
+          return new Error("Failed to extract redirect URL from QR data");
 
         const encodedOrigin = encodeURIComponent(window.location.origin);
         window.location.href = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
@@ -339,7 +343,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         return JSON.parse(decoded);
       }
     } catch (error) {
-      return error;
+      return error instanceof Error ? error : new Error("Unknown error");
     }
   };
 
