@@ -46,16 +46,16 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_Success() throws Exception {
-        FormatDto formatDto = new FormatDto(null,null,null);
-        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purposr",formatDto, new ArrayList<>());
-        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
-        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId","rId",mock(), 0L,"");
+        FormatDto formatDto = new FormatDto(null, null, null);
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), "name", "purposr", formatDto, new ArrayList<>());
+        VPRequestCreateDto createDto = new VPRequestCreateDto("cId", "tId", "pdId", "nonce", vpDefinitionResponseDto);
+        VPRequestResponseDto responseDto = new VPRequestResponseDto("tId", "rId", mock(), 0L, "");
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any())).thenReturn(responseDto);
 
         mockMvc.perform(post("/vp-request")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createDto)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
 
@@ -63,12 +63,11 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_BadRequest_NoDefinition() throws Exception {
-        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId",null,"nonce",null);
-
+        VPRequestCreateDto createDto = new VPRequestCreateDto("cId", "tId", null, "nonce", null);
 
         mockMvc.perform(post("/vp-request")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createDto)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.BOTH_ID_AND_PD_CANNOT_BE_NULL))));
 
@@ -77,18 +76,17 @@ public class VPRequestControllerTest {
 
     @Test
     public void testCreateVPRequest_NotFound() throws Exception {
-        FormatDto formatDto = new FormatDto(null,null,null);
-        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purposr",formatDto, new ArrayList<>());
+        FormatDto formatDto = new FormatDto(null, null, null);
+        VPDefinitionResponseDto vpDefinitionResponseDto = new VPDefinitionResponseDto("id", new ArrayList<>(), "name", "purposr", formatDto, new ArrayList<>());
 
-        VPRequestCreateDto createDto = new VPRequestCreateDto("cId","tId","pdId","nonce",vpDefinitionResponseDto);
-
+        VPRequestCreateDto createDto = new VPRequestCreateDto("cId", "tId", "pdId", "nonce", vpDefinitionResponseDto);
 
         when(verifiablePresentationRequestService.createAuthorizationRequest(any()))
                 .thenThrow(new PresentationDefinitionNotFoundException());
 
         mockMvc.perform(post("/vp-request")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createDto)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createDto)))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(objectMapper.writeValueAsString(new ErrorDto(ErrorCode.NO_PRESENTATION_DEFINITION))));
     }
@@ -103,7 +101,7 @@ public class VPRequestControllerTest {
         when(verifiablePresentationRequestService.getStatus(requestId)).thenReturn(deferredResult);
 
         MvcResult mvcResult = mockMvc.perform(get("/vp-request/{requestId}/status", requestId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -111,5 +109,20 @@ public class VPRequestControllerTest {
         Object result = mvcResult.getAsyncResult();
         assertEquals(new ObjectMapper().writeValueAsString(statusDto), new ObjectMapper().writeValueAsString(result));
         verify(verifiablePresentationRequestService, times(1)).getStatus(requestId);
+    }
+
+    @Test
+    public void testGetVPRequest_Success() throws Exception {
+        String requestId = "req123";
+        String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+        when(verifiablePresentationRequestService.getVPRequestJwt(requestId)).thenReturn(jwt);
+
+        mockMvc.perform(get("/vp-request/{requestId}", requestId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("application/oauth-authz-req+jwt"))
+                .andExpect(content().string(jwt));
+
+        verify(verifiablePresentationRequestService, times(1)).getVPRequestJwt(requestId);
     }
 }

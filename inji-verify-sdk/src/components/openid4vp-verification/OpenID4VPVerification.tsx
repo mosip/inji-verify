@@ -6,7 +6,8 @@ import {
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
-import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
+import {vpRequest, vpRequestStatus, vpResult} from "../../utils/api";
+import "./OpenID4VPVerification.css"
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
@@ -36,10 +37,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [reqId, setReqId] = useState<string | null>(null);
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showWallets, setShowWallets] = useState<boolean>(false);
   const hasInitializedRef = useRef(false);
 
-  const shouldShowQRCode = !loading && qrCodeData && !showWallets;
+  const shouldShowQRCode = !loading && qrCodeData;
 
   const DEFAULT_PROTOCOL = "openid4vp://";
 
@@ -230,7 +230,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setTxnId(null);
     setReqId(null);
     setQrCodeData(null);
-    setShowWallets(false);
     setLoading(false);
     hasInitializedRef.current = false;
     scheduleSessionAutoReset();
@@ -261,27 +260,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minWidth: "100%",
-      }}
-    >
+    <div className={"ovp-root-div-container"}>
       {loading && (
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            border: "4px solid #ccc",
-            borderTop: "4px solid #333",
-            borderRadius: "50%",
-            animation: "spin 1s linear infinite",
-            margin: "20px auto",
-          }}
-        />
+        <div className={"ovp-loader"}/>
       )}
 
       {!loading && triggerElement && !qrCodeData && (

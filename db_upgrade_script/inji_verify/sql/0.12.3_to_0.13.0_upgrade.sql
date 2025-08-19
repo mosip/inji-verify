@@ -6,8 +6,6 @@
 -- Upgrade Script: v0.12.3 to v0.13.0
 -- Database       : inji_verify
 -- Purpose        : Apply schema changes introduced in version 0.13.0
--- Author         : 
--- Date           : 
 -- -------------------------------------------------------------------------------------------------
 
 \c inji_verify
@@ -37,19 +35,5 @@ ALTER TABLE verify.vp_submission
   USING presentation_submission::TEXT;
 
 -- -------------------------------------------------------------------------------------------------
--- SECTION 2: Create vc_submission table
+-- END OF SCRIPT
 -- -------------------------------------------------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS verify.vc_submission (
-  transaction_id VARCHAR(40) NOT NULL,
-  vc TEXT NOT NULL
-);
-
-COMMENT ON TABLE verify.vc_submission IS 
-  'VC Submission table: Stores details of all verifiable credentials submissions';
-
-COMMENT ON COLUMN verify.vc_submission.transaction_id IS 
-  'Transaction ID: Unique identifier for the VC submission transaction';
-
-COMMENT ON COLUMN verify.vc_submission.vc IS 
-  'VC: Base64-encoded verifiable credential submission result';

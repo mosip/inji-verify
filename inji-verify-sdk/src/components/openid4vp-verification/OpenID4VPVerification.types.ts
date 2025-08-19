@@ -45,13 +45,6 @@ export interface VPRequestBody {
   presentationDefinitionId?: string;
   presentationDefinition?: PresentationDefinition;
 }
-
-export interface Wallet {
-  name: string;
-  scheme: string;
-  icon: string;
-}
-
 type ExclusivePresentationDefinition =
   /**
    * ID of the presentation definition used for verification.
