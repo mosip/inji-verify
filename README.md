@@ -1,4 +1,4 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=release-0.13.x&project=mosip_inji-verify=alert_status)](https://sonarcloud.io/dashboard?branch=release-0.13.x&id=mosip_inji-verify)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=mosip_inji-verify=alert_status)](https://sonarcloud.io/dashboard?branch=master&id=mosip_inji-verify)
 # Inji Verify
 
 Inji Verify offers a seamless credential verification experience through QR code scanning, upload functionality, and Pixel Pass SDK integration for accurate decoding. Utilizing a robust Verification SDK ensures the authenticity and integrity of credentials. The portal displays credentials accurately based on issuer configurations and handles errors effectively. With a user-friendly, responsive interface, real-time verification, and scalable performance, Inji Verify provides an efficient and flexible verification solution
