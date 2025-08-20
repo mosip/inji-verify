@@ -60,7 +60,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Value("${inji.vp-submission.base-url}")
     String vpSubmissionBaseUrl;
 
-    @Value("${inji.did.issuer.public.key.uri}")
+    @Value("${inji.did.verify.public.key.uri}")
     String issuerPublicKeyURI;
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();

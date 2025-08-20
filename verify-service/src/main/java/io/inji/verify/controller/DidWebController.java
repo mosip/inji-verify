@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Slf4j
 public class DidWebController {
 
-    @Value("${inji.did.issuer.uri}")
+    @Value("${inji.did.verify.uri}")
     String issuerURI;
 
-    @Value("${inji.did.issuer.public.key.uri}")
+    @Value("${inji.did.verify.public.key.uri}")
     String issuerPublicKeyURI;
 
     Extractor extractor;
