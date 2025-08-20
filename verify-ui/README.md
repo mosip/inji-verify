@@ -97,9 +97,16 @@ release branches:
 - release-0.9.x
 - release-0.10.x
 - release-0.11.x
+- release-0.12.x
+- release-0.13.x
+- release-0.14.x
 
 tags :
 
+- v0.14.0
+- v0.13.0
+- v0.12.3
+- v0.11.1
 - v0.11.0
 - v0.10.0
 - v0.9.0
