@@ -19,6 +19,7 @@ import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.JWTCreationException;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
+import io.inji.verify.exception.VPRequestNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
@@ -175,7 +176,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public String getVPRequestJwt(String requestId) {
+    public String getVPRequestJwt(String requestId) throws VPRequestNotFoundException {
         return authorizationRequestCreateResponseRepository
                 .findById(requestId)
                 .map(authorizationRequestCreateResponse -> {
@@ -186,7 +187,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                     String state = authorizationRequestCreateResponse.getRequestId();
                     return createAndSignAuthorizationRequestJwt(verifierDid, authorizationRequestCreateResponse.getAuthorizationDetails(), state);
                 })
-                .orElse(null);
+                .orElseThrow(VPRequestNotFoundException::new);
     }
     private String createAndSignAuthorizationRequestJwt(String verifierDid, AuthorizationRequestResponseDto authorizationRequest, String state) {
 
