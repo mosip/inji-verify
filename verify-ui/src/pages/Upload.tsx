@@ -29,11 +29,18 @@ export const Upload = () => {
     </div>
   );
 
+  const scheduleVcDisplayTimeOut = () => {
+    setTimeout(() => {
+      dispatch(goToHomeScreen({}));
+    }, 10000)
+  };
+
   const handleOnVCProcessed = (data: {
     vc: unknown;
     vcStatus: string
   }[]) => {
     dispatch(verificationComplete({verificationResult: data[0]}));
+    scheduleVcDisplayTimeOut();
   }
 
   return (
