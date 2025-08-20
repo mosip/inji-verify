@@ -20,6 +20,13 @@ function QrScanner({ onClose, scannerActive }: {
     setIsScanning(true);
   }, []);
 
+  const handleOnVCProcessed = (data: {
+    vc: unknown;
+    vcStatus: string
+  }[]) => {
+    dispatch(verificationComplete({verificationResult: data[0]}));
+  }
+
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black lg:relative lg:inset-auto lg:w-[21rem] lg:h-auto lg:aspect-square lg:bg-transparent">
       {!isCameraBlocked && (
@@ -36,9 +43,7 @@ function QrScanner({ onClose, scannerActive }: {
           scannerActive={scannerActive}
           verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
           isEnableUpload={false}
-          onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
-            dispatch(verificationComplete({ verificationResult: data[0] }))
-          }
+          onVCProcessed={handleOnVCProcessed}
           onClose={onClose}
           onError={(error) => {
             if (error.name === "NotAllowedError") {
