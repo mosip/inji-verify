@@ -65,9 +65,9 @@ function installing_inji-verify-service() {
     --version $CHART_VERSION $ENABLE_INSECURE \
     --set extraEnv[0].name=INJI_VP_SUBMISSION_BASE_URL \
     --set extraEnv[0].value="https://${INJIVERIFY_HOST}/v1/verify" \
-    --set extraEnv[1].name=INJI_DID_ISSUER_URI \
+    --set extraEnv[1].name=INJI_DID_VERIFY_URI \
     --set extraEnv[1].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify" \
-    --set extraEnv[2].name=INJI_DID_ISSUER_PUBLIC_KEY_URI \
+    --set extraEnv[2].name=INJI_DID_VERIFY_PUBLIC_KEY_URI \
     --set extraEnv[2].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify#key-0"
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
