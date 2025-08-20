@@ -24,15 +24,16 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         {label}
       </p>
 
-      <div
+      <button
+        type="button"
+        onClick={onClick}
         className="flex items-center justify-center w-[40px] h-[40px] aspect-square bg-cover opacity-25 group-hover:opacity-100"
         style={{
           backgroundImage: `url(${VectorOutline})`,
         }}
-        onClick={onClick}
       >
         {icon}
-      </div>
+      </button>
     </div>
   );
 };

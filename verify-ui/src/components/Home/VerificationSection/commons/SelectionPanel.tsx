@@ -33,9 +33,11 @@ const SelectionPanel: React.FC = () => {
       <div className="block lg:hidden">
         <SlideModal>
           <div className="flex justify-center">
-            <div
-              className="w-10 h-1 rounded-full my-2 cursor-pointer"
+            <button
+              type="button"
               onClick={HandelBack}
+              className="w-10 h-1 rounded-full my-2 cursor-pointer bg-sortByBorder"
+              aria-label="Go back"
             />
           </div>
           <div className="pt-2">
