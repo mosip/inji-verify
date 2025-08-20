@@ -158,13 +158,14 @@ class VerifiablePresentationRequestServiceImplTest {
     }
 
     @Test
-    void getVPRequestJwt_NullAuthorizationDetails_ReturnsNull() {
+    void getVPRequestJwt_NullAuthorizationDetails_Throws_VPRequestNotFoundException()  {
         String requestId = "reqWithNullDetails";
         AuthorizationRequestCreateResponse response = new AuthorizationRequestCreateResponse(requestId, "tx", null, Instant.now().toEpochMilli() + 1000);
         when(mockAuthorizationRequestCreateResponseRepository.findById(requestId)).thenReturn(Optional.of(response));
 
-        String jwt = service.getVPRequestJwt(requestId);
-        assertNull(jwt);
+        assertThrows(VPRequestNotFoundException.class, () -> {
+            service.getVPRequestJwt(requestId);
+        });
     }
 
     @Test

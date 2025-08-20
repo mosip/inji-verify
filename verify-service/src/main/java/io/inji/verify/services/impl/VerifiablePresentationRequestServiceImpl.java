@@ -61,7 +61,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     String vpSubmissionBaseUrl;
 
     @Value("${inji.did.verify.public.key.uri}")
-    String issuerPublicKeyURI;
+    String verifyPublicKeyURI;
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
@@ -218,7 +218,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
             JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.EdDSA)
                     .type(new JOSEObjectType("oauth-authz-req+jwt"))
-                    .keyID(issuerPublicKeyURI)
+                    .keyID(verifyPublicKeyURI)
                     .build();
             SignedJWT signedJWT = new SignedJWT(jwsHeader, claimsSet);
             JWSSigner signer = new Ed25519Signer(keyManagementService.getKeyPair());
