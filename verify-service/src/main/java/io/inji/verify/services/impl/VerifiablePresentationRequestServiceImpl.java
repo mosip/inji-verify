@@ -180,9 +180,6 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         return authorizationRequestCreateResponseRepository
                 .findById(requestId)
                 .map(authorizationRequestCreateResponse -> {
-                    if (authorizationRequestCreateResponse.getAuthorizationDetails() == null) {
-                        return null;
-                    }
                     String verifierDid = authorizationRequestCreateResponse.getAuthorizationDetails().getClientId();
                     String state = authorizationRequestCreateResponse.getRequestId();
                     return createAndSignAuthorizationRequestJwt(verifierDid, authorizationRequestCreateResponse.getAuthorizationDetails(), state);
