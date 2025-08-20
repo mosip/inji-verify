@@ -29,6 +29,13 @@ export const Upload = () => {
     </div>
   );
 
+  const handleOnVCProcessed = (data: {
+    vc: unknown;
+    vcStatus: string
+  }[]) => {
+    dispatch(verificationComplete({verificationResult: data[0]}));
+  }
+
   return (
     <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
       <div className="xs:col-end-13">
@@ -38,11 +45,9 @@ export const Upload = () => {
         >
           <QRCodeVerification
             triggerElement={triggerElement}
-            verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
+            verifyServiceUrl={"https://witty-worms-speak.loca.lt" + window._env_.VERIFY_SERVICE_API_URL}
             isEnableScan={false}
-            onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
-              dispatch(verificationComplete({ verificationResult: data[0] }))
-            }
+            onVCProcessed={handleOnVCProcessed}
             uploadButtonId={"upload-qr"}
             uploadButtonStyle="hidden"
             onError={(error) => {
