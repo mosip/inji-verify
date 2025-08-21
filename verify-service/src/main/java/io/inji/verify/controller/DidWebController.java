@@ -14,18 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.KeyPair;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 @RequestMapping
 @RestController
 @Slf4j
 public class DidWebController {
 
-    @Value("${inji.did.issuer.uri}")
-    String issuerURI;
+    @Value("${inji.did.verify.uri}")
+    String verifyDidURI;
 
-    @Value("${inji.did.issuer.public.key.uri}")
-    String issuerPublicKeyURI;
+    @Value("${inji.did.verify.public.key.uri}")
+    String verifyPublicKeyURI;
 
     Extractor extractor;
 
@@ -40,7 +38,7 @@ public class DidWebController {
             KeyPair keyPair = extractor.extractKeyPair();
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(DIDDocumentUtil.generateDIDDocument(keyPair.getPublic(), issuerURI, issuerPublicKeyURI));
+                    .body(DIDDocumentUtil.generateDIDDocument(keyPair.getPublic(), verifyDidURI, verifyPublicKeyURI));
 
         } catch (Exception e) {
             log.error("Error extracting KeyPair: {}", e.getMessage());

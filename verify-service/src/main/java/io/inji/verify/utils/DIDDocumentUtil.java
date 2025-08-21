@@ -23,19 +23,19 @@ public class DIDDocumentUtil {
 
     private static final String MULTICODEC_PREFIX = "ed01";
 
-    public static Map<String, Object> generateDIDDocument(PublicKey publicKey, String issuerURI, String issuerPublicKeyURI) {
+    public static Map<String, Object> generateDIDDocument(PublicKey publicKey, String verifyDidURI, String verifyPublicKeyURI) {
 
         HashMap<String, Object> didDocument = new HashMap<>();
         didDocument.put("@context", Collections.singletonList("https://www.w3.org/ns/did/v1"));
         didDocument.put("alsoKnownAs", new ArrayList<>());
         didDocument.put("service", new ArrayList<>());
-        didDocument.put("id", issuerURI);
-        didDocument.put("authentication", Collections.singletonList(issuerPublicKeyURI));
-        didDocument.put("assertionMethod", Collections.singletonList(issuerPublicKeyURI));
+        didDocument.put("id", verifyDidURI);
+        didDocument.put("authentication", Collections.singletonList(verifyPublicKeyURI));
+        didDocument.put("assertionMethod", Collections.singletonList(verifyPublicKeyURI));
 
         Map<String, Object> verificationMethod;
         try {
-            verificationMethod = generateEd25519VerificationMethod(publicKey, issuerURI, issuerPublicKeyURI);
+            verificationMethod = generateEd25519VerificationMethod(publicKey, verifyDidURI, verifyPublicKeyURI);
         } catch (Exception e) {
             log.error("Exception occurred while generating verification method for given certificate : {}", e.getMessage());
             throw new DidGenerationException();
@@ -45,7 +45,7 @@ public class DIDDocumentUtil {
         return didDocument;
     }
 
-    private static Map<String, Object> generateEd25519VerificationMethod(PublicKey publicKey, String issuerURI, String issuerPublicKeyURI) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+    private static Map<String, Object> generateEd25519VerificationMethod(PublicKey publicKey, String verifyDidURI, String verifyPublicKeyURI) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
         X509EncodedKeySpec pkSpec = new X509EncodedKeySpec(publicKey.getEncoded());
         BCEdDSAPublicKey bcEdDSAPublicKey = (BCEdDSAPublicKey) KeyFactory.getInstance("EdDSA", "BC").generatePublic(pkSpec);
 
@@ -57,10 +57,10 @@ public class DIDDocumentUtil {
         String publicKeyMultibase = Multibase.encode(Multibase.Base.Base58BTC, finalBytes);
 
         Map<String, Object> verificationMethod = new HashMap<>();
-        verificationMethod.put("id", issuerPublicKeyURI);
+        verificationMethod.put("id", verifyPublicKeyURI);
         verificationMethod.put("type", "Ed25519VerificationKey2020");
         verificationMethod.put("@context", "https://w3id.org/security/suites/ed25519-2020/v1");
-        verificationMethod.put("controller", issuerURI);
+        verificationMethod.put("controller", verifyDidURI);
         verificationMethod.put("publicKeyMultibase", publicKeyMultibase);
         return verificationMethod;
     }

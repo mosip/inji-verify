@@ -12,7 +12,7 @@ import {
 } from "../../../redux/features/verify/vpVerificationState";
 import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages } from "../../../utils/config";
+import { AlertMessages, DisplayTimeout } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
@@ -47,8 +47,15 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
+  const scheduleVpDisplayTimeOut = () => {
+    setTimeout(() => {
+      handleRestartProcess();
+    }, DisplayTimeout)
+  };
+
   const handleOnVpProcessed = (vpResult: {}) => {
     dispatch(verificationSubmissionComplete({ verificationResult: vpResult }));
+    scheduleVpDisplayTimeOut();
   };
 
   const handleOnQrExpired = () => {

@@ -13,6 +13,7 @@ import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
+import io.inji.verify.exception.VPRequestNotFoundException;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.enums.VPRequestStatus;
@@ -134,7 +135,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("Should return JWT string when authorization request and details are valid")
-    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException {
+    void getVPRequestJwt_ValidRequest_ReturnsJwtString() throws JOSEException, VPRequestNotFoundException {
         String requestId = "testRequestId123";
         String verifierDid = "did:example:verifier123";
         String expectedJwtHeader = "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRWREU0EifQ.";
@@ -157,13 +158,13 @@ class VerifiablePresentationRequestServiceImplTest {
     }
 
     @Test
-    void getVPRequestJwt_NullAuthorizationDetails_ReturnsNull() {
+    void getVPRequestJwt_NullAuthorizationDetails_Throws_VPRequestNotFoundException()  {
         String requestId = "reqWithNullDetails";
-        AuthorizationRequestCreateResponse response = new AuthorizationRequestCreateResponse(requestId, "tx", null, Instant.now().toEpochMilli() + 1000);
-        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId)).thenReturn(Optional.of(response));
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId)).thenReturn(Optional.empty());
 
-        String jwt = service.getVPRequestJwt(requestId);
-        assertNull(jwt);
+        assertThrows(VPRequestNotFoundException.class, () -> {
+            service.getVPRequestJwt(requestId);
+        });
     }
 
     @Test

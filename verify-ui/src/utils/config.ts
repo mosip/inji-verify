@@ -127,7 +127,11 @@ export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIV
 
 export const InternetConnectivityCheckTimeout = isNaN(Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT))
     ? 10000
-    : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT); //milliseconds
+    : Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT);
+
+export const DisplayTimeout = isNaN(Number.parseInt(window._env_.DISPLAY_TIMEOUT))
+    ? 10000
+    : Number.parseInt(window._env_.DISPLAY_TIMEOUT);
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
