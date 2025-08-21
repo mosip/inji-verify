@@ -14,11 +14,16 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
+      <button
         className="absolute inset-0 bg-black/50 transition-opacity duration-300"
         onClick={onClose}
+        aria-label="Close modal"
       />
-      <div className="relative z-10 transform transition-all duration-300 scale-100 opacity-100">
+      <div
+        className="relative z-10 transform transition-all duration-300 scale-100 opacity-100"
+        role="dialog"
+        aria-modal="true"
+      >
         {children}
       </div>
     </div>
