@@ -33,9 +33,14 @@ const AlertMessage = (props:any) => {
                     <p id="alert-message">
                         {alertInfo.message}
                     </p>
-                    <div className={`${isRtl?'pr-4':'pl-4'} cursor-pointer`} onClick={handleClose}>
-                        <CloseIcon/>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={handleClose}
+                      className={`${isRtl ? "pr-4" : "pl-4"} cursor-pointer`}
+                      aria-label="Close"
+                    >
+                      <CloseIcon />
+                    </button>
                 </div>
             </div>
         </>
