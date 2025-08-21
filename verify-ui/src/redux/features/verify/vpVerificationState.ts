@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { verifiableClaims, VerificationSteps } from "../../../utils/config";
+import { getVerifiableClaims, VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
 import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../utils/commonUtils";
 
@@ -14,8 +14,8 @@ const PreloadedState: VerifyState = {
   activeScreen: VerificationSteps["VERIFY"].InitiateVpRequest,
   SelectionPanel: false,
   verificationSubmissionResult: [],
-  selectedClaims: verifiableClaims?.filter((claim) => claim.essential),
-  originalSelectedClaims: verifiableClaims?.filter((claim) => claim.essential),
+  selectedClaims: getVerifiableClaims()?.filter((claim) => claim.essential),
+  originalSelectedClaims: getVerifiableClaims()?.filter((claim) => claim.essential),
   unVerifiedClaims: [],
   sharingType: VCShareType.SINGLE,
   isPartiallyShared: false,
@@ -39,7 +39,7 @@ const vpVerificationState = createSlice({
   reducers: {
     setSelectCredential: (state) => {
       state.activeScreen = VerificationSteps[state.method].SelectCredential;
-      state.selectedClaims = verifiableClaims.filter((claim) => claim.essential );
+      state.selectedClaims = getVerifiableClaims().filter((claim) => claim.essential );
       state.originalSelectedClaims = [...state.selectedClaims];
       state.sharingType = state.selectedClaims.length > 1 ? VCShareType.MULTIPLE : VCShareType.SINGLE;
       const inputDescriptors = state.selectedClaims.flatMap((claim) => claim.definition.input_descriptors);
