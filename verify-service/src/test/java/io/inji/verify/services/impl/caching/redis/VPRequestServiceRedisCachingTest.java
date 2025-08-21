@@ -9,7 +9,7 @@ import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.AuthorizationRequestCacheService;
-import io.inji.verify.services.JwtService;
+import io.inji.verify.services.KeyManagementService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,14 +81,15 @@ class VPRequestServiceRedisCachingTest {
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
                 AuthorizationRequestCreateResponseRepository repo,
                 RedisConfigProperties redisConfigProperties,
-                AuthorizationRequestCacheService cacheService) {
+                AuthorizationRequestCacheService cacheService
+        ) {
             return new VerifiablePresentationRequestServiceImpl(
                     mock(PresentationDefinitionRepository.class),
                     repo,
                     mock(VPSubmissionRepository.class),
                     redisConfigProperties,
-                    mock(JwtService.class),
-                    cacheService
+                    cacheService,
+                    mock(KeyManagementService.class)
             );
         }
     }

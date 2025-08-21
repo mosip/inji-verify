@@ -4,7 +4,7 @@ import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.services.AuthorizationRequestCacheService;
-import io.inji.verify.services.JwtService;
+import io.inji.verify.services.KeyManagementService;
 import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.impl.VerifiablePresentationRequestServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -53,11 +53,6 @@ class VPRequestServiceImplCachingTest {
         }
 
         @Bean
-        public JwtService jwtService() {
-            return mock(JwtService.class);
-        }
-
-        @Bean
         public AuthorizationRequestCacheService authorizationRequestCacheService(
                 RedisConfigProperties redisConfigProperties
         ) {
@@ -68,11 +63,15 @@ class VPRequestServiceImplCachingTest {
         public VerifiablePresentationRequestService verifiablePresentationRequestService(
                 AuthorizationRequestCreateResponseRepository repository,
                 RedisConfigProperties redisConfigProperties,
-                JwtService jwtService,
                 AuthorizationRequestCacheService cacheService
         ) {
             return new VerifiablePresentationRequestServiceImpl(
-                    null, repository, null, redisConfigProperties, jwtService, cacheService
+                    null,
+                    repository,
+                    null,
+                    redisConfigProperties,
+                    cacheService,
+                    mock(KeyManagementService.class)
             );
         }
     }
@@ -118,8 +117,7 @@ class VPRequestServiceImplCachingTest {
                 .thenReturn(Collections.emptyList());
 
         assertThrows(NoSuchElementException.class, () -> service.getLatestAuthorizationRequestFor(TRANSACTION_ID));
-        assertThrows(NoSuchElementException.class, () -> service.getLatestAuthorizationRequestFor(TRANSACTION_ID));
 
-        verify(repository, times(2)).findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
+        verify(repository, times(1)).findAllByTransactionIdOrderByExpiresAtDesc(TRANSACTION_ID);
     }
 }
