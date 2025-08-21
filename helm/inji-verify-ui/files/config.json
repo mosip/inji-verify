@@ -3,7 +3,7 @@
     {
       "logo": "/assets/cert.png",
       "name": "MOSIP ID",
-      "type": "MosipVerifiableCredential",
+      "type": "MOSIPVerifiableCredential",
       "essential": true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
@@ -138,12 +138,60 @@
       }
     }
   ],
-  "supportedWallets": [
-    {
-      "name": "Inji Wallet",
-      "scheme": "openid4vp://authorize",
-      "icon": "/assets/inji.png",
-      "description": "Use Inji wallet to present your credentials."
-    }
-  ]
+  "VCRenderOrders": {
+    "InsuranceCredentialRenderOrder": [
+      "fullName",
+      "gender",
+      "dob",
+      "benefits",
+      "policyName",
+      "policyNumber",
+      "policyIssuedOn",
+      "policyExpiresOn",
+      "mobile",
+      "email"
+    ],
+    "farmerLandCredentialRenderOrder": [
+      "id",
+      "farmerId",
+      "dvcType",
+      {
+        "farmerLandDetails": ["farmId", "district", "surveyNumber"]
+      }
+    ],
+    "farmerCredentialRenderOrder": [
+      "farmerID",
+      "landOwnershipType",
+      "fullName",
+      "mobileNumber",
+      "dateOfBirth",
+      "gender",
+      "villageOrTown",
+      "district",
+      "state",
+      "postalCode",
+      "landArea",
+      "primaryCropType",
+      "secondaryCropType"
+    ],
+    "MosipVerifiableCredentialRenderOrder": [
+      "face",
+      "UIN",
+      "fullName",
+      "dateOfBirth",
+      "gender",
+      "phone",
+      "email",
+      "addressLine1",
+      "city"
+    ],
+    "IncomeTaxAccountCredentialRenderOrder": [
+      "fullName",
+      "tan",
+      "gender",
+      "dateOfBirth",
+      "issuedOn",
+      "expiresOn"
+    ]
+  }
 }

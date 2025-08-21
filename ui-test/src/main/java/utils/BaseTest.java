@@ -1,5 +1,7 @@
 package utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import api.InjiVerifyConfigManager;
 import io.cucumber.java.*;
 import org.openqa.selenium.JavascriptExecutor;
@@ -14,8 +16,6 @@ import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.browserstack.local.Local;
 
-import io.cucumber.java.Scenario;
-import io.cucumber.java.BeforeStep;
 import io.cucumber.plugin.event.PickleStepTestStep;
 import io.cucumber.plugin.event.TestStep;
 import io.mosip.testrig.apirig.utils.ConfigManager;
@@ -34,6 +34,8 @@ import java.util.Properties;
 
 
 public class BaseTest {
+	private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+	
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -63,39 +65,85 @@ public class BaseTest {
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
 		
-		try {
-			if (bsLocal == null || !bsLocal.isRunning()) {
-				bsLocal = new Local();
-				HashMap<String, String> bsLocalArgs = new HashMap<>();
-				bsLocalArgs.put("key", accessKey);
-				try {
-					bsLocal.start(bsLocalArgs);
-					System.out.println("✅ BrowserStack Local tunnel started.");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		totalCount++;
-		   ExtentReportManager.initReport();
-	        ExtentReportManager.createTest(scenario.getName()); 
-	        ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("browserName", "Chrome");
-		capabilities.setCapability("browserVersion", "latest");
-		HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
-		browserstackOptions.put("os", "Windows");
-		browserstackOptions.put("local", true);
-		browserstackOptions.put("interactiveDebugging", true);
-		capabilities.setCapability("bstack:options", browserstackOptions);
+		 this.scenario = scenario;
 
-		driver = new RemoteWebDriver(new URL(URL), capabilities);
-		jse = (JavascriptExecutor) driver;
-		driver.manage().window().maximize();
-		driver.get(url);
+	    try {
+	        if (bsLocal == null || !bsLocal.isRunning()) {
+	            bsLocal = new Local();
+	            HashMap<String, String> bsLocalArgs = new HashMap<>();
+	            bsLocalArgs.put("key", accessKey);
+	            try {
+	                bsLocal.start(bsLocalArgs);
+	                logger.info("✅ BrowserStack Local tunnel started.");
+	            } catch (Exception e) {
+	                logger.error("Failed to start BrowserStack Local tunnel", e);
+	            }
+	        }
+	    } catch (Exception e) {
+	        logger.error("Failed to initialize BrowserStack Local", e);
+	    }
+
+	    totalCount++;
+	    ExtentReportManager.initReport();
+	    ExtentReportManager.createTest(scenario.getName());
+	    ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
+
+	    DesiredCapabilities capabilities = new DesiredCapabilities();
+	    HashMap<String, Object> browserstackOptions = new HashMap<>();
+
+	    if (scenario.getSourceTagNames().contains("@mobileView")) {
+        logger.info("📱 Launching test in MOBILE VIEW (Desktop Emulation) via BrowserStack");
+
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("browserVersion", "latest");
+        
+        browserstackOptions.put("os", "Windows");
+        browserstackOptions.put("osVersion", "10");
+        browserstackOptions.put("local", "true");
+        browserstackOptions.put("debug", "true");
+        
+        // Add Chrome options for mobile emulation
+        HashMap<String, Object> chromeOptions = new HashMap<>();
+        HashMap<String, Object> mobileEmulation = new HashMap<>();
+        // Instead of using deviceName, set specific device metrics
+        HashMap<String, Object> deviceMetrics = new HashMap<>();
+        deviceMetrics.put("width", 412);  // Galaxy S22 width
+        deviceMetrics.put("height", 915);  // Galaxy S22 height
+        deviceMetrics.put("pixelRatio", 2.625);  // Device pixel ratio
+        deviceMetrics.put("mobile", true);
+        mobileEmulation.put("deviceMetrics", deviceMetrics);
+        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 12; SM-S901E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36");
+        chromeOptions.put("mobileEmulation", mobileEmulation);
+        capabilities.setCapability("goog:chromeOptions", chromeOptions);
+    }
+    else {
+        logger.info("🖥️ Launching test in DESKTOP mode");
+
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("browserVersion", "latest");
+
+        browserstackOptions.put("os", "Windows");
+        browserstackOptions.put("osVersion", "10");
+        browserstackOptions.put("local", "true");
+        browserstackOptions.put("debug", "true");
+    }
+
+    // ✅ Common step — attach the bstack:options finally
+    capabilities.setCapability("bstack:options", browserstackOptions);
+
+    logger.info("Final capabilities: {}", capabilities);
+
+    // Setup driver (only once)
+    driver = new RemoteWebDriver(new URL(URL), capabilities);
+    jse = (JavascriptExecutor) driver;
+    
+    // Only maximize window for desktop tests
+    if (!scenario.getSourceTagNames().contains("@mobileView")) {
+        driver.manage().window().maximize();
+    }
+    
+    driver.get(url);
+	
 	}
 
 
@@ -132,13 +180,12 @@ public class BaseTest {
 			if (bsLocal != null && bsLocal.isRunning() && (passedCount + failedCount == totalCount)) {
 				try {
 					bsLocal.stop();
-					System.out.println("🛑 BrowserStack Local tunnel stopped.");
+					logger.info("🛑 BrowserStack Local tunnel stopped.");
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error("Failed to stop BrowserStack Local tunnel", e);
 				}}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error in afterScenario", e);
 		}
 	}
 
@@ -177,7 +224,7 @@ public class BaseTest {
 	@AfterAll
 	public static void afterAll() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			System.out.println("Shutdown hook triggered. Uploading report...");
+			logger.info("Shutdown hook triggered. Uploading report...");
 			if (extent != null) {
 				extent.flush();
 			}
@@ -214,9 +261,9 @@ public class BaseTest {
 
 		// Rename the file
 		if (originalReportFile.renameTo(newReportFile)) {
-			System.out.println("Report renamed to: " + newFileName);
+			logger.info("Report renamed to: {}", newFileName);
 		} else {
-			System.out.println("Failed to rename the report file.");
+			logger.error("Failed to rename the report file");
 		}
 
 		executeLsCommand(newReportFile.getAbsolutePath());
@@ -232,10 +279,10 @@ public class BaseTest {
 						newFileName,
 						newReportFile
 				);
-				System.out.println("isStoreSuccess:: " + isStoreSuccess);
+				logger.info("isStoreSuccess:: {}", isStoreSuccess);
 			} catch (Exception e) {
-				System.out.println("Error occurred while pushing the object: " + e.getLocalizedMessage());
-				System.out.println(e.getMessage());
+				logger.error("Error occurred while pushing the object: {}", e.getLocalizedMessage());
+				logger.error("Error details: {}", e.getMessage());
 			}
 		}
 	}
@@ -256,24 +303,24 @@ public class BaseTest {
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
-			System.out.println("--- Directory listing for " + directoryPath + " ---");
+			logger.info("--- Directory listing for {} ---", directoryPath);
 			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
+				logger.info(line);
 			}
 
 			int exitCode = process.waitFor();
 			if (exitCode != 0) {
 				BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 				String errorLine;
-				System.err.println("--- Directory listing error ---");
+				logger.error("--- Directory listing error ---");
 				while ((errorLine = errorReader.readLine()) != null) {
-					System.err.println(errorLine);
+					logger.error(errorLine);
 				}
 			}
-			System.out.println("--- End directory listing ---");
+			logger.info("--- End directory listing ---");
 
 		} catch (IOException | InterruptedException e) {
-			System.err.println("Error executing directory listing command: " + e.getMessage());
+			logger.error("Error executing directory listing command: {}", e.getMessage());
 		}
 	}
 	public static String[] fetchIssuerTexts() {

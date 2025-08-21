@@ -6,15 +6,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.interfaces.EdECPublicKey;
 import java.security.Security;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey;
 
 import java.security.spec.NamedParameterSpec;
 import java.util.Collections;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.ArgumentMatchers.any;
 
 class DIDDocumentUtilTest {
 
@@ -36,7 +38,7 @@ class DIDDocumentUtilTest {
             Security.addProvider(new BouncyCastleProvider());
             System.out.println("Bouncy Castle provider added for tests.");
         }
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("EdDSA");
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("EdDSA", "BC");
         kpg.initialize(new NamedParameterSpec("Ed25519"));
 
         testKeyPair = kpg.generateKeyPair();
@@ -71,26 +73,114 @@ class DIDDocumentUtilTest {
 
         String publicKeyMultibase = (String) vm.get("publicKeyMultibase");
         assertNotNull(publicKeyMultibase);
-        assertTrue(publicKeyMultibase.startsWith("z"));
+        assertTrue(publicKeyMultibase.startsWith("z"), "Public key should be multibase encoded with base58btc (z prefix)");
+
+        assertTrue(publicKeyMultibase.length() > 40, "Multibase encoded key should have sufficient length");
+    }
+
+    @Test
+    @DisplayName("Should throw DidGenerationException when KeyFactory throws NoSuchAlgorithmException")
+    void generateDIDDocument_NoSuchAlgorithmException_ThrowsDidGenerationException() {
+        try (MockedStatic<KeyFactory> mockedKeyFactory = Mockito.mockStatic(KeyFactory.class)) {
+            mockedKeyFactory.when(() -> KeyFactory.getInstance("EdDSA", "BC"))
+                    .thenThrow(new NoSuchAlgorithmException("EdDSA algorithm not available"));
+
+            Exception exception = assertThrows(DidGenerationException.class, () -> {
+                DIDDocumentUtil.generateDIDDocument(testKeyPair.getPublic(), issuerURI, issuerPublicKeyURI);
+            });
+
+            assertNotNull(exception);
+        }
+    }
+
+    @Test
+    @DisplayName("Should throw DidGenerationException when KeyFactory throws NoSuchProviderException")
+    void generateDIDDocument_NoSuchProviderException_ThrowsDidGenerationException() {
+        try (MockedStatic<KeyFactory> mockedKeyFactory = Mockito.mockStatic(KeyFactory.class)) {
+            mockedKeyFactory.when(() -> KeyFactory.getInstance("EdDSA", "BC"))
+                    .thenThrow(new NoSuchProviderException("BC provider not available"));
+
+            Exception exception = assertThrows(DidGenerationException.class, () -> {
+                DIDDocumentUtil.generateDIDDocument(testKeyPair.getPublic(), issuerURI, issuerPublicKeyURI);
+            });
+
+            assertNotNull(exception);
+        }
+    }
+
+    @Test
+    @DisplayName("Should throw DidGenerationException when KeyFactory throws InvalidKeySpecException")
+    void generateDIDDocument_InvalidKeySpecException_ThrowsDidGenerationException() {
+        try (MockedStatic<KeyFactory> mockedKeyFactory = Mockito.mockStatic(KeyFactory.class)) {
+            KeyFactory mockKeyFactory = Mockito.mock(KeyFactory.class);
+            mockedKeyFactory.when(() -> KeyFactory.getInstance("EdDSA", "BC"))
+                    .thenReturn(mockKeyFactory);
+
+            try {
+                Mockito.when(mockKeyFactory.generatePublic(any(X509EncodedKeySpec.class)))
+                        .thenThrow(new InvalidKeySpecException("Invalid key specification"));
+            } catch (InvalidKeySpecException e) {
+            }
+
+            Exception exception = assertThrows(DidGenerationException.class, () -> {
+                DIDDocumentUtil.generateDIDDocument(testKeyPair.getPublic(), issuerURI, issuerPublicKeyURI);
+            });
+
+            assertNotNull(exception);
+        }
+    }
+
+    @Test
+    @DisplayName("Should throw DidGenerationException when BCEdDSAPublicKey.getPointEncoding() throws RuntimeException")
+    void generateDIDDocument_PointEncodingError_ThrowsDidGenerationException() {
+        try (MockedStatic<KeyFactory> mockedKeyFactory = Mockito.mockStatic(KeyFactory.class)) {
+            KeyFactory mockKeyFactory = Mockito.mock(KeyFactory.class);
+            BCEdDSAPublicKey mockBCKey = Mockito.mock(BCEdDSAPublicKey.class);
+
+            mockedKeyFactory.when(() -> KeyFactory.getInstance("EdDSA", "BC"))
+                    .thenReturn(mockKeyFactory);
+
+            try {
+                Mockito.when(mockKeyFactory.generatePublic(any(X509EncodedKeySpec.class)))
+                        .thenReturn(mockBCKey);
+            } catch (InvalidKeySpecException e) {
+            }
+
+            Mockito.when(mockBCKey.getPointEncoding())
+                    .thenThrow(new RuntimeException("Error getting point encoding"));
+
+            Exception exception = assertThrows(DidGenerationException.class, () -> {
+                DIDDocumentUtil.generateDIDDocument(testKeyPair.getPublic(), issuerURI, issuerPublicKeyURI);
+            });
+
+            assertNotNull(exception);
+        }
+    }
+
+    @Test
+    @DisplayName("Should handle null parameters gracefully")
+    void generateDIDDocument_NullParameters_ThrowsException() {
+        assertThrows(Exception.class, () -> {
+            DIDDocumentUtil.generateDIDDocument(null, issuerURI, issuerPublicKeyURI);
+        });
 
     }
 
     @Test
-    @DisplayName("Should throw DidGenerationException on unexpected error in verification method generation")
-    void generateDIDDocument_UnexpectedError_ThrowsDidGenerationException() {
-        Logger mockLogger = Mockito.mock(Logger.class);
-        try (MockedStatic<LoggerFactory> mockedLoggerFactory = Mockito.mockStatic(LoggerFactory.class)) {
-            mockedLoggerFactory.when(() -> LoggerFactory.getLogger(DIDDocumentUtil.class))
-                    .thenReturn(mockLogger);
+    @DisplayName("Should verify multicodec prefix is correctly applied")
+    void generateDIDDocument_VerifyMulticodecPrefix_Success() throws Exception {
+        Map<String, Object> didDocument = DIDDocumentUtil.generateDIDDocument(
+                testKeyPair.getPublic(),
+                issuerURI,
+                issuerPublicKeyURI
+        );
 
-            EdECPublicKey malformedEdECPublicKey = Mockito.mock(EdECPublicKey.class);
-            Mockito.when(malformedEdECPublicKey.getPoint()).thenThrow(new RuntimeException("Simulated internal key error"));
+        List<Map<String, Object>> verificationMethods = (List<Map<String, Object>>) didDocument.get("verificationMethod");
+        String publicKeyMultibase = (String) verificationMethods.get(0).get("publicKeyMultibase");
 
-            Exception exception = assertThrows(DidGenerationException.class, () -> {
-                DIDDocumentUtil.generateDIDDocument(malformedEdECPublicKey, issuerURI, issuerPublicKeyURI);
-            });
+        assertNotNull(publicKeyMultibase);
+        assertTrue(publicKeyMultibase.startsWith("z"));
 
-            assertTrue(exception.getMessage().contains("Error while generating DID document."));
-        }
+        assertTrue(publicKeyMultibase.length() > 40);
     }
 }

@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS VERIFY;
+CREATE SCHEMA IF NOT EXISTS verify;
 
 CREATE TABLE IF NOT EXISTS verify.authorization_request_details (
     request_id character varying(40) NOT NULL,

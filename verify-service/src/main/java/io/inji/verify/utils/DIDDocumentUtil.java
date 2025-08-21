@@ -4,7 +4,6 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
-import java.security.interfaces.EdECPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
@@ -17,10 +16,7 @@ import io.inji.verify.exception.DidGenerationException;
 
 import io.ipfs.multibase.Multibase;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey;
-
-import static io.ipfs.multibase.Base16.bytesToHex;
 
 @Slf4j
 public class DIDDocumentUtil {

@@ -1,7 +1,7 @@
 Feature: Inji Verify vpVerification testing
 
-  @smoke @verifyingVpVerification
-  Scenario: Verify the Inji verify homepage
+@smoke @verifyingVpVerification
+  Scenario: Verify the VP verifcation pannel
     Given User gets the title of the page
     Then Validate the title of the page
     And Click on vp verification tab
@@ -29,7 +29,7 @@ Feature: Inji Verify vpVerification testing
       
       
   @smoke @verifyingVpVerification
-  Scenario: Verify the Inji verify homepage
+  Scenario: Verify the VP verifcation QR code
 
     Given User gets the title of the page
     Then Validate the title of the page
@@ -49,3 +49,20 @@ Feature: Inji Verify vpVerification testing
     And Verify Click on Generate QR Code button
     And Verify QR code generated
     And Click on vp verification tab 
+    
+@mobileView @verifyingVpVerification
+Scenario: Verify VP verification same device flow 
+
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on right arrow 
+    And Click on vp verification tab 
+    And Verify click on request verifiable credentials button
+    And Verify Click on open wallet button
+    And Verify Click on cancel 
+    And verify Transaction Terminated error message 
+    And Verify click on request verifiable credentials button
+    And Verify Click on open wallet button
+    And Verify Click on wallet 
+    And Verify Click on Proceed
+    And verify loading screen 

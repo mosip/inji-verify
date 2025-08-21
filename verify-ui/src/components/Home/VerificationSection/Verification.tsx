@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
-import {Button} from "./commons/Button";
+import { Button } from "./commons/Button";
 import { useAppDispatch } from "../../../redux/hooks";
 import { goToHomeScreen } from "../../../redux/features/verification/verification.slice";
 import { VerificationSteps } from "../../../utils/config";
@@ -16,6 +16,14 @@ const Verification = () => {
     method: state.method,
   }));
   const {t} = useTranslation()
+  const [scannerActive, setScannerActive] = useState(true);
+
+  const handleBack = () => {
+    setScannerActive(false);
+    setTimeout(() => {
+      dispatch(goToHomeScreen({}));
+    }, 80);
+  };
 
   return (
     <div className="grid grid-cols-12 mx-auto pt-1 pb-[100px] px-[16px] lg:py-[42px] lg:px-[104px] text-center content-center justify-center">
@@ -28,7 +36,7 @@ const Verification = () => {
         {activeScreen === VerificationSteps[method].Verifying ? (
           <Loader innerBg="bg-white"/>
         ) : (
-          <QrScanner />
+          <QrScanner scannerActive={scannerActive} onClose={handleBack}/>
         )}
       </div>
       <div className="col-span-12">
@@ -36,9 +44,7 @@ const Verification = () => {
           id="verification-back-button"
           title={t("Common:Button.back")}
           className="w-[100px] lg:w-[350px] mt-[18px] mx-0 my-1.6 text-lgNormalTextSize inline-flex"
-          onClick={() => {
-            dispatch(goToHomeScreen({}));
-          }}
+          onClick={handleBack}
         />
       </div>
     </div>

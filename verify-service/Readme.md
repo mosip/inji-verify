@@ -26,6 +26,7 @@
 For OpenID4VP Sharing below are the supported features.
 
 - Cross Device Flow
+- Same Device Flow
 - `response_type` as `vp_token`
 - `response_mode` as `direct_post`
 - Verifiable Presentation proofs supported are `ED25519Signature2018`, `ED25519Signature2020` and `RSASignature2018`

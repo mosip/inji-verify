@@ -18,6 +18,7 @@ public class AuthorizationRequestResponseDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private final String responseType = Constants.RESPONSE_TYPE;
+    private final String responseMode = Constants.RESPONSE_MODE;
     private final long issuedAt = Instant.now().toEpochMilli();
     private final String clientId;
     private final String presentationDefinitionUri;
