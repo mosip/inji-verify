@@ -41,15 +41,15 @@ class DidWebControllerTest {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private String testIssuerURI = "did:example:test-issuer";
-    private String testIssuerPublicKeyURI = "did:example:test-issuer#key-0";
+    private final String testVerifyURI = "did:example:test-issuer";
+    private final String testVerifyPublicKeyURI = "did:example:test-issuer#key-0";
 
     @BeforeEach
     void setUp() {
         DidWebController controller = applicationContext.getBean(DidWebController.class);
 
-        ReflectionTestUtils.setField(controller, "issuerURI", testIssuerURI);
-        ReflectionTestUtils.setField(controller, "issuerPublicKeyURI", testIssuerPublicKeyURI);
+        ReflectionTestUtils.setField(controller, "verifyDidURI", testVerifyURI);
+        ReflectionTestUtils.setField(controller, "verifyPublicKeyURI", testVerifyPublicKeyURI);
     }
 
     @Test
@@ -61,9 +61,9 @@ class DidWebControllerTest {
 
         Map<String, Object> expectedDidDocument = new HashMap<>();
         expectedDidDocument.put("@context", Collections.singletonList("https://www.w3.org/ns/did/v1"));
-        expectedDidDocument.put("id", testIssuerURI);
+        expectedDidDocument.put("id", testVerifyURI);
         Map<String, Object> verificationMethod = new HashMap<>();
-        verificationMethod.put("id", testIssuerPublicKeyURI);
+        verificationMethod.put("id", testVerifyPublicKeyURI);
         verificationMethod.put("type", "Ed25519VerificationKey2020");
         expectedDidDocument.put("verificationMethod", Collections.singletonList(verificationMethod));
 
@@ -71,20 +71,20 @@ class DidWebControllerTest {
 
         try (MockedStatic<DIDDocumentUtil> mockedDidDocumentUtil = Mockito.mockStatic(DIDDocumentUtil.class)) {
             mockedDidDocumentUtil.when(() -> DIDDocumentUtil.generateDIDDocument(
-                            eq(mockKeyPair.getPublic()), eq(testIssuerURI), eq(testIssuerPublicKeyURI)))
+                            eq(mockKeyPair.getPublic()), eq(testVerifyURI), eq(testVerifyPublicKeyURI)))
                     .thenReturn(expectedDidDocument);
 
             mockMvc.perform(get("/did.json")
                             .accept(MediaType.valueOf("application/json")))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.id").value(testIssuerURI))
+                    .andExpect(jsonPath("$.id").value(testVerifyURI))
                     .andExpect(jsonPath("$['@context'][0]").value("https://www.w3.org/ns/did/v1"))
-                    .andExpect(jsonPath("$.verificationMethod[0].id").value(testIssuerPublicKeyURI));
+                    .andExpect(jsonPath("$.verificationMethod[0].id").value(testVerifyPublicKeyURI));
 
             verify(mockExtractor, times(1)).extractKeyPair();
             mockedDidDocumentUtil.verify(() -> DIDDocumentUtil.generateDIDDocument(
-                    eq(mockKeyPair.getPublic()), eq(testIssuerURI), eq(testIssuerPublicKeyURI)), times(1));
+                    eq(mockKeyPair.getPublic()), eq(testVerifyURI), eq(testVerifyPublicKeyURI)), times(1));
         }
     }
 

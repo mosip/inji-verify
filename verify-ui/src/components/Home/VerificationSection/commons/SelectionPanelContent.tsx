@@ -114,9 +114,12 @@ function SelectionPanelContent() {
             onChange={handleSearchChange}
           />
         </div>
-        <div
+        <button
+          type="button"
           onClick={() => setShowMenu(!showMenu)}
           className="w-[120px] relative flex items-center rounded-lg p-2 cursor-pointer border border-sortByBorder"
+          aria-haspopup="menu"
+          aria-expanded={showMenu}
         >
           <FilterLinesIcon />
           <span className="text-sortByText font-semibold text-smallTextSize ml-2">
@@ -124,11 +127,13 @@ function SelectionPanelContent() {
           </span>
           {showMenu && (
             <div
+              role="menu"
               className={`absolute top-8 z-40 flex flex-col ${
                 rtl ? "left-1 lg:left-0" : "right-px"
               } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
             >
               <button
+                role="menuitem"
                 onClick={() => setIsAscending(true)}
                 className="w-[106px] h-[44px] text-sortByText w-full text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
               >
@@ -136,6 +141,7 @@ function SelectionPanelContent() {
               </button>
               <div className="w-full border-t-[2px] border-sortByBorder" />
               <button
+                role="menuitem"
                 onClick={() => setIsAscending(false)}
                 className="w-[106px] h-[44px] text-sortByText w-full text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
               >
@@ -143,7 +149,7 @@ function SelectionPanelContent() {
               </button>
             </div>
           )}
-        </div>
+        </button>
       </div>
 
       <div className="h-[210px] overflow-y-auto custom-scrollbar">
@@ -205,6 +211,7 @@ function SelectionPanelContent() {
                           ✓
                         </span>
                       </div>
+                      <span className="sr-only"> {claim.name} </span>
                     </label>
                   </div>
                 </li>

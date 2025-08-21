@@ -20,6 +20,7 @@ import io.inji.verify.enums.ErrorCode;
 import io.inji.verify.enums.VPRequestStatus;
 import io.inji.verify.exception.JWTCreationException;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
+import io.inji.verify.exception.VPRequestNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
@@ -63,8 +64,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Value("${inji.vp-submission.base-url}")
     String vpSubmissionBaseUrl;
 
-    @Value("${inji.did.issuer.public.key.uri}")
-    String issuerPublicKeyURI;
+    @Value("${inji.did.verify.public.key.uri}")
+    String verifyPublicKeyURI;
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
@@ -192,18 +193,15 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     @Override
-    public String getVPRequestJwt(String requestId) {
+    public String getVPRequestJwt(String requestId) throws VPRequestNotFoundException {
         return authorizationRequestCreateResponseRepository
                 .findById(requestId)
                 .map(authorizationRequestCreateResponse -> {
-                    if (authorizationRequestCreateResponse.getAuthorizationDetails() == null) {
-                        return null;
-                    }
                     String verifierDid = authorizationRequestCreateResponse.getAuthorizationDetails().getClientId();
                     String state = authorizationRequestCreateResponse.getRequestId();
                     return createAndSignAuthorizationRequestJwt(verifierDid, authorizationRequestCreateResponse.getAuthorizationDetails(), state);
                 })
-                .orElse(null);
+                .orElseThrow(VPRequestNotFoundException::new);
     }
     private String createAndSignAuthorizationRequestJwt(String verifierDid, AuthorizationRequestResponseDto authorizationRequest, String state) {
 
@@ -234,7 +232,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
             JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.EdDSA)
                     .type(new JOSEObjectType("oauth-authz-req+jwt"))
-                    .keyID(issuerPublicKeyURI)
+                    .keyID(verifyPublicKeyURI)
                     .build();
             SignedJWT signedJWT = new SignedJWT(jwsHeader, claimsSet);
             JWSSigner signer = new Ed25519Signer(keyManagementService.getKeyPair());
