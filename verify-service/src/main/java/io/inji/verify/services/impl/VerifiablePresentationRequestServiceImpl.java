@@ -54,8 +54,8 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     final AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository;
     final VPSubmissionRepository vpSubmissionRepository;
     final RedisConfigProperties redisConfigProperties;
-    final AuthorizationRequestCacheService authorizationRequestCacheService;
     final KeyManagementService<OctetKeyPair> keyManagementService;
+    final AuthorizationRequestCacheService authorizationRequestCacheService;
 
     @Value("${inji.vp-request.long-polling-timeout}")
     Long defaultTimeout;
@@ -68,7 +68,14 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
 
-    public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, RedisConfigProperties redisConfigProperties, AuthorizationRequestCacheService authorizationRequestCacheService, KeyManagementService<OctetKeyPair> keyManagementService) {
+    public VerifiablePresentationRequestServiceImpl(
+            PresentationDefinitionRepository presentationDefinitionRepository,
+            AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository,
+            VPSubmissionRepository vpSubmissionRepository,
+            RedisConfigProperties redisConfigProperties,
+            AuthorizationRequestCacheService authorizationRequestCacheService,
+            KeyManagementService<OctetKeyPair> keyManagementService
+    ) {
         this.presentationDefinitionRepository = presentationDefinitionRepository;
         this.authorizationRequestCreateResponseRepository = authorizationRequestCreateResponseRepository;
         this.vpSubmissionRepository = vpSubmissionRepository;
@@ -135,10 +142,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
         List<String> requestIds = getLatestRequestIdFor(transactionId);
         if (requestIds.isEmpty()) {
-            return null;
+            throw new NoSuchElementException("No authorization request found for transaction ID: " + transactionId);
         }
 
-        String requestId = getLatestRequestIdFor(transactionId).getFirst();
+        String requestId = requestIds.getFirst();
         if (requestId == null || !redisConfigProperties.isAuthRequestPersisted()) return null;
 
         log.info("Fetching persisted authorization request with transaction ID: {}", transactionId);
