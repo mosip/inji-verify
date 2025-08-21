@@ -7,6 +7,7 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
+import { DisplayTimeout } from "../../../utils/config";
 
 function QrScanner({ onClose, scannerActive }: {
   onClose: () => void;
@@ -19,6 +20,20 @@ function QrScanner({ onClose, scannerActive }: {
   useEffect(() => {
     setIsScanning(true);
   }, []);
+
+  const scheduleVcDisplayTimeOut = () => {
+    setTimeout(() => {
+      dispatch(goToHomeScreen({}));
+    }, DisplayTimeout)
+  };
+
+  const handleOnVCProcessed = (data: {
+    vc: unknown;
+    vcStatus: string
+  }[]) => {
+    dispatch(verificationComplete({verificationResult: data[0]}));
+    scheduleVcDisplayTimeOut();
+  }
 
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black lg:relative lg:inset-auto lg:w-[21rem] lg:h-auto lg:aspect-square lg:bg-transparent">
@@ -36,9 +51,7 @@ function QrScanner({ onClose, scannerActive }: {
           scannerActive={scannerActive}
           verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
           isEnableUpload={false}
-          onVCProcessed={(data: { vc: unknown; vcStatus: string }[]) =>
-            dispatch(verificationComplete({ verificationResult: data[0] }))
-          }
+          onVCProcessed={handleOnVCProcessed}
           onClose={onClose}
           onError={(error) => {
             if (error.name === "NotAllowedError") {
