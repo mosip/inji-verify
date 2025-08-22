@@ -135,8 +135,12 @@ export const DisplayTimeout = isNaN(timeout) ? 10000 : timeout;
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
-export let VCRenderOrders: any = {};
-export let verifiableClaims: claim[] = [];
+let VCRenderOrders: any = {};
+let verifiableClaims: claim[] = [];
+
+export const getVCRenderOrders = () => VCRenderOrders;
+export const getVerifiableClaims = () => verifiableClaims;
+
 export const initializeClaims = async () => {
   try {
     const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
@@ -150,6 +154,7 @@ export const initializeClaims = async () => {
     console.error("Error loading claims from ConfigMap:", error);
   }
 };
+
 initializeClaims();
 
 export const backgroundColorMapping: any = {

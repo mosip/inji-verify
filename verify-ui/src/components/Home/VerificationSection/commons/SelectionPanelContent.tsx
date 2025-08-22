@@ -4,7 +4,7 @@ import { claim } from "../../../../types/data-types";
 import { RootState } from "../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../../utils/i18n";
-import { isMobileDevice, verifiableClaims } from "../../../../utils/config";
+import { isMobileDevice, getVerifiableClaims } from "../../../../utils/config";
 import {
   getVpRequest,
   resetVpRequest,
@@ -29,7 +29,7 @@ function SelectionPanelContent() {
   const presentationDefinition = useVerifyFlowSelector((state) => state.presentationDefinition );
   const isMobile = isMobileDevice();
 
-  const filteredClaims = verifiableClaims
+  const filteredClaims = getVerifiableClaims()
     .filter((claim) => claim.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       const aSelected = selectedClaims.includes(a);
