@@ -21,9 +21,9 @@ public class UiConstants {
 	public static final String SCAN_QR_CODE_STEP3_DESCRIPTION = "The QR code verification is in progress.";
 	public static final String SCAN_QR_CODE_STEP4_LABEL = "View result";
 	public static final String VP_VERIFICATION_QR_CODE_STEP1_LABEL = "Initiate VP Request Process";
-	public static final String VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION = "Click \"Request Verifiable Credentials\" to begin the verification process.";
-	public static final String VP_VERIFICATION_QR_CODE_STEP2_LABEL = "Select Credentials & Generate QR Code";
-	public static final String VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION = "Choose the required verifiable credentials and click \"Generate QR Code\".";
+	public static final String VP_VERIFICATION_QR_CODE_STEP1_DESCRIPTION = "Click \"Request Verifiable Credentials\" to initiate the credential verification process";
+	public static final String VP_VERIFICATION_QR_CODE_STEP2_LABEL = "Select Credential Types";
+	public static final String VP_VERIFICATION_QR_CODE_STEP2_DESCRIPTION = "Choose the Verifiable Credentials (VCs) from the list to be requested from the mobile wallet.";
 	public static final String VP_VERIFICATION_QR_CODE_STEP3_LABEL = "Scan QR Code (Use a Different Device)";
 	public static final String VP_VERIFICATION_QR_CODE_STEP3_DESCRIPTION = "Use a wallet containing verifiable credentials on a different device with QR code scanning capabilities to scan the QR code (Support for same-device scanning is coming soon!)";
 	public static final String VP_VERIFICATION_QR_CODE_STEP4_LABEL = "View Verification Results";
@@ -39,6 +39,7 @@ public class UiConstants {
 	public static final String CONGRATULATIONS_MESSAGE = "Congratulations, the given credential is valid!";
 	public static final String SUCCESS_TOAST_MESSAGE = "QR code uploaded successfully!";
 	public static final String INFO_MESSAGE = "Coming soon";
+	public static final String TRANSACTION_TERMINATED_MESSAGE = "Transaction Terminated";
 	public static final String ERROR_MESSAGE_INVALID_QR = "Unfortunately, the given credential is invalid!";
 	public static final String ERROR_MESSAGE_LARGEFILE_QR = "File size not supported. The file size should be between 10 KB and 5 MB.";
 	public static final String ERROR_MESSAGE_SCAN_TIMEOUT = "The scan session has expired due to inactivity. Please initiate a new scan.";
