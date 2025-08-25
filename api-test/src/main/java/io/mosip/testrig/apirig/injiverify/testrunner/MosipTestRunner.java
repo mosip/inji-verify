@@ -13,14 +13,12 @@ import org.apache.log4j.Logger;
 import org.testng.TestNG;
 
 import io.mosip.testrig.apirig.injiverify.utils.InjiVerifyConfigManager;
-import io.mosip.testrig.apirig.injiverify.utils.InjiVerifyUtil;
 import io.mosip.testrig.apirig.testrunner.BaseTestCase;
 import io.mosip.testrig.apirig.testrunner.ExtractResource;
 import io.mosip.testrig.apirig.testrunner.HealthChecker;
 import io.mosip.testrig.apirig.utils.AdminTestUtil;
 import io.mosip.testrig.apirig.utils.AuthTestsUtil;
 import io.mosip.testrig.apirig.utils.CertsUtil;
-import io.mosip.testrig.apirig.utils.DependencyResolver;
 import io.mosip.testrig.apirig.utils.GlobalConstants;
 import io.mosip.testrig.apirig.utils.GlobalMethods;
 import io.mosip.testrig.apirig.utils.JWKKeyUtil;
@@ -75,14 +73,7 @@ public class MosipTestRunner {
 				trigger.start();
 
 			BaseTestCase.getLanguageList();
-			
-			String testCasesToExecuteString = InjiVerifyConfigManager.getproperty("testCasesToExecute");
-
-			DependencyResolver.loadDependencies(getGlobalResourcePath() + "/" + "config/testCaseInterDependency.json");
-			if (!testCasesToExecuteString.isBlank()) {
-				InjiVerifyUtil.testCasesInRunScope = DependencyResolver.getDependencies(testCasesToExecuteString);
-			}
-
+	
 			startTestRunner();
 		} catch (Exception e) {
 			LOGGER.error("Exception " + e.getMessage());
@@ -90,8 +81,7 @@ public class MosipTestRunner {
 
 		HealthChecker.bTerminate = true;
 		
-		// Used for generating the test case interdependency JSON file
-		// AdminTestUtil.generateTestCaseInterDependencies(getGlobalResourcePath() + "/config/testCaseInterDependency.json");
+		
 		System.exit(0);
 
 	}
