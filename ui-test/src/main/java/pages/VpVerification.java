@@ -19,13 +19,13 @@ public class VpVerification extends BasePage {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(id = "vp-verification-tab")
+	@FindBy(xpath = "//button[@id='vp-verification-tab']")
 	WebElement vpVerificationTab;
 
 	@FindBy(id = "tabs-carousel-right-icon")
 	WebElement rightArrow;
 
-	@FindBy(xpath = "//span[@id='verification-back-button']")
+	@FindBy(xpath = "(//button[@id='verification-back-button'])[2]")
 	WebElement vpGoBack;
 
 	@FindBy(xpath = "//div[contains(@class, 'bg-default_theme-gradient')]/span[text()='✓']")
@@ -67,10 +67,10 @@ public class VpVerification extends BasePage {
 	@FindBy(id = "initiate-vp-request-process")
 	WebElement vpVerificationQrCodeStep1Label;
 
-	@FindBy(id = "select-credentials-&-generate-qr-code")
+	@FindBy(id = "select-credential-types")
 	WebElement vpVerificationQrCodeStep2Label;
 
-	@FindBy(id = "select-credentials-&-generate-qr-code-description")
+	@FindBy(id = "select-credential-types-description")
 	WebElement vpVerificationQrCodeStep2Description;
 
 	@FindBy(id = "scan-qr-code-(use-a-different-device)")
@@ -290,12 +290,12 @@ public class VpVerification extends BasePage {
 
 	public void enterCredentialType(String string) {
 		enterText(driver, By.xpath(
-				"(//input[@placeholder='Search for the Verifiable Credential type' and contains(@class,'outline-none')])[2]"),
+				"(//input[@type='text' and @placeholder='Search VC Type'])[2]"),
 				string);
 	}
 
 	public void clickOnBackButton() {
-		clickOnElement(driver, backButton);
+		clickOnElement(driver, vpGoBack);
 	}
 
 	public void clickOnCancelButton() {

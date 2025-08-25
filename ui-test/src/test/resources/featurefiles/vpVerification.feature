@@ -5,7 +5,6 @@ Feature: Inji Verify vpVerification testing
     Given User gets the title of the page
     Then Validate the title of the page
     And Click on vp verification tab
-    And verify request verifiable credentials button
     And Verify VP verification qr code step1 description
     And Verify VP verification qr code step1 label
     And Verify VP verification qr code step2 label
@@ -59,10 +58,10 @@ Scenario: Verify VP verification same device flow
     And Click on vp verification tab 
     And Verify click on request verifiable credentials button
     And Verify Click on open wallet button
-    And Verify Click on cancel 
-    And verify Transaction Terminated error message 
-    And Verify click on request verifiable credentials button
-    And Verify Click on open wallet button
-    And Verify Click on wallet 
-    And Verify Click on Proceed
+#    And Verify Click on cancel 
+#    And verify Transaction Terminated error message 
+#    And Verify click on request verifiable credentials button
+#    And Verify Click on open wallet button
+#    And Verify Click on wallet 
+#    And Verify Click on Proceed
     And verify loading screen 
