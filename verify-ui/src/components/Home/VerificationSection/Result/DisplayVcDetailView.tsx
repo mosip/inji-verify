@@ -17,7 +17,7 @@ function DisplayVcDetailView({
   onExpand,
   className,
 }: {
-  vc: VC;
+  vc: VC | Object;
   onExpand: any;
   className?: string;
 }) {

@@ -15,7 +15,7 @@ import VcDetailsGrid from "./VcDetailsGrid";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  vc: VC;
+  vc: VC|Object;
   status: VcStatus;
   vcType: string;
   logo?: { url: any; alt: string };

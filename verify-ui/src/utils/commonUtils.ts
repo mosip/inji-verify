@@ -9,8 +9,9 @@ const getValue = (credentialElement: any)=> {
 }
 
 export const getDetailsOrder = (vc: any) => {
-  const type = vc.type[1];
-  const credential = vc.credentialSubject;
+  const type = vc?.type ? vc.type[1] : "default";
+  const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
+
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
