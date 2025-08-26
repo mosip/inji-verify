@@ -175,7 +175,7 @@ function SelectionPanelContent() {
                         alt={claim.type}
                         className="w-10 h-10 rounded"
                       />
-                      <span className="truncate font-semibold text-smallTextSize lg:text-sm">
+                      <span data-testid={`ItemBox-Text-${index}`} className="truncate font-semibold text-smallTextSize lg:text-sm">
                         {claim.name}
                       </span>
                     </div>
@@ -221,7 +221,7 @@ function SelectionPanelContent() {
 
       <div>
         <Button
-          id="camera-access-denied-okay-button"
+          id="verification-generate-qr-code-button"
           title={t("generateQrCodeBtn")}
           onClick={handleGenerateQR}
           className="w-full text-smallTextSize lg:text-sm lg:mb-2"
@@ -230,7 +230,7 @@ function SelectionPanelContent() {
         />
         {isMobile && (
           <Button
-            id="verification-back-button"
+            id="verification-open-wallet-button"
             title={t("Common:Button.openWallet")}
             className="w-full text-smallTextSize lg:text-sm my-2"
             onClick={handleOpenWallet}
@@ -239,7 +239,7 @@ function SelectionPanelContent() {
           />
         )}
         <Button
-          id="verification-back-button"
+          id="selection-panel-back-button"
           className="w-full text-smallTextSize lg:text-sm"
           onClick={handleBack}
           title={t("goBack")}
