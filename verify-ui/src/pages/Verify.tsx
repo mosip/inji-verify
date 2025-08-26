@@ -29,7 +29,7 @@ export function Verify() {
 
   const renderRequestCredentialsButton = () => (
     <Button
-      id="request-credentials-button"
+      id="stepper-request-credentials-button"
       title={t("rqstButton")}
       className={`w-[300px] mx-auto lg:ml-[76px] mt-10 hidden lg:block`}
       variant="fill"
