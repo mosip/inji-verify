@@ -12,24 +12,6 @@
             "proof_type": [
               "RsaSignature2018"
             ]
-          },
-          "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
-          },
-          "dc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
           }
         },
         "input_descriptors": [
@@ -39,24 +21,6 @@
               "ldp_vc": {
                 "proof_type": [
                   "RsaSignature2018"
-                ]
-              },
-              "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              },
-              "dc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
                 ]
               }
             },
@@ -88,24 +52,6 @@
             "proof_type": [
               "Ed25519Signature2018"
             ]
-          },
-          "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
-          },
-          "dc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
           }
         },
         "input_descriptors": [
@@ -115,24 +61,6 @@
               "ldp_vc": {
                 "proof_type": [
                   "Ed25519Signature2020"
-                ]
-              },
-              "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              },
-              "dc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
                 ]
               }
             },
@@ -164,24 +92,6 @@
             "proof_type": [
               "Ed25519Signature2018"
             ]
-          },
-          "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
-          },
-          "dc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
           }
         },
         "input_descriptors": [
@@ -191,24 +101,6 @@
               "ldp_vc": {
                 "proof_type": [
                   "Ed25519Signature2020"
-                ]
-              },
-              "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              },
-              "dc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
                 ]
               }
             },
@@ -236,21 +128,7 @@
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
-          "ldp_vc": {
-            "proof_type": [
-              "RsaSignature2018"
-            ]
-          },
           "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
-          },
-          "dc+sd-jwt": {
             "sd-jwt_alg_values": [
               "RS256",
               "PS256",
@@ -264,21 +142,7 @@
           {
             "id": "id card credential",
             "format": {
-              "ldp_vc": {
-                "proof_type": [
-                  "RsaSignature2018"
-                ]
-              },
               "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              },
-              "dc+sd-jwt": {
                 "sd-jwt_alg_values": [
                   "RS256",
                   "PS256",
@@ -316,24 +180,6 @@
             "proof_type": [
               "Ed25519Signature2020"
             ]
-          },
-          "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
-          },
-          "dc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
-            ]
           }
         },
         "input_descriptors": [
@@ -343,24 +189,6 @@
               "ldp_vc": {
                 "proof_type": [
                   "Ed25519Signature2020"
-                ]
-              },
-              "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              },
-              "dc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
                 ]
               }
             },
