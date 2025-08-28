@@ -9,7 +9,27 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": ["RsaSignature2018"]
+            "proof_type": [
+              "RsaSignature2018"
+            ]
+          },
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          },
+          "dc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
           }
         },
         "input_descriptors": [
@@ -17,13 +37,35 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": ["RsaSignature2018"]
+                "proof_type": [
+                  "RsaSignature2018"
+                ]
+              },
+              "vc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
+              },
+              "dc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": ["$.type"],
+                  "path": [
+                    "$.type"
+                  ],
                   "filter": {
                     "type": "object",
                     "pattern": "MOSIPVerifiableCredential"
@@ -43,7 +85,27 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": ["Ed25519Signature2018"]
+            "proof_type": [
+              "Ed25519Signature2018"
+            ]
+          },
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          },
+          "dc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
           }
         },
         "input_descriptors": [
@@ -51,13 +113,35 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": ["Ed25519Signature2020"]
+                "proof_type": [
+                  "Ed25519Signature2020"
+                ]
+              },
+              "vc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
+              },
+              "dc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": ["$.type"],
+                  "path": [
+                    "$.type"
+                  ],
                   "filter": {
                     "type": "object",
                     "pattern": "LifeInsuranceCredential"
@@ -77,7 +161,27 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": ["Ed25519Signature2018"]
+            "proof_type": [
+              "Ed25519Signature2018"
+            ]
+          },
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          },
+          "dc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
           }
         },
         "input_descriptors": [
@@ -85,13 +189,35 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": ["Ed25519Signature2020"]
+                "proof_type": [
+                  "Ed25519Signature2020"
+                ]
+              },
+              "vc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
+              },
+              "dc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": ["$.type"],
+                  "path": [
+                    "$.type"
+                  ],
                   "filter": {
                     "type": "object",
                     "pattern": "InsuranceCredential"
@@ -111,7 +237,27 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": ["RsaSignature2018"]
+            "proof_type": [
+              "RsaSignature2018"
+            ]
+          },
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          },
+          "dc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
           }
         },
         "input_descriptors": [
@@ -119,13 +265,35 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": ["RsaSignature2018"]
+                "proof_type": [
+                  "RsaSignature2018"
+                ]
+              },
+              "vc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
+              },
+              "dc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": ["$.type"],
+                  "path": [
+                    "$.type"
+                  ],
                   "filter": {
                     "type": "object",
                     "pattern": "MockVerifiableCredential"
@@ -145,7 +313,27 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": ["Ed25519Signature2020"]
+            "proof_type": [
+              "Ed25519Signature2020"
+            ]
+          },
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          },
+          "dc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "RS256",
+              "PS256",
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
           }
         },
         "input_descriptors": [
@@ -153,13 +341,35 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": ["Ed25519Signature2020"]
+                "proof_type": [
+                  "Ed25519Signature2020"
+                ]
+              },
+              "vc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
+              },
+              "dc+sd-jwt": {
+                "sd-jwt_alg_values": [
+                  "RS256",
+                  "PS256",
+                  "ES256",
+                  "ES256K",
+                  "EdDSA"
+                ]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": ["$.type"],
+                  "path": [
+                    "$.type"
+                  ],
                   "filter": {
                     "type": "object",
                     "pattern": "LandStatementCredential"
@@ -190,7 +400,11 @@
       "farmerId",
       "dvcType",
       {
-        "farmerLandDetails": ["farmId", "district", "surveyNumber"]
+        "farmerLandDetails": [
+          "farmId",
+          "district",
+          "surveyNumber"
+        ]
       }
     ],
     "farmerCredentialRenderOrder": [
