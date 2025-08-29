@@ -22,6 +22,6 @@ public class VCVerificationServiceImpl implements VCVerificationService {
     public VCVerificationStatusDto verify(String vc) {
         VerificationResult verificationResult = credentialsVerifier.verify(vc, CredentialFormat.LDP_VC);
         log.info("VC verification result:: {}", verificationResult);
-        return new VCVerificationStatusDto(Util.Companion.getVerificationStatus(verificationResult));
+        return new VCVerificationStatusDto(Util.INSTANCE.getVerificationStatus(verificationResult));
     }
 }
