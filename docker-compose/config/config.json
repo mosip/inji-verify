@@ -4,7 +4,7 @@
       "logo": "/assets/cert.png",
       "name": "MOSIP ID",
       "type": "MOSIPVerifiableCredential",
-      "essential": false,
+      "essential": true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -130,25 +130,17 @@
         "format": {
           "vc+sd-jwt": {
             "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
+              "ES256"
             ]
           }
         },
         "input_descriptors": [
           {
-            "id": "id card credential",
+            "id": "Mock Identity card credential",
             "format": {
               "vc+sd-jwt": {
                 "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
+                  "ES256"
                 ]
               }
             },

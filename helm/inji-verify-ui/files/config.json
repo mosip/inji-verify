@@ -130,25 +130,17 @@
         "format": {
           "vc+sd-jwt": {
             "sd-jwt_alg_values": [
-              "RS256",
-              "PS256",
-              "ES256",
-              "ES256K",
-              "EdDSA"
+              "ES256"
             ]
           }
         },
         "input_descriptors": [
           {
-            "id": "id card credential",
+            "id": "Mock Identity card credential",
             "format": {
               "vc+sd-jwt": {
                 "sd-jwt_alg_values": [
-                  "RS256",
-                  "PS256",
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
+                  "ES256"
                 ]
               }
             },
