@@ -6,9 +6,14 @@ import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @AllArgsConstructor
 @Getter
-public class DescriptorMapDto {
+public class DescriptorMapDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     String id;
     String format;
     String path;

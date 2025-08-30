@@ -1,5 +1,7 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.config.RedisConfigProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.OctetKeyPair;
@@ -21,6 +23,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.PresentationDefinition;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.KeyManagementService;
+import io.inji.verify.services.AuthorizationRequestCacheService;
 import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +34,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,11 +42,11 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VerifiablePresentationRequestServiceImplTest {
-
     static VerifiablePresentationRequestServiceImpl service;
     static AuthorizationRequestCreateResponseRepository mockAuthorizationRequestCreateResponseRepository;
     static PresentationDefinitionRepository mockPresentationDefinitionRepository;
     static VPSubmissionRepository mockVPSubmissionRepository;
+    static AuthorizationRequestCacheService mockCacheService;
     static KeyManagementService<OctetKeyPair> mockKeyManagementService;
 
     @BeforeAll
@@ -51,8 +55,18 @@ class VerifiablePresentationRequestServiceImplTest {
         mockAuthorizationRequestCreateResponseRepository = mock(AuthorizationRequestCreateResponseRepository.class);
         mockVPSubmissionRepository = mock(VPSubmissionRepository.class);
         mockKeyManagementService = mock(KeyManagementService.class);
-        service = new VerifiablePresentationRequestServiceImpl(mockPresentationDefinitionRepository, mockAuthorizationRequestCreateResponseRepository, mockVPSubmissionRepository, mockKeyManagementService);
-
+        mockCacheService = mock(AuthorizationRequestCacheService.class);
+        RedisConfigProperties mockRedisConfig = mock(RedisConfigProperties.class);
+        when(mockRedisConfig.isAuthRequestPersisted()).thenReturn(false);
+        when(mockRedisConfig.isAuthRequestCacheEnabled()).thenReturn(false);
+        service = new VerifiablePresentationRequestServiceImpl(
+                mockPresentationDefinitionRepository,
+                mockAuthorizationRequestCreateResponseRepository,
+                mockVPSubmissionRepository,
+                mockRedisConfig,
+                mockCacheService,
+                mockKeyManagementService
+        );
     }
 
     @Test
@@ -118,7 +132,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         DeferredResult<VPRequestStatusDto> result = service.getStatus("req_id");
 
-        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity) result.getResult()).getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, ((ResponseEntity<?>) Objects.requireNonNull(result.getResult())).getStatusCode());
     }
 
     @Test()
@@ -130,7 +144,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
         DeferredResult<VPRequestStatusDto> result = service.getStatus(requestId);
 
-        assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) result.getResult()).getStatus());
+        assertEquals(VPRequestStatus.EXPIRED, ((VPRequestStatusDto) Objects.requireNonNull(result.getResult())).getStatus());
     }
 
     @Test

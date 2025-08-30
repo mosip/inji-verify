@@ -1,6 +1,6 @@
 package io.inji.verify.services.impl;
 
-
+import io.inji.verify.config.RedisConfigProperties;
 import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
@@ -12,6 +12,7 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.VerifiablePresentationRequestService;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
@@ -19,14 +20,15 @@ import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
 import org.json.JSONTokener;
 
 @Service
@@ -36,19 +38,41 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     final VPSubmissionRepository vpSubmissionRepository;
     final CredentialsVerifier credentialsVerifier;
     final PresentationVerifier presentationVerifier;
-    final VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService;
+    final VerifiablePresentationRequestService verifiablePresentationRequestService;
+    private final RedisConfigProperties redisConfigProperties;
 
-    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestServiceImpl verifiablePresentationRequestService) {
+    public VerifiablePresentationSubmissionServiceImpl(VPSubmissionRepository vpSubmissionRepository, CredentialsVerifier credentialsVerifier, PresentationVerifier presentationVerifier, VerifiablePresentationRequestService verifiablePresentationRequestService, RedisConfigProperties redisConfigProperties) {
         this.vpSubmissionRepository = vpSubmissionRepository;
         this.credentialsVerifier = credentialsVerifier;
         this.presentationVerifier = presentationVerifier;
         this.verifiablePresentationRequestService = verifiablePresentationRequestService;
+        this.redisConfigProperties = redisConfigProperties;
     }
 
     @Override
-    public void submit(VPSubmissionDto vpSubmissionDto) {
-        vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
+    @CachePut(value = "vpSubmissionCache", key = "#vpSubmissionDto.state",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
+    public VPSubmission submit(VPSubmissionDto vpSubmissionDto) {
+        boolean persist = redisConfigProperties.isVpSubmissionPersisted();
+        boolean cache = redisConfigProperties.isVpSubmissionCacheEnabled();
+
+        if (!persist && !cache) {
+            log.warn("VP submission is neither being persisted to DB nor cached. State = {}", vpSubmissionDto.getState());
+        }
+
+        VPSubmission vpSubmission = new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission());
+
+        if (persist) {
+            log.info("Persisting VP submission to database");
+            vpSubmissionRepository.save(vpSubmission);
+        } else {
+            log.info("Skipping VP submission persistence to database");
+        }
+
         verifiablePresentationRequestService.invokeVpRequestStatusListener(vpSubmissionDto.getState());
+
+        return vpSubmission;
     }
 
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
@@ -64,34 +88,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 throw new TokenMatchingFailedException();
             }
 
-            Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
-            List<JSONObject> vpTokens = new ArrayList<>();
-
-            if (vpTokenRaw instanceof String) {
-                String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
-                vpTokenRaw = new JSONTokener(decodedJson).nextValue();
-            }
-
-            if (vpTokenRaw instanceof JSONObject) {
-                vpTokens.add((JSONObject) vpTokenRaw);
-            } else if (vpTokenRaw instanceof JSONArray array) {
-                for (int i = 0; i < array.length(); i++) {
-                    Object item = array.get(i);
-
-                    if (item instanceof String) {
-                        String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
-                        item = new JSONTokener(decodedJson).nextValue();
-                    }
-
-                    if (item instanceof JSONObject) {
-                        vpTokens.add((JSONObject) item);
-                    } else {
-                        throw new IllegalArgumentException("Invalid item in vp_token array");
-                    }
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid vp_token format");
-            }
+            List<JSONObject> vpTokens = parseVpTokens(vpSubmission);
 
             log.info("Processing VP verification");
             for (JSONObject vpToken : vpTokens) {
@@ -115,7 +112,43 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
     }
 
+    @NotNull
+    private static List<JSONObject> parseVpTokens(VPSubmission vpSubmission) {
+        Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
+        List<JSONObject> vpTokens = new ArrayList<>();
+
+        if (vpTokenRaw instanceof String) {
+            String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
+            vpTokenRaw = new JSONTokener(decodedJson).nextValue();
+        }
+
+        if (vpTokenRaw instanceof JSONObject) {
+            vpTokens.add((JSONObject) vpTokenRaw);
+        } else if (vpTokenRaw instanceof JSONArray array) {
+            for (int i = 0; i < array.length(); i++) {
+                Object item = array.get(i);
+
+                if (item instanceof String) {
+                    String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
+                    item = new JSONTokener(decodedJson).nextValue();
+                }
+
+                if (item instanceof JSONObject) {
+                    vpTokens.add((JSONObject) item);
+                } else {
+                    throw new IllegalArgumentException("Invalid item in vp_token array");
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid vp_token format");
+        }
+        return vpTokens;
+    }
+
     @Override
+    @Cacheable(value = "vpSubmissionCache", key = "#requestIds[0]",
+            unless = "#result == null",
+            condition = "@redisConfigProperties.vpSubmissionCacheEnabled")
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
@@ -123,6 +156,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             throw new VPSubmissionNotFoundException();
         }
         VPSubmission vpSubmission = vpSubmissions.getFirst();
+
         return processSubmission(vpSubmission, transactionId);
     }
 

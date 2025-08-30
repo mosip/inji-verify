@@ -1,0 +1,170 @@
+package io.inji.verify.services.impl.caching;
+
+import io.inji.verify.config.RedisConfigProperties;
+import io.inji.verify.dto.submission.PresentationSubmissionDto;
+import io.inji.verify.dto.submission.VPTokenResultDto;
+import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.models.VPSubmission;
+import io.inji.verify.repository.VPSubmissionRepository;
+import io.inji.verify.services.VerifiablePresentationRequestService;
+import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import io.inji.verify.services.impl.VerifiablePresentationSubmissionServiceImpl;
+import io.mosip.vercred.vcverifier.CredentialsVerifier;
+import io.mosip.vercred.vcverifier.PresentationVerifier;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig
+public class VPSubmissionServiceImplCachingTest {
+
+    @Autowired
+    private VerifiablePresentationSubmissionService verifiablePresentationSubmissionService;
+
+    @TestConfiguration
+    @EnableCaching
+    static class CachingTestConfig {
+
+        @Bean
+        public CacheManager cacheManager() {
+            return new ConcurrentMapCacheManager("vpSubmissionCache");
+        }
+
+        @Bean
+        public VPSubmissionRepository vpSubmissionRepository() {
+            return mock(VPSubmissionRepository.class);
+        }
+
+        @Bean
+        public CredentialsVerifier credentialsVerifier() {
+            return mock(CredentialsVerifier.class);
+        }
+
+        @Bean
+        public PresentationVerifier presentationVerifier() {
+            return mock(PresentationVerifier.class);
+        }
+
+        @Bean
+        public VerifiablePresentationRequestService verifiablePresentationRequestService() {
+            return mock(VerifiablePresentationRequestService.class);
+        }
+
+        @Bean
+        public RedisConfigProperties redisConfigProperties() {
+            RedisConfigProperties properties = new RedisConfigProperties();
+            properties.setVpSubmissionPersisted(true);
+            properties.setVpSubmissionCacheEnabled(true);
+            return properties;
+        }
+
+        @Bean
+        public VerifiablePresentationSubmissionService verifiablePresentationSubmissionService(
+                VPSubmissionRepository vpSubmissionRepository,
+                CredentialsVerifier credentialsVerifier,
+                PresentationVerifier presentationVerifier,
+                VerifiablePresentationRequestService verifiablePresentationRequestService,
+                RedisConfigProperties redisConfigProperties
+        ) {
+            return new VerifiablePresentationSubmissionServiceImpl(
+                    vpSubmissionRepository,
+                    credentialsVerifier,
+                    presentationVerifier,
+                    verifiablePresentationRequestService,
+                    redisConfigProperties
+            );
+        }
+
+    }
+
+    @Autowired
+    private CredentialsVerifier credentialsVerifier;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
+    private VPSubmissionRepository vpSubmissionRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Objects.requireNonNull(cacheManager.getCache("vpSubmissionCache")).clear();
+        reset(vpSubmissionRepository, credentialsVerifier);
+    }
+
+    @Test
+    void getVPResult_shouldUseCacheForSameRequestIdAndTransactionId() throws VPSubmissionNotFoundException {
+        String TEST_VP_TOKEN = "vpToken123";
+        List<String> requestIds = List.of("req123");
+        String transactionId = "tx123";
+
+        PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
+                "id",
+                "dId",
+                new ArrayList<>()
+        );
+
+        VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
+        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        VPTokenResultDto result1 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
+
+        assertNotNull(result1);
+
+        VPTokenResultDto result2 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
+
+        assertNotNull(result2);
+
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds);
+        assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
+    }
+
+    @Test
+    void getVPResult_shouldNotUseCacheForDifferentRequestIds() throws VPSubmissionNotFoundException {
+        String TEST_VP_TOKEN = "vpToken123";
+        List<String> requestIds1 = List.of("req123");
+        List<String> requestIds2 = List.of("req123");
+        String transactionId = "tx123";
+
+        PresentationSubmissionDto presentationSubmission = new PresentationSubmissionDto(
+                "id",
+                "dId",
+                new ArrayList<>()
+        );
+
+        VPSubmission vpSubmission = new VPSubmission("state123", TEST_VP_TOKEN, presentationSubmission);
+        when(vpSubmissionRepository.findAllById(requestIds1)).thenReturn(List.of(vpSubmission));
+        when(vpSubmissionRepository.findAllById(requestIds2)).thenReturn(List.of(vpSubmission));
+
+        VPTokenResultDto result1 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds1, transactionId);
+
+        assertNotNull(result1);
+
+        VPTokenResultDto result2 =
+                verifiablePresentationSubmissionService.getVPResult(requestIds2, transactionId);
+
+        assertNotNull(result2);
+
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds1);
+        verify(vpSubmissionRepository, times(1)).findAllById(requestIds2);
+        assertEquals(result1.getVpResultStatus(), result2.getVpResultStatus());
+    }
+}

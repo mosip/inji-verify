@@ -6,10 +6,15 @@ import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @AllArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FormatDto {
+public class FormatDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final JwtDto jwt;
     @JsonProperty("jwt_vc")
     @SerializedName("jwt_vc")
