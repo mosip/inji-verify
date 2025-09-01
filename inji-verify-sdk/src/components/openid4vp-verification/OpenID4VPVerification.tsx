@@ -78,7 +78,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
             JSON.stringify(data.authorizationDetails.presentationDefinition)
           );
         }
-        params.set("client_metadata",
+        params.set(
+          "client_metadata",
           JSON.stringify({
             client_name: data.authorizationDetails.clientId,
             vp_formats: VPFormat,
@@ -214,7 +215,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   useEffect(() => {
     if (reqId) {
-      void fetchVPStatus();
+      fetchVPStatus();
     }
   }, [fetchVPStatus, reqId]);
 
