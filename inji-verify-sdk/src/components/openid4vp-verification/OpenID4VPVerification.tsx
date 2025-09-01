@@ -57,11 +57,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const getPresentationDefinitionParams = useCallback(
     (data: QrData) => {
       const params = new URLSearchParams();
+      params.set("client_id", clientId);
       if (data.requestUri) {
-        params.set("client_id", clientId);
         params.set("request_uri", verifyServiceUrl + data.requestUri);
       } else if (data.authorizationDetails) {
-        params.set("client_id", data.authorizationDetails.clientId);
         params.set("state", data.requestId);
         params.set("response_mode", "direct_post");
         params.set("response_type", data.authorizationDetails.responseType);
@@ -81,14 +80,14 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         params.set(
           "client_metadata",
           JSON.stringify({
-            client_name: data.authorizationDetails.clientId,
+            client_name: clientId,
             vp_formats: VPFormat,
           })
         );
       }
       return params.toString();
     },
-    [verifyServiceUrl]
+    [verifyServiceUrl, clientId]
   );
 
   const fetchVPResult = useCallback(async () => {
@@ -163,6 +162,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     presentationDefinition,
     getPresentationDefinitionParams,
     onError,
+    clientId,
   ]);
 
   useEffect(() => {
