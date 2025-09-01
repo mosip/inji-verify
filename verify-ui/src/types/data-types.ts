@@ -118,27 +118,6 @@ export interface PresentationDefinition {
   input_descriptors: InputDescriptor[];
 }
 
-interface BodyType {
-  transactionId: string;
-  clientId: string;
-  presentationDefinition: PresentationDefinition;
-  nonce: string;
-}
-
-export type ApiRequest = {
-  url: (...args: string[]) => string;
-  methodType: MethodType;
-  headers: (...args: string[]) => Record<string, string>;
-  body?: BodyType;
-};
-
-export type VpRequestStatusApi = {
-  url: (reqId: string) => string;
-  methodType: MethodType;
-  headers: (...args: string[]) => Record<string, string>;
-  body?: BodyType;
-};
-
 export type VpSubmissionResultInt = {
   vc: VC;
   vcStatus: VcStatus;
@@ -169,21 +148,6 @@ export enum VCShareType {
   SINGLE = "single",
   MULTIPLE = "multiple",
 }
-
-export type QrData = {
-  transactionId: string;
-  requestId: string;
-  authorizationDetails: {
-    responseType: string;
-    clientId: string;
-    presentationDefinition: object;
-    presentationDefinitionUri?: string;
-    responseUri: string;
-    nonce: string;
-    iat: number;
-  };
-  expiresAt: number;
-};
 
 export type QrCodeProps = {
   title: string;
@@ -242,11 +206,3 @@ export type Detail = {
   key: string;
   value: string;
 };
-
-export interface VPRequestBody {
-  clientId: string;
-  nonce: string;
-  transactionId?: string;
-  presentationDefinitionId?: string;
-  presentationDefinition?: PresentationDefinition;
-}
