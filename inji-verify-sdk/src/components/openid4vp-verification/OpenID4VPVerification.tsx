@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState,} from "react";
-import {QRCodeSVG} from "qrcode.react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import {
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
-import {vpRequest, vpRequestStatus, vpResult} from "../../utils/api";
+import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css"
 
 const isMobileDevice = (): boolean => {
@@ -57,8 +57,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const getPresentationDefinitionParams = useCallback(
     (data: QrData) => {
       const params = new URLSearchParams();
-      params.set("client_id", clientId);
       if (data.requestUri) {
+        params.set("client_id", clientId);
         params.set("request_uri", verifyServiceUrl + data.requestUri);
       } else if (data.authorizationDetails) {
         params.set("client_id", data.authorizationDetails.clientId);
@@ -67,7 +67,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         params.set("response_type", data.authorizationDetails.responseType);
         params.set("nonce", data.authorizationDetails.nonce);
         params.set("response_uri", data.authorizationDetails.responseUri);
-        params.set("client_metadata", JSON.stringify({ client_name: data.authorizationDetails.clientId, vp_formats: VPFormat }));
+        params.set("client_metadata",
+          JSON.stringify({
+            client_name: data.authorizationDetails.clientId,
+            vp_formats: VPFormat,
+          })
+        );
         if (data.authorizationDetails.presentationDefinitionUri) {
           params.set(
             "presentation_definition_uri",
@@ -115,10 +120,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         const response = await vpRequestStatus(verifyServiceUrl, reqId);
 
         if (response.status === "ACTIVE") {
-          await fetchVPStatus();
+          fetchVPStatus();
         }
         if (response.status === "VP_SUBMITTED") {
-          await fetchVPResult();
+          fetchVPResult();
         } else if (response.status === "EXPIRED") {
           resetState();
           onQrCodeExpired();
@@ -200,10 +205,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
       if (!triggerElement) {
-        void startVerification();
+        startVerification();
       }
     } else if (!triggerElement) {
-      void handleGenerateQRCode();
+      handleGenerateQRCode();
     }
   }, []);
 
@@ -223,9 +228,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   const handleTriggerClick = () => {
     if (isEnableSameDeviceFlow && isMobileDevice()) {
-      void startVerification();
+      startVerification();
     } else {
-      void handleGenerateQRCode();
+      handleGenerateQRCode();
     }
   };
 
