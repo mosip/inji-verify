@@ -67,12 +67,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         params.set("response_type", data.authorizationDetails.responseType);
         params.set("nonce", data.authorizationDetails.nonce);
         params.set("response_uri", data.authorizationDetails.responseUri);
-        params.set("client_metadata",
-          JSON.stringify({
-            client_name: data.authorizationDetails.clientId,
-            vp_formats: VPFormat,
-          })
-        );
         if (data.authorizationDetails.presentationDefinitionUri) {
           params.set(
             "presentation_definition_uri",
@@ -84,6 +78,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
             JSON.stringify(data.authorizationDetails.presentationDefinition)
           );
         }
+        params.set("client_metadata",
+          JSON.stringify({
+            client_name: data.authorizationDetails.clientId,
+            vp_formats: VPFormat,
+          })
+        );
       }
       return params.toString();
     },
