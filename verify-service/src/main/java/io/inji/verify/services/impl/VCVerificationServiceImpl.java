@@ -51,7 +51,7 @@ public class VCVerificationServiceImpl implements VCVerificationService {
                 return CredentialFormat.LDP_VC;
             } catch (Exception jsonEx) {
                 log.error("Credential is neither valid JWT nor valid JSON: {}", jsonEx.getMessage());
-                throw new IllegalArgumentException("Unsupported credential format");
+                return CredentialFormat.LDP_VC;
             }
         }
     }
