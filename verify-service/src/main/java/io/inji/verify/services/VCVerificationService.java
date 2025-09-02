@@ -4,5 +4,5 @@ import io.inji.verify.dto.verification.VCVerificationStatusDto;
 
 public interface VCVerificationService {
 
-    VCVerificationStatusDto verify(String vc);
+    VCVerificationStatusDto verify(String vc, String contentType);
 }

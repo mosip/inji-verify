@@ -5,6 +5,7 @@
       "name": "MOSIP ID",
       "type": "MOSIPVerifiableCredential",
       "essential": true,
+      "isAuthRequestEmbedded" : false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -45,6 +46,7 @@
       "logo": "/assets/cert.png",
       "name": "Life Insurance",
       "type": "LifeInsuranceCredential",
+      "isAuthRequestEmbedded" : true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -85,6 +87,7 @@
       "logo": "/assets/cert.png",
       "name": "Health Insurance",
       "type": "InsuranceCredential",
+      "isAuthRequestEmbedded" : false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -165,6 +168,7 @@
       "logo": "/assets/cert.png",
       "name": "Land Registry",
       "type": "LandStatementCredential",
+      "isAuthRequestEmbedded" : false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
