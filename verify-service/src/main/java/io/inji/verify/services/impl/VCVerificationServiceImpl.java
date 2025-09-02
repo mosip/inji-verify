@@ -9,19 +9,30 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@Service
 public class VCVerificationServiceImpl implements VCVerificationService {
-    final CredentialsVerifier credentialsVerifier;
+
+    private final CredentialsVerifier credentialsVerifier;
 
     public VCVerificationServiceImpl(CredentialsVerifier credentialsVerifier) {
         this.credentialsVerifier = credentialsVerifier;
     }
 
     @Override
-    public VCVerificationStatusDto verify(String vc) {
-        VerificationResult verificationResult = credentialsVerifier.verify(vc, CredentialFormat.LDP_VC);
+    public VCVerificationStatusDto verify(String vc, String contentType) {
+        CredentialFormat format;
+        if ("application/vc+sd-jwt".equalsIgnoreCase(contentType) || "application/dc+sd-jwt".equalsIgnoreCase(contentType)) {
+            format = CredentialFormat.VC_SD_JWT;
+        } else {
+            format = CredentialFormat.LDP_VC;
+        }
+
+        log.info("Using credential format based on Content-Type: {}", format);
+
+        VerificationResult verificationResult = credentialsVerifier.verify(vc, format);
         log.info("VC verification result:: {}", verificationResult);
+
         return new VCVerificationStatusDto(Util.INSTANCE.getVerificationStatus(verificationResult));
     }
 }
