@@ -34,35 +34,39 @@ public class VCVerificationControllerTest {
     @Test
     public void testVerifyValidVC() throws Exception {
         String validVC = "validVC";
+        String contentType = "application/vc+sd-jwt"; // Add content type
         VCVerificationStatusDto expectedStatus = new VCVerificationStatusDto(VerificationStatus.SUCCESS);
 
-        when(VCVerificationService.verify(validVC)).thenReturn(expectedStatus);
+        when(VCVerificationService.verify(validVC, contentType)).thenReturn(expectedStatus);
 
         String result = mockMvc.perform(post("/vc-verification")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Content-Type", contentType)
                         .content(validVC))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         assertEquals(objectMapper.writeValueAsString(expectedStatus), result);
 
-        verify(VCVerificationService, times(1)).verify(validVC);
+        verify(VCVerificationService, times(1)).verify(validVC, contentType);
     }
 
     @Test
     public void testVerifyInvalidVC() throws Exception {
         String invalidVC = "invalidVC";
+        String contentType = "application/vc+sd-jwt";
         VCVerificationStatusDto expectedStatus = new VCVerificationStatusDto(VerificationStatus.INVALID);
 
-        when(VCVerificationService.verify(invalidVC)).thenReturn(expectedStatus);
+        when(VCVerificationService.verify(invalidVC, contentType)).thenReturn(expectedStatus);
 
         mockMvc.perform(post("/vc-verification")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Content-Type", contentType)
                         .content(invalidVC))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(expectedStatus)));
 
-        verify(VCVerificationService, times(1)).verify(invalidVC);
+        verify(VCVerificationService, times(1)).verify(invalidVC, contentType);
     }
 
     @Test
