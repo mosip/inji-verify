@@ -3,70 +3,59 @@ package io.inji.verify.services.impl;
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
+import io.mosip.vercred.vcverifier.constants.CredentialValidatorConstants;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
-import io.mosip.vercred.vcverifier.utils.Util;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class VCVerificationServiceImplTest {
+public class VCVerificationServiceImplTest {
 
-    private CredentialsVerifier credentialsVerifier;
-    private VCVerificationServiceImpl service;
+    static VCVerificationServiceImpl service;
+    static CredentialsVerifier mockCredentialsVerifier;
 
-    @BeforeEach
-    void setUp() {
-        credentialsVerifier = mock(CredentialsVerifier.class);
-        service = new VCVerificationServiceImpl(credentialsVerifier);
+    @BeforeAll
+    public static void beforeAll() {
+        mockCredentialsVerifier = mock(CredentialsVerifier.class);
+        service = new VCVerificationServiceImpl(mockCredentialsVerifier);
     }
 
     @Test
-    void testVerify_WithSdJwtContentType_ReturnsSuccess() {
-        String vc = "dummy-vc";
-        String contentType = "application/vc+sd-jwt";
+    public void shouldReturnSuccessForVerifiedVc() {
+        VerificationResult mockResult = new VerificationResult(true, "", "");
+        when(mockCredentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(mockResult);
 
-        VerificationResult mockResult = mock(VerificationResult.class);
-        when(credentialsVerifier.verify(vc, CredentialFormat.VC_SD_JWT)).thenReturn(mockResult);
-
-        // Mock Util.INSTANCE.getVerificationStatus
-        Util utilMock = mock(Util.class);
-        when(Util.INSTANCE.getVerificationStatus(mockResult)).thenReturn(VerificationStatus.SUCCESS);
-
-        VCVerificationStatusDto result = service.verify(vc, contentType);
-
-        assertEquals(VerificationStatus.SUCCESS, result.getVerificationStatus());
-        verify(credentialsVerifier, times(1)).verify(vc, CredentialFormat.VC_SD_JWT);
+        VCVerificationStatusDto statusDto = service.verify("some_vc", "application/ldp+json");
+        assertEquals(VerificationStatus.SUCCESS, statusDto.getVerificationStatus());
     }
 
     @Test
-    void testVerify_WithLdJsonContentType_ReturnsExpired() {
-        String vc = "dummy-vc";
-        String contentType = "application/ld+json";
+    public void shouldReturnExpiredForVerifiedVcWhichIsExpired() {
+        VerificationResult mockResult = new VerificationResult(true, "", CredentialValidatorConstants.ERROR_CODE_VC_EXPIRED);
+        when(mockCredentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(mockResult);
 
-        VerificationResult mockResult = mock(VerificationResult.class);
-        when(credentialsVerifier.verify(vc, CredentialFormat.LDP_VC)).thenReturn(mockResult);
-        when(Util.INSTANCE.getVerificationStatus(mockResult)).thenReturn(VerificationStatus.EXPIRED);
-
-        VCVerificationStatusDto result = service.verify(vc, contentType);
-
-        assertEquals(VerificationStatus.EXPIRED, result.getVerificationStatus());
-        verify(credentialsVerifier, times(1)).verify(vc, CredentialFormat.LDP_VC);
+        VCVerificationStatusDto statusDto = service.verify("some_vc", "application/ldp+json");
+        assertEquals(VerificationStatus.EXPIRED, statusDto.getVerificationStatus());
     }
 
     @Test
-    void testVerify_UnsupportedContentType_ThrowsException() {
-        String vc = "dummy-vc";
-        String contentType = "text/plain";
+    public void shouldReturnInvalidForVcWhichIsInvalid() {
+        VerificationResult mockResult = new VerificationResult(false, "", "");
+        when(mockCredentialsVerifier.verify(anyString(), any(CredentialFormat.class))).thenReturn(mockResult);
 
-        IllegalArgumentException ex = org.junit.jupiter.api.Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> service.verify(vc, contentType)
-        );
+        VCVerificationStatusDto statusDto = service.verify("some_vc", "application/ldp+json");
+        assertEquals(VerificationStatus.INVALID, statusDto.getVerificationStatus());
+    }
 
-        assertEquals("Unsupported Content-Type: " + contentType, ex.getMessage());
-        verifyNoInteractions(credentialsVerifier);
+    @Test
+    public void shouldUseLDPFormatForOtherContentTypes() {
+        VerificationResult mockResult = new VerificationResult(true, "", "");
+        when(mockCredentialsVerifier.verify(anyString(), eq(CredentialFormat.LDP_VC))).thenReturn(mockResult);
+
+        VCVerificationStatusDto statusDto = service.verify("some_vc", "application/ldp+json");
+        assertEquals(VerificationStatus.SUCCESS, statusDto.getVerificationStatus());
     }
 }

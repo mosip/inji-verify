@@ -22,12 +22,10 @@ public class VCVerificationServiceImpl implements VCVerificationService {
     @Override
     public VCVerificationStatusDto verify(String vc, String contentType) {
         CredentialFormat format;
-        if ("application/vc+sd-jwt".equals(contentType)) {
+        if ("application/vc+sd-jwt".equalsIgnoreCase(contentType) || "application/dc+sd-jwt".equalsIgnoreCase(contentType)) {
             format = CredentialFormat.VC_SD_JWT;
-        } else if ("application/ld+json".equals(contentType)) {
-            format = CredentialFormat.LDP_VC;
         } else {
-            throw new IllegalArgumentException("Unsupported Content-Type: " + contentType);
+            format = CredentialFormat.LDP_VC;
         }
 
         log.info("Using credential format based on Content-Type: {}", format);

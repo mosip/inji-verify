@@ -34,14 +34,14 @@ public class VCVerificationControllerTest {
     @Test
     public void testVerifyValidVC() throws Exception {
         String validVC = "validVC";
-        String contentType = "application/vc+sd-jwt"; // Add content type
+        String contentType = "application/ldp+json";
+
         VCVerificationStatusDto expectedStatus = new VCVerificationStatusDto(VerificationStatus.SUCCESS);
 
         when(VCVerificationService.verify(validVC, contentType)).thenReturn(expectedStatus);
 
         String result = mockMvc.perform(post("/vc-verification")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Content-Type", contentType)
+                        .contentType(contentType)
                         .content(validVC))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -54,14 +54,13 @@ public class VCVerificationControllerTest {
     @Test
     public void testVerifyInvalidVC() throws Exception {
         String invalidVC = "invalidVC";
-        String contentType = "application/vc+sd-jwt";
+        String contentType = "application/ldp+json";
         VCVerificationStatusDto expectedStatus = new VCVerificationStatusDto(VerificationStatus.INVALID);
 
         when(VCVerificationService.verify(invalidVC, contentType)).thenReturn(expectedStatus);
 
         mockMvc.perform(post("/vc-verification")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Content-Type", contentType)
+                        .contentType(contentType)
                         .content(invalidVC))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(expectedStatus)));
