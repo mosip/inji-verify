@@ -14,6 +14,7 @@ declare global {
             VERIFY_SERVICE_API_URL: string,
             VERIFIABLE_CLAIMS_CONFIG_URL: string,
             CLIENT_ID: string;
+            CLIENT_ID_DID: string;
             DISPLAY_TIMEOUT: string;
         }
     }
