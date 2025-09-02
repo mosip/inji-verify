@@ -30,7 +30,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   logo,
 }) => {
   const { t } = useTranslation("Verify");
-  const orderedDetails = getDetailsOrder(vc);
+  const orderedDetails =vc&& getDetailsOrder(vc);
 
   if (!isOpen) return null;
   return (

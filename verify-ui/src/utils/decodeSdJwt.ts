@@ -9,8 +9,5 @@ export const decodeSdJwtToken = async (sdjwt: string): Promise<Object> => {
     decodedSdJwt.disclosures,
     digest
   );
-
-  console.log("The claims are:");
-  console.log(typeof claims);
   return claims;
 };

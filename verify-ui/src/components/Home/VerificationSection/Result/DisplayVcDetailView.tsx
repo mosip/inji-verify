@@ -22,7 +22,8 @@ function DisplayVcDetailView({
   className?: string;
 }) {
   const { t, i18n } = useTranslation("Verify");
-  const orderedDetails = getDetailsOrder(vc);
+  
+  const orderedDetails = vc && getDetailsOrder(vc);
   const isRtl = isRTL(i18n.language);
   const positionLeft = "left-[250px] lg:left-[328px] lg:hover:left-[215px]";
   const positionRight = "right-[250px] lg:right-[328px] lg:hover:right-[215px]";

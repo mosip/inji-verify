@@ -1,14 +1,33 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
 import { getVCRenderOrders } from "./config";
 
-const getValue = (credentialElement: any)=> {
-  if (Array.isArray(credentialElement)){
-    return credentialElement.filter(element => element.language === "eng")[0].value
+const getValue = (credentialElement: any): string | undefined => {
+  if (!credentialElement) return undefined;
+
+  if (Array.isArray(credentialElement)) {
+    const engEntry = credentialElement.find((el) => el.language === "eng");
+    return engEntry ? engEntry.value : credentialElement[0]?.value;
   }
-  return credentialElement.value;
-}
+
+  if (typeof credentialElement === "object") {
+    if ("value" in credentialElement) {
+      return credentialElement.value;
+    }
+
+    for (const key of Object.keys(credentialElement)) {
+      const nestedValue = getValue(credentialElement[key]);
+      if (nestedValue !== undefined) return nestedValue;
+    }
+  }
+
+  return String(credentialElement);
+};
+
 
 export const getDetailsOrder = (vc: any) => {
+  if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
+    return [];
+  }
   const type = vc?.type ? vc.type[1] : "default";
   const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
 
@@ -83,7 +102,7 @@ export const getDetailsOrder = (vc: any) => {
             credential[key] !== undefined &&
             credential[key] !== ""
         )
-        .map((key) => ({ key, value: credential[key] }));
+        .map((key) => ({ key, value: getValue(credential[key]) }));
   }
 };
 
