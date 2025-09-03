@@ -34,5 +34,7 @@ public class VCVerificationServiceImpl implements VCVerificationService {
         log.info("VC verification result:: {}", verificationResult);
 
         return new VCVerificationStatusDto(Util.INSTANCE.getVerificationStatus(verificationResult));
+
     }
+
 }

@@ -12,6 +12,8 @@
     "@mosip/react-inji-verify-sdk": "0.15.0-beta.5",
     "@mui/material": "^6.1.2",
     "@reduxjs/toolkit": "^2.2.3",
+    "@sd-jwt/crypto-browser": "^0.15.0",
+    "@sd-jwt/decode": "^0.15.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^13.4.0",
     "@types/react": "^18.2.73",
