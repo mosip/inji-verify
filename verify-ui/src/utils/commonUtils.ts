@@ -36,12 +36,6 @@ export const getDetailsOrder = (vc: any) => {
   const type = vc?.type ? vc.type[1] : "default";
   const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
 
-  if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
-    return [];
-  }
-  const type = vc?.type ? vc.type[1] : "default";
-  const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
-
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
@@ -113,7 +107,6 @@ export const getDetailsOrder = (vc: any) => {
             credential[key] !== undefined &&
             credential[key] !== ""
         )
-        .map((key) => ({ key, value: getValue(credential[key]) }));
         .map((key) => ({ key, value: getValue(credential[key]) }));
   }
 };
