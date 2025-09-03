@@ -15,7 +15,7 @@ import VcDetailsGrid from "./VcDetailsGrid";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  vc: VC|Object;
+  vc: VC | Object;
   status: VcStatus;
   vcType: string;
   logo?: { url: any; alt: string };
@@ -30,7 +30,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   logo,
 }) => {
   const { t } = useTranslation("Verify");
-  const orderedDetails =vc&& getDetailsOrder(vc);
+  const orderedDetails = vc && getDetailsOrder(vc);
 
   if (!isOpen) return null;
   return (
