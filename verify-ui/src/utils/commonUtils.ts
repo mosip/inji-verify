@@ -2,16 +2,22 @@ import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
 import { getVCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any): string | undefined => {
-  if (!credentialElement) return undefined;
+  if (credentialElement === null || credentialElement === undefined) {
+    return undefined;
+  }
+
+  if (typeof credentialElement === "boolean") {
+    return credentialElement ? "true" : "false";
+  }
 
   if (Array.isArray(credentialElement)) {
     const engEntry = credentialElement.find((el) => el.language === "eng");
-    return engEntry ? engEntry.value : credentialElement[0]?.value;
+    return engEntry ? engEntry.value : getValue(credentialElement[0]);
   }
 
   if (typeof credentialElement === "object") {
     if ("value" in credentialElement) {
-      return credentialElement.value;
+      return getValue(credentialElement.value);
     }
 
     for (const key of Object.keys(credentialElement)) {
@@ -22,7 +28,6 @@ const getValue = (credentialElement: any): string | undefined => {
 
   return String(credentialElement);
 };
-
 
 export const getDetailsOrder = (vc: any) => {
   if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
