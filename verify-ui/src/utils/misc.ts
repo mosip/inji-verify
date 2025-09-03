@@ -131,7 +131,7 @@ export const convertToId = (content: string) => content.toLowerCase().replaceAll
 
 export const saveData = async (vc: any) => {
   const myData = vc;
-  const fileName = vc.type[1];
+  const fileName = vc.type ? vc?.type[1] : "data";
   const json = JSON.stringify(myData, null, 2);
   const blob = new Blob([json], { type: "application/json" });
   const href = URL.createObjectURL(blob);
