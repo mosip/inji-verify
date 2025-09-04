@@ -40,7 +40,7 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
             VerificationResult verificationResult = credentialsVerifier.verify(vcJSON, CredentialFormat.LDP_VC);
-            return new VCSubmissionVerificationStatusDto(vcJSON, Util.Companion.getVerificationStatus(verificationResult));
+            return new VCSubmissionVerificationStatusDto(vcJSON, Util.INSTANCE.getVerificationStatus(verificationResult));
         }).orElse(null);
     }
 }

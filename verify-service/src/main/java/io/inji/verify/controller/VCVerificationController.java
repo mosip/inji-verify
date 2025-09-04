@@ -16,7 +16,7 @@ public class VCVerificationController {
     }
 
     @PostMapping()
-    public VCVerificationStatusDto verify(@RequestBody String vc) {
-        return VCVerificationService.verify(vc);
+    public VCVerificationStatusDto verify(@RequestBody String vc, @RequestHeader("Content-Type") String contentType) {
+        return VCVerificationService.verify(vc, contentType);
     }
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
@@ -32,6 +32,7 @@ const DisplayActiveStep = () => {
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const flowType = useVerifyFlowSelector((state) => state.flowType);
   const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -47,8 +48,16 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
   const scheduleVpDisplayTimeOut = () => {
-    setTimeout(() => {
+    clearTimer();
+    timerRef.current = setTimeout(() => {
       handleRestartProcess();
     }, DisplayTimeout)
   };
@@ -67,6 +76,10 @@ const DisplayActiveStep = () => {
     dispatch(raiseAlert({ message:error.message, severity:"error", open:true }));
     dispatch(resetVpRequest());
   };
+
+  const getClientId = () => {
+    return (isSingleVc && selectedClaims[0]?.isAuthRequestEmbedded) ? window._env_.CLIENT_ID : window._env_.CLIENT_ID_DID;
+  }
 
   useEffect(() => {
     if (selectedClaims.length > 0 && activeScreen === 3) {
@@ -121,7 +134,7 @@ const DisplayActiveStep = () => {
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   qrCodeStyles={{ size: qrSize }}
-                  clientId={window._env_.CLIENT_ID}
+                  clientId={getClientId()}
                   isEnableSameDeviceFlow={false}
                 />
               </div>
@@ -156,7 +169,7 @@ const DisplayActiveStep = () => {
                   onVPProcessed={handleOnVpProcessed}
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
-                  clientId={window._env_.CLIENT_ID}
+                  clientId={getClientId()}
                 />
               </div>
             </div>

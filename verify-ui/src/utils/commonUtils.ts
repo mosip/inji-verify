@@ -1,16 +1,41 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
 import { getVCRenderOrders } from "./config";
 
-const getValue = (credentialElement: any)=> {
-  if (Array.isArray(credentialElement)){
-    return credentialElement.filter(element => element.language === "eng")[0].value
+const getValue = (credentialElement: any): string | undefined => {
+  if (credentialElement === null || credentialElement === undefined) {
+    return undefined;
   }
-  return credentialElement.value;
-}
+
+  if (typeof credentialElement === "boolean") {
+    return credentialElement ? "true" : "false";
+  }
+
+  if (Array.isArray(credentialElement)) {
+    const engEntry = credentialElement.find((el) => el.language === "eng");
+    return engEntry ? engEntry.value : getValue(credentialElement[0]);
+  }
+
+  if (typeof credentialElement === "object") {
+    if ("value" in credentialElement) {
+      return getValue(credentialElement.value);
+    }
+
+    for (const key of Object.keys(credentialElement)) {
+      const nestedValue = getValue(credentialElement[key]);
+      if (nestedValue !== undefined) return nestedValue;
+    }
+  }
+
+  return String(credentialElement);
+};
 
 export const getDetailsOrder = (vc: any) => {
-  const type = vc.type[1];
-  const credential = vc.credentialSubject;
+  if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
+    return [];
+  }
+  const type = vc?.type ? vc.type[1] : "default";
+  const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
+
   switch (type) {
     case "InsuranceCredential":
     case "LifeInsuranceCredential":
@@ -82,7 +107,7 @@ export const getDetailsOrder = (vc: any) => {
             credential[key] !== undefined &&
             credential[key] !== ""
         )
-        .map((key) => ({ key, value: credential[key] }));
+        .map((key) => ({ key, value: getValue(credential[key]) }));
   }
 };
 

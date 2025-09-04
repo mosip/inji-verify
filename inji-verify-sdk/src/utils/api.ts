@@ -10,11 +10,19 @@ const generateNonce = (): string => {
 };
 
 export const vcVerification = async (credential: unknown, url: string) => {
-  const body = JSON.stringify(credential);
+  let body: string;
+  let contentType: string;
+  if (typeof credential === "string") {
+    body = credential;
+    contentType = "application/vc+sd-jwt";
+  } else {
+    body = JSON.stringify(credential);
+    contentType = "application/ld+json";
+  }
   const requestOptions = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     },
     body: body,
   };

@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState,} from "react";
-import {QRCodeSVG} from "qrcode.react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import {
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
-import {vpRequest, vpRequestStatus, vpResult} from "../../utils/api";
+import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css"
 
 const isMobileDevice = (): boolean => {
@@ -87,7 +87,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       return params.toString();
     },
-    [verifyServiceUrl]
+    [verifyServiceUrl, clientId]
   );
 
   const fetchVPResult = useCallback(async () => {
@@ -162,6 +162,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     presentationDefinition,
     getPresentationDefinitionParams,
     onError,
+    clientId,
   ]);
 
   useEffect(() => {

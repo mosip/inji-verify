@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ResultSummary from "./ResultSummary";
 import { useVerificationFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
@@ -10,12 +10,14 @@ import {
   goToHomeScreen,
   qrReadInit,
 } from "../../../../redux/features/verification/verification.slice";
+import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
   const { method } = useVerificationFlowSelector((state) => ({ method: state.method }));
   const [isModalOpen, setModalOpen] = useState(false);
-  const credentialType: string = vc.type[1];
+  const [decodedClaims, setDecodedClaims] = useState<object>({});
+  const credentialType: string = vc?.type ? vc.type[1] : "verifiableCredential";
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   
@@ -29,6 +31,18 @@ const Result = () => {
       }, 50);
     }
   };
+  
+  useEffect(() => {
+    const fetchDecodedClaims = async () => {
+      if (typeof vc === "string") {
+        const claims = await decodeSdJwtToken(vc);
+        setDecodedClaims(claims);
+      } else {
+        setDecodedClaims(vc);
+      }
+    };
+    fetchDecodedClaims();
+  }, [vc]);
 
   return (
     <div id="result-section" className="relative mb-[100px]">
@@ -38,7 +52,7 @@ const Result = () => {
       <div>
         <div className={`h-[3px] border-b-2 border-b-transparent`} />
         <DisplayVcDetailView
-          vc={vc}
+          vc={decodedClaims}
           onExpand={() => setModalOpen(true)}
           className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
         />
@@ -53,7 +67,7 @@ const Result = () => {
       <DisplayVcDetailsModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        vc={vc}
+        vc={decodedClaims}
         status={vcStatus}
         vcType={credentialType}
       />
