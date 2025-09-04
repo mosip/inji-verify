@@ -68,6 +68,7 @@ public class BaseTest {
 				bsLocal = new Local();
 				HashMap<String, String> bsLocalArgs = new HashMap<>();
 				bsLocalArgs.put("key", accessKey);
+                bsLocalArgs.put("forceLocal", "true");
 				try {
 					bsLocal.start(bsLocalArgs);
 					System.out.println("✅ BrowserStack Local tunnel started.");
