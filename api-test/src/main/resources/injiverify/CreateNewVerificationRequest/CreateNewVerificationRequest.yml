@@ -14,7 +14,7 @@ CreateNewVerificationRequest:
       output: '{
     "responseType": "vp_token",
     "clientId": "client123",
-    "responseUri": "/vp-submission/direct-post",
+    "responseUri": "$INJIVERIFYBASEURL$/v1/verify/vp-submission/direct-post",
     "id": "$PRESENTATIONDEFINITIONID$"
 }'
 
@@ -33,7 +33,7 @@ CreateNewVerificationRequest:
       output: '{
     "responseType": "vp_token",
     "clientId": "client123",
-    "responseUri": "/vp-submission/direct-post",
+    "responseUri": "$INJIVERIFYBASEURL$/v1/verify/vp-submission/direct-post",
     "id": "$PRESENTATIONDEFINITIONID$"
 }'
 
@@ -52,7 +52,7 @@ CreateNewVerificationRequest:
       output: '{
     "responseType": "vp_token",
     "clientId": "ygygduDS",
-    "responseUri": "/vp-submission/direct-post",
+    "responseUri": "$INJIVERIFYBASEURL$/v1/verify/vp-submission/direct-post",
     "id": "$PRESENTATIONDEFINITIONID$"
 }'
 
@@ -71,7 +71,7 @@ CreateNewVerificationRequest:
       output: '{
     "responseType": "vp_token",
     "clientId": "client123",
-    "responseUri": "/vp-submission/direct-post",
+    "responseUri": "$INJIVERIFYBASEURL$/v1/verify/vp-submission/direct-post",
     "id": "dsAygyasa"
 }'
 
@@ -158,6 +158,6 @@ CreateNewVerificationRequest:
       output: '{
     "responseType": "vp_token",
     "clientId": "client123",
-    "responseUri": "/vp-submission/direct-post",
+    "responseUri": "$INJIVERIFYBASEURL$/v1/verify/vp-submission/direct-post",
     "id": "$PRESENTATIONDEFINITIONID$"
 }'

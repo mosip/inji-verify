@@ -1,0 +1,17 @@
+CreateNewVerificationRequestWithDID:
+  Injiverify_CreateNewVerificationRequest_DID_ClientId_Valid_Sid:
+      endPoint: /v1/verify/vp-request
+      description: Creating a new verification request with DID-based client id
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequestWithDID_01
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/CreateNewVerificationRequestWithDID/CreateNewVerificationRequestWithDID
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId":"did:client123",
+      "id":"$PRESENTATIONDEFINITIONID$"
+      }'
+      output: '{
+      "responseCode": "201"
+}'

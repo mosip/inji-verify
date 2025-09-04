@@ -53,8 +53,8 @@ public class BaseTest {
 	private static ExtentReports extent;
 	private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
-	String username = System.getenv("BROWSERSTACK_USERNAME");
-	String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+	String username = InjiVerifyConfigManager.getproperty("browserstack_username");
+	String accessKey = InjiVerifyConfigManager.getproperty("browserstack_access_key");
 	public final String URL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
 	
 	private Scenario scenario;

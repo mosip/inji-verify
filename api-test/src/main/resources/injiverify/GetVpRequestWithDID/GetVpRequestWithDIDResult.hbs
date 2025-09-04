@@ -1,0 +1,15 @@
+{
+  "header" : {
+    "typ" : "oauth-authz-req+jwt",
+    "alg" : "EdDSA"
+  },
+  "payload" : {
+    "iss" : "{{client_id}}",
+    "response_type" : "vp_token",
+    "client_id" : "{{client_id}}",
+    "client_metadata" : {
+      "client_name" : "{{client_id}}"
+    },
+    "response_mode" : "direct_post"
+  }
+}

@@ -1,7 +1,9 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -17,10 +19,13 @@ public class VpVerification extends BasePage {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(id = "vp-verification-tab")
+    @FindBy(id = "vp-verification-tab")
 	WebElement vpVerificationTab;
 
-	@FindBy(xpath = "//span[@id='verification-back-button']")
+	@FindBy(id = "tabs-carousel-right-icon")
+	WebElement rightArrow;
+
+	@FindBy(id = "selection-panel-back-button")
 	WebElement vpGoBack;
 
 	@FindBy(xpath = "//div[contains(@class, 'bg-default_theme-gradient')]/span[text()='✓']")
@@ -44,25 +49,28 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//*[name()='path' and contains(@fill,'#000000')]")
 	WebElement verificationQrCode;
 
-	@FindBy(xpath = "(//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')])[2]")
+	@FindBy(xpath = "//div[contains(@style,'animation') and contains(@style,'spin') and contains(@style,'border-radius: 50%')]")
+	WebElement loadingScreen;
+
+	@FindBy(xpath = "//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')]")
 	WebElement verifiableCredentialPanel;
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='2'])")
 	WebElement VPverificationstep3LabelAfter;
-	
-	@FindBy(xpath = "(//span[contains(@class, 'text-smallTextSize') and contains(text(), 'MOSIP ID')])[2]")
+
+	@FindBy(xpath = "//span[contains(@class, 'text-smallTextSize') and contains(text(), 'MOSIP ID')]")
 	WebElement MosipTypeCredential;
 
-	@FindBy(id ="initiate-vp-request-process-description")
+	@FindBy(id = "initiate-vp-request-process-description")
 	WebElement VpVerificationQrCodeStep1Description;
 
 	@FindBy(id = "initiate-vp-request-process")
 	WebElement vpVerificationQrCodeStep1Label;
 
-	@FindBy(id = "select-credentials-&-generate-qr-code")
+	@FindBy(id = "select-credential-types")
 	WebElement vpVerificationQrCodeStep2Label;
 
-	@FindBy(id = "select-credentials-&-generate-qr-code-description")
+	@FindBy(id = "select-credential-types-description")
 	WebElement vpVerificationQrCodeStep2Description;
 
 	@FindBy(id = "scan-qr-code-(use-a-different-device)")
@@ -76,56 +84,78 @@ public class VpVerification extends BasePage {
 
 	@FindBy(id = "view-verification-results-description")
 	WebElement vpVerificationQrCodeStep4Description;
-	
-	@FindBy(xpath = "(//span[@class='text-sortByText font-semibold text-smallTextSize ml-2' and text()='Sort by'])[2]")
+
+	@FindBy(xpath = "//span[@class='text-sortByText font-semibold text-smallTextSize ml-2' and text()='Sort by']")
 	WebElement SortButton;
-	
-	@FindBy(xpath = "(//button[@id='camera-access-denied-okay-button'])[2]")
+
+	@FindBy(id = "verification-generate-qr-code-button")
 	WebElement GenerateQrCodeButton;
-	
-	@FindBy(xpath = "(//label[@for='MOSIP ID'])[2]")
+
+	@FindBy(xpath = "//label[@for='MOSIP ID']")
 	WebElement MosipIdChecklist;
-	
-	@FindBy(xpath = "(//label[@for='Health Insurance'])[2]")
+
+	@FindBy(xpath = "//label[@for='Health Insurance']")
 	WebElement HealthInsuranceChecklist;
-	
-	@FindBy(xpath = "(//label[@for='Land Registry'])[2]")
+
+	@FindBy(xpath = "//span[@class='walletName' and text()='Inji Wallet']")
+	WebElement WalletButton;
+
+	@FindBy(xpath = "//button[@class='proceedButton' and text()='Proceed']")
+	WebElement ProceedButton;
+
+	@FindBy(xpath = "//label[@for='Land Registry']")
 	WebElement LandRegistryChecklist;
-	
+
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (A-Z)')]")
 	WebElement SortAtoZButton;
-	
+
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (Z-A)')]")
 	WebElement SortZtoAButton;
-	
-	@FindBy(xpath = "(//*[@id='verification-back-button'])[3]")
+
+	@FindBy(xpath = "//button[@id='verification-back-button']")
 	WebElement backButton;
 
+	@FindBy(xpath = "(//button[contains(@class,'cancelButton') and contains(text(),'Cancel')])")
+	WebElement cancelButton;
+
+	@FindBy(id = "selection-panel-back-button")
+	WebElement openWalletButton;
 
 	public String getVpVerificationQrCodeStep1Description() {
-		return getText(driver, VpVerificationQrCodeStep1Description);}
+		return getText(driver, VpVerificationQrCodeStep1Description);
+	}
+
+	public String getTransactionTerminatedText() {
+		return getText(driver, vpVerificationAlertMsg);
+	}
 
 	public String getVpVerificationQrCodeStep1Label() {
-		return getText(driver, vpVerificationQrCodeStep1Label);}
+		return getText(driver, vpVerificationQrCodeStep1Label);
+	}
 
 	public String getVpVerificationQrCodeStep2Label() {
-		return getText(driver, vpVerificationQrCodeStep2Label);}
+		return getText(driver, vpVerificationQrCodeStep2Label);
+	}
 
 	public String getVpVerificationQrCodeStep2Description() {
-		return getText(driver, vpVerificationQrCodeStep2Description);}
+		return getText(driver, vpVerificationQrCodeStep2Description);
+	}
 
 	public String getVpVerificationQrCodeStep3Label() {
-		return getText(driver, vpVerificationQrCodeStep3Label);}
+		return getText(driver, vpVerificationQrCodeStep3Label);
+	}
 
 	public String getVpVerificationQrCodeStep3Description() {
-		return getText(driver, vpVerificationQrCodeStep3Description);}
+		return getText(driver, vpVerificationQrCodeStep3Description);
+	}
 
 	public String getVpVerificationQrCodeStep4Label() {
-		return getText(driver, vpVerificationQrCodeStep4Label);}
+		return getText(driver, vpVerificationQrCodeStep4Label);
+	}
 
 	public String getVpVerificationQrCodeStep4Description() {
-		return getText(driver, vpVerificationQrCodeStep4Description);}
-
+		return getText(driver, vpVerificationQrCodeStep4Description);
+	}
 
 	public Boolean isVisibleVerifiableCredentialsButton() {
 		return isElementIsVisible(driver, verifiableCredentialsButton);
@@ -134,10 +164,41 @@ public class VpVerification extends BasePage {
 	public Boolean isVpVerificationQrCodeGenerated() {
 		return isElementIsVisible(driver, verificationQrCode);
 	}
-	
+
+	public Boolean isLoadingScreenDisplayed() {
+		return isElementIsVisible(driver, loadingScreen);
+	}
 
 	public void clickOnVerifiableCredentialsButton() {
-		 clickOnElement(driver, verifiableCredentialsButton);
+		try {
+			// Set viewport and prevent zooming
+			((JavascriptExecutor) driver)
+					.executeScript("document.querySelector('meta[name=viewport]').setAttribute('content', "
+							+ "'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');");
+
+			// Remove the copyright element temporarily to prevent interference
+			((JavascriptExecutor) driver).executeScript("var copyright = document.getElementById('copyrights-content');"
+					+ "if(copyright) { copyright.style.display = 'none'; }");
+
+			// Wait a bit for the viewport changes to take effect
+			Thread.sleep(500);
+
+			// Scroll the button into view
+			((JavascriptExecutor) driver).executeScript(
+					"arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", verifiableCredentialsButton);
+
+			// Wait for scroll
+			Thread.sleep(500);
+
+			// Click the button
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", verifiableCredentialsButton);
+
+			// Restore the copyright element
+			((JavascriptExecutor) driver).executeScript("var copyright = document.getElementById('copyrights-content');"
+					+ "if(copyright) { copyright.style.display = ''; }");
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to click verifiable credentials button: " + e.getMessage());
+		}
 	}
 
 	public String isVerifiableCredentialSelectionPannelDisplayed() {
@@ -146,6 +207,10 @@ public class VpVerification extends BasePage {
 
 	public void clickOnVPVerificationTab() {
 		clickOnElement(driver, vpVerificationTab);
+	}
+
+	public void clickOnRightArrow() {
+		clickOnElement(driver, rightArrow);
 	}
 
 	public void clickOnGoBack() {
@@ -173,52 +238,72 @@ public class VpVerification extends BasePage {
 	}
 
 	public void enterVcInSearchBox(String string) {
-		enterText(driver, By.xpath("//input[@type='text' and contains(@placeholder, 'Search for the Verifiable Credential type')]"), string);
+		enterText(driver, By
+				.xpath("//input[@type='text' and contains(@placeholder, 'Search for the Verifiable Credential type')]"),
+				string);
 
 	}
 
 	public boolean isVisibleVPverificationstep3LabelAfter() {
 		return isElementIsVisible(driver, VPverificationstep3LabelAfter);
 	}
-	
+
 	public boolean isMosipTypeCredentialVisible() {
 		return isElementIsVisible(driver, MosipTypeCredential);
 	}
-	
+
 	public void clickOnSortButton() {
-		 clickOnElement(driver, SortButton);
+		clickOnElement(driver, SortButton);
 	}
-	
+
 	public void ClickOnGenerateQrCodeButton() {
-		 clickOnElement(driver, GenerateQrCodeButton);
+		clickOnElement(driver, GenerateQrCodeButton);
 	}
-	
+
 	public void ClickOnMosipIdChecklist() {
-		 clickOnElement(driver, MosipIdChecklist);
+		clickOnElement(driver, MosipIdChecklist);
 	}
-	
+
 	public void ClickOnHealthInsuranceChecklist() {
-		 clickOnElement(driver, HealthInsuranceChecklist);
+		clickOnElement(driver, HealthInsuranceChecklist);
 	}
-	
+
+	public void ClickOnWalletButton() {
+		clickOnElement(driver, WalletButton);
+	}
+
+	public void ClickOnProceedButton() {
+		clickOnElement(driver, ProceedButton);
+	}
+
 	public void ClickOnLandRegistryChecklist() {
-		 clickOnElement(driver, LandRegistryChecklist);
+		clickOnElement(driver, LandRegistryChecklist);
 	}
-	
+
 	public void clickOnSortAtoZButton() {
-		 clickOnElement(driver, SortAtoZButton);
+		clickOnElement(driver, SortAtoZButton);
 	}
-	
+
 	public void clickOnSortZtoAButton() {
-		 clickOnElement(driver, SortZtoAButton);
+		clickOnElement(driver, SortZtoAButton);
 	}
-	
+
 	public void enterCredentialType(String string) {
-		enterText(driver, By.xpath("(//input[@placeholder='Search for the Verifiable Credential type' and contains(@class,'outline-none')])[2]"), string);
+		enterText(driver, By.xpath(
+				"//input[@placeholder='Search VC Type']"),
+				string);
 	}
-	
+
 	public void clickOnBackButton() {
-		 clickOnElement(driver, backButton);
+		clickOnElement(driver, vpGoBack);
+	}
+
+	public void clickOnCancelButton() {
+		clickOnElement(driver, cancelButton);
+	}
+
+	public void clickOnOpenWalletButton() {
+		clickOnElement(driver, openWalletButton);
 	}
 
 
