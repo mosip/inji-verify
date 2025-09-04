@@ -28,8 +28,11 @@ injiweb=<injiweb-endpoint>
 InsuranceUrl=<insurance-registry-endpoint>
 actuatorMimotoEndpoint=<mimoto-actuator-endpoint>
 eSignetbaseurl=<esignet-base-url>
+stayProtectedIssuer=<stay-protected-issuer-name><default: StayProtected Insurance>
+stayProtectedIssuerCredentialType=<stay-protected-issuer-credential-type><default: Health Insurance>
+browserstack_username=<your-browserstack-username>
+browserstack_accesskey=<your-browserstack-accesskey>
 ```
-
 
 
 Note:- all are config properties has to be updated by replacing the 'dev' with  actual env name/url
