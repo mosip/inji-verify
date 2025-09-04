@@ -73,14 +73,15 @@ public class MosipTestRunner {
 				trigger.start();
 
 			BaseTestCase.getLanguageList();
-
+	
 			startTestRunner();
 		} catch (Exception e) {
 			LOGGER.error("Exception " + e.getMessage());
 		}
 
 		HealthChecker.bTerminate = true;
-
+		
+		
 		System.exit(0);
 
 	}

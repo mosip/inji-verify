@@ -1,11 +1,10 @@
 Feature: Inji Verify vpVerification testing
 
   @smoke @verifyingVpVerification
-  Scenario: Verify the Inji verify homepage
+  Scenario Outline: Verify the VP verification panel
     Given User gets the title of the page
     Then Validate the title of the page
     And Click on vp verification tab
-    And verify request verifiable credentials button
     And Verify VP verification qr code step1 description
     And Verify VP verification qr code step1 label
     And Verify VP verification qr code step2 label
@@ -25,27 +24,44 @@ Feature: Inji Verify vpVerification testing
 
     Examples:
       | credential type |
-      | life    |
-      
-      
+      | life            |
+
+
   @smoke @verifyingVpVerification
-  Scenario: Verify the Inji verify homepage
+  Scenario: Verify the VP verification QR code
 
     Given User gets the title of the page
     Then Validate the title of the page
-    And Click on vp verification tab 
+    And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
     And Verify Click on Generate QR Code button
-    And Verify QR code generated 
-#    And Click on vp verification tab 
-#    And Verify QR code is not precent 
-    And Click on vp verification tab 
+    And Verify QR code generated
+#    And Click on vp verification tab
+#    And Verify QR code is not precent
+    And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
     And Uncheck MOSIP ID
     And Select Health Insurance
-    And Select Land Registry    
+    And Select Land Registry
     And Verify Click on Generate QR Code button
     And Verify QR code generated
-    And Click on vp verification tab 
+    And Click on vp verification tab
+
+#@mobileView @verifyingVpVerification
+#Scenario: Verify VP verification same device flow
+#
+#    Given User gets the title of the page
+#    Then Validate the title of the page
+#    And Click on right arrow
+#    And Click on vp verification tab
+#    And Verify click on request verifiable credentials button
+#    And Verify Click on open wallet button
+#    And Verify Click on cancel
+#    And verify Transaction Terminated error message
+#    And Verify click on request verifiable credentials button
+#    And Verify Click on open wallet button
+#    And Verify Click on wallet
+#    And Verify Click on Proceed
+#    And verify loading screen

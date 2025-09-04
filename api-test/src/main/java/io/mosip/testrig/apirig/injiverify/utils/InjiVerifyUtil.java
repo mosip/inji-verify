@@ -2,12 +2,18 @@ package io.mosip.testrig.apirig.injiverify.utils;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.testng.SkipException;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.mosip.testrig.apirig.dto.TestCaseDTO;
 import io.mosip.testrig.apirig.utils.AdminTestUtil;
@@ -28,6 +34,7 @@ public class InjiVerifyUtil extends AdminTestUtil {
 	private static final Logger logger = Logger.getLogger(InjiVerifyUtil.class);
 	public static final String injiVerifyBaseUrl = InjiVerifyConfigManager
 			.getproperty(InjiVerifyConstants.INJI_VERIFY_BASE_URL);
+	public static List<String> testCasesInRunScope = new ArrayList<>();
 
 	public static String isTestCaseValidForExecution(TestCaseDTO testCaseDTO) {
 		String testCaseName = testCaseDTO.getTestCaseName();
@@ -36,6 +43,7 @@ public class InjiVerifyUtil extends AdminTestUtil {
 		String modifiedTestCaseName = testCaseName.substring(indexof + 1);
 
 		addTestCaseDetailsToMap(modifiedTestCaseName, testCaseDTO.getUniqueIdentifier());
+		
 
 		if (SkipTestCaseHandler.isTestCaseInSkippedList(testCaseName)) {
 			throw new SkipException(GlobalConstants.KNOWN_ISSUES);
@@ -53,6 +61,11 @@ public class InjiVerifyUtil extends AdminTestUtil {
 		if (jsonString.contains("$PRESENTATIONDEFINITIONID$")) {
 			jsonString = replaceKeywordWithValue(jsonString, "$PRESENTATIONDEFINITIONID$",
 					InjiVerifyConfigManager.getproperty(InjiVerifyConstants.PRESENTATION_DEFINITION_ID));
+		}
+
+		if (jsonString.contains("$INJIVERIFYBASEURL$")) {
+			jsonString = replaceKeywordWithValue(jsonString, "$INJIVERIFYBASEURL$",
+					InjiVerifyConfigManager.getproperty(InjiVerifyConstants.INJI_VERIFY_BASE_URL));
 		}
 
 		return jsonString;
@@ -114,5 +127,35 @@ public class InjiVerifyUtil extends AdminTestUtil {
 
 		return postResponse;
 	}
+	
+	
+	public static String decodeBase64Url(String encoded) {
+        return new String(Base64.getUrlDecoder().decode(encoded));
+	}
+	
+	public static String decodeAndCombineJwt(String jwtString) {
+	    try {
+	        DecodedJWT jwt = JWT.decode(jwtString);
+
+	        // Base64 decode header & payload
+	        String headerJson = decodeBase64Url(jwt.getHeader());
+	        String payloadJson = decodeBase64Url(jwt.getPayload());
+
+	        // Use Jackson to combine into single JSON object
+	        ObjectMapper mapper = new ObjectMapper();
+	        ObjectNode combinedJson = mapper.createObjectNode();
+
+	        combinedJson.set("header", mapper.readTree(headerJson));
+	        combinedJson.set("payload", mapper.readTree(payloadJson));
+
+	        // Pretty print final JSON
+	        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(combinedJson);
+
+	    } catch (Exception e) {
+	        logger.error("Error decoding JWT: " + e.getMessage(), e);
+	        return null;
+	    }
+	}
+
 
 }
