@@ -113,7 +113,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
 
-	@FindBy(xpath = "(//*[@data-testid='ItemBox-Text'])[2]")
+	@FindBy(xpath = "//*[@data-testid='ItemBox-Text']")
 	WebElement mosipCrdentials;
 
 	@FindBy(xpath = "(//label[contains(@class, 'w-full h-full') and contains(text(), 'Once')])[1]")
