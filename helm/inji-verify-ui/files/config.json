@@ -87,7 +87,7 @@
       "logo": "/assets/cert.png",
       "name": "Health Insurance",
       "type": "InsuranceCredential",
-      "isAuthRequestEmbedded" : false,
+      "isAuthRequestEmbedded" : true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -128,6 +128,7 @@
       "logo": "/assets/cert.png",
       "name": "Mock Identity (Released)",
       "type": "MockVerifiableCredential",
+      "isAuthRequestEmbedded" : true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -168,7 +169,7 @@
       "logo": "/assets/cert.png",
       "name": "Land Registry",
       "type": "LandStatementCredential",
-      "isAuthRequestEmbedded" : false,
+      "isAuthRequestEmbedded" : true,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
