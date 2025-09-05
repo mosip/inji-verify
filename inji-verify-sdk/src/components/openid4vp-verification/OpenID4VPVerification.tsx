@@ -6,8 +6,8 @@ import {
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
-import {vpRequest, vpRequestStatus, vpResult} from "../../utils/api";
-import "./OpenID4VPVerification.css"
+import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
+import "./OpenID4VPVerification.css";
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
@@ -121,9 +121,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
         if (response.status === "ACTIVE") {
           fetchVPStatus();
-        }
-        if (response.status === "VP_SUBMITTED") {
+        } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult();
+        } else if (response.status === "TIMEOUT") {
+          fetchVPStatus();
         } else if (response.status === "EXPIRED") {
           resetState();
           onQrCodeExpired();
@@ -252,9 +253,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   return (
     <div className={"ovp-root-div-container"}>
-      {loading && (
-        <div className={"ovp-loader"}/>
-      )}
+      {loading && <div className={"ovp-loader"} />}
 
       {!loading && triggerElement && !qrCodeData && (
         <div onClick={handleTriggerClick} style={{ cursor: "pointer" }}>
