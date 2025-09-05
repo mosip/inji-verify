@@ -115,13 +115,17 @@ export const vpRequest = async (
 
 export const vpRequestStatus = async (url: string, reqId: string) => {
   try {
-    const response = await fetch(url + `/vp-request/${reqId}/status`);
+    const response = await fetch(`${url}/vp-request/${reqId}/status`, {
+      signal: AbortSignal.timeout(60000),
+    });
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    if (error instanceof Error) {
+    if (error?.name === "TimeoutError" || error?.name === "AbortError") {
+      return { status: "TIMEOUT" };
+    } else if (error instanceof Error) {
       throw Error(error.message);
     } else {
       throw new Error("An unknown error occurred");
