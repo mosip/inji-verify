@@ -1,7 +1,7 @@
 Feature: Inji Verify homepage testing
 
   @smoke @verifyingHomepage
-  Scenario: Verify the Inji web homepage
+  Scenario: Verify the Inji Verify homepage
     Given User gets the title of the page
     Then Validate the title of the page
     And Verify that header is displayed

@@ -55,8 +55,8 @@ public class BaseTest {
 	private static ExtentReports extent;
 	private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
-	String username = System.getenv("BROWSERSTACK_USERNAME");
-	String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+	String username = InjiVerifyConfigManager.getproperty("browserstack_username");
+	String accessKey = InjiVerifyConfigManager.getproperty("browserstack_access_key");
 	public final String URL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
 	
 	private Scenario scenario;
@@ -65,13 +65,14 @@ public class BaseTest {
 	@Before
 	public void beforeAll(Scenario scenario) throws MalformedURLException {
 		
-		 this.scenario = scenario;
+        this.scenario = scenario;
 
 	    try {
 	        if (bsLocal == null || !bsLocal.isRunning()) {
 	            bsLocal = new Local();
 	            HashMap<String, String> bsLocalArgs = new HashMap<>();
 	            bsLocalArgs.put("key", accessKey);
+                bsLocalArgs.put("forceLocal", "true");
 	            try {
 	                bsLocal.start(bsLocalArgs);
 	                logger.info("✅ BrowserStack Local tunnel started.");

@@ -21,15 +21,18 @@ Ensure the following software is installed on the machine from where the automat
 1. update `src\main\resources\config\injiVerify.properties`
 
 ```properties
-apiEnvUser=api-internal.dev
-apiInternalEndPoint=https://api-internal.dev.mosip.net
-injiverify=https://injiverify.dev.mosip.net/
-injiweb=https://injiweb.dev.mosip.net/issuers
-InsuranceUrl=https://registry.dev.mosip.net/api/v1/Insurance
-actuatorMimotoEndpoint=/v1/mimoto/actuator/dev
-eSignetbaseurl=https://esignet-mosipid.dev.mosip.net
+apiEnvUser=<your-api-env-user>
+apiInternalEndPoint=<api-internal-endpoint>
+injiverify=<injiverify-endpoint>
+injiweb=<injiweb-endpoint>
+InsuranceUrl=<insurance-registry-endpoint>
+actuatorMimotoEndpoint=<mimoto-actuator-endpoint>
+eSignetbaseurl=<esignet-base-url>
+stayProtectedIssuer=<stay-protected-issuer-name><default: StayProtected Insurance>
+stayProtectedIssuerCredentialType=<stay-protected-issuer-credential-type><default: Health Insurance>
+browserstack_username=<your-browserstack-username>
+browserstack_accesskey=<your-browserstack-accesskey>
 ```
-
 
 
 Note:- all are config properties has to be updated by replacing the 'dev' with  actual env name/url
