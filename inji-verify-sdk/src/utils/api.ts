@@ -121,15 +121,13 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error: any) {
-    console.error(error);
-    if (error?.name === "TimeoutError" || error?.name === "AbortError") {
-      return { status: "TIMEOUT" };
-    } else if (error instanceof Error) {
-      throw Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`${error.name} : ${error.message}`);
     } else {
-      throw new Error("An unknown error occurred");
+      console.error("An unknown error occurred");
     }
+    return { status: "SERVICE_ERROR" };
   }
 };
 
