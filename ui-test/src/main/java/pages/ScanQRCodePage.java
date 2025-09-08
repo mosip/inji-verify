@@ -49,7 +49,7 @@ public class ScanQRCodePage extends BasePage {
 	@FindBy(xpath = "//*[name()='svg' and @width='24' and @height='22']")
 	WebElement ScanQRCodeIcon;
 
-	@FindBy(xpath = "//span[@id='scan-button']")
+	@FindBy(xpath = "//button[@id='scan-button']")
 	WebElement ScanQRCodeButtonTo;
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='3'])")

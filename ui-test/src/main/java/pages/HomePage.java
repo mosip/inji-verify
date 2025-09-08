@@ -24,6 +24,9 @@ public class HomePage extends BasePage {
 
 	private WebDriver driver;
 
+    private static final String stayProtectedIssuer = InjiVerifyConfigManager.getproperty("stayProtectedIssuer");
+    private static final String stayProtectedIssuerCredentialType = InjiVerifyConfigManager.getproperty("stayProtectedIssuerCredentialType");
+
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -110,7 +113,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//p[@data-testid='IntroBox-SubText']")
 	WebElement IntroSubText;
 
-	@FindBy(xpath = "//*[@data-testid='ItemBox-Text'][1]")
+	@FindBy(xpath = "//*[@data-testid='ItemBox-Text']")
 	WebElement mosipCrdentials;
 
 	@FindBy(xpath = "(//label[contains(@class, 'w-full h-full') and contains(text(), 'Once')])[1]")
@@ -294,6 +297,11 @@ public class HomePage extends BasePage {
 		clickOnElement(driver,mosipCrdentials);
 	}
 
+    public void clickOnStayProtectedCredentials() {
+        WebElement stayProtectedIssuerElement = driver.findElement(By.xpath("//h3[text()='" + stayProtectedIssuer + "']"));
+        clickOnElement(driver,stayProtectedIssuerElement);
+    }
+
 	public void clickOnGetStartedButton() {
 		if(isElementIsVisible(driver,getStartedButton)) {
 		clickOnElement(driver,getStartedButton);
@@ -327,6 +335,12 @@ public class HomePage extends BasePage {
 		}
 		clickOnElement(driver, isMosipNationalId);
 	}
+
+    public void clickOnStayProtectedCredentialType() {
+        By locator = By.xpath("//h3[text()='" + stayProtectedIssuerCredentialType + "']");
+        WebElement stayProtectedCredentialTypeElement = waitForElementClickable(driver, locator, 30);
+        clickOnElement(driver, stayProtectedCredentialTypeElement);
+    }
 
 	public void clickOnOnProceed() {
 		try {

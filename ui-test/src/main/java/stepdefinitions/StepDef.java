@@ -1826,7 +1826,7 @@ public class StepDef {
 	@When("User click on StayProtected Insurance credentials button")
 	public void user_click_on_download_StayProtected_Insurance_button() {
 	    try {
-	        homePage.clickOnDownloadMosipCredentials();
+	        homePage.clickOnStayProtectedCredentials();
 	        test.log(Status.PASS, "Successfully clicked on StayProtected Insurance credentials button.");
 	    } catch (NoSuchElementException e) {
 	        logFailure(test, driver, "Element not found while clicking StayProtected Insurance credentials button", e);
@@ -1871,7 +1871,7 @@ public class StepDef {
 	@Then("User click on health insurance by e-signet button")
 	public void user_click_on_health_insurance_id_by_e_signet_button() {
 	    try {
-	        homePage.clickOnMosipNationalId();
+	        homePage.clickOnStayProtectedCredentialType();
 	        test.log(Status.PASS, "Successfully clicked on health insurance by e-signet button.");
 	    } catch (NoSuchElementException e) {
 	        logFailure(test, driver, "Element not found while clicking health insurance by e-signet button", e);
