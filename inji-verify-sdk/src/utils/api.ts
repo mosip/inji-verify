@@ -118,7 +118,7 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
     if (error?.name === "TimeoutError" || error?.name === "AbortError") {
       return { status: "TIMEOUT" };
     } else if (error instanceof Error) {
-      throw error;
+      throw new Error(error.message);
     } else {
       throw new Error("An unknown error occurred");
     }
