@@ -43,7 +43,17 @@ public class VPSubmissionController {
     }
 
     @PostMapping(path = Constants.RESPONSE_SUBMISSION_URI, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> submitVP(@NotNull @NotBlank @RequestParam(value = "vp_token") String vpToken, @NotNull @NotBlank @RequestParam(value = "presentation_submission") String presentationSubmission, @NotNull @NotBlank @RequestParam(value = "state") String state) {
+    public ResponseEntity<?> submitVP(
+            @RequestParam(value = "vp_token", required = false) String vpToken,
+            @RequestParam(value = "presentation_submission", required = false) String presentationSubmission,
+            @NotNull @NotBlank @RequestParam(value = "state") String state,
+            @RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "error_description", required = false) String errorDescription) {
+        if (!isValidResponse(vpToken, error)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Either 'vp_token' or 'error' must be provided, but not both.");
+        }
+
         PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(presentationSubmissionDto);
@@ -59,5 +69,9 @@ public class VPSubmissionController {
 
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private static boolean isValidResponse(String vpToken, String error) {
+        return vpToken != null ^ error != null;
     }
 }
