@@ -8,9 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class VPSubmissionDto {
-    @NotNull
     String vpToken;
-    @NotNull
     @Valid
     PresentationSubmissionDto presentationSubmission;
     @NotNull
