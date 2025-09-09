@@ -118,7 +118,7 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "(//button[contains(@class,'cancelButton') and contains(text(),'Cancel')])")
 	WebElement cancelButton;
 
-	@FindBy(id = "selection-panel-back-button")
+	@FindBy(id = "verification-open-wallet-button")
 	WebElement openWalletButton;
 
 	public String getVpVerificationQrCodeStep1Description() {
