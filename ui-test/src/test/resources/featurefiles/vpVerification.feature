@@ -49,19 +49,20 @@ Feature: Inji Verify vpVerification testing
     And Verify QR code generated
     And Click on vp verification tab
 
-#@mobileView @verifyingVpVerification
-#Scenario: Verify VP verification same device flow
-#
-#    Given User gets the title of the page
-#    Then Validate the title of the page
-#    And Click on right arrow
-#    And Click on vp verification tab
-#    And Verify click on request verifiable credentials button
-#    And Verify Click on open wallet button
+@mobileView @verifyingVpVerification
+Scenario: Verify VP verification same device flow
+
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on right arrow
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Click on open wallet button
+    #Below lines are commented as the selecting wallet flow is descoped for the release
 #    And Verify Click on cancel
 #    And verify Transaction Terminated error message
 #    And Verify click on request verifiable credentials button
 #    And Verify Click on open wallet button
 #    And Verify Click on wallet
 #    And Verify Click on Proceed
-#    And verify loading screen
+    And verify loading screen

@@ -22,6 +22,9 @@ import io.mosip.testrig.apirig.utils.ConfigManager;
 import io.mosip.testrig.apirig.utils.S3Adapter;
 
 import com.aventstack.extentreports.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,6 +37,8 @@ import java.util.Properties;
 
 
 public class BaseTest {
+    private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+
 	public void setDriver(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -61,43 +66,88 @@ public class BaseTest {
 	Local bsLocal = null;
 
 	@Before
-	public void beforeAll(Scenario scenario) throws MalformedURLException {
-		
-		try {
-			if (bsLocal == null || !bsLocal.isRunning()) {
-				bsLocal = new Local();
-				HashMap<String, String> bsLocalArgs = new HashMap<>();
-				bsLocalArgs.put("key", accessKey);
-                bsLocalArgs.put("forceLocal", "true");
-				try {
-					bsLocal.start(bsLocalArgs);
-					System.out.println("✅ BrowserStack Local tunnel started.");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		totalCount++;
-		   ExtentReportManager.initReport();
-	        ExtentReportManager.createTest(scenario.getName()); 
-	        ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("browserName", "Chrome");
-		capabilities.setCapability("browserVersion", "latest");
-		HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
-		browserstackOptions.put("os", "Windows");
-		browserstackOptions.put("local", true);
-		browserstackOptions.put("interactiveDebugging", true);
-		capabilities.setCapability("bstack:options", browserstackOptions);
+    public void beforeAll(Scenario scenario) throws MalformedURLException {
 
-		driver = new RemoteWebDriver(new URL(URL), capabilities);
-		jse = (JavascriptExecutor) driver;
-		driver.manage().window().maximize();
-		driver.get(url);
-	}
+        this.scenario = scenario;
+
+        try {
+            if (bsLocal == null || !bsLocal.isRunning()) {
+                bsLocal = new Local();
+                HashMap<String, String> bsLocalArgs = new HashMap<>();
+                bsLocalArgs.put("key", accessKey);
+                bsLocalArgs.put("forceLocal", "true");
+                try {
+                    bsLocal.start(bsLocalArgs);
+                    logger.info("✅ BrowserStack Local tunnel started.");
+                } catch (Exception e) {
+                    logger.error("Failed to start BrowserStack Local tunnel", e);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to initialize BrowserStack Local", e);
+        }
+
+        totalCount++;
+        ExtentReportManager.initReport();
+        ExtentReportManager.createTest(scenario.getName());
+        ExtentReportManager.logStep("Scenario Started: " + scenario.getName());
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        HashMap<String, Object> browserstackOptions = new HashMap<>();
+
+        if (scenario.getSourceTagNames().contains("@mobileView")) {
+            logger.info("📱 Launching test in MOBILE VIEW (Desktop Emulation) via BrowserStack");
+
+            capabilities.setCapability("browserName", "Chrome");
+            capabilities.setCapability("browserVersion", "latest");
+
+            browserstackOptions.put("os", "Windows");
+            browserstackOptions.put("osVersion", "10");
+            browserstackOptions.put("local", "true");
+            browserstackOptions.put("debug", "true");
+
+            // Add Chrome options for mobile emulation
+            HashMap<String, Object> chromeOptions = new HashMap<>();
+            HashMap<String, Object> mobileEmulation = new HashMap<>();
+            // Instead of using deviceName, set specific device metrics
+            HashMap<String, Object> deviceMetrics = new HashMap<>();
+            deviceMetrics.put("width", 412);  // Galaxy S22 width
+            deviceMetrics.put("height", 915);  // Galaxy S22 height
+            deviceMetrics.put("pixelRatio", 2.625);  // Device pixel ratio
+            deviceMetrics.put("mobile", true);
+            mobileEmulation.put("deviceMetrics", deviceMetrics);
+            mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 12; SM-S901E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36");
+            chromeOptions.put("mobileEmulation", mobileEmulation);
+            capabilities.setCapability("goog:chromeOptions", chromeOptions);
+        } else {
+            logger.info("🖥️ Launching test in DESKTOP mode");
+
+            capabilities.setCapability("browserName", "Chrome");
+            capabilities.setCapability("browserVersion", "latest");
+
+            browserstackOptions.put("os", "Windows");
+            browserstackOptions.put("osVersion", "10");
+            browserstackOptions.put("local", "true");
+            browserstackOptions.put("debug", "true");
+        }
+
+        // ✅ Common step — attach the bstack:options finally
+        capabilities.setCapability("bstack:options", browserstackOptions);
+
+        logger.info("Final capabilities: {}", capabilities);
+
+        // Setup driver (only once)
+        driver = new RemoteWebDriver(new URL(URL), capabilities);
+        jse = (JavascriptExecutor) driver;
+
+        // Only maximize window for desktop tests
+        if (!scenario.getSourceTagNames().contains("@mobileView")) {
+            driver.manage().window().maximize();
+        }
+
+        driver.get(url);
+
+    }
 
 
 	@BeforeStep
