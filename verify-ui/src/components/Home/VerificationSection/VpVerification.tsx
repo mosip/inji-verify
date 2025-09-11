@@ -73,7 +73,7 @@ const DisplayActiveStep = () => {
   };
 
   const handleOnError = (error:Error) => {
-    dispatch(raiseAlert({ message:error.message, severity:"error", open:true }));
+    dispatch(raiseAlert({ message:error.message, severity:"error", open:true , autoHideDuration:120000}));
     dispatch(resetVpRequest());
   };
 
