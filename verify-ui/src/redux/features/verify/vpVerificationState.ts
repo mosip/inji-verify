@@ -24,11 +24,6 @@ const PreloadedState: VerifyState = {
     id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
     purpose:
       "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-    format: {
-      ldp_vc: {
-        proof_type: ["Ed25519Signature2020"],
-      },
-    },
     input_descriptors: [] as any[],
   }  
 };
