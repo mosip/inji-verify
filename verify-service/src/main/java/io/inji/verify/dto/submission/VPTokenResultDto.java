@@ -5,12 +5,11 @@ import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.dto.result.VCResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VPTokenResultDto {
     String transactionId;
     VPResultStatus vpResultStatus;
