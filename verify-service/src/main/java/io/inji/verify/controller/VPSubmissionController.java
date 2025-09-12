@@ -1,17 +1,12 @@
 package io.inji.verify.controller;
 
+import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.nimbusds.jose.shaded.gson.Gson;
-
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
 import io.inji.verify.dto.submission.PresentationSubmissionDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
@@ -54,33 +49,31 @@ public class VPSubmissionController {
                     .body("Either 'vp_token' or 'error' must be provided, but not both.");
         }
 
-        if (error != null) {
-            submitVerifiablePresentation(null, state, error, errorDescription, null);
-        } else {
-            PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+        Optional<PresentationSubmissionDto> presentationSubmissionDto =
+                Optional.ofNullable(presentationSubmission).map(submission -> gson.fromJson(submission, PresentationSubmissionDto.class));
+
+        PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElseGet(() -> null);
+
+        if (submissionDto != null) {
             Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-            Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(presentationSubmissionDto);
+            Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(submissionDto);
             if (!violations.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations.iterator().next().getMessage());
             }
-            submitVerifiablePresentation(vpToken, state, null, null, presentationSubmissionDto);
         }
+
+        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, submissionDto, state, error, errorDescription);
+
+        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
+        if (currentVPRequestStatusDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private static boolean isValidResponse(String vpToken, String error) {
         return vpToken != null ^ error != null;
-    }
-
-    private void submitVerifiablePresentation(String vpToken, String state, String error, String errorDescription, PresentationSubmissionDto presentationSubmissionDto) {
-        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state, error, errorDescription);
-
-        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
-        if (currentVPRequestStatusDto == null) {
-            new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            return;
-        }
-
-        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
     }
 }
