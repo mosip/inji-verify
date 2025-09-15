@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.nimbusds.jose.shaded.gson.Gson;
 import io.inji.verify.dto.authorizationrequest.VPRequestStatusDto;
@@ -54,7 +55,7 @@ public class VPSubmissionController {
 
         PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElseGet(() -> null);
 
-        if (submissionDto != null) {
+        if (presentationSubmissionDto.isPresent()) {
             Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
             Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(submissionDto);
             if (!violations.isEmpty()) {
@@ -74,6 +75,6 @@ public class VPSubmissionController {
     }
 
     private static boolean isValidResponse(String vpToken, String error) {
-        return vpToken != null ^ error != null;
+        return StringUtils.hasText(vpToken) ^ StringUtils.hasText(error);
     }
 }
