@@ -30,6 +30,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   onError,
   clientId,
   isEnableSameDeviceFlow = true,
+  errorMessageTemplate,
 }) => {
   const [txnId, setTxnId] = useState<string | null>(transactionId || null);
   const [reqId, setReqId] = useState<string | null>(null);
@@ -94,14 +95,14 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setLoading(true);
     try {
       if (onVPProcessed && txnId) {
-        const vcResults = await vpResult(verifyServiceUrl, txnId);
-        const VPResult: VerificationResults = vcResults.map(
+        const vcResults = await vpResult(verifyServiceUrl, txnId, errorMessageTemplate);
+        const VPResult: VerificationResults = vcResults?.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
             vc: JSON.parse(vcResult.vc),
             vcStatus: vcResult.verificationStatus,
           })
         );
-        onVPProcessed?.(VPResult);
+        if (VPResult) onVPProcessed?.(VPResult);
         resetState();
       }
       if (onVPReceived && txnId) {
@@ -112,7 +113,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       onError(error as Error);
       resetState();
     }
-  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
+  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError, errorMessageTemplate]);
 
   const fetchVPStatus = useCallback(async () => {
     try {

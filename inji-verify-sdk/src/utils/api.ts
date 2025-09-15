@@ -131,11 +131,22 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
   }
 };
 
-export const vpResult = async (url: string, txnId: string) => {
+const generateErrorMessage = (data: any, errorMessageTemplate?: string) => {
+  const reason = data.errorDescription || data.error;
+  return errorMessageTemplate?.replace("error", reason).replace("txnId", data.transactionId);
+};
+
+export const vpResult = async (url: string, txnId: string, errorMessageTemplate?: string) => {
   try {
     const response = await fetch(url + `/vp-result/${txnId}`);
     if (response.status !== 200) throw new Error("Failed to fetch VP result");
     const data = await response.json();
+    if (data.error) {
+      const errorDescription = generateErrorMessage(data, errorMessageTemplate);
+      throw new Error(errorDescription);
+    }
     return data.vcResults;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 };
