@@ -10,8 +10,15 @@ import {
   setSelectCredential,
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
-import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
-import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
+import {
+  ErrorMessageTemplate,
+  VCShareType,
+  VpSubmissionResultInt
+} from "../../../types/data-types";
+import {
+  closeAlert,
+  raiseAlert
+} from "../../../redux/features/alerts/alerts.slice";
 import { AlertMessages, DisplayTimeout } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
@@ -33,6 +40,7 @@ const DisplayActiveStep = () => {
   const flowType = useVerifyFlowSelector((state) => state.flowType);
   const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const errorMessageTemplate = ErrorMessageTemplate.REASON + ErrorMessageTemplate.ASSISTANCE;
 
   const dispatch = useAppDispatch();
 
@@ -73,8 +81,9 @@ const DisplayActiveStep = () => {
   };
 
   const handleOnError = (error:Error) => {
-    dispatch(raiseAlert({ message:error.message, severity:"error", open:true , autoHideDuration:120000}));
+    dispatch(closeAlert({}));
     dispatch(resetVpRequest());
+    dispatch(raiseAlert({ message: error.message, severity: "error", open: true, autoHideDuration: 120000 }));
   };
 
   const getClientId = () => {
@@ -136,6 +145,7 @@ const DisplayActiveStep = () => {
                   qrCodeStyles={{ size: qrSize }}
                   clientId={getClientId()}
                   isEnableSameDeviceFlow={false}
+                  errorMessageTemplate={errorMessageTemplate}
                 />
               </div>
               <Button	
@@ -170,6 +180,7 @@ const DisplayActiveStep = () => {
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   clientId={getClientId()}
+                  errorMessageTemplate={errorMessageTemplate}
                 />
               </div>
             </div>
