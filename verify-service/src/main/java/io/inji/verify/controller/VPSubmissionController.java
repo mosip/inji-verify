@@ -46,9 +46,9 @@ public class VPSubmissionController {
             @NotNull @NotBlank @RequestParam(value = "state") String state,
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "error_description", required = false) String errorDescription) {
-        if (!isValidResponse(vpToken, error)) {
+        if (!isValidResponse(vpToken, error, presentationSubmission)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Either 'vp_token' or 'error' must be provided, but not both.");
+                    .body("Invalid response: either vp_token and presentation_submission must be provided, or error must be provided.");
         }
 
         Optional<PresentationSubmissionDto> presentationSubmissionDto =
@@ -75,7 +75,16 @@ public class VPSubmissionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private static boolean isValidResponse(String vpToken, String error) {
-        return StringUtils.hasText(vpToken) ^ StringUtils.hasText(error);
+    private static boolean isValidResponse(String vpToken, String error, String presentationSubmission) {
+        boolean hasVpToken = StringUtils.hasText(vpToken);
+        boolean hasSubmission = StringUtils.hasText(presentationSubmission);
+        boolean hasError = StringUtils.hasText(error);
+
+        boolean hasValidVpBlock = hasVpToken && hasSubmission && !hasError;
+
+        boolean hasValidErrorBlock = hasError && !hasVpToken && !hasSubmission;
+
+        return hasValidVpBlock || hasValidErrorBlock;
     }
+
 }
