@@ -4,7 +4,7 @@ import { convertToTitleCase, saveData } from "../../../../utils/misc";
 import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
-import { VC, VcStatus } from "../../../../types/data-types";
+import { SdJwtVC, VC, VcStatus } from "../../../../types/data-types";
 import {
   backgroundColorMapping,
   borderColorMapping,
@@ -15,7 +15,7 @@ import VcDetailsGrid from "./VcDetailsGrid";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  vc: VC | Object;
+  vc: VC | SdJwtVC;
   status: VcStatus;
   vcType: string;
   logo?: { url: any; alt: string };
@@ -70,7 +70,14 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
         </div>
 
         <div className="space-y-4">
-          <VcDetailsGrid orderedDetails={orderedDetails} />
+          <VcDetailsGrid
+            orderedDetails={orderedDetails}
+            disclosedClaims={
+              "disclosedClaims" in vc
+                ? (vc as SdJwtVC).disclosedClaims
+                : undefined
+            }
+          />
         </div>
 
         <div className="flex justify-end space-x-4 mt-6">

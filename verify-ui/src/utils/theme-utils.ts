@@ -53,3 +53,4 @@ export const VectorOutline = Theme.VectorOutline;
 export const VectorExpand = Theme.VectorExpand;
 export const VectorCollapse = Theme.VectorCollapse;
 export const VectorDownload = Theme.VectorDownload;
+export const SharableLink = Theme.SharableLink;

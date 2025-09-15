@@ -33,8 +33,16 @@ export const getDetailsOrder = (vc: any) => {
   if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
     return [];
   }
-  const type = vc?.type ? vc.type[1] : "default";
-  const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
+
+const isSdJwt: boolean = Boolean(vc.regularClaims && vc.disclosedClaims);
+
+  const credential = isSdJwt
+    ? { ...vc.regularClaims, ...vc.disclosedClaims }
+    : vc?.credentialSubject
+    ? vc.credentialSubject
+    : vc;
+  
+  const type = !isSdJwt && vc?.type ? vc.type[1] : vc.vct;
 
   switch (type) {
     case "InsuranceCredential":
@@ -49,7 +57,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "farmer":
-      return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key:any) => {
+      return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key: any) => {
         if (typeof key === "string") {
           return {
             key,

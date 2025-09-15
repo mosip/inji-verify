@@ -2,6 +2,7 @@ import React from "react";
 import { saveData } from "../../../../utils/misc";
 import {
   DocumentIcon,
+  SharableLink,
   VectorDownload,
   VectorExpand,
 } from "../../../../utils/theme-utils";
@@ -9,7 +10,7 @@ import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
 import { isRTL } from "../../../../utils/i18n";
-import { VC } from "../../../../types/data-types";
+import { SdJwtVC, VC } from "../../../../types/data-types";
 import VcDetailsGrid from "./VcDetailsGrid";
 
 function DisplayVcDetailView({
@@ -17,7 +18,7 @@ function DisplayVcDetailView({
   onExpand,
   className,
 }: {
-  vc: VC | Object;
+  vc: VC | SdJwtVC;
   onExpand: any;
   className?: string;
 }) {
@@ -36,7 +37,14 @@ function DisplayVcDetailView({
       >
         {vc ? (
           <div className="relative">
-            <VcDetailsGrid orderedDetails={orderedDetails} />
+            <VcDetailsGrid
+              orderedDetails={orderedDetails}
+              disclosedClaims={
+                "disclosedClaims" in vc
+                  ? (vc as SdJwtVC).disclosedClaims
+                  : undefined
+              }
+            />
             <div className="absolute inset-x-0 bottom-0 flex justify-end lg:justify-start px-4">
               <ActionButton
                 label={t("expand")}
@@ -50,6 +58,10 @@ function DisplayVcDetailView({
                 icon={<VectorDownload />}
                 positionClasses={`${buttonPosition} bottom-[10px]`}
               />
+            </div>
+            <div className="flex gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-gray-700 mb-3 w-[240px] lg:w-[320px]">
+              <SharableLink />
+              <span className="text-verySmallTextSize">{t("IconToolTip")}</span>
             </div>
           </div>
         ) : (

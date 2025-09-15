@@ -28,6 +28,7 @@ import { ReactComponent as VectorUpArrow } from "../assets/purpleTheme/vector-ar
 import { ReactComponent as VectorExpandIcon } from "../assets/purpleTheme/vector-expand.svg";
 import { ReactComponent as VectorCollapseIcon } from "../assets/purpleTheme/vector-collapse.svg";
 import { ReactComponent as VectorDownloadIcon } from "../assets/purpleTheme/vector-download.svg";
+import { ReactComponent as SharableLinkIcon } from "../assets/purpleTheme/sharable-link.svg";
 import ScannerOutline from "../assets/purpleTheme/scanner-outline.svg";
 import QrOutline from "../assets/purpleTheme/qr-code-outline.svg";
 import VectorOutline from "../assets/purpleTheme/vector-icon-outline.svg";
@@ -66,6 +67,7 @@ const purpleTheme = {
   VectorExpand: VectorExpandIcon,
   VectorCollapse: VectorCollapseIcon,
   VectorDownload: VectorDownloadIcon,
+  SharableLink: SharableLinkIcon,
 };
 
 export default purpleTheme;

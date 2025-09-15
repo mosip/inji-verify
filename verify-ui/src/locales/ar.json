@@ -47,7 +47,8 @@
     "credentialsRequested": "تم طلب أوراق الاعتماد",
     "walletSelectorTitle": "لوحة اختيار المحفظة",
     "walletSelectorDescription": "يرجى تحديد محفظة للمتابعة مع عرض تقديمي يمكن التحقق منه.",
-    "walletSearchPlaceholder": "محافظ البحث"
+    "walletSearchPlaceholder": "محافظ البحث",
+    "IconToolTip": "تشير الحقول بجانب هذا الرمز إلى أن المعلومات تمت مشاركتها بشكل انتقائي بواسطة حامل المحفظة."
   },
   "VerificationStepsContent": {
     "SCAN": {

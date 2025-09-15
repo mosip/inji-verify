@@ -11,13 +11,14 @@ import {
   qrReadInit,
 } from "../../../../redux/features/verification/verification.slice";
 import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
+import { SdJwtVC, VC } from "../../../../types/data-types";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
   const { method } = useVerificationFlowSelector((state) => ({ method: state.method }));
   const [isModalOpen, setModalOpen] = useState(false);
-  const [decodedClaims, setDecodedClaims] = useState<object>({});
-  const credentialType: string = vc?.type ? vc.type[1] : "verifiableCredential";
+  const [decodedClaims, setDecodedClaims] = useState<VC | SdJwtVC | null>(null);
+  const [credentialType, setCredentialType] = useState<string>("");
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   
@@ -36,9 +37,16 @@ const Result = () => {
     const fetchDecodedClaims = async () => {
       if (typeof vc === "string") {
         const claims = await decodeSdJwtToken(vc);
-        setDecodedClaims(claims);
+        setDecodedClaims(claims as SdJwtVC);
+        setCredentialType(claims.regularClaims.vct);
       } else {
-        setDecodedClaims(vc);
+        setDecodedClaims(vc as VC);
+        const typeEntry = vc.type[1];
+        if (typeof typeEntry === "string") {
+          setCredentialType(typeEntry);
+        } else if (typeof typeEntry === "object" && "_value" in typeEntry) {
+          setCredentialType(typeEntry._value);
+        }
       }
     };
     fetchDecodedClaims();
@@ -51,11 +59,13 @@ const Result = () => {
       </div>
       <div>
         <div className={`h-[3px] border-b-2 border-b-transparent`} />
-        <DisplayVcDetailView
-          vc={decodedClaims}
-          onExpand={() => setModalOpen(true)}
-          className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
-        />
+        {decodedClaims && (
+          <DisplayVcDetailView
+            vc={decodedClaims}
+            onExpand={() => setModalOpen(true)}
+            className={`h-auto rounded-t-0 rounded-b-lg overflow-y-auto mt-[-30px]`}
+          />
+        )}
         <div className="grid content-center justify-center">
           <Button
             title={t("Common:Button.verifyAnotherQrCode")}
@@ -64,13 +74,15 @@ const Result = () => {
           />
         </div>
       </div>
-      <DisplayVcDetailsModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        vc={decodedClaims}
-        status={vcStatus}
-        vcType={credentialType}
-      />
+      {decodedClaims && (
+        <DisplayVcDetailsModal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          vc={decodedClaims}
+          status={vcStatus}
+          vcType={credentialType}
+        />
+      )}
     </div>
   );
 };

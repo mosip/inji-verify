@@ -174,6 +174,11 @@ export type VC = {
   type: string[];
 };
 
+export type SdJwtVC = {
+  regularClaims: Record<string, any>;
+  disclosedClaims: Record<string, any>;
+};
+
 export type VCWrapper = {
   credential: VC
   credentialConfigurationId: string;

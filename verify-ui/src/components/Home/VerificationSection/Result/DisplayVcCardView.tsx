@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { convertToId, convertToTitleCase } from "../../../../utils/misc";
 import { VectorDown, VectorUp } from "../../../../utils/theme-utils";
-import { VpSubmissionResultInt } from "../../../../types/data-types";
+import { SdJwtVC, VC, VpSubmissionResultInt } from "../../../../types/data-types";
 import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
 import DisplayVcDetailView from "./DisplayVcDetailView";
 import { useTranslation } from "react-i18next";
+import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
 
 const backgroundColorMapping: any = {
   SUCCESS: "bg-[#ECFFF6]",
@@ -28,8 +29,32 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const [showDetailView, setShowDetailView] = useState(view);
   const [isModalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("Verify");
-  const credential = vc;
-  const credentialType: string = vc.type[1];
+  const [decodedClaims, setDecodedClaims] = useState<VC | SdJwtVC>();
+  const [credentialType, setCredentialType] = useState<string>("");
+
+  useEffect(() => {
+    const fetchDecodedClaims = async () => {
+      if (typeof vc === "string") {
+        const claims = await decodeSdJwtToken(vc);
+        setDecodedClaims(claims as SdJwtVC);
+        setCredentialType(claims.regularClaims.vct);
+      } else {
+        setDecodedClaims(vc as VC);
+        const typeEntry = vc.type[1];
+        if (typeof typeEntry === "string") {
+          setCredentialType(typeEntry);
+        } else if (
+          typeof typeEntry === "object" &&
+          typeEntry !== null &&
+          "_value" in typeEntry &&
+          typeof (typeEntry as { _value?: unknown })._value === "string"
+        ) {
+          setCredentialType((typeEntry as { _value: string })._value);
+        }
+      }
+    };
+    fetchDecodedClaims();
+  }, [vc]);
 
   return (
     <div>
@@ -64,11 +89,11 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         </div>
         {view === false && (showDetailView ? <VectorUp /> : <VectorDown />)}
       </button>
-      {showDetailView && (
+      {showDetailView && decodedClaims && (
         <div>
           <div className={`h-[3px] border-b-2 border-b-transparent`} />
           <DisplayVcDetailView
-            vc={credential}
+            vc={decodedClaims}
             onExpand={() => setModalOpen(true)}
             className={`${
               view ? "h-auto" : "h-[257px]"
@@ -76,13 +101,15 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
           />
         </div>
       )}
-      <DisplayVcDetailsModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        vc={credential}
-        status={vcStatus}
-        vcType={credentialType}
-      />
+      {decodedClaims && (
+        <DisplayVcDetailsModal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          vc={decodedClaims}
+          status={vcStatus}
+          vcType={credentialType}
+        />
+      )}
     </div>
   );
 }
