@@ -132,25 +132,31 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object ; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
-  );
+    selectedClaims.some((claim) => getCredentialType(vc.vc).includes(claim.type)));
 };
 
 export const calculateUnverifiedClaims = (
   originalSelectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ): claim[] => {
   return originalSelectedClaims.filter((claim) => {
-    return !verificationSubmissionResult.some((vcResult) => {
-      const vcTypes = vcResult.vc?.type || [];
-      return vcTypes.includes(claim.type);
-    });
+    return !verificationSubmissionResult.some((vcResult) => getCredentialType(vcResult.vc).includes(claim.type));
   });
 };
 
+
+export const getCredentialType = (vc: object): string[]  =>{
+  const credential = vc as any;
+  if ('type' in credential && Array.isArray(credential.type) && credential.type.length > 1) {
+    return credential.type;
+  } else if ('vct' in credential && typeof credential.vct === 'string') {
+    return [credential.vct];
+  }
+  return ["verifiableCredential"];
+}
 export const generateErrorMessage = (error: any): string => {
   return `We’re unable to complete your request due to ${error.errorMessage || error.errorCode}. Please contact support with the reference ID: ${error.transactionId} for further assistance.`
 }

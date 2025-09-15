@@ -7,6 +7,7 @@ import { Button } from "../commons/Button";
 import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import {useTranslation} from "react-i18next";
+import {getCredentialType} from "../../../../utils/commonUtils";
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
@@ -33,9 +34,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const { t } = useTranslation("Verify");
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
-    originalSelectedClaims.some((selectedVc) =>
-      verifiedVc.vc.type.includes(selectedVc.type)
-    )
+    originalSelectedClaims.some((selectedVc) => getCredentialType(verifiedVc.vc).includes(selectedVc.type))
   );
 
   const renderRequestCredentialsButton = (propClasses = "") => (

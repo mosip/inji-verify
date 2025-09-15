@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getVerifiableClaims, VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
-import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../utils/commonUtils";
+import {calculateUnverifiedClaims, calculateVerifiedClaims, getCredentialType} from "../../../utils/commonUtils";
 
 const PreloadedState: VerifyState = {
   isLoading: false,
@@ -79,8 +79,7 @@ const vpVerificationState = createSlice({
         ...newlyVerified.filter(
           (vc) =>
             !state.verificationSubmissionResult.some(
-              (existing) => existing.vc.type[1] === vc.vc.type[1]
-            )
+              (existing) => getCredentialType(existing.vc) === getCredentialType(vc.vc))
         ),
       ];
       state.verificationSubmissionResult = uniqueResult;

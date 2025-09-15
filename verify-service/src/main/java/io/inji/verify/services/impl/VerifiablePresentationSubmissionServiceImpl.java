@@ -15,11 +15,14 @@ import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
+import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
+import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import org.json.JSONTokener;
+
+import static io.inji.verify.utils.Utils.isSdJwt;
 
 @Service
 @Slf4j
@@ -53,9 +58,19 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
         log.info("Processing VP submission");
 
+        if (isSdJwt(vpSubmission.getVpToken())) {
+            VerificationResult verify = credentialsVerifier.verify(vpSubmission.getVpToken(), CredentialFormat.VC_SD_JWT);
+            if (!verify.getVerificationErrorCode().isEmpty()) {
+                log.info("SD JWT VP verification failed with error: {} and message: {}", verify.getVerificationErrorCode(), verify.getVerificationMessage());
+            }
+            return new VPTokenResultDto(
+                    transactionId,
+                    verify.getVerificationStatus() ? VPResultStatus.SUCCESS : VPResultStatus.FAILED,
+                    List.of(new VCResultDto(vpSubmission.getVpToken(), verify.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID)));
+        }
+
         List<VCResultDto> verificationResults = new ArrayList<>();
         List<VPVerificationStatus> vpVerificationStatuses = new ArrayList<>();
-
         try {
             Optional<String> error = Optional.ofNullable(vpSubmission.getError()).filter(e -> !e.isEmpty());
             if (error.isPresent()) {
@@ -69,36 +84,32 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
 
             Object vpTokenRaw = new JSONTokener(vpSubmission.getVpToken()).nextValue();
-            List<JSONObject> vpTokens = new ArrayList<>();
+            List<JSONObject> jsonVpTokens = new ArrayList<>();
+            List<String> sdJwtVpTokens = new ArrayList<>();
 
-            if (vpTokenRaw instanceof String) {
-                String decodedJson = new String(Base64.getUrlDecoder().decode((String) vpTokenRaw));
-                vpTokenRaw = new JSONTokener(decodedJson).nextValue();
-            }
-
-            if (vpTokenRaw instanceof JSONObject) {
-                vpTokens.add((JSONObject) vpTokenRaw);
-            } else if (vpTokenRaw instanceof JSONArray array) {
-                for (int i = 0; i < array.length(); i++) {
-                    Object item = array.get(i);
-
-                    if (item instanceof String) {
-                        String decodedJson = new String(Base64.getUrlDecoder().decode((String) item));
-                        item = new JSONTokener(decodedJson).nextValue();
-                    }
-
-                    if (item instanceof JSONObject) {
-                        vpTokens.add((JSONObject) item);
+            JSONArray vpTokenArray = normalizeToJsonArray(vpTokenRaw);
+            for (Object item : vpTokenArray) {
+                if (item instanceof String tokenString) {
+                    if (isSdJwt(tokenString)) {
+                        sdJwtVpTokens.add(tokenString);
                     } else {
-                        throw new IllegalArgumentException("Invalid item in vp_token array");
+                        try {
+                            String decodedJson = new String(Base64.getUrlDecoder().decode(tokenString));
+                            JSONObject jsonObject = new JSONObject(new JSONTokener(decodedJson));
+                            jsonVpTokens.add(jsonObject);
+                        } catch (Exception e) {
+                            log.info("vp_token not base64-encoded");
+                        }
                     }
+                } else if (item instanceof JSONObject jsonObject) {
+                    jsonVpTokens.add(jsonObject);
+                } else {
+                    throw new IllegalArgumentException("Invalid item in vp_token array: " + item.getClass().getName());
                 }
-            } else {
-                throw new IllegalArgumentException("Invalid vp_token format");
             }
 
             log.info("Processing VP verification");
-            for (JSONObject vpToken : vpTokens) {
+            for (JSONObject vpToken : jsonVpTokens) {
                 PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
                 vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
                 List<VCResultDto> vcResults = presentationVerificationResult.getVcResults().stream()
@@ -106,7 +117,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                         .toList();
                 verificationResults.addAll(vcResults);
             }
-
+            sdJwtVpTokens.forEach(sdJwtVpToken -> {
+                VerificationResult verificationResult = credentialsVerifier.verify(sdJwtVpToken, CredentialFormat.VC_SD_JWT);
+                verificationResults.add(new VCResultDto(sdJwtVpToken, verificationResult.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID));
+            });
             boolean combinedVerificationStatus = getCombinedVerificationStatus(vpVerificationStatuses, verificationResults);
             if (!combinedVerificationStatus) {
                 throw new VerificationFailedException();
@@ -157,5 +171,22 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             combinedVerificationStatus = combinedVerificationStatus && (verificationResult.getVerificationStatus() == VerificationStatus.SUCCESS);
         }
         return combinedVerificationStatus;
+    }
+
+    private JSONArray normalizeToJsonArray(Object rawToken) {
+        if (rawToken instanceof String tokenString) {
+            try {
+                String decodedJson = new String(Base64.getUrlDecoder().decode(tokenString));
+                return new JSONArray().put(new JSONObject(decodedJson));
+            } catch (IllegalArgumentException | JSONException e) {
+                return new JSONArray().put(tokenString);
+            }
+        } else if (rawToken instanceof JSONObject) {
+            return new JSONArray().put(rawToken);
+        } else if (rawToken instanceof JSONArray) {
+            return (JSONArray) rawToken;
+        } else {
+            throw new IllegalArgumentException("Invalid vp_token format: " + rawToken.getClass().getName());
+        }
     }
 }
