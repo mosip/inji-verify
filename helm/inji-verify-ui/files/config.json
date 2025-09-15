@@ -51,7 +51,7 @@
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
-          "ldp_vc": {
+          "ldp_vp": {
             "proof_type": [
               "RsaSignature2018"
             ]
@@ -61,7 +61,7 @@
           {
             "id": "id card credential",
             "format": {
-              "ldp_vc": {
+              "ldp_vp": {
                 "proof_type": [
                   "RsaSignature2018"
                 ]
@@ -92,7 +92,7 @@
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
-          "ldp_vc": {
+          "ldp_vp": {
             "proof_type": [
               "Ed25519Signature2018"
             ]
@@ -102,7 +102,7 @@
           {
             "id": "id card credential",
             "format": {
-              "ldp_vc": {
+              "ldp_vp": {
                 "proof_type": [
                   "Ed25519Signature2020"
                 ]
@@ -133,7 +133,7 @@
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
-          "ldp_vc": {
+          "ldp_vp": {
             "proof_type": [
               "Ed25519Signature2018"
             ]
@@ -143,7 +143,7 @@
           {
             "id": "id card credential",
             "format": {
-              "ldp_vc": {
+              "ldp_vp": {
                 "proof_type": [
                   "Ed25519Signature2020"
                 ]
@@ -215,7 +215,7 @@
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
-          "ldp_vc": {
+          "ldp_vp": {
             "proof_type": [
               "Ed25519Signature2020"
             ]
@@ -225,7 +225,7 @@
           {
             "id": "id card credential",
             "format": {
-              "ldp_vc": {
+              "ldp_vp": {
                 "proof_type": [
                   "Ed25519Signature2020"
                 ]
