@@ -8,6 +8,7 @@ import io.inji.verify.exception.TokenMatchingFailedException;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.exception.VerificationFailedException;
 import io.inji.verify.dto.result.VCResultDto;
+import io.inji.verify.exception.VpSubmissionError;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -59,7 +60,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             Optional<String> error = Optional.ofNullable(vpSubmission.getError()).filter(e -> !e.isEmpty());
             if (error.isPresent()) {
                 log.info("VP submission contains error");
-                return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, vpSubmission.getError() , vpSubmission.getErrorDescription());
+                throw new VpSubmissionError(vpSubmission.getError(), vpSubmission.getErrorDescription());
             }
 
             log.info("Processing VP token matching");
@@ -114,6 +115,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults, null, null);
         } catch (Exception e) {
             log.error("Failed to verify VP submission", e);
+            if (e instanceof VpSubmissionError) return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, ((VpSubmissionError) e).getErrorCode(), ((VpSubmissionError) e).getErrorDescription());
             return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, e.getClass().getSimpleName(), e.getMessage());
         }
     }
