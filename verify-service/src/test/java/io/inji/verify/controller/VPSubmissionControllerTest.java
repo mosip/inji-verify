@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public class VPSubmissionControllerTest {
 
@@ -89,5 +90,87 @@ public class VPSubmissionControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
                 .andExpect(status().isBadRequest());
     }
-}
 
+    @Test
+    public void testSubmitVP_BothVpTokenAndErrorMissing() throws Exception {
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("state", "testState"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Either 'vp_token' or 'error' must be provided, but not both."));
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_BothVpTokenAndErrorPresent() throws Exception {
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", "token")
+                        .param("error", "some_error")
+                        .param("state", "testState"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Either 'vp_token' or 'error' must be provided, but not both."));
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_PresentationSubmissionFailsValidation() throws Exception {
+        String vpToken = "testToken";
+        String presentationSubmission = "{\"id\":\"\"}"; // id blank, should fail @NotBlank
+        String state = "testState";
+        PresentationSubmissionDto invalidDto = new PresentationSubmissionDto("", "", new ArrayList<>());
+        when(gson.fromJson(presentationSubmission, PresentationSubmissionDto.class)).thenReturn(invalidDto);
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", vpToken)
+                        .param("presentation_submission", presentationSubmission)
+                        .param("state", state))
+                .andExpect(status().isBadRequest());
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_OnlyErrorPresent() throws Exception {
+        String error = "some_error";
+        String state = "testState";
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("error", error)
+                        .param("state", state))
+                .andExpect(status().isOk());
+        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_MissingState() throws Exception {
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", "token"))
+                .andExpect(status().isBadRequest());
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_BlankState() throws Exception {
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", "token")
+                        .param("state", " "))
+                .andExpect(status().isBadRequest());
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
+    }
+
+    @Test
+    public void testSubmitVP_OnlyVpTokenPresent() throws Exception {
+        String vpToken = "testToken";
+        String state = "testState";
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", vpToken)
+                        .param("state", state))
+                .andExpect(status().isOk());
+        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+    }
+}
