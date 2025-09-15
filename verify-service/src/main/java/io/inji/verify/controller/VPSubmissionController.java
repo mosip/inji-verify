@@ -22,6 +22,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = Constants.RESPONSE_SUBMISSION_URI_ROOT)
 @Slf4j
 public class VPSubmissionController {
@@ -53,7 +54,7 @@ public class VPSubmissionController {
         Optional<PresentationSubmissionDto> presentationSubmissionDto =
                 Optional.ofNullable(presentationSubmission).map(submission -> gson.fromJson(submission, PresentationSubmissionDto.class));
 
-        PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElseGet(() -> null);
+        PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElse(null);
 
         if (presentationSubmissionDto.isPresent()) {
             Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
