@@ -8,18 +8,9 @@ export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
 
-export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
-
 export type VerificationStep = {
   label: string;
   description: string;
-};
-
-export type CardPositioning = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
 };
 
 export type AlertSeverity =
@@ -68,8 +59,6 @@ export type OvpFlowData = {
   vpToken?: any;
 };
 
-export type VerificationTrigger = {};
-
 export type VerificationResult = {
   vc?: VC;
   vcStatus?: VcStatus;
@@ -86,8 +75,6 @@ export interface VerificationStepsContentType {
   VERIFY: VerificationStep[];
   TO_BE_SELECTED: VerificationStep[];
 }
-
-export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface claim {
   name: string;
@@ -174,16 +161,6 @@ export type VC = {
   type: string[];
 };
 
-export type VCWrapper = {
-  credential: VC
-  credentialConfigurationId: string;
-  issuerLogo: {
-    url: string;
-    alt_text: string;
-  };
-  wellKnown: string;
-};
-
 export type credentialSubject = {
   benefits: string[];
   gender: string;
@@ -198,11 +175,7 @@ export type credentialSubject = {
   policyExpiresOn: string;
 };
 
-export interface fetchStatusResponse {
-  status: string;
+export enum ErrorMessageTemplate {
+  REASON = "We’re unable to complete your request due to <error>. ",
+  ASSISTANCE = "Please contact support with the reference ID: <txnId> for further assistance."
 }
-
-export type Detail = {
-  key: string;
-  value: string;
-};
