@@ -68,6 +68,8 @@
     "@emotion/styled": "^11.14.0",
     "@mosip/pixelpass": "^0.6.0",
     "@mui/material": "^7.1.0",
+    "@noble/hashes": "^2.0.0",
+    "@sd-jwt/decode": "^0.15.0",
     "ajv": "^8.17.1",
     "pdfjs-dist": "^5.2.133",
     "qrcode.react": "^4.1.0",
