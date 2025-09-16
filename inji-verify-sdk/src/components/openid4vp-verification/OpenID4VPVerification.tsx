@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
+  Error,
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
@@ -30,7 +31,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   onError,
   clientId,
   isEnableSameDeviceFlow = true,
-  errorMessageTemplate,
 }) => {
   const [txnId, setTxnId] = useState<string | null>(transactionId || null);
   const [reqId, setReqId] = useState<string | null>(null);
@@ -95,7 +95,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setLoading(true);
     try {
       if (onVPProcessed && txnId) {
-        const vcResults = await vpResult(verifyServiceUrl, txnId, errorMessageTemplate);
+        const vcResults = await vpResult(verifyServiceUrl, txnId);
         const VPResult: VerificationResults = vcResults?.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
             vc: JSON.parse(vcResult.vc),
@@ -109,11 +109,19 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         onVPReceived(txnId);
         resetState();
       }
-    } catch (error) {
-      onError(error as Error);
+    } catch (error: any) {
+      if (error.errorCode) {
+        onError({
+          errorCode: error.errorCode,
+          errorMessage: error.errorDescription,
+          transactionId: error.transactionId
+        });
+      } else {
+        onError(error as Error);
+      }
       resetState();
     }
-  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError, errorMessageTemplate]);
+  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
 
   const fetchVPStatus = useCallback(async () => {
     try {
@@ -124,7 +132,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           fetchVPStatus();
         } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult();
-        } else if (response.status === "SERVICE_ERROR") {
+        } else if (response.status === "TIMEOUT") {
           fetchVPStatus();
         } else if (response.status === "EXPIRED") {
           resetState();
@@ -134,7 +142,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     } catch (error) {
       setLoading(false);
       resetState();
-      onError(error as Error);
+      onError({ errorMessage: typeof error === "string" ? error : (error instanceof Error ? error.message : JSON.stringify(error)) });
     }
   }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
 
@@ -154,7 +162,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       setReqId(data.requestId);
       return getPresentationDefinitionParams(data);
     } catch (error) {
-      onError(error as Error);
+      onError({ errorMessage: typeof error === "string" ? error : (error instanceof Error ? error.message : JSON.stringify(error)) });
       resetState();
     }
   }, [
