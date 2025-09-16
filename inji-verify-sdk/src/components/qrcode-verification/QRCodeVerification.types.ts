@@ -89,9 +89,3 @@ export interface vcSubmissionBody {
   vc: any;
   transactionId?: string;
 }
-
-export type AppError = {
-  errorMessage: string;
-  errorCode?: string;
-  transactionId?: string | null;
-};
