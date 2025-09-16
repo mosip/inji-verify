@@ -134,7 +134,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     } catch (error) {
       setLoading(false);
       resetState();
-      onError({ errorMessage: typeof error === "string" ? error : (error instanceof Error ? error.message : JSON.stringify(error)) });
+      onError(error as AppError);
     }
   }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
 
@@ -154,7 +154,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       setReqId(data.requestId);
       return getPresentationDefinitionParams(data);
     } catch (error) {
-      onError({ errorMessage: typeof error === "string" ? error : (error instanceof Error ? error.message : JSON.stringify(error)) });
+      onError(error as AppError);
       resetState();
     }
   }, [
