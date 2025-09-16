@@ -9,6 +9,7 @@ import {
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css";
+import {AppError} from "../qrcode-verification/QRCodeVerification.types";
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
@@ -109,16 +110,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         onVPReceived(txnId);
         resetState();
       }
-    } catch (error: any) {
-      if (error.error) {
-        onError({
-          errorCode: error.error,
-          errorMessage: error.errorDescription,
-          transactionId: error.transactionId
-        });
-      } else {
-        onError(error as Error);
-      }
+    } catch (error) {
+      onError(error as AppError);
       resetState();
     }
   }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
