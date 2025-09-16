@@ -1,15 +1,16 @@
 import React from "react";
 import { convertToId, convertToTitleCase, getDisplayValue } from "../../../../utils/misc";
 import { SharableLink } from "../../../../utils/theme-utils";
+import { AnyVc } from "../../../../types/data-types";
 
 interface VcDetailsGridProps {
   orderedDetails: { key: string; value: any }[];
-  disclosedClaims?: Record<string, any>;
+  vc?: AnyVc;
 }
 
 const VcDetailsGrid: React.FC<VcDetailsGridProps> = ({
   orderedDetails,
-  disclosedClaims = {},
+  vc ,
 }) => {
   const BIOMETRIC_KEYS  = ["face", "portrait", "signature_usual_mark"];
 
@@ -28,9 +29,12 @@ const VcDetailsGrid: React.FC<VcDetailsGridProps> = ({
         const isImage = BIOMETRIC_KEYS.includes(label.key);
         const isEven = index % 2 === 0;
         const normalizeKey = (key: string) => key.toLowerCase().trim();
-        const isDisclosed = Object.keys(disclosedClaims).some(
-          (key) => normalizeKey(key) === normalizeKey(label.key)
-        );
+        const isDisclosed =
+          vc && "disclosedClaims" in vc && vc.disclosedClaims
+            ? Object.keys(vc.disclosedClaims).some(
+                (key) => normalizeKey(key) === normalizeKey(label.key)
+              )
+            : false;
 
         return (
           <div

@@ -1,4 +1,4 @@
-import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
+import { claim, credentialSubject, LdpVc, VcStatus } from "../types/data-types";
 import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any): string | undefined => {
@@ -132,7 +132,7 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
     selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
@@ -141,7 +141,7 @@ export const calculateVerifiedClaims = (
 
 export const calculateUnverifiedClaims = (
   originalSelectedClaims: claim[],
-  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
 ): claim[] => {
   return originalSelectedClaims.filter((claim) => {
     return !verificationSubmissionResult.some((vcResult) => {

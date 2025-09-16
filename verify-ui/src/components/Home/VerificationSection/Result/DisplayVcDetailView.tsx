@@ -10,7 +10,7 @@ import ActionButton from "../commons/ActionButton";
 import { useTranslation } from "react-i18next";
 import { getDetailsOrder } from "../../../../utils/commonUtils";
 import { isRTL } from "../../../../utils/i18n";
-import { SdJwtVC, VC } from "../../../../types/data-types";
+import { AnyVc } from "../../../../types/data-types";
 import VcDetailsGrid from "./VcDetailsGrid";
 
 function DisplayVcDetailView({
@@ -18,7 +18,7 @@ function DisplayVcDetailView({
   onExpand,
   className,
 }: {
-  vc: VC | SdJwtVC;
+  vc: AnyVc;
   onExpand: any;
   className?: string;
 }) {
@@ -39,11 +39,7 @@ function DisplayVcDetailView({
           <div className="relative">
             <VcDetailsGrid
               orderedDetails={orderedDetails}
-              disclosedClaims={
-                "disclosedClaims" in vc
-                  ? (vc as SdJwtVC).disclosedClaims
-                  : undefined
-              }
+              vc={vc}
             />
             <div className="absolute inset-x-0 bottom-0 flex justify-end lg:justify-start px-4">
               <ActionButton
