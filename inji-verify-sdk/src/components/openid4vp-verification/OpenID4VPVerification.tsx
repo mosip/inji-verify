@@ -110,9 +110,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         resetState();
       }
     } catch (error: any) {
-      if (error.errorCode) {
+      if (error.error) {
         onError({
-          errorCode: error.errorCode,
+          errorCode: error.error,
           errorMessage: error.errorDescription,
           transactionId: error.transactionId
         });
