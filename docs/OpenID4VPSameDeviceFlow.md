@@ -107,5 +107,5 @@ openid4vp://authorize?token=xyz123
 
 ```
 Example using Domain-bound Universal Links/App:
-https://wallet.example.com/authorization_request?token=xyz123
+injiwallet://authorize?token=xyz123
 ```
