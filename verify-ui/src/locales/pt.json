@@ -47,7 +47,8 @@
     "credentialsRequested": "Credenciais foram solicitadas",
     "walletSelectorTitle": "Painel de seleção de carteira",
     "walletSelectorDescription": "Selecione uma carteira para prosseguir com a apresentação verificável.",
-    "walletSearchPlaceholder": "Carteiras de pesquisa"
+    "walletSearchPlaceholder": "Carteiras de pesquisa",
+    "IconToolTip": "Os campos ao lado deste ícone indicam que as informações foram compartilhadas seletivamente pelo suporte da carteira."
   },
   "VerificationStepsContent": {
     "SCAN": {

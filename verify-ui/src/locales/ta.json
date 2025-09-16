@@ -47,7 +47,8 @@
     "credentialsRequested": "சான்றுகள் கோரப்பட்டன",
     "walletSelectorTitle": "பணப்பையை தேர்வு குழு",
     "walletSelectorDescription": "சரிபார்க்கக்கூடிய விளக்கக்காட்சியைத் தொடர ஒரு பணப்பையைத் தேர்ந்தெடுக்கவும்.",
-    "walletSearchPlaceholder": "பணப்பைகளைத் தேடுங்கள்"
+    "walletSearchPlaceholder": "பணப்பைகளைத் தேடுங்கள்",
+    "IconToolTip": "இந்த ஐகானுக்கு அடுத்துள்ள புலங்கள், பணப்பையை வைத்திருப்பவரால் தகவல் தேர்ந்தெடுத்த முறையில் பகிரப்பட்டதைக் குறிக்கிறது."
   },
   "VerificationStepsContent": {
     "SCAN": {

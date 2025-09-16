@@ -47,7 +47,8 @@
     "credentialsRequested": "លិខិតសម្គាល់ត្រូវបានស្នើសុំ",
     "walletSelectorTitle": "បន្ទះជ្រើសរើសកាបូប",
     "walletSelectorDescription": "សូមជ្រើសរើសកាបូបដើម្បីបន្តការធ្វើបទបង្ហាញដែលអាចផ្ទៀងផ្ទាត់បាន។",
-    "walletSearchPlaceholder": "ស្វែងរកកាបូប"
+    "walletSearchPlaceholder": "ស្វែងរកកាបូប",
+    "IconToolTip": "វាលនៅជាប់រូបតំណាងនេះបង្ហាញថាព័ត៌មានត្រូវបានចែករំលែកដោយម្ចាស់កាបូប។"
   },
   "VerificationStepsContent": {
     "SCAN": {

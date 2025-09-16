@@ -47,7 +47,8 @@
     "credentialsRequested": "Credentials were requested",
     "walletSelectorTitle": "Wallet Selection Panel",
     "walletSelectorDescription": "Please select a wallet to proceed with Verifiable Presentation.",
-    "walletSearchPlaceholder": "Search Wallets"
+    "walletSearchPlaceholder": "Search Wallets",
+    "IconToolTip": "Fields next to this icon indicate that the information was shared selectively by the wallet holder."
   },
   "VerificationStepsContent": {
     "SCAN": {

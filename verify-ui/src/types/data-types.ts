@@ -71,7 +71,7 @@ export type OvpFlowData = {
 export type VerificationTrigger = {};
 
 export type VerificationResult = {
-  vc?: VC;
+  vc?: AnyVc;
   vcStatus?: VcStatus;
 };
 
@@ -119,7 +119,7 @@ export interface PresentationDefinition {
 }
 
 export type VpSubmissionResultInt = {
-  vc: VC;
+  vc: LdpVc;
   vcStatus: VcStatus;
   view?: boolean;
 };
@@ -157,7 +157,7 @@ export type QrCodeProps = {
   status: "SUCCESS" | "EXPIRED" | "INVALID";
 };
 
-export type VC = {
+export type LdpVc = {
   "@context": string[];
   credentialSubject: credentialSubject;
   expirationDate: string;
@@ -174,8 +174,16 @@ export type VC = {
   type: string[];
 };
 
+export type SdJwtVc = {
+  regularClaims: Record<string, any>;
+  disclosedClaims: Record<string, any>;
+};
+
+export type AnyVc = LdpVc | SdJwtVc;
+
+
 export type VCWrapper = {
-  credential: VC
+  credential: LdpVc;
   credentialConfigurationId: string;
   issuerLogo: {
     url: string;

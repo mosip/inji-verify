@@ -28,6 +28,7 @@ import { ReactComponent as VectorUpArrow } from "../assets/defaultTheme/vector-a
 import { ReactComponent as VectorExpandIcon } from "../assets/defaultTheme/vector-expand.svg";
 import { ReactComponent as VectorCollapseIcon } from "../assets/defaultTheme/vector-collapse.svg";
 import { ReactComponent as VectorDownloadIcon } from "../assets/defaultTheme/vector-download.svg";
+import { ReactComponent as SharableLinkIcon } from "../assets/defaultTheme/sharable-link.svg";
 import ScannerOutline from "../assets/defaultTheme/scanner-outline.svg";
 import QrOutline from "../assets/defaultTheme/qr-code-outline.svg";
 import VectorOutline from "../assets/defaultTheme/vector-icon-outline.svg";
@@ -66,6 +67,7 @@ const defaultTheme = {
   VectorExpand: VectorExpandIcon,
   VectorCollapse: VectorCollapseIcon,
   VectorDownload: VectorDownloadIcon,
+  SharableLink: SharableLinkIcon,
 };
 
 export default defaultTheme;
