@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { convertToId, convertToTitleCase } from "../../../../utils/misc";
 import { VectorDown, VectorUp } from "../../../../utils/theme-utils";
-import { SdJwtVC, VC, VpSubmissionResultInt } from "../../../../types/data-types";
+import { VpSubmissionResultInt } from "../../../../types/data-types";
 import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
 import DisplayVcDetailView from "./DisplayVcDetailView";
 import { useTranslation } from "react-i18next";
@@ -29,28 +29,18 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
   const [showDetailView, setShowDetailView] = useState(view);
   const [isModalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("Verify");
-  const [decodedClaims, setDecodedClaims] = useState<VC | SdJwtVC>();
+  const [claims, setClaims] = useState<any>();
   const [credentialType, setCredentialType] = useState<string>("");
 
   useEffect(() => {
     const fetchDecodedClaims = async () => {
       if (typeof vc === "string") {
         const claims = await decodeSdJwtToken(vc);
-        setDecodedClaims(claims as SdJwtVC);
+        setClaims(claims);
         setCredentialType(claims.regularClaims.vct);
       } else {
-        setDecodedClaims(vc as VC);
-        const typeEntry = vc.type[1];
-        if (typeof typeEntry === "string") {
-          setCredentialType(typeEntry);
-        } else if (
-          typeof typeEntry === "object" &&
-          typeEntry !== null &&
-          "_value" in typeEntry &&
-          typeof (typeEntry as { _value?: unknown })._value === "string"
-        ) {
-          setCredentialType((typeEntry as { _value: string })._value);
-        }
+        setClaims(vc);
+        setCredentialType(vc.type[1]);
       }
     };
     fetchDecodedClaims();
@@ -89,11 +79,11 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         </div>
         {view === false && (showDetailView ? <VectorUp /> : <VectorDown />)}
       </button>
-      {showDetailView && decodedClaims && (
+      {showDetailView && claims && (
         <div>
           <div className={`h-[3px] border-b-2 border-b-transparent`} />
           <DisplayVcDetailView
-            vc={decodedClaims}
+            vc={claims}
             onExpand={() => setModalOpen(true)}
             className={`${
               view ? "h-auto" : "h-[257px]"
@@ -101,11 +91,11 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
           />
         </div>
       )}
-      {decodedClaims && (
+      {claims && (
         <DisplayVcDetailsModal
           isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
-          vc={decodedClaims}
+          vc={claims}
           status={vcStatus}
           vcType={credentialType}
         />

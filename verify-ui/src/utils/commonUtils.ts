@@ -1,5 +1,5 @@
 import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
-import { getVCRenderOrders } from "./config";
+import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any): string | undefined => {
   if (credentialElement === null || credentialElement === undefined) {
@@ -34,15 +34,13 @@ export const getDetailsOrder = (vc: any) => {
     return [];
   }
 
-const isSdJwt: boolean = Boolean(vc.regularClaims && vc.disclosedClaims);
+  const credential =
+    vc?.regularClaims && vc?.disclosedClaims
+      ? { ...vc.regularClaims, ...vc.disclosedClaims }
+      : vc?.credentialSubject ?? vc;
 
-  const credential = isSdJwt
-    ? { ...vc.regularClaims, ...vc.disclosedClaims }
-    : vc?.credentialSubject
-    ? vc.credentialSubject
-    : vc;
-  
-  const type = !isSdJwt && vc?.type ? vc.type[1] : vc.vct;
+  const type =
+    vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
 
   switch (type) {
     case "InsuranceCredential":
@@ -98,15 +96,28 @@ const isSdJwt: boolean = Boolean(vc.regularClaims && vc.disclosedClaims);
         return { key, value: "N/A" };
       });
     case "IncomeTaxAccountCredential":
-      return getVCRenderOrders().IncomeTaxAccountCredentialRenderOrder.map((key: any) => {
-        if (key in credential) {
-          return {
-            key,
-            value: credential[key as keyof credentialSubject] || "N/A",
-          };
+      return getVCRenderOrders().IncomeTaxAccountCredentialRenderOrder.map(
+        (key: any) => {
+          if (key in credential) {
+            return {
+              key,
+              value: credential[key as keyof credentialSubject] || "N/A",
+            };
+          }
+          return { key, value: "N/A" };
         }
-        return { key, value: "N/A" };
-      });
+      );
+    case "SdJwtVC":
+      return Object.keys(credential)
+        .filter(
+          (key) =>
+            key !== "id" &&
+            credential[key] !== null &&
+            credential[key] !== undefined &&
+            credential[key] !== "" &&
+            !EXCLUDE_KEYS_SD_JWT_VC.includes(key.toLowerCase())
+        )
+        .map((key) => ({ key, value: getValue(credential[key]) }));
     default:
       return Object.keys(credential)
         .filter((key) =>

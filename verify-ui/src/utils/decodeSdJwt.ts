@@ -1,22 +1,6 @@
 import { decodeSdJwt } from "@sd-jwt/decode";
 import { digest } from "@sd-jwt/crypto-browser";
 
-const EXCLUDE_KEYS = [
-  "cnf",
-  "iss",
-  "iat",
-  "nbf",
-  "exp",
-  "jti",
-  "sub",
-  "ssn",
-  "_sd_alg",
-  "_sd",
-  "@context",
-  "issuer",
-  "type",
-].map((key) => key.toLowerCase());
-
 export const decodeSdJwtToken = async (
   sdjwt: string
 ): Promise<{
@@ -32,7 +16,7 @@ export const decodeSdJwtToken = async (
       const key = (disclosure as any).key;
       const value = (disclosure as any).value;
 
-      if (key && !EXCLUDE_KEYS.includes(String(key).toLowerCase())) {
+      if (key) {
         disclosedClaims[key] = value;
       }
     } catch (e) {
@@ -42,7 +26,7 @@ export const decodeSdJwtToken = async (
 
   const regularClaims = Object.fromEntries(
     Object.entries(decodedSdJwt.jwt.payload).flatMap(([key, value]) => {
-      if (EXCLUDE_KEYS.includes(key.toLowerCase()) || disclosedClaims[key]) {
+      if (disclosedClaims[key]) {
         return [];
       }
 
@@ -52,9 +36,7 @@ export const decodeSdJwtToken = async (
         value !== null
       ) {
         return Object.entries(value).filter(
-          ([subKey]) =>
-            !EXCLUDE_KEYS.includes(subKey.toLowerCase()) &&
-            !disclosedClaims[subKey]
+          ([subKey]) => !disclosedClaims[subKey]
         );
       }
 
