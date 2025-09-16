@@ -158,7 +158,7 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      * Callback triggered when an error occurs during the verification process.
      * This is a required field to ensure proper error handling.
      */
-    onError: (error: Error) => void;
+    onError: (error: AppError) => void;
   };
 
 export type AppError = {
