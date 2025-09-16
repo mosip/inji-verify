@@ -29,7 +29,20 @@ paths:
   /vp-request:
     post:
       summary: Create a new verification request
-      description: This endpoint is used to initiate a verifiable presentation (VP) request. It's the first step a verifier takes to ask a wallet to present credentials. The request body must include a clientId and either a presentationDefinitionId (referencing a pre-existing definition) or a full presentationDefinition object. The response provides the necessary information for a client application to build an authorization URL, which can then be used to generate a QR code for cross-device or same-device flows. For a direct post flow, the authorizationDetails object is returned directly.
+      description: | 
+        This endpoint is used to initiate a verifiable presentation (VP) request. 
+        It's the first step a verifier takes to ask a wallet to present credentials.
+        The request body must include a `clientId` and either:
+        - A `presentationDefinitionId` (referencing a pre-existing definition), or
+        - A full `presentationDefinition` object. 
+        
+        The response from this endpoint is used by the UI application to generate a QR code, which the wallet consumes in a cross-device flow. As of version *0.14.x*, the response will include a mix of `camelCase` and `snake_case` attributes. It is the responsibility of the UI application to convert `snake_case` attributes before generating the QR code.
+        
+        The response will contain the Authorization Request in one of two ways:
+        - **By value** (the full request object), or
+        - **By reference** (`request_uri`).
+        - In *0.13.x*, the Authorization Request was always provided by value. In this case, the `clientId` could simply be the client’s name.
+        - From *0.14.x* onward, the endpoint supports Authorization Request by reference (`request_uri`). For this, the `clientId` must be a valid DID URL of the verifier.
       operationId: createVPRequest
       tags:
         - VP Request Management
@@ -44,7 +57,7 @@ paths:
               presentationDefinitionId: age_verification
       responses:
         '201':
-          description: The VP Request was created successfully. The response includes a transactionId and requestId, along with either the full authorizationDetails for a direct post flow or a requestUri for a cross-device flow.
+          description: The VP Request was created successfully. The response includes a transactionId and requestId, along with either the full authorizationDetails or a requestUri.
           content:
             application/json:
               schema:
@@ -52,8 +65,12 @@ paths:
                   - $ref: '#/components/schemas/VPRequestResponse'
                   - $ref: '#/components/schemas/VPRequestResponseByReference'
               examples:
-                direct_post_flow:
-                  summary: Example for By Value
+                by_value:
+                  summary: >-
+                    In this flow the wallet can receive the entire request payload directly. 
+                    All necessary authorization details, including the presentation definition,
+                    nonce, and responseUri, are provided in a single API response, eliminating
+                    the need for the wallet to make a separate call to fetch the request.
                   value:
                     transactionId: txn_f82f281e-8d96-419b-b413-5a0459739a7b
                     requestId: req_6d538e1b-2615-4927-bfd2-094e9f73f2a1
@@ -78,8 +95,12 @@ paths:
                                     minimum: 18
                       iat: 1752838929
                     expiresAt: 1752838929
-                cross_device_flow:
-                  summary: Example for By Reference
+                by_reference:
+                  summary: >-
+                    Instead of the full payload, the response provides a `requestUri` which
+                    the wallet must resolve to retrieve the authorization details. This keeps the
+                    QR code payload small and enables more complex or larger presentation definitions.
+                    This feature is available only from Inji Verify 0.14.0
                   value:
                     transactionId: 'urn:uuid:f82f281e-8d96-419b-b413-5a0459739a7b'
                     requestId: 'urn:uuid:6d538e1b-2615-4927-bfd2-094e9f73f2a1'
@@ -998,7 +1019,3 @@ components:
           $ref: '#/components/schemas/verificationStatus'
           description: The verification status of the specific VC.
           example: SUCCESS
-  securitySchemes:
-    ClientIdSecret:
-      type: http
-      scheme: basic
