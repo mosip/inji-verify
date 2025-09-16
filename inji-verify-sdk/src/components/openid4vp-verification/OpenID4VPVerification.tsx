@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  Error,
+  AppError,
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
@@ -9,7 +9,6 @@ import {
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css";
-import {AppError} from "../qrcode-verification/QRCodeVerification.types";
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;

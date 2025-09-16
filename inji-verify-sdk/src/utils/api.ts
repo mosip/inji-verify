@@ -1,10 +1,9 @@
 import {
   VPRequestBody,
   PresentationDefinition,
-  QrData,
+  QrData, AppError,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
 import {
-  AppError,
   vcSubmissionBody
 } from "../components/qrcode-verification/QRCodeVerification.types";
 
