@@ -161,4 +161,8 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
     onError: (error: Error) => void;
   };
 
-export type Error = ({errorCode?: string; errorMessage: string; transactionId?: string | null});
+export type AppError = {
+  errorMessage: string;
+  errorCode?: string;
+  transactionId?: string | null;
+};
