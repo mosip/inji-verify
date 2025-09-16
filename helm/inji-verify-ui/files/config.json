@@ -2,8 +2,8 @@
   "verifiableClaims": [
     {
       "logo": "/assets/cert.png",
-      "name": "SD JWT Email Pass",
-      "type": "EmailPass",
+      "name": "SD JWT PID (Talao)",
+      "type": "eu.europa.ec.eudi.pid.1",
       "essential": true,
       "isAuthRequestEmbedded": false,
       "definition": {
