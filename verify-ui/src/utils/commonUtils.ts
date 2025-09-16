@@ -39,8 +39,7 @@ export const getDetailsOrder = (vc: any) => {
       ? { ...vc.regularClaims, ...vc.disclosedClaims }
       : vc?.credentialSubject ?? vc;
 
-  const type =
-    vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
+  const type = getCredentialType(vc)[0];
 
   switch (type) {
     case "InsuranceCredential":
@@ -108,6 +107,7 @@ export const getDetailsOrder = (vc: any) => {
         }
       );
     case "SdJwtVC":
+    case "eu.europa.ec.eudi.pid.1":
       return Object.keys(credential)
         .filter(
           (key) =>
