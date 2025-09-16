@@ -36,7 +36,7 @@ paths:
         - A `presentationDefinitionId` (referencing a pre-existing definition), or
         - A full `presentationDefinition` object. 
         
-        The response from this endpoint is used by the UI application to generate a QR code, which the wallet consumes in a cross-device flow. As of version *0.14.x*, the response will include a mix of `camelCase` and `snake_case` attributes. It is the responsibility of the UI application to convert `snake_case` attributes before generating the QR code.
+        The response from this endpoint is used by the UI application to generate a QR code, which the wallet consumes. As of version *0.14.x*, the response will include a mix of `camelCase` and `snake_case` attributes. It is the responsibility of the UI application to convert `snake_case` attributes before generating the QR code.
         
         The response will contain the Authorization Request in one of two ways:
         - **By value** (the full request object), or
@@ -113,7 +113,7 @@ paths:
   '/vp-request/{requestId}':
     get:
       summary: Get VP Request JWT
-      description: This endpoint allows a client to retrieve the Verifiable Presentation (VP) request in its JSON Web Token (JWT) format. This is particularly useful for cross-device flows where the wallet needs to fetch the request details from a URI.
+      description: This endpoint allows a client to retrieve the Verifiable Presentation (VP) request in its JSON Web Token (JWT) format. This is particularly useful for cross-device flows where the wallet needs to fetch the request details from a URI. This is introduced in version *0.14.x* to support Authorization Request by reference.
       operationId: getVPRequestJwt
       tags:
         - VP Request Management
