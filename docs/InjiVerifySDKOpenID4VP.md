@@ -15,7 +15,7 @@ sequenceDiagram
     OPENID4VP UI Component->>Verify Backend: Create a Authorization Request (verifyServiceUrl/vp-request) 
     Verify Backend--)Verify Backend: Process the request,<br> Generate txnId if not provided, <br> create and return Authorization Request response
     Verify Backend->>OPENID4VP UI Component: Authorization Request Response
-    OPENID4VP UI Component--)OPENID4VP UI Component: Convert Authorization Request parameters to `snake_case` as per OID4VP spec and construct Final Auth Request
+    OPENID4VP UI Component--)OPENID4VP UI Component: Convert Authorization Request parameters to `snake_case` as per OPENID4VP spec and construct Final Auth Request
     OPENID4VP UI Component--)OPENID4VP UI Component: Generate QR Code with response
     OPENID4VP UI Component--)OPENID4VP UI Component: Polling Status verifyServiceUrl/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
     Wallet--)Wallet: Scan QR Code
