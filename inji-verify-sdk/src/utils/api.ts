@@ -137,11 +137,7 @@ export const vpResult = async (url: string, txnId: string) => {
     if (response.status !== 200) throw new Error("Failed to fetch VP result");
     const data = await response.json();
     if (data.error) {
-      throw {
-        errorCode: data.error,
-        errorDescription: data.errorDescription,
-        transactionId: data.transactionId,
-      };
+      throw data;
     }
     return data.vcResults;
   } catch (error) {
