@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getVerifiableClaims, VerificationSteps } from "../../../utils/config";
 import { VCShareType, VerifyState } from "../../../types/data-types";
-import { calculateUnverifiedClaims, calculateVerifiedClaims } from "../../../utils/commonUtils";
+import {calculateUnverifiedClaims, calculateVerifiedClaims, getCredentialType} from "../../../utils/commonUtils";
 
 const PreloadedState: VerifyState = {
   isLoading: false,
@@ -24,11 +24,6 @@ const PreloadedState: VerifyState = {
     id: "c4822b58-7fb4-454e-b827-f8758fe27f9a",
     purpose:
       "Relying party is requesting your digital ID for the purpose of Self-Authentication",
-    format: {
-      ldp_vc: {
-        proof_type: ["Ed25519Signature2020"],
-      },
-    },
     input_descriptors: [] as any[],
   }  
 };
@@ -84,8 +79,7 @@ const vpVerificationState = createSlice({
         ...newlyVerified.filter(
           (vc) =>
             !state.verificationSubmissionResult.some(
-              (existing) => existing.vc.type[1] === vc.vc.type[1]
-            )
+              (existing) => getCredentialType(existing.vc) === getCredentialType(vc.vc))
         ),
       ];
       state.verificationSubmissionResult = uniqueResult;

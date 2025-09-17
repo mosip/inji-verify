@@ -9,6 +9,7 @@ import {
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css";
+import {isSdJwt} from "../../utils/utils";
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
@@ -98,7 +99,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         const vcResults = await vpResult(verifyServiceUrl, txnId);
         const VPResult: VerificationResults = vcResults?.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
-            vc: JSON.parse(vcResult.vc),
+            vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
             vcStatus: vcResult.verificationStatus,
           })
         );

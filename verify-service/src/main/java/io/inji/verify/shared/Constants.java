@@ -2,6 +2,7 @@ package io.inji.verify.shared;
 
 import io.inji.verify.dto.client.LdpVp;
 import io.inji.verify.dto.client.VpFormats;
+import io.inji.verify.dto.client.SdJwt;
 
 import java.util.Arrays;
 
@@ -28,7 +29,11 @@ public final class Constants {
             ED25519_SIGNATURE_2018,
             ED25519_SIGNATURE_2020,
             RSA_SIGNATURE_2018
-    )));
+    )),new SdJwt(Arrays.asList("ES256",
+            "ES256K",
+            "EdDSA"), Arrays.asList("ES256",
+            "ES256K",
+            "EdDSA")));
 
     // JSON KEYS
     public static final String KEY_PROOF = "proof";
