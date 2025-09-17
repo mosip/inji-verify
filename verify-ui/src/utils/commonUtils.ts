@@ -148,12 +148,13 @@ export const calculateUnverifiedClaims = (
 };
 
 
-export const getCredentialType = (vc: object): string[]  =>{
-  const credential = vc as any;
+export const getCredentialType = (credential: any): string[]  =>{
+  console.log(credential)
+  if (credential.regularClaims){
+    return [credential.regularClaims.vct];
+  }
   if ('type' in credential && Array.isArray(credential.type) && credential.type.length > 1) {
     return credential.type;
-  } else if ('vct' in credential && typeof credential.vct === 'string') {
-    return [credential.vct];
   }
   return ["verifiableCredential"];
 }
