@@ -11,7 +11,6 @@ import {
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
 import {
-  ErrorMessageTemplate,
   VCShareType,
   VpSubmissionResultInt
 } from "../../../types/data-types";
@@ -23,6 +22,7 @@ import { AlertMessages, DisplayTimeout } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
+import { generateErrorMessage } from "../../../utils/commonUtils";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -40,7 +40,6 @@ const DisplayActiveStep = () => {
   const flowType = useVerifyFlowSelector((state) => state.flowType);
   const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const errorMessageTemplate = ErrorMessageTemplate.REASON + ErrorMessageTemplate.ASSISTANCE;
 
   const dispatch = useAppDispatch();
 
@@ -80,9 +79,12 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
-  const handleOnError = (error:Error) => {
+  const handleOnError = (error: any) => {
     dispatch(closeAlert({}));
     dispatch(resetVpRequest());
+    if (error.errorCode) {
+      error.message = generateErrorMessage(error);
+    }
     dispatch(raiseAlert({ message: error.message, severity: "error", open: true, autoHideDuration: 120000 }));
   };
 
@@ -145,7 +147,6 @@ const DisplayActiveStep = () => {
                   qrCodeStyles={{ size: qrSize }}
                   clientId={getClientId()}
                   isEnableSameDeviceFlow={false}
-                  errorMessageTemplate={errorMessageTemplate}
                 />
               </div>
               <Button	
@@ -180,7 +181,6 @@ const DisplayActiveStep = () => {
                   onQrCodeExpired={handleOnQrExpired}
                   onError={handleOnError}
                   clientId={getClientId()}
-                  errorMessageTemplate={errorMessageTemplate}
                 />
               </div>
             </div>
