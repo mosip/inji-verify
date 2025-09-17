@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
+  AppError,
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
@@ -95,13 +96,13 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     try {
       if (onVPProcessed && txnId) {
         const vcResults = await vpResult(verifyServiceUrl, txnId);
-        const VPResult: VerificationResults = vcResults.map(
+        const VPResult: VerificationResults = vcResults?.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
             vc: JSON.parse(vcResult.vc),
             vcStatus: vcResult.verificationStatus,
           })
         );
-        onVPProcessed?.(VPResult);
+        if (VPResult) onVPProcessed?.(VPResult);
         resetState();
       }
       if (onVPReceived && txnId) {
@@ -109,7 +110,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         resetState();
       }
     } catch (error) {
-      onError(error as Error);
+      onError(error as AppError);
       resetState();
     }
   }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
@@ -133,7 +134,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     } catch (error) {
       setLoading(false);
       resetState();
-      onError(error as Error);
+      onError(error as AppError);
     }
   }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
 
@@ -153,7 +154,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       setReqId(data.requestId);
       return getPresentationDefinitionParams(data);
     } catch (error) {
-      onError(error as Error);
+      onError(error as AppError);
       resetState();
     }
   }, [

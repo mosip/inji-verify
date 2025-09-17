@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {AlertInfo} from "../../../types/data-types";
+import {DisplayTimeout} from "../../../utils/config";
 
 export const InitialState: AlertInfo = {}
 
@@ -9,7 +10,7 @@ const alertsSlice = createSlice({
             state.open = true;
             state.severity = action.payload.severity;
             state.message = action.payload.message;
-            state.autoHideDuration = action.payload.autoHideDuration ?? 5000;
+            state.autoHideDuration = action.payload.autoHideDuration ?? DisplayTimeout;
         },
         closeAlert: (state, action) => {
             state.open = false;

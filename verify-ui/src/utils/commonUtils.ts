@@ -150,3 +150,7 @@ export const calculateUnverifiedClaims = (
     });
   });
 };
+
+export const generateErrorMessage = (error: any): string => {
+  return `We’re unable to complete your request due to ${error.errorMessage || error.errorCode}. Please contact support with the reference ID: ${error.transactionId} for further assistance.`
+}

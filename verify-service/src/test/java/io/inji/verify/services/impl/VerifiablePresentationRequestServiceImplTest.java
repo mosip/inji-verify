@@ -12,8 +12,11 @@ import io.inji.verify.dto.presentation.FormatDto;
 import io.inji.verify.dto.presentation.InputDescriptorDto;
 import io.inji.verify.dto.presentation.VPDefinitionResponseDto;
 import io.inji.verify.dto.presentation.SubmissionRequirementDto;
+import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.exception.PresentationDefinitionNotFoundException;
 import io.inji.verify.exception.VPRequestNotFoundException;
+import io.inji.verify.exception.VpSubmissionError;
+import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.AuthorizationRequestCreateResponseRepository;
 import io.inji.verify.repository.PresentationDefinitionRepository;
 import io.inji.verify.enums.VPRequestStatus;
@@ -33,6 +36,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -205,4 +209,55 @@ class VerifiablePresentationRequestServiceImplTest {
         assertNotNull(result);
     }
 
+    @Test
+    void getVPRequestJwt_RequestNotFound_ThrowsException() {
+        when(mockAuthorizationRequestCreateResponseRepository.findById("missingId"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(VPRequestNotFoundException.class, () -> service.getVPRequestJwt("missingId"));
+    }
+
+    @Test
+    void getVPRequestJwt_WithExpiredRequest_AllowsJwt() throws Exception {
+        String requestId = "expiredReq";
+        AuthorizationRequestResponseDto authzDto = new AuthorizationRequestResponseDto("did:example", null, null, "nonce", "responseUri");
+        AuthorizationRequestCreateResponse expiredResponse =
+                new AuthorizationRequestCreateResponse(requestId, "tx", authzDto, Instant.now().toEpochMilli() - 5000);
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId))
+                .thenReturn(Optional.of(expiredResponse));
+        OctetKeyPair mockOKP = new OctetKeyPairGenerator(Curve.Ed25519).generate();
+        when(mockKeyManagementService.getKeyPair()).thenReturn(mockOKP);
+
+        String jwt = service.getVPRequestJwt(requestId);
+        assertNotNull(jwt); // ✅ no exception expected
+    }
+
+    @Test
+    void getCurrentRequestStatus_WithExpiredRequest_ReturnsExpired() {
+        String requestId = "expiredStatusReq";
+        AuthorizationRequestCreateResponse expiredResponse =
+                new AuthorizationRequestCreateResponse(requestId, "tx", null, Instant.now().toEpochMilli() - 1000);
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId))
+                .thenReturn(Optional.of(expiredResponse));
+        when(mockVPSubmissionRepository.findById(requestId)).thenReturn(Optional.empty());
+
+        VPRequestStatusDto status = service.getCurrentRequestStatus(requestId);
+
+        assertEquals(VPRequestStatus.EXPIRED, status.getStatus());
+    }
+
+    @Test
+    void shouldReturnStatusCompletedWhenSubmissionExists() {
+        String requestId = "req_with_submission";
+        AuthorizationRequestCreateResponse response =
+                new AuthorizationRequestCreateResponse(requestId, "tx_id", null, Instant.now().toEpochMilli() + 10000);
+
+        when(mockAuthorizationRequestCreateResponseRepository.findById(requestId)).thenReturn(Optional.of(response));
+        when(mockVPSubmissionRepository.findById(requestId)).thenReturn(Optional.of(mock()));
+
+        VPRequestStatusDto result = service.getCurrentRequestStatus(requestId);
+
+        assertNotNull(result);
+        assertEquals(VPRequestStatus.VP_SUBMITTED, result.getStatus()); // ✅ correct status
+    }
 }

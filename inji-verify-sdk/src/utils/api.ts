@@ -1,9 +1,11 @@
 import {
   VPRequestBody,
   PresentationDefinition,
-  QrData,
+  QrData, AppError,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
-import { vcSubmissionBody } from "../components/qrcode-verification/QRCodeVerification.types";
+import {
+  vcSubmissionBody
+} from "../components/qrcode-verification/QRCodeVerification.types";
 
 const generateNonce = (): string => {
   return btoa(Date.now().toString());
@@ -131,11 +133,25 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
   }
 };
 
-export const vpResult = async (url: string, txnId: string) => {
+export const vpResult = async (url: string, txnId: string): Promise<any> => {
   try {
     const response = await fetch(url + `/vp-result/${txnId}`);
-    if (response.status !== 200) throw new Error("Failed to fetch VP result");
+    if (response.status !== 200) throw { errorMessage: "Failed to fetch VP result" } as AppError;
+
     const data = await response.json();
+    if (data.error) {
+      throw {
+        errorCode: data.error,
+        errorMessage: data.errorDescription,
+        transactionId: data.transactionId ?? null,
+      } as AppError;
+    }
+
     return data.vcResults;
-  } catch (error) {}
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw { errorMessage: err.message } as AppError;
+    }
+    throw err as AppError;
+  }
 };
