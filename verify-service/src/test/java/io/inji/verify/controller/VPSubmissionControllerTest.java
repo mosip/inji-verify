@@ -97,7 +97,7 @@ public class VPSubmissionControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                         .param("state", "testState"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Either 'vp_token' or 'error' must be provided, but not both."));
+                .andExpect(content().string("Invalid response: either vp_token and presentation_submission must be provided, or error must be provided."));
         verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
     }
 
@@ -109,7 +109,7 @@ public class VPSubmissionControllerTest {
                         .param("error", "some_error")
                         .param("state", "testState"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Either 'vp_token' or 'error' must be provided, but not both."));
+                .andExpect(content().string("Invalid response: either vp_token and presentation_submission must be provided, or error must be provided."));
         verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
     }
 
@@ -170,7 +170,8 @@ public class VPSubmissionControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                         .param("vp_token", vpToken)
                         .param("state", state))
-                .andExpect(status().isOk());
-        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid response: either vp_token and presentation_submission must be provided, or error must be provided."));
+        verify(verifiablePresentationSubmissionService, times(0)).submit(any(VPSubmissionDto.class));
     }
 }
