@@ -10,7 +10,7 @@ import {
   setSelectCredential,
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
-import {VCShareType, VerificationResult, VpSubmissionResultInt} from "../../../types/data-types";
+import {VCShareType, VpSubmissionResultInt} from "../../../types/data-types";
 import {closeAlert,
   raiseAlert
 } from "../../../redux/features/alerts/alerts.slice";
