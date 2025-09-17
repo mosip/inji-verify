@@ -47,7 +47,8 @@
     "credentialsRequested": "Des informations d'identification ont été demandées",
     "walletSelectorTitle": "Panneau de sélection du portefeuille",
     "walletSelectorDescription": "Veuillez sélectionner un portefeuille pour procéder avec une présentation vérifiable.",
-    "walletSearchPlaceholder": "Portefeuilles de recherche"
+    "walletSearchPlaceholder": "Portefeuilles de recherche",
+    "IconToolTip": "Les champs à côté de cette icône indiquent que les informations ont été partagées sélectivement par le porte-portefeuille."
   },
   "VerificationStepsContent": {
     "SCAN": {

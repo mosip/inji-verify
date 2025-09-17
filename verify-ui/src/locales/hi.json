@@ -47,7 +47,8 @@
     "credentialsRequested": "प्रमाणपत्रों का अनुरोध किया गया था",
     "walletSelectorTitle": "बटुए चयन पैनल",
     "walletSelectorDescription": "कृपया सत्यापन योग्य प्रस्तुति के साथ आगे बढ़ने के लिए एक वॉलेट का चयन करें।",
-    "walletSearchPlaceholder": "खोज बटुए"
+    "walletSearchPlaceholder": "खोज बटुए",
+    "IconToolTip": "इस आइकन के बगल के फ़ील्ड से संकेत मिलता है कि जानकारी को बटुए धारक द्वारा चुनिंदा रूप से साझा किया गया था।"
   },
   "VerificationStepsContent": {
     "SCAN": {

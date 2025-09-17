@@ -28,6 +28,7 @@ import { ReactComponent as VectorUpArrow } from "../assets/carTheme/vector-arrow
 import { ReactComponent as VectorExpandIcon } from "../assets/carTheme/vector-expand.svg";
 import { ReactComponent as VectorCollapseIcon } from "../assets/carTheme/vector-collapse.svg";
 import { ReactComponent as VectorDownloadIcon } from "../assets/carTheme/vector-download.svg";
+import { ReactComponent as SharableLinkIcon } from "../assets/carTheme/sharable-link.svg";
 import ScannerOutline from "../assets/carTheme/scanner-outline.svg";
 import QrOutline from "../assets/carTheme/qr-code-outline.svg";
 import VectorOutline from "../assets/carTheme/vector-icon-outline.svg";
@@ -66,6 +67,7 @@ const carTheme = {
   VectorExpand: VectorExpandIcon,
   VectorCollapse: VectorCollapseIcon,
   VectorDownload: VectorDownloadIcon,
+  SharableLink: SharableLinkIcon,
 };
 
 export default carTheme;
