@@ -2,7 +2,6 @@ package io.inji.verify.models;
 
 import io.inji.verify.serialization.impl.PresentationSubmissionDtoConverter;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -28,8 +27,11 @@ public class VPSubmission {
     @JdbcTypeCode(SqlTypes.CLOB)
     private final String vpToken;
 
-    @NotNull
     @Convert(converter = PresentationSubmissionDtoConverter.class)
     @Column(columnDefinition = "TEXT")
     private final PresentationSubmissionDto presentationSubmission;
+
+    private final String error;
+
+    private final String errorDescription;
 }

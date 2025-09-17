@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-
 import io.inji.verify.dto.submission.DescriptorMapDto;
 import io.inji.verify.dto.submission.VPSubmissionDto;
 import io.inji.verify.dto.submission.VPTokenResultDto;
@@ -8,8 +7,9 @@ import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.TokenMatchingFailedException;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.exception.VerificationFailedException;
-import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.dto.result.VCResultDto;
+import io.inji.verify.exception.VpSubmissionError;
+import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
@@ -22,11 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
+import java.util.Optional;
 import org.json.JSONTokener;
 
 @Service
@@ -47,7 +46,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     @Override
     public void submit(VPSubmissionDto vpSubmissionDto) {
-        vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission()));
+        vpSubmissionRepository.save(new VPSubmission(vpSubmissionDto.getState(), vpSubmissionDto.getVpToken(), vpSubmissionDto.getPresentationSubmission(), vpSubmissionDto.getError(), vpSubmissionDto.getErrorDescription()));
         verifiablePresentationRequestService.invokeVpRequestStatusListener(vpSubmissionDto.getState());
     }
 
@@ -58,8 +57,13 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         List<VPVerificationStatus> vpVerificationStatuses = new ArrayList<>();
 
         try {
-            log.info("Processing VP token matching");
+            Optional<String> error = Optional.ofNullable(vpSubmission.getError()).filter(e -> !e.isEmpty());
+            if (error.isPresent()) {
+                log.info("VP submission contains error");
+                throw new VpSubmissionError(vpSubmission.getError(), vpSubmission.getErrorDescription());
+            }
 
+            log.info("Processing VP token matching");
             if (!isVPTokenMatching(vpSubmission, transactionId)) {
                 throw new TokenMatchingFailedException();
             }
@@ -108,10 +112,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 throw new VerificationFailedException();
             }
             log.info("VP submission processing done");
-            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults);
+            return new VPTokenResultDto(transactionId, VPResultStatus.SUCCESS, verificationResults, null, null);
         } catch (Exception e) {
             log.error("Failed to verify VP submission", e);
-            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
+            if (e instanceof VpSubmissionError) return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, ((VpSubmissionError) e).getErrorCode(), ((VpSubmissionError) e).getErrorDescription());
+            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, e.getClass().getSimpleName(), e.getMessage());
         }
     }
 

@@ -48,7 +48,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     @Test
     public void testSubmit_Success() {
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto("vpToken123", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()), "state123");
+            new PresentationSubmissionDto("id", "dId", new ArrayList<>()),
+                "state123", null, null);
 
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
@@ -65,7 +66,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))),null,null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -95,7 +97,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<VCResult> vcResults = Arrays.asList(new VCResult("", VerificationStatus.SUCCESS));
         VPSubmission vpSubmission = new VPSubmission("state123", "\"" + base64Token + "\"", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -121,7 +124,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "[{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -150,7 +154,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "[\"" + base64Token1 + "\", {\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -183,7 +188,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -206,7 +212,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -229,7 +236,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -250,7 +258,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "null", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -270,7 +279,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
@@ -288,7 +298,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()));
+            new PresentationSubmissionDto("id", "dId", new ArrayList<>()), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -307,7 +317,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", null));
+            new PresentationSubmissionDto("id", "dId", null), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -327,7 +337,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -347,7 +358,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "12345", // Invalid format (number)
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -366,7 +378,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "[123, \"invalid\"]", // Invalid array items
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -385,7 +398,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "[\"invalid-base64!!!\"]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -404,7 +418,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123", "\"invalid-base64!!!\"", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -424,7 +439,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -447,7 +463,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -470,7 +487,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -494,7 +512,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
@@ -513,7 +532,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -542,7 +562,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "[{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -571,7 +592,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
