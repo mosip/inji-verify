@@ -7,7 +7,6 @@ import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
-import io.inji.verify.utils.VerificationUtils;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VCResult;
@@ -74,16 +73,11 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
             .thenReturn(new AuthorizationRequestCreateResponse());
+        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
-        try (MockedStatic<VerificationUtils> utilities = Mockito.mockStatic(VerificationUtils.class)) {
-            utilities.when(() -> VerificationUtils.verifyEd25519Signature(any())).thenAnswer(invocation -> null);
-
-            VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
-
-            assertNotNull(resultDto);
-            assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
-            assertEquals(1, resultDto.getVcResults().size());
-        }
+        assertNotNull(resultDto);
+        assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
+        assertEquals(1, resultDto.getVcResults().size());
     }
 
     @Test
