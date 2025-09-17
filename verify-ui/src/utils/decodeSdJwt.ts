@@ -1,4 +1,4 @@
-import { decodeSdJwt } from "@sd-jwt/decode";
+import { decodeSdJwt, getClaims } from "@sd-jwt/decode";
 import { digest } from "@sd-jwt/crypto-browser";
 
 export const decodeSdJwtToken = async (
@@ -24,8 +24,14 @@ export const decodeSdJwtToken = async (
     }
   }
 
+  const claims: Record<string, any> = await getClaims(
+    decodedSdJwt.jwt.payload,
+    decodedSdJwt.disclosures,
+    digest
+  );
+
   const regularClaims = Object.fromEntries(
-    Object.entries(decodedSdJwt.jwt.payload).flatMap(([key, value]) => {
+    Object.entries(claims).flatMap(([key, value]) => {
       if (disclosedClaims[key]) {
         return [];
       }
