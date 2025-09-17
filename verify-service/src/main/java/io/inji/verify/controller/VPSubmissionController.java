@@ -22,7 +22,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = Constants.RESPONSE_SUBMISSION_URI_ROOT)
 @Slf4j
 public class VPSubmissionController {
