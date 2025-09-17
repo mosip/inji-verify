@@ -9,5 +9,6 @@
     "TC_InjiVerify_GetVpRequestStatus_01": ["TC_InjiVerify_CreateNewVerificationRequest_01"],
     "TC_InjiVerify_VpSubmission_07": ["TC_InjiVerify_CreateNewVerificationRequest_09"],
     "TC_InjiVerify_GetVpRequestStatus_04": ["TC_InjiVerify_CreateNewVerificationRequest_02"],
-    "TC_InjiVerify_VpSubmission_10": ["TC_InjiVerify_CreateNewVerificationRequest_09"]
+    "TC_InjiVerify_VpSubmission_10": ["TC_InjiVerify_CreateNewVerificationRequest_09"],
+    "TC_InjiVerify_GetVpRequestWithDID_02": ["TC_InjiVerify_CreateNewVerificationRequestWithDID_01"]
 }

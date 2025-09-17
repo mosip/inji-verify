@@ -8,9 +8,18 @@ export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
 
+export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
+
 export type VerificationStep = {
   label: string;
   description: string;
+};
+
+export type CardPositioning = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 };
 
 export type AlertSeverity =
@@ -59,8 +68,10 @@ export type OvpFlowData = {
   vpToken?: any;
 };
 
+export type VerificationTrigger = {};
+
 export type VerificationResult = {
-  vc?: VC;
+  vc?: AnyVc;
   vcStatus?: VcStatus;
 };
 
@@ -75,6 +86,8 @@ export interface VerificationStepsContentType {
   VERIFY: VerificationStep[];
   TO_BE_SELECTED: VerificationStep[];
 }
+
+export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface claim {
   name: string;
@@ -106,7 +119,7 @@ export interface PresentationDefinition {
 }
 
 export type VpSubmissionResultInt = {
-  vc: VC;
+  vc: LdpVc;
   vcStatus: VcStatus;
   view?: boolean;
 };
@@ -144,7 +157,7 @@ export type QrCodeProps = {
   status: "SUCCESS" | "EXPIRED" | "INVALID";
 };
 
-export type VC = {
+export type LdpVc = {
   "@context": string[];
   credentialSubject: credentialSubject;
   expirationDate: string;
@@ -161,6 +174,24 @@ export type VC = {
   type: string[];
 };
 
+export type SdJwtVc = {
+  regularClaims: Record<string, any>;
+  disclosedClaims: Record<string, any>;
+};
+
+export type AnyVc = LdpVc | SdJwtVc;
+
+
+export type VCWrapper = {
+  credential: LdpVc;
+  credentialConfigurationId: string;
+  issuerLogo: {
+    url: string;
+    alt_text: string;
+  };
+  wellKnown: string;
+};
+
 export type credentialSubject = {
   benefits: string[];
   gender: string;
@@ -175,7 +206,11 @@ export type credentialSubject = {
   policyExpiresOn: string;
 };
 
-export enum ErrorMessageTemplate {
-  REASON = "We’re unable to complete your request due to <error>. ",
-  ASSISTANCE = "Please contact support with the reference ID: <txnId> for further assistance."
+export interface fetchStatusResponse {
+  status: string;
 }
+
+export type Detail = {
+  key: string;
+  value: string;
+};

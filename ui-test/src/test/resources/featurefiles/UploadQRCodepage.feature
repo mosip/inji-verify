@@ -50,7 +50,6 @@ Feature: Inji Verify upload qr code testing
       | policy number | full name | date of birth |
       | 9991    | hello     | 01-01-2025   |
 
-
   @smoke @verifyuploadqrcode
   Scenario Outline: Verify upload qr code with PDF
     And Open inji web in new tab
@@ -219,7 +218,7 @@ Feature: Inji Verify upload qr code testing
     And Verify click on another qr code button
     And Upload QR code unsupported file HTML
     And Verify Error message
-    
+
   @smoke @verifyuploadValidqrcodeDownloadedByMobileApp
   Scenario: Verify upload qr code for Valid
     And Verify browser refresh
@@ -228,43 +227,39 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Upload QR code file PDF downloaded from mobile
     And Verify message for valid QR code
-    
+
   @smoke @verifyuploadLargeSizeqrcode
   Scenario: Verify upload large size QR code
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload Large size not supported QR code file 
+    And Upload Large size not supported QR code file
     And Verify Large size alert message
-    
+
    @smoke @verifyuploadblurqrcode
   Scenario: Verify upload blur QR code
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload blur QR code file 
+    And Upload blur QR code file
     And Verify MultiFormat alert message
-    
+
   @smoke @verifyuploadmultipleqrcodeinoneimage
   Scenario: Verify multiple qr code in one image
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload multiple qr code in one image file 
+    And Upload multiple qr code in one image file
     And Verify MultiFormat alert message
-    
+
   @smoke @verifyinvalidpdf
-  Scenario: Verify upload invalid pdf 
+  Scenario: Verify upload invalid pdf
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload invalid pdf 
+    And Upload invalid pdf
     And Verify MultiFormat alert message
-    
- 
-
- 

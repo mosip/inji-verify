@@ -177,3 +177,19 @@ export const borderColorMapping: any = {
 export const isMobileDevice = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
+
+export const EXCLUDE_KEYS_SD_JWT_VC = [
+  "cnf",
+  "iss",
+  "iat",
+  "nbf",
+  "exp",
+  "jti",
+  "sub",
+  "ssn",
+  "_sd_alg",
+  "_sd",
+  "@context",
+  "issuer",
+  "type",
+].map((key) => key.toLowerCase());
