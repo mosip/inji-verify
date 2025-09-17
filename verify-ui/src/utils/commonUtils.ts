@@ -149,7 +149,6 @@ export const calculateUnverifiedClaims = (
 
 
 export const getCredentialType = (credential: any): string[]  =>{
-  console.log(credential)
   if (credential.regularClaims){
     return [credential.regularClaims.vct];
   }
