@@ -1,5 +1,5 @@
-import { claim, credentialSubject, VC, VcStatus } from "../types/data-types";
-import { getVCRenderOrders } from "./config";
+import { claim, credentialSubject, LdpVc, VcStatus } from "../types/data-types";
+import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
 
 const getValue = (credentialElement: any): string | undefined => {
   if (credentialElement === null || credentialElement === undefined) {
@@ -33,8 +33,13 @@ export const getDetailsOrder = (vc: any) => {
   if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
     return [];
   }
-  const type = vc?.type ? vc.type[1] : "default";
-  const credential = vc?.credentialSubject ? vc.credentialSubject : vc;
+
+  const credential =
+    vc?.regularClaims && vc?.disclosedClaims
+      ? { ...vc.regularClaims, ...vc.disclosedClaims }
+      : vc?.credentialSubject ?? vc;
+
+  const type = vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
 
   switch (type) {
     case "InsuranceCredential":
@@ -49,7 +54,7 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "farmer":
-      return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key:any) => {
+      return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key: any) => {
         if (typeof key === "string") {
           return {
             key,
@@ -90,15 +95,28 @@ export const getDetailsOrder = (vc: any) => {
         return { key, value: "N/A" };
       });
     case "IncomeTaxAccountCredential":
-      return getVCRenderOrders().IncomeTaxAccountCredentialRenderOrder.map((key: any) => {
-        if (key in credential) {
-          return {
-            key,
-            value: credential[key as keyof credentialSubject] || "N/A",
-          };
+      return getVCRenderOrders().IncomeTaxAccountCredentialRenderOrder.map(
+        (key: any) => {
+          if (key in credential) {
+            return {
+              key,
+              value: credential[key as keyof credentialSubject] || "N/A",
+            };
+          }
+          return { key, value: "N/A" };
         }
-        return { key, value: "N/A" };
-      });
+      );
+    case "SdJwtVC":
+      return Object.keys(credential)
+        .filter(
+          (key) =>
+            key !== "id" &&
+            credential[key] !== null &&
+            credential[key] !== undefined &&
+            credential[key] !== "" &&
+            !EXCLUDE_KEYS_SD_JWT_VC.includes(key.toLowerCase())
+        )
+        .map((key) => ({ key, value: getValue(credential[key]) }));
     default:
       return Object.keys(credential)
         .filter((key) =>
@@ -113,21 +131,31 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object ; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
-  );
+    selectedClaims.some((claim) => getCredentialType(vc.vc).includes(claim.type)));
 };
 
 export const calculateUnverifiedClaims = (
   originalSelectedClaims: claim[],
-  verificationSubmissionResult: { vc: VC; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ): claim[] => {
   return originalSelectedClaims.filter((claim) => {
-    return !verificationSubmissionResult.some((vcResult) => {
-      const vcTypes = vcResult.vc?.type || [];
-      return vcTypes.includes(claim.type);
-    });
+    return !verificationSubmissionResult.some((vcResult) => getCredentialType(vcResult.vc).includes(claim.type));
   });
 };
+
+
+export const getCredentialType = (credential: any): string[]  =>{
+  if (credential.regularClaims){
+    return [credential.regularClaims.vct];
+  }
+  if ('type' in credential && Array.isArray(credential.type) && credential.type.length > 1) {
+    return credential.type;
+  }
+  return ["verifiableCredential"];
+}
+export const generateErrorMessage = (error: any): string => {
+  return `We’re unable to complete your request due to ${error.errorMessage || error.errorCode}. Please contact support with the reference ID: ${error.transactionId} for further assistance.`
+}

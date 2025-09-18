@@ -41,6 +41,11 @@ public class BasePage {
 		waitForElementVisible(driver, element, 10);
 		element.click();
 	}
+
+    protected WebElement waitForElementClickable(WebDriver driver, By locator, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
 	
 	public boolean isElementIsVisible(WebDriver driver, WebElement element) {
 	    int maxRetries = 2;

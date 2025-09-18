@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
+  AppError,
   OpenID4VPVerificationProps,
   QrData,
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
 import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
-import "./OpenID4VPVerification.css"
+import "./OpenID4VPVerification.css";
+import {isSdJwt} from "../../utils/utils";
 
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
@@ -95,13 +97,13 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     try {
       if (onVPProcessed && txnId) {
         const vcResults = await vpResult(verifyServiceUrl, txnId);
-        const VPResult: VerificationResults = vcResults.map(
+        const VPResult: VerificationResults = vcResults?.map(
           (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
-            vc: JSON.parse(vcResult.vc),
+            vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
             vcStatus: vcResult.verificationStatus,
           })
         );
-        onVPProcessed?.(VPResult);
+        if (VPResult) onVPProcessed?.(VPResult);
         resetState();
       }
       if (onVPReceived && txnId) {
@@ -109,7 +111,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         resetState();
       }
     } catch (error) {
-      onError(error as Error);
+      onError(error as AppError);
       resetState();
     }
   }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
@@ -121,9 +123,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
         if (response.status === "ACTIVE") {
           fetchVPStatus();
-        }
-        if (response.status === "VP_SUBMITTED") {
+        } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult();
+        } else if (response.status === "SERVICE_ERROR") {
+          fetchVPStatus();
         } else if (response.status === "EXPIRED") {
           resetState();
           onQrCodeExpired();
@@ -132,7 +135,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     } catch (error) {
       setLoading(false);
       resetState();
-      onError(error as Error);
+      onError(error as AppError);
     }
   }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
 
@@ -152,7 +155,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       setReqId(data.requestId);
       return getPresentationDefinitionParams(data);
     } catch (error) {
-      onError(error as Error);
+      onError(error as AppError);
       resetState();
     }
   }, [
@@ -253,9 +256,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   return (
     <div className={"ovp-root-div-container"}>
-      {loading && (
-        <div className={"ovp-loader"}/>
-      )}
+      {loading && <div className={"ovp-loader"} />}
 
       {!loading && triggerElement && !qrCodeData && (
         <div onClick={handleTriggerClick} style={{ cursor: "pointer" }}>

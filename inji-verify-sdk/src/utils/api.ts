@@ -1,9 +1,11 @@
 import {
   VPRequestBody,
   PresentationDefinition,
-  QrData,
+  QrData, AppError,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
-import { vcSubmissionBody } from "../components/qrcode-verification/QRCodeVerification.types";
+import {
+  vcSubmissionBody
+} from "../components/qrcode-verification/QRCodeVerification.types";
 
 const generateNonce = (): string => {
   return btoa(Date.now().toString());
@@ -115,25 +117,41 @@ export const vpRequest = async (
 
 export const vpRequestStatus = async (url: string, reqId: string) => {
   try {
-    const response = await fetch(url + `/vp-request/${reqId}/status`);
+    const response = await fetch(`${url}/vp-request/${reqId}/status`, {
+      signal: AbortSignal.timeout(60000),
+    });
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error) {
-    console.error(error);
+  } catch (error: unknown) {
     if (error instanceof Error) {
-      throw Error(error.message);
+      console.error(`${error.name} : ${error.message}`);
     } else {
-      throw new Error("An unknown error occurred");
+      console.error("An unknown error occurred");
     }
+    return { status: "SERVICE_ERROR" };
   }
 };
 
-export const vpResult = async (url: string, txnId: string) => {
+export const vpResult = async (url: string, txnId: string): Promise<any> => {
   try {
     const response = await fetch(url + `/vp-result/${txnId}`);
-    if (response.status !== 200) throw new Error("Failed to fetch VP result");
+    if (response.status !== 200) throw { errorMessage: "Failed to fetch VP result" } as AppError;
+
     const data = await response.json();
+    if (data.error) {
+      throw {
+        errorCode: data.error,
+        errorMessage: data.errorDescription,
+        transactionId: data.transactionId ?? null,
+      } as AppError;
+    }
+
     return data.vcResults;
-  } catch (error) {}
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw { errorMessage: err.message } as AppError;
+    }
+    throw err as AppError;
+  }
 };

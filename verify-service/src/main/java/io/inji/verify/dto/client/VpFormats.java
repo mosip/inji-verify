@@ -11,4 +11,8 @@ public class VpFormats {
     @JsonProperty("ldp_vp")
     @SerializedName("ldp_vp")
     private LdpVp ldpVp;
+
+    @JsonProperty("vc+sd-jwt")
+    @SerializedName("vc+sd-jwt")
+    private SdJwt sdJwt;
 }

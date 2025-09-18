@@ -10,12 +10,17 @@ import {
   setSelectCredential,
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
-import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
-import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
+import {VCShareType, VpSubmissionResultInt} from "../../../types/data-types";
+import {closeAlert,
+  raiseAlert
+} from "../../../redux/features/alerts/alerts.slice";
 import { AlertMessages, DisplayTimeout } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
+import {VerificationResults} from "@mosip/react-inji-verify-sdk/dist/components/openid4vp-verification/OpenID4VPVerification.types";
+import {decodeSdJwtToken} from "../../../utils/decodeSdJwt";
+import { generateErrorMessage } from "../../../utils/commonUtils";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -62,8 +67,17 @@ const DisplayActiveStep = () => {
     }, DisplayTimeout)
   };
 
-  const handleOnVpProcessed = (vpResult: {}) => {
-    dispatch(verificationSubmissionComplete({ verificationResult: vpResult }));
+  const handleOnVpProcessed = async (vpResults: VerificationResults) => {
+    const decodedVpResults = await Promise.all(
+        vpResults.map(async (vpResult) => {
+          if (typeof vpResult?.vc === 'string') {
+            const decodedSdJwt = await decodeSdJwtToken(vpResult.vc);
+            return { ...vpResult, vc: decodedSdJwt };
+          }
+          return vpResult;
+        })
+    );
+    dispatch(verificationSubmissionComplete({ verificationResult: decodedVpResults }));
     scheduleVpDisplayTimeOut();
   };
 
@@ -72,9 +86,13 @@ const DisplayActiveStep = () => {
     dispatch(resetVpRequest());
   };
 
-  const handleOnError = (error:Error) => {
-    dispatch(raiseAlert({ message:error.message, severity:"error", open:true }));
+  const handleOnError = (error: any) => {
+    dispatch(closeAlert({}));
     dispatch(resetVpRequest());
+    if (error.errorCode) {
+      error.message = generateErrorMessage(error);
+    }
+    dispatch(raiseAlert({ message: error.message, severity: "error", open: true, autoHideDuration: 120000 }));
   };
 
   const getClientId = () => {

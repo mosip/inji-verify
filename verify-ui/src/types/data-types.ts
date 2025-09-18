@@ -8,20 +8,10 @@ export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
 
-export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
-
 export type VerificationStep = {
   label: string;
   description: string;
 };
-
-export type CardPositioning = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};
-
 export type AlertSeverity =
   | "success"
   | "info"
@@ -67,11 +57,8 @@ export type OvpFlowData = {
   presentationSubmission?: any;
   vpToken?: any;
 };
-
-export type VerificationTrigger = {};
-
 export type VerificationResult = {
-  vc?: VC;
+  vc?: AnyVc;
   vcStatus?: VcStatus;
 };
 
@@ -86,9 +73,6 @@ export interface VerificationStepsContentType {
   VERIFY: VerificationStep[];
   TO_BE_SELECTED: VerificationStep[];
 }
-
-export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
-
 export interface claim {
   name: string;
   type: string;
@@ -119,7 +103,7 @@ export interface PresentationDefinition {
 }
 
 export type VpSubmissionResultInt = {
-  vc: VC;
+  vc: LdpVc | object;
   vcStatus: VcStatus;
   view?: boolean;
 };
@@ -157,7 +141,7 @@ export type QrCodeProps = {
   status: "SUCCESS" | "EXPIRED" | "INVALID";
 };
 
-export type VC = {
+export type LdpVc = {
   "@context": string[];
   credentialSubject: credentialSubject;
   expirationDate: string;
@@ -174,16 +158,12 @@ export type VC = {
   type: string[];
 };
 
-export type VCWrapper = {
-  credential: VC
-  credentialConfigurationId: string;
-  issuerLogo: {
-    url: string;
-    alt_text: string;
-  };
-  wellKnown: string;
+export type SdJwtVc = {
+  regularClaims: Record<string, any>;
+  disclosedClaims: Record<string, any>;
 };
 
+export type AnyVc = LdpVc | SdJwtVc;
 export type credentialSubject = {
   benefits: string[];
   gender: string;
@@ -196,13 +176,4 @@ export type credentialSubject = {
   id: string;
   email: string;
   policyExpiresOn: string;
-};
-
-export interface fetchStatusResponse {
-  status: string;
-}
-
-export type Detail = {
-  key: string;
-  value: string;
 };
