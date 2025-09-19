@@ -8,7 +8,7 @@ import io.inji.verify.exception.InvalidVpTokenException;
 import io.inji.verify.exception.TokenMatchingFailedException;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
 import io.inji.verify.dto.result.VCResultDto;
-import io.inji.verify.exception.VpSubmissionError;
+import io.inji.verify.exception.VPSubmissionWalletError;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -56,7 +56,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         verifiablePresentationRequestService.invokeVpRequestStatusListener(vpSubmissionDto.getState());
     }
 
-    private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) {
+    private VPTokenResultDto processSubmission(VPSubmission vpSubmission, String transactionId) throws VPSubmissionWalletError {
         log.info("Processing VP submission");
 
         List<VCResultDto> verificationResults = new ArrayList<>();
@@ -65,8 +65,8 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         try {
             Optional<String> error = Optional.ofNullable(vpSubmission.getError()).filter(e -> !e.isEmpty());
             if (error.isPresent()) {
-                log.info("VP submission contains error");
-                throw new VpSubmissionError(vpSubmission.getError(), vpSubmission.getErrorDescription());
+                log.info("VP submission from wallet has error");
+                throw new VPSubmissionWalletError(vpSubmission.getError(), vpSubmission.getErrorDescription());
             }
 
             log.info("Processing VP token matching");
@@ -122,21 +122,25 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
             for (String sdJwtVpToken : sdJwtVpTokens) {
                 VerificationResult verificationResult = credentialsVerifier.verify(sdJwtVpToken, CredentialFormat.VC_SD_JWT);
+                if (!verificationResult.getVerificationStatus()) {
+                    log.error("SD-JWT VC verification result errors : {} {}", verificationResult.getVerificationErrorCode(), verificationResult.getVerificationMessage());
+                }
                 verificationResults.add(new VCResultDto(sdJwtVpToken, verificationResult.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID));
             }
             boolean combinedVerificationStatus = getCombinedVerificationStatus(vpVerificationStatuses, verificationResults);
             log.info("VP submission processing done");
-            return new VPTokenResultDto(transactionId, combinedVerificationStatus ? VPResultStatus.SUCCESS : VPResultStatus.FAILED, verificationResults, null, null);
+            return new VPTokenResultDto(transactionId, combinedVerificationStatus ? VPResultStatus.SUCCESS : VPResultStatus.FAILED, verificationResults);
+        } catch (VPSubmissionWalletError e) {
+            log.error("Received wallet error: {} - {}", e.getErrorCode(), e.getErrorDescription());
+            throw e;
         } catch (Exception e) {
             log.error("Failed to verify VP submission", e);
-            if (e instanceof VpSubmissionError)
-                return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, ((VpSubmissionError) e).getErrorCode(), ((VpSubmissionError) e).getErrorDescription());
-            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults, e.getClass().getSimpleName(), e.getMessage());
+            return new VPTokenResultDto(transactionId, VPResultStatus.FAILED, verificationResults);
         }
     }
 
     @Override
-    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException {
+    public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
 
         if (vpSubmissions.isEmpty()) {
