@@ -374,7 +374,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: mosipint/os-shell
-    tag: "12-debian-12-r46"
+    tag: "latest"
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
