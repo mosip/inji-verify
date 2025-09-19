@@ -122,6 +122,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
             for (String sdJwtVpToken : sdJwtVpTokens) {
                 VerificationResult verificationResult = credentialsVerifier.verify(sdJwtVpToken, CredentialFormat.VC_SD_JWT);
+                if (!verificationResult.getVerificationStatus()) {
+                    log.error("SD-JWT VC verification result errors : {} {}", verificationResult.getVerificationErrorCode(), verificationResult.getVerificationMessage());
+                }
                 verificationResults.add(new VCResultDto(sdJwtVpToken, verificationResult.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID));
             }
             boolean combinedVerificationStatus = getCombinedVerificationStatus(vpVerificationStatuses, verificationResults);
