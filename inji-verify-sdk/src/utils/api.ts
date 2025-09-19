@@ -1,7 +1,8 @@
 import {
-  VPRequestBody,
+  AppError,
   PresentationDefinition,
-  QrData, AppError,
+  QrData,
+  VPRequestBody,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
 import {
   vcSubmissionBody
@@ -133,25 +134,19 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
   }
 };
 
-export const vpResult = async (url: string, txnId: string): Promise<any> => {
+export const vpResult = async (url: string, txnId: string) => {
   try {
     const response = await fetch(url + `/vp-result/${txnId}`);
-    if (response.status !== 200) throw { errorMessage: "Failed to fetch VP result" } as AppError;
-
     const data = await response.json();
-    if (data.error) {
+    if (response.status !== 200) {
       throw {
-        errorCode: data.error,
-        errorMessage: data.errorDescription,
-        transactionId: data.transactionId ?? null,
+        errorCode: data.errorCode,
+        errorMessage: data.errorMessage,
+        transactionId: txnId ?? null
       } as AppError;
     }
-
     return data.vcResults;
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      throw { errorMessage: err.message } as AppError;
-    }
-    throw err as AppError;
+  } catch (error) {
+     throw error as AppError;
   }
 };
