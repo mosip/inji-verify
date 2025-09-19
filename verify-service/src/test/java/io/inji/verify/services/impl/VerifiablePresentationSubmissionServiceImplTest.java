@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.exception.VPSubmissionWalletError;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
@@ -57,7 +58,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONObject() throws VPSubmissionNotFoundException, ParseException, JOSEException {
+    public void testGetVPResult_Success_JSONObject() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         List<VCResult> vcResults = Arrays.asList(new VCResult("", VerificationStatus.SUCCESS));
         String transactionId = "tx123";
@@ -81,7 +82,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_Base64EncodedString() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_Base64EncodedString() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -107,7 +108,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_JSONArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -136,7 +137,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONArrayWithBase64() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_JSONArrayWithBase64() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -175,7 +176,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_InvalidVPStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_InvalidVPStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -198,7 +199,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_InvalidVCStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_InvalidVCStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -222,7 +223,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_ExpiredVCStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_ExpiredVCStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -246,7 +247,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullVpToken() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullVpToken() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -266,7 +267,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullRequest() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullRequest() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -286,7 +287,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_EmptyDescriptorMap() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_EmptyDescriptorMap() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -305,7 +306,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullDescriptorMap() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullDescriptorMap() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -324,7 +325,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_ExceptionHandling_RuntimeException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_ExceptionHandling_RuntimeException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -346,7 +347,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidVPTokenFormat() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidVPTokenFormat() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -366,7 +367,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidItemInVPTokenArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidItemInVPTokenArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -386,7 +387,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidBase64InArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidBase64InArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -406,7 +407,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidBase64String() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidBase64String() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -426,7 +427,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_EmptyVpVerificationStatuses() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_EmptyVpVerificationStatuses() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -449,7 +450,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testIsVPTokenMatching_AllValidConditions() throws VPSubmissionNotFoundException {
+    public void testIsVPTokenMatching_AllValidConditions() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -474,7 +475,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailedException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailedException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -499,7 +500,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test 
-    public void testGetVPResult_TokenMatchingFailedException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailedException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -519,7 +520,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetCombinedVerificationStatus_EmptyLists() throws VPSubmissionNotFoundException {
+    public void testGetCombinedVerificationStatus_EmptyLists() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -542,7 +543,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_MixedVerificationStatuses() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_MixedVerificationStatuses() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -573,7 +574,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_AllVerificationStatusTypes() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_AllVerificationStatusTypes() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
