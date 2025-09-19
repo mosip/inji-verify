@@ -162,6 +162,7 @@ function SelectionPanelContent() {
               const isSelectedClaim = selectedClaims.includes(claim);
               return (
                 <li
+                  id={`${claim.name}-ItemBox`}
                   key={index}
                   className={`grid mb-2 ${
                     isSelectedClaim
