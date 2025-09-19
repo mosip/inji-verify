@@ -7,7 +7,6 @@ import {
 import {
   vcSubmissionBody
 } from "../components/qrcode-verification/QRCodeVerification.types";
-import {Simulate} from "react-dom/test-utils";
 
 const generateNonce = (): string => {
   return btoa(Date.now().toString());
@@ -148,6 +147,6 @@ export const vpResult = async (url: string, txnId: string) => {
     }
     return data.vcResults;
   } catch (error) {
-     throw error;
+     throw error as AppError;
   }
 };
