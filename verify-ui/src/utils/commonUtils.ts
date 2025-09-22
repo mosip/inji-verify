@@ -156,7 +156,3 @@ export const getCredentialType = (credential: any): string[]  =>{
   }
   return ["verifiableCredential"];
 }
-export const generateErrorMessage = (error: any): string => {
-  const errorReason =  error.errorMessage || `We’re unable to complete your request due to ${error.errorCode}`;
-  return `${errorReason}. Please contact support with the reference ID: ${error.transactionId} for further assistance.`
-}

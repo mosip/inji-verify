@@ -7,6 +7,10 @@ export const InitialState: AlertInfo = {}
 const alertsSlice = createSlice({
     reducers: {
         raiseAlert: (state, action) => {
+            state.title = action.payload.title;
+            state.errorCode = action.payload.errorCode;
+            state.errorReason = action.payload.errorReason;
+            state.referenceId = action.payload.referenceId;
             state.open = true;
             state.severity = action.payload.severity;
             state.message = action.payload.message;
