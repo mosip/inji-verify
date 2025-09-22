@@ -20,6 +20,10 @@ export type AlertSeverity =
   | undefined;
 
 export type AlertInfo = {
+  title?: string;
+  errorCode?: string;
+  errorReason?: string;
+  referenceId?: string;
   message?: string;
   severity?: AlertSeverity;
   open?: boolean;
