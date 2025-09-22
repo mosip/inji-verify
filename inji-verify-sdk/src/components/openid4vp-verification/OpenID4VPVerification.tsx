@@ -125,8 +125,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           fetchVPStatus();
         } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult();
-        } else if (response.status === "SERVICE_ERROR") {
-          fetchVPStatus();
         } else if (response.status === "EXPIRED") {
           resetState();
           onQrCodeExpired();
