@@ -19,7 +19,7 @@ class VPTokenResultDtoTest {
         vcResults.add(new VCResultDto("vc1", VerificationStatus.SUCCESS));
         vcResults.add(new VCResultDto("vc2", VerificationStatus.INVALID));
 
-        VPTokenResultDto resultDto = new VPTokenResultDto(transactionId, vpResultStatus, vcResults, null, null);
+        VPTokenResultDto resultDto = new VPTokenResultDto(transactionId, vpResultStatus, vcResults);
 
         assertEquals(transactionId, resultDto.getTransactionId());
         assertEquals(vpResultStatus, resultDto.getVpResultStatus());

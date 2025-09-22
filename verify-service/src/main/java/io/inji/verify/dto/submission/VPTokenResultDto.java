@@ -14,6 +14,4 @@ public class VPTokenResultDto {
     String transactionId;
     VPResultStatus vpResultStatus;
     List<VCResultDto> vcResults;
-    String error;
-    String errorDescription;
 }

@@ -7,5 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ErrorDto {
-    ErrorCode errorCode;
+    private String errorCode;
+    private String errorMessage;
+
+    public ErrorDto(ErrorCode errorCodeEnum) {
+        this.errorCode = errorCodeEnum.getErrorCode();
+        this.errorMessage = errorCodeEnum.getErrorMessage();
+    }
 }

@@ -18,7 +18,6 @@ import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
 import {VerificationResults} from "@mosip/react-inji-verify-sdk/dist/components/openid4vp-verification/OpenID4VPVerification.types";
 import {decodeSdJwtToken} from "../../../utils/decodeSdJwt";
-import { generateErrorMessage } from "../../../utils/commonUtils";
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -71,9 +70,9 @@ const DisplayActiveStep = () => {
     dispatch(closeAlert({}));
     dispatch(resetVpRequest());
     if (error.errorCode) {
-      error.message = generateErrorMessage(error);
+      error.message = "We’re unable to complete your request. Please contact support for assistance.";
     }
-    dispatch(raiseAlert({ message: error.message, severity: "error", open: true, autoHideDuration: 120000 }));
+    dispatch(raiseAlert({ title: "Request Failed", errorCode:error.errorCode, errorReason: error.errorMessage, message: error.message, referenceId: error.transactionId, severity: "error", open: true, autoHideDuration: 120000 }));
   };
 
   const getClientId = () => {

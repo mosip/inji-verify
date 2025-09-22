@@ -11,7 +11,7 @@ class ErrorDtoTest {
 
         ErrorDto errorDto = new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID);
 
-        assertEquals(ErrorCode.INVALID_TRANSACTION_ID, errorDto.getErrorCode());
+        assertEquals(ErrorCode.INVALID_TRANSACTION_ID.name(), errorDto.getErrorCode());
     }
 
 }
