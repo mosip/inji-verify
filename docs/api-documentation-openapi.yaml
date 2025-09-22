@@ -29,15 +29,15 @@ paths:
   /vp-request:
     post:
       summary: Create a new verification request
-      description: | 
+      description: |
         This endpoint is used to initiate a verifiable presentation (VP) request. 
         It's the first step a verifier takes to ask a wallet to present credentials.
         The request body must include a `clientId` and either:
         - A `presentationDefinitionId` (referencing a pre-existing definition), or
         - A full `presentationDefinition` object. 
-        
+
         The response from this endpoint is used by the UI application to generate a QR code, which the wallet consumes. As of version *0.14.x*, the response will include a mix of `camelCase` and `snake_case` attributes. It is the responsibility of the UI application to convert `snake_case` attributes before generating the QR code.
-        
+
         The response will contain the Authorization Request in one of two ways:
         - **By value** (the full request object), or
         - **By reference** (`request_uri`).
@@ -57,7 +57,7 @@ paths:
               presentationDefinitionId: age_verification
       responses:
         '201':
-          description: The VP Request was created successfully. The response includes a transactionId and requestId, along with either the full authorizationDetails or a requestUri.
+          description: 'The VP Request was created successfully. The response includes a transactionId and requestId, along with either the full authorizationDetails or a requestUri.'
           content:
             application/json:
               schema:
@@ -66,11 +66,7 @@ paths:
                   - $ref: '#/components/schemas/VPRequestResponseByReference'
               examples:
                 by_value:
-                  summary: >-
-                    In this flow the wallet can receive the entire request payload directly. 
-                    All necessary authorization details, including the presentation definition,
-                    nonce, and responseUri, are provided in a single API response, eliminating
-                    the need for the wallet to make a separate call to fetch the request.
+                  summary: 'In this flow the wallet can receive the entire request payload directly.  All necessary authorization details, including the presentation definition, nonce, and responseUri, are provided in a single API response, eliminating the need for the wallet to make a separate call to fetch the request.'
                   value:
                     transactionId: txn_f82f281e-8d96-419b-b413-5a0459739a7b
                     requestId: req_6d538e1b-2615-4927-bfd2-094e9f73f2a1
@@ -96,11 +92,7 @@ paths:
                       iat: 1752838929
                     expiresAt: 1752838929
                 by_reference:
-                  summary: >-
-                    Instead of the full payload, the response provides a `requestUri` which
-                    the wallet must resolve to retrieve the authorization details. This keeps the
-                    QR code payload small and enables more complex or larger presentation definitions.
-                    This feature is available only from Inji Verify 0.14.0
+                  summary: 'Instead of the full payload, the response provides a `requestUri` which the wallet must resolve to retrieve the authorization details. This keeps the QR code payload small and enables more complex or larger presentation definitions. This feature is available only from Inji Verify 0.14.0'
                   value:
                     transactionId: 'urn:uuid:f82f281e-8d96-419b-b413-5a0459739a7b'
                     requestId: 'urn:uuid:6d538e1b-2615-4927-bfd2-094e9f73f2a1'
@@ -139,7 +131,7 @@ paths:
   '/vp-request/{requestId}/status':
     get:
       summary: Get VP Request status
-      description: This endpoint is used to check the current status of a specific VP request transaction. This allows the verifier to monitor whether the request has been fulfilled, is still active, or has expired.
+      description: 'This endpoint is used to check the current status of a specific VP request transaction. This allows the verifier to monitor whether the request has been fulfilled, is still active, or has expired.'
       operationId: getVPRequestStatus
       tags:
         - VP Request Management
@@ -153,7 +145,7 @@ paths:
           example: req_12345
       responses:
         '200':
-          description: The VP Request status was retrieved successfully. The status can be 'ACTIVE', 'VP_SUBMITTED', or 'EXPIRED'.
+          description: 'The VP Request status was retrieved successfully. The status can be ''ACTIVE'', ''VP_SUBMITTED'', or ''EXPIRED''.'
           content:
             application/json:
               schema:
@@ -176,7 +168,18 @@ paths:
   /vp-submission/direct-post:
     post:
       summary: Submit authorization response
-      description: This endpoint is the destination for a wallet to submit a Verifiable Presentation (VP) token and a presentation_submission object, typically in a direct post flow. The server processes this submission, verifies the credentials, and updates the transaction status.
+      description: |-
+        This endpoint is the destination for a wallet to submit a Verifiable Presentation (VP) `vp_token` and a `presentation_submission` object, typically in a direct post flow. 
+        The server processes this VP submission, saves it in database, and updates the transaction status.
+
+        As of release `0.15.0` of this service below changes are made:
+        1. new request attributes added for `error` and `error_description` have been added
+        1. `vp_token` is allowed as null, provided error is not null
+        2. `presentation_submission` is allowed as null, provided error is not null
+        3. if `vp_token` is not_null, then `presentation_submission` should be not null
+        4. if `error` is not null, then `vp_token` and `presentation_submission` should be null  
+        5. if `error` is not null, still `error_description` can be null
+         
       operationId: submitResponse
       tags:
         - VP Submission
@@ -255,12 +258,12 @@ paths:
         required: true
     get:
       summary: Get the VP token for a request
-      description: This endpoint provides the final outcome of a Verifiable Presentation submission. After a wallet has submitted a VP, this endpoint can be polled to get the submission status and the verification results for each credential.
+      description: 'This endpoint provides the final outcome of a Verifiable Presentation submission. After a wallet has submitted a VP, this endpoint can be polled to get the submission status and the verification results for each credential.'
       tags:
         - VP Request Management
       responses:
         '200':
-          description: The result of the submission was successfully retrieved. The response includes the overall submissionStatus and an array of vcResults, each detailing the verification status for an individual VC.
+          description: 'The result of the submission was successfully retrieved. The response includes the overall submissionStatus and an array of vcResults, each detailing the verification status for an individual VC.'
           content:
             application/json:
               schema:
@@ -282,8 +285,30 @@ paths:
                     vcResults:
                       - vc: '{...}'
                         verificationStatus: INVALID
+        '400':
+          description: |-
+            There was error during VP request processing in the wallet, which is sent to the Verifier.
+            The client is expected to use this to display the results of VP request.
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    error: string
+                    errorDescription: string
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    description: The error code sent by the wallet during VP submission
+                  errorDescription:
+                    type: string
+                    description: The optional error message sent by the wallet
         '404':
-          description: No result was found for the given transaction ID, or the given transaction ID is invalid.
+          description: 'No result was found for the given transaction ID, or the given transaction ID is invalid.'
+          content: {}
       operationId: get-vp-result-requestId-presentations
   '/vp-definition/{id}':
     parameters:
@@ -295,7 +320,7 @@ paths:
         required: true
     get:
       summary: Get presentation definition
-      description: This API allows a user to fetch a previously stored or referenced presentation definition. A presentation definition outlines the specific data requirements for a VP, such as the required credential types and their constraints.
+      description: 'This API allows a user to fetch a previously stored or referenced presentation definition. A presentation definition outlines the specific data requirements for a VP, such as the required credential types and their constraints.'
       tags:
         - Presentation Definition Management
       responses:
@@ -358,7 +383,7 @@ paths:
         description: The Verifiable Credential to be verified.
       responses:
         '200':
-          description: The VC verification status. The response contains the verificationStatus, which can be 'SUCCESS' or 'INVALID'.
+          description: 'The VC verification status. The response contains the verificationStatus, which can be ''SUCCESS'' / ''EXPIRED'' / ''INVALID''.'
           content:
             application/json:
               schema:
@@ -377,7 +402,7 @@ paths:
   /well-known/did.json:
     post:
       summary: Get the did document
-      description: This endpoint is part of a standard DID discovery mechanism, following the .well-known pattern. It is used to retrieve a DID (Decentralized Identifier) document for a given DID. A DID document contains crucial information for interacting with a DID, including public keys for authentication and service endpoints. This is introduced in version *0.14.x*.
+      description: 'This endpoint is part of a standard DID discovery mechanism, following the .well-known pattern. It is used to retrieve a DID (Decentralized Identifier) document for a given DID. A DID document contains crucial information for interacting with a DID, including public keys for authentication and service endpoints. This is introduced in version *0.14.x*.'
       tags:
         - ./well-known
       responses:
@@ -477,7 +502,7 @@ components:
       properties:
         id:
           type: string
-          description: A unique identifier for the verification method within the DID Document, typically a fragment appended to the DID.
+          description: 'A unique identifier for the verification method within the DID Document, typically a fragment appended to the DID.'
           example: 'did:example:123#keys-1'
         type:
           type: string
@@ -535,7 +560,7 @@ components:
           example: age_verification
         presentationDefinition:
           $ref: '#/components/schemas/PresentationDefinition'
-          description: The complete presentation definition object that specifies the requirements for the verifiable presentation, including the format and content of the verifiable credentials.
+          description: 'The complete presentation definition object that specifies the requirements for the verifiable presentation, including the format and content of the verifiable credentials.'
           example:
             id: age_verification
             input_descriptors:
@@ -559,7 +584,7 @@ components:
         - requestUri
       properties:
         transactionId:
-          description: A unique id of the verifiable presentation request transaction, used to correlate the entire interaction from request to result.
+          description: 'A unique id of the verifiable presentation request transaction, used to correlate the entire interaction from request to result.'
           type: string
           example: 'urn:uuid:f82f281e-8d96-419b-b413-5a0459739a7b'
         requestId:
@@ -567,7 +592,7 @@ components:
           description: A unique id of the verifiable presentation request. It is a more specific identifier for the authorization request itself.
           example: 'urn:uuid:6d538e1b-2615-4927-bfd2-094e9f73f2a1'
         requestUri:
-          description: The URL to fetch the verifiable presentation request, a common pattern in cross-device flows.
+          description: 'The URL to fetch the verifiable presentation request, a common pattern in cross-device flows.'
           type: string
           format: uri
           example: 'https://example.com/vp-requests/6d538e1b-2615-4927-bfd2-094e9f73f2a1'
@@ -601,7 +626,7 @@ components:
       properties:
         status:
           type: string
-          description: The current status of the verifiable presentation request transaction, indicating its state in the verification process.
+          description: 'The current status of the verifiable presentation request transaction, indicating its state in the verification process.'
           enum:
             - ACTIVE
             - VP_SUBMITTED
@@ -609,7 +634,7 @@ components:
           example: ACTIVE
     verificationStatus:
       type: string
-      description: The status of the verifiable VC verification, indicating whether the VC's signature and integrity are valid.
+      description: 'The status of the verifiable VC verification, indicating whether the VC''s signature and integrity are valid.'
       enum:
         - SUCCESS
         - EXPIRED
@@ -624,14 +649,23 @@ components:
       properties:
         vp_token:
           type: string
-          description: 'vp_token - REQUIRED. JSON String or JSON object that MUST contain a single Verifiable Presentation or an array of JSON Strings and JSON objects each of them containing a Verifiable Presentations. This is the core payload submitted by the wallet.'
+          description: 'vp_token - REQUIRED. JSON String or JSON object that MUST contain a single Verifiable Presentation or an array of JSON Strings and JSON objects each of them containing a Verifiable Presentations. This is the core payload submitted by the wallet. As of release 0.15.0, this can be null when there is error.'
           example: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2cCI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iXSwidmVyaWZpYWJsZUNyZWRlbnRpYWwiOlsiZXlKaGJHY2lPaUpGVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhkV1FpT2lKb2RIUndjem92TDNabGNtbG1lUzVrWlhZeExtMXZjMmx3TG01bGRDOXlaWE53YjI1elpYTWlMQ0pqYkdGcGJYTWlPbnNpWVdkbElqb3hPSDBzSW1semN5STZJbWgwZEhCek9pOHZkbVZ5YVdaNUxtUmxkakV1Ylc5emFYQXVibVYwTDJselozSmhiblJsY25NaUxDSnVZbVlpT2pFMk9ESTVOekF3TURBc0ltVjRjQ0k2TVRjd05qazNNREF3TUgwLnNpZ25hdHVyZSJdfSwibm9uY2UiOiJub25jZV8xMjM0NSIsImF1ZCI6ImNsaWVudDEyMyJ9.signature
         state:
           type: string
           description: The requestId created for the transaction. It is used to link the authorization response back to the original request.
           example: req_6d538e1b-2615-4927-bfd2-094e9f73f2a1
+        error:
+          type: string
+          description: The error code for the transaction sent by the wallet. It can be null when there is no error.
+          example: invalid_scope
+        error_description:
+          type: string
+          description: Optional error message for the transaction sent by the wallet. It can be null when there is no error.
+          example: Something went wrong with the request configuration.
         presentation_submission:
           type: object
+          description: 'As of release 0.15.0, this can be null when there is error.'
           required:
             - id
             - definition_id
@@ -663,7 +697,7 @@ components:
       properties:
         id:
           type: string
-          description: ID of the descriptor map, which links a specific submitted credential to a required input descriptor in the presentation definition.
+          description: 'ID of the descriptor map, which links a specific submitted credential to a required input descriptor in the presentation definition.'
           example: age_credential
         format:
           type: string
@@ -675,7 +709,7 @@ components:
           example: '$.verifiableCredential[0]'
         path_nested:
           $ref: '#/components/schemas/PathNested'
-          description: Contains nested path for each verifiable presentation, allowing for precise location of specific fields.
+          description: 'Contains nested path for each verifiable presentation, allowing for precise location of specific fields.'
           example:
             format: jwt_vc
             path: $.vc.credentialSubject.age
@@ -688,7 +722,7 @@ components:
       properties:
         format:
           type: string
-          description: Format of the verifiable presentation, indicating the data structure.
+          description: 'Format of the verifiable presentation, indicating the data structure.'
           example: jwt_vc
         path:
           type: string
@@ -700,16 +734,16 @@ components:
       properties:
         responseUri:
           type: string
-          description: The URL for the wallet to submit the verifiable presentation, used in direct post flows.
+          description: 'The URL for the wallet to submit the verifiable presentation, used in direct post flows.'
           format: uri
           example: 'https://injiverify.collab.mosip.net/v1/verify/vp-submission/direct-post'
         responseType:
           type: string
-          description: The response type of the verifiable presentation, typically vp_token.
+          description: 'The response type of the verifiable presentation, typically vp_token.'
           example: vp_token
         responseMode:
           type: string
-          description: The response mode of the verifiable presentation submission (e.g., direct_post).
+          description: 'The response mode of the verifiable presentation submission (e.g., direct_post).'
           example: direct_post
         clientId:
           type: string
@@ -738,7 +772,7 @@ components:
         iat:
           type: integer
           format: unixtime
-          description: Issued time, a Unix timestamp indicating when the request was generated.
+          description: 'Issued time, a Unix timestamp indicating when the request was generated.'
           example: 1752838929
     VCSubmissionRequest:
       title: VCSubmissionRequest
@@ -748,7 +782,7 @@ components:
       properties:
         vc:
           type: object
-          description: The complete Verifiable Credential to be submitted. This object contains the subject's claims, issuer information, and cryptographic proof.
+          description: 'The complete Verifiable Credential to be submitted. This object contains the subject''s claims, issuer information, and cryptographic proof.'
           example:
             '@context':
               - 'https://www.w3.org/2018/credentials/v1'
@@ -780,7 +814,7 @@ components:
       properties:
         transactionId:
           type: string
-          description: The unique transaction ID assigned to the VC submission, used to retrieve the result.
+          description: 'The unique transaction ID assigned to the VC submission, used to retrieve the result.'
           example: txn_abc123
     PresentationDefinition:
       title: PresentationDefinition
@@ -797,7 +831,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InputDescriptors'
-          description: An array of objects, where each object describes a specific credential or data requirement that the verifier is requesting from the holder.
+          description: 'An array of objects, where each object describes a specific credential or data requirement that the verifier is requesting from the holder.'
           example:
             - id: age_credential
               name: Age Credential
@@ -815,7 +849,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubmissionRequirements'
-          description: An optional array of objects that specify how the input descriptors must be fulfilled (e.g., "all" must be submitted, or "any" of a group).
+          description: 'An optional array of objects that specify how the input descriptors must be fulfilled (e.g., "all" must be submitted, or "any" of a group).'
           example:
             - id: submission_req_1
               rule: all
@@ -833,7 +867,7 @@ components:
           example: Age Verification Submission
         rule:
           type: string
-          description: The rule for fulfillment (e.g., 'all' or 'any' of the specified descriptors).
+          description: 'The rule for fulfillment (e.g., ''all'' or ''any'' of the specified descriptors).'
           example: all
         count:
           type: integer
@@ -860,12 +894,12 @@ components:
             - age_group_1
         format:
           type: object
-          description: The format of the required verifiable credential (e.g., jwt_vc).
+          description: 'The format of the required verifiable credential (e.g., jwt_vc).'
           example:
             jwt_vc: {}
         constraints:
           type: object
-          description: A set of rules that the verifiable credential must satisfy, such as specific field values or data types.
+          description: 'A set of rules that the verifiable credential must satisfy, such as specific field values or data types.'
           properties:
             fields:
               type: array
@@ -901,7 +935,7 @@ components:
       properties:
         verificationStatus:
           $ref: '#/components/schemas/verificationStatus'
-          description: The overall status of the VC verification process, indicating if the credential passed all integrity and validity checks.
+          description: 'The overall status of the VC verification process, indicating if the credential passed all integrity and validity checks.'
           example: SUCCESS
     VCVerificationRequest:
       title: VCVerificationRequest
