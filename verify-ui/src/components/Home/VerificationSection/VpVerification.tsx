@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
@@ -10,11 +10,9 @@ import {
   setSelectCredential,
   verificationSubmissionComplete,
 } from "../../../redux/features/verify/vpVerificationState";
-import {VCShareType, VpSubmissionResultInt} from "../../../types/data-types";
-import {closeAlert,
-  raiseAlert
-} from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages, DisplayTimeout } from "../../../utils/config";
+import { VCShareType, VpSubmissionResultInt } from "../../../types/data-types";
+import { closeAlert, raiseAlert } from "../../../redux/features/alerts/alerts.slice";
+import { AlertMessages } from "../../../utils/config";
 import { OpenID4VPVerification } from "@mosip/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
@@ -25,7 +23,6 @@ import { generateErrorMessage } from "../../../utils/commonUtils";
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
   const isLoading = useVerifyFlowSelector((state) => state.isLoading);
-  const txnId = useVerifyFlowSelector((state) => state.txnId);
   const sharingType = useVerifyFlowSelector((state) => state.sharingType);
   const isSingleVc = sharingType === VCShareType.SINGLE;
   const selectedClaims = useVerifyFlowSelector((state) => state.selectedClaims);
@@ -33,38 +30,23 @@ const DisplayActiveStep = () => {
   const unverifiedClaims = useVerifyFlowSelector((state) => state.unVerifiedClaims );
   const presentationDefinition = useVerifyFlowSelector((state) => state.presentationDefinition );
   const qrSize = window.innerWidth <= 1024 ? 240 : 320;
-  const activeScreen = useVerifyFlowSelector((state) => state.activeScreen );
-  const showResult = useVerifyFlowSelector((state) => state.isShowResult );
+  const activeScreen = useVerifyFlowSelector((state) => state.activeScreen);
+  const showResult = useVerifyFlowSelector((state) => state.isShowResult);
   const flowType = useVerifyFlowSelector((state) => state.flowType);
   const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const dispatch = useAppDispatch();
 
   const handleRequestCredentials = () => {
-      dispatch(setSelectCredential());
+    dispatch(setSelectCredential());
   };
 
   const handleMissingCredentials = () => {
-      dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
+    dispatch(getVpRequest({ selectedClaims: unverifiedClaims }));
   };
 
   const handleRestartProcess = () => {
     dispatch(resetVpRequest());
-  };
-
-  const clearTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
-  const scheduleVpDisplayTimeOut = () => {
-    clearTimer();
-    timerRef.current = setTimeout(() => {
-      handleRestartProcess();
-    }, DisplayTimeout)
   };
 
   const handleOnVpProcessed = async (vpResults: VerificationResults) => {
@@ -78,7 +60,6 @@ const DisplayActiveStep = () => {
         })
     );
     dispatch(verificationSubmissionComplete({ verificationResult: decodedVpResults }));
-    scheduleVpDisplayTimeOut();
   };
 
   const handleOnQrExpired = () => {
@@ -112,20 +93,23 @@ const DisplayActiveStep = () => {
   }, [selectedClaims, activeScreen]);
 
   if (isLoading) {
-    return <Loader className={`absolute lg:top-[200px] right-[100px]`} />;
-  } else if (incorrectCredentialShared) {
+    return <Loader className="absolute lg:top-[200px] right-[100px]" />;
+  } 
+  
+  if (incorrectCredentialShared) {
     dispatch(resetVpRequest());
     dispatch(
       raiseAlert({ ...AlertMessages().incorrectCredential, open: true })
     );
     return null;
-  } else if (showResult) {
+  }
+
+  if (showResult) {
     return (
       <div className="w-[100vw] lg:w-[50vw] display-flex flex-col items-center justify-center">
         <VpSubmissionResult
           verifiedVcs={verifiedVcs}
           unverifiedClaims={unverifiedClaims}
-          txnId={txnId}
           requestCredentials={handleRequestCredentials}
           requestMissingCredentials={handleMissingCredentials}
           restart={handleRestartProcess}
