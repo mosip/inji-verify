@@ -111,10 +111,6 @@ export type VpSubmissionResultInt = {
 export type VerifyState = {
   isLoading: boolean;
   flowType: "crossDevice" | "sameDevice";
-  status: string;
-  qrData: string;
-  txnId: string;
-  reqId: string;
   method: string;
   activeScreen: number;
   verificationSubmissionResult: VpSubmissionResultInt[];

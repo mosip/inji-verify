@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ResultSummary from "./ResultSummary";
 import { useVerificationFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
@@ -12,15 +12,18 @@ import {
 } from "../../../../redux/features/verification/verification.slice";
 import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
 import { AnyVc, LdpVc, SdJwtVc } from "../../../../types/data-types";
+import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
+import { DisplayTimeout } from "../../../../utils/config";
 
 const Result = () => {
   const { vc, vcStatus } = useVerificationFlowSelector((state) => state.verificationResult ?? { vc: null, vcStatus: null });
   const { method } = useVerificationFlowSelector((state) => ({ method: state.method }));
   const [isModalOpen, setModalOpen] = useState(false);
-  const [claims, setClaims] = useState<AnyVc| null>(null);
+  const [claims, setClaims] = useState<AnyVc | null>(null);
   const [credentialType, setCredentialType] = useState<string>("");
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   const handleVerifyAnotherQrCode = () => {
     if (method === "SCAN") {
@@ -51,6 +54,22 @@ const Result = () => {
     };
     fetchDecodedClaims();
   }, [vc]);
+
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    clearTimer();
+    timerRef.current = setTimeout(() => {
+      dispatch(resetVpRequest());
+    }, DisplayTimeout);
+
+    return () => clearTimer();
+  }, [dispatch]);
 
   return (
     <div id="result-section" className="relative mb-[100px]">
