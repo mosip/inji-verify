@@ -33,6 +33,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   clientId,
   isEnableSameDeviceFlow = true,
 }) => {
+  const [txnId, setTxnId] = useState<string | null>(transactionId || null);
+  const [reqId, setReqId] = useState<string | null>(null);
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const hasInitializedRef = useRef(false);
@@ -90,55 +92,50 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     [verifyServiceUrl, clientId]
   );
 
-  const fetchVPResult = useCallback(
-    async (txnId: string) => {
-      setLoading(true);
-      try {
-        if (onVPProcessed && txnId) {
-          const vcResults = await vpResult(verifyServiceUrl, txnId);
-           if (vcResults && vcResults.length > 0) {
-            const VPResult: VerificationResults = vcResults.map(
-              (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
-                vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
-                vcStatus: vcResult.verificationStatus,
-              })
-            );
-            if (VPResult) onVPProcessed?.(VPResult);
-            resetState();
-          }}
-        if (onVPReceived && txnId) {
-          onVPReceived(txnId);
+  const fetchVPResult = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (onVPProcessed && txnId) {
+        const vcResults = await vpResult(verifyServiceUrl, txnId);
+        const VPResult: VerificationResults = vcResults?.map(
+          (vcResult: { vc: any; verificationStatus: VerificationStatus }) => ({
+            vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
+            vcStatus: vcResult.verificationStatus,
+          })
+        );
+        if (VPResult) onVPProcessed?.(VPResult);
+        resetState();
+      }
+      if (onVPReceived && txnId) {
+        onVPReceived(txnId);
+        resetState();
+      }
+    } catch (error) {
+      onError(error as AppError);
+      resetState();
+    }
+  }, [verifyServiceUrl, txnId, onVPProcessed, onVPReceived, onError]);
+
+  const fetchVPStatus = useCallback(async () => {
+    try {
+      if (reqId) {
+        const response = await vpRequestStatus(verifyServiceUrl, reqId);
+
+        if (response.status === "ACTIVE") {
+          fetchVPStatus();
+        } else if (response.status === "VP_SUBMITTED") {
+          fetchVPResult();
+        } else if (response.status === "EXPIRED") {
           resetState();
+          onQrCodeExpired();
         }
-      } catch (error) {
-        onError(error as AppError);
-        resetState();
       }
-    }, [verifyServiceUrl, onVPProcessed, onVPReceived, onError]);
-
-  const fetchVPStatus = useCallback(
-    async (reqId: string, txnId: string) => {
-      try {
-        if (reqId) {
-          const response = await vpRequestStatus(verifyServiceUrl, reqId);
-
-          if (response.status === "ACTIVE") {
-            fetchVPStatus(reqId, txnId);
-          } else if (response.status === "VP_SUBMITTED") {
-            fetchVPResult(txnId);
-          } else if (response.status === "SERVICE_ERROR") {
-            fetchVPStatus(reqId, txnId);
-          } else if (response.status === "EXPIRED") {
-            resetState();
-            onQrCodeExpired();
-          }
-        }
-      } catch (error) {
-        setLoading(false);
-        resetState();
-        onError(error as AppError);
-      }
-    }, [verifyServiceUrl, onQrCodeExpired, onError, fetchVPResult]);
+    } catch (error) {
+      setLoading(false);
+      resetState();
+      onError(error as AppError);
+    }
+  }, [verifyServiceUrl, reqId, onQrCodeExpired, onError, fetchVPResult]);
 
   const createVPRequest = useCallback(async () => {
     if (hasInitializedRef.current) return;
@@ -148,11 +145,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       const data = await vpRequest(
         verifyServiceUrl,
         clientId,
-        transactionId ?? undefined,
+        txnId ?? undefined,
         presentationDefinitionId,
         presentationDefinition
       );
-      fetchVPStatus(data.requestId, data.transactionId);
+      setTxnId(data.transactionId);
+      setReqId(data.requestId);
       return getPresentationDefinitionParams(data);
     } catch (error) {
       onError(error as AppError);
@@ -160,45 +158,13 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     }
   }, [
     verifyServiceUrl,
-    transactionId,
+    txnId,
     presentationDefinitionId,
     presentationDefinition,
     getPresentationDefinitionParams,
     onError,
     clientId,
   ]);
-
-  const resetState = () => {
-    setQrCodeData(null);
-    setLoading(false);
-    hasInitializedRef.current = false;
-  };
-
-  const handleTriggerClick = () => {
-    if (isEnableSameDeviceFlow && isMobileDevice()) {
-      startVerification();
-    } else {
-      handleGenerateQRCode();
-    }
-  };
-
-  const handleGenerateQRCode = async () => {
-    const pdParams = await createVPRequest();
-    if (pdParams) {
-      const qrData = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
-      setQrCodeData(qrData);
-      setLoading(false);
-    }
-  };
-
-  const startVerification = async () => {
-    const pdParams = await createVPRequest();
-    if (pdParams) {
-      window.location.href = `${
-        protocol || DEFAULT_PROTOCOL
-      }authorize?${pdParams}`;
-    }
-  };
 
   useEffect(() => {
     if (!presentationDefinitionId && !presentationDefinition) {
@@ -239,14 +205,52 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   ]);
 
   useEffect(() => {
-    if (!triggerElement) {
-      if (isEnableSameDeviceFlow && isMobileDevice()) {
+    if (isEnableSameDeviceFlow && isMobileDevice()) {
+      if (!triggerElement) {
         startVerification();
-      } else {
-        handleGenerateQRCode();
       }
+    } else if (!triggerElement) {
+      handleGenerateQRCode();
     }
-  }, [triggerElement, isEnableSameDeviceFlow]);
+  }, []);
+
+  useEffect(() => {
+    if (reqId) {
+      fetchVPStatus();
+    }
+  }, [fetchVPStatus, reqId]);
+
+  const resetState = () => {
+    setTxnId(null);
+    setReqId(null);
+    setQrCodeData(null);
+    setLoading(false);
+    hasInitializedRef.current = false;
+  };
+
+  const handleTriggerClick = () => {
+    if (isEnableSameDeviceFlow && isMobileDevice()) {
+      startVerification();
+    } else {
+      handleGenerateQRCode();
+    }
+  };
+
+  const handleGenerateQRCode = async () => {
+    const pdParams = await createVPRequest();
+    if (pdParams) {
+      const qrData = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
+      setQrCodeData(qrData);
+      setLoading(false);
+    }
+  };
+
+  const startVerification = async () => {
+    const pdParams = await createVPRequest();
+    if (pdParams) {
+      window.location.href = `${protocol || DEFAULT_PROTOCOL}authorize?${pdParams}`;
+    }
+  };
 
   return (
     <div className={"ovp-root-div-container"}>
