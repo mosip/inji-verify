@@ -254,7 +254,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   return (
     <div className={"ovp-root-div-container"}>
-      {loading && <div className={"ovp-loader"} />}
+      {loading && <div id="ovp-loader" className={"ovp-loader"} />}
 
       {!loading && triggerElement && !qrCodeData && (
         <div onClick={handleTriggerClick} style={{ cursor: "pointer" }}>
