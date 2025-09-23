@@ -191,5 +191,5 @@ export const EXCLUDE_KEYS_SD_JWT_VC = [
   "_sd",
   "@context",
   "issuer",
-  "type",
+  "vct",
 ].map((key) => key.toLowerCase());
