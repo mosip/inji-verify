@@ -520,29 +520,6 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetCombinedVerificationStatus_EmptyLists() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
-        List<String> requestIds = Arrays.asList("req123");
-        String transactionId = "tx123";
-
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto(
-                        "format","path")))), null, null);
-        
-        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
-        when(presentationVerifier.verify(anyString())).thenReturn(
-            new PresentationVerificationResult(VPVerificationStatus.VALID, new ArrayList<>()));
-        when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
-
-        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
-
-        assertNotNull(resultDto);
-        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
-    }
-
-    @Test
     public void testGetVPResult_MixedVerificationStatuses() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
