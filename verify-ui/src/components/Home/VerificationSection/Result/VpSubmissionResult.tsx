@@ -35,7 +35,7 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const { t } = useTranslation("Verify");
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
-    originalSelectedClaims.some((selectedVc) => getCredentialType(verifiedVc.vc).includes(selectedVc.type))
+    originalSelectedClaims.some((selectedVc) => getCredentialType(verifiedVc.vc) === (selectedVc.type))
   );
   const dispatch = useAppDispatch();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
