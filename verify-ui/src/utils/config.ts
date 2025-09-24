@@ -1,6 +1,5 @@
 import {AlertInfo, claim, VerificationStepsContentType } from "../types/data-types";
 import i18next from 'i18next';
-import { useEffect, useState } from "react";
 
 export const Pages = {
     Home: "/",
@@ -185,7 +184,6 @@ export const isMobileDevice = (): boolean => {
     (/Macintosh/i.test(ua) && "ontouchend" in document) || // iPad iOS13+ (real)
     (/Android/i.test(ua) && !/Mobile/i.test(ua));          // Android tablet
 
-  console.log("isMobile", isMobileUA || isTabletUA);
   return isMobileUA || isTabletUA;
 };
 
