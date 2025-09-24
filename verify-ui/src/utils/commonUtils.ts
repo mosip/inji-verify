@@ -148,8 +148,9 @@ export const calculateUnverifiedClaims = (
 
 
 export const getCredentialType = (credential: any): string[]  =>{
-  if (credential.regularClaims){
-    return [credential.regularClaims.vct];
+  if (credential.regularClaims) {
+    const sdType = credential.regularClaims.type || credential.regularClaims.vct;
+    return Array.isArray(sdType) ? sdType : [sdType];
   }
   if ('type' in credential && Array.isArray(credential.type) && credential.type.length > 1) {
     return credential.type;
