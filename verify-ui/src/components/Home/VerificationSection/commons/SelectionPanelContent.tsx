@@ -95,7 +95,7 @@ function SelectionPanelContent() {
 
   return (
     <div className="fill-primary grid gap-6 p-3 rounded max-h-[80vh] overflow-y-auto">
-      <div>
+      <div className="lg:block sm:text-left">
         <h1 className="font-bold text-smallTextSize lg:text-lg sm:text-xl text-selectorPanelTitle">
           {t("selectorTitle")}
         </h1>
