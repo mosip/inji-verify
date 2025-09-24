@@ -149,20 +149,36 @@ export const calculateUnverifiedClaims = (
   });
 };
 
+const extractType = (type: any): string | undefined => {
+  if (!type) return undefined;
+  if (typeof type === "string")
+    return type !== "VerifiableCredential" ? type : undefined;
+  if (typeof type === "object" && "_value" in type) {
+    return type._value !== "VerifiableCredential" ? type._value : undefined;
+  }
+  return String(type);
+};
+
 export const getCredentialType = (credential: any): string => {
-  if (credential?.regularClaims) {
-    const sdType = credential.regularClaims.type || credential.regularClaims.vct;
+  const sdType = credential?.regularClaims?.type || credential?.regularClaims?.vct;
+  if (sdType) {
     if (Array.isArray(sdType)) {
-      const value = sdType[1] ?? sdType[0];
-      return typeof value === "string" ? value : value._value ?? String(value);
+      for (const type of sdType) {
+        const credentialType = extractType(type);
+        if (credentialType) return credentialType;
+      }
+    } else {
+      const credentialType = extractType(sdType);
+      if (credentialType) return credentialType;
     }
-
-    return typeof sdType === "string" ? sdType : sdType?._value ?? "verifiableCredential";
   }
 
-  if (Array.isArray(credential?.type) && credential.type.length > 0) {
-    const value = credential.type[1] ?? credential.type[0];
-    return typeof value === "string" ? value : value._value ?? String(value);
+  if (Array.isArray(credential?.type)) {
+    for (const type of credential.type) {
+      const credentialType = extractType(type);
+      if (credentialType) return credentialType;
+    }
   }
+
   return "verifiableCredential";
 };
