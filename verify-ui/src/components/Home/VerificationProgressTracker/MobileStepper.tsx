@@ -63,7 +63,7 @@ function MobileStepper() {
   const description = activeStep?.description as string;
 
   return (
-    <div className="grid grid-cols-13 lg:hidden flex-column mx-auto items-center">
+    <div className="grid grid-cols-13 flex-column mx-auto items-center">
       <div
         className="col-start-1 col-end-13 flex items-center mx-auto p-4"
         id="stepper"
