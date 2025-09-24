@@ -12,7 +12,7 @@ const getValue = (credentialElement: any): string | undefined => {
 
   if (Array.isArray(credentialElement)) {
     const engEntry = credentialElement.find((el) => el.language === "eng");
-    return engEntry ? engEntry.value : getValue(credentialElement[0]);
+    return engEntry ? engEntry.value : getValue(credentialElement[1]);
   }
 
   if (typeof credentialElement === "object") {
@@ -131,10 +131,11 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc | object ; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => getCredentialType(vc.vc).includes(claim.type)));
+    selectedClaims.some((claim) => getCredentialType(vc.vc) === claim.type)
+  );
 };
 
 export const calculateUnverifiedClaims = (
@@ -142,17 +143,26 @@ export const calculateUnverifiedClaims = (
   verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ): claim[] => {
   return originalSelectedClaims.filter((claim) => {
-    return !verificationSubmissionResult.some((vcResult) => getCredentialType(vcResult.vc).includes(claim.type));
+    return !verificationSubmissionResult.some(
+      (vcResult) => getCredentialType(vcResult.vc) === claim.type
+    );
   });
 };
 
+export const getCredentialType = (credential: any): string => {
+  if (credential?.regularClaims) {
+    const sdType = credential.regularClaims.type || credential.regularClaims.vct;
+    if (Array.isArray(sdType)) {
+      const value = sdType[1] ?? sdType[0];
+      return typeof value === "string" ? value : value._value ?? String(value);
+    }
 
-export const getCredentialType = (credential: any): string[]  =>{
-  if (credential.regularClaims){
-    return [credential.regularClaims.vct];
+    return typeof sdType === "string" ? sdType : sdType?._value ?? "verifiableCredential";
   }
-  if ('type' in credential && Array.isArray(credential.type) && credential.type.length > 1) {
-    return credential.type;
+
+  if (Array.isArray(credential?.type) && credential.type.length > 0) {
+    const value = credential.type[1] ?? credential.type[0];
+    return typeof value === "string" ? value : value._value ?? String(value);
   }
-  return ["verifiableCredential"];
-}
+  return "verifiableCredential";
+};

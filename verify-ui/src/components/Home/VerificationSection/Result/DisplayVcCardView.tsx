@@ -41,7 +41,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         setCredentialType(claims.regularClaims.vct);
       } else {
         setClaims(vc);
-        setCredentialType(getCredentialType(vc)[0]);
+        setCredentialType(getCredentialType(vc));
       }
     };
     fetchDecodedClaims();
