@@ -29,7 +29,7 @@ RUN ls /app/src
 RUN npm run build
 
 # Use an official Nginx image as the final production image
-FROM nginx:1.29.1-alpine3.22-slim
+FROM nginx:stable
 
 # Add the ARGs as environment variables
 ARG SOURCE
