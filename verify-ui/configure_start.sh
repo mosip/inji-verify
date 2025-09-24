@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "generating env-config file"
 workingDir="$nginx_dir"/html

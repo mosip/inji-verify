@@ -49,6 +49,7 @@ ENV work_dir=${nginx_dir}/html
 COPY configure_start.sh /configure_start.sh
 COPY .env ${nginx_dir}/html/.env
 
+RUN sed -i 's/\r$//' /configure_start.sh
 RUN chmod +x /configure_start.sh
 
 # Copy the built React app from the build container to the Nginx container
