@@ -75,7 +75,7 @@ const vpVerificationState = createSlice({
         ...newlyVerified.filter(
           (vc) =>
             !state.verificationSubmissionResult.some(
-              (existing) => getCredentialType(existing.vc)[0] === getCredentialType(vc.vc)[0])
+              (existing) => getCredentialType(existing.vc) === getCredentialType(vc.vc))
         ),
       ];
       state.verificationSubmissionResult = uniqueResult;
