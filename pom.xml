@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.3.11</version>
     </parent>
 
     <name>verify-service-parent</name>
@@ -105,12 +105,11 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <spring.boot.version>3.2.3</spring.boot.version>
         <java.version>21</java.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
         <maven.javadoc.version>3.6.3</maven.javadoc.version>
-        <spring.version>3.2.3</spring.version>
+        <spring.version>3.3.11</spring.version>
         <springdoc.version>2.0.4</springdoc.version>
         <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
