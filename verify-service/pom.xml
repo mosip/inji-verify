@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
-            <version>9.37</version>
+            <version>${nimbusds-jiose-jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
