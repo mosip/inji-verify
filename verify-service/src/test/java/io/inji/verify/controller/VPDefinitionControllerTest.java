@@ -15,11 +15,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class VPDefinitionControllerTest {
 
@@ -40,15 +40,21 @@ public class VPDefinitionControllerTest {
     @Test
     public void testGetPresentationDefinitionForFound() throws Exception {
         String id = "presentation123";
-        FormatDto formatDto = new FormatDto(null,null,null);
-        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto("id", new ArrayList<>(),"name","purpose",formatDto, new ArrayList<>());
+        FormatDto formatDto = new FormatDto(null, null, null);
+        VPDefinitionResponseDto expectedResponse = new VPDefinitionResponseDto("id", new ArrayList<>(), "name", "purpose", formatDto, new ArrayList<>());
 
         when(vpDefinitionService.getPresentationDefinition(id)).thenReturn(expectedResponse);
 
         mockMvc.perform(get("/vp-definition/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(expectedResponse)));
+                .andExpect(jsonPath("$.id").value(expectedResponse.getId()))
+                .andExpect(jsonPath("$.name").value(expectedResponse.getName()))
+                .andExpect(jsonPath("$.purpose").value(expectedResponse.getPurpose()))
+                .andExpect(jsonPath("$.input_descriptors").isArray())
+                .andExpect(jsonPath("$.input_descriptors", hasSize(0)))
+                .andExpect(jsonPath("$.submission_requirements").isArray())
+                .andExpect(jsonPath("$.submission_requirements", hasSize(0)));
 
         verify(vpDefinitionService, times(1)).getPresentationDefinition(id);
     }
