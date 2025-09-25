@@ -174,9 +174,18 @@ export const borderColorMapping: any = {
   INVALID: "border-invalidBorder",
 };
 
-export const isMobileDevice = () => {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
+export const isMobileDevice = (): boolean => {
+  const ua = navigator.userAgent;
+
+  const isMobileUA = /Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+  const isTabletUA =
+    /iPad/i.test(ua) ||
+    (/Macintosh/i.test(ua) && "ontouchend" in document) || // iPad iOS13+ (real)
+    (/Android/i.test(ua) && !/Mobile/i.test(ua));          // Android tablet
+
+  return isMobileUA || isTabletUA;
+};
 
 export const EXCLUDE_KEYS_SD_JWT_VC = [
   "cnf",

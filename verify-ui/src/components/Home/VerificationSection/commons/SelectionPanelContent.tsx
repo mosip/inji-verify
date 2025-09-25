@@ -94,8 +94,8 @@ function SelectionPanelContent() {
   }, [selectedClaims]);
 
   return (
-    <div className="fill-primary grid gap-6 p-3 lg:p-0 rounded h-[500px]">
-      <div className="hidden lg:block text-center sm:text-left">
+    <div className="fill-primary grid gap-6 p-3 rounded max-h-[80vh] overflow-y-auto">
+      <div className="lg:block sm:text-left">
         <h1 className="font-bold text-smallTextSize lg:text-lg sm:text-xl text-selectorPanelTitle">
           {t("selectorTitle")}
         </h1>
@@ -105,7 +105,7 @@ function SelectionPanelContent() {
       </div>
 
       <div className="flex justify-around lg:gap-4 box-border">
-        <div className="w-[250px] lg:w-[483px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
+        <div className="w-fit lg:w-[483px] flex items-center border-[2px] border-searchBorder rounded-lg p-2">
           <SearchIcon />
           <input
             type="text"
@@ -135,7 +135,7 @@ function SelectionPanelContent() {
               <button
                 role="menuitem"
                 onClick={() => setIsAscending(true)}
-                className="w-[106px] h-[44px] text-sortByText w-full text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
+                className="w-full h-[44px] text-sortByText text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
               >
                 {t("sortAtoZ")}
               </button>
@@ -143,7 +143,7 @@ function SelectionPanelContent() {
               <button
                 role="menuitem"
                 onClick={() => setIsAscending(false)}
-                className="w-[106px] h-[44px] text-sortByText w-full text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
+                className="w-full h-[44px] text-sortByText text-left text-verySmallTextSize px-4 py-2 hover:bg-gray-100"
               >
                 {t("sortZtoA")}
               </button>

@@ -44,7 +44,7 @@ const DesktopStepper: React.FC = () => {
   const isStepCompleted = (index: number) => activeScreen > index;
 
   return (
-    <div className="hidden pr-[60px] pl-[76px] lg:flex flex-col items-start justify-start ml-0 mt-9 max-h-[100%]">
+    <div className="pr-[60px] pl-[76px] flex flex-col items-start justify-start ml-0 mt-9 max-h-[100%]">
       <div className="flex flex-col items-start space-y-2">
         {steps.map((step, index) => {
           const lastStepMargin = rtl ? "mr-9" : "ml-9";

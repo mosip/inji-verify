@@ -31,7 +31,7 @@ const SelectionPanel: React.FC = () => {
     return (
         <div>
             {isMobileDevice() &&
-                <div className="block lg:hidden">
+                <div className="block">
                     <SlideModal>
                         <div className="flex justify-center">
                             <button
@@ -49,7 +49,7 @@ const SelectionPanel: React.FC = () => {
                 </div>
             }
             {!isMobileDevice() &&
-                <div className="hidden lg:block">
+                <div className="lg:block">
                     <DesktopModal>
                         <SelectionPanelContent/>
                     </DesktopModal>

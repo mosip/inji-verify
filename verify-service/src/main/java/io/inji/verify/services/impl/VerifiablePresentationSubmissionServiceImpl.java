@@ -165,9 +165,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     private static boolean getCombinedVerificationStatus(List<VPVerificationStatus> vpVerificationStatuses, List<VCResultDto> verificationResults) {
-        if (vpVerificationStatuses.isEmpty() || verificationResults.isEmpty()) {
-            return false;
-        }
         boolean combinedVerificationStatus = true;
         for (VPVerificationStatus vpVerificationStatus : vpVerificationStatuses) {
             combinedVerificationStatus = combinedVerificationStatus && (vpVerificationStatus == VPVerificationStatus.VALID);
