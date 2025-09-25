@@ -119,10 +119,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       const anyWindow = window as any;
       const video = videoRef.current;
       if (video) {
-        video.pause()
+        video.pause();
         const stream = video.srcObject as MediaStream | null;
         if (stream) {
-          stream.getTracks().forEach(track => {
+          stream.getTracks().forEach((track) => {
             track.stop();
           });
         }
@@ -137,7 +137,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         anyWindow.__inji_all_streams.forEach((mediaStream: MediaStream) => {
           try {
             mediaStream.getTracks().forEach((t: MediaStreamTrack) => {
-              try { t.stop(); } catch (e) {}
+              try {
+                t.stop();
+              } catch (e) {}
             });
           } catch (e) {
             console.warn("[stopVideoStream] error stopping registry stream", e);
@@ -243,7 +245,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       streamingRef.current ||
       startingRef.current ||
       scanSessionCompletedRef.current
-    ) return;
+    )
+      return;
 
     startingRef.current = true;
 
@@ -332,7 +335,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const extractVerifiableCredential = async (data: any) => {
     try {
       if (data?.vpToken) return data.vpToken.verifiableCredential[0];
-      if (data.startsWith(OvpQrHeader)) {
+      if (typeof data === "string" && data.startsWith(OvpQrHeader)) {
         const redirectUrl = extractRedirectUrlFromQrData(data);
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
@@ -340,10 +343,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const encodedOrigin = encodeURIComponent(window.location.origin);
         const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
         window.location.href = url;
-      } else {
+        return;
+      }
+
+      if (typeof data === "string") {
         const decoded = await decodeQrData(new TextEncoder().encode(data));
         return JSON.parse(decoded);
       }
+      throw new Error("Unsupported QR data format");
     } catch (error) {
       return error;
     }

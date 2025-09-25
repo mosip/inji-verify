@@ -36,11 +36,10 @@ export const decodeQrData = async (qrData: any) => {
   }
 };
 
-export const extractRedirectUrlFromQrData = (qrData: string) => {
+export const extractRedirectUrlFromQrData = (qrData: string): string | null => {
   // qr data format = OVP://payload:text-content
-  const regex = new RegExp(`^${OvpQrHeader}(.*)$`);
-  const match = qrData.match(regex);
-  return match ? match[1] : null;
+  if (!qrData.startsWith(OvpQrHeader)) return null;
+  return qrData.substring(OvpQrHeader.length);
 };
 
 export const initiateOvpFlow = (redirectUri: string) => {
