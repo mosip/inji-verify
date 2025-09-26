@@ -12,7 +12,7 @@ const getValue = (credentialElement: any): string | undefined => {
 
   if (Array.isArray(credentialElement)) {
     const engEntry = credentialElement.find((el) => el.language === "eng");
-    return engEntry ? engEntry.value : getValue(credentialElement[0]);
+    return engEntry ? engEntry.value : getValue(credentialElement[1]);
   }
 
   if (typeof credentialElement === "object") {
@@ -39,8 +39,7 @@ export const getDetailsOrder = (vc: any) => {
       ? { ...vc.regularClaims, ...vc.disclosedClaims }
       : vc?.credentialSubject ?? vc;
 
-  const type =
-    vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
+  const type = vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
 
   switch (type) {
     case "InsuranceCredential":
@@ -132,21 +131,54 @@ export const getDetailsOrder = (vc: any) => {
 
 export const calculateVerifiedClaims = (
   selectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ) => {
   return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => vc.vc.type.includes(claim.type))
+    selectedClaims.some((claim) => getCredentialType(vc.vc) === claim.type)
   );
 };
 
 export const calculateUnverifiedClaims = (
   originalSelectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc; vcStatus: VcStatus }[]
+  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ): claim[] => {
   return originalSelectedClaims.filter((claim) => {
-    return !verificationSubmissionResult.some((vcResult) => {
-      const vcTypes = vcResult.vc?.type || [];
-      return vcTypes.includes(claim.type);
-    });
+    return !verificationSubmissionResult.some(
+      (vcResult) => getCredentialType(vcResult.vc) === claim.type
+    );
   });
+};
+
+const extractType = (type: any): string | undefined => {
+  if (!type) return undefined;
+  if (typeof type === "string")
+    return type !== "VerifiableCredential" ? type : undefined;
+  if (typeof type === "object" && "_value" in type) {
+    return type._value !== "VerifiableCredential" ? type._value : undefined;
+  }
+  return String(type);
+};
+
+export const getCredentialType = (credential: any): string => {
+  const sdType = credential?.regularClaims?.type || credential?.regularClaims?.vct;
+  if (sdType) {
+    if (Array.isArray(sdType)) {
+      for (const type of sdType) {
+        const credentialType = extractType(type);
+        if (credentialType) return credentialType;
+      }
+    } else {
+      const credentialType = extractType(sdType);
+      if (credentialType) return credentialType;
+    }
+  }
+
+  if (Array.isArray(credential?.type)) {
+    for (const type of credential.type) {
+      const credentialType = extractType(type);
+      if (credentialType) return credentialType;
+    }
+  }
+
+  return "verifiableCredential";
 };

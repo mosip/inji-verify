@@ -1,7 +1,8 @@
 import {
-  VPRequestBody,
+  AppError,
   PresentationDefinition,
-  QrData, AppError,
+  QrData,
+  VPRequestBody,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
 import {
   vcSubmissionBody
@@ -117,41 +118,33 @@ export const vpRequest = async (
 
 export const vpRequestStatus = async (url: string, reqId: string) => {
   try {
-    const response = await fetch(`${url}/vp-request/${reqId}/status`, {
-      signal: AbortSignal.timeout(60000),
-    });
+    const response = await fetch(url + `/vp-request/${reqId}/status`);
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error: unknown) {
+  } catch (error) {
+    console.error(error);
     if (error instanceof Error) {
-      console.error(`${error.name} : ${error.message}`);
+      throw Error(error.message);
     } else {
-      console.error("An unknown error occurred");
+      throw new Error("An unknown error occurred");
     }
-    return { status: "SERVICE_ERROR" };
   }
 };
 
-export const vpResult = async (url: string, txnId: string): Promise<any> => {
+export const vpResult = async (url: string, txnId: string) => {
   try {
     const response = await fetch(url + `/vp-result/${txnId}`);
-    if (response.status !== 200) throw { errorMessage: "Failed to fetch VP result" } as AppError;
-
     const data = await response.json();
-    if (data.error) {
+    if (response.status !== 200) {
       throw {
-        errorCode: data.error,
-        errorMessage: data.errorDescription,
-        transactionId: data.transactionId ?? null,
+        errorCode: data.errorCode,
+        errorMessage: data.errorMessage,
+        transactionId: txnId ?? null
       } as AppError;
     }
-
     return data.vcResults;
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      throw { errorMessage: err.message } as AppError;
-    }
-    throw err as AppError;
+  } catch (error) {
+     throw error as AppError;
   }
 };

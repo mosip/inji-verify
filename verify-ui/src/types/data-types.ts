@@ -8,20 +8,10 @@ export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
 export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
 
-export type RequestStatus = "ACTIVE" | "VP_SUBMITTED" | "EXPIRED";
-
 export type VerificationStep = {
   label: string;
   description: string;
 };
-
-export type CardPositioning = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};
-
 export type AlertSeverity =
   | "success"
   | "info"
@@ -30,6 +20,10 @@ export type AlertSeverity =
   | undefined;
 
 export type AlertInfo = {
+  title?: string;
+  errorCode?: string;
+  errorReason?: string;
+  referenceId?: string;
   message?: string;
   severity?: AlertSeverity;
   open?: boolean;
@@ -67,9 +61,6 @@ export type OvpFlowData = {
   presentationSubmission?: any;
   vpToken?: any;
 };
-
-export type VerificationTrigger = {};
-
 export type VerificationResult = {
   vc?: AnyVc;
   vcStatus?: VcStatus;
@@ -86,9 +77,6 @@ export interface VerificationStepsContentType {
   VERIFY: VerificationStep[];
   TO_BE_SELECTED: VerificationStep[];
 }
-
-export type MethodType = "GET" | "POST" | "PUT" | "DELETE";
-
 export interface claim {
   name: string;
   type: string;
@@ -119,7 +107,7 @@ export interface PresentationDefinition {
 }
 
 export type VpSubmissionResultInt = {
-  vc: LdpVc;
+  vc: LdpVc | object;
   vcStatus: VcStatus;
   view?: boolean;
 };
@@ -127,10 +115,6 @@ export type VpSubmissionResultInt = {
 export type VerifyState = {
   isLoading: boolean;
   flowType: "crossDevice" | "sameDevice";
-  status: string;
-  qrData: string;
-  txnId: string;
-  reqId: string;
   method: string;
   activeScreen: number;
   verificationSubmissionResult: VpSubmissionResultInt[];
@@ -180,18 +164,6 @@ export type SdJwtVc = {
 };
 
 export type AnyVc = LdpVc | SdJwtVc;
-
-
-export type VCWrapper = {
-  credential: LdpVc;
-  credentialConfigurationId: string;
-  issuerLogo: {
-    url: string;
-    alt_text: string;
-  };
-  wellKnown: string;
-};
-
 export type credentialSubject = {
   benefits: string[];
   gender: string;
@@ -204,13 +176,4 @@ export type credentialSubject = {
   id: string;
   email: string;
   policyExpiresOn: string;
-};
-
-export interface fetchStatusResponse {
-  status: string;
-}
-
-export type Detail = {
-  key: string;
-  value: string;
 };

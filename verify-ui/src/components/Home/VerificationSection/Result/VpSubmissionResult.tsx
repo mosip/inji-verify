@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ResultSummary from "./ResultSummary";
 import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
 import VpVerifyResultSummary from "./VpVerifyResultSummary";
@@ -7,11 +7,14 @@ import { Button } from "../commons/Button";
 import DisplayUnVerifiedVc from "./DisplayUnVerifiedVc";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import {useTranslation} from "react-i18next";
+import {getCredentialType} from "../../../../utils/commonUtils";
+import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
+import { DisplayTimeout } from "../../../../utils/config";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 type VpSubmissionResultProps = {
   verifiedVcs: VpSubmissionResultInt[];
   unverifiedClaims: claim[];
-  txnId: string;
   requestCredentials: () => void;
   requestMissingCredentials: () => void;
   restart: () => void;
@@ -21,7 +24,6 @@ type VpSubmissionResultProps = {
 const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   verifiedVcs,
   unverifiedClaims,
-  txnId,
   requestCredentials,
   requestMissingCredentials,
   restart,
@@ -33,10 +35,10 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
   const showResult = useVerifyFlowSelector((state) => state.isShowResult );
   const { t } = useTranslation("Verify");
   const filterVerifiedVcs = verifiedVcs.filter((verifiedVc) =>
-    originalSelectedClaims.some((selectedVc) =>
-      verifiedVc.vc.type.includes(selectedVc.type)
-    )
+    originalSelectedClaims.some((selectedVc) => getCredentialType(verifiedVc.vc) === (selectedVc.type))
   );
+  const dispatch = useAppDispatch();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const renderRequestCredentialsButton = (propClasses = "") => (
     <div className={`flex flex-col items-center lg:hidden ${propClasses}`}>
@@ -46,7 +48,6 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
         className={`w-[339px] mt-5`}
         variant="fill"
         onClick={requestCredentials}
-        disabled={txnId !== ""}
       />
     </div>
   );
@@ -68,6 +69,22 @@ const VpSubmissionResult: React.FC<VpSubmissionResultProps> = ({
       />
     </div>
   );
+
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    clearTimer();
+    timerRef.current = setTimeout(() => {
+      dispatch(resetVpRequest());
+    }, DisplayTimeout);
+
+    return () => clearTimer();
+  }, [dispatch]);
 
   return (
     <div className="space-y-6 mb-[100px] lg:mb-0">

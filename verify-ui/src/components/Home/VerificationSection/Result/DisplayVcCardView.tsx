@@ -6,6 +6,7 @@ import DisplayVcDetailsModal from "./DisplayVcDetailsModal";
 import DisplayVcDetailView from "./DisplayVcDetailView";
 import { useTranslation } from "react-i18next";
 import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
+import {getCredentialType} from "../../../../utils/commonUtils";
 
 const backgroundColorMapping: any = {
   SUCCESS: "bg-[#ECFFF6]",
@@ -40,7 +41,7 @@ function DisplayVcCardView(ViewVc: VpSubmissionResultInt) {
         setCredentialType(claims.regularClaims.vct);
       } else {
         setClaims(vc);
-        setCredentialType(vc.type[1]);
+        setCredentialType(getCredentialType(vc));
       }
     };
     fetchDecodedClaims();

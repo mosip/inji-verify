@@ -4,10 +4,10 @@ import com.nimbusds.jose.JOSEException;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
+import io.inji.verify.exception.VPSubmissionWalletError;
 import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
-import io.inji.verify.utils.VerificationUtils;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VCResult;
@@ -48,7 +48,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     @Test
     public void testSubmit_Success() {
         VPSubmissionDto vpSubmissionDto = new VPSubmissionDto("vpToken123", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()), "state123");
+            new PresentationSubmissionDto("id", "dId", new ArrayList<>()),
+                "state123", null, null);
 
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
 
@@ -57,7 +58,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONObject() throws VPSubmissionNotFoundException, ParseException, JOSEException {
+    public void testGetVPResult_Success_JSONObject() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         List<VCResult> vcResults = Arrays.asList(new VCResult("", VerificationStatus.SUCCESS));
         String transactionId = "tx123";
@@ -65,27 +66,23 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[\"{\\\"verifiableCredential\\\":{\\\"credential\\\":{}}}\"]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))),null,null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
             new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
             .thenReturn(new AuthorizationRequestCreateResponse());
+        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
-        try (MockedStatic<VerificationUtils> utilities = Mockito.mockStatic(VerificationUtils.class)) {
-            utilities.when(() -> VerificationUtils.verifyEd25519Signature(any())).thenAnswer(invocation -> null);
-
-            VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
-
-            assertNotNull(resultDto);
-            assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
-            assertEquals(1, resultDto.getVcResults().size());
-        }
+        assertNotNull(resultDto);
+        assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
+        assertEquals(1, resultDto.getVcResults().size());
     }
 
     @Test
-    public void testGetVPResult_Success_Base64EncodedString() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_Base64EncodedString() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -95,7 +92,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<VCResult> vcResults = Arrays.asList(new VCResult("", VerificationStatus.SUCCESS));
         VPSubmission vpSubmission = new VPSubmission("state123", "\"" + base64Token + "\"", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -110,7 +108,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_JSONArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -121,7 +119,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "[{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -138,7 +137,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_Success_JSONArrayWithBase64() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_Success_JSONArrayWithBase64() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
         
@@ -150,7 +149,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "[\"" + base64Token1 + "\", {\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -176,14 +176,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_InvalidVPStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_InvalidVPStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -198,7 +199,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_InvalidVCStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_InvalidVCStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -206,7 +207,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -221,7 +223,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailed_ExpiredVCStatus() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailed_ExpiredVCStatus() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -229,7 +231,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -244,13 +247,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullVpToken() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullVpToken() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "null", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -263,14 +267,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullRequest() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullRequest() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
@@ -282,13 +287,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_EmptyDescriptorMap() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_EmptyDescriptorMap() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()));
+            new PresentationSubmissionDto("id", "dId", new ArrayList<>()), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -301,13 +306,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_TokenMatchingFailed_NullDescriptorMap() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailed_NullDescriptorMap() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", null));
+            new PresentationSubmissionDto("id", "dId", null), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -320,14 +325,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_ExceptionHandling_RuntimeException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_ExceptionHandling_RuntimeException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -341,13 +347,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidVPTokenFormat() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidVPTokenFormat() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "12345", // Invalid format (number)
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -360,13 +367,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidItemInVPTokenArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidItemInVPTokenArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "[123, \"invalid\"]", // Invalid array items
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -379,13 +387,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidBase64InArray() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidBase64InArray() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "[\"invalid-base64!!!\"]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -398,13 +407,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_InvalidBase64String() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_InvalidBase64String() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "\"invalid-base64!!!\"", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -417,14 +427,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_EmptyVpVerificationStatuses() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_EmptyVpVerificationStatuses() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -439,7 +450,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testIsVPTokenMatching_AllValidConditions() throws VPSubmissionNotFoundException {
+    public void testIsVPTokenMatching_AllValidConditions() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -447,7 +458,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString())).thenReturn(
@@ -463,14 +475,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_VerificationFailedException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_VerificationFailedException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
@@ -487,14 +500,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test 
-    public void testGetVPResult_TokenMatchingFailedException() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_TokenMatchingFailedException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", 
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
@@ -506,29 +520,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetCombinedVerificationStatus_EmptyLists() throws VPSubmissionNotFoundException {
-        List<String> requestIds = Arrays.asList("req123");
-        String transactionId = "tx123";
-
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
-        
-        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
-        when(presentationVerifier.verify(anyString())).thenReturn(
-            new PresentationVerificationResult(VPVerificationStatus.VALID, new ArrayList<>()));
-        when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
-
-        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
-
-        assertNotNull(resultDto);
-        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
-    }
-
-    @Test
-    public void testGetVPResult_MixedVerificationStatuses() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_MixedVerificationStatuses() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -542,7 +534,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "[{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))
@@ -558,7 +551,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testGetVPResult_AllVerificationStatusTypes() throws VPSubmissionNotFoundException {
+    public void testGetVPResult_AllVerificationStatusTypes() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = Arrays.asList("req123");
         String transactionId = "tx123";
 
@@ -571,7 +564,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
             "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
             new PresentationSubmissionDto("id", "dId", Arrays.asList(
-                new DescriptorMapDto("id","format","path", new PathNestedDto("format","path")))));
+                new DescriptorMapDto("id","format","path", new PathNestedDto(
+                        "format","path")))), null, null);
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(Arrays.asList(vpSubmission));
         when(presentationVerifier.verify(anyString()))

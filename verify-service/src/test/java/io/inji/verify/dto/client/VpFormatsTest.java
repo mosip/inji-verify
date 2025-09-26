@@ -16,7 +16,7 @@ public class VpFormatsTest {
         List<String> proofTypes = Arrays.asList("LdProof", "JsonWebSignature2020");
         LdpVp ldpVp = new LdpVp(proofTypes);
 
-        VpFormats vpFormats = new VpFormats(ldpVp);
+        VpFormats vpFormats = new VpFormats(ldpVp,null);
 
         assertNotNull(vpFormats.getLdpVp(), "The LdpVp object should not be null.");
         assertEquals(ldpVp, vpFormats.getLdpVp(), "The LdpVp object should match the one set in the constructor.");
@@ -30,7 +30,7 @@ public class VpFormatsTest {
 
     @Test
     public void testVpFormats_WithNullLdpVp() {
-        VpFormats vpFormats = new VpFormats(null);
+        VpFormats vpFormats = new VpFormats(null,null);
 
         assertNull(vpFormats.getLdpVp(), "The LdpVp object should be null when initialized with null.");
     }
@@ -40,7 +40,7 @@ public class VpFormatsTest {
         List<String> proofTypes = Arrays.asList();
         LdpVp ldpVp = new LdpVp(proofTypes);
 
-        VpFormats vpFormats = new VpFormats(ldpVp);
+        VpFormats vpFormats = new VpFormats(ldpVp,null);
 
         assertNotNull(vpFormats.getLdpVp(), "The LdpVp object should not be null.");
         assertEquals(ldpVp, vpFormats.getLdpVp(), "The LdpVp object should match the one set in the constructor.");
