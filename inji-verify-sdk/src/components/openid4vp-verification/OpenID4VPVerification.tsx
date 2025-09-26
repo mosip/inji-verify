@@ -222,7 +222,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const startVerification = async () => {
     const pdParams = await createVPRequest();
     if (pdParams) {
-      window.location.href = `${protocol || DEFAULT_PROTOCOL }authorize?${pdParams}`;
+      window.location.href = encodeURI(`${protocol || DEFAULT_PROTOCOL }authorize?${pdParams}`);
     }
   };
 
