@@ -27,6 +27,7 @@ export interface QrData {
   requestId: string;
   authorizationDetails?: {
     responseType: string;
+    responseMode: string;
     clientId: string;
     presentationDefinition: Record<string, unknown>;
     presentationDefinitionUri?: string;
@@ -134,7 +135,7 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   Indicates whether the same device flow is enabled.
   Defaults to true, allowing verification on the same device.
   */
-    isEnableSameDeviceFlow?: boolean;
+    isSameDeviceFlowEnabled?: boolean;
 
     /**
   

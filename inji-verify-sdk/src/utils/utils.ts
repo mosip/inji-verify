@@ -1,4 +1,4 @@
-import {VALID_JWT_TYPES} from "./constants";
+import {VALID_SD_JWT_TYPES} from "./constants";
 
 export const isSdJwt = (vpToken: string): boolean => {
     try {
@@ -8,9 +8,9 @@ export const isSdJwt = (vpToken: string): boolean => {
         }
         const header = decodeBase64Url(jwtParts[0]);
         const {typ} = JSON.parse(header);
-        return VALID_JWT_TYPES.has(typ);
+        return VALID_SD_JWT_TYPES.has(typ);
     }catch (e) {
-        console.log("VC is not of type SD-JWT:", e);
+        console.log("Invalid SD-JWT:", e);
         return false;
     }
 }
