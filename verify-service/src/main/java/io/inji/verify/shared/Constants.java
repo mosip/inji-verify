@@ -5,11 +5,18 @@ import io.inji.verify.dto.client.VpFormats;
 import io.inji.verify.dto.client.SdJwt;
 
 import java.util.Arrays;
+import java.util.List;
 
 public final class Constants {
 
     private Constants() {
     }
+
+    private static final List<String> SD_JWT_SUPPORTED_ALGORITHMS = Arrays.asList(
+            "RS256",
+            "ES256",
+            "ES256K",
+            "EdDSA");
 
     public static final int DEFAULT_EXPIRY = 300;
 
@@ -29,11 +36,8 @@ public final class Constants {
             ED25519_SIGNATURE_2018,
             ED25519_SIGNATURE_2020,
             RSA_SIGNATURE_2018
-    )),new SdJwt(Arrays.asList("ES256",
-            "ES256K",
-            "EdDSA"), Arrays.asList("ES256",
-            "ES256K",
-            "EdDSA")));
+    )), new SdJwt(SD_JWT_SUPPORTED_ALGORITHMS,
+            SD_JWT_SUPPORTED_ALGORITHMS));
 
     // JSON KEYS
     public static final String KEY_PROOF = "proof";
