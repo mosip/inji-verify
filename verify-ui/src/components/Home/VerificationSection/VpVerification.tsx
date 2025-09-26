@@ -136,7 +136,7 @@ const DisplayActiveStep = () => {
                   onError={handleOnError}
                   qrCodeStyles={{ size: qrSize }}
                   clientId={getClientId()}
-                  isEnableSameDeviceFlow={false}
+                  isSameDeviceFlowEnabled={false}
                 />
               </div>
               <Button	
