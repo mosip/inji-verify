@@ -27,6 +27,7 @@ export interface QrData {
   requestId: string;
   authorizationDetails?: {
     responseType: string;
+    responseMode: string;
     clientId: string;
     presentationDefinition: Record<string, unknown>;
     presentationDefinitionUri?: string;

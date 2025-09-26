@@ -43,16 +43,30 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const DEFAULT_PROTOCOL = "openid4vp://";
 
   const VPFormat = useMemo(
-    () => ({
-      ldp_vp: {
-        proof_type: [
-          "Ed25519Signature2018",
-          "Ed25519Signature2020",
-          "RsaSignature2018",
-        ],
-      },
-    }),
-    []
+      () => ({
+        ldp_vp: {
+          proof_type: [
+            "Ed25519Signature2018",
+            "Ed25519Signature2020",
+            "RsaSignature2018",
+          ],
+        },
+        "vc+sd-jwt": {
+          "sd-jwt_alg_values": [
+            "RS256",
+            "ES256",
+            "ES256K",
+            "EdDSA"
+          ],
+          "kb-jwt_alg_values": [
+            "RS256",
+            "ES256",
+            "ES256K",
+            "EdDSA"
+          ]
+        }
+      }),
+      []
   );
 
   const getPresentationDefinitionParams = useCallback(
@@ -63,7 +77,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         params.set("request_uri", verifyServiceUrl + data.requestUri);
       } else if (data.authorizationDetails) {
         params.set("state", data.requestId);
-        params.set("response_mode", "direct_post");
+        params.set("response_mode", data.authorizationDetails.responseMode);
         params.set("response_type", data.authorizationDetails.responseType);
         params.set("nonce", data.authorizationDetails.nonce);
         params.set("response_uri", data.authorizationDetails.responseUri);

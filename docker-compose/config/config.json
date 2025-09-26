@@ -2,48 +2,6 @@
   "verifiableClaims": [
     {
       "logo": "/assets/cert.png",
-      "name": "SD JWT PID (Talao)",
-      "type": "eu.europa.ec.eudi.pid.1",
-      "essential": false,
-      "isAuthRequestEmbedded": false,
-      "definition": {
-        "id": "two_sd_jwt",
-        "input_descriptors": [
-          {
-            "id": "pid_credential",
-            "format": {
-              "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ],
-                "kb-jwt_alg_values": [
-                  "ES256",
-                  "ES256K",
-                  "EdDSA"
-                ]
-              }
-            },
-            "constraints": {
-              "fields": [
-                {
-                  "path": [
-                    "$.vct"
-                  ],
-                  "filter": {
-                    "type": "string",
-                    "const": "eu.europa.ec.eudi.pid.1"
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "logo": "/assets/cert.png",
       "name": "MOSIP ID",
       "type": "MOSIPVerifiableCredential",
       "essential": true,
