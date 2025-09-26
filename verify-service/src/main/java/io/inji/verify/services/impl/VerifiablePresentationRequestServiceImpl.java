@@ -39,11 +39,14 @@ import org.springframework.web.context.request.async.DeferredResult;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import static io.inji.verify.shared.Constants.VP_FORMATS;
 import static io.inji.verify.shared.Constants.VP_REQUEST_URI;
+import jakarta.annotation.PreDestroy;
 
 @Service
 @Slf4j
@@ -63,7 +66,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     @Value("${inji.did.verify.public.key.uri}")
     String verifyPublicKeyURI;
 
-    HashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new HashMap<>();
+    private final ConcurrentHashMap<String, DeferredResult<VPRequestStatusDto>> vpRequestStatusListeners = new ConcurrentHashMap<>();
 
     public VerifiablePresentationRequestServiceImpl(PresentationDefinitionRepository presentationDefinitionRepository, AuthorizationRequestCreateResponseRepository authorizationRequestCreateResponseRepository, VPSubmissionRepository vpSubmissionRepository, KeyManagementService<OctetKeyPair> keyManagementService) {
         this.presentationDefinitionRepository = presentationDefinitionRepository;
@@ -133,15 +136,18 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     }
 
     private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
-        vpRequestStatusListeners.put(requestId, result);
+        DeferredResult<VPRequestStatusDto> existing = vpRequestStatusListeners.put(requestId, result);
+        if (existing != null && !existing.isSetOrExpired()) {
+            existing.setResult(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
+        }
     }
 
     @Override
     public void invokeVpRequestStatusListener(String requestId) {
-        Optional.ofNullable(vpRequestStatusListeners.get(requestId)).ifPresent(vpRequestStatusDtoDeferredResult -> {
-            vpRequestStatusDtoDeferredResult.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
-            vpRequestStatusListeners.remove(requestId);
-        });
+        DeferredResult<VPRequestStatusDto> listener = vpRequestStatusListeners.remove(requestId);
+        if (listener != null && !listener.isSetOrExpired()) {
+            listener.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
+        }
     }
 
     @Override
@@ -150,17 +156,45 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                 .findById(requestId)
                 .map(authorizationRequestCreateResponse -> {
                     long expiresAt = authorizationRequestCreateResponse.getExpiresAt();
-                    long timeToExpiry = expiresAt - Instant.now().toEpochMilli();
-                    Long timeOut = timeToExpiry > defaultTimeout ? defaultTimeout : timeToExpiry;
-                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(timeOut);
-                    VPRequestStatusDto currentRequestStatus = getCurrentRequestStatus(requestId);
+                    long now = Instant.now().toEpochMilli();
+                    long timeToExpiry = expiresAt - now;
 
-                    if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
-                        result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
-                        return result;
+                    if (timeToExpiry <= 0) {
+                        DeferredResult<VPRequestStatusDto> expiredResult = new DeferredResult<>();
+                        expiredResult.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        return expiredResult;
                     }
 
-                    result.onTimeout(() -> result.setResult(getCurrentRequestStatus(requestId)));
+                    VPRequestStatusDto currentStatus = getCurrentRequestStatus(requestId);
+                    if (currentStatus != null && currentStatus.getStatus() == VPRequestStatus.VP_SUBMITTED) {
+                        DeferredResult<VPRequestStatusDto> submittedResult = new DeferredResult<>();
+                        submittedResult.setResult(currentStatus);
+                        return submittedResult;
+                    }
+
+                    long holdTime = Math.min(defaultTimeout, timeToExpiry);
+                    DeferredResult<VPRequestStatusDto> result = new DeferredResult<>(holdTime);
+
+                    result.onTimeout(() -> {
+                        long remainingTime = expiresAt - Instant.now().toEpochMilli();
+                        if (remainingTime > 0) {
+                            result.setResult(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
+                        } else {
+                            result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        }
+                    });
+
+                    result.onError((throwable) -> {
+                        long remainingTime = expiresAt - Instant.now().toEpochMilli();
+                        if (remainingTime > 0) {
+                            result.setResult(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
+                        } else {
+                            result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        }
+                    });
+
+                    result.onCompletion(() -> vpRequestStatusListeners.remove(requestId));
+
                     registerVpRequestStatusListener(requestId, result);
                     return result;
                 })
@@ -169,6 +203,19 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                     result.setErrorResult(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.NO_AUTH_REQUEST)));
                     return result;
                 });
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        VPRequestStatusDto shutdownStatus = new VPRequestStatusDto(VPRequestStatus.EXPIRED);
+
+        vpRequestStatusListeners.values().forEach(listener -> {
+            if (!listener.isSetOrExpired()) {
+                listener.setResult(shutdownStatus);
+            }
+        });
+
+        vpRequestStatusListeners.clear();
     }
 
     @Override
@@ -196,7 +243,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                     .claim("nonce", authorizationRequest.getNonce())
                     .claim("state", state)
                     .claim("response_uri", authorizationRequest.getResponseUri())
-                    .claim("client_metadata", new ClientMetadataDto(verifierDid,VP_FORMATS))
+                    .claim("client_metadata", new ClientMetadataDto(verifierDid, VP_FORMATS))
                     .build();
             if (authorizationRequest.getPresentationDefinitionUri() != null) {
                 claimsSet = new JWTClaimsSet.Builder(claimsSet)
