@@ -134,7 +134,7 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
   Indicates whether the same device flow is enabled.
   Defaults to true, allowing verification on the same device.
   */
-    isEnableSameDeviceFlow?: boolean;
+    isSameDeviceFlowEnabled?: boolean;
 
     /**
   

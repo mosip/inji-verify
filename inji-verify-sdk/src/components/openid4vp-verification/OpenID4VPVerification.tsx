@@ -31,7 +31,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   onQrCodeExpired,
   onError,
   clientId,
-  isEnableSameDeviceFlow = true,
+  isSameDeviceFlowEnabled = true,
 }) => {
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -189,7 +189,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   const handleTriggerClick = () => {
-    if (isEnableSameDeviceFlow && isMobileDevice()) {
+    if (isSameDeviceFlowEnabled && isMobileDevice()) {
       startVerification();
     } else {
       handleGenerateQRCode();
@@ -257,7 +257,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   ]);
 
   useEffect(() => {
-    if (isEnableSameDeviceFlow && isMobileDevice()) {
+    if (isSameDeviceFlowEnabled && isMobileDevice()) {
       if (!triggerElement) {
         startVerification();
       }

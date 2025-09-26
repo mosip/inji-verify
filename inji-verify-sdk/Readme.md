@@ -227,7 +227,7 @@ presentationDefinition={{
 | `onVpProcessed`            | function | -              | Get full results immediately       |
 | `onVpReceived`             | function | -              | Get transaction ID only            |
 | `onQrCodeExpired`          | function | -              | Handle QR code expiration          |
-| `isEnableSameDeviceFlow`   | boolean  | true           | Enable same-device flow (optional) |
+| `isSameDeviceFlowEnabled`  | boolean  | true           | Enable same-device flow (optional) |
 | `qrCodeStyles`             | object   | -              | Customize QR code appearance       |
 
 ## ⚠️ Important Limitations
