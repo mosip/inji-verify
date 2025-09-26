@@ -20,7 +20,7 @@ export const vcVerification = async (credential: unknown, url: string) => {
     contentType = "application/vc+sd-jwt";
   } else {
     body = JSON.stringify(credential);
-    contentType = "application/ld+json";
+    contentType = "application/vc+ld+json";
   }
   const requestOptions = {
     method: "POST",
