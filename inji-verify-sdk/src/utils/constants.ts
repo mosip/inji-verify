@@ -30,4 +30,4 @@ export const acceptedFileTypes = SupportedFileTypes.map(
 ).join(", ");
 
 // Constants for SD-JWT validation
-export const VALID_JWT_TYPES = new Set(['vc+sd-jwt', 'dc+sd-jwt']);
+export const VALID_SD_JWT_TYPES = new Set(['vc+sd-jwt', 'dc+sd-jwt']);
