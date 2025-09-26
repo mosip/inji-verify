@@ -43,16 +43,28 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const DEFAULT_PROTOCOL = "openid4vp://";
 
   const VPFormat = useMemo(
-    () => ({
-      ldp_vp: {
-        proof_type: [
-          "Ed25519Signature2018",
-          "Ed25519Signature2020",
-          "RsaSignature2018",
-        ],
-      },
-    }),
-    []
+      () => ({
+        ldp_vp: {
+          proof_type: [
+            "Ed25519Signature2018",
+            "Ed25519Signature2020",
+            "RsaSignature2018",
+          ],
+        },
+        "vc+sd-jwt": {
+          "sd-jwt_alg_values": [
+            "ES256",
+            "ES256K",
+            "EdDSA"
+          ],
+          "kb-jwt_alg_values": [
+            "ES256",
+            "ES256K",
+            "EdDSA"
+          ]
+        }
+      }),
+      []
   );
 
   const getPresentationDefinitionParams = useCallback(
