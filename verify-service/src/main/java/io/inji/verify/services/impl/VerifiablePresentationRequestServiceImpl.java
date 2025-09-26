@@ -124,16 +124,12 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     @Override
     public AuthorizationRequestCreateResponse getLatestAuthorizationRequestFor(String transactionId) {
-        List<String> requestIds = getLatestRequestIdFor(transactionId);
-        if (requestIds.isEmpty()) {
+        try {
+            String requestId = getLatestRequestIdFor(transactionId).getFirst();
+            return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
+        }catch (NoSuchElementException e){
             return null;
         }
-
-        String requestId = getLatestRequestIdFor(transactionId).getFirst();
-        if (requestId == null) {
-            return null;
-        }
-        return authorizationRequestCreateResponseRepository.findById(requestId).orElse(null);
     }
 
     private void registerVpRequestStatusListener(String requestId, DeferredResult<VPRequestStatusDto> result) {
