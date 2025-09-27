@@ -342,7 +342,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
         const encodedOrigin = encodeURIComponent(window.location.origin);
         const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
-        window.location.href = encodeURI(url);
+        window.location.href = url;
         return;
       }
 
