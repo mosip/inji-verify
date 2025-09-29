@@ -1,6 +1,5 @@
 package io.inji.verify.controller;
 
-import java.util.Optional;
 import java.util.Set;
 
 import com.nimbusds.jose.shaded.gson.JsonSyntaxException;
@@ -18,7 +17,6 @@ import io.inji.verify.services.VerifiablePresentationSubmissionService;
 import io.inji.verify.shared.Constants;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +82,7 @@ public class VPSubmissionController {
         }
     }
 
-    private static boolean isValidResponse(String vpToken, String error, String presentationSubmission) {
+    private boolean isValidResponse(String vpToken, String error, String presentationSubmission) {
         boolean hasVpToken = StringUtils.hasText(vpToken);
         boolean hasSubmission = StringUtils.hasText(presentationSubmission);
         boolean hasError = StringUtils.hasText(error);
