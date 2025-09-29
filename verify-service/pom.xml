@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
-            <version>9.37</version>
+            <version>${nimbusds-jiose-jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -140,7 +140,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>${spring.version}</version>
                 <executions>
                     <execution>
                         <goals>
