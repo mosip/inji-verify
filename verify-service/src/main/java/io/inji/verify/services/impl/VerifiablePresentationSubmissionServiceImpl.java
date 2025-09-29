@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.json.JSONTokener;
 
@@ -123,9 +124,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         Object vpTokenRaw = new JSONTokener(vpTokenString).nextValue();
 
         if (vpTokenRaw instanceof JSONArray array) {
-            for (int i = 0; i < array.length(); i++) {
-                processSingleToken(array.get(i), jsonVpTokens, sdJwtVpTokens);
-            }
+            IntStream.range(0, array.length()).forEach(i -> processSingleToken(array.get(i), jsonVpTokens, sdJwtVpTokens));
         } else {
             processSingleToken(vpTokenRaw, jsonVpTokens, sdJwtVpTokens);
         }
