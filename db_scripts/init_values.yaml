@@ -13,4 +13,4 @@ databases:
         key: postgres-password
     dml: 1
     repoUrl: https://github.com/mosip/inji-verify.git
-    branch: release-0.14.x
+    branch: v0.14.0
