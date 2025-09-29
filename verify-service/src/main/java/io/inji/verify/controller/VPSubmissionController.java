@@ -47,22 +47,26 @@ public class VPSubmissionController {
             @NotNull @NotBlank @RequestParam(value = "state") String state,
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "error_description", required = false) String errorDescription) {
+        // --- 1. Initial response validation ---
         if (!isValidResponse(vpToken, error, presentationSubmission)) {
             String invalidResponseMessage = "Invalid response: either vp_token and presentation_submission must be provided, or error must be provided.";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(invalidResponseMessage);
         }
 
+        // --- 2. Check if request present of not ---
         VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(state);
         if (currentVPRequestStatusDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        // --- 3. Check if error present ---
         if (error != null) {
             VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(null, null, state, error, errorDescription);
             verifiablePresentationSubmissionService.submit(vpSubmissionDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            // --- 4. Presentation Submission Validation ---
             try {
                 PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
                 Set<ConstraintViolation<PresentationSubmissionDto>> violations = Validation.buildDefaultValidatorFactory().getValidator().validate(presentationSubmissionDto);
