@@ -2,6 +2,8 @@ package io.inji.verify.controller;
 
 import java.util.Optional;
 import java.util.Set;
+
+import com.nimbusds.jose.shaded.gson.JsonSyntaxException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,34 +47,41 @@ public class VPSubmissionController {
             @NotNull @NotBlank @RequestParam(value = "state") String state,
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "error_description", required = false) String errorDescription) {
+        // --- 1. Initial response validation ---
         if (!isValidResponse(vpToken, error, presentationSubmission)) {
             String invalidResponseMessage = "Invalid response: either vp_token and presentation_submission must be provided, or error must be provided.";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(invalidResponseMessage);
         }
 
-        Optional<PresentationSubmissionDto> presentationSubmissionDto =
-                Optional.ofNullable(presentationSubmission).map(submission -> gson.fromJson(submission, PresentationSubmissionDto.class));
-
-        PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElse(null);
-
-        if (presentationSubmissionDto.isPresent()) {
-            Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-            Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(submissionDto);
-            if (!violations.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations.iterator().next().getMessage());
-            }
-        }
-
-        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, submissionDto, state, error, errorDescription);
-
-        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
+        // --- 2. Check if request present of not ---
+        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(state);
         if (currentVPRequestStatusDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        // --- 3. Check if error present ---
+        if (error != null) {
+            VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(null, null, state, error, errorDescription);
+            verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            // --- 4. Presentation Submission Validation ---
+            try {
+                PresentationSubmissionDto presentationSubmissionDto = gson.fromJson(presentationSubmission, PresentationSubmissionDto.class);
+                Set<ConstraintViolation<PresentationSubmissionDto>> violations = Validation.buildDefaultValidatorFactory().getValidator().validate(presentationSubmissionDto);
+                if (!violations.isEmpty()) {
+                    String violationMessage = violations.iterator().next().getMessage();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violationMessage);
+                }
+
+                VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state, null, null);
+                verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (JsonSyntaxException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_PRESENTATION_SUBMISSION");
+            }
+        }
     }
 
     private static boolean isValidResponse(String vpToken, String error, String presentationSubmission) {
