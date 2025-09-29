@@ -127,9 +127,8 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 }
                 verificationResults.add(new VCResultDto(sdJwtVpToken, verificationResult.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID));
             }
-            boolean combinedVerificationStatus = getCombinedVerificationStatus(vpVerificationStatuses, verificationResults);
             log.info("VP submission processing done");
-            return new VPTokenResultDto(transactionId, combinedVerificationStatus ? VPResultStatus.SUCCESS : VPResultStatus.FAILED, verificationResults);
+            return new VPTokenResultDto(transactionId, getCombinedVerificationStatus(vpVerificationStatuses, verificationResults), verificationResults);
         } catch (VPSubmissionWalletError e) {
             log.error("Received wallet error: {} - {}", e.getErrorCode(), e.getErrorDescription());
             throw e;
@@ -164,7 +163,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return true;
     }
 
-    private static boolean getCombinedVerificationStatus(List<VPVerificationStatus> vpVerificationStatuses, List<VCResultDto> verificationResults) {
+    private VPResultStatus getCombinedVerificationStatus(List<VPVerificationStatus> vpVerificationStatuses, List<VCResultDto> verificationResults) {
         boolean combinedVerificationStatus = true;
         for (VPVerificationStatus vpVerificationStatus : vpVerificationStatuses) {
             combinedVerificationStatus = combinedVerificationStatus && (vpVerificationStatus == VPVerificationStatus.VALID);
@@ -172,6 +171,6 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         for (VCResultDto verificationResult : verificationResults) {
             combinedVerificationStatus = combinedVerificationStatus && (verificationResult.getVerificationStatus() == VerificationStatus.SUCCESS);
         }
-        return combinedVerificationStatus;
+        return combinedVerificationStatus ? VPResultStatus.SUCCESS : VPResultStatus.FAILED;
     }
 }
