@@ -277,6 +277,11 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, UploadButton);
 	}
 
+		public Boolean isUploadButtonIsVisibleAfterIdle() {
+		driver.navigate().refresh();
+		return isElementIsVisibleAfterIdle(driver, UploadButton);
+	}
+
 	public String getFormatConstraintText() {
 		System.out.println(getText(driver, FormatConstraintText));
 		return getText(driver, FormatConstraintText);

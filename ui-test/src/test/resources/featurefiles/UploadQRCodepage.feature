@@ -263,3 +263,32 @@ Feature: Inji Verify upload qr code testing
     And Verify that Upload button visible
     And Upload invalid pdf
     And Verify MultiFormat alert message
+
+  @smoke @verifyuploadValidSDJWTqrcode
+  Scenario: Verify upload valid SD-Jwt qr code
+    And Verify browser refresh
+    And Verify upload QR code step2 label
+    And Verify upload QR code step3 label
+    And Verify that Upload button visible
+    And Upload SD-Jwt QR code 
+    And Verify message for valid QR code
+
+  @smoke @verifyVcVerificationStatusExpiry
+  Scenario: Verify valid vc verification status expiry
+    And Verify browser refresh
+    And Verify upload QR code step2 label
+    And Verify upload QR code step3 label
+    And Verify that Upload button visible
+    And Upload QR code file PDF downloaded from mobile
+    And Verify message for valid QR code
+    And Verify that Upload button after 2 mins idle 
+
+  @smoke @verifyInvalidVcVerificationStatusExpiry
+  Scenario: Verify invalid vc verification status expiry
+    And Verify browser refresh
+    And Verify upload QR code step2 label
+    And Verify upload QR code step3 label
+    And Verify that Upload button visible
+    And Upload invalid pdf
+    And Verify MultiFormat alert message
+    And Verify that Upload button after 2 mins idle 
