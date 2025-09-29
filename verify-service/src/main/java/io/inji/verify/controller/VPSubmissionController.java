@@ -54,25 +54,29 @@ public class VPSubmissionController {
         Optional<PresentationSubmissionDto> presentationSubmissionDto =
                 Optional.ofNullable(presentationSubmission).map(submission -> gson.fromJson(submission, PresentationSubmissionDto.class));
 
-        PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElse(null);
+        Optional<ResponseEntity<?>> validationErrorResponse = presentationSubmissionDto
+                .flatMap(submissionDto -> {
+                    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+                    Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(submissionDto);
 
-        if (presentationSubmissionDto.isPresent()) {
-            Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-            Set<ConstraintViolation<PresentationSubmissionDto>> violations = validator.validate(submissionDto);
-            if (!violations.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations.iterator().next().getMessage());
+                    if (!violations.isEmpty()) {
+                        String violationMessage = violations.iterator().next().getMessage();
+                        return Optional.of(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violationMessage));
+                    }
+                    return Optional.empty();
+                });
+
+        return validationErrorResponse.orElseGet(() -> {
+            PresentationSubmissionDto submissionDto = presentationSubmissionDto.orElse(null);
+            VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, submissionDto, state, error, errorDescription);
+            VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
+            if (currentVPRequestStatusDto == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        }
 
-        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, submissionDto, state, error, errorDescription);
-
-        VPRequestStatusDto currentVPRequestStatusDto = verifiablePresentationRequestService.getCurrentRequestStatus(vpSubmissionDto.getState());
-        if (currentVPRequestStatusDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        verifiablePresentationSubmissionService.submit(vpSubmissionDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+            verifiablePresentationSubmissionService.submit(vpSubmissionDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        });
     }
 
     private static boolean isValidResponse(String vpToken, String error, String presentationSubmission) {
