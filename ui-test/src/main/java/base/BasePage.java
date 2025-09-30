@@ -38,7 +38,7 @@ public class BasePage {
 	}
 
 	public void clickOnElement(WebDriver driver, WebElement element) {
-		waitForElementVisible(driver, element, 10);
+		waitForElementVisible(driver, element, 60);
 		element.click();
 	}
 
@@ -48,9 +48,9 @@ public class BasePage {
     }
 	
 	public boolean isElementIsVisible(WebDriver driver, WebElement element) {
-	    int maxRetries = 2;
+	    int maxRetries = 5;
 	    int attempts = 0;
-	    long waitTimeInSeconds = 10;
+	    long waitTimeInSeconds = 40;
 
 	    while (attempts < maxRetries) {
 	        try {
@@ -61,7 +61,34 @@ public class BasePage {
 	            System.out.println("⚠️ Attempt " + (attempts + 1) + ": Element went stale. Retrying...");
 	            attempts++;
 	            try {
-	                Thread.sleep(500); 
+	                Thread.sleep(900); 
+	            } catch (InterruptedException ie) {
+	                Thread.currentThread().interrupt();
+	                return false;
+	            }
+	        } catch (TimeoutException e) {
+	            System.out.println("⏰ Timeout waiting for element to be visible.");
+	            return false;
+	        }
+	    }
+	    return false;
+	}
+
+		public boolean isElementIsVisibleAfterIdle(WebDriver driver, WebElement element) {
+	    int maxRetries = 5;
+	    int attempts = 0;
+	    long waitTimeInSeconds = 140;
+
+	    while (attempts < maxRetries) {
+	        try {
+	            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
+	            wait.until(ExpectedConditions.visibilityOf(element));
+	            return element.isDisplayed();
+	        } catch (StaleElementReferenceException e) {
+	            System.out.println("⚠️ Attempt " + (attempts + 1) + ": Element went stale. Retrying...");
+	            attempts++;
+	            try {
+	                Thread.sleep(900); 
 	            } catch (InterruptedException ie) {
 	                Thread.currentThread().interrupt();
 	                return false;
@@ -77,12 +104,12 @@ public class BasePage {
 
 
 	public String getText(WebDriver driver, WebElement element) {
-		waitForElementVisible(driver, element, 10);
+		waitForElementVisible(driver, element, 60);
 		return element.getText();
 	}
 
 	public Boolean isButtonEnabled(WebDriver driver, WebElement element) {
-		waitForElementVisible(driver, element, 10);
+		waitForElementVisible(driver, element, 60);
 		return element.isEnabled();
 	}
 	public void enterText(WebDriver driver, By locator, String text) {
