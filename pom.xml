@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.4.10</version>
     </parent>
 
     <name>verify-service-parent</name>
     <groupId>io.inji.verify</groupId>
     <artifactId>verify-service-parent</artifactId>
-    <version>0.15.0-SNAPSHOT</version>
+    <version>0.16.0-SNAPSHOT</version>
     <description>Parent project of MOSIP Inji verify backend service</description>
     <url>https://github.com/mosip/inji-verify</url>
     <packaging>pom</packaging>
@@ -105,25 +105,25 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <spring.boot.version>3.2.3</spring.boot.version>
         <java.version>21</java.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
         <maven.javadoc.version>3.6.3</maven.javadoc.version>
-        <spring.version>3.2.3</spring.version>
-        <springdoc.version>2.0.4</springdoc.version>
+        <spring.version>3.4.10</spring.version>
+        <springdoc.version>2.8.10</springdoc.version>
         <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <lombok.version>1.18.30</lombok.version>
         <h2.version>2.2.224</h2.version>
         <identity-credential.version>20231002</identity-credential.version>
-        <ld-signatures-java.version>1.5.0</ld-signatures-java.version>
+        <ld-signatures-java.version>1.11.0</ld-signatures-java.version>
         <jsonld-common-java.version>1.8.0</jsonld-common-java.version>
         <vcverifier-jar.version>1.5.0-SNAPSHOT</vcverifier-jar.version>
         <json.version>20240303</json.version>
-        <bouncycastle.version>1.76</bouncycastle.version>
+        <bouncycastle.version>1.78</bouncycastle.version>
         <java-jwt.version>3.18.1</java-jwt.version>
-        <tink.version>1.15.0</tink.version>
+        <tink.version>1.16.0</tink.version>
+        <nimbusds-jiose-jwt.version>9.37.2</nimbusds-jiose-jwt.version>
     </properties>
 
     <modules>

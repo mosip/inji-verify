@@ -48,20 +48,44 @@ Feature: Inji Verify vpVerification testing
     And Verify Click on Generate QR Code button
     And Verify QR code generated
     And Click on vp verification tab
-    
+
 @mobileView @verifyingVpVerification
-Scenario: Verify VP verification same device flow 
+Scenario: Verify VP verification same device flow
 
     Given User gets the title of the page
     Then Validate the title of the page
-    And Click on right arrow 
-    And Click on vp verification tab 
+    And Click on right arrow
+    And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Verify Click on open wallet button
-    And Verify Click on cancel 
-    And verify Transaction Terminated error message 
-    And Verify click on request verifiable credentials button
-    And Verify Click on open wallet button
-    And Verify Click on wallet 
-    And Verify Click on Proceed
+    #Below lines are commented as the selecting wallet flow is descoped for the release
+#    And Verify Click on cancel
+#    And verify Transaction Terminated error message
+#    And Verify click on request verifiable credentials button
+#    And Verify Click on open wallet button
+#    And Verify Click on wallet
+#    And Verify Click on Proceed
     And verify loading screen
+
+  @smoke @verifyingVpVerification
+  Scenario: Verify the VP verification QR code
+
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    And User enter the credential type "<credential type>"
+    And Select SD JWT VC
+    And Verify Click on Generate QR Code button
+    And Verify QR code generated
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    And Select Health Insurance
+    And Verify Click on Generate QR Code button
+    And Verify QR code generated
+    
+    Examples:
+      | credential type |
+      | SD JWT PID      |

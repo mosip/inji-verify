@@ -120,6 +120,7 @@ public class VPSubmissionControllerTest {
         String state = "testState";
         PresentationSubmissionDto invalidDto = new PresentationSubmissionDto("", "", new ArrayList<>());
         when(gson.fromJson(presentationSubmission, PresentationSubmissionDto.class)).thenReturn(invalidDto);
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(new VPRequestStatusDto(VPRequestStatus.ACTIVE));
         mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                         .param("vp_token", vpToken)

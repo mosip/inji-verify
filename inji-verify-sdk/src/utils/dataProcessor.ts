@@ -41,17 +41,3 @@ export const extractRedirectUrlFromQrData = (qrData: string): string | null => {
   if (!qrData.startsWith(OvpQrHeader)) return null;
   return qrData.substring(OvpQrHeader.length);
 };
-
-export const initiateOvpFlow = (redirectUri: string) => {
-  const encodedOriginUrl = window.encodeURIComponent(window.location.origin);
-  window.location.href = `${redirectUri}&client_id=${encodedOriginUrl}&redirect_uri=${encodedOriginUrl}/redirect`;
-};
-
-export const handleOvpFlow = async (qrData: string) => {
-  const redirectUrl = extractRedirectUrlFromQrData(qrData);
-  if (redirectUrl) {
-    initiateOvpFlow(redirectUrl);
-  } else {
-    throw new Error("Failed to extract the redirect url from the qr data");
-  }
-};
