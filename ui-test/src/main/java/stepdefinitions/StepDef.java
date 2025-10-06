@@ -3,9 +3,14 @@ package stepdefinitions;
 
 import com.aventstack.extentreports.ExtentTest;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import constants.UiConstants;
@@ -26,6 +31,7 @@ import java.util.Base64;
 import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.Duration;
 import java.io.FileOutputStream;
 import java.io.File;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -2309,6 +2315,23 @@ public class StepDef {
 	    }
 	}
 
+@Then("Verify that Upload button after 2 mins idle")
+public void verify_upload_button_visible_after_2_mins_idle() {
+     try {
+	        boolean isUploadButtonVisibleAfterIdle = homePage.isUploadButtonIsVisibleAfterIdle();
+	        Assert.assertTrue(isUploadButtonVisibleAfterIdle, "Upload button is not visible.");
+	        test.log(Status.PASS, "Upload button is successfully visible.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying Upload button visibility", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while verifying Upload button visibility", e);
+	        throw e;
+	    }
+	}
+
+
+
 	@When("verify click on home button")
 	public void user_click_on_home_button() {
 	    try {
@@ -2639,6 +2662,23 @@ public class StepDef {
 	    }
 	}
 
+    @Then("Upload SD-Jwt QR code")
+	public void upload_sd_jwt_qr_code() {
+	    try {
+	        uploadqrcode.ClickonUploadSDJwtQRCode();
+	        test.log(Status.PASS, "Successfully uploaded SD-Jwt QR code.");
+	    } catch (AssertionError e) {
+	        test.log(Status.FAIL, "Verification failed: Upload of SD-Jwt QR code did not behave as expected.");
+	        throw e;
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading SD-Jwt QR code", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while uploading SD-Jwt QR code", e);
+	        throw e;
+	    }
+	}
+
 	@Then("Upload invalid pdf")
 	public void upload_invalid_pdf() {
 	    try {
@@ -2869,6 +2909,20 @@ public class StepDef {
 	        throw e;
 	    } catch (Exception e) {
 	        logFailure(test, driver, "Unexpected error occurred while selecting the Health Insurance option", e);
+	        throw e;
+	    }
+	}
+
+    @Then("Select SD JWT VC")
+	public void select_sd_jwt_vc() {
+	    try {
+	        vpverification.ClickOnSDJwtVCChecklist();
+	        test.log(Status.PASS, "Successfully selected the SD JWT VC option.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while selecting the SD JWT VC option", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error occurred while selecting the SD JWT VC option", e);
 	        throw e;
 	    }
 	}
