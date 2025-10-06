@@ -1,0 +1,37 @@
+{
+  "clientId": "{{clientId}}",
+  "presentationDefinition": {
+    "id":"{{id}}",
+    "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
+    "input_descriptors": [
+      {
+        "id": "pid_credential",
+        "format": {
+          "vc+sd-jwt": {
+            "sd-jwt_alg_values": [
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ],
+            "kb-jwt_alg_values": [
+              "ES256",
+              "ES256K",
+              "EdDSA"
+            ]
+          }
+        },
+        "constraints": {
+          "fields": [
+            {
+              "path": ["$.vct"],
+              "filter": {
+                "type": "string",
+                "const": "eu.europa.ec.eudi.pid.1"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
