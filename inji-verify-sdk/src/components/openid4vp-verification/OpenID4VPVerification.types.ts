@@ -1,9 +1,3 @@
-export type OpenID4VPError = {
-  message: string;
-  code?: string;
-  details?: unknown;
-};
-
 export type VerificationStatus = "valid" | "invalid" | "expired";
 
 export interface VerificationResult {

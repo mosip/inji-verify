@@ -10,7 +10,7 @@ import java.util.UUID;
 @Slf4j
 public final class Utils {
 
-    private static final Set<String> VALID_JWT_TYPES = Set.of("vc+sd-jwt", "dc+sd-jwt");
+    private static final Set<String> VALID_SD_JWT_TYPES = Set.of("vc+sd-jwt", "dc+sd-jwt");
 
     private Utils() {
     }
@@ -26,7 +26,7 @@ public final class Utils {
         }
         String header = decodeBase64Json(jwtParts[0]);
         String typ = new JSONObject(header).optString("typ", "");
-        return VALID_JWT_TYPES.contains(typ);
+        return VALID_SD_JWT_TYPES.contains(typ);
     }
 
     private static String decodeBase64Json(String encoded)  {
