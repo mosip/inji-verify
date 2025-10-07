@@ -19,6 +19,7 @@ import org.openqa.selenium.NoSuchElementException;
 
 
 import base.BasePage;
+import utils.WaitUtil;
 
 public class HomePage extends BasePage {
 
@@ -341,11 +342,12 @@ public class HomePage extends BasePage {
 		clickOnElement(driver, isMosipNationalId);
 	}
 
-    public void clickOnStayProtectedCredentialType() {
-        By locator = By.xpath("//h3[text()='" + stayProtectedIssuerCredentialType + "']");
-        WebElement stayProtectedCredentialTypeElement = waitForElementClickable(driver, locator, 30);
-        clickOnElement(driver, stayProtectedCredentialTypeElement);
-    }
+	public void clickOnStayProtectedCredentialType() {
+	    By locator = By.xpath("//h3[text()='" + stayProtectedIssuerCredentialType + "']");
+	    WebElement stayProtectedCredentialTypeElement = driver.findElement(locator);
+	    WaitUtil.waitForClickability(driver, stayProtectedCredentialTypeElement);
+	    stayProtectedCredentialTypeElement.click();
+	}
 
 	public void clickOnOnProceed() {
 		try {
