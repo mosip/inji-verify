@@ -43,13 +43,13 @@ public class VpVerification extends BasePage {
 	@FindBy(id = "camera-access-denied-okay-button")
 	WebElement generateQRCodeButton;
 
-	@FindBy(xpath = "(//button[@id='request-credentials-button'])[2]")
+	@FindBy(id = "request-credentials-button")
 	WebElement verifiableCredentialsButton;
 
 	@FindBy(xpath = "//*[name()='path' and contains(@fill,'#000000')]")
 	WebElement verificationQrCode;
 
-	@FindBy(xpath = "//div[contains(@style,'animation') and contains(@style,'spin') and contains(@style,'border-radius: 50%')]")
+    @FindBy(id = "ovp-loader")
 	WebElement loadingScreen;
 
 	@FindBy(xpath = "//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')]")
@@ -97,6 +97,9 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//label[@for='Health Insurance']")
 	WebElement HealthInsuranceChecklist;
 
+	@FindBy(xpath = "//label[@for='SD JWT PID (Talao)']")
+	WebElement SDJwtVCChecklist;
+
 	@FindBy(xpath = "//span[@class='walletName' and text()='Inji Wallet']")
 	WebElement WalletButton;
 
@@ -118,7 +121,7 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "(//button[contains(@class,'cancelButton') and contains(text(),'Cancel')])")
 	WebElement cancelButton;
 
-	@FindBy(id = "selection-panel-back-button")
+	@FindBy(id = "verification-open-wallet-button")
 	WebElement openWalletButton;
 
 	public String getVpVerificationQrCodeStep1Description() {
@@ -268,6 +271,10 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, HealthInsuranceChecklist);
 	}
 
+	public void ClickOnSDJwtVCChecklist() {
+		clickOnElement(driver, SDJwtVCChecklist);
+	}
+
 	public void ClickOnWalletButton() {
 		clickOnElement(driver, WalletButton);
 	}
@@ -305,6 +312,7 @@ public class VpVerification extends BasePage {
 	public void clickOnOpenWalletButton() {
 		clickOnElement(driver, openWalletButton);
 	}
+
 
 
 }
