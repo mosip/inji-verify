@@ -177,13 +177,7 @@
 }
 
 .upload-container.fixed-enabled {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: white;
-  padding: 1rem;
-  z-index: 20;
+  display: none;
 }
 
 .upload-container.default {
