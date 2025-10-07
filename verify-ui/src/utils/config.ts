@@ -126,12 +126,12 @@ export const UploadFileSizeLimits = {
 export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIVITY_CHECK_ENDPOINT ?? "https://dns.google/";
 
 const InternetConnectivityTimeout = Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT);
-export const InternetConnectivityCheckTimeout = isNaN(InternetConnectivityTimeout)
+export const InternetConnectivityCheckTimeout = Number.isNaN(InternetConnectivityTimeout)
     ? 10000
     : InternetConnectivityTimeout;
 
 const timeout = Number.parseInt(window._env_.DISPLAY_TIMEOUT);
-export const DisplayTimeout = isNaN(timeout) ? 10000 : timeout;
+export const DisplayTimeout = Number.isNaN(timeout) ? 10000 : timeout;
 
 export const OvpQrHeader = window._env_.OVP_QR_HEADER;
 
