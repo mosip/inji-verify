@@ -116,19 +116,20 @@ export const vpRequest = async (
   }
 };
 
-export const vpRequestStatus = async (url: string, reqId: string) => {
+export const vpRequestStatus = async (
+  url: string,
+  reqId: string,
+  signal?: AbortSignal
+) => {
   try {
-    const response = await fetch(url + `/vp-request/${reqId}/status`);
+    const response = await fetch(url + `/vp-request/${reqId}/status`, { signal });
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === "AbortError") throw error;
     console.error(error);
-    if (error instanceof Error) {
-      throw Error(error.message);
-    } else {
-      throw new Error("An unknown error occurred");
-    }
+    throw new Error(error?.message || "An unknown error occurred");
   }
 };
 
@@ -140,7 +141,7 @@ export const vpResult = async (url: string, txnId: string) => {
       throw {
         errorCode: data.errorCode,
         errorMessage: data.errorMessage,
-        transactionId: txnId ?? null
+        transactionId: txnId ?? null,
       } as AppError;
     }
     return data.vcResults;

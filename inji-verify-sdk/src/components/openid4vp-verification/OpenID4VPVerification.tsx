@@ -4,6 +4,7 @@ import {
   AppError,
   OpenID4VPVerificationProps,
   QrData,
+  SessionState,
   VerificationResults,
   VerificationStatus,
 } from "./OpenID4VPVerification.types";
@@ -11,11 +12,19 @@ import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css";
 import { isSdJwt } from "../../utils/utils";
 
+const MOBILE_DEVICE_REGEX = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+
 const isMobileDevice = (): boolean => {
   if (typeof navigator === "undefined") return false;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+
+  const userAgent = navigator.userAgent;
+  const isMobile = MOBILE_DEVICE_REGEX.test(userAgent);
+
+  if (!isMobile && userAgent.includes("Mac") && "ontouchend" in document) {
+    return true;
+  }
+
+  return isMobile;
 };
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
@@ -37,37 +46,58 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const hasInitializedRef = useRef(false);
   const isActiveRef = useRef(true);
+  const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const sessionStateRef = useRef<SessionState | null>(null);
+  const isPollingRef = useRef(false);
 
   const shouldShowQRCode = !loading && qrCodeData;
 
   const DEFAULT_PROTOCOL = "openid4vp://";
 
   const VPFormat = useMemo(
-      () => ({
-        ldp_vp: {
-          proof_type: [
-            "Ed25519Signature2018",
-            "Ed25519Signature2020",
-            "RsaSignature2018",
-          ],
-        },
-        "vc+sd-jwt": {
-          "sd-jwt_alg_values": [
-            "RS256",
-            "ES256",
-            "ES256K",
-            "EdDSA"
-          ],
-          "kb-jwt_alg_values": [
-            "RS256",
-            "ES256",
-            "ES256K",
-            "EdDSA"
-          ]
-        }
-      }),
-      []
+    () => ({
+      ldp_vp: {
+        proof_type: [
+          "Ed25519Signature2018",
+          "Ed25519Signature2020",
+          "RsaSignature2018",
+        ],
+      },
+      "vc+sd-jwt": {
+        "sd-jwt_alg_values": ["RS256", "ES256", "ES256K", "EdDSA"],
+        "kb-jwt_alg_values": ["RS256", "ES256", "ES256K", "EdDSA"],
+      },
+    }),
+    []
   );
+
+  const stopPolling = useCallback(() => {
+    if (pollingTimeoutRef.current) {
+      clearTimeout(pollingTimeoutRef.current);
+      pollingTimeoutRef.current = null;
+    }
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+
+    isPollingRef.current = false;
+  }, []);
+
+  const clearSessionData = useCallback(() => {
+    sessionStateRef.current = null;
+  }, []);
+
+  const resetState = useCallback(() => {
+    stopPolling();
+    setQrCodeData(null);
+    setLoading(false);
+    hasInitializedRef.current = false;
+    isActiveRef.current = false;
+    sessionStateRef.current = null;
+  }, [stopPolling]);
 
   const getPresentationDefinitionParams = useCallback(
     (data: QrData) => {
@@ -102,7 +132,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       return params.toString();
     },
-    [verifyServiceUrl, clientId]
+    [verifyServiceUrl, clientId, VPFormat]
   );
 
   const fetchVPResult = useCallback(
@@ -121,8 +151,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
                 vcStatus: vcResult.verificationStatus,
               })
             );
-            onVPProcessed?.(VPResult);
+            onVPProcessed(VPResult);
             resetState();
+            return;
           }
         }
 
@@ -137,15 +168,24 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         }
       }
     },
-    [verifyServiceUrl, onVPProcessed, onVPReceived, onError]
+    [verifyServiceUrl, onVPProcessed, onVPReceived, onError, resetState]
   );
 
   const fetchVPStatus = useCallback(
     async (reqId: string, txnId: string) => {
-      if (!isActiveRef.current) return;
+      if (isPollingRef.current) {
+        stopPolling();
+      }
+
+      isPollingRef.current = true;
+
+      if (!isActiveRef.current || !isPollingRef.current) return;
+      
+      abortControllerRef.current = new AbortController();
+
       try {
-        const response = await vpRequestStatus(verifyServiceUrl, reqId);
-        if (!isActiveRef.current) return;
+        const response = await vpRequestStatus(verifyServiceUrl, reqId, abortControllerRef.current.signal);
+        if (!isActiveRef.current || !isPollingRef.current) return;
 
         if (response.status === "ACTIVE") {
           fetchVPStatus(reqId, txnId);
@@ -155,15 +195,26 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           resetState();
           onQrCodeExpired();
         }
-      } catch (error) {
+      } catch (error:any) {
+        if (error?.name === "AbortError") return;
+
         if (isActiveRef.current) {
+          stopPolling();
           setLoading(false);
           resetState();
           onError(error as AppError);
         }
       }
     },
-    [verifyServiceUrl, onQrCodeExpired, onError, fetchVPResult]
+    [
+      verifyServiceUrl,
+      onQrCodeExpired,
+      onError,
+      fetchVPResult,
+      resetState,
+      clearSessionData,
+      stopPolling,
+    ]
   );
 
   const createVPRequest = useCallback(async () => {
@@ -179,7 +230,15 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         presentationDefinitionId,
         presentationDefinition
       );
-      fetchVPStatus(data.requestId, data.transactionId);
+
+      sessionStateRef.current = {
+        requestId: data.requestId,
+        transactionId: data.transactionId,
+      };
+
+      if (!isSameDeviceFlowEnabled) {
+        fetchVPStatus(data.requestId, data.transactionId);
+      }
       return getPresentationDefinitionParams(data);
     } catch (error) {
       onError(error as AppError);
@@ -194,13 +253,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     onError,
     clientId,
   ]);
-
-  const resetState = () => {
-    setQrCodeData(null);
-    setLoading(false);
-    hasInitializedRef.current = false;
-    isActiveRef.current = false;
-  };
 
   const handleTriggerClick = () => {
     if (isSameDeviceFlowEnabled && isMobileDevice()) {
@@ -227,10 +279,27 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   };
 
   useEffect(() => {
-    return () => {
-      isActiveRef.current = false;
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        if (
+          sessionStateRef.current &&
+          isActiveRef.current &&
+          !isPollingRef.current
+        ) {
+          const { requestId, transactionId } = sessionStateRef.current;
+          fetchVPStatus(requestId, transactionId);
+        }
+      } else {
+        stopPolling();
+      }
     };
-  }, []);
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [fetchVPStatus, stopPolling]);
 
   useEffect(() => {
     if (!presentationDefinitionId && !presentationDefinition) {
@@ -271,14 +340,28 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   ]);
 
   useEffect(() => {
-    if (isSameDeviceFlowEnabled && isMobileDevice()) {
-      if (!triggerElement) {
+    if (!triggerElement) {
+      if (isSameDeviceFlowEnabled && isMobileDevice()) {
         startVerification();
+      } else {
+        handleGenerateQRCode();
       }
-    } else if (!triggerElement) {
-      handleGenerateQRCode();
     }
-  }, []);
+  }, [
+    triggerElement,
+    isSameDeviceFlowEnabled,
+    startVerification,
+    handleGenerateQRCode,
+    presentationDefinition,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      isActiveRef.current = false;
+      stopPolling();
+      clearSessionData();
+    };
+  }, [stopPolling, clearSessionData]);
 
   return (
     <div className={"ovp-root-div-container"}>
