@@ -11,7 +11,7 @@ import {
   setFlowType,
   setSelectedClaims,
 } from "../../../../redux/features/verify/vpVerificationState";
-import { storage } from "../../../../utils/storage";
+import { Storage } from "../../../../utils/storage";
 import { Button } from "./Button";
 import { FilterLinesIcon, SearchIcon } from "../../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
@@ -89,7 +89,7 @@ function SelectionPanelContent() {
 
   useEffect(() => {
     selectedClaims.forEach((claim: claim) =>
-      storage.setItem(storage.ESSENTIAL_CLAIM, claim)
+      Storage.setItem(Storage.ESSENTIAL_CLAIM, claim)
     );
   }, [selectedClaims]);
 
