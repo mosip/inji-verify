@@ -4,7 +4,9 @@ import {
   QrData,
   VPRequestBody,
 } from "../components/openid4vp-verification/OpenID4VPVerification.types";
-import { vcSubmissionBody } from "../components/qrcode-verification/QRCodeVerification.types";
+import {
+  vcSubmissionBody
+} from "../components/qrcode-verification/QRCodeVerification.types";
 
 const generateNonce = (): string => {
   return btoa(Date.now().toString());
@@ -120,10 +122,13 @@ export const vpRequestStatus = async (url: string, reqId: string) => {
     if (response.status !== 200) throw new Error("Failed to fetch status");
     const data = await response.json();
     return data;
-  } catch (error: any) {
-    if (error?.name === "AbortError") throw error;
+  } catch (error) {
     console.error(error);
-    throw new Error(error?.message || "An unknown error occurred");
+    if (error instanceof Error) {
+      throw Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
   }
 };
 

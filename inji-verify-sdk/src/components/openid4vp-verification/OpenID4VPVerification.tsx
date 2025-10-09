@@ -77,6 +77,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     setQrCodeData(null);
     setLoading(false);
     hasInitializedRef.current = false;
+    isActiveRef.current = false;
     clearSessionData();
   }, []);
 
@@ -154,19 +155,12 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 
   const fetchVPStatus = useCallback(
     async (reqId: string, txnId: string) => {
-      if (!isActiveRef.current || sessionStateRef.current?.isPolling) return;
-
-      if (sessionStateRef.current) {
-        sessionStateRef.current.isPolling = true;
-      }
+      if (!isActiveRef.current || !sessionStateRef.current) return;
 
       try {
         const response = await vpRequestStatus(verifyServiceUrl, reqId);
 
         if (response.status === "ACTIVE") {
-          if (sessionStateRef.current) {
-            sessionStateRef.current.isPolling = false;
-          }
           fetchVPStatus(reqId, txnId);
         } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult(txnId);
@@ -174,14 +168,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           resetState();
           onQrCodeExpired();
         }
-      } catch (error:any) {
-        if (error?.name === "AbortError") {
-          if (sessionStateRef.current) {
-            sessionStateRef.current.isPolling = false;
-          }
-          fetchVPStatus(reqId, txnId);
-          return;
-        }
+      } catch (error) {
         if (isActiveRef.current) {
           setLoading(false);
           resetState();
@@ -193,9 +180,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       verifyServiceUrl,
       onQrCodeExpired,
       onError,
-      fetchVPResult,
-      resetState,
-      clearSessionData,
+      fetchVPResult
     ]
   );
 
@@ -216,7 +201,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       sessionStateRef.current = {
         requestId: data.requestId,
         transactionId: data.transactionId,
-        isPolling: false,
       };
 
       if (!isSameDeviceFlowEnabled || !isMobileDevice()) {
@@ -264,7 +248,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        if (sessionStateRef.current && isActiveRef.current && !sessionStateRef.current.isPolling) {
+        if (sessionStateRef.current && isActiveRef.current) {
           const { requestId, transactionId } = sessionStateRef.current;
           fetchVPStatus(requestId, transactionId);
         }
