@@ -26,13 +26,13 @@ export const LanguagesSupported: LanguageObject[] = [
   { label: "ខ្មែរ", value: "km" },
 ];
 
-export const defaultLanguage = window._env_.DEFAULT_LANG;
+export const defaultLanguage = (globalThis as any)._env_.DEFAULT_LANG;
 
 export const selected_language = Storage.getItem(Storage.SELECTED_LANGUAGE);
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: selected_language ? selected_language : defaultLanguage,
+  lng: selected_language || defaultLanguage,
   fallbackLng: defaultLanguage,
   interpolation: {
     escapeValue: false,
