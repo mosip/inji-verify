@@ -44,8 +44,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
 }) => {
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const hasInitializedRef = useRef(false);
-  const isActiveRef = useRef(true);
+  const isActiveRef = useRef(false);
   const sessionStateRef = useRef<SessionState | null>(null);
 
   const shouldShowQRCode = !loading && qrCodeData;
@@ -76,7 +75,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const resetState = useCallback(() => {
     setQrCodeData(null);
     setLoading(false);
-    hasInitializedRef.current = false;
     isActiveRef.current = false;
     clearSessionData();
   }, []);
@@ -185,10 +183,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   );
 
   const createVPRequest = useCallback(async () => {
-    if (hasInitializedRef.current) return;
-    hasInitializedRef.current = true;
-    setLoading(true);
+    if (isActiveRef.current) return;
     isActiveRef.current = true;
+    setLoading(true);
     try {
       const data = await vpRequest(
         verifyServiceUrl,
