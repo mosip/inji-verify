@@ -159,6 +159,7 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
 export interface SessionState {
   requestId: string;
   transactionId: string;
+  isPolling: boolean;
 }
 
 export type AppError = {

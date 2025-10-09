@@ -12,19 +12,19 @@ import { vpRequest, vpRequestStatus, vpResult } from "../../utils/api";
 import "./OpenID4VPVerification.css";
 import { isSdJwt } from "../../utils/utils";
 
-const MOBILE_DEVICE_REGEX = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+export const isMobileDevice = (): boolean => {
+  const ua = navigator.userAgent;
 
-const isMobileDevice = (): boolean => {
-  if (typeof navigator === "undefined") return false;
+  const isMobileUA = /Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    ua
+  );
 
-  const userAgent = navigator.userAgent;
-  const isMobile = MOBILE_DEVICE_REGEX.test(userAgent);
+  const isTabletUA =
+    /iPad/i.test(ua) ||
+    (/Macintosh/i.test(ua) && "ontouchend" in document) || // iPad iOS13+ (real)
+    (/Android/i.test(ua) && !/Mobile/i.test(ua)); // Android tablet
 
-  if (!isMobile && userAgent.includes("Mac") && "ontouchend" in document) {
-    return true;
-  }
-
-  return isMobile;
+  return isMobileUA || isTabletUA;
 };
 
 const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
@@ -46,10 +46,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const hasInitializedRef = useRef(false);
   const isActiveRef = useRef(true);
-  const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
   const sessionStateRef = useRef<SessionState | null>(null);
-  const isPollingRef = useRef(false);
 
   const shouldShowQRCode = !loading && qrCodeData;
 
@@ -72,32 +69,16 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     []
   );
 
-  const stopPolling = useCallback(() => {
-    if (pollingTimeoutRef.current) {
-      clearTimeout(pollingTimeoutRef.current);
-      pollingTimeoutRef.current = null;
-    }
-
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-    }
-
-    isPollingRef.current = false;
-  }, []);
-
   const clearSessionData = useCallback(() => {
     sessionStateRef.current = null;
   }, []);
 
   const resetState = useCallback(() => {
-    stopPolling();
     setQrCodeData(null);
     setLoading(false);
     hasInitializedRef.current = false;
-    isActiveRef.current = false;
-    sessionStateRef.current = null;
-  }, [stopPolling]);
+    clearSessionData();
+  }, []);
 
   const getPresentationDefinitionParams = useCallback(
     (data: QrData) => {
@@ -132,7 +113,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       return params.toString();
     },
-    [verifyServiceUrl, clientId, VPFormat]
+    [verifyServiceUrl, clientId]
   );
 
   const fetchVPResult = useCallback(
@@ -168,26 +149,24 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         }
       }
     },
-    [verifyServiceUrl, onVPProcessed, onVPReceived, onError, resetState]
+    [verifyServiceUrl, onVPProcessed, onVPReceived, onError]
   );
 
   const fetchVPStatus = useCallback(
     async (reqId: string, txnId: string) => {
-      if (isPollingRef.current) {
-        stopPolling();
+      if (!isActiveRef.current || sessionStateRef.current?.isPolling) return;
+
+      if (sessionStateRef.current) {
+        sessionStateRef.current.isPolling = true;
       }
 
-      isPollingRef.current = true;
-
-      if (!isActiveRef.current || !isPollingRef.current) return;
-      
-      abortControllerRef.current = new AbortController();
-
       try {
-        const response = await vpRequestStatus(verifyServiceUrl, reqId, abortControllerRef.current.signal);
-        if (!isActiveRef.current || !isPollingRef.current) return;
+        const response = await vpRequestStatus(verifyServiceUrl, reqId);
 
         if (response.status === "ACTIVE") {
+          if (sessionStateRef.current) {
+            sessionStateRef.current.isPolling = false;
+          }
           fetchVPStatus(reqId, txnId);
         } else if (response.status === "VP_SUBMITTED") {
           fetchVPResult(txnId);
@@ -196,10 +175,14 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
           onQrCodeExpired();
         }
       } catch (error:any) {
-        if (error?.name === "AbortError") return;
-
+        if (error?.name === "AbortError") {
+          if (sessionStateRef.current) {
+            sessionStateRef.current.isPolling = false;
+          }
+          fetchVPStatus(reqId, txnId);
+          return;
+        }
         if (isActiveRef.current) {
-          stopPolling();
           setLoading(false);
           resetState();
           onError(error as AppError);
@@ -213,7 +196,6 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       fetchVPResult,
       resetState,
       clearSessionData,
-      stopPolling,
     ]
   );
 
@@ -234,9 +216,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       sessionStateRef.current = {
         requestId: data.requestId,
         transactionId: data.transactionId,
+        isPolling: false,
       };
 
-      if (!isSameDeviceFlowEnabled) {
+      if (!isSameDeviceFlowEnabled || !isMobileDevice()) {
         fetchVPStatus(data.requestId, data.transactionId);
       }
       return getPresentationDefinitionParams(data);
@@ -281,16 +264,10 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        if (
-          sessionStateRef.current &&
-          isActiveRef.current &&
-          !isPollingRef.current
-        ) {
+        if (sessionStateRef.current && isActiveRef.current && !sessionStateRef.current.isPolling) {
           const { requestId, transactionId } = sessionStateRef.current;
           fetchVPStatus(requestId, transactionId);
         }
-      } else {
-        stopPolling();
       }
     };
 
@@ -299,7 +276,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [fetchVPStatus, stopPolling]);
+  }, [fetchVPStatus]);
 
   useEffect(() => {
     if (!presentationDefinitionId && !presentationDefinition) {
@@ -358,10 +335,9 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   useEffect(() => {
     return () => {
       isActiveRef.current = false;
-      stopPolling();
       clearSessionData();
     };
-  }, [stopPolling, clearSessionData]);
+  }, [clearSessionData]);
 
   return (
     <div className={"ovp-root-div-container"}>
