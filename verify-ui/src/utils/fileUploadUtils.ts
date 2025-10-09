@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
-import { checkInternetStatus} from "./misc";
-import { SupportedFileTypes} from "./config";
+import { checkInternetStatus } from "./misc";
+import { SupportedFileTypes } from "./config";
 import { updateInternetConnectionStatus } from "../redux/features/application-state/application-state.slice";
 
 export const acceptedFileTypes = SupportedFileTypes.map((ext) => `.${ext}`).join(", ");
