@@ -123,17 +123,17 @@ export const UploadFileSizeLimits = {
     max: 5000000 // 5MB
 }
 
-export const InternetConnectivityCheckEndpoint = window._env_.INTERNET_CONNECTIVITY_CHECK_ENDPOINT ?? "https://dns.google/";
+export const InternetConnectivityCheckEndpoint = (globalThis as any)._env_.INTERNET_CONNECTIVITY_CHECK_ENDPOINT ?? "https://dns.google/";
 
-const InternetConnectivityTimeout = Number.parseInt(window._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT);
+const InternetConnectivityTimeout = Number.parseInt((globalThis as any)._env_.INTERNET_CONNECTIVITY_CHECK_TIMEOUT);
 export const InternetConnectivityCheckTimeout = Number.isNaN(InternetConnectivityTimeout)
     ? 10000
     : InternetConnectivityTimeout;
 
-const timeout = Number.parseInt(window._env_.DISPLAY_TIMEOUT);
+const timeout = Number.parseInt((globalThis as any)._env_.DISPLAY_TIMEOUT);
 export const DisplayTimeout = Number.isNaN(timeout) ? 10000 : timeout;
 
-export const OvpQrHeader = window._env_.OVP_QR_HEADER;
+export const OvpQrHeader = (globalThis as any)._env_.OVP_QR_HEADER;
 
 let VCRenderOrders: any = {};
 let verifiableClaims: claim[] = [];
@@ -143,13 +143,13 @@ export const getVerifiableClaims = () => verifiableClaims;
 
 export const initializeClaims = async () => {
   try {
-    const response = await fetch(window._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
+    const response = await fetch((globalThis as any)._env_.VERIFIABLE_CLAIMS_CONFIG_URL);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
     verifiableClaims = data.verifiableClaims as claim[];
-    VCRenderOrders = data.VCRenderOrders as any;
+    VCRenderOrders = data.VCRenderOrders;
   } catch (error) {
     console.error("Error loading claims from ConfigMap:", error);
   }
