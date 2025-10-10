@@ -156,6 +156,11 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
     onError: (error: AppError) => void;
   };
 
+export interface SessionState {
+  requestId: string;
+  transactionId: string;
+}
+
 export type AppError = {
   errorMessage: string;
   errorCode?: string;
