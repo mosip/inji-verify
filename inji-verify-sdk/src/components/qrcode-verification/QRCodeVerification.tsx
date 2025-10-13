@@ -17,7 +17,7 @@ import {
   THROTTLE_FRAMES_PER_SEC,
   ZOOM_STEP,
 } from "../../utils/constants";
-import { vcSubmission, vcVerification } from "../../utils/api";
+import {vcSubmission, vcVerification, vpRequest} from "../../utils/api";
 import {
   decodeQrData,
   extractRedirectUrlFromQrData,
@@ -332,6 +332,53 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }
   };
 
+  const createVPRequest = async (url: string, clientId: string, presentationDefinition: any) => {
+    try {
+      let presentationDefinitionId= undefined;
+      const data = await vpRequest(
+        url,
+        clientId,
+        transactionId ?? undefined,
+        presentationDefinitionId,
+        presentationDefinition
+      );
+
+      return data;
+    } catch (err) {
+      console.error("Error resolving data:", err);
+    }
+  };
+
+  const parsePresentationDefinition = (pdParams: string) => {
+    const decoded = JSON.parse(decodeURIComponent(pdParams));
+    const { inputDescriptors, ...rest } = decoded;
+
+    return { ...rest, input_descriptors: inputDescriptors };
+  };
+
+  const buildRedirectUrl = (
+    baseRedirectUrl: string,
+    clientId: string,
+    state: string,
+    responseUri?: string,
+    nonce?: string
+  ) => {
+    const encodedClientId = encodeURIComponent(clientId);
+    const redirectUri = `${encodedClientId}%2F`;
+
+    const params = new URLSearchParams({
+      client_id: encodedClientId,
+      redirect_uri: redirectUri,
+      state,
+      response_mode: "direct_post",
+    });
+
+    if (responseUri) params.set("response_uri", responseUri);
+    if (nonce) params.set("nonce", nonce);
+
+    return `${baseRedirectUrl}&${params.toString()}#`;
+  };
+
   const extractVerifiableCredential = async (data: any) => {
     try {
       if (data?.vpToken) return data.vpToken.verifiableCredential[0];
@@ -340,8 +387,20 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
 
-        const encodedOrigin = encodeURIComponent(window.location.origin);
-        const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
+        const clientId = window.location.origin;
+        const parsedUrl = new URL(redirectUrl);
+        const pdParams = parsedUrl.searchParams.get("presentation_definition");
+
+        if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
+
+        const presentationDefinition = parsePresentationDefinition(pdParams);
+        const response = await createVPRequest(verifyServiceUrl, clientId, presentationDefinition);
+
+        if (!response) throw new Error("Failed to create VP Request");
+
+        const { requestId: state , authorizationDetails } = response;
+        const { responseUri , nonce } = authorizationDetails || {};
+        const url = buildRedirectUrl(redirectUrl, clientId, state, responseUri, nonce);
         window.location.href = url;
         return;
       }
