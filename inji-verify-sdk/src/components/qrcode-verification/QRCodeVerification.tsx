@@ -26,6 +26,9 @@ import { readBarcodes } from "zxing-wasm/full";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Slider } from "@mui/material";
 import "./QRCodeVerification.css";
+import {
+  SessionState
+} from "../openid4vp-verification/OpenID4VPVerification.types";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   scannerActive = true,
@@ -54,6 +57,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const scanSessionCompletedRef = useRef(false);
   const frameProcessingRef = useRef(false);
   const startingRef = useRef(false);
+  const sessionStateRef = useRef<SessionState | null>(null);
 
   const shouldEnableZoom = isEnableZoom && isMobile;
 
@@ -342,6 +346,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         presentationDefinitionId,
         presentationDefinition
       );
+
+      sessionStateRef.current = {
+        requestId: data.requestId,
+        transactionId: data.transactionId,
+      };
 
       return data;
     } catch (err) {
