@@ -43,6 +43,7 @@ function MyApp() {
     <OpenID4VPVerification
       verifyServiceUrl="https://your-backend.com/v1/verify"
       presentationDefinitionId="your-definition-id"
+      clientId="https://verifier.example.com"
       onVpProcessed={(result) => {
         console.log("Wallet verification complete:", result);
         // Handle the verification result here
@@ -152,6 +153,7 @@ https://your-backend.com
 <OpenID4VPVerification
   verifyServiceUrl="https://your-backend.com"
   presentationDefinition={"Refer Option 2 below"}
+  clientId="https://verifier.example.com"
   onVpProcessed={(result) => console.log(result)}
   onQrCodeExpired={() => alert("QR expired")}
   onError={(error) => console.error(error)}
@@ -229,6 +231,7 @@ presentationDefinition={{
 | `onQrCodeExpired`          | function | -              | Handle QR code expiration          |
 | `isSameDeviceFlowEnabled`  | boolean  | true           | Enable same-device flow (optional) |
 | `qrCodeStyles`             | object   | -              | Customize QR code appearance       |
+| `clientId`                  | string  | - | Unique client identifier for the relaying party
 
 ## ⚠️ Important Limitations
 
