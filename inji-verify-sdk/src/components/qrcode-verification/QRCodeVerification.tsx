@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   QRCodeVerificationProps,
   scanResult,
+  VcStatus,
 } from "../../components/qrcode-verification/QRCodeVerification.types";
 import { doFileChecks, scanFilesForQr } from "../../utils/uploadQRCodeUtils";
 import {
@@ -17,7 +18,13 @@ import {
   THROTTLE_FRAMES_PER_SEC,
   ZOOM_STEP,
 } from "../../utils/constants";
-import {vcSubmission, vcVerification, vpRequest} from "../../utils/api";
+import {
+  vcSubmission,
+  vcVerification,
+  vpRequest,
+  vpRequestStatus,
+  vpResult
+} from "../../utils/api";
 import {
   decodeQrData,
   extractRedirectUrlFromQrData,
@@ -29,6 +36,7 @@ import "./QRCodeVerification.css";
 import {
   SessionState
 } from "../openid4vp-verification/OpenID4VPVerification.types";
+import { isSdJwt } from "../../utils/utils";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   scannerActive = true,
@@ -44,6 +52,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonId,
   uploadButtonStyle,
   isEnableZoom = true,
+  clientId,
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
@@ -57,7 +66,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const scanSessionCompletedRef = useRef(false);
   const frameProcessingRef = useRef(false);
   const startingRef = useRef(false);
-  const sessionStateRef = useRef<SessionState | null>(null);
+  const sessionStateRef = useRef<SessionState | null>(null); //Todo : check
+  // on page reload
 
   const shouldEnableZoom = isEnableZoom && isMobile;
 
@@ -336,9 +346,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }
   };
 
-  const createVPRequest = async (url: string, clientId: string, presentationDefinition: any) => {
+  const createVPRequest = async (url: string, presentationDefinition: any) => {
     try {
-      let presentationDefinitionId= undefined;
+      let presentationDefinitionId = undefined;
       const data = await vpRequest(
         url,
         clientId,
@@ -347,14 +357,17 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         presentationDefinition
       );
 
+      console.log("requestId ", data.requestId);
+      console.log("transactionId ", data.transactionId);
+
       sessionStateRef.current = {
         requestId: data.requestId,
         transactionId: data.transactionId,
       };
 
       return data;
-    } catch (err) {
-      console.error("Error resolving data:", err);
+    } catch (error) { // TODO: show error on screen
+      throw error;
     }
   };
 
@@ -367,23 +380,21 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   const buildRedirectUrl = (
     baseRedirectUrl: string,
-    clientId: string,
     state: string,
-    responseUri?: string,
-    nonce?: string
+    responseUri: string,
+    nonce: string
   ) => {
-    const encodedClientId = encodeURIComponent(clientId);
-    const redirectUri = `${encodedClientId}%2F`;
+    const encodedRedirectUri = encodeURIComponent(window.location.origin);
+    const redirectUri = `${encodedRedirectUri}%2F`;
 
     const params = new URLSearchParams({
-      client_id: encodedClientId,
+      client_id: clientId,
       redirect_uri: redirectUri,
       state,
       response_mode: "direct_post",
+      response_uri: responseUri,
+      nonce: nonce,
     });
-
-    if (responseUri) params.set("response_uri", responseUri);
-    if (nonce) params.set("nonce", nonce);
 
     return `${baseRedirectUrl}&${params.toString()}#`;
   };
@@ -396,21 +407,22 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
 
-        const clientId = window.location.origin;
         const parsedUrl = new URL(redirectUrl);
         const pdParams = parsedUrl.searchParams.get("presentation_definition");
 
         if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
-        const response = await createVPRequest(verifyServiceUrl, clientId, presentationDefinition);
+        const response = await createVPRequest(verifyServiceUrl, presentationDefinition);
 
         if (!response) throw new Error("Failed to create VP Request");
 
         const { requestId: state , authorizationDetails } = response;
-        const { responseUri , nonce } = authorizationDetails || {};
-        const url = buildRedirectUrl(redirectUrl, clientId, state, responseUri, nonce);
-        window.location.href = url;
+
+        if (!authorizationDetails) throw new Error("Missing authorization details in VP Request response");
+
+        const { responseUri, nonce } = authorizationDetails;
+        window.location.href = buildRedirectUrl(redirectUrl, state, responseUri, nonce);
         return;
       }
 
@@ -422,6 +434,17 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     } catch (error) {
       return error;
     }
+  };
+
+  const resetState = () => {
+    sessionStateRef.current = null;
+    scanSessionCompletedRef.current = true;
+    frameProcessingRef.current = false;
+    clearTimer();
+    stopVideoStream();
+    setScanning(false);
+    setUploading(false);
+    setLoading(false);
   };
 
   const triggerCallbacks = async (vc: any) => {
@@ -436,13 +459,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     } catch (error) {
       handleError(error);
     } finally {
-      scanSessionCompletedRef.current = true;
-      frameProcessingRef.current = false;
-      clearTimer();
-      stopVideoStream();
-      setScanning(false);
-      setUploading(false);
-      setLoading(false);
+      resetState();
     }
   };
 
@@ -468,6 +485,42 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     if (pad) base64 += "=".repeat(4 - pad);
     return atob(base64);
   }
+
+  const fetchVPResult = async (verifyServiceUrl: string, transactionId: string) => {
+    try {
+      if (onVCProcessed && transactionId) {
+        const vcResults = await vpResult(verifyServiceUrl, transactionId);
+        if (vcResults && vcResults.length > 0) {
+          const VCResult = vcResults.map((vcResult: any) => ({
+            vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
+            vcStatus: vcResult.verificationStatus as VcStatus,
+          }));
+          onVCProcessed(VCResult);
+          resetState();
+          return;
+        }
+      }
+    } catch (error) {
+      onError(error instanceof Error ? error : new Error("Unknown error"));
+    }
+  };
+
+  const fetchVPStatus = async (verifyServiceUrl: string, transactionId: string, requestId: string) => {
+    try {
+      const response = await vpRequestStatus(verifyServiceUrl, requestId);
+      if (response?.status === "VP_SUBMITTED") {
+        if (onVCReceived) {
+          onVCReceived(transactionId);
+          resetState();
+          return;
+        }
+        await fetchVPResult(verifyServiceUrl, transactionId); // todo : rename
+      }
+      throw new Error("VP submission failed or not completed");
+    } catch (error) {
+      onError(error instanceof Error ? error : new Error("Unknown error"));
+    }
+  };
 
   const startScanning =
     Boolean(scannerActive) &&
@@ -507,8 +560,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         : undefined;
       error = params.get("error");
       if (vpToken && presentationSubmission) {
-        processScanResult({ vpToken, presentationSubmission });
+        processScanResult({vpToken, presentationSubmission});
         window.history.replaceState(null, "", window.location.pathname);
+      } else if (sessionStateRef.current && !vpToken) {
+        const {transactionId, requestId} = sessionStateRef.current;
+        fetchVPStatus(verifyServiceUrl, transactionId, requestId); // TOdo :
+        // rename
       } else if (!!error) {
         onError(new Error(error));
       }
