@@ -1,7 +1,17 @@
 # UITESTRIG
 
 ## Introduction
-UITESTRIG will test end-to-end functional flows involving multiple UI modules.
+UITESTRIG will test end-to-end functional flows involving multiple INJIVERIFY-UI module.
+
+## Update the values.yaml
+
+1. Create the required BrowserStack and Google credentials by referring to this documentation.
+2. Add the BrowserStack and Google credentials in the values.yaml file.
+3. Replace sandbox with the appropriate environment name.
+``` example : api-internal.sandbox to api-internal.dev ```
+4. Replace sandbox.xyz.net with the required endpoint.
+``` example : api-internal.sandbox.xyz.net to api-internal.dev.mosip.net ```
+5. Update other fields as per your requirements, if needed.
 
 ## Install
 * Install
@@ -29,4 +39,4 @@ UITESTRIG will test end-to-end functional flows involving multiple UI modules.
   kubectl --kubeconfig=/home/xxx/Downloads/qa4.config -n UITESTRIG create job --from=cronjob/cronjob-uitestrig cronjob-uitestrig
   ```
 
-  
+
