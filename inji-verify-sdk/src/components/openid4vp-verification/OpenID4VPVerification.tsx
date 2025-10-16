@@ -84,7 +84,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       const params = new URLSearchParams();
       params.set("client_id", clientId);
       if (data.requestUri) {
-        params.set("request_uri", verifyServiceUrl + data.requestUri);
+        params.set("request_uri", data.requestUri);
       } else if (data.authorizationDetails) {
         params.set("state", data.requestId);
         params.set("response_mode", data.authorizationDetails.responseMode);
