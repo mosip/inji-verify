@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   QRCodeVerificationProps,
   scanResult,
@@ -419,8 +419,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!authorizationDetails) throw new Error("Missing authorization details in VP Request response");
 
         const { responseUri, nonce } = authorizationDetails;
-        const href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
-        window.location.href = href;
+        window.location.href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
         return;
       }
 
@@ -572,6 +571,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const transactionId = sessionStorage.getItem("transactionId");
 
         if (requestId && transactionId && !vpToken) {
+          console.log("fetching VPStatus with requestId: ", requestId, " and transactionId: ", transactionId);
           fetchVPStatus(verifyServiceUrl, transactionId, requestId);
         } else if (error) {
           onError(new Error(error));
