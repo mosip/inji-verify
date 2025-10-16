@@ -505,6 +505,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const fetchVPStatus = async (verifyServiceUrl: string, transactionId: string, requestId: string) => {
+    setLoading(true);
     try {
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
       if (response.status === "ACTIVE") {
