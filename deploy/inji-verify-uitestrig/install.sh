@@ -6,7 +6,7 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-NS=injiverify-ui-testrig
+NS=uitestrig-injiverify
 CHART_VERSION=0.0.1-develop
 COPY_UTIL=../copy_cm_func.sh
 
@@ -55,7 +55,7 @@ function installing_uitestrig() {
   API_INTERNAL_HOST=$( kubectl -n default get cm global -o json  |jq -r '.data."mosip-api-internal-host"' )
 
   echo Installing verify uitestrig
-  helm -n $NS install verify-uitestrig mosip/uitestrig \
+  helm -n $NS install uitestrig-injiverify mosip/uitestrig \
   -f values.yaml  \
   --version $CHART_VERSION \
   $ENABLE_INSECURE

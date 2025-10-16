@@ -6,7 +6,6 @@ extraEnvVarsCM:
   - keycloak-host
   - db
   - uitestrig
-  - config-server-share
 
 ## Secret with extra environment variables
 ##
@@ -40,35 +39,23 @@ uitestrig:
       apiEnvUser: 'api-internal.sandbox.xyz.net'
       CHROME_DRIVER_CPU_LIMIT: "2"
       CHROME_DRIVER_MEMORY: 3g
-      ENV_BROWSERSTACK_CONFIG: androidConfig.yml
       ENV_ENDPOINT: https://api-internal.sandbox.xyz.net
       ENV_TESTLEVEL: smokeAndRegression
-      ENV_TESTNG_XML_FILE: androidRegression.xml
       ENV_USER: api-internal.sandbox
       InsuranceUrl: https://registry.sandbox.xyz.net/api/v1/Insurance
-      MOSIP_INJIWEB_GOOGLE_REFRESH_TOKEN: $token # pass the google token in the place of $token
-      MOSIP_INJIWEB_GOOGLE_CLIENT_ID: $client_id # pass the google client id in the place of $client_id
-      MOSIP_INJIWEB_GOOGLE_CLIENT_SECRET: $secret # pass the google client secret in the place of $ $secret
-      NS: injiverify-ui-testrig  # provide the namespace
+      NS: injiverify-uitestrig  # provide the namespace
       actuatorMimotoEndpoint: /v1/mimoto/actuator/env
       eSignetbaseurl: https://esignet-mosipid.sandbox.xyz.net
-      eSignet_resource_bundle_url: https://github.com/mosip/esignet/blob/v1.5.1/oidc-ui/public/locales/en.json
       injiverify: https://injiverify.sandbox.xyz.net/
       injiweb: https://injiweb.sandbox.xyz.net/issuers
-      mosip.inji.web.url: https://injiweb.sandbox.xyz.net/
       loginlang: sin
       mosip_components_base_urls: auditmanager=api-internal.sandbox.xyz.net;idrepository=api-internal.sandbox.xyz.net;partnermanager=api-internal.sandbox.xyz.net;idauthentication=api-internal.sandbox.xyz.net;policymanager=api-internal.sandbox.xyz.net;authmanager=api-internal.sandbox.xyz.net;resident=api-internal.sandbox.xyz.net;preregistration=api-internal.sandbox.xyz.net;masterdata=api-internal.sandbox.xyz.net;idgenerator=api-internal.sandbox.xyz.net;
       verifyPortalPath: https://injiverify.sandbox.xyz.net
       push-reports-to-s3: 'yes'
-      s3-account: uitestrig
+      s3-account: uitestrig-inji
       stayProtectedIssuerCredentialType: Insurance Credential
       browserstack_access_key: $accesskey # Create a BrowserStack accesskey as per the README and update the accesskey in place of $accesskey
       browserstack_username: $username # Create a BrowserStack username as per the README and update the username in place of $username
-      browserstack_appId: $appid # Create a BrowserStack appid as per the README and update the appid in place of $appid
-      browserstack_buildName: sandbox Android Build
-      browserstack_deviceName: Google Pixel 7 Pro #Update the device name as per requirement
-      browserstack_platformName: Android #Update platform name as  per requirement
-      browserstack_platformVersion: '13.0' #Update version as per requirement
     scripts:
       fetch_docker_image_hash_ids.sh: |
         #!/bin/bash
