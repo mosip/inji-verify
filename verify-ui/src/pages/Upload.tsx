@@ -44,6 +44,10 @@ export const Upload = () => {
     scheduleVcDisplayTimeOut();
   }
 
+  const getClientId = () => {
+    return window._env_.CLIENT_ID;
+  };
+
   return (
     <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
       <div className="xs:col-end-13">
@@ -68,6 +72,7 @@ export const Upload = () => {
               );
               dispatch(goToHomeScreen({}));
             }}
+            clientId={getClientId()}
           />
         </div>
         <div className="grid text-center content-center justify-center pt-2">
