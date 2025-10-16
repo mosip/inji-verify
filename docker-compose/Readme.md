@@ -80,6 +80,12 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
 `essential`: This credential is required for the verification to succeed.
 `definition` : The presentation definition for the particular type of credential. For more details check [[DIF.PresentationExchange]](https://identity.foundation/presentation-exchange/spec/v2.0.0/)
 
+#### OpenID4VP proxy for localhost
+
+Use a proxy service like ngrok or localtunnel to create a proxy url like https://myproxy.ngrok-free.app for http://localhost:3000
+This is required since wallet will not be able to invoke the http://localhost url while sharing the credentials to get the OpenID4VP flow working locally.
+In docker-compose.yml file replace {VERIFY_SERVICE_PROXY_FOR_LOCALHOST} with myproxy.ngrok-free.app. Save the docker-compose.yml file.
+
 ### Run Using Docker Compose:
 
 Navigate to the docker-compose directory:
