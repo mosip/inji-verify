@@ -3,7 +3,7 @@ import {
   QRCodeVerificationProps,
   scanResult,
   VcStatus,
-} from "../../components/qrcode-verification/QRCodeVerification.types";
+} from "./QRCodeVerification.types";
 import { doFileChecks, scanFilesForQr } from "../../utils/uploadQRCodeUtils";
 import {
   acceptedFileTypes,
