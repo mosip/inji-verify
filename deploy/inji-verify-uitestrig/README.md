@@ -5,7 +5,7 @@ UITESTRIG will test end-to-end functional flows involving multiple INJIVERIFY-UI
 
 ## Update the values.yaml
 
-1. Create the required BrowserStack and Google credentials by referring to this documentation.
+1. Create the required BrowserStack credentials and  create google credentials by referring to this [documentation](https://mosip.atlassian.net/wiki/spaces/QT/pages/1671168131/Generate+ID+Token+for+Inji+Web+Login+API+using+Google+Sign+In).
 2. Add the BrowserStack and Google credentials in the values.yaml file.
 3. Replace sandbox with the appropriate environment name.
 ``` example : api-internal.sandbox to api-internal.dev ```
