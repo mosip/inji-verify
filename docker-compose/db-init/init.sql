@@ -24,5 +24,7 @@ CREATE TABLE IF NOT EXISTS verify.vc_submission(
 CREATE TABLE IF NOT EXISTS verify.vp_submission(
     request_id character varying(40) NOT NULL,
     vp_token VARCHAR NOT NULL,
-    presentation_submission text NOT NULL
+    presentation_submission text NOT NULL,
+    error character varying(100) NULL,
+    error_description character varying(200) NULL
 );
