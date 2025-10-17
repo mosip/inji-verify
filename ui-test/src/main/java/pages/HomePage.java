@@ -353,12 +353,8 @@ public class HomePage extends BasePage {
 	}
 
 	public void clickOnStayProtectedCredentialType() {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+       		// Use explicit wait (configured via explicitWaitTimeout) instead of Thread.sleep
+		WaitUtil.waitForClickability(driver, healthInsurance);
 		clickOnElement(driver, healthInsurance);
 	}
 
