@@ -62,9 +62,23 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    */
   isEnableScan?: boolean;
 
+  /**
+   * Enable scan functionality.
+   * Redirect to home onClose.
+   */
   onClose?: () => void;
 
+  /**
+   * Enable scan functionality.
+   * Defaults to true.
+   */
   scannerActive?: boolean;
+
+  /**
+   * A unique identifier for the client application.
+   * Used in the OVP redirect flow.
+   */
+  clientId: string;
 };
 
 interface VerificationResult {
