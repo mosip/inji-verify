@@ -66,7 +66,14 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
 
   scannerActive?: boolean;
 
+  scannerActive?: boolean;
+
+  /**
+   * A unique identifier for the client application.
+   * Used in the OpenID4VP redirect flow.
+   */
   clientId: string;
+};
 };
 
 interface VerificationResult {
