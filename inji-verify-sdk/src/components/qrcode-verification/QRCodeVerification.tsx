@@ -41,6 +41,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonId,
   uploadButtonStyle,
   isEnableZoom = true,
+  clientId
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
@@ -74,6 +75,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       "Only one of onVCReceived or onVCProcessed can be provided."
     );
   if (!onError) throw new Error("onError callback is required.");
+  if (!clientId) throw new Error("clientId is required.");
 
   const readQrCodeFromCanvas = useRef(async (canvas: HTMLCanvasElement) => {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -341,7 +343,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           throw new Error("Failed to extract redirect URL from QR data");
 
         const encodedOrigin = encodeURIComponent(window.location.origin);
-        const url = `${redirectUrl}&client_id=${encodedOrigin}&redirect_uri=${encodedOrigin}%2F#`;
+        const url = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
         window.location.href = url;
         return;
       }

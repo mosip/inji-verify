@@ -62,9 +62,23 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    */
   isEnableScan?: boolean;
 
+  /**
+   * Callback invoked when the scanner is closed.
+   * Can be used to redirect to home or perform cleanup.
+   */
   onClose?: () => void;
 
+  /**
+   * Enable scan functionality.
+   * Defaults to true.
+   */
   scannerActive?: boolean;
+
+  /**
+   * A unique identifier for the client application.
+   * Used in the OVP redirect flow.
+   */
+  clientId: string;
 };
 
 interface VerificationResult {
