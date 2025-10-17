@@ -35,6 +35,10 @@ function QrScanner({ onClose, scannerActive }: {
     scheduleVcDisplayTimeOut();
   }
 
+  function getClientId() {
+    return window._env_.CLIENT_ID;
+  }
+
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black lg:relative lg:inset-auto lg:w-[21rem] lg:h-auto lg:aspect-square lg:bg-transparent">
       {!isCameraBlocked && (
@@ -63,6 +67,7 @@ function QrScanner({ onClose, scannerActive }: {
               );
             }
           }}
+          clientId={getClientId()}
         />
       </div>
 
