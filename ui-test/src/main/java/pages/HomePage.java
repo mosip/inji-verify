@@ -50,6 +50,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='help-button']")
 	WebElement helpButton;
+	
+	@FindBy(xpath = "//button[.//span[text()='Continue as Guest']]")
+	WebElement continueButton;
 
 	@FindBy(xpath = "(//*[@id='help-button']//*[@class='mx-1.5 rotate-180']//*)[1]")
 	WebElement Expansionbutton;
@@ -125,6 +128,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[contains(@data-testid, 'DataShareFooter-Success-Button')]")
 	WebElement getOnOnProceed;
+	
+	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text' and text()='Health Insurance']")
+	WebElement healthInsurance;
 
 	@FindBy(xpath = "//div[@data-testid='ItemBox-Outer-Container-0']")
 	WebElement isMosipNationalId;
@@ -199,6 +205,10 @@ public class HomePage extends BasePage {
 
 	public void ClickonHomeButton() {
 		clickOnElement(driver, helpButton);
+	}
+	
+	public void ClickonContinueButton() {
+		clickOnElement(driver, continueButton);
 	}
 
 	public Boolean isExpansionbuttonDisplayedAfter() {
@@ -343,11 +353,11 @@ public class HomePage extends BasePage {
 	}
 
 	public void clickOnStayProtectedCredentialType() {
-	    By locator = By.xpath("//h3[text()='" + stayProtectedIssuerCredentialType + "']");
-	    WebElement stayProtectedCredentialTypeElement = driver.findElement(locator);
-	    WaitUtil.waitForClickability(driver, stayProtectedCredentialTypeElement);
-	    stayProtectedCredentialTypeElement.click();
+       		// Use explicit wait (configured via explicitWaitTimeout) instead of Thread.sleep
+		WaitUtil.waitForClickability(driver, healthInsurance);
+		clickOnElement(driver, healthInsurance);
 	}
+
 
 	public void clickOnOnProceed() {
 		try {
