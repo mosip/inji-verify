@@ -53,7 +53,7 @@ For more flexibility, the component also supports these optional props:
 - `onVpReceived` – Callback triggered with `transactionId` (for server-to-server flow).  
 - `qrCodeStyles` – Apply custom styles to the QR code.  
 - `clientId` – Client identifier used in the OID4VP request.  
-- `isEnableSameDeviceFlow` *(default: `true`)* – Enable/disable the same-device flow.  
+- `isSameDeviceFlowEnabled` *(default: `true`)* – Enable/disable the same-device flow.
 
 
 1. **Relying Party UI initiates the process:** The user interacts with the Relying Party's User Interface (UI) and triggers a verification action.
