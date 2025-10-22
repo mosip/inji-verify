@@ -380,8 +380,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     responseUri: string,
     nonce: string
   ) => {
-    const encodedRedirectUri = encodeURIComponent(window.location.origin);
-    const redirectUri = `${encodedRedirectUri}%2F`;
+    const redirectUri = `${window.location.origin}/`;
 
     const params = new URLSearchParams({
       client_id: clientId,
@@ -510,7 +509,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
       if (response.status === "ACTIVE") {
         await fetchVPStatus(verifyServiceUrl, transactionId, requestId);
-      } else if (response.status === "VP_SUBMITTED") {
+      } else if (response.status === "VP_SUBMITTED" && sessionStorage.length > 0) {
         if (onVCReceived) {
           onVCReceived(transactionId);
           resetState();
@@ -595,6 +594,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       scanSessionCompletedRef.current = false;
     };
   }, [stopVideoStream]);
+
+  useEffect(() => {
+    if (sessionStorage.length === 0) resetState();
+  }, [sessionStorage]);
 
   return (
     <div className="qrcode-container">
