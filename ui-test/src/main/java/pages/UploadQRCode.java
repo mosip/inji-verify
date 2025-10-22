@@ -150,7 +150,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadSDJwtQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
 
 	}
 
@@ -291,5 +291,6 @@ public class UploadQRCode extends BasePage {
 	public void clickOnPleaseTryAgain() {
 		clickOnElement(driver, PleaseTryAgain);
 	}
+
 
 }
