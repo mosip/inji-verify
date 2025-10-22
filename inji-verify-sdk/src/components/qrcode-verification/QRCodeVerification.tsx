@@ -460,12 +460,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const handleError = (error: unknown) => {
-    frameProcessingRef.current = false;
-    stopVideoStream();
+    resetState();
     onError(
       error instanceof Error ? error : new Error("Unknown error occurred")
     );
   };
+
   const handleZoomChange = (value: number) => {
     if (value >= 0 && value <= 10) setZoomLevel(value);
   };
@@ -499,7 +499,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         }
       }
     } catch (error) {
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      handleError(error);
     }
   };
 
@@ -521,7 +521,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         throw new Error("VP submission failed or not completed");
       }
     } catch (error) {
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      handleError(error);
     }
   };
 
@@ -574,7 +574,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           console.log("fetching VPStatus with requestId: ", requestId, " and transactionId: ", transactionId);
           fetchVPStatus(verifyServiceUrl, transactionId, requestId);
         } else if (error) {
-          onError(new Error(error));
+          throw error;
         }
       }
     } catch (error) {
@@ -582,7 +582,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      handleError(error);
     }
   }, [onError]);
 
