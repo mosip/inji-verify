@@ -94,8 +94,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         log.info("Authorization request created");
         if (vpRequestCreate.getClientId().startsWith("did")) {
-            String requestUri = verifyServiceBaseUrl + Constants.VP_REQUEST_URI;
-            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(requestUri, authorizationRequestCreateResponse.getRequestId()));
+            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(VP_REQUEST_URI, authorizationRequestCreateResponse.getRequestId()));
         }
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(), null);
 
