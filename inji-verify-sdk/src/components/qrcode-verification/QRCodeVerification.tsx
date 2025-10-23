@@ -571,7 +571,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const transactionId = sessionStorage.getItem("transactionId");
 
         if (requestId && transactionId && !vpToken) {
-          console.log("fetching VPStatus with requestId: ", requestId, " and transactionId: ", transactionId);
           fetchVPStatus(verifyServiceUrl, transactionId, requestId);
         } else if (error) {
           throw error;
