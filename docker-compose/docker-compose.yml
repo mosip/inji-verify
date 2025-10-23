@@ -7,19 +7,19 @@ services:
     user: root
     ports:
       - "8080:8080"
-    build:
-      context: ../verify-service
-      dockerfile: Dockerfile
     environment:
       - active_profile_env=default
-      - spring_config_label_env=main
-      - spring_config_url_env=http://config-server:8888
       - DATABASE_HOST=postgres
       - DATABASE_PORT=5432
       - DATABASE_NAME=inji_verify
       - DATABASE_SCHEMA=verify
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
+      - INJI_VP_REQUEST_LONG_POLLING_TIMEOUT=55000
+      - INJI_VP_SUBMISSION_BASE_URL=https://VERIFY_SERVICE_PROXY_FOR_LOCALHOST/v1/verify
+      - INJI_DID_VERIFY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:v1:verify
+      - INJI_DID_VERIFY_PUBLIC_KEY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:verify#key-0
+      - INJI_KEYSTORE_FILE_PASS=mosip
     depends_on:
       - postgres
 
@@ -28,17 +28,16 @@ services:
     image: mosipdev/inji-verify-ui:release-0.15.x
     ports:
       - "3000:8000"
-    build:
-      context: ../verify-ui
-      dockerfile: Dockerfile
     environment:
       - DEFAULT_TITLE=Inji Verify
       - DEFAULT_LANG=en
       - INTERNET_CONNECTIVITY_CHECK_ENDPOINT=${INTERNET_CONNECTIVITY_CHECK_ENDPOINT-https://dns.google/}
       - INTERNET_CONNECTIVITY_CHECK_TIMEOUT=${INTERNET_CONNECTIVITY_CHECK_TIMEOUT-10000}
       - OVP_QR_HEADER={OVP_QR_HEADER-INJI_OVP://payload=}
-      - REACT_APP_VERIFY_API_URL=http://verify-service:8080/v1/verify
       - VERIFIABLE_CLAIMS_CONFIG_URL=/assets/config.json
+      - CLIENT_ID=inji-verify-ui
+      - CLIENT_ID_DID=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:v1:verify
+      - DISPLAY_TIMEOUT=120000
     volumes:
       - ./config/config.json:/usr/share/nginx/html/assets/config.json
     depends_on:
