@@ -11,6 +11,7 @@ import {
   textColorMapping,
 } from "../../../../utils/config";
 import VcDetailsGrid from "./VcDetailsGrid";
+import i18next from "i18next";
 
 interface ModalProps {
   isOpen: boolean;
@@ -30,7 +31,8 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   logo,
 }) => {
   const { t } = useTranslation("Verify");
-  const orderedDetails = vc && getDetailsOrder(vc);
+  const currentLang =i18next.language;
+  const orderedDetails = vc && getDetailsOrder(vc,currentLang);
 
   if (!isOpen) return null;
   return (

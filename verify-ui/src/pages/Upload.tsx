@@ -7,13 +7,22 @@ import {
   verificationComplete,
 } from "../redux/features/verification/verification.slice";
 import { raiseAlert } from "../redux/features/alerts/alerts.slice";
-import { useAppDispatch } from "../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 import { DisplayTimeout } from "../utils/config";
+import { FarmerCredentialSample } from '../utils/config';
+import { getDetailsOrder } from "../utils/commonUtils";
+import i18next from "i18next";
+import {useState} from "react";
+
 
 export const Upload = () => {
   const { t } = useTranslation("Upload");
   const dispatch = useAppDispatch();
+  const currentLang = i18next.language;
+    console.log(currentLang);
+
+    const [details, setDetails] = useState<{ key: string; value: string }[]>([]);
 
   const triggerElement = (
     <div>
@@ -35,16 +44,18 @@ export const Upload = () => {
       dispatch(goToHomeScreen({}));
     }, DisplayTimeout)
   };
-
-  const handleOnVCProcessed = (data: {
-    vc: unknown;
-    vcStatus: string
-  }[]) => {
-    dispatch(verificationComplete({verificationResult: data[0]}));
-    scheduleVcDisplayTimeOut();
-  }
-
-  return (
+    const handleOnVCProcessed = (data: {
+        vc: unknown;
+        vcStatus: string
+    }[]) => {
+        if(data.length > 0){
+            const vcDetails = getDetailsOrder(data[0], currentLang);
+            setDetails(vcDetails);
+            dispatch(verificationComplete({verificationResult:data[0]}));
+        }
+        scheduleVcDisplayTimeOut();
+    }
+    return (
     <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
       <div className="xs:col-end-13">
         <div
@@ -53,7 +64,7 @@ export const Upload = () => {
         >
           <QRCodeVerification
             triggerElement={triggerElement}
-            verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
+            verifyServiceUrl={window._env_.VERIFY_SERVICE_API_URL}
             isEnableScan={false}
             onVCProcessed={handleOnVCProcessed}
             uploadButtonId={"upload-qr"}
