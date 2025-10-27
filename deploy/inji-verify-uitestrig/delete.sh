@@ -7,12 +7,12 @@ if [ $# -ge 1 ] ; then
 fi
 
 function deleting_uitestrig() {
-  NS=injiverify-ui-testrig
+  NS=uitestrig-injiverify
   while true; do
       read -p "Are you sure you want to delete verify uitestrig helm charts?(Y/n) " yn
       if [ $yn = "Y" ]
         then
-          helm -n $NS delete verify-uitestrig
+          helm -n $NS delete uitestrig-injiverify
           break
         else
           break

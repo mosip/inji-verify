@@ -84,6 +84,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       "Only one of onVCReceived or onVCProcessed can be provided."
     );
   if (!onError) throw new Error("onError callback is required.");
+  if (!clientId) throw new Error("clientId is required.");
 
   const readQrCodeFromCanvas = useRef(async (canvas: HTMLCanvasElement) => {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
