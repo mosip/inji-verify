@@ -366,17 +366,25 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       storeStates(data);
 
       return data;
-    } catch (error) { // TODO: show error on screen
-      throw error;
+    } catch (error) {
+      resetState();
+      throw new Error(String(error));
     }
   };
 
   const parsePresentationDefinition = (pdParams: string) => {
-    const decoded = JSON.parse(pdParams);
-    const { inputDescriptors, ...rest } = decoded;
+    try {
+      const decoded = JSON.parse(pdParams);
+      const {inputDescriptors, ...rest} = decoded;
 
-    if (inputDescriptors) return { ...rest, input_descriptors: inputDescriptors };
-    return decoded;
+      if (inputDescriptors) return {
+        ...rest,
+        input_descriptors: inputDescriptors
+      };
+      return decoded;
+    } catch (error) {
+      throw new Error("Failed to create VP request, due to invalid presentation definition");
+    }
   };
 
   const buildRedirectUrl = (
@@ -518,13 +526,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     setLoading(true);
     try {
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
-      if (response.status === "VP_SUBMITTED" && sessionStorage.length > 0) {
+      const hasRequiredKeys = sessionStorage.getItem("transactionId") && sessionStorage.getItem("requestId");
+      if (response.status === "VP_SUBMITTED" && hasRequiredKeys) {
         if (onVCReceived) {
           onVCReceived(transactionId);
           resetState();
           return;
         }
-        await fetchVPResult(verifyServiceUrl, transactionId); // todo : rename
+        await fetchVPResult(verifyServiceUrl, transactionId);
       } else {
         resetState();
         throw new Error("VP submission failed or not completed");
