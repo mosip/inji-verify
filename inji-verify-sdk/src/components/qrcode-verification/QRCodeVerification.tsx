@@ -453,7 +453,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         onVCReceived(txnId);
       } else if (onVCProcessed) {
         const status = await vcVerification(vc, verifyServiceUrl);
-        onVCProcessed([{vc, vcStatus: status}]);
+        onVCProcessed([{ vc, vcStatus: status }]);
       }
     } catch (error) {
       handleError(error);
@@ -567,7 +567,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       error = params.get("error");
 
       if (vpToken && presentationSubmission) {
-        processScanResult({vpToken, presentationSubmission});
+        processScanResult({ vpToken, presentationSubmission });
         window.history.replaceState(null, "", window.location.pathname);
       } else {
         const requestId = sessionStorage.getItem("requestId");
