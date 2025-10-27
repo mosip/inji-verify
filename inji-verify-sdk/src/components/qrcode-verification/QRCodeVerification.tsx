@@ -344,7 +344,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const storeStates = (data: QrData) => {
-    sessionStorage.clear();
+    sessionStorage.removeItem("transactionId");
+    sessionStorage.removeItem("requestId");
+    sessionStorage.removeItem("pathName");
     sessionStorage.setItem("transactionId", data.transactionId);
     sessionStorage.setItem("requestId", data.requestId);
     sessionStorage.setItem("pathName", window.location.pathname);
@@ -385,16 +387,16 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   ) => {
     const redirectUri = `${window.location.origin}/`;
 
-    const params = new URLSearchParams({
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      state,
-      response_mode: "direct_post",
-      response_uri: responseUri,
-      nonce: nonce,
-    });
+    const url = new URL(baseRedirectUrl);
+    url.hash = "";
+    url.searchParams.set("client_id", clientId);
+    url.searchParams.set("redirect_uri", redirectUri);
+    url.searchParams.set("state", state);
+    url.searchParams.set("response_mode", "direct_post");
+    url.searchParams.set("response_uri", responseUri);
+    url.searchParams.set("nonce", nonce);
 
-    return `${baseRedirectUrl}&${params.toString()}#`;
+    return `${url.toString()}#`;
   };
 
   const extractVerifiableCredential = async (data: any) => {
@@ -411,7 +413,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
-        parsedUrl.searchParams.set("presentation_definition", encodeURIComponent(JSON.stringify(presentationDefinition)));
+        parsedUrl.searchParams.set("presentation_definition", JSON.stringify(presentationDefinition));
         const response = await createVPRequest(verifyServiceUrl, presentationDefinition);
 
         if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
@@ -437,7 +439,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const resetState = () => {
-    sessionStorage.clear();
+    sessionStorage.removeItem("transactionId");
+    sessionStorage.removeItem("requestId");
+    sessionStorage.removeItem("pathName");
+    hasFetchedVPResultRef.current = false;
     scanSessionCompletedRef.current = true;
     frameProcessingRef.current = false;
     clearTimer();
@@ -577,7 +582,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (requestId && transactionId && !vpToken) {
           fetchVPStatus(verifyServiceUrl, transactionId, requestId);
         } else if (error) {
-          throw error;
+          throw new Error(String(error));
         }
       }
     } catch (error) {
