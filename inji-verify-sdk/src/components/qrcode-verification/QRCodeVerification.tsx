@@ -346,6 +346,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     sessionStorage.clear();
     sessionStorage.setItem("transactionId", data.transactionId);
     sessionStorage.setItem("requestId", data.requestId);
+    sessionStorage.setItem("pathName", window.location.pathname);
   };
 
   const createVPRequest = async (url: string, presentationDefinition: any) => {
@@ -412,11 +413,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         parsedUrl.searchParams.set("presentation_definition", encodeURIComponent(JSON.stringify(presentationDefinition)));
         const response = await createVPRequest(verifyServiceUrl, presentationDefinition);
 
-        if (!response) throw new Error("Failed to create VP Request");
+        if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
 
         const { requestId: state , authorizationDetails } = response;
 
-        if (!authorizationDetails) throw new Error("Missing authorization details in VP Request response");
+        if (!authorizationDetails) throw new Error("Unable to access the shared VC, due to Missing authorization details in VP Request");
 
         const { responseUri, nonce } = authorizationDetails;
         window.location.href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
@@ -427,8 +428,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const decoded = await decodeQrData(new TextEncoder().encode(data));
         return JSON.parse(decoded);
       }
-      throw new Error("Unsupported QR data format");
+      throw new Error("Unable to access the shared VC, due to Unsupported QR data format");
     } catch (error) {
+      resetState();
       return error;
     }
   };
@@ -461,9 +463,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const handleError = (error: unknown) => {
-    resetState();
+    frameProcessingRef.current = false;
+    stopVideoStream();
     onError(
-      error instanceof Error ? error : new Error("Unknown error occurred")
+      error instanceof Error ? error : new Error("An unexpected error occurred while processing VC")
     );
   };
 
@@ -500,6 +503,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         }
       }
     } catch (error) {
+      resetState();
       handleError(error);
     }
   };
@@ -508,16 +512,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     setLoading(true);
     try {
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
-      if (response.status === "ACTIVE") {
-        await fetchVPStatus(verifyServiceUrl, transactionId, requestId);
-      } else if (response.status === "VP_SUBMITTED" && sessionStorage.length > 0) {
+      if (response.status === "VP_SUBMITTED" && sessionStorage.length > 0) {
         if (onVCReceived) {
           onVCReceived(transactionId);
           resetState();
           return;
         }
         await fetchVPResult(verifyServiceUrl, transactionId); // todo : rename
-      } else if (response.status === "EXPIRED") {
+      } else {
         resetState();
         throw new Error("VP submission failed or not completed");
       }
@@ -582,7 +584,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      handleError(error);
+      onError(error instanceof Error ? error : new Error("Unknown error"));
     }
   }, [onError]);
 
