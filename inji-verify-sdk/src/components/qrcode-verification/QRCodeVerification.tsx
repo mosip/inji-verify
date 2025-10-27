@@ -428,7 +428,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const decoded = await decodeQrData(new TextEncoder().encode(data));
         return JSON.parse(decoded);
       }
-      throw new Error("Unable to access the shared VC, due to Unsupported QR data format");
+      throw new Error("Unable to access the shared VC, due to unsupported QR data format");
     } catch (error) {
       resetState();
       return error;
