@@ -368,10 +368,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const parsePresentationDefinition = (pdParams: string) => {
-    const decoded = JSON.parse(decodeURIComponent(pdParams));
+    const decoded = JSON.parse(pdParams);
     const { inputDescriptors, ...rest } = decoded;
 
-    return { ...rest, input_descriptors: inputDescriptors };
+    if (inputDescriptors) return { ...rest, input_descriptors: inputDescriptors };
+    return decoded;
   };
 
   const buildRedirectUrl = (
@@ -593,10 +594,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       scanSessionCompletedRef.current = false;
     };
   }, [stopVideoStream]);
-
-  useEffect(() => {
-    if (sessionStorage.length === 0) resetState();
-  }, [sessionStorage]);
 
   return (
     <div className="qrcode-container">
