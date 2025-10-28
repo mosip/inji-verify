@@ -349,11 +349,11 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     sessionStorage.setItem("pathName", window.location.pathname);
   };
 
-  const createVPRequest = async (url: string, presentationDefinition: any) => {
+  const createVPRequest = async (presentationDefinition: any) => {
     try {
       let presentationDefinitionId;
       const data = await vpRequest(
-        url,
+        verifyServiceUrl,
         clientId,
         transactionId ?? undefined,
         presentationDefinitionId,
@@ -419,7 +419,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
         parsedUrl.searchParams.set("presentation_definition", JSON.stringify(presentationDefinition));
-        const response = await createVPRequest(verifyServiceUrl, presentationDefinition);
+        const response = await createVPRequest(presentationDefinition);
 
         if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
 
@@ -444,9 +444,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const resetState = () => {
-    sessionStorage.removeItem("transactionId");
-    sessionStorage.removeItem("requestId");
-    sessionStorage.removeItem("pathName");
+    sessionStorage.clear();
     hasFetchedVPResultRef.current = false;
     scanSessionCompletedRef.current = true;
     frameProcessingRef.current = false;
