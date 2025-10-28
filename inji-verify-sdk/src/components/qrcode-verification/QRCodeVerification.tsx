@@ -344,9 +344,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const storeStates = (data: QrData) => {
-    sessionStorage.removeItem("transactionId");
-    sessionStorage.removeItem("requestId");
-    sessionStorage.removeItem("pathName");
     sessionStorage.setItem("transactionId", data.transactionId);
     sessionStorage.setItem("requestId", data.requestId);
     sessionStorage.setItem("pathName", window.location.pathname);
@@ -354,7 +351,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   const createVPRequest = async (url: string, presentationDefinition: any) => {
     try {
-      let presentationDefinitionId = undefined;
+      let presentationDefinitionId;
       const data = await vpRequest(
         url,
         clientId,
