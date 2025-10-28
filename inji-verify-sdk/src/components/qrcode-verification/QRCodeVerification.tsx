@@ -501,21 +501,26 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     if (hasFetchedVPResultRef.current) return;
     hasFetchedVPResultRef.current = true;
     try {
-      if (onVCProcessed && transactionId) {
+      if (transactionId) {
         const vcResults = await vpResult(verifyServiceUrl, transactionId);
         if (vcResults && vcResults.length > 0) {
           const VCResult = vcResults.map((vcResult: any) => ({
             vc: isSdJwt(vcResult.vc) ? vcResult.vc : JSON.parse(vcResult.vc),
             vcStatus: vcResult.verificationStatus as VcStatus,
           }));
-          onVCProcessed(VCResult);
+          if (onVCReceived) {
+            const txnId = await vcSubmission(VCResult[0], verifyServiceUrl, transactionId);
+            onVCReceived(txnId);
+          } else if (onVCProcessed) {
+            onVCProcessed(VCResult);
+          }
           resetState();
           return;
         }
       }
     } catch (error) {
-      resetState();
       handleError(error);
+      resetState();
     }
   };
 
@@ -525,11 +530,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
       const hasRequiredKeys = sessionStorage.getItem("transactionId") && sessionStorage.getItem("requestId");
       if (response.status === "VP_SUBMITTED" && hasRequiredKeys) {
-        if (onVCReceived) {
-          onVCReceived(transactionId);
-          resetState();
-          return;
-        }
         await fetchVPResult(transactionId);
       } else {
         resetState();
