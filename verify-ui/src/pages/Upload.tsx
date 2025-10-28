@@ -3,93 +3,83 @@ import { UploadQrCode } from "../components/Home/VerificationSection/UploadQrCod
 import { ScanOutline } from "../utils/theme-utils";
 import { useTranslation } from "react-i18next";
 import {
-  goToHomeScreen,
-  verificationComplete,
+    goToHomeScreen,
+    verificationComplete,
 } from "../redux/features/verification/verification.slice";
 import { raiseAlert } from "../redux/features/alerts/alerts.slice";
-import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 import { DisplayTimeout } from "../utils/config";
-import { FarmerCredentialSample } from '../utils/config';
-import { getDetailsOrder } from "../utils/commonUtils";
-import i18next from "i18next";
-import {useState} from "react";
 
 
 export const Upload = () => {
-  const { t } = useTranslation("Upload");
-  const dispatch = useAppDispatch();
-  const currentLang = i18next.language;
-    console.log(currentLang);
+    const { t } = useTranslation("Upload");
+    const dispatch = useAppDispatch();
 
-    const [details, setDetails] = useState<{ key: string; value: string }[]>([]);
+    const triggerElement = (
+        <div>
+            <div
+                className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}
+            ></div>
+            <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
+                <QrIcon className="w-[78px] lg:w-[100px]" />
+            </div>
+            <UploadQrCode
+                className="absolute top-[130px] left-[45px] lg:top-[200px] lg:left-[95px]"
+                displayMessage={t("Common:Button.upload")}
+            />
+        </div>
+    );
 
-  const triggerElement = (
-    <div>
-      <div
-        className={`grid bg-${window._env_.DEFAULT_THEME}-lighter-gradient rounded-[12px] w-[250px] lg:w-[320px] aspect-square content-center justify-center`}
-      ></div>
-      <div className="absolute top-[58px] left-[98px] lg:top-[165px] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[-50%]">
-        <QrIcon className="w-[78px] lg:w-[100px]" />
-      </div>
-      <UploadQrCode
-        className="absolute top-[130px] left-[45px] lg:top-[200px] lg:left-[95px]"
-        displayMessage={t("Common:Button.upload")}
-      />
-    </div>
-  );
-
-  const scheduleVcDisplayTimeOut = () => {
-    setTimeout(() => {
-      dispatch(goToHomeScreen({}));
-    }, DisplayTimeout)
-  };
+    const scheduleVcDisplayTimeOut = () => {
+        setTimeout(() => {
+            dispatch(goToHomeScreen({}));
+        }, DisplayTimeout)
+    };
     const handleOnVCProcessed = (data: {
         vc: unknown;
         vcStatus: string
     }[]) => {
-        if(data.length > 0){
-            const vcDetails = getDetailsOrder(data[0], currentLang);
-            setDetails(vcDetails);
-            dispatch(verificationComplete({verificationResult:data[0]}));
-        }
+        dispatch(verificationComplete({verificationResult: data[0]}));
         scheduleVcDisplayTimeOut();
     }
+
     return (
-    <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
-      <div className="xs:col-end-13">
-        <div
-          className={`relative grid content-center justify-center w-[275px] h-auto lg:w-[360px] aspect-square my-1.5 mx-auto bg-cover`}
-          style={{ backgroundImage: `url(${ScanOutline})` }}
-        >
-          <QRCodeVerification
-            triggerElement={triggerElement}
-            verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
-            isEnableScan={false}
-            onVCProcessed={handleOnVCProcessed}
-            uploadButtonId={"upload-qr"}
-            uploadButtonStyle="hidden"
-            onError={(error) => {
-              dispatch(
-                raiseAlert({
-                  message: error.message,
-                  severity: "error",
-                  open: true,
-                })
-              );
-              dispatch(goToHomeScreen({}));
-            }}
-          />
+        <div className="flex flex-col pt-0 pb-[100px] lg:py-[42px] px-0 lg:px-[104px] text-center content-center justify-center">
+            <div className="xs:col-end-13">
+                <div
+                    className={`relative grid content-center justify-center w-[275px] h-auto lg:w-[360px] aspect-square my-1.5 mx-auto bg-cover`}
+                    style={{ backgroundImage: `url(${ScanOutline})` }}
+                >
+                    <QRCodeVerification
+                        triggerElement={triggerElement}
+                        verifyServiceUrl={window.location.origin + window._env_.VERIFY_SERVICE_API_URL}
+                        isEnableScan={false}
+                        onVCProcessed={handleOnVCProcessed}
+                        uploadButtonId={"upload-qr"}
+                        uploadButtonStyle="hidden"
+                        onError={(error) => {
+                            dispatch(
+                                raiseAlert({
+                                    message: error.message,
+                                    severity: "error",
+                                    open: true,
+                                })
+                            );
+                            dispatch(goToHomeScreen({}));
+                        }}
+                    />
+                </div>
+                <div className="grid text-center content-center justify-center pt-2">
+                    <p
+                        id="file-format-constraints"
+                        className="font-normal text-normalTextSize text-uploadDescription w-[280px]"
+                    >
+                        {t("format")}
+                    </p>
+                </div>
+            </div>
         </div>
-        <div className="grid text-center content-center justify-center pt-2">
-          <p
-            id="file-format-constraints"
-            className="font-normal text-normalTextSize text-uploadDescription w-[280px]"
-          >
-            {t("format")}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
+

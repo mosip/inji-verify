@@ -1,7 +1,8 @@
 import { claim, LdpVc, VcStatus } from "../types/data-types";
 import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
 import i18next from "i18next";
-const getValue = (credentialElement: any,language: string): string | undefined => {
+
+const getValue = (credentialElement: any,language:string = i18next.language || "en" ): string | undefined => {
   if (credentialElement === null || credentialElement === undefined) {
     return undefined;
   }
@@ -21,7 +22,6 @@ const getValue = (credentialElement: any,language: string): string | undefined =
       return getValue(credentialElement.value, language);
     }
 
-      // Object with multiple language keys (e.g., { en: "Rice", ta: "அரிசி" })
       const langValue = credentialElement[language];
       if (typeof langValue === "string") {
           return langValue;
@@ -36,8 +36,7 @@ const getValue = (credentialElement: any,language: string): string | undefined =
   return String(credentialElement);
 };
 
-export const getDetailsOrder = (vc: any,language:string=i18next.language) => {
-    console.log("inside getDetailsorder:",language);
+export const getDetailsOrder = (vc: any,language:string= i18next.language || "en") => {
   if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
     return [];
   }

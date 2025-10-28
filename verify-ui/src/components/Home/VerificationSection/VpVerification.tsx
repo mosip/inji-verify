@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect } from "react";
 import { QrIcon } from "../../../utils/theme-utils";
 import { useVerifyFlowSelector } from "../../../redux/features/verification/verification.selector";
 import Loader from "../../commons/Loader";
@@ -18,8 +18,7 @@ import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
 import {VerificationResults} from "@mosip/react-inji-verify-sdk/dist/components/openid4vp-verification/OpenID4VPVerification.types";
 import {decodeSdJwtToken} from "../../../utils/decodeSdJwt";
-import { getDetailsOrder } from "../../../utils/commonUtils";
-import i18next from "i18next";
+
 
 const DisplayActiveStep = () => {
   const { t } = useTranslation("Verify");
@@ -35,9 +34,8 @@ const DisplayActiveStep = () => {
   const showResult = useVerifyFlowSelector((state) => state.isShowResult);
   const flowType = useVerifyFlowSelector((state) => state.flowType);
   const incorrectCredentialShared = selectedClaims.length === 1 && unverifiedClaims.length === 1 && isSingleVc;
-  const currentLang = i18next.language;
   const dispatch = useAppDispatch();
-  const [details, setDetails] = useState<{ key: string; value: string }[]>([]);
+
   const handleRequestCredentials = () => {
     dispatch(setSelectCredential());
   };
@@ -55,12 +53,8 @@ const DisplayActiveStep = () => {
         vpResults.map(async (vpResult) => {
           if (typeof vpResult?.vc === 'string') {
             const decodedSdJwt = await decodeSdJwtToken(vpResult.vc);
-            const vcDetails=getDetailsOrder(decodedSdJwt,currentLang);
-            setDetails(vcDetails);
             return { ...vpResult, vc: decodedSdJwt };
           }
-          const vcDetails =getDetailsOrder(vpResult.vc,currentLang);
-          setDetails(vcDetails);
           return vpResult;
         })
     );
@@ -121,6 +115,7 @@ const DisplayActiveStep = () => {
           isSingleVc={isSingleVc}
         />
       </div>
+
     );
   } else if (flowType === "crossDevice") {
     return (
