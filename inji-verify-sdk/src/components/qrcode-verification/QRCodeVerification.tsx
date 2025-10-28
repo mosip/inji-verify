@@ -50,7 +50,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonId,
   uploadButtonStyle,
   isEnableZoom = true,
-  clientId,
+  clientId
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
