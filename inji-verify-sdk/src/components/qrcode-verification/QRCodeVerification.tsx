@@ -509,7 +509,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
             vcStatus: vcResult.verificationStatus as VcStatus,
           }));
           if (onVCReceived) {
-            const txnId = await vcSubmission(VCResult[0], verifyServiceUrl, transactionId);
+            const txnId = await vcSubmission(VCResult[0].vc, verifyServiceUrl, transactionId);
             onVCReceived(txnId);
           } else if (onVCProcessed) {
             onVCProcessed(VCResult);
