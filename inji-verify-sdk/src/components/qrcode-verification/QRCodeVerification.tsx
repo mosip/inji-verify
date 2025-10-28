@@ -497,7 +497,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     return atob(base64);
   }
 
-  const fetchVPResult = async (verifyServiceUrl: string, transactionId: string) => {
+  const fetchVPResult = async (transactionId: string) => {
     if (hasFetchedVPResultRef.current) return;
     hasFetchedVPResultRef.current = true;
     try {
@@ -519,7 +519,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     }
   };
 
-  const fetchVPStatus = async (verifyServiceUrl: string, transactionId: string, requestId: string) => {
+  const fetchVPStatus = async (transactionId: string, requestId: string) => {
     setLoading(true);
     try {
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
@@ -530,7 +530,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           resetState();
           return;
         }
-        await fetchVPResult(verifyServiceUrl, transactionId);
+        await fetchVPResult(transactionId);
       } else {
         resetState();
         throw new Error("VP submission failed or not completed");
@@ -586,7 +586,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const transactionId = sessionStorage.getItem("transactionId");
 
         if (requestId && transactionId && !vpToken) {
-          fetchVPStatus(verifyServiceUrl, transactionId, requestId);
+          fetchVPStatus(transactionId, requestId);
         } else if (error) {
           throw new Error(String(error));
         }
