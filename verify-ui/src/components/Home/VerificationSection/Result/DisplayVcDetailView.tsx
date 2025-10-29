@@ -12,6 +12,7 @@ import { getDetailsOrder } from "../../../../utils/commonUtils";
 import { isRTL } from "../../../../utils/i18n";
 import { AnyVc } from "../../../../types/data-types";
 import VcDetailsGrid from "./VcDetailsGrid";
+import i18next from "i18next";
 
 function DisplayVcDetailView({
   vc,
@@ -23,8 +24,8 @@ function DisplayVcDetailView({
   className?: string;
 }) {
   const { t, i18n } = useTranslation("Verify");
-  
-  const orderedDetails = vc && getDetailsOrder(vc);
+  const currentLang =i18next.language;
+  const orderedDetails = vc && getDetailsOrder(vc, currentLang);
   const isRtl = isRTL(i18n.language);
   const positionLeft = "left-[250px] lg:left-[328px] lg:hover:left-[215px]";
   const positionRight = "right-[250px] lg:right-[328px] lg:hover:right-[215px]";
