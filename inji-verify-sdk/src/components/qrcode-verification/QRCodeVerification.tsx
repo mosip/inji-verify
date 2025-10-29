@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   QRCodeVerificationProps,
+  QrData,
   scanResult,
   VcStatus,
 } from "./QRCodeVerification.types";
@@ -33,7 +34,6 @@ import { readBarcodes } from "zxing-wasm/full";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Slider } from "@mui/material";
 import "./QRCodeVerification.css";
-import { QrData } from "../openid4vp-verification/OpenID4VPVerification.types";
 import { isSdJwt } from "../../utils/utils";
 
 const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
