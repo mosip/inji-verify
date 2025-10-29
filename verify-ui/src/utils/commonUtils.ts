@@ -1,4 +1,4 @@
-import { claim, credentialSubject, LdpVc, VcStatus } from "../types/data-types";
+import { claim, LdpVc, VcStatus } from "../types/data-types";
 import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
 import i18next from "i18next";
 
@@ -16,10 +16,18 @@ const getValue = (credentialElement: any,language: string = i18next.language || 
         if (langEntry) {
             return langEntry["@value"] ?? langEntry.value;
         }
+
+      const fallbackEntry = credentialElement.find(
+          (el) => el?.["@language"] === "en" || el?.language === "en"
+      );
+      if (fallbackEntry) {
+          return fallbackEntry["@value"] ?? fallbackEntry.value;
+      }
         for (const key of Object.keys(credentialElement)) {
             const nestedValue = getValue(key, language);
             if (nestedValue !== undefined) return nestedValue;
         }
+        return undefined;
     }
     return String(credentialElement);
 };
@@ -63,7 +71,7 @@ export const getDetailsOrder = (vc: any,language:string = i18next.language || "e
           ) {
             return (farmOrder as string[]).map((farmField: any) => ({
               key: farmField,
-              value: getValue(credential[key], language) || "N/A",
+              value: credential[farmKey][farmField] || "N/A",
             }));
           }
           return { key: farmKey, value: "N/A" };
