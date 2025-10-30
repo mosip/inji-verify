@@ -52,40 +52,6 @@ If the VC is a string, the UI decodes it using the SD-JWT library before display
 npm install @sd-jwt/decode@0.8.1-next.0
 ```
 
-🔄 Verification Flow (SDK ↔ Backend Sequence)
-
-This section describes the interaction sequence between the Inji Verify SDK and the Verifier backend APIs during the Verifiable Presentation (VP) verification process.
-
-🧩 Step 1: Create Verifiable Presentation (VP) Request
-
-Purpose: The verifier initiates the verification process by creating a VP request through the SDK.
-
-Sequence	Description	SDK / Method	Backend API
-1	SDK sends a request to the backend to create a new VP request	initiateVerification()	POST /vp-request
-2	Backend generates and responds with VP request details including:
-transactionId, requestId, expiresAt, and requestUri	–	Response example:
-json<br>{<br> "transactionId": "txn_145aa3ca-89b6-4b9c-9ed0-02dded1ba677",<br> "requestId": "req_55cfd512-a0c7-4adb-98de-3eb437f258b3",<br> "expiresAt": 1761814010329,<br> "requestUri": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-request/req_55cfd512-a0c7-4adb-98de-3eb437f258b3"<br>}
-3	SDK uses the response to determine the flow type:	–	–
-  • Cross-device flow → SDK generates a QR code for wallet scanning	renderQRCode()	–	
-  • Same-device flow → SDK redirects to wallet using deep link / Digital Credentials API	triggerWalletFlow()	–	
-📤 Step 2: Wallet Submits the Verifiable Presentation
-
-Purpose: Wallet submits Verifiable Presentation (VP) with matching credentials.
-
-Sequence	Description	SDK / Method	Backend API
-4	Wallet scans the QR code or receives the deep link, prepares VP submission	–	–
-5	Wallet submits the VP token (JWT / SD-JWT) and presentation submission to backend	–	POST /vp-request/{requestId}/submit
-6	SDK starts polling to track the VP request status	pollVpStatus()	GET /vp-request/{requestId}/status
-✅ Step 3: Verification Result Retrieval
-
-Purpose: SDK fetches verification result once the VP is submitted and verified.
-
-Sequence	Description	SDK / Method	Backend API
-7	Backend verifies the VP (cryptographic validation, issuer verification, schema validation, etc.)	–	Internal verification
-8	When backend marks status as VP_SUBMITTED, SDK fetches the verification result	fetchVpResult()	GET /vp-result/{transactionId}
-9	SDK passes verification result to Verifier UI	returnVerificationResult()	–
-10	Verifier UI decodes the credential using @sd-jwt/decode (if the credential is a compact SD-JWT string) and displays public + disclosed claims	decodeCredential()	–
-
 # 🔄 Verification Flow (SDK ↔ Backend Sequence)
 
 This section describes the interaction sequence between the **Inji Verify SDK** and the **Verifier backend APIs** during the Verifiable Presentation (VP) verification process.
@@ -144,7 +110,7 @@ sequenceDiagram
     SDK->>Backend: POST /vp-request
     Backend-->>SDK: transactionId, requestId, requestUri
     alt Cross-device flow
-        SDK->>UI: renderQRCode()
+        SDK->>UI: generateQRCode()
         Wallet->>Backend: POST /vp-submission/direct-post
     else Same-device flow
         SDK->>Wallet: redirect (deeplink)
