@@ -407,7 +407,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const extractVerifiableCredential = async (data: any) => {
     try {
       if (data?.vpToken) return data.vpToken.verifiableCredential[0];
+      //check if QRCode contains OVP_QR in the header, it means this is a
+      // data share VC
       if (typeof data === "string" && data.startsWith(OvpQrHeader)) {
+        //extract the redirect Url from QRCode
         const redirectUrl = extractRedirectUrlFromQrData(data);
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
@@ -418,7 +421,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
-        parsedUrl.searchParams.set("presentation_definition", JSON.stringify(presentationDefinition));
+        //call /v1/verify/vp-request endpoint to get the request_id and
+        // transaction_id to be sent to the redirectUrl
         const response = await createVPRequest(presentationDefinition);
 
         if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
@@ -428,6 +432,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!authorizationDetails) throw new Error("Unable to access the shared VC, due to Missing authorization details in VP Request");
 
         const { responseUri, nonce } = authorizationDetails;
+
+        if (!responseUri || !nonce) throw new Error("Unable to access the shared VC, due to missing responseUri or nonce in authorization details");
+        //call the redirectUrl
         window.location.href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
         return;
       }
