@@ -275,6 +275,24 @@ public class StepDef {
             throw e;
         }
     }
+    
+    @When("User click on continue")
+    public void verifyClickOnContinueButton() {
+        try {
+            homePage.ClickonContinueButton();
+            test.log(Status.PASS, "Successfully clicked on the Continue button.");
+            test.log(Status.PASS, "Successfully navigated to the home page after clicking the Continue button.");
+        } catch (NoSuchElementException e) {
+            logFailure(test, driver, "Element not found while clicking on the Continue button", e);
+            throw e;
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Navigation verification failed: Home page is not displayed after clicking the Continue button.");
+            throw e;
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while clicking on the Continue button", e);
+            throw e;
+        }
+    }
 
     @When("Verify that expansion button is displayed after expansion")
     public void verifyThatExpansionButtonIsDisplayedAfterExpansion() {
