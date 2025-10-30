@@ -432,6 +432,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!authorizationDetails) throw new Error("Unable to access the shared VC, due to Missing authorization details in VP Request");
 
         const { responseUri, nonce } = authorizationDetails;
+
+        if (!responseUri || !nonce) throw new Error("Unable to access the shared VC, due to missing responseUri or nonce in authorization details");
         //call the redirectUrl
         window.location.href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
         return;
