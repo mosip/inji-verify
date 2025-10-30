@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
@@ -608,59 +607,76 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     }
 
     @Test
-    public void testProcessJsonVpTokens_SimpleVC() {
-        List<JSONObject> jsonVpTokens = new ArrayList<>();
-        List<VCResultDto> verificationResults = new ArrayList<>();
-        List<VPVerificationStatus> vpVerificationStatuses = new ArrayList<>();
+    public void testProcessJsonVpTokens_SimpleVC() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
+        // Prepare a VPSubmission with a simple VC token
         JSONArray types = new JSONArray();
         types.put("VerifiableCredential");
         JSONObject vc = new JSONObject();
         vc.put("type", types);
-        jsonVpTokens.add(vc);
-        VerificationResult mockResult = mock(VerificationResult.class);
 
+        List<JSONObject> jsonVpTokens = new ArrayList<>();
+        jsonVpTokens.add(vc);
+
+        VPSubmission vpSubmission = new VPSubmission(
+            "state123",
+            vc.toString(),
+            new PresentationSubmissionDto("id", "dId", List.of(
+                new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
+            )),
+            null,
+            null
+        );
+
+        String transactionId = "tx123";
+        List<String> requestIds = List.of("req123");
+
+        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+        VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
         when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.LDP_VC)))
             .thenReturn(mockResult);
-        PresentationVerificationResult presResult = new PresentationVerificationResult(VPVerificationStatus.VALID, new ArrayList<>());
-        when(presentationVerifier.verify(anyString())).thenReturn(presResult);
-        verifiablePresentationSubmissionService.processJsonVpTokens(jsonVpTokens, verificationResults, vpVerificationStatuses);
+        when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
+            .thenReturn(new AuthorizationRequestCreateResponse());
 
-        assertFalse(verificationResults.isEmpty());
-        assertTrue(vpVerificationStatuses.isEmpty());
+        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
+
+        assertNotNull(resultDto);
+        assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
+        assertFalse(resultDto.getVcResults().isEmpty());
     }
 
     @Test
-    public void testProcessSdJwtVpTokens_Success() {
-        List<String> sdJwtVpTokens = List.of("sdjwt-token");
-        List<VCResultDto> verificationResults = new ArrayList<>();
-        VerificationResult mockResult = mock(VerificationResult.class);
+    public void testProcessSdJwtVpTokens_Success() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
+        String header = Base64.getUrlEncoder().encodeToString("{\"typ\":\"vc+sd-jwt\"}".getBytes());
+        String payload = Base64.getUrlEncoder().encodeToString("{\"sub\":\"123\"}".getBytes());
+        String signature = Base64.getUrlEncoder().encodeToString("signature".getBytes());
+        String sdJwtToken = header + "." + payload + "." + signature;
+        VPSubmission vpSubmission = new VPSubmission(
+            "state123",
+            "\"" + sdJwtToken + "\"",
+            new PresentationSubmissionDto("id", "dId", List.of(
+                new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
+            )),
+            null,
+            null
+        );
 
+        String transactionId = "tx123";
+        List<String> requestIds = List.of("req123");
+
+        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+        VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
         when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.VC_SD_JWT)))
             .thenReturn(mockResult);
-        verifiablePresentationSubmissionService.processSdJwtVpTokens(sdJwtVpTokens, verificationResults);
+        when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
+            .thenReturn(new AuthorizationRequestCreateResponse());
 
-        assertFalse(verificationResults.isEmpty());
-    }
+        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
-    @Test
-    public void testProcessJsonVpTokens_VPWithVCs() {
-        List<JSONObject> jsonVpTokens = new ArrayList<>();
-        List<VCResultDto> verificationResults = new ArrayList<>();
-        List<VPVerificationStatus> vpVerificationStatuses = new ArrayList<>();
-        JSONArray types = new JSONArray();
-        types.put("VerifiablePresentation");
-        JSONObject vp = new JSONObject();
-        vp.put("type", types);
-        jsonVpTokens.add(vp);
-        PresentationVerificationResult presResult = new PresentationVerificationResult(VPVerificationStatus.VALID, List.of(new VCResult("vc", VerificationStatus.SUCCESS)));
-
-        when(presentationVerifier.verify(anyString())).thenReturn(presResult);
-        verifiablePresentationSubmissionService.processJsonVpTokens(jsonVpTokens, verificationResults, vpVerificationStatuses);
-
-        assertFalse(verificationResults.isEmpty());
-        assertFalse(vpVerificationStatuses.isEmpty());
+        assertNotNull(resultDto);
+        assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
+        assertFalse(resultDto.getVcResults().isEmpty());
     }
 
     @Test
@@ -688,3 +704,4 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         assertTrue(sdJwtVpTokens.isEmpty());
     }
 }
+
