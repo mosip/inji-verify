@@ -34,6 +34,8 @@ function switchToVerificationMethod(method: VerificationMethod) {
   }
   if (sessionStoragePath && sessionStoragePath !== methodPath) {
     sessionStorage.removeItem("pathName");
+    sessionStorage.removeItem("transactionId");
+    sessionStorage.removeItem("requestId");
   }
   store.dispatch(goToHomeScreen({ method }));
   return null;
