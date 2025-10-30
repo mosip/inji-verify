@@ -16,13 +16,13 @@ export const convertToTitleCase = (text: string): string => {
     if (!text) return "";
     return text
         // Once match is found, split the words by adding space at the beginning of the natch and ensure the first letter is capital
-        .replace(splitCamelCaseRegex, (match) => ` ${match.charAt(0).toUpperCase()}${match.slice(1)}`)
+        .replaceAll(splitCamelCaseRegex, (match) => ` ${match.charAt(0).toUpperCase()}${match.slice(1)}`)
         // convert the first char of 'text' to capital case
         .replace(lowercaseStartRegex, (match) => match.toUpperCase());
 };
 
 export const getDisplayValue = (data: any): string => {
-    if (data instanceof Array && data?.length > 0) {
+    if (Array.isArray(data) && data?.length > 0) {
         let displayValue = "";
         data.forEach(value => {
             displayValue += `${value}, `;

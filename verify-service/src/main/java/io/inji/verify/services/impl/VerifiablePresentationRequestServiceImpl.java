@@ -58,7 +58,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
     Long defaultTimeout;
 
     @Value("${inji.vp-submission.base-url}")
-    String vpSubmissionBaseUrl;
+    String verifyServiceBaseUrl;
 
     @Value("${inji.did.verify.public.key.uri}")
     String verifyPublicKeyURI;
@@ -79,7 +79,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         String requestId = Utils.generateID(Constants.REQUEST_ID_PREFIX);
         long expiresAt = Instant.now().plusSeconds(Constants.DEFAULT_EXPIRY).toEpochMilli();
         String nonce = vpRequestCreate.getNonce() != null ? vpRequestCreate.getNonce() : SecurityUtils.generateNonce();
-        String responseUri = vpSubmissionBaseUrl + Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI;
+        String responseUri = verifyServiceBaseUrl + Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI;
 
         AuthorizationRequestResponseDto authorizationRequestResponseDto = Optional.ofNullable(vpRequestCreate.getPresentationDefinitionId())
                 .map(presentationDefinitionId -> presentationDefinitionRepository.findById(presentationDefinitionId)
@@ -94,10 +94,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         authorizationRequestCreateResponseRepository.save(authorizationRequestCreateResponse);
         log.info("Authorization request created");
         if (vpRequestCreate.getClientId().startsWith("did")) {
-            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(VP_REQUEST_URI, authorizationRequestCreateResponse.getRequestId()));
+            String requestUri = verifyServiceBaseUrl + Constants.VP_REQUEST_URI;
+            return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), null, authorizationRequestCreateResponse.getExpiresAt(), "%s/%s".formatted(requestUri, authorizationRequestCreateResponse.getRequestId()));
         }
         return new VPRequestResponseDto(authorizationRequestCreateResponse.getTransactionId(), authorizationRequestCreateResponse.getRequestId(), authorizationRequestCreateResponse.getAuthorizationDetails(), authorizationRequestCreateResponse.getExpiresAt(), null);
-
     }
 
     @Override
@@ -157,6 +157,11 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
                     if (currentRequestStatus.getStatus() == VPRequestStatus.EXPIRED) {
                         result.setResult(new VPRequestStatusDto(VPRequestStatus.EXPIRED));
+                        return result;
+                    }
+
+                    if (currentRequestStatus.getStatus() == VPRequestStatus.VP_SUBMITTED) {
+                        result.setResult(new VPRequestStatusDto(VPRequestStatus.VP_SUBMITTED));
                         return result;
                     }
 

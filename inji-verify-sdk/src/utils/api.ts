@@ -145,6 +145,10 @@ export const vpResult = async (url: string, txnId: string) => {
     }
     return data.vcResults;
   } catch (error) {
-     throw error as AppError;
+    if (error instanceof Error) {
+      throw Error(error.message);
+    } else {
+      throw error as AppError;
+    }
   }
 };

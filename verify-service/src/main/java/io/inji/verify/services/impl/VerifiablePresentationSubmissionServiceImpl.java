@@ -20,6 +20,7 @@ import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
 import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
+import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,13 +89,21 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
 
             for (JSONObject vpToken : jsonVpTokens) {
-                PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
-                vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
+                boolean isVerifiablePresentation = isVerifiablePresentation(vpToken);
 
-                List<VCResultDto> vcResults = presentationVerificationResult.getVcResults().stream()
-                        .map(vcResult -> new VCResultDto(vcResult.getVc(), vcResult.getStatus()))
-                        .toList();
-                verificationResults.addAll(vcResults);
+                if (isVerifiablePresentation) {
+                    PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
+                    vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
+
+                    List<VCResultDto> vcResults = presentationVerificationResult.getVcResults().stream()
+                            .map(vcResult -> new VCResultDto(vcResult.getVc(), vcResult.getStatus()))
+                            .toList();
+                    verificationResults.addAll(vcResults);
+                } else {
+                    VerificationResult verificationResult = credentialsVerifier.verify(vpToken.toString(), CredentialFormat.LDP_VC);
+                    VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
+                    verificationResults.add(new VCResultDto(vpToken.toString(), status));
+                }
             }
 
             for (String sdJwtVpToken : sdJwtVpTokens) {
@@ -103,7 +112,8 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                 if (!verificationResult.getVerificationStatus()) {
                     log.error("SD-JWT VC verification result errors : {} {}", verificationResult.getVerificationErrorCode(), verificationResult.getVerificationMessage());
                 }
-                verificationResults.add(new VCResultDto(sdJwtVpToken, verificationResult.getVerificationStatus() ? VerificationStatus.SUCCESS : VerificationStatus.INVALID));
+                VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
+                verificationResults.add(new VCResultDto(sdJwtVpToken, status));
             }
 
             log.info("VP submission processing done");
@@ -118,7 +128,20 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
     }
 
-    private void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {
+    private boolean isVerifiablePresentation(JSONObject vpToken) {
+        Object types = vpToken.opt("type");
+        if (types == null) return false;
+
+        return switch (types) {
+            case JSONArray jsonTypes -> jsonTypes.toList().stream()
+                    .anyMatch(type -> "VerifiablePresentation".equalsIgnoreCase(type.toString()));
+            case String typeString ->
+                    "VerifiablePresentation".equalsIgnoreCase(typeString);
+            default -> false;
+        };
+    }
+
+    void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {
         if (vpTokenString == null) return;
 
         Object vpTokenRaw = new JSONTokener(vpTokenString).nextValue();
@@ -154,6 +177,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
 
     }
+
     @Override
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);

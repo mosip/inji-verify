@@ -1,9 +1,3 @@
-export type OpenID4VPError = {
-  message: string;
-  code?: string;
-  details?: unknown;
-};
-
 export type VerificationStatus = "valid" | "invalid" | "expired";
 
 export interface VerificationResult {
@@ -161,6 +155,11 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      */
     onError: (error: AppError) => void;
   };
+
+export interface SessionState {
+  requestId: string;
+  transactionId: string;
+}
 
 export type AppError = {
   errorMessage: string;

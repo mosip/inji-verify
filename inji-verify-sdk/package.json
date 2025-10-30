@@ -1,8 +1,10 @@
 {
   "name": "@mosip/react-inji-verify-sdk",
-  "version": "0.16.0-beta.0",
+  "version": "0.16.0-beta.8",
   "description": "A react component library to perform Inji verify tasks, such as OpenId4VP sharing, Reading VC QR codes",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -69,7 +71,7 @@
     "@mosip/pixelpass": "^0.6.0",
     "@mui/material": "^7.1.0",
     "ajv": "^8.17.1",
-    "pdfjs-dist": "^5.2.133",
+    "pdfjs-dist": "5.2.133",
     "qrcode.react": "^4.1.0",
     "react-icons": "^5.5.0",
     "zxing-wasm": "^2.1.2"
