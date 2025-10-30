@@ -89,8 +89,13 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
 
             for (JSONObject vpToken : jsonVpTokens) {
-                Object types = vpToken.get("type");
-                boolean isVerifiableCredential = isVerifiableCredential((JSONArray) types);
+                Object types = vpToken.opt("type");
+                boolean isVerifiableCredential = false;
+                if (types instanceof JSONArray jsonTypes) {
+                    isVerifiableCredential = isVerifiableCredential(jsonTypes);
+                } else if (types instanceof String typeString) {
+                    isVerifiableCredential = "VerifiableCredential".equalsIgnoreCase(typeString);
+                }
 
                 if (isVerifiableCredential) {
                     VerificationResult verificationResult = credentialsVerifier.verify(vpToken.toString(), CredentialFormat.LDP_VC);
