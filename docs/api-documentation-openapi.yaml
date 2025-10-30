@@ -169,16 +169,16 @@ paths:
     post:
       summary: Submit authorization response
       description: |-
-        This endpoint is the destination for a wallet to submit a Verifiable Presentation (VP) `vp_token` and a `presentation_submission` object, typically in a direct post flow. 
+        This endpoint is the destination for a wallet to submit a Verifiable Presentation (VP) `vp_token` and a `presentation_submission` object, typically when `response_mode` is `direct_post`.
         The server processes this VP submission, saves it in database, and updates the transaction status.
 
-        As of release `0.15.0` of this service below changes are made:
-        1. new request attributes added for `error` and `error_description` have been added
-        1. `vp_token` is allowed as null, provided error is not null
-        2. `presentation_submission` is allowed as null, provided error is not null
-        3. if `vp_token` is not_null, then `presentation_submission` should be not null
-        4. if `error` is not null, then `vp_token` and `presentation_submission` should be null  
-        5. if `error` is not null, still `error_description` can be null
+        With release `0.15.0`, following changes are done in API:
+        1. new request attributes `error` and `error_description` have been added for accepting error from wallet
+        2. `vp_token` is allowed as null, provided `error` is not null
+        3. `presentation_submission` is allowed as null, provided `error` is not null
+        4. if `vp_token` is not null, then `presentation_submission` should be not null
+        5. if `error` is not null, then `vp_token` and `presentation_submission` should be null  
+        6. if `error` is not null, still `error_description` can be null
          
       operationId: submitResponse
       tags:
@@ -209,7 +209,7 @@ paths:
   /vc-submission:
     post:
       summary: Submit Verifiable Credential (VC)
-      description: 'This API allows a user or system to submit a Verifiable Credential to the server. The server can optionally generate a transactionId if one is not provided in the request. This is distinct from a Verifiable Presentation submission and might be used for other purposes, such as VC issuance or general credential management.'
+      description: 'This API allows a user or system to submit a Verifiable Credential to the server. The server can optionally generate a transactionId if one is not provided in the request. This is distinct from a Verifiable Presentation submission.'
       operationId: submitVC
       tags:
         - VC Submission
@@ -649,7 +649,7 @@ components:
       properties:
         vp_token:
           type: string
-          description: 'vp_token - REQUIRED. JSON String or JSON object that MUST contain a single Verifiable Presentation or an array of JSON Strings and JSON objects each of them containing a Verifiable Presentations. This is the core payload submitted by the wallet. As of release 0.15.0, this can be null when there is error.'
+          description: 'vp_token - REQUIRED. JSON String or JSON object that MUST contain a single Verifiable Presentation or an array of JSON Strings and JSON objects each of them containing a Verifiable Presentations. This is the core payload submitted by the wallet. With release 0.15.0, this should/must be null when there is error'
           example: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2cCI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iXSwidmVyaWZpYWJsZUNyZWRlbnRpYWwiOlsiZXlKaGJHY2lPaUpGVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhkV1FpT2lKb2RIUndjem92TDNabGNtbG1lUzVrWlhZeExtMXZjMmx3TG01bGRDOXlaWE53YjI1elpYTWlMQ0pqYkdGcGJYTWlPbnNpWVdkbElqb3hPSDBzSW1semN5STZJbWgwZEhCek9pOHZkbVZ5YVdaNUxtUmxkakV1Ylc5emFYQXVibVYwTDJselozSmhiblJsY25NaUxDSnVZbVlpT2pFMk9ESTVOekF3TURBc0ltVjRjQ0k2TVRjd05qazNNREF3TUgwLnNpZ25hdHVyZSJdfSwibm9uY2UiOiJub25jZV8xMjM0NSIsImF1ZCI6ImNsaWVudDEyMyJ9.signature
         state:
           type: string
@@ -665,7 +665,7 @@ components:
           example: Something went wrong with the request configuration.
         presentation_submission:
           type: object
-          description: 'As of release 0.15.0, this can be null when there is error.'
+          description: 'With release 0.15.0, this should/must be null when there is error'
           required:
             - id
             - definition_id
@@ -734,7 +734,7 @@ components:
       properties:
         responseUri:
           type: string
-          description: 'The URL for the wallet to submit the verifiable presentation, used in direct post flows.'
+          description: 'The URL for the wallet to submit the verifiable presentation,  when `response_mode` is `direct_post`.'
           format: uri
           example: 'https://injiverify.collab.mosip.net/v1/verify/vp-submission/direct-post'
         responseType:
