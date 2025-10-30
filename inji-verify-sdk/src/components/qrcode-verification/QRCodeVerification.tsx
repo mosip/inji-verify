@@ -418,7 +418,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
-        parsedUrl.searchParams.set("presentation_definition", JSON.stringify(presentationDefinition));
         const response = await createVPRequest(presentationDefinition);
 
         if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
