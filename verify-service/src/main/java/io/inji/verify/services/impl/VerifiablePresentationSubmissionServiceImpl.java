@@ -147,7 +147,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         return false;
     }
 
-    private void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {
+    void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {
         if (vpTokenString == null) return;
 
         Object vpTokenRaw = new JSONTokener(vpTokenString).nextValue();
