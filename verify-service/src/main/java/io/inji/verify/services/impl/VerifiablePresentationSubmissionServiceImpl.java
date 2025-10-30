@@ -175,6 +175,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
 
     }
+
     @Override
     public VPTokenResultDto getVPResult(List<String> requestIds, String transactionId) throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<VPSubmission> vpSubmissions = vpSubmissionRepository.findAllById(requestIds);
