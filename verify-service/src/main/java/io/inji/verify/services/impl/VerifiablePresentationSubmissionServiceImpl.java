@@ -130,12 +130,14 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
     private boolean isVerifiablePresentation(JSONObject vpToken) {
         Object types = vpToken.opt("type");
+        if (types == null) return false;
+
         return switch (types) {
             case JSONArray jsonTypes -> jsonTypes.toList().stream()
                     .anyMatch(type -> "VerifiablePresentation".equalsIgnoreCase(type.toString()));
             case String typeString ->
                     "VerifiablePresentation".equalsIgnoreCase(typeString);
-            case null, default -> false;
+            default -> false;
         };
     }
 
