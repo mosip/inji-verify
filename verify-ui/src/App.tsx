@@ -32,8 +32,8 @@ function switchToVerificationMethod(method: VerificationMethod) {
     default:
       methodPath = "";
   }
-  if (sessionStoragePath !== methodPath) {
-    sessionStorage.clear();
+  if (sessionStoragePath && sessionStoragePath !== methodPath) {
+    sessionStorage.removeItem("pathName");
   }
   store.dispatch(goToHomeScreen({ method }));
   return null;
