@@ -89,19 +89,9 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
             }
 
             for (JSONObject vpToken : jsonVpTokens) {
-                Object types = vpToken.opt("type");
-                boolean isVerifiableCredential = false;
-                if (types instanceof JSONArray jsonTypes) {
-                    isVerifiableCredential = isVerifiableCredential(jsonTypes);
-                } else if (types instanceof String typeString) {
-                    isVerifiableCredential = "VerifiableCredential".equalsIgnoreCase(typeString);
-                }
+                boolean isVerifiablePresentation = isVerifiablePresentation(vpToken);
 
-                if (isVerifiableCredential) {
-                    VerificationResult verificationResult = credentialsVerifier.verify(vpToken.toString(), CredentialFormat.LDP_VC);
-                    VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
-                    verificationResults.add(new VCResultDto(vpToken.toString(), status));
-                } else {
+                if (isVerifiablePresentation) {
                     PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
                     vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
 
@@ -109,6 +99,10 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                             .map(vcResult -> new VCResultDto(vcResult.getVc(), vcResult.getStatus()))
                             .toList();
                     verificationResults.addAll(vcResults);
+                } else {
+                    VerificationResult verificationResult = credentialsVerifier.verify(vpToken.toString(), CredentialFormat.LDP_VC);
+                    VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
+                    verificationResults.add(new VCResultDto(vpToken.toString(), status));
                 }
             }
 
@@ -134,17 +128,15 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
     }
 
-    private boolean isVerifiableCredential(JSONArray types) {
-        if (types == null) return false;
-
-        for (Object type : types) {
-            log.info("type: {}", type);
-            if ("VerifiableCredential".equalsIgnoreCase(type.toString())) {
-                return true;
-            }
-        }
-
-        return false;
+    private boolean isVerifiablePresentation(JSONObject vpToken) {
+        Object types = vpToken.opt("type");
+        return switch (types) {
+            case JSONArray jsonTypes -> jsonTypes.toList().stream()
+                    .anyMatch(type -> "VerifiablePresentation".equalsIgnoreCase(type.toString()));
+            case String typeString ->
+                    "VerifiablePresentation".equalsIgnoreCase(typeString);
+            case null, default -> false;
+        };
     }
 
     void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {
