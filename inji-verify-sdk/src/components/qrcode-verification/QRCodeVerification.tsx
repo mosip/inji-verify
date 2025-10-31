@@ -606,8 +606,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      resetState();
       onError(error instanceof Error ? error : new Error("Unknown error"));
+      resetState();
     }
   }, []);
 
