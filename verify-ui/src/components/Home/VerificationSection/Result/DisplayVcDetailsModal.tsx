@@ -12,6 +12,8 @@ import {
 } from "../../../../utils/config";
 import VcDetailsGrid from "./VcDetailsGrid";
 import i18next from "i18next";
+import VcSvgTemplate from "./VcSvgTemplate";
+import { getTemplateUrl } from "../../../../utils/svg-template-utils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -33,6 +35,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   const { t } = useTranslation("Verify");
   const currentLang =i18next.language;
   const orderedDetails = vc && getDetailsOrder(vc, currentLang);
+  const templateUrl = getTemplateUrl(vc);
 
   if (!isOpen) return null;
   return (
@@ -72,10 +75,11 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
         </div>
 
         <div className="space-y-4">
-          <VcDetailsGrid
-            orderedDetails={orderedDetails}
-            vc={vc}
-          />
+          {templateUrl ? (
+            <VcSvgTemplate vc={vc} templateUrl={templateUrl} />
+          ) : (
+            <VcDetailsGrid orderedDetails={orderedDetails} vc={vc} />
+          )}
         </div>
 
         <div className="flex justify-end space-x-4 mt-6">
