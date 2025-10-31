@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { MdArrowForwardIos } from "react-icons/md";
-import { MdExpandLess } from "react-icons/md";
+import { MdArrowForwardIos, MdExpandLess } from "react-icons/md";
 import {Pages} from "../../utils/config";
 import { LanguageSelector } from '../commons/LanguageSelector';
 import { useTranslation } from 'react-i18next';
@@ -54,7 +53,7 @@ const MobileDropDownMenu = ({ showMenu, setShowMenu }: { showMenu: boolean; setS
                 <div id="menu"
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
                     <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">{t("home")}</a>
-                    <a id="verify-credentials-button" href={Pages.Home} className={`block px-1 py-2 font-bold text-sm bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>{t('verifyCredentials')}</a>
+                    <a id="verify-credentials-button" href={Pages.Home} className={`block px-1 py-2 font-bold text-sm bg-${(globalThis as any)._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>{t('verifyCredentials')}</a>
                     <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
@@ -88,7 +87,7 @@ const DesktopMenu = () => {
                 <li>
                     <a id="verify-credentials-button"
                        href={Pages.VerifyCredentials}
-                       className={`block py-2 font-bold rounded bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>
+                       className={`block py-2 font-bold rounded bg-${(globalThis as any)._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>
                         {t("verifyCredentials")}
                     </a>
                 </li>
@@ -114,7 +113,7 @@ function Navbar(props: any) {
             <div className="container flex flex-wrap justify-between items-center h-[40px] mx-0">
                 <div className='flex items-center'>
                     <button data-collapse-toggle="navbar-default" type="button"
-                            className={`${showMenu?`bg-${window._env_.DEFAULT_THEME}-lighter-gradient`:"bg-background"} p-3 ml-2 mr-1 lg:hidden`}
+                            className={`${showMenu?`bg-${(globalThis as any)._env_.DEFAULT_THEME}-lighter-gradient`:"bg-background"} p-3 ml-2 mr-1 lg:hidden`}
                             aria-controls="navbar-default" aria-expanded="false" id="hamburger"
                             onClick={() => setShowMenu(!showMenu)}
                     >

@@ -24,10 +24,10 @@ export const convertToTitleCase = (text: string): string => {
 export const getDisplayValue = (data: any): string => {
     if (Array.isArray(data) && data?.length > 0) {
         let displayValue = "";
-        data.forEach(value => {
+        for (const value of data) {
             displayValue += `${value}, `;
-        });
-        return displayValue.slice(0, displayValue.length - 2);
+        }
+        return displayValue.slice(0,- 2);
     }
     return data?.toString();
 }
@@ -102,7 +102,7 @@ export const getFileExtension = (fileName: string) => fileName.slice(
 );
 
 export const checkInternetStatus = async (): Promise<boolean> => {
-    if (!window.navigator.onLine) return false;
+    if (!globalThis.navigator.onLine) return false;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
         controller.abort()
@@ -140,6 +140,6 @@ export const saveData = async (vc: any) => {
   link.download = fileName + ".json";
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  link.remove();
   URL.revokeObjectURL(href);
 };
