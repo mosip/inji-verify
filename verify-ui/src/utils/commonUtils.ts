@@ -1,7 +1,7 @@
 import {claim, LdpVc, VcStatus} from "../types/data-types";
 import {EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders} from "./config";
 
-const getValue = (credentialElement: any, CurrentLanguage: string): string | undefined => {
+const getValue = (credentialElement: any, currentLanguage: string): string | undefined => {
     if (credentialElement === null || credentialElement === undefined) {
         return undefined;
     }
@@ -12,7 +12,7 @@ const getValue = (credentialElement: any, CurrentLanguage: string): string | und
 
     if (Array.isArray(credentialElement)) {
         const languageEntry = credentialElement.find(
-            (el) => el?.["@language"] === CurrentLanguage || el?.language === CurrentLanguage
+            (el) => el?.["@language"] === currentLanguage || el?.language === currentLanguage
         );
         if (languageEntry) {
             return languageEntry["@value"] ?? languageEntry.value;
@@ -28,11 +28,11 @@ const getValue = (credentialElement: any, CurrentLanguage: string): string | und
     }
     if (typeof credentialElement === "object") {
         if ("value" in credentialElement) {
-            return getValue(credentialElement.value, CurrentLanguage);
+            return getValue(credentialElement.value, currentLanguage);
         }
 
         for (const key of Object.keys(credentialElement)) {
-            const nestedValue = getValue(credentialElement[key], CurrentLanguage);
+            const nestedValue = getValue(credentialElement[key], currentLanguage);
             if (nestedValue !== undefined) return nestedValue;
         }
     }
@@ -40,7 +40,7 @@ const getValue = (credentialElement: any, CurrentLanguage: string): string | und
     return String(credentialElement);
 };
 
-export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
+export const getDetailsOrder = (vc: any, currentLanguage: string) => {
     if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
         return [];
     }
@@ -59,7 +59,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                 if (key in credential) {
                     return {
                         key,
-                        value: getValue(credential[key], CurrentLanguage) || "N/A",
+                        value: getValue(credential[key], currentLanguage) || "N/A",
                     };
                 }
                 return {key, value: "N/A"};
@@ -69,7 +69,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                 if (typeof key === "string") {
                     return {
                         key,
-                        value: getValue(credential[key], CurrentLanguage) || "N/A",
+                        value: getValue(credential[key], currentLanguage) || "N/A",
                     };
                 } else if (typeof key === "object" && key !== null) {
                     const [farmKey, farmOrder] = Object.entries(key)[0];
@@ -89,7 +89,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
         case "FarmerCredential":
             return getVCRenderOrders().farmerCredentialRenderOrder.map((key: any) => {
                 if (key in credential) {
-                    return {key, value: getValue(credential[key], CurrentLanguage) || "N/A"};
+                    return {key, value: getValue(credential[key], currentLanguage) || "N/A"};
                 }
                 return {key, value: "N/A"};
             });
@@ -99,9 +99,9 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                 if (key in credential) {
 
                     if (typeof (credential[key]) == "object") {
-                        return {key, value: getValue(credential[key], CurrentLanguage)};
+                        return {key, value: getValue(credential[key], currentLanguage)};
                     }
-                    return {key, value: getValue(credential[key], CurrentLanguage) || "N/A"};
+                    return {key, value: getValue(credential[key], currentLanguage) || "N/A"};
                 }
                 return {key, value: "N/A"};
             });
@@ -111,7 +111,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                     if (key in credential) {
                         return {
                             key,
-                            value: getValue(credential[key], CurrentLanguage) || "N/A",
+                            value: getValue(credential[key], currentLanguage) || "N/A",
                         };
                     }
                     return {key, value: "N/A"};
@@ -127,7 +127,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                         credential[key] !== "" &&
                         !EXCLUDE_KEYS_SD_JWT_VC.includes(key.toLowerCase())
                 )
-                .map((key) => ({key, value: getValue(credential[key], CurrentLanguage)}));
+                .map((key) => ({key, value: getValue(credential[key], currentLanguage)}));
         default:
             return Object.keys(credential)
                 .filter((key) =>
@@ -136,7 +136,7 @@ export const getDetailsOrder = (vc: any, CurrentLanguage: string) => {
                     credential[key] !== undefined &&
                     credential[key] !== ""
                 )
-                .map((key) => ({key, value: getValue(credential[key], CurrentLanguage)}));
+                .map((key) => ({key, value: getValue(credential[key], currentLanguage)}));
     }
 };
 
