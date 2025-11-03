@@ -1,6 +1,12 @@
-import { AnyVc } from "../types/data-types";
+import { AnyVc, LdpVc } from "../types/data-types";
+
+function hasRenderMethod(vc: AnyVc): vc is LdpVc {
+  return (vc as LdpVc).renderMethod !== undefined;
+}
 
 export const getTemplateUrl = (vc: AnyVc): string | undefined => {
+  if (!hasRenderMethod(vc)) return undefined;
+
   const renderMethod = Array.isArray(vc.renderMethod)
     ? vc.renderMethod.find(
         (r: any) =>
@@ -8,6 +14,7 @@ export const getTemplateUrl = (vc: AnyVc): string | undefined => {
           r.template?.mediaType === "image/svg+xml"
       )
     : undefined;
+
   return renderMethod?.template?.id;
 };
 
