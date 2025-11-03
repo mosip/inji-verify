@@ -30,7 +30,7 @@ const VcSvgTemplate = ({
   }, [templateUrl]);
 
   if (error) {
-    return <div className="text-red-500 text-sm text-center p-3">{error}</div>;
+    return <div className="text-red-500 text-sm text-center p-3 mt-10">{error}</div>;
   }
 
   if (!templateContent)
