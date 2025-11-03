@@ -141,6 +141,12 @@ export type QrCodeProps = {
   status: "SUCCESS" | "EXPIRED" | "INVALID";
 };
 
+export type RenderMethod = {
+  id: string;
+  type: string;
+  templateUrl?: string;
+};
+
 export type LdpVc = {
   "@context": string[];
   credentialSubject: credentialSubject;
@@ -156,8 +162,7 @@ export type LdpVc = {
     verificationMethod: string;
   };
   type: string[];
-  renderMethod?: any[];
-
+  renderMethod?: RenderMethod[];
 };
 
 export type SdJwtVc = {

@@ -18,9 +18,9 @@ const VcSvgTemplate = ({
   useEffect(() => {
     const loadTemplate = async () => {
       if (templateUrl) {
-        const svg = await fetchSvgTemplate(templateUrl);
-        if (svg) {
-          setTemplateContent(svg);
+        const svgTemplate = await fetchSvgTemplate(templateUrl);
+        if (svgTemplate) {
+          setTemplateContent(svgTemplate);
         } else {
           setError("Failed to load credential template");
         }
