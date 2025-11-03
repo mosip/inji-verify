@@ -84,7 +84,7 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    * Enable Data share VP Supported functionality.
    * Defaults to false.
    */
-  isDataShareVPSubmissionSupported: boolean;
+  isDataShareVPSubmissionSupported?: boolean;
 };
 
 interface VerificationResult {
