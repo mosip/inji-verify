@@ -51,7 +51,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonStyle,
   isEnableZoom = true,
   clientId,
-  isDataShareVPSubmissionSupported = false
+  isVPSubmissionSupported = false
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
@@ -416,7 +416,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
 
-        if (!isDataShareVPSubmissionSupported) {
+        if (!isVPSubmissionSupported) {
           const encodedOrigin = encodeURIComponent(window.location.origin);
           window.location.href = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
           return;
