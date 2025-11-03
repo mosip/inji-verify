@@ -129,7 +129,7 @@ https://your-backend.com
   isEnableUpload={true}        // Allow file uploads
   isEnableScan={true}          // Allow camera scanning  
   isEnableZoom={true}          // Allow camera zoom
-  isVPSubmissionSupported={false}  // Allow VP Submission
+  isVPSubmissionSupported={false}  // This attribute indicates whether VP submission is supported in Inji OVP VC sharing flow. By default, it is false which means that VP token will be directly sent in response. If set to true, then VP token will be submitted to the VP_SUBMISSION_ URL.
 />
 ```
 
@@ -224,7 +224,7 @@ presentationDefinition={{
 | `isEnableScan`            | boolean  | true    | Allow camera scanning        |
 | `isEnableZoom`            | boolean  | true    | Allow camera zoom            |
 | `uploadButtonStyle`       | object   | -       | Custom upload button styling |
-| `isVPSubmissionSupported` | Boolean  | false   | Allow VP Submission          |
+| `isVPSubmissionSupported` | Boolean  | false   | Toggle VP submission support |
 
 ### OpenID4VPVerification Specific
 
