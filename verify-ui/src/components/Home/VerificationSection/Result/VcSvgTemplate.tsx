@@ -3,6 +3,7 @@ import Mustache from "mustache";
 import { AnyVc } from "../../../../types/data-types";
 import { fetchSvgTemplate } from "../../../../utils/svg-template-utils";
 import Loader from "../../../commons/Loader";
+import DOMPurify from "dompurify";
 
 const VcSvgTemplate = ({
   vc,
@@ -12,16 +13,25 @@ const VcSvgTemplate = ({
   templateUrl: string;
 }) => {
   const [templateContent, setTemplateContent] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const loadTemplate = async () => {
       if (templateUrl) {
         const svg = await fetchSvgTemplate(templateUrl);
-        setTemplateContent(svg);
+        if (svg) {
+          setTemplateContent(svg);
+        } else {
+          setError("Failed to load credential template");
+        }
       }
     };
     loadTemplate();
   }, [templateUrl]);
+
+  if (error) {
+    return <div className="text-red-500 text-sm text-center p-3">{error}</div>;
+  }
 
   if (!templateContent)
     return <Loader innerBg="bg-white" className="w-5 h-5" />;
@@ -42,6 +52,13 @@ const VcSvgTemplate = ({
   let renderedSvg: string;
   try {
     renderedSvg = Mustache.render(preprocessedTemplate, vc);
+    renderedSvg = DOMPurify.sanitize(renderedSvg, {
+      USE_PROFILES: { svg: true, svgFilters: true },
+      ADD_TAGS: ["use"],
+      ADD_ATTR: ["target"],
+      FORBID_TAGS: ["script", "iframe", "object", "embed"],
+      FORBID_ATTR: ["onerror", "onload", "onclick", "onmouseover"],
+    });
   } catch (err) {
     console.error("Mustache render error:", err);
     return (

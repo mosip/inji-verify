@@ -38,7 +38,7 @@ function DisplayVcDetailView({
     <div>
       <div
         className={`w-[339px] lg:w-[410px] m-auto rounded-lg ${
-          templateUrl ? null : `bg-white shadow-lg`
+          templateUrl ? "" : "bg-white shadow-lg"
         } px-[15px] mb-4 ${className}`}
       >
         {vc ? (

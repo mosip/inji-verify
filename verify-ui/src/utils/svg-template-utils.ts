@@ -1,6 +1,8 @@
-export const getTemplateUrl = (vc: any): string => {
-  const renderMethod = Array.isArray((vc as any)?.renderMethod)
-    ? (vc as any).renderMethod.find(
+import { AnyVc } from "../types/data-types";
+
+export const getTemplateUrl = (vc: AnyVc): string | undefined => {
+  const renderMethod = Array.isArray(vc.renderMethod)
+    ? vc.renderMethod.find(
         (r: any) =>
           r.renderSuite === "svg-mustache" &&
           r.template?.mediaType === "image/svg+xml"

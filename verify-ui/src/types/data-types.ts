@@ -156,11 +156,14 @@ export type LdpVc = {
     verificationMethod: string;
   };
   type: string[];
+  renderMethod?: any[];
+
 };
 
 export type SdJwtVc = {
   regularClaims: Record<string, any>;
   disclosedClaims: Record<string, any>;
+  renderMethod?: any[];
 };
 
 export type AnyVc = LdpVc | SdJwtVc;

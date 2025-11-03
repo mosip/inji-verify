@@ -33,7 +33,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   logo,
 }) => {
   const { t } = useTranslation("Verify");
-  const currentLang =i18next.language;
+  const currentLang = i18next.language;
   const orderedDetails = vc && getDetailsOrder(vc, currentLang);
   const templateUrl = getTemplateUrl(vc);
 
