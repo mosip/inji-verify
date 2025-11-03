@@ -50,7 +50,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonId,
   uploadButtonStyle,
   isEnableZoom = true,
-  clientId
+  clientId,
+  isVPSubmissionSupported = false
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
@@ -415,6 +416,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
 
+        if (!isVPSubmissionSupported) {
+          const encodedOrigin = encodeURIComponent(window.location.origin);
+          window.location.href = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
+          return;
+        }
+
         const parsedUrl = new URL(redirectUrl);
         const pdParams = parsedUrl.searchParams.get("presentation_definition");
 
@@ -574,6 +581,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   useEffect(() => {
     let vpToken, presentationSubmission, error;
     try {
+      const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
       const params = new URLSearchParams(hash.substring(1));
       const vpTokenParam = params.get("vp_token");
@@ -583,7 +591,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       presentationSubmission = params.get("presentation_submission")
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
-      error = params.get("error");
+      error = params.get("error") || searchParams.get("error");
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
@@ -592,10 +600,12 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const requestId = sessionStorage.getItem("requestId");
         const transactionId = sessionStorage.getItem("transactionId");
 
-        if (requestId && transactionId && !vpToken) {
+        if (requestId && transactionId && !vpToken && !error) {
           fetchVPStatus(transactionId, requestId);
         } else if (error) {
-          throw new Error(String(error));
+          onError(new Error(error));
+          resetState();
+          window.history.replaceState(null, "", window.location.pathname);
         }
       }
     } catch (error) {
@@ -604,8 +614,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         error
       );
       onError(error instanceof Error ? error : new Error("Unknown error"));
+      resetState();
     }
-  }, [onError]);
+  }, []);
 
   useEffect(() => {
     return () => {

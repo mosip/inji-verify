@@ -79,6 +79,12 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    * Used in the OVP redirect flow.
    */
   clientId: string;
+
+  /**
+   * Enable Data share VP Supported functionality.
+   * Defaults to false.
+   */
+  isVPSubmissionSupported?: boolean;
 };
 
 interface VerificationResult {
