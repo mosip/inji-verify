@@ -235,7 +235,6 @@
     "farmerCredentialRenderOrder": [
       "farmerID",
       "landOwnershipType",
-      "ownershipType",
       "fullName",
       "mobileNumber",
       "dateOfBirth",
@@ -246,14 +245,7 @@
       "postalCode",
       "landArea",
       "primaryCropType",
-      "secondaryCropType",
-      "address",
-      "primaryCommodity",
-      "phoneNumber",
-      "farmerId",
-      "village",
-      "season",
-      "totalLandArea"
+      "secondaryCropType"
     ],
     "MosipVerifiableCredentialRenderOrder": [
       "face",
