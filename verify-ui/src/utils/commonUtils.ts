@@ -89,15 +89,17 @@ export const getDetailsOrder = (vc: any, currentLanguage: string) => {
             });
         case "FarmerCredential": {
             return getVCRenderOrders().farmerCredentialRenderOrder
-                .map((key: any) => {
-                    const rawValue = key in credential ? credential[key] : undefined;
+                .map((key: string) => {
+                    const rawValue = credential?.[key];
+                    if (rawValue === undefined || rawValue === null) return null;
+
                     const value = getValue(rawValue, currentLanguage);
                     if (value !== undefined && value !== null && value !== "") {
                         return {key, value};
                     }
                     return null;
                 })
-                .filter((entry: any) => entry !== null);
+                .filter((keyValue: { key: string; value: string }) => keyValue !== null);
         }
         case "MockVerifiableCredential":
             return getVCRenderOrders().MosipVerifiableCredentialRenderOrder.map((key: any) => {
