@@ -33,7 +33,13 @@ const getValue = (credentialElement: any, currentLanguage: string): string | und
         let finalValue: any = [];
         for (const key of Object.keys(credentialElement)) {
             const nestedValue = getValue(credentialElement[key], currentLanguage);
-            finalValue.push(nestedValue);
+            if (nestedValue !== undefined) {
+                if (Array.isArray(nestedValue)) {
+                    finalValue.push(...nestedValue);
+                } else {
+                    finalValue.push(nestedValue);
+                }
+            }
         }
         return finalValue;
     }
