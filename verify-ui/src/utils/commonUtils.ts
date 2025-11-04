@@ -41,7 +41,7 @@ const getValue = (credentialElement: any, currentLanguage: string): string | und
                 }
             }
         }
-        return finalValue;
+        return finalValue.length > 0 ? finalValue : undefined;
     }
 
     return String(credentialElement);
