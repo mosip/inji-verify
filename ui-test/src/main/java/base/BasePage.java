@@ -232,7 +232,7 @@ public class BasePage {
 		try {
 			return Integer.parseInt(System.getProperty("explicitWaitTimeout", "30"));
 		} catch (NumberFormatException e) {
-			System.out.println("Invalid explicitWaitTimeout value in config.properties. Using default 10 seconds.");
+			System.out.println("Invalid explicitWaitTimeout value in config.properties. Using default 30 seconds.");
 			return 30;
 		}
 }
