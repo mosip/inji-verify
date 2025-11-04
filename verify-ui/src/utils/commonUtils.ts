@@ -30,11 +30,12 @@ const getValue = (credentialElement: any, currentLanguage: string): string | und
         if ("value" in credentialElement) {
             return getValue(credentialElement.value, currentLanguage);
         }
-
+        let finalValue: any = [];
         for (const key of Object.keys(credentialElement)) {
             const nestedValue = getValue(credentialElement[key], currentLanguage);
-            if (nestedValue !== undefined) return nestedValue;
+            finalValue.push(nestedValue);
         }
+        return finalValue;
     }
 
     return String(credentialElement);
@@ -86,14 +87,18 @@ export const getDetailsOrder = (vc: any, currentLanguage: string) => {
                 }
                 return {key, value: "N/A"};
             });
-        case "FarmerCredential":
-            return getVCRenderOrders().farmerCredentialRenderOrder.map((key: any) => {
-                if (key in credential) {
-                    return {key, value: getValue(credential[key], currentLanguage) || "N/A"};
-                }
-                return {key, value: "N/A"};
-            });
-        case "MOSIPVerifiableCredential":
+        case "FarmerCredential": {
+            return getVCRenderOrders().farmerCredentialRenderOrder
+                .map((key: any) => {
+                    const rawValue = key in credential ? credential[key] : undefined;
+                    const value = getValue(rawValue, currentLanguage);
+                    if (value !== undefined && value !== null && value !== "") {
+                        return {key, value};
+                    }
+                    return null;
+                })
+                .filter((entry: any) => entry !== null);
+        }
         case "MockVerifiableCredential":
             return getVCRenderOrders().MosipVerifiableCredentialRenderOrder.map((key: any) => {
                 if (key in credential) {
