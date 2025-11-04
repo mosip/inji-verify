@@ -62,9 +62,29 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
    */
   isEnableScan?: boolean;
 
+  /**
+   * Callback invoked when the scanner is closed.
+   * Can be used to redirect to home or perform cleanup.
+   */
   onClose?: () => void;
 
+  /**
+   * Enable scan functionality.
+   * Defaults to true.
+   */
   scannerActive?: boolean;
+
+  /**
+   * A unique identifier for the client application.
+   * Used in the OVP redirect flow.
+   */
+  clientId: string;
+
+  /**
+   * Enable Data share VP Supported functionality.
+   * Defaults to false.
+   */
+  isVPSubmissionSupported?: boolean;
 };
 
 interface VerificationResult {
@@ -88,4 +108,21 @@ export type scanResult = { data: any; error: Error | null };
 export interface vcSubmissionBody {
   vc: any;
   transactionId?: string;
+}
+
+export interface QrData {
+  transactionId: string;
+  requestId: string;
+  authorizationDetails?: {
+    responseType: string;
+    responseMode: string;
+    clientId: string;
+    presentationDefinition: Record<string, unknown>;
+    presentationDefinitionUri?: string;
+    responseUri: string;
+    nonce: string;
+    iat: number;
+  };
+  expiresAt: number;
+  requestUri?: string;
 }

@@ -31,6 +31,7 @@ function MyApp() {
         console.log("Something went wrong:", error);
       }}
       triggerElement={<button>📷 Scan ID Document</button>}
+      clientId="CLIENT_ID"
     />
   );
 }
@@ -50,6 +51,7 @@ function MyApp() {
       onQrCodeExpired={() => alert("QR code expired, please try again")}
       onError={(error) => console.log("Error:", error)}
       triggerElement={<button>📱 Verify with Digital Wallet</button>}
+      clientId="CLIENT_ID"
     />
   );
 }
@@ -106,6 +108,7 @@ https://your-backend.com
   onVCProcessed={(result) => handleResult(result)}
   onError={(error) => handleError(error)}
   triggerElement={<button>Start Verification</button>}
+  clientId="CLIENT_ID"
 />
 ```
 
@@ -116,6 +119,7 @@ https://your-backend.com
   verifyServiceUrl="https://your-backend.com"
   onVCProcessed={(result) => console.log(result)}  // OR use onVCReceived
   onError={(error) => console.log(error)}
+  clientId="CLIENT_ID"
 
   // Optional
   triggerElement={<button>Custom Trigger</button>}
@@ -125,6 +129,7 @@ https://your-backend.com
   isEnableUpload={true}        // Allow file uploads
   isEnableScan={true}          // Allow camera scanning  
   isEnableZoom={true}          // Allow camera zoom
+  isVPSubmissionSupported={false}  // This attribute indicates whether VP submission is supported in Inji OVP VC sharing flow. By default, it is false which means that VP token will be directly sent in response. If set to true, then VP token will be submitted to the VP_SUBMISSION_ URL.
 />
 ```
 
@@ -144,6 +149,7 @@ https://your-backend.com
   onVpProcessed={(result) => handleResult(result)}
   onQrCodeExpired={() => alert("Please try again")}
   onError={(error) => handleError(error)}
+  clientId="CLIENT_ID"
 />
 ```
 
@@ -156,6 +162,7 @@ https://your-backend.com
   onQrCodeExpired={() => alert("QR expired")}
   onError={(error) => console.error(error)}
   triggerElement={<button>🔐 Verify Credentials</button>}
+  clientId="CLIENT_ID"
 />
 ```
 
@@ -205,17 +212,19 @@ presentationDefinition={{
 | `onError`          | function      | ✅        | What to do when something goes wrong        |
 | `triggerElement`   | React element | ❌        | Custom button/element to start verification |
 | `transactionId`    | string        | ❌        | Your own tracking ID                        |
+| `clientId`         | string        | ✅        | Your own client ID                          |  
 
 ### QRCodeVerification Specific
 
-| Property            | Type     | Default | Description                  |
-|---------------------|----------|---------|------------------------------|
-| `onVCProcessed`     | function | -       | Get full results immediately |
-| `onVCReceived`      | function | -       | Get transaction ID only      |
-| `isEnableUpload`    | boolean  | true    | Allow file uploads           |
-| `isEnableScan`      | boolean  | true    | Allow camera scanning        |
-| `isEnableZoom`      | boolean  | true    | Allow camera zoom            |
-| `uploadButtonStyle` | object   | -       | Custom upload button styling |
+| Property                  | Type     | Default | Description                  |
+|---------------------------|----------|---------|------------------------------|
+| `onVCProcessed`           | function | -       | Get full results immediately |
+| `onVCReceived`            | function | -       | Get transaction ID only      |
+| `isEnableUpload`          | boolean  | true    | Allow file uploads           |
+| `isEnableScan`            | boolean  | true    | Allow camera scanning        |
+| `isEnableZoom`            | boolean  | true    | Allow camera zoom            |
+| `uploadButtonStyle`       | object   | -       | Custom upload button styling |
+| `isVPSubmissionSupported` | Boolean  | false   | Toggle VP submission support |
 
 ### OpenID4VPVerification Specific
 

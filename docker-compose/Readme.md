@@ -17,9 +17,10 @@ Once installed, use Docker compose option below to run the Inji Verify applicati
 
 ---
 
-### Setup
+## Setup
 
-#### OpenID4VP config
+
+### OpenID4VP config
 
 The configuration file can be found under `config` directory.
 
@@ -33,6 +34,7 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
   "name": "MOSIP ID",
   "type": "MOSIPVerifiableCredential",
   "essential": true,
+  "isAuthRequestEmbedded": false,
   "definition": {
     "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
     "format": {
@@ -70,7 +72,6 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
   }
 }
 ```
-
 `logo`: The image /assets/cert.png will be shown on the credential selection panel.
 
 `name`: The name that has to be shown on the credential selection panel.
@@ -78,9 +79,41 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
 `type`: Internally, this configuration is used to identify what are the different types of credential.
 
 `essential`: This credential is required for the verification to succeed.
+
+`isAuthRequestEmbedded: false`: The corresponding VP request will use `client_id_scheme` as `DID` and Auth Request will be available to wallet via Request_Uri within the VP request.
+
+`isAuthRequestEmbedded: true`: The corresponding VP request will use `client_id_scheme` as `pre_registered` and Auth Request will be available to wallet directly within the VP request.
+
 `definition` : The presentation definition for the particular type of credential. For more details check [[DIF.PresentationExchange]](https://identity.foundation/presentation-exchange/spec/v2.0.0/)
 
-### Run Using Docker Compose:
+---
+
+### OpenID4VP Setting Up Proxy For Localhost
+
+To get the OpenID4VP flow working locally, use a proxy service like ngrok or localtunnel 
+to create a proxy url like https://proxyurl.ngrok.app for http://localhost:3000.
+
+This is required since wallet running on your mobile / tablet device, will not be able to invoke the http://localhost:3000 url,
+while sharing the credentials.
+
+#### In docker-compose.yml file replace `VERIFY_SERVICE_PROXY_FOR_LOCALHOST` with `proxyurl.ngrok.app`. 
+Save the `docker-compose.yml` file.
+
+### Cross Device Flow
+
+To test the Cross Device flow on your mobile / tablet device, scan the VP request QR code directly.
+For Credentials which use `client_id_scheme` as`pre_registered` in the VP request, the wallet will not be able to share the VC since
+your locally running Verify application will not be pre registered with the wallet. 
+For other Credentials which use `client_id_scheme` as `DID` in the VP request, the wallet will be able to share the VC. 
+
+### Same Device Flow
+
+To test the Same Device flow on your mobile / tablet device, hit the URL https://proxyurl.ngrok.app. 
+This will open app. 
+
+---
+
+## Run Using Docker Compose:
 
 Navigate to the docker-compose directory:
 
@@ -120,7 +153,7 @@ To remove volumes as well (clean reset):
 docker-compose down -v # if docker compose is installed as a standalone command.
 docker compose down -v # if docker compose is installed as a plugin to docker command
 ```
-
+---
 ### Troubleshooting
 
 To check container logs:
