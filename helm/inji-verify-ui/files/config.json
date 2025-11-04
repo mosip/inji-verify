@@ -253,7 +253,9 @@
       "farmerId",
       "village",
       "season",
-      "totalLandArea"
+      "totalLandArea",
+      "crops",
+      "authority"
     ],
     "MosipVerifiableCredentialRenderOrder": [
       "face",
