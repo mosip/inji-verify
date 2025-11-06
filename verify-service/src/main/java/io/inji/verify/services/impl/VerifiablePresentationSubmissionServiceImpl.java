@@ -110,7 +110,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                         }
                     }
                 } else {
-                    addVerificationResults(vpToken.toString(), verificationResults);
+                    throw new InvalidVpTokenException();
                 }
             }
 
