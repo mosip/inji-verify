@@ -49,7 +49,7 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//*[name()='path' and contains(@fill,'#000000')]")
 	WebElement verificationQrCode;
 
-    @FindBy(id = "ovp-loader")
+	@FindBy(xpath = "//div[@id='ovp-loader']")
 	WebElement loadingScreen;
 
 	@FindBy(xpath = "//h1[contains(@class,'text-selectorPanelTitle') and contains(text(),'Verifiable Credential Selection Panel')]")
@@ -97,7 +97,7 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//label[@for='Health Insurance']")
 	WebElement HealthInsuranceChecklist;
 
-	@FindBy(xpath = "//label[@for='Mock Identity (SD JWT)']")
+	@FindBy(xpath = "//label[@for='SD JWT PID (Talao)']")
 	WebElement SDJwtVCChecklist;
 
 	@FindBy(xpath = "//span[@class='walletName' and text()='Inji Wallet']")
@@ -312,7 +312,6 @@ public class VpVerification extends BasePage {
 	public void clickOnOpenWalletButton() {
 		clickOnElement(driver, openWalletButton);
 	}
-
 
 
 }
