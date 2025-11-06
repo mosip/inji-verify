@@ -189,7 +189,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer();
     timerRef.current = setTimeout(() => {
       stopVideoStream();
-      onError?.(new Error("scanSessionExpired"));
+      onError?.(new Error("Session expired. Please Scan again."));
     }, ScanSessionExpiryTime);
   };
 
