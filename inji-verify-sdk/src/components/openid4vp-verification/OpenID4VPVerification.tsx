@@ -134,6 +134,8 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
             onVPProcessed(VPResult);
             resetState();
             return;
+          } else {
+            throw new Error("Failed to get the VP result");
           }
         }
 

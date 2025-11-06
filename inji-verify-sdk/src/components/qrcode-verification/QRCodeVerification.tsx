@@ -530,6 +530,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           }
           resetState();
           return;
+        } else {
+          throw new Error("Unable to access the shared VC, due to Invalid VP Submission");
         }
       }
     } catch (error) {
