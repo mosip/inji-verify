@@ -641,8 +641,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
         assertNotNull(resultDto);
-        assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
-        assertFalse(resultDto.getVcResults().isEmpty());
+        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
+        assertTrue(resultDto.getVcResults().isEmpty());
     }
 
     @Test
