@@ -29,6 +29,9 @@ const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({
   const NoOfInvalid: number = verifiedVcs.filter(
     (vc) => vc.vcStatus === "INVALID"
   ).length;
+  const NoOfRevoked: number = verifiedVcs.filter(
+    (vc) => vc.vcStatus === "REVOKED"
+  ).length;
 
   return (
     <div
@@ -63,6 +66,8 @@ const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({
                       NoOfExpired + "/" + NoOfClaims}
                     {vc.vcStatus === "INVALID" &&
                       NoOfInvalid + "/" + NoOfClaims}
+                    {vc.vcStatus === "REVOKED" &&
+                      NoOfRevoked + "/" + NoOfClaims}
                   </span>
                 </p>
               </div>
