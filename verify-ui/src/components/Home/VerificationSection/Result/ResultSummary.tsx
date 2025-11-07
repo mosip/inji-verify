@@ -6,12 +6,13 @@ const backgroundColorMapping: any = {
   SUCCESS: "bg-successText",
   EXPIRED: "bg-expiredText",
   INVALID: "bg-invalidText",
+  REVOKED: "bg-revokedText",
 };
 
 const ResultSummary = ({
   status,
 }: {
-  status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT";
+  status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT" | "REVOKED";
 }) => {
   const bgColor = backgroundColorMapping[status];
   const { t } = useTranslation("ResultSummary");
@@ -20,7 +21,7 @@ const ResultSummary = ({
       className={`flex flex-col items-center justify-center h-[170px] lg:h-[186px] ${bgColor}`}
     >
       <div className={`block mb-2.5 text-white`}>
-        {status === "SUCCESS" ? (
+        {status === "SUCCESS" || status === "REVOKED" ? (
           <VerificationSuccessIcon id="success_message_icon" />
         ) : (
           <VerificationFailedIcon />
