@@ -594,10 +594,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
       error = params.get("error") || searchParams.get("error");
-      errorDescripton = params.get("error_description") || searchParams.get("error_description") || `We’re unable to complete your request.`;
+      errorDescripton = params.get("error_description") || searchParams.get("error_description") || `We’re unable to complete your request`;
 
       if (error) {
-        onError(new Error(`${errorDescripton}, due to ${error}`));
+        onError(new Error(`${errorDescripton}, ${error}`));
         resetState();
         window.history.replaceState(null, "", window.location.pathname);
       }
