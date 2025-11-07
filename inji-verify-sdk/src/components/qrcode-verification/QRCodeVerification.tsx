@@ -617,6 +617,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       );
       onError(error as AppError);
       resetState();
+      window.history.replaceState(null, "", window.location.pathname);
     }
   }, []);
 
