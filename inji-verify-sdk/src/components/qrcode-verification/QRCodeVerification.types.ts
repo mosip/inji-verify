@@ -34,9 +34,9 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
 
   /**
    * Callback triggered when an error occurs during the verification process.
-   * Accepts either a native Error or an AppError for compatibility.
+   * This is a required field to ensure proper error handling.
    */
-  onError: (error: Error | QRCodeAppError) => void;
+  onError: (error: Error) => void;
 
   /**
    * Upload button config.
@@ -125,17 +125,4 @@ export interface QrData {
   };
   expiresAt: number;
   requestUri?: string;
-}
-
-export class QRCodeAppError extends Error {
-  errorCode?: string;
-  transactionId?: string | null;
-
-  constructor(errorMessage: string, errorCode?: string, transactionId?: string | null) {
-    super(errorMessage);
-    this.name = "AppError";
-    this.errorCode = errorCode;
-    this.transactionId = transactionId;
-    Object.setPrototypeOf(this, QRCodeAppError.prototype);
-  }
 }

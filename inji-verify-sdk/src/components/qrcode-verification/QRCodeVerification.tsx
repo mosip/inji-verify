@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  QRCodeAppError,
   QRCodeVerificationProps,
   QrData,
   scanResult,
@@ -185,7 +184,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer: () => void,
     timerRef: React.MutableRefObject<any>,
     stopVideoStream: () => void,
-    onError?: (err: Error | QRCodeAppError) => void
+    onError?: (err: Error) => void
   ) => {
     clearTimer();
     timerRef.current = setTimeout(() => {
@@ -211,7 +210,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer: () => void,
     timerRef: React.MutableRefObject<any>,
     stopVideoStream: () => void,
-    onError: ((err: Error | QRCodeAppError) => void) | undefined,
+    onError: ((err: Error) => void) | undefined,
     processFrame: () => void
   ) => {
     const video = videoRef.current;
@@ -595,7 +594,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
       error = params.get("error") || searchParams.get("error");
-      errorMessage = searchParams.get("error_description") || "An error occurred during VP submission";
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
@@ -607,7 +605,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (requestId && transactionId && !vpToken && !error) {
           fetchVPStatus(transactionId, requestId);
         } else if (error) {
-          throw new QRCodeAppError(errorMessage, error, transactionId ?? null);
+          onError(new Error(error));
+          resetState();
+          window.history.replaceState(null, "", window.location.pathname);
         }
       }
     } catch (error) {
@@ -615,13 +615,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      if (error instanceof QRCodeAppError || error instanceof Error) {
-        onError(error);
-        } else {
-        onError(new Error("An unexpected error occurred while processing redirect URL"));
-        }
+      onError(error instanceof Error ? error : new Error("An unexpected error occurred while processing redirect URL"));
       resetState();
-      window.history.replaceState(null, "", window.location.pathname);
     }
   }, []);
 
