@@ -595,7 +595,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
       error = params.get("error") || searchParams.get("error");
-      errorMessage = searchParams.get("error_description") || "";
+      errorMessage = searchParams.get("error_description") || "An error occurred during VP submission";
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
