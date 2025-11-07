@@ -1,5 +1,5 @@
 import {
-  OpenID4VPAppError,
+  AppError,
   PresentationDefinition,
   QrData,
   VPRequestBody,
@@ -141,14 +141,14 @@ export const vpResult = async (url: string, txnId: string) => {
         errorCode: data.errorCode,
         errorMessage: data.errorMessage,
         transactionId: txnId ?? null
-      } as OpenID4VPAppError;
+      } as AppError;
     }
     return data.vcResults;
   } catch (error) {
     if (error instanceof Error) {
       throw Error(error.message);
     } else {
-      throw error as OpenID4VPAppError;
+      throw error as AppError;
     }
   }
 };
