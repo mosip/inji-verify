@@ -532,7 +532,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           resetState();
           return;
         } else {
-          throw new QRCodeAppError("Unable to access the shared VC, due to Invalid VP Submission", "VP_SUBMISSION_FAILED", transactionId);
+          throw new Error("Unable to access the shared VC, due to Invalid VP Submission");
         }
       }
     } catch (error) {
@@ -550,7 +550,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         await fetchVPResult(transactionId);
       } else {
         resetState();
-        throw new QRCodeAppError("VP submission failed or not completed","VP_SUBMISSION_FAILED", transactionId);
+        throw new Error("VP submission failed or not completed");
       }
     } catch (error) {
       handleError(error);
