@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  AppError,
+  OpenID4VPAppError,
   OpenID4VPVerificationProps,
   QrData,
   SessionState,
@@ -145,7 +145,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         }
       } catch (error) {
         if (isActiveRef.current) {
-          onError(error as AppError);
+          onError(error as OpenID4VPAppError);
           resetState();
         }
       }
@@ -172,7 +172,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
         if (isActiveRef.current) {
           setLoading(false);
           resetState();
-          onError(error as AppError);
+          onError(error as OpenID4VPAppError);
         }
       }
     },
@@ -207,7 +207,7 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
       }
       return getPresentationDefinitionParams(data);
     } catch (error) {
-      onError(error as AppError);
+      onError(error as OpenID4VPAppError);
       resetState();
     }
   }, [

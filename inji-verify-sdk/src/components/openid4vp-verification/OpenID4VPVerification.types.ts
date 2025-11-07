@@ -153,7 +153,7 @@ export type OpenID4VPVerificationProps = ExclusivePresentationDefinition &
      * Callback triggered when an error occurs during the verification process.
      * This is a required field to ensure proper error handling.
      */
-    onError: (error: AppError) => void;
+    onError: (error: OpenID4VPAppError) => void;
   };
 
 export interface SessionState {
@@ -161,7 +161,7 @@ export interface SessionState {
   transactionId: string;
 }
 
-export type AppError = {
+export type OpenID4VPAppError = {
   errorMessage: string;
   errorCode?: string;
   transactionId?: string | null;
