@@ -34,9 +34,9 @@ export type QRCodeVerificationProps = ExclusiveCallbacks & {
 
   /**
    * Callback triggered when an error occurs during the verification process.
-   * This is a required field to ensure proper error handling.
+   * Accepts either a native Error or an AppError for compatibility.
    */
-  onError: (error: AppError) => void;
+  onError: (error: Error | AppError) => void;
 
   /**
    * Upload button config.
