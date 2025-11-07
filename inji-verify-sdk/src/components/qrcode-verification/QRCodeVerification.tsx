@@ -185,7 +185,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer: () => void,
     timerRef: React.MutableRefObject<any>,
     stopVideoStream: () => void,
-    onError?: (err: Error) => void
+    onError?: (err: Error | AppError) => void
   ) => {
     clearTimer();
     timerRef.current = setTimeout(() => {
@@ -211,7 +211,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer: () => void,
     timerRef: React.MutableRefObject<any>,
     stopVideoStream: () => void,
-    onError: ((err: Error) => void) | undefined,
+    onError: ((err: Error | AppError) => void) | undefined,
     processFrame: () => void
   ) => {
     const video = videoRef.current;
