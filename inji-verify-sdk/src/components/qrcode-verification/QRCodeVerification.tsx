@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  AppError,
   QRCodeVerificationProps,
   QrData,
   scanResult,
@@ -531,7 +532,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           resetState();
           return;
         } else {
-          throw new Error("Unable to access the shared VC, due to Invalid VP Submission");
+          throw new AppError("Unable to access the shared VC, due to Invalid VP Submission");
         }
       }
     } catch (error) {
@@ -549,7 +550,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         await fetchVPResult(transactionId);
       } else {
         resetState();
-        throw new Error("VP submission failed or not completed");
+        throw new AppError("VP submission failed or not completed");
       }
     } catch (error) {
       handleError(error);
@@ -581,7 +582,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   useEffect(() => {
-    let vpToken, presentationSubmission, error;
+    let vpToken, presentationSubmission, error, errorMessage;
     try {
       const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
@@ -594,6 +595,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
       error = params.get("error") || searchParams.get("error");
+      errorMessage = searchParams.get("error_description") || "";
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
@@ -605,9 +607,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (requestId && transactionId && !vpToken && !error) {
           fetchVPStatus(transactionId, requestId);
         } else if (error) {
-          onError(new Error(error));
-          resetState();
-          window.history.replaceState(null, "", window.location.pathname);
+          throw new AppError(errorMessage, error, transactionId ?? null);
         }
       }
     } catch (error) {
@@ -615,7 +615,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      onError(error as AppError);
       resetState();
     }
   }, []);
