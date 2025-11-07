@@ -581,7 +581,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   useEffect(() => {
-    let vpToken, presentationSubmission, error, errorMessage;
+    let vpToken, presentationSubmission, error;
     try {
       const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
