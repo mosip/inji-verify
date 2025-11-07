@@ -129,14 +129,12 @@ export interface QrData {
 
 export class AppError extends Error {
   errorCode?: string;
-  errorMessage?: string;
   transactionId?: string | null;
 
   constructor(errorMessage: string, errorCode?: string, transactionId?: string | null) {
     super(errorMessage);
     this.name = "AppError";
     this.errorCode = errorCode;
-    this.errorMessage = errorMessage;
     this.transactionId = transactionId;
     Object.setPrototypeOf(this, AppError.prototype);
   }
