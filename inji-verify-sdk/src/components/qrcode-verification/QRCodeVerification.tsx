@@ -530,6 +530,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           }
           resetState();
           return;
+        } else {
+          throw new Error("Unable to process the VC, due to invalid VP submission");
         }
       }
     } catch (error) {
@@ -579,7 +581,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   useEffect(() => {
-    let vpToken, presentationSubmission, error;
+    let vpToken, presentationSubmission, error, errorDescripton;
     try {
       const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
@@ -592,6 +594,13 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
       error = params.get("error") || searchParams.get("error");
+      errorDescripton = params.get("error_description") || searchParams.get("error_description") || `We’re unable to complete your request`;
+
+      if (error) {
+        onError(new Error(`${errorDescripton}, ${error}`));
+        resetState();
+        window.history.replaceState(null, "", window.location.pathname);
+      }
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
@@ -602,10 +611,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
         if (requestId && transactionId && !vpToken && !error) {
           fetchVPStatus(transactionId, requestId);
-        } else if (error) {
-          onError(new Error(error));
-          resetState();
-          window.history.replaceState(null, "", window.location.pathname);
         }
       }
     } catch (error) {
@@ -613,7 +618,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      onError(error instanceof Error ? error : new Error("An unexpected error occurred while processing the request"));
       resetState();
     }
   }, []);
