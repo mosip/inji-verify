@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { VectorCollapse, VectorDownload } from "../../../../utils/theme-utils";
 import { convertToTitleCase, saveData } from "../../../../utils/misc";
 import ActionButton from "../commons/ActionButton";
@@ -12,8 +12,9 @@ import {
 } from "../../../../utils/config";
 import VcDetailsGrid from "./VcDetailsGrid";
 import i18next from "i18next";
-import VcSvgTemplate from "./VcSvgTemplate";
+import { VCRenderer } from "@mosip/inji-vc-renderer";
 import { getTemplateUrl } from "../../../../utils/svg-template-utils";
+import Loader from "../../../commons/Loader";
 
 interface ModalProps {
   isOpen: boolean;
@@ -36,6 +37,20 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
   const currentLang = i18next.language;
   const orderedDetails = vc && getDetailsOrder(vc, currentLang);
   const templateUrl = getTemplateUrl(vc);
+  const [svg, setSvg] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const VcSvgTemplate = async () => {
+    const result = await VCRenderer.renderSVG(vc, currentLang);
+    setSvg(result || "");
+    setLoading(false);
+  };
+  useEffect(() => {
+    if (templateUrl) {
+      setLoading(true);
+      VcSvgTemplate();
+    }
+  }, [currentLang]);
 
   if (!isOpen) return null;
   return (
@@ -76,7 +91,14 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
 
         <div className="space-y-4">
           {templateUrl ? (
-            <VcSvgTemplate vc={vc} templateUrl={templateUrl} />
+            loading ? (
+              <Loader innerBg="bg-white" className="w-5 h-5 mt-10" />
+            ) : (
+              <div
+                className="w-full flex justify-center items-center"
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
+            )
           ) : (
             <VcDetailsGrid orderedDetails={orderedDetails} vc={vc} />
           )}
