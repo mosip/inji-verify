@@ -51,10 +51,12 @@ public final class Utils {
         log.info("Credential Status: {}", credentialStatusResults);
 
         if (!credentialStatusResults.isEmpty()) {
-            String purpose = credentialStatusResults.getFirst().getPurpose();
-            int status = credentialStatusResults.getFirst().getStatus();
-            boolean isRevoked = purpose.equalsIgnoreCase(Constants.STATUS_PURPOSE_REVOKED);
-            if (isRevoked && status == 1) return VerificationStatus.REVOKED;
+            for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
+                String purpose = credentialStatusResult.getPurpose();
+                int status = credentialStatusResult.getStatus();
+                boolean isRevoked = purpose.equalsIgnoreCase(Constants.STATUS_PURPOSE_REVOKED);
+                if (isRevoked && status == 1) return VerificationStatus.REVOKED;
+            }
         }
 
         return verificationStatus;
