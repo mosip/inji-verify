@@ -45,20 +45,22 @@ public final class Utils {
         log.info("Credential Verification Summary: {}", credentialVerificationSummary);
         VerificationResult verificationResult = credentialVerificationSummary.getVerificationResult();
         VerificationStatus verificationStatus = Util.INSTANCE.getVerificationStatus(verificationResult);
-        log.info("VC Verification Status:: {}", verificationStatus);
-
         List<CredentialStatusResult> credentialStatusResults = credentialVerificationSummary.getCredentialStatus();
-        log.info("Credential Status: {}", credentialStatusResults);
 
         if (!credentialStatusResults.isEmpty()) {
             for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
                 String purpose = credentialStatusResult.getPurpose();
                 int status = credentialStatusResult.getStatus();
-                boolean isRevoked = purpose.equalsIgnoreCase(Constants.STATUS_PURPOSE_REVOKED);
-                if (isRevoked && status == 1) return VerificationStatus.REVOKED;
+                if (Constants.STATUS_PURPOSE_REVOKED.equalsIgnoreCase(purpose)) {
+                    if (status == 1) {
+                        log.info("VC is Revoked");
+                        return VerificationStatus.REVOKED;
+                    }
+                }
             }
         }
 
+        log.info("VC verification status is {}", verificationStatus );
         return verificationStatus;
     }
 }
