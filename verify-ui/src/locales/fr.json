@@ -44,6 +44,7 @@
     "SUCCESS": "Valide",
     "EXPIRED": "Valide mais expiré",
     "INVALID": "Invalide",
+    "REVOKED": "Révoqué",
     "credentialsRequested": "Des informations d'identification ont été demandées",
     "walletSelectorTitle": "Panneau de sélection du portefeuille",
     "walletSelectorDescription": "Veuillez sélectionner un portefeuille pour procéder avec une présentation vérifiable.",
@@ -114,6 +115,7 @@
     "SUCCESS": "Félicitations, le titre donné est valide !",
     "INVALID": "Malheureusement, les informations d'identification fournies ne sont pas valides !",
     "EXPIRED": "L'identifiant donné est valide mais expiré !",
+    "REVOKED": "Malheureusement, les informations d'identification fournies ont été révoquées !",
     "TIMEOUT": "La session d'analyse a expiré en raison d'une inactivité. Veuillez lancer une nouvelle analyse."
   },
   "AlertMessages": {

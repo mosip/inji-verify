@@ -44,6 +44,7 @@
     "SUCCESS": "Válido",
     "EXPIRED": "Válido pero caducado",
     "INVALID": "Inválido",
+    "REVOKED": "Revogado",
     "credentialsRequested": "Se solicitaron credenciales",
     "walletSelectorTitle": "Panel de selección de billetera",
     "walletSelectorDescription": "Seleccione una billetera para continuar con una presentación verificable.",
@@ -114,6 +115,7 @@
     "SUCCESS": "¡Felicitaciones, la credencial proporcionada es válida!",
     "INVALID": "Lamentablemente, la credencial proporcionada no es válida!",
     "EXPIRED": "¡La credencial proporcionada es válida pero caducada!",
+    "REVOKED": "Lamentablemente, la credencial proporcionada ha sido revocada!",
     "TIMEOUT": "La sesión de escaneo ha expirado debido a inactividad. Inicie un nuevo escaneo."
   },
   "AlertMessages": {
