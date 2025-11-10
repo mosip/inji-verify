@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 import { saveData } from "../../../../utils/misc";
 import {
   DocumentIcon,
@@ -34,20 +35,38 @@ function DisplayVcDetailView({
   const positionLeft = `left-[250px] ${templateUrl?"lg:left-[310px]":"lg:left-[328px]"} ${templateUrl?"lg:hover:left-[197px]":"lg:hover:left-[215px]"}`;
   const positionRight = `right-[250px] ${templateUrl?"lg:right-[310px]":"lg:right-[328px]"} ${templateUrl?"lg:hover:right-[197px]":"lg:hover:right-[215px]"}`;
   const buttonPosition = isRtl ? positionRight : positionLeft;
+
   const [svg, setSvg] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [svgFailed, setSvgFailed] = useState<boolean>(false);
 
-  const VcSvgTemplate = async () => {
-    const result = await VCRenderer.renderSVG(vc, currentLang,"ta");
-    setSvg(result || "");
-    setLoading(false);
+  const renderSvgTemplate = async () => {
+    try {
+      setSvgFailed(false);
+      setLoading(true);
+      const result = await VCRenderer.renderSVG(vc, currentLang, "en");
+
+      if (result && result.trim().length > 0) {
+        setSvg(result);
+      } else {
+        console.warn("SVG rendering returned empty string — falling back");
+        setSvgFailed(true);
+      }
+    } catch (error) {
+      console.error("Failed to render SVG:", error);
+      setSvgFailed(true);
+    } finally {
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     if (templateUrl) {
-      setLoading(true);
-      VcSvgTemplate();
+      renderSvgTemplate();
     }
-  }, [currentLang]);
+  }, [currentLang, vc, templateUrl]);
+
+  const shouldShowSvg = templateUrl && !svgFailed && svg && !loading;
 
   return (
     <div>
@@ -58,15 +77,13 @@ function DisplayVcDetailView({
       >
         {vc ? (
           <div className="relative">
-            {templateUrl ? (
-              loading ? (
-                <Loader innerBg="bg-white" className="w-5 h-5 mt-10" />
-              ) : (
-                <div
-                  className="w-full flex justify-center items-center"
-                  dangerouslySetInnerHTML={{ __html: svg }}
-                />
-              )
+            {loading ? (
+              <Loader innerBg="bg-white" className="w-5 h-5 mt-10" />
+            ) : shouldShowSvg ? (
+              <div
+                className="w-full flex justify-center items-center"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(svg) }}
+              />
             ) : (
               <VcDetailsGrid orderedDetails={orderedDetails} vc={vc} />
             )}
