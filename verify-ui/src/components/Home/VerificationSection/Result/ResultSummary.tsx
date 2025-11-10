@@ -6,12 +6,13 @@ const backgroundColorMapping: any = {
   SUCCESS: "bg-successText",
   EXPIRED: "bg-expiredText",
   INVALID: "bg-invalidText",
+  REVOKED: "bg-revokedText",
 };
 
 const ResultSummary = ({
   status,
 }: {
-  status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT";
+  status: "SUCCESS" | "EXPIRED" | "INVALID" | "TIMEOUT" | "REVOKED";
 }) => {
   const bgColor = backgroundColorMapping[status];
   const { t } = useTranslation("ResultSummary");

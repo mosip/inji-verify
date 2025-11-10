@@ -161,17 +161,20 @@ export const backgroundColorMapping: any = {
   SUCCESS: "bg-success",
   EXPIRED: "bg-expired",
   INVALID: "bg-invalid",
+  REVOKED: "bg-revoked",
 };
 export const textColorMapping: any = {
   SUCCESS: "text-successText",
   EXPIRED: "text-expiredText",
   INVALID: "text-invalidText",
+  REVOKED: "text-revokedText",
 };
 
 export const borderColorMapping: any = {
   SUCCESS: "border-successBorder",
   EXPIRED: "border-expiredBorder",
   INVALID: "border-invalidBorder",
+  REVOKED: "border-revokedBorder",
 };
 
 export const isMobileDevice = (): boolean => {

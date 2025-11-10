@@ -44,6 +44,7 @@
     "SUCCESS": "Valid",
     "EXPIRED": "Valid But Expired",
     "INVALID": "Invalid",
+    "REVOKED": "Revoked",
     "credentialsRequested": "Credentials were requested",
     "walletSelectorTitle": "Wallet Selection Panel",
     "walletSelectorDescription": "Please select a wallet to proceed with Verifiable Presentation.",
@@ -114,6 +115,7 @@
     "SUCCESS": "Congratulations, the given credential is valid!",
     "INVALID": "Unfortunately, the given credential is invalid!",
     "EXPIRED": "The given credential is valid but expired!",
+    "REVOKED": "Unfortunately, the given credential is revoked!",
     "TIMEOUT": "The scan session has expired due to inactivity. Please initiate a new scan."
   },
   "AlertMessages": {

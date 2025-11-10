@@ -1,6 +1,7 @@
 package io.inji.verify.services.impl;
 
-import io.mosip.vercred.vcverifier.utils.Util;
+import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.springframework.stereotype.Service;
 
 import io.inji.verify.dto.submission.VCSubmissionDto;
@@ -13,7 +14,8 @@ import io.inji.verify.shared.Constants;
 import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class VCSubmissionServiceImpl implements VCSubmissionService {
@@ -39,8 +41,12 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
         return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
             String vcJSON = vcSubmission.getVc();
-            VerificationResult verificationResult = credentialsVerifier.verify(vcJSON, CredentialFormat.LDP_VC);
-            return new VCSubmissionVerificationStatusDto(vcJSON, Util.INSTANCE.getVerificationStatus(verificationResult));
+            List<String> statusPurposeList = new ArrayList<>();
+            statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+            CredentialVerificationSummary credentialVerificationSummary = credentialsVerifier.verifyAndGetCredentialStatus(vcJSON, CredentialFormat.LDP_VC, statusPurposeList);
+            VerificationStatus vcVerificationStatus = Utils.getVcVerificationStatus(credentialVerificationSummary);
+
+            return new VCSubmissionVerificationStatusDto(vcJSON, vcVerificationStatus);
         }).orElse(null);
     }
 }
