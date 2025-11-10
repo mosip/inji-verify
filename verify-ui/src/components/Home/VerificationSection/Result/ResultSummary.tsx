@@ -21,7 +21,7 @@ const ResultSummary = ({
       className={`flex flex-col items-center justify-center h-[170px] lg:h-[186px] ${bgColor}`}
     >
       <div className={`block mb-2.5 text-white`}>
-        {status === "SUCCESS" || status === "REVOKED" ? (
+        {status === "SUCCESS" ? (
           <VerificationSuccessIcon id="success_message_icon" />
         ) : (
           <VerificationFailedIcon />
