@@ -1,9 +1,16 @@
 package io.inji.verify.utils;
 
+import io.inji.verify.shared.Constants;
+import io.mosip.vercred.vcverifier.data.CredentialStatusResult;
+import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
+import io.mosip.vercred.vcverifier.data.VerificationResult;
+import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import io.mosip.vercred.vcverifier.utils.Base64Decoder;
+import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,5 +39,28 @@ public final class Utils {
     private static String decodeBase64Json(String encoded)  {
         byte[] decodedBytes = new Base64Decoder().decodeFromBase64Url(encoded);
         return new String(decodedBytes);
+    }
+
+    public static VerificationStatus getVcVerificationStatus(CredentialVerificationSummary credentialVerificationSummary) {
+        log.info("Credential Verification Summary: {}", credentialVerificationSummary);
+        VerificationResult verificationResult = credentialVerificationSummary.getVerificationResult();
+        VerificationStatus verificationStatus = Util.INSTANCE.getVerificationStatus(verificationResult);
+        List<CredentialStatusResult> credentialStatusResults = credentialVerificationSummary.getCredentialStatus();
+
+        if (!credentialStatusResults.isEmpty()) {
+            for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
+                String purpose = credentialStatusResult.getPurpose();
+                int status = credentialStatusResult.getStatus();
+                if (Constants.STATUS_PURPOSE_REVOKED.equalsIgnoreCase(purpose)) {
+                    if (status == 1) {
+                        log.info("VC is Revoked");
+                        return VerificationStatus.REVOKED;
+                    }
+                }
+            }
+        }
+
+        log.info("VC verification status is {}", verificationStatus );
+        return verificationStatus;
     }
 }

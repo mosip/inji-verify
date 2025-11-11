@@ -13,13 +13,12 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import io.inji.verify.shared.Constants;
+import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
-import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
-import io.mosip.vercred.vcverifier.data.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.*;
 import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -137,8 +136,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
     }
 
     private void addVerificationResults(String vc, List<VCResultDto> verificationResults) {
-        VerificationResult verificationResult = credentialsVerifier.verify(vc, CredentialFormat.LDP_VC);
-        VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
+        List<String> statusPurposeList = new ArrayList<>();
+        statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+        CredentialVerificationSummary credentialVerificationSummary = credentialsVerifier.verifyAndGetCredentialStatus(vc, CredentialFormat.LDP_VC, statusPurposeList);
+
+        VerificationStatus status = Utils.getVcVerificationStatus(credentialVerificationSummary);
         verificationResults.add(new VCResultDto(vc, status));
     }
 

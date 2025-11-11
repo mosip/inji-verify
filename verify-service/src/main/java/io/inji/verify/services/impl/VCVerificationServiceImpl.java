@@ -2,12 +2,16 @@ package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
 import io.inji.verify.services.VCVerificationService;
+import io.inji.verify.shared.Constants;
+import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
-import io.mosip.vercred.vcverifier.utils.Util;
+import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -30,11 +34,12 @@ public class VCVerificationServiceImpl implements VCVerificationService {
 
         log.info("Using credential format based on Content-Type: {}", format);
 
-        VerificationResult verificationResult = credentialsVerifier.verify(vc, format);
-        log.info("VC verification result:: {}", verificationResult);
+        List<String> statusPurposeList = new ArrayList<>();
+        statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+        CredentialVerificationSummary credentialVerificationSummary =
+                credentialsVerifier.verifyAndGetCredentialStatus(vc, format, statusPurposeList);
 
-        return new VCVerificationStatusDto(Util.INSTANCE.getVerificationStatus(verificationResult));
-
+        return new VCVerificationStatusDto(Utils.getVcVerificationStatus(credentialVerificationSummary));
     }
 
 }
