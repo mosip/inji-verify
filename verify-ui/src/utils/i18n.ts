@@ -9,7 +9,7 @@ import ar from "../locales/ar.json";
 import pt from "../locales/pt.json";
 import es from "../locales/es.json";
 import km from "../locales/km.json";
-import { storage } from "./storage";
+import { Storage } from "./storage";
 import { LanguageObject } from "../types/data-types";
 
 const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
@@ -26,13 +26,13 @@ export const LanguagesSupported: LanguageObject[] = [
   { label: "ខ្មែរ", value: "km" },
 ];
 
-export const defaultLanguage = window._env_.DEFAULT_LANG;
+export const defaultLanguage = (globalThis as any)._env_.DEFAULT_LANG;
 
-export const selected_language = storage.getItem(storage.SELECTED_LANGUAGE);
+export const selected_language = Storage.getItem(Storage.SELECTED_LANGUAGE);
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: selected_language ? selected_language : defaultLanguage,
+  lng: selected_language || defaultLanguage,
   fallbackLng: defaultLanguage,
   interpolation: {
     escapeValue: false,
@@ -40,7 +40,7 @@ i18n.use(initReactI18next).init({
 });
 
 export const switchLanguage = async (language: string) => {
-  storage.setItem(storage.SELECTED_LANGUAGE, language);
+  Storage.setItem(Storage.SELECTED_LANGUAGE, language);
   await i18n.changeLanguage(language);
 };
 
