@@ -11,9 +11,10 @@ import es from "../locales/es.json";
 import km from "../locales/km.json";
 import { storage } from "./storage";
 import { LanguageObject } from "../types/data-types";
+import { iso6393 } from "iso-639-3";
 
 const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
-
+const DEFAULT_ENG = "en";
 export const LanguagesSupported: LanguageObject[] = [
   { label: "English", value: "en" },
   { label: "Português", value: "pt" },
@@ -25,6 +26,33 @@ export const LanguagesSupported: LanguageObject[] = [
   { label: "español", value: "es" },
   { label: "ខ្មែរ", value: "km" },
 ];
+
+export function normalizeLanguageCode(lang: string): string {
+    if (!lang) return DEFAULT_ENG;
+    const code = lang.toLowerCase();
+
+    if (code.length === 3) {
+        const valid3 = (iso6393 as any).find((entry: any) => entry.iso6393 === code);
+        if (valid3) return code;
+    }
+    if (code.length === 2) {
+        const valid2 = (iso6393 as any).find((entry: any) => entry.iso6391 === code);
+        if (valid2) return valid2.iso6393;
+    }
+    return DEFAULT_ENG;
+}
+
+export function getLanguageCodes(lang: string): string[] {
+    const normalized = normalizeLanguageCode(lang);
+    const entry = (iso6393 as any).find((e: any) => e.iso6393 === normalized);
+
+    const aliases = new Set<string>();
+    if (!entry) return [normalized];
+    if (entry.iso6391) aliases.add(entry.iso6391);
+    aliases.add(entry.iso6393);
+
+    return Array.from(aliases);
+}
 
 export const defaultLanguage = window._env_.DEFAULT_LANG;
 
@@ -51,3 +79,5 @@ export const isRTL = (language: string) => {
 export const getDirCurrentLanguage = (language: string) => {
   return isRTL(language) ? "rtl" : "ltr";
 };
+
+
