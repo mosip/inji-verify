@@ -14,7 +14,7 @@ import { LanguageObject } from "../types/data-types";
 import { iso6393 } from "iso-639-3";
 
 const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
-const DEFAULT_ENG = "en";
+
 export const LanguagesSupported: LanguageObject[] = [
   { label: "English", value: "en" },
   { label: "Português", value: "pt" },
@@ -28,7 +28,7 @@ export const LanguagesSupported: LanguageObject[] = [
 ];
 
 export function normalizeLanguageCode(lang: string): string {
-    if (!lang) return DEFAULT_ENG;
+    if (!lang) return window._env_.DEFAULT_LANG;
     const code = lang.toLowerCase();
 
     if (code.length === 3) {
@@ -39,7 +39,7 @@ export function normalizeLanguageCode(lang: string): string {
         const valid2 = (iso6393 as any).find((entry: any) => entry.iso6391 === code);
         if (valid2) return valid2.iso6393;
     }
-    return DEFAULT_ENG;
+    return window._env_.DEFAULT_LANG;
 }
 
 export function getLanguageCodes(lang: string): string[] {
