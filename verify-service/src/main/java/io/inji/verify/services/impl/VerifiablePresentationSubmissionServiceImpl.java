@@ -101,9 +101,7 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
                         List<VCResultDto> vcResults = presentationResultWithCredentialStatus.getVcResults().stream()
                                 .map(vcResult -> {
-                                    VerificationStatus vcStatus = vcResult.getStatus();
-                                    boolean isRevoked = Utils.checkIfVCIsRevoked(vcResult.getCredentialStatus());
-                                    if (isRevoked) vcStatus = VerificationStatus.REVOKED;
+                                    VerificationStatus vcStatus = Utils.applyRevocationStatus(vcResult.getStatus(), vcResult.getCredentialStatus());
                                     return new VCResultDto(vcResult.getVc(), vcStatus);
                                 })
                                 .toList();
