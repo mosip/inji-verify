@@ -68,4 +68,9 @@ public final class Utils {
         }
         return false;
     }
+
+    public static VerificationStatus applyRevocationStatus(VerificationStatus originalStatus, List<CredentialStatusResult> credentialStatus) {
+        boolean isRevoked = checkIfVCIsRevoked(credentialStatus);
+        return isRevoked ? VerificationStatus.REVOKED : originalStatus;
+    }
 }
