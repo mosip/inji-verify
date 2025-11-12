@@ -1,6 +1,5 @@
 package io.inji.verify.services.impl;
 
-import io.inji.verify.dto.result.VCResultDto;
 import io.inji.verify.dto.submission.*;
 import io.inji.verify.enums.VPResultStatus;
 import io.inji.verify.exception.VPSubmissionNotFoundException;
@@ -63,7 +62,6 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     @Test
     public void testGetVPResult_Success_JSONObject() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = List.of("req123");
-        // Use VCResultWithCredentialStatus for PresentationResultWithCredentialStatus
         List<VCResultWithCredentialStatus> vcResults = List.of(
             new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.SUCCESS, new ArrayList<>())
         );
