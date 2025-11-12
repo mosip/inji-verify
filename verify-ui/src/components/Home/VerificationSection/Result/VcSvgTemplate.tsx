@@ -14,10 +14,14 @@ const VcSvgTemplate = ({
 }) => {
   const [templateContent, setTemplateContent] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const loadTemplate = async () => {
+      if (!templateUrl) {
+        setLoader(false);
+        return;
+      }
       if (templateUrl) {
         setLoader(true);
         const svgTemplate = await fetchSvgTemplate(templateUrl);
@@ -37,8 +41,7 @@ const VcSvgTemplate = ({
     return <div className="text-red-500 text-sm text-center p-3 mt-10">{error}</div>;
   }
 
-  if (loader)
-    return <Loader innerBg="bg-white" className="w-5 h-5 mt-20" />;
+  if (loader) return <Loader innerBg="bg-white" className="w-5 h-5 mt-20" />;
 
   const preprocessedTemplate = templateContent.replace(
     /\{\{\/([^}]+)\}\}/g,
