@@ -30,8 +30,12 @@ function DisplayVcDetailView({
   const templateUrl = getTemplateUrl(vc);
   const orderedDetails = vc && getDetailsOrder(vc, currentLang);
   const isRtl = isRTL(i18n.language);
-  const positionLeft = "left-[250px] lg:left-[328px] lg:hover:left-[215px]";
-  const positionRight = "right-[250px] lg:right-[328px] lg:hover:right-[215px]";
+  const positionLeft = `left-[250px] ${
+    templateUrl ? "lg:left-[310px]" : "lg:left-[328px]"
+  } ${templateUrl ? "lg:hover:left-[197px]" : "lg:hover:left-[215px]"}`;
+  const positionRight = `right-[250px] ${
+    templateUrl ? "lg:right-[310px]" : "lg:right-[328px]"
+  } ${templateUrl ? "lg:hover:right-[197px]" : "lg:hover:right-[215px]"}`;
   const buttonPosition = isRtl ? positionRight : positionLeft;
 
   return (
@@ -54,17 +58,13 @@ function DisplayVcDetailView({
                 label={t("expand")}
                 onClick={onExpand}
                 icon={<VectorExpand />}
-                positionClasses={`hidden lg:flex ${buttonPosition} ${
-                  templateUrl ? "bottom-[150px]" : "bottom-[60px]"
-                }`}
+                positionClasses={`hidden lg:flex ${buttonPosition} bottom-[60px]`}
               />
               <ActionButton
                 label={t("download")}
                 onClick={() => saveData(vc)}
                 icon={<VectorDownload />}
-                positionClasses={`${buttonPosition} ${
-                  templateUrl ? "bottom-[100px]" : "bottom-[10px]"
-                }`}
+                positionClasses={`bottom-[30px] ${buttonPosition} lg:bottom-[10px]`}
               />
             </div>
             {!templateUrl && (
