@@ -8,6 +8,7 @@ import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import io.mosip.vercred.vcverifier.utils.Base64Decoder;
 import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -45,7 +46,14 @@ public final class Utils {
         log.info("Credential Verification Summary: {}", credentialVerificationSummary);
         VerificationResult verificationResult = credentialVerificationSummary.getVerificationResult();
         VerificationStatus verificationStatus = Util.INSTANCE.getVerificationStatus(verificationResult);
-        List<CredentialStatusResult> credentialStatusResults = credentialVerificationSummary.getCredentialStatus();
+        boolean isRevoked = checkIfVCIsRevoked(credentialVerificationSummary.getCredentialStatus());
+        if (isRevoked) return VerificationStatus.REVOKED;
+
+        log.info("VC verification status is {}", verificationStatus );
+        return verificationStatus;
+    }
+
+    public static boolean checkIfVCIsRevoked(List<CredentialStatusResult> credentialStatusResults) {
 
         if (!credentialStatusResults.isEmpty()) {
             for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
@@ -54,13 +62,11 @@ public final class Utils {
                 if (Constants.STATUS_PURPOSE_REVOKED.equalsIgnoreCase(purpose)) {
                     if (status == 1) {
                         log.info("VC is Revoked");
-                        return VerificationStatus.REVOKED;
+                        return true;
                     }
                 }
             }
         }
-
-        log.info("VC verification status is {}", verificationStatus );
-        return verificationStatus;
+        return false;
     }
 }
