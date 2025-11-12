@@ -43,7 +43,7 @@ export function normalizeLanguageCode(lang: string): string {
         if (valid3) return code;
     }
     if (code.length === 2) {
-        const valid2 = (iso6393 as any).find((entry: any) => entry.iso6391 === code);
+        const valid2 = (iso6393 as ISO639Entry[]).find((entry: any) => entry.iso6391 === code);
         if (valid2) return valid2.iso6393;
     }
      return defaultLang;
