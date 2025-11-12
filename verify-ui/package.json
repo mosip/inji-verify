@@ -21,6 +21,7 @@
     "@types/react-redux": "^7.1.33",
     "dompurify": "^3.3.0",
     "i18next": "^23.11.2",
+    "iso-639-3": "^3.0.1",
     "mustache": "^4.2.0",
     "pdfjs-dist": "^4.5.136",
     "qrcode.react": "^4.1.0",
