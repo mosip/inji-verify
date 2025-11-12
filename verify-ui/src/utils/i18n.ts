@@ -33,28 +33,31 @@ export const LanguagesSupported: LanguageObject[] = [
   { label: "ខ្មែរ", value: "km" },
 ];
 
-export function normalizeLanguageCode(lang: string): string {
-    const defaultLang = window._env_?.DEFAULT_LANG || 'eng';
+export function normalizeLanguageCode(lang: string | undefined | null): string {
+    const defaultLang = window._env_?.DEFAULT_LANG || "eng";
     if (!lang) return defaultLang;
+
     const code = lang.toLowerCase();
 
     if (code.length === 3) {
         const valid3 = (iso6393 as ISO639Entry[]).find((entry) => entry.iso6393 === code);
         if (valid3) return code;
     }
+
     if (code.length === 2) {
         const valid2 = (iso6393 as ISO639Entry[]).find((entry) => entry.iso6391 === code);
         if (valid2) return valid2.iso6393;
     }
-     return defaultLang;
-}
 
+    return defaultLang;
+}
 export function getLanguageCodes(lang: string): string[] {
     const normalized = normalizeLanguageCode(lang);
-    const entry = (iso6393 as ISO639Entry[]).find((e) => e.iso6393 === normalized);
+    const entry = (iso6393 as ISO639Entry[]).find((e: ISO639Entry) => e.iso6393 === normalized);
 
     const aliases = new Set<string>();
     if (!entry) return [normalized];
+
     if (entry.iso6391) aliases.add(entry.iso6391);
     aliases.add(entry.iso6393);
 
