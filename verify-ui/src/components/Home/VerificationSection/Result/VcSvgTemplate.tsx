@@ -39,7 +39,7 @@ const VcSvgTemplate = ({ vc, templateUrl, onError }: VcSvgTemplateProps) => {
       }
     };
     loadTemplate();
-  }, [templateUrl]);
+  }, [onError, templateUrl]);
 
   if (loader) return <Loader innerBg="bg-white" className="w-5 h-5 mt-20" />;
   if (!templateContent) return null;
