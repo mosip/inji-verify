@@ -13,6 +13,12 @@ import { storage } from "./storage";
 import { LanguageObject } from "../types/data-types";
 import { iso6393 } from "iso-639-3";
 
+interface ISO639Entry {
+    iso6393: string;
+    iso6391?: string;
+    name?: string;
+}
+
 const resources = { en, ta, kn, hi, fr, ar, pt, es, km };
 
 export const LanguagesSupported: LanguageObject[] = [
@@ -28,18 +34,19 @@ export const LanguagesSupported: LanguageObject[] = [
 ];
 
 export function normalizeLanguageCode(lang: string): string {
-    if (!lang) return window._env_.DEFAULT_LANG;
+    const defaultLang = window._env_?.DEFAULT_LANG || 'eng';
+    if (!lang) return defaultLang;
     const code = lang.toLowerCase();
 
     if (code.length === 3) {
-        const valid3 = (iso6393 as any).find((entry: any) => entry.iso6393 === code);
+        const valid3 = (iso6393 as ISO639Entry[]).find((entry) => entry.iso6393 === code);
         if (valid3) return code;
     }
     if (code.length === 2) {
         const valid2 = (iso6393 as any).find((entry: any) => entry.iso6391 === code);
         if (valid2) return valid2.iso6393;
     }
-    return window._env_.DEFAULT_LANG;
+     return defaultLang;
 }
 
 export function getLanguageCodes(lang: string): string[] {
