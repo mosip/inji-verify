@@ -573,7 +573,7 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         assertNotNull(resultDto);
         assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
         assertEquals(4, resultDto.getVcResults().size());
-        assertEquals(VerificationStatus.SUCCESS, resultDto.getVcResults().getFirst().getVerificationStatus());
+        assertEquals(VerificationStatus.SUCCESS, resultDto.getVcResults().get(0).getVerificationStatus());
         assertEquals(VerificationStatus.REVOKED, resultDto.getVcResults().get(1).getVerificationStatus());
         assertEquals(VerificationStatus.EXPIRED, resultDto.getVcResults().get(2).getVerificationStatus());
         assertEquals(VerificationStatus.INVALID, resultDto.getVcResults().get(3).getVerificationStatus());
