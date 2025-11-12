@@ -268,7 +268,11 @@
       "phone",
       "email",
       "addressLine1",
-      "city"
+      "city",
+      "province",
+      "region",
+      "postalCode",
+      "VID"
     ],
     "IncomeTaxAccountCredentialRenderOrder": [
       "fullName",

@@ -27,6 +27,7 @@ const VcSvgTemplate = ({ vc, templateUrl, onError }: VcSvgTemplateProps) => {
         const svgTemplate = await fetchSvgTemplate(templateUrl);
         if (svgTemplate) {
           setTemplateContent(svgTemplate);
+          setLoader(false);
         } else {
           throw new Error("Failed to load credential template");
         }
