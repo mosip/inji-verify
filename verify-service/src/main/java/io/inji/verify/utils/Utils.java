@@ -45,7 +45,14 @@ public final class Utils {
         log.info("Credential Verification Summary: {}", credentialVerificationSummary);
         VerificationResult verificationResult = credentialVerificationSummary.getVerificationResult();
         VerificationStatus verificationStatus = Util.INSTANCE.getVerificationStatus(verificationResult);
-        List<CredentialStatusResult> credentialStatusResults = credentialVerificationSummary.getCredentialStatus();
+        boolean isRevoked = checkIfVCIsRevoked(credentialVerificationSummary.getCredentialStatus());
+        if (isRevoked) return VerificationStatus.REVOKED;
+
+        log.info("VC verification status is {}", verificationStatus );
+        return verificationStatus;
+    }
+
+    public static boolean checkIfVCIsRevoked(List<CredentialStatusResult> credentialStatusResults) {
 
         if (!credentialStatusResults.isEmpty()) {
             for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
@@ -54,13 +61,16 @@ public final class Utils {
                 if (Constants.STATUS_PURPOSE_REVOKED.equalsIgnoreCase(purpose)) {
                     if (status == 1) {
                         log.info("VC is Revoked");
-                        return VerificationStatus.REVOKED;
+                        return true;
                     }
                 }
             }
         }
+        return false;
+    }
 
-        log.info("VC verification status is {}", verificationStatus );
-        return verificationStatus;
+    public static VerificationStatus applyRevocationStatus(VerificationStatus originalStatus, List<CredentialStatusResult> credentialStatus) {
+        boolean isRevoked = checkIfVCIsRevoked(credentialStatus);
+        return isRevoked ? VerificationStatus.REVOKED : originalStatus;
     }
 }

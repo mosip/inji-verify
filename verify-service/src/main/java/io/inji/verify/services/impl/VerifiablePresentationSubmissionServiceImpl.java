@@ -93,11 +93,17 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
                 if (isVerifiablePresentation) {
                     if (isVerifiablePresentationSigned) {
-                        PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
-                        vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
+                        List<String> statusPurposeList = new ArrayList<>();
+                        statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+                        PresentationResultWithCredentialStatus presentationResultWithCredentialStatus = presentationVerifier.verifyAndGetCredentialStatus(vpToken.toString(), statusPurposeList);
+                        VPVerificationStatus proofVerificationStatus = presentationResultWithCredentialStatus.getProofVerificationStatus();
+                        vpVerificationStatuses.add(proofVerificationStatus);
 
-                        List<VCResultDto> vcResults = presentationVerificationResult.getVcResults().stream()
-                                .map(vcResult -> new VCResultDto(vcResult.getVc(), vcResult.getStatus()))
+                        List<VCResultDto> vcResults = presentationResultWithCredentialStatus.getVcResults().stream()
+                                .map(vcResult -> {
+                                    VerificationStatus vcStatus = Utils.applyRevocationStatus(vcResult.getStatus(), vcResult.getCredentialStatus());
+                                    return new VCResultDto(vcResult.getVc(), vcStatus);
+                                })
                                 .toList();
                         verificationResults.addAll(vcResults);
                     } else {
