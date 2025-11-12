@@ -1,5 +1,6 @@
 import {claim, LdpVc, VcStatus} from "../types/data-types";
 import {EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders} from "./config";
+import { getLanguageCodes } from "./i18n";
 
 const getValue = (credentialElement: any, currentLanguage: string): string | undefined => {
     if (credentialElement === null || credentialElement === undefined) {
@@ -10,18 +11,24 @@ const getValue = (credentialElement: any, currentLanguage: string): string | und
         return credentialElement ? "true" : "false";
     }
 
+    const languageAliases = getLanguageCodes(currentLanguage);
+    const fallbackAliases = getLanguageCodes("en");
+
     if (Array.isArray(credentialElement)) {
         const languageEntry = credentialElement.find(
-            (el) => el?.["@language"] === currentLanguage || el?.language === currentLanguage
+            (el) =>
+                languageAliases.includes(el?.["@language"]) ||
+                languageAliases.includes(el?.language)
         );
         if (languageEntry) {
             return languageEntry["@value"] ?? languageEntry.value;
         }
 
         const fallbackEntry = credentialElement.find(
-            (el) => el?.["@language"] === "en" || el?.language === "en"
+            (el) =>
+                fallbackAliases.includes(el?.["@language"]) ||
+                fallbackAliases.includes(el?.language)
         );
-
         if (fallbackEntry) {
             return fallbackEntry["@value"] ?? fallbackEntry.value;
         }
