@@ -9,7 +9,9 @@ import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
+import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.*;
+import jakarta.validation.OverridesAttribute;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -546,16 +548,18 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         List<VCResultWithCredentialStatus> vcResults = Arrays.asList(
                 new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.SUCCESS, new ArrayList<>()),
+                new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.REVOKED, new ArrayList<>()),
                 new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.EXPIRED, new ArrayList<>()),
                 new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.INVALID, new ArrayList<>())
         );
-        
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "[{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}, " +
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}]", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
+
+        VPSubmission vpSubmission = new VPSubmission(
+                "state123",
+                "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2020\"},\"verifiableCredential\":[{\"type\":[\"VerifiablePresentation\"]}]}",
+                new PresentationSubmissionDto("id", "dId", List.of(new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path")))),
+                null,
+                null
+        );
         
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
@@ -568,6 +572,11 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         assertNotNull(resultDto);
         assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
+        assertEquals(4, resultDto.getVcResults().size());
+        assertEquals(VerificationStatus.SUCCESS, resultDto.getVcResults().getFirst().getVerificationStatus());
+        assertEquals(VerificationStatus.REVOKED, resultDto.getVcResults().get(1).getVerificationStatus());
+        assertEquals(VerificationStatus.EXPIRED, resultDto.getVcResults().get(2).getVerificationStatus());
+        assertEquals(VerificationStatus.INVALID, resultDto.getVcResults().get(3).getVerificationStatus());
     }
 
     @Test
@@ -705,6 +714,36 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         assertTrue(jsonVpTokens.isEmpty());
         assertTrue(sdJwtVpTokens.isEmpty());
+    }
+
+    @Test
+    public void testGetVPResult_Revoked_JSONObject() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
+        List<String> requestIds = List.of("req123");
+        List<VCResultWithCredentialStatus> vcResults =
+                List.of(new VCResultWithCredentialStatus("Verified successfully", VerificationStatus.REVOKED, new  ArrayList<>()));
+        String transactionId = "tx123";
+
+        VPSubmission vpSubmission = new VPSubmission(
+                "state123",
+                "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2020\"},\"verifiableCredential\":[{\"type\":[\"VerifiablePresentation\"]}]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
+                )),
+                null,
+                null
+        );
+
+        when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+        when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+        when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
+                .thenReturn(new AuthorizationRequestCreateResponse());
+        VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
+
+        assertNotNull(resultDto);
+        assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
+        assertEquals(1, resultDto.getVcResults().size());
+        assertEquals(VerificationStatus.REVOKED, resultDto.getVcResults().getFirst().getVerificationStatus());
     }
 }
 
