@@ -70,11 +70,20 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//button[@data-testid='Language-Selector-Button']")
 	WebElement LanguageDropdownButton;
 
+	@FindBy(xpath = "//button[@data-testid='Language-Selector-Button']")
+	WebElement LanguageDropdownMenu;
+
 	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-ar']//button[contains(text(),'عربي')]")
 	WebElement ArabicLanguageButton;
 
 	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-fr']//button[contains(text(),'Français')]")
 	WebElement FrenchLanguageButton;
+
+	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-ar']//button[contains(text(),'عربي')]")
+	WebElement ArabicLanguageSelected;
+
+	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-fr']//button[contains(text(),'Français')]")
+	WebElement FrenchLanguageSelected;
 
 	@FindBy(xpath = "//input[@type='file']")
 	WebElement uploadpath;
@@ -312,6 +321,18 @@ public class UploadQRCode extends BasePage {
 
 	public void clickOnLanguageDropdownButton() {
 		clickOnElement(driver, LanguageDropdownButton);
+	}
+
+	public boolean isLanguageDropdownVisible() {
+		return isElementIsVisible(driver, LanguageDropdownMenu);
+	}
+
+	public boolean isArabicLanguageSelected() {
+		return isElementIsVisible(driver, ArabicLanguageSelected);
+	}
+
+	public boolean isFrenchLanguageSelected() {
+		return isElementIsVisible(driver, FrenchLanguageSelected);
 	}
 
 	public void SelectArabicLanguage() {

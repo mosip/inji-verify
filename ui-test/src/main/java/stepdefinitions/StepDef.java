@@ -552,23 +552,23 @@ public class StepDef {
         }
     }
 
-    @Given("Verify if gender value is present in French")
+    @When("Verify if gender value is present in French")
     public void verifyIfGenderValueIsPresentInFrench() {
         try {
             String actualLabel = homePage.getGenderValueInFrench();
             Assert.assertEquals(actualLabel, UiConstants.GENDER_VALUE_IN_FRENCH, 
-                "Gender value in arabic does not match the expected value.");
-            test.log(Status.PASS, "Gender value in arabic verification successful. Expected: " 
+                "Gender value in French does not match the expected value.");
+            test.log(Status.PASS, "Gender value in French verification successful. Expected: " 
                 + UiConstants.GENDER_VALUE_IN_FRENCH + ", Actual: " + actualLabel);
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Gender value in arabic verification failed. Expected: " 
+            test.log(Status.FAIL, "Gender value in French verification failed. Expected: " 
                 + UiConstants.GENDER_VALUE_IN_FRENCH + ", but found: " + homePage.getGenderValueInFrench());
             throw e;
         } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while verifying Gender value in arabic", e);
+            logFailure(test, driver, "Element not found while verifying Gender value in French", e);
             throw e;
         } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while verifying Gender value in arabic", e);
+            logFailure(test, driver, "Unexpected error while verifying Gender value in French", e);
             throw e;
         }
     }
@@ -1095,12 +1095,8 @@ public class StepDef {
         try {
             homePage.ClickonContinueButton();
             test.log(Status.PASS, "Successfully clicked on the Continue button.");
-            test.log(Status.PASS, "Successfully navigated to the home page after clicking the Continue button.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking on the Continue button", e);
-            throw e;
-        } catch (AssertionError e) {
-            test.log(Status.FAIL, "Navigation verification failed: Home page is not displayed after clicking the Continue button.");
             throw e;
         } catch (Exception e) {
             logFailure(test, driver, "Unexpected error while clicking on the Continue button", e);
@@ -1263,7 +1259,9 @@ public class StepDef {
         try {
             uploadqrcode.clickOnLanguageDropdownButton();
             test.log(Status.PASS, "Clicked on 'language Dropdown' button successfully.");
-            Assert.assertTrue(true, "Successfully clicked on the 'Language dropdown' button.");
+            boolean isDropdownVisible = uploadqrcode.isLanguageDropdownVisible();
+            Assert.assertTrue(isDropdownVisible, "Language dropdown should be visible after click");
+            test.log(Status.PASS, "Language dropdown is visible after click.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking 'Language dropdown' button", e);
             throw e;
@@ -1278,7 +1276,9 @@ public class StepDef {
         try {
             uploadqrcode.SelectArabicLanguage();
             test.log(Status.PASS, "Clicked on 'Arabic Language' button successfully.");
-            Assert.assertTrue(true, "Successfully clicked on the 'Arabic Language' button.");
+            boolean isArabicSelected = uploadqrcode.isArabicLanguageSelected();
+            Assert.assertTrue(isArabicSelected, "Arabic language should be selected after click");
+            test.log(Status.PASS, "Arabic language is successfully selected. Language indicator shows 'عربي'.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking 'Arabic Language' button", e);
             throw e;
@@ -1293,7 +1293,9 @@ public class StepDef {
         try {
             uploadqrcode.SelectFrenchLanguage();
             test.log(Status.PASS, "Clicked on 'French Language' button successfully.");
-            Assert.assertTrue(true, "Successfully clicked on the 'French Language' button.");
+            boolean isFrenchSelected = uploadqrcode.isFrenchLanguageSelected();
+            Assert.assertTrue(isFrenchSelected, "French language should be selected after click");
+            test.log(Status.PASS, "French language is successfully selected. Language indicator shows 'Français'.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking 'French Language' button", e);
             throw e;

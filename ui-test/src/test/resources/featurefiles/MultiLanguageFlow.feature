@@ -1,7 +1,7 @@
 Feature: Inji Verify Multilanguage testing
 
   @smoke @verifyingMultiLanguage
-  Scenario Outline: Verify the Multilanguage VC verification
+  Scenario: Verify the Multilanguage VC verification
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
