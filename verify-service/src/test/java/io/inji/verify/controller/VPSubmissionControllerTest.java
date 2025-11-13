@@ -11,6 +11,7 @@ import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,10 +20,12 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class VPSubmissionControllerTest {
+
+    @Value("${inji.verify.redirect-uri}")
+    String redirectUri;
 
     private final VerifiablePresentationRequestService verifiablePresentationRequestService = Mockito.mock(VerifiablePresentationRequestService.class);
 
@@ -33,8 +36,11 @@ public class VPSubmissionControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IllegalAccessException, NoSuchFieldException {
         VPSubmissionController vpSubmissionController = new VPSubmissionController(verifiablePresentationRequestService, verifiablePresentationSubmissionService, gson);
+        java.lang.reflect.Field field = vpSubmissionController.getClass().getDeclaredField("redirectUri");
+        field.setAccessible(true);
+        field.set(vpSubmissionController, redirectUri);
         mockMvc = MockMvcBuilders.standaloneSetup(vpSubmissionController).build();
     }
 
@@ -57,6 +63,31 @@ public class VPSubmissionControllerTest {
                         .param("presentation_submission", presentationSubmission)
                         .param("state", state))
                 .andExpect(status().isOk());
+
+        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+        verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);
+    }
+
+    @Test
+    public void testResponseWithRedirectUriOnSubmitVP_Success() throws Exception {
+        String vpToken = "testToken";
+        String presentationSubmission = "{\"id\":\"testId\"}";
+        String state = "testState";
+
+        PresentationSubmissionDto presentationSubmissionDto = new PresentationSubmissionDto("id","dId",new ArrayList<>());
+
+        VPRequestStatusDto requestStatusDto = new VPRequestStatusDto(VPRequestStatus.ACTIVE);
+
+        when(gson.fromJson(presentationSubmission, PresentationSubmissionDto.class)).thenReturn(presentationSubmissionDto);
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(requestStatusDto);
+
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", vpToken)
+                        .param("presentation_submission", presentationSubmission)
+                        .param("state", state))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.redirect_uri").value(redirectUri));
 
         verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
         verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);
