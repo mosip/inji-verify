@@ -1,14 +1,14 @@
-import { scanResult } from "../components/qrcode-verification/QRCodeVerification.types";
+import {scanResult} from "../components/qrcode-verification/QRCodeVerification.types";
 import {
     OvpQrHeader,
     SupportedFileTypes,
     UploadFileSizeLimits,
 } from "./constants";
-import { readBarcodes } from "zxing-wasm/full";
+import {readBarcodes} from "zxing-wasm/full";
 import * as pdfjsLib from "pdfjs-dist";
 import workerCode from "pdfjs-dist/build/pdf.worker.mjs";
 
-const blob = new Blob([workerCode], { type: "application/javascript" });
+const blob = new Blob([workerCode], {type: "application/javascript"});
 const workerBlobUrl = URL.createObjectURL(blob);
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerBlobUrl;
@@ -39,12 +39,12 @@ export const readQRcodeFromImageFile = async (
 
 const readQRcodeFromPdf = async (file: File, format: string) => {
     const pdfData = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+    const pdf = await pdfjsLib.getDocument({data: pdfData}).promise;
 
     let result;
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 3.0 });
+        const viewport = page.getViewport({scale: 2.5});
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
         if (!context) {
@@ -60,10 +60,11 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
         await page.render(renderContext).promise;
         const dataURL = canvas.toDataURL();
         const blob = await (await fetch(dataURL)).blob();
-        const fileFromBlob = new File([blob], "tempFileName", { type: blob.type });
+        const fileFromBlob = new File([blob], "tempFileName", {type: blob.type});
         const qrCode = await readQRcodeFromImageFile(fileFromBlob, format, true);
         if (qrCode) {
             result = qrCode;
+            break;
         }
     }
     if (result) {
@@ -76,7 +77,7 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
 export const scanFilesForQr = async (
     selectedFile: File
 ): Promise<scanResult> => {
-    const scanResult: scanResult = { data: null, error: null };
+    const scanResult: scanResult = {data: null, error: null};
     const format: string = "QRCode";
 
     try {
