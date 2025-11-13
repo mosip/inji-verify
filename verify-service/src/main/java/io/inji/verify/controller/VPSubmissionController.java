@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class VPSubmissionController {
 
-    @Value("${inji.redirect-uri}")
+    @Value("${inji.verify.redirect-uri}")
     String redirectUri;
 
     final VerifiablePresentationRequestService verifiablePresentationRequestService;
