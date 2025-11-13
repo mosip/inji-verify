@@ -14,10 +14,8 @@ const workerBlobUrl = URL.createObjectURL(blob);
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerBlobUrl;
 
 export const extractRedirectUrlFromQrData = (qrData: string) => {
-    // qr data format = OVP://payload:text-content
-    const regex = new RegExp(`^${OvpQrHeader}(.*)$`);
-    const match = qrData.match(regex);
-    return match ? match[1] : null;
+    if (!qrData.startsWith(OvpQrHeader)) return null;
+       return qrData.substring(OvpQrHeader.length);
 };
 
 export const readQRcodeFromImageFile = async (
@@ -44,27 +42,29 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
     let result;
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({scale: 2.5});
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        if (!context) {
-            throw new Error("Failed to get canvas 2D context");
-        }
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        const renderContext = {
-            canvas: canvas,
-            canvasContext: context,
-            viewport: viewport,
-        };
-        await page.render(renderContext).promise;
-        const dataURL = canvas.toDataURL();
-        const blob = await (await fetch(dataURL)).blob();
-        const fileFromBlob = new File([blob], "tempFileName", {type: blob.type});
-        const qrCode = await readQRcodeFromImageFile(fileFromBlob, format, true);
-        if (qrCode) {
-            result = qrCode;
-            break;
+        for (const scale of [2.0, 2.5, 3.0]) {
+            const viewport = page.getViewport({scale});
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            if (!context) {
+                throw new Error("Failed to get canvas 2D context");
+            }
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            const renderContext = {
+                canvas: canvas,
+                canvasContext: context,
+                viewport: viewport,
+            };
+            await page.render(renderContext).promise;
+            const dataURL = canvas.toDataURL();
+            const blob = await (await fetch(dataURL)).blob();
+            const fileFromBlob = new File([blob], "tempFileName", {type: blob.type});
+            const qrCode = await readQRcodeFromImageFile(fileFromBlob, format, true);
+            if (qrCode) {
+                result = qrCode;
+                break;
+            }
         }
     }
     if (result) {
