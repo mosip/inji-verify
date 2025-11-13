@@ -33,8 +33,11 @@ public class VPSubmissionControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IllegalAccessException, NoSuchFieldException {
         VPSubmissionController vpSubmissionController = new VPSubmissionController(verifiablePresentationRequestService, verifiablePresentationSubmissionService, gson);
+        java.lang.reflect.Field field = vpSubmissionController.getClass().getDeclaredField("redirectUri");
+        field.setAccessible(true);
+        field.set(vpSubmissionController, "https://injiverify.dev.mosip.net/v1/verify");
         mockMvc = MockMvcBuilders.standaloneSetup(vpSubmissionController).build();
     }
 
@@ -57,6 +60,33 @@ public class VPSubmissionControllerTest {
                         .param("presentation_submission", presentationSubmission)
                         .param("state", state))
                 .andExpect(status().isOk());
+
+        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+        verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);
+    }
+
+    @Test
+    public void testResponseWithRedirectUriOnSubmitVP_Success() throws Exception {
+        String vpToken = "testToken";
+        String presentationSubmission = "{\"id\":\"testId\"}";
+        String state = "testState";
+
+        PresentationSubmissionDto presentationSubmissionDto = new PresentationSubmissionDto("id","dId",new ArrayList<>());
+
+        VPRequestStatusDto requestStatusDto = new VPRequestStatusDto(VPRequestStatus.ACTIVE);
+
+        when(gson.fromJson(presentationSubmission, PresentationSubmissionDto.class)).thenReturn(presentationSubmissionDto);
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(requestStatusDto);
+
+        String expectedContent = "{\"redirect_uri\":\"https://injiverify.dev.mosip.net/v1/verify\"}";
+
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", vpToken)
+                        .param("presentation_submission", presentationSubmission)
+                        .param("state", state))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedContent));
 
         verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
         verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);
