@@ -131,4 +131,10 @@ public class ConstantsTest {
         Executable exec = () -> constructor.newInstance();
         assertDoesNotThrow(exec);
     }
+
+    @Test
+    @DisplayName("Verify Status Purpose Constant")
+    void testStatusPurposeConstant() {
+        assertEquals("revocation", Constants.STATUS_PURPOSE_REVOKED);
+    }
 }
