@@ -1,13 +1,10 @@
 package io.inji.verify.services.impl;
 
 import io.inji.verify.dto.verification.VCVerificationStatusDto;
-import io.inji.verify.shared.Constants;
 import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.constants.CredentialValidatorConstants;
 import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -96,6 +93,24 @@ public class VCVerificationServiceImplTest {
 
             VCVerificationStatusDto statusDto = service.verify("some_vc", "application/other");
             assertEquals(VerificationStatus.SUCCESS, statusDto.getVerificationStatus());
+        }
+    }
+
+    @Test
+    public void shouldReturnRevokedForRevokedVc() {
+        CredentialVerificationSummary mockSummary = mock(CredentialVerificationSummary.class);
+        when(mockCredentialsVerifier.verifyAndGetCredentialStatus(
+                anyString(),
+                eq(CredentialFormat.LDP_VC),
+                anyList())
+        ).thenReturn(mockSummary);
+
+        try (MockedStatic<Utils> utilsMock = mockStatic(Utils.class)) {
+            utilsMock.when(() -> Utils.getVcVerificationStatus(mockSummary))
+                    .thenReturn(VerificationStatus.REVOKED);
+
+            VCVerificationStatusDto statusDto = service.verify("some_vc", "application/ldp+json");
+            assertEquals(VerificationStatus.REVOKED, statusDto.getVerificationStatus());
         }
     }
 }

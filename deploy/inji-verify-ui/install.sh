@@ -52,12 +52,24 @@ function installing_inji-verify-ui() {
   COPY_UTIL=../copy_cm_func.sh
   $COPY_UTIL configmap inji-stack-config default $NS
 
+  while true; do
+    read -p "Enable VP_SUBMISSION_SUPPORTED? (true/false) [default: true]: " VP_SUBMISSION_SUPPORTED
+    VP_SUBMISSION_SUPPORTED=${VP_SUBMISSION_SUPPORTED:-true}
+    if [[ "$VP_SUBMISSION_SUPPORTED" == "true" || "$VP_SUBMISSION_SUPPORTED" == "false" ]]; then
+      break
+    else
+      echo "Invalid input. Please enter 'true' or 'false'."
+    fi
+  done
+
   INJIVERIFY_HOST=$(kubectl get cm inji-stack-config -o jsonpath={.data.injiverify-host})
   echo Installing INJIVERIFY
   helm -n $NS install inji-verify-ui mosip/inji-verify-ui \
   --set istio.hosts\[0\]=$INJIVERIFY_HOST \
   --set inji_verify_service.host="inji-verify-service.$NS" \
-  --version $CHART_VERSION 
+  --set extraEnvVars[0].name=VP_SUBMISSION_SUPPORTED \
+  --set-string extraEnvVars[0].value="${VP_SUBMISSION_SUPPORTED}" \
+  --version $CHART_VERSION
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { saveData } from "../../../../utils/misc";
 import {
   DocumentIcon,
@@ -15,6 +15,8 @@ import VcDetailsGrid from "./VcDetailsGrid";
 import i18next from "i18next";
 import { getTemplateUrl } from "../../../../utils/svg-template-utils";
 import VcSvgTemplate from "./VcSvgTemplate";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { raiseAlert } from "../../../../redux/features/alerts/alerts.slice";
 
 function DisplayVcDetailView({
   vc,
@@ -30,21 +32,45 @@ function DisplayVcDetailView({
   const templateUrl = getTemplateUrl(vc);
   const orderedDetails = vc && getDetailsOrder(vc, currentLang);
   const isRtl = isRTL(i18n.language);
-  const positionLeft = "left-[250px] lg:left-[328px] lg:hover:left-[215px]";
-  const positionRight = "right-[250px] lg:right-[328px] lg:hover:right-[215px]";
+  const [templateError, setTemplateError] = useState(false);
+
+  const positionLeft = `left-[250px] ${
+    templateUrl ? "lg:left-[310px]" : "lg:left-[328px]"
+  } ${templateUrl ? "lg:hover:left-[197px]" : "lg:hover:left-[215px]"}`;
+  const positionRight = `right-[250px] ${
+    templateUrl ? "lg:right-[310px]" : "lg:right-[328px]"
+  } ${templateUrl ? "lg:hover:right-[197px]" : "lg:hover:right-[215px]"}`;
   const buttonPosition = isRtl ? positionRight : positionLeft;
+
+  const showTemplate = templateUrl && !templateError;
+  const dispatch = useAppDispatch();
+
+  const onTemplateError = (error: Error) => {
+    setTemplateError(true);
+    dispatch(
+      raiseAlert({ message: error.message, severity: "error", open: true })
+    );
+  };
+
+  useEffect(() => {
+    setTemplateError(false);
+  }, [templateUrl, vc]);
 
   return (
     <div>
       <div
         className={`w-[339px] lg:w-[410px] m-auto rounded-lg ${
-          templateUrl ? "" : "bg-white shadow-lg"
+          showTemplate ? "" : "bg-white shadow-lg"
         } px-[15px] mb-4 ${className}`}
       >
         {vc ? (
           <div className="relative">
-            {templateUrl ? (
-              <VcSvgTemplate vc={vc} templateUrl={templateUrl} />
+            {showTemplate ? (
+              <VcSvgTemplate
+                vc={vc}
+                templateUrl={templateUrl!}
+                onError={onTemplateError}
+              />
             ) : (
               <VcDetailsGrid orderedDetails={orderedDetails} vc={vc} />
             )}
@@ -54,17 +80,13 @@ function DisplayVcDetailView({
                 label={t("expand")}
                 onClick={onExpand}
                 icon={<VectorExpand />}
-                positionClasses={`hidden lg:flex ${buttonPosition} ${
-                  templateUrl ? "bottom-[150px]" : "bottom-[60px]"
-                }`}
+                positionClasses={`hidden lg:flex ${buttonPosition} bottom-[60px]`}
               />
               <ActionButton
                 label={t("download")}
                 onClick={() => saveData(vc)}
                 icon={<VectorDownload />}
-                positionClasses={`${buttonPosition} ${
-                  templateUrl ? "bottom-[100px]" : "bottom-[10px]"
-                }`}
+                positionClasses={`bottom-[30px] ${buttonPosition} lg:bottom-[10px]`}
               />
             </div>
             {!templateUrl && (

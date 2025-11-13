@@ -189,4 +189,36 @@ public class VCSubmissionServiceImplTest {
         verify(vcSubmissionRepository, times(1)).findById(TEST_TRANSACTION_ID);
         verifyNoInteractions(credentialsVerifier);
     }
+
+    @Test
+    void getVcWithVerification_shouldReturnRevokeStatus_whenVerificationPassesButVCIsRevoked() {
+        VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
+        when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
+
+        CredentialVerificationSummary credentialVerificationSummary = mock(CredentialVerificationSummary.class);
+        when(credentialsVerifier.verifyAndGetCredentialStatus(
+                eq(TEST_VC_STRING),
+                eq(CredentialFormat.LDP_VC),
+                anyList())
+        ).thenReturn(credentialVerificationSummary);
+
+        try (MockedStatic<Utils> utilsMock = mockStatic(Utils.class)) {
+            utilsMock.when(() -> Utils.getVcVerificationStatus(credentialVerificationSummary))
+                    .thenReturn(VerificationStatus.REVOKED);
+
+            VCSubmissionVerificationStatusDto resultDto = vcSubmissionService.getVcWithVerification(TEST_TRANSACTION_ID);
+
+            assertNotNull(resultDto);
+            assertEquals(TEST_VC_STRING, resultDto.getVc());
+            assertEquals(VerificationStatus.REVOKED, resultDto.getVerificationStatus());
+
+            verify(vcSubmissionRepository, times(1)).findById(TEST_TRANSACTION_ID);
+            verify(credentialsVerifier, times(1)).verifyAndGetCredentialStatus(
+                    eq(TEST_VC_STRING),
+                    eq(CredentialFormat.LDP_VC),
+                    argThat(list -> list.contains(Constants.STATUS_PURPOSE_REVOKED))
+            );
+            utilsMock.verify(() -> Utils.getVcVerificationStatus(credentialVerificationSummary), times(1));
+        }
+    }
 }

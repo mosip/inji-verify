@@ -5,53 +5,55 @@ import { fetchSvgTemplate } from "../../../../utils/svg-template-utils";
 import Loader from "../../../commons/Loader";
 import DOMPurify from "dompurify";
 
-const VcSvgTemplate = ({
-  vc,
-  templateUrl,
-}: {
+interface VcSvgTemplateProps {
   vc: AnyVc;
   templateUrl: string;
-}) => {
+  onError?: (error:Error) => void;
+}
+
+const VcSvgTemplate = ({ vc, templateUrl, onError }: VcSvgTemplateProps) => {
   const [templateContent, setTemplateContent] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const loadTemplate = async () => {
-      if (templateUrl) {
+      if (!templateUrl) {
+        setLoader(false);
+        return;
+      }
+
+      setLoader(true);
+      try {
         const svgTemplate = await fetchSvgTemplate(templateUrl);
         if (svgTemplate) {
           setTemplateContent(svgTemplate);
+          setLoader(false);
         } else {
-          setError("Failed to load credential template");
+          throw new Error("Failed to load credential template");
         }
+      } catch (err) {
+        console.error("Template fetch error:", err);
+        onError?.(new Error(err instanceof Error ? err.message : "Failed to fetch template"));
+      } finally {
+        setLoader(false);
       }
     };
     loadTemplate();
-  }, [templateUrl]);
+  }, [onError, templateUrl]);
 
-  if (error) {
-    return <div className="text-red-500 text-sm text-center p-3 mt-10">{error}</div>;
-  }
+  if (loader) return <Loader innerBg="bg-white" className="w-5 h-5 mt-20" />;
+  if (!templateContent) return null;
 
-  if (!templateContent)
-    return <Loader innerBg="bg-white" className="w-5 h-5" />;
-
-  const preprocessedTemplate = templateContent.replace(
-    /\{\{\/([^}]+)\}\}/g,
-    (_, path) => {
-      const trimmed = path.trim();
-
-      if (trimmed.includes("/")) {
+  try {
+    const preprocessedTemplate = templateContent.replace(
+      /\{\{\/([^}]+)\}\}/g,
+      (_, path) => {
+        const trimmed = path.trim();
         return `{{${trimmed.replace(/\//g, ".")}}}`;
       }
+    );
 
-      return `{{${trimmed}}}`;
-    }
-  );
-
-  let renderedSvg: string;
-  try {
-    renderedSvg = Mustache.render(preprocessedTemplate, vc);
+    let renderedSvg = Mustache.render(preprocessedTemplate, vc);
     renderedSvg = DOMPurify.sanitize(renderedSvg, {
       USE_PROFILES: { svg: true, svgFilters: true },
       ADD_TAGS: ["use"],
@@ -59,24 +61,16 @@ const VcSvgTemplate = ({
       FORBID_TAGS: ["script", "iframe", "object", "embed"],
       FORBID_ATTR: ["onerror", "onload", "onclick", "onmouseover"],
     });
-  } catch (err) {
-    console.error("Mustache render error:", err);
     return (
-      <div className="text-red-500 text-sm text-center p-3">
-        Failed to render credential:{" "}
-        {err instanceof Error ? err.message : "Unknown error"}
+      <div className="w-full flex justify-center items-center">
+        <div dangerouslySetInnerHTML={{ __html: renderedSvg }} />
       </div>
     );
+  } catch (err) {
+    console.error("Mustache render error:", err);
+    onError?.(new Error(err instanceof Error ? err.message : "Failed to render template"));
+    return null;
   }
-
-  return (
-    <div>
-      <div
-        className="w-full flex justify-center items-center"
-        dangerouslySetInnerHTML={{ __html: renderedSvg }}
-      />
-    </div>
-  );
 };
 
 export default VcSvgTemplate;
