@@ -14,8 +14,10 @@ const workerBlobUrl = URL.createObjectURL(blob);
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerBlobUrl;
 
 export const extractRedirectUrlFromQrData = (qrData: string) => {
-    if (!qrData.startsWith(OvpQrHeader)) return null;
-       return qrData.substring(OvpQrHeader.length);
+    // qr data format = OVP://payload:text-content
+    const regex = new RegExp(`^${OvpQrHeader}(.*)$`);
+    const match = qrData.match(regex);
+    return match ? match[1] : null;
 };
 
 export const readQRcodeFromImageFile = async (
@@ -39,7 +41,6 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
     const pdfData = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({data: pdfData}).promise;
 
-    let result;
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         for (const scale of [2.0, 2.5, 3.0]) {
@@ -61,15 +62,12 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
             const fileFromBlob = new File([blob], "tempFileName", {type: blob.type});
             const qrCode = await readQRcodeFromImageFile(fileFromBlob, format, true);
             if (qrCode) {
-                result = qrCode;
+                return qrCode;
             }
         }
     }
-    if (result) {
-        return result;
-    } else {
-        throw new Error(`No ${format} found`);
-    }
+    throw new Error(`No ${format} found`);
+
 };
 
 export const scanFilesForQr = async (
