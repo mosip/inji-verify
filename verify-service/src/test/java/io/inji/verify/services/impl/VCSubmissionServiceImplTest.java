@@ -67,7 +67,7 @@ public class VCSubmissionServiceImplTest {
                     .thenReturn(TEST_TRANSACTION_ID);
 
             VCSubmissionDto submissionDto = new VCSubmissionDto(TEST_SDJWT_VC_STRING, null);
-            VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
+            VCSubmission expectedVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_SDJWT_VC_STRING);
             when(vcSubmissionRepository.save(any(VCSubmission.class))).thenReturn(expectedVCSubmission);
 
             VCSubmissionResponseDto response = vcSubmissionService.submitVC(submissionDto);
