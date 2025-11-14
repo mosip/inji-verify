@@ -45,11 +45,11 @@ const VcSvgTemplate = ({ vc, templateUrl, onError }: VcSvgTemplateProps) => {
   if (!templateContent) return null;
 
   try {
-    const preprocessedTemplate = templateContent.replace(
+    const preprocessedTemplate = templateContent.replaceAll(
       /\{\{\/([^}]+)\}\}/g,
       (_, path) => {
         const trimmed = path.trim();
-        return `{{${trimmed.replace(/\//g, ".")}}}`;
+        return `{{${trimmed.replaceAll(/\//g, ".")}}}`;
       }
     );
 
