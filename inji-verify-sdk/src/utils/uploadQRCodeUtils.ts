@@ -52,7 +52,6 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
             canvas.height = viewport.height;
             canvas.width = viewport.width;
             const renderContext = {
-                canvas: canvas,
                 canvasContext: context,
                 viewport: viewport,
             };
