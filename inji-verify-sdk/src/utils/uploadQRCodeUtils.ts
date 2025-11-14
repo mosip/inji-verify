@@ -63,7 +63,6 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
             const qrCode = await readQRcodeFromImageFile(fileFromBlob, format, true);
             if (qrCode) {
                 result = qrCode;
-                break;
             }
         }
     }
