@@ -4,15 +4,16 @@
     };
 
     const updateHref = (el, value) => {
-        if (el && typeof value === "string") {
-            try {
-                const url = new URL(value, window.location.origin);
-                if (url.protocol === "http:" || url.protocol === "https:") {
-                    el.href = url.toString();
-                }
-            } catch (e) {
-                console.error("Invalid URL:", value);
+        if (!el || typeof value !== "string") return false;
+        try {
+            const url = new URL(value);
+            if (url.protocol !== "http:" && url.protocol !== "https:") {
+                return false;
             }
+            el.href = url.toString();
+            return true;
+        } catch (e) {
+            return false;
         }
     };
 
