@@ -11,7 +11,6 @@ import io.inji.verify.shared.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,8 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VPSubmissionControllerTest {
 
-    @Value("${inji.verify.redirect-uri}")
-    String redirectUri;
+    String redirectUri = "http://example.com/callback";
 
     private final VerifiablePresentationRequestService verifiablePresentationRequestService = Mockito.mock(VerifiablePresentationRequestService.class);
 
@@ -88,6 +86,38 @@ public class VPSubmissionControllerTest {
                         .param("state", state))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.redirect_uri").value(redirectUri));
+
+        verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
+        verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);
+    }
+
+    @Test
+    public void testResponseWithEmptyBodyIfRedirectUriNotPresentOnSubmitVP_Success() throws Exception {
+        String vpToken = "testToken";
+        String presentationSubmission = "{\"id\":\"testId\"}";
+        String state = "testState";
+
+        PresentationSubmissionDto presentationSubmissionDto = new PresentationSubmissionDto("id","dId",new ArrayList<>());
+
+        VPSubmissionController vpSubmissionController = new VPSubmissionController(verifiablePresentationRequestService, verifiablePresentationSubmissionService, gson);
+        java.lang.reflect.Field field = vpSubmissionController.getClass().getDeclaredField("redirectUri");
+        field.setAccessible(true);
+        field.set(vpSubmissionController, null);
+        mockMvc = MockMvcBuilders.standaloneSetup(vpSubmissionController).build();
+
+
+        VPRequestStatusDto requestStatusDto = new VPRequestStatusDto(VPRequestStatus.ACTIVE);
+
+        when(gson.fromJson(presentationSubmission, PresentationSubmissionDto.class)).thenReturn(presentationSubmissionDto);
+        when(verifiablePresentationRequestService.getCurrentRequestStatus(state)).thenReturn(requestStatusDto);
+
+        mockMvc.perform(post(Constants.RESPONSE_SUBMISSION_URI_ROOT + Constants.RESPONSE_SUBMISSION_URI)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("vp_token", vpToken)
+                        .param("presentation_submission", presentationSubmission)
+                        .param("state", state))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.redirect_uri").doesNotExist());
 
         verify(verifiablePresentationSubmissionService, times(1)).submit(any(VPSubmissionDto.class));
         verify(verifiablePresentationRequestService, times(1)).getCurrentRequestStatus(state);

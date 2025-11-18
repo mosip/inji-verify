@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class VPSubmissionController {
 
-    @Value("${inji.verify.redirect-uri}")
+    @Value("${inji.verify.redirect-uri:#{null}}")
     String redirectUri;
 
     final VerifiablePresentationRequestService verifiablePresentationRequestService;
@@ -82,7 +82,9 @@ public class VPSubmissionController {
                 VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state, null, null);
                 verifiablePresentationSubmissionService.submit(vpSubmissionDto);
                 Map<String, Object> response = new HashMap<>();
-                response.put("redirect_uri", redirectUri);
+                if (StringUtils.hasText(redirectUri)) {
+                    response.put("redirect_uri", redirectUri);
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             } catch (JsonSyntaxException e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_PRESENTATION_SUBMISSION");
