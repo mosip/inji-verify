@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --iv-font-base: Inter, sans-serif;
+}
+
 @layer base {
   [class="default_theme"] {
-    --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #951f6f;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
@@ -68,7 +71,6 @@
     --iv-qr-code-timer: #8e8e8e;
   }
   [class="purple_theme"] {
-    --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
@@ -126,7 +128,6 @@
     --iv-qr-code-timer: #8e8e8e;
   }
   [class="car_theme"] {
-    --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #278834;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
