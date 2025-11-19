@@ -21,13 +21,15 @@
             el.classList.add(className);
         }
     };
+    const setFontFamily = (value) => {
+        if (typeof value === "string" && value.trim()) {
+            document.documentElement.style.setProperty("--iv-font-base", value);
+        }
+    };
 
     updateText(document.getElementById("title"), window._env_.DEFAULT_TITLE);
     updateHref(document.getElementById("font"), window._env_.DEFAULT_FONT_URL);
     updateHref(document.getElementById("icon"), window._env_.DEFAULT_FAVICON);
     addThemeClass(document.body, window._env_.DEFAULT_THEME);
+    setFontFamily(window._env_.DEFAULT_FONT_FAMILY);
 })();
-document.documentElement.style.setProperty(
-        "--iv-font-base",
-         window._env_.DEFAULT_FONT_FAMILY
-);
