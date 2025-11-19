@@ -229,7 +229,7 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload QR code file PDF downloaded from mobile
+    And Upload QR code file png
     And Verify message for valid QR code
 
   @smoke @verifyuploadLargeSizeqrcode
@@ -283,7 +283,7 @@ Feature: Inji Verify upload qr code testing
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
     And Verify that Upload button visible
-    And Upload QR code file PDF downloaded from mobile
+    And Upload QR code file png
     And Verify message for valid QR code
     And Verify that Upload button after 2 mins idle 
 
