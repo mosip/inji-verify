@@ -65,7 +65,7 @@ export const getDetailsOrder = (vc: any, currentLanguage: string) => {
             : vc?.credentialSubject ?? vc;
 
     const type =
-        vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
+        vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.find((t: string) => t !== "VerifiableCredential");
 
     switch (type) {
         case "InsuranceCredential":
