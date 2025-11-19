@@ -68,8 +68,10 @@ function installing_inji-verify-service() {
     --set extraEnv[1].name=INJI_DID_VERIFY_URI \
     --set extraEnv[1].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify" \
     --set extraEnv[2].name=INJI_DID_VERIFY_PUBLIC_KEY_URI \
-    --set extraEnv[2].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify#key-0"
-
+    --set extraEnv[2].value="did:web:${INJIVERIFY_HOST//:/\\:}:v1:verify#key-0" \
+    --set extraEnv[3].name=INJI_VERIFY_REDIRECT_URI \
+    --set extraEnv[3].value=""    
+    
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
   echo Installed inji-verify-service service
