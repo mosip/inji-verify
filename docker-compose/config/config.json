@@ -10,9 +10,7 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": [
-              "RsaSignature2018"
-            ]
+            "proof_type": ["RsaSignature2018"]
           }
         },
         "input_descriptors": [
@@ -20,17 +18,13 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": [
-                  "RsaSignature2018"
-                ]
+                "proof_type": ["RsaSignature2018"]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": [
-                    "$.type"
-                  ],
+                  "path": ["$.type"],
                   "filter": {
                     "type": "object",
                     "pattern": "MOSIPVerifiableCredential"
@@ -51,9 +45,7 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": [
-              "Ed25519Signature2018"
-            ]
+            "proof_type": ["Ed25519Signature2018"]
           }
         },
         "input_descriptors": [
@@ -61,17 +53,13 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": [
-                  "Ed25519Signature2020"
-                ]
+                "proof_type": ["Ed25519Signature2020"]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": [
-                    "$.type"
-                  ],
+                  "path": ["$.type"],
                   "filter": {
                     "type": "object",
                     "pattern": "LifeInsuranceCredential"
@@ -92,9 +80,7 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": [
-              "Ed25519Signature2018"
-            ]
+            "proof_type": ["Ed25519Signature2018"]
           }
         },
         "input_descriptors": [
@@ -102,17 +88,13 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": [
-                  "Ed25519Signature2020"
-                ]
+                "proof_type": ["Ed25519Signature2020"]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": [
-                    "$.type"
-                  ],
+                  "path": ["$.type"],
                   "filter": {
                     "type": "object",
                     "pattern": "InsuranceCredential"
@@ -133,9 +115,7 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "vc+sd-jwt": {
-            "sd-jwt_alg_values": [
-              "EdDSA"
-            ]
+            "sd-jwt_alg_values": ["EdDSA"]
           }
         },
         "input_descriptors": [
@@ -143,17 +123,13 @@
             "id": "Mock Identity card credential",
             "format": {
               "vc+sd-jwt": {
-                "sd-jwt_alg_values": [
-                  "EdDSA"
-                ]
+                "sd-jwt_alg_values": ["EdDSA"]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": [
-                    "$.vct"
-                  ],
+                  "path": ["$.vct"],
                   "filter": {
                     "type": "string",
                     "pattern": "SD_JWT"
@@ -174,9 +150,7 @@
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
           "ldp_vc": {
-            "proof_type": [
-              "Ed25519Signature2020"
-            ]
+            "proof_type": ["Ed25519Signature2020"]
           }
         },
         "input_descriptors": [
@@ -184,17 +158,13 @@
             "id": "id card credential",
             "format": {
               "ldp_vc": {
-                "proof_type": [
-                  "Ed25519Signature2020"
-                ]
+                "proof_type": ["Ed25519Signature2020"]
               }
             },
             "constraints": {
               "fields": [
                 {
-                  "path": [
-                    "$.type"
-                  ],
+                  "path": ["$.type"],
                   "filter": {
                     "type": "object",
                     "pattern": "LandStatementCredential"
@@ -210,39 +180,39 @@
   "VCRenderOrders": {
     "InsuranceCredentialRenderOrder": [
       "fullName",
-      "gender",
-      "dob",
-      "benefits",
-      "policyName",
       "policyNumber",
+      "policyName",
       "policyIssuedOn",
       "policyExpiresOn",
+      "benefits",
       "mobile",
-      "email"
+      "email",
+      "gender",
+      "dob"
     ],
     "farmerLandCredentialRenderOrder": [
       "id",
       "farmerId",
       "dvcType",
       {
-        "farmerLandDetails": [
-          "farmId",
-          "district",
-          "surveyNumber"
-        ]
+        "farmerLandDetails": ["farmId", "district", "surveyNumber"]
       }
     ],
     "farmerCredentialRenderOrder": [
       "face",
+      "authority",
+      "idType",
+      "fullName",
       "farmerId",
       "farmerID",
+      "gender",
+      "phoneNumber",
+      "mobileNumber",
+      "dateOfBirth",
+      "primaryCommodity",
       "landOwnershipType",
       "ownershipType",
-      "fullName",
-      "mobileNumber",
-      "phoneNumber",
-      "dateOfBirth",
-      "gender",
+      "crops",
       "address",
       "villageOrTown",
       "village",
@@ -253,26 +223,22 @@
       "totalLandArea",
       "primaryCropType",
       "secondaryCropType",
-      "primaryCommodity",
-      "crops",
-      "season",
-      "authority"
-
+      "season"
     ],
     "MosipVerifiableCredentialRenderOrder": [
       "face",
-      "UIN",
       "fullName",
+      "phone",
       "dateOfBirth",
       "gender",
-      "phone",
       "email",
-      "addressLine1",
       "city",
+      "UIN",
+      "VID",
+      "addressLine1",
       "province",
       "region",
-      "postalCode",
-      "VID"
+      "postalCode"
     ],
     "IncomeTaxAccountCredentialRenderOrder": [
       "fullName",
