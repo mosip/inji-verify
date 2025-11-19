@@ -27,3 +27,7 @@
     updateHref(document.getElementById("icon"), window._env_.DEFAULT_FAVICON);
     addThemeClass(document.body, window._env_.DEFAULT_THEME);
 })();
+document.documentElement.style.setProperty(
+        "--iv-font-base",
+         window._env_.DEFAULT_FONT_FAMILY
+);
