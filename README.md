@@ -38,7 +38,7 @@ Once the repo is cloned, following folders can be found under the inji-verify re
   - [Readme.md](./db_scripts/README.md)
 - **db_upgrade_script:** contains the database upgrade and rollback scripts
   - sql (contains SQL scripts for database upgrade and rollback)
-  - [Readme.md](./db_upgrade_script/README.md)
+  - [Readme.md](./db_upgrade_script/inji_verify/README.md)
 - **deploy:** folder contains deployment scripts required to deploy on K8S
 - **docker-compose** : folder containing setup for docker compose
   - config
