@@ -13,13 +13,12 @@ import io.inji.verify.models.AuthorizationRequestCreateResponse;
 import io.inji.verify.models.VPSubmission;
 import io.inji.verify.repository.VPSubmissionRepository;
 import io.inji.verify.services.VerifiablePresentationSubmissionService;
+import io.inji.verify.shared.Constants;
+import io.inji.verify.utils.Utils;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.PresentationVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
-import io.mosip.vercred.vcverifier.data.PresentationVerificationResult;
-import io.mosip.vercred.vcverifier.data.VPVerificationStatus;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
-import io.mosip.vercred.vcverifier.data.VerificationStatus;
+import io.mosip.vercred.vcverifier.data.*;
 import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -90,19 +89,33 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
 
             for (JSONObject vpToken : jsonVpTokens) {
                 boolean isVerifiablePresentation = isVerifiablePresentation(vpToken);
+                boolean isVerifiablePresentationSigned =  isVerifiablePresentationSigned(vpToken);
 
                 if (isVerifiablePresentation) {
-                    PresentationVerificationResult presentationVerificationResult = presentationVerifier.verify(vpToken.toString());
-                    vpVerificationStatuses.add(presentationVerificationResult.getProofVerificationStatus());
+                    if (isVerifiablePresentationSigned) {
+                        List<String> statusPurposeList = new ArrayList<>();
+                        statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+                        PresentationResultWithCredentialStatus presentationResultWithCredentialStatus = presentationVerifier.verifyAndGetCredentialStatus(vpToken.toString(), statusPurposeList);
+                        VPVerificationStatus proofVerificationStatus = presentationResultWithCredentialStatus.getProofVerificationStatus();
+                        vpVerificationStatuses.add(proofVerificationStatus);
 
-                    List<VCResultDto> vcResults = presentationVerificationResult.getVcResults().stream()
-                            .map(vcResult -> new VCResultDto(vcResult.getVc(), vcResult.getStatus()))
-                            .toList();
-                    verificationResults.addAll(vcResults);
+                        List<VCResultDto> vcResults = presentationResultWithCredentialStatus.getVcResults().stream()
+                                .map(vcResult -> {
+                                    VerificationStatus vcStatus = Utils.applyRevocationStatus(vcResult.getStatus(), vcResult.getCredentialStatus());
+                                    return new VCResultDto(vcResult.getVc(), vcStatus);
+                                })
+                                .toList();
+                        verificationResults.addAll(vcResults);
+                    } else {
+                        Object verifiableCredential = vpToken.opt("verifiableCredential");
+                        if (verifiableCredential instanceof JSONArray array) {
+                            array.forEach(vc -> addVerificationResults(vc.toString(), verificationResults));
+                        } else {
+                            throw new InvalidVpTokenException();
+                        }
+                    }
                 } else {
-                    VerificationResult verificationResult = credentialsVerifier.verify(vpToken.toString(), CredentialFormat.LDP_VC);
-                    VerificationStatus status = Util.INSTANCE.getVerificationStatus(verificationResult);
-                    verificationResults.add(new VCResultDto(vpToken.toString(), status));
+                    throw new InvalidVpTokenException();
                 }
             }
 
@@ -128,6 +141,15 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
         }
     }
 
+    private void addVerificationResults(String vc, List<VCResultDto> verificationResults) {
+        List<String> statusPurposeList = new ArrayList<>();
+        statusPurposeList.add(Constants.STATUS_PURPOSE_REVOKED);
+        CredentialVerificationSummary credentialVerificationSummary = credentialsVerifier.verifyAndGetCredentialStatus(vc, CredentialFormat.LDP_VC, statusPurposeList);
+
+        VerificationStatus status = Utils.getVcVerificationStatus(credentialVerificationSummary);
+        verificationResults.add(new VCResultDto(vc, status));
+    }
+
     private boolean isVerifiablePresentation(JSONObject vpToken) {
         Object types = vpToken.opt("type");
         if (types == null) return false;
@@ -139,6 +161,11 @@ public class VerifiablePresentationSubmissionServiceImpl implements VerifiablePr
                     "VerifiablePresentation".equalsIgnoreCase(typeString);
             default -> false;
         };
+    }
+
+    private boolean isVerifiablePresentationSigned(JSONObject vpToken) {
+        Object proof = vpToken.opt("proof");
+        return proof != null;
     }
 
     void extractTokens(String vpTokenString, List<JSONObject> jsonVpTokens, List<String> sdJwtVpTokens) {

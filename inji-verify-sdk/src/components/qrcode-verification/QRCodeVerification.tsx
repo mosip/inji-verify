@@ -50,7 +50,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   uploadButtonId,
   uploadButtonStyle,
   isEnableZoom = true,
-  clientId
+  clientId,
+  isVPSubmissionSupported = false
 }) => {
   const [isScanning, setScanning] = useState(false);
   const [isUploading, setUploading] = useState(false);
@@ -188,7 +189,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     clearTimer();
     timerRef.current = setTimeout(() => {
       stopVideoStream();
-      onError?.(new Error("scanSessionExpired"));
+      onError?.(new Error("Session expired. Please Scan again."));
     }, ScanSessionExpiryTime);
   };
 
@@ -407,10 +408,19 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   const extractVerifiableCredential = async (data: any) => {
     try {
       if (data?.vpToken) return data.vpToken.verifiableCredential[0];
+      //check if QRCode contains OVP_QR in the header, it means this is a
+      // data share VC
       if (typeof data === "string" && data.startsWith(OvpQrHeader)) {
+        //extract the redirect Url from QRCode
         const redirectUrl = extractRedirectUrlFromQrData(data);
         if (!redirectUrl)
           throw new Error("Failed to extract redirect URL from QR data");
+
+        if (!isVPSubmissionSupported) {
+          const encodedOrigin = encodeURIComponent(window.location.origin);
+          window.location.href = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
+          return;
+        }
 
         const parsedUrl = new URL(redirectUrl);
         const pdParams = parsedUrl.searchParams.get("presentation_definition");
@@ -418,7 +428,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!pdParams) throw new Error("Missing presentation_definition in redirect URL");
 
         const presentationDefinition = parsePresentationDefinition(pdParams);
-        parsedUrl.searchParams.set("presentation_definition", JSON.stringify(presentationDefinition));
+        //call /v1/verify/vp-request endpoint to get the request_id and
+        // transaction_id to be sent to the redirectUrl
         const response = await createVPRequest(presentationDefinition);
 
         if (!response) throw new Error("Unable to access the shared VC, due to failure in creating VP request");
@@ -428,6 +439,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         if (!authorizationDetails) throw new Error("Unable to access the shared VC, due to Missing authorization details in VP Request");
 
         const { responseUri, nonce } = authorizationDetails;
+
+        if (!responseUri || !nonce) throw new Error("Unable to access the shared VC, due to missing responseUri or nonce in authorization details");
+        //call the redirectUrl
         window.location.href = buildRedirectUrl(parsedUrl.toString(), state, responseUri, nonce);
         return;
       }
@@ -516,6 +530,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           }
           resetState();
           return;
+        } else {
+          throw new Error("Unable to process the VC, due to invalid VP submission");
         }
       }
     } catch (error) {
@@ -565,8 +581,9 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   }, []);
 
   useEffect(() => {
-    let vpToken, presentationSubmission, error;
+    let vpToken, presentationSubmission, error, errorDescripton;
     try {
+      const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
       const params = new URLSearchParams(hash.substring(1));
       const vpTokenParam = params.get("vp_token");
@@ -576,7 +593,14 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       presentationSubmission = params.get("presentation_submission")
         ? decodeURIComponent(params.get("presentation_submission") as string)
         : undefined;
-      error = params.get("error");
+      error = params.get("error") || searchParams.get("error");
+      errorDescripton = params.get("error_description") || searchParams.get("error_description") || `We’re unable to complete your request`;
+
+      if (error) {
+        onError(new Error(`${errorDescripton}, ${error}`));
+        resetState();
+        window.history.replaceState(null, "", window.location.pathname);
+      }
 
       if (vpToken && presentationSubmission) {
         processScanResult({ vpToken, presentationSubmission });
@@ -585,10 +609,8 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const requestId = sessionStorage.getItem("requestId");
         const transactionId = sessionStorage.getItem("transactionId");
 
-        if (requestId && transactionId && !vpToken) {
+        if (requestId && transactionId && !vpToken && !error) {
           fetchVPStatus(transactionId, requestId);
-        } else if (error) {
-          throw new Error(String(error));
         }
       }
     } catch (error) {
@@ -596,9 +618,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         "Error occurred while reading params in redirect url, Error: ",
         error
       );
-      onError(error instanceof Error ? error : new Error("Unknown error"));
+      onError(error instanceof Error ? error : new Error("An unexpected error occurred while processing the request"));
+      resetState();
     }
-  }, [onError]);
+  }, []);
 
   useEffect(() => {
     return () => {

@@ -47,4 +47,6 @@ public final class Constants {
     public static final String KEY_VERIFIABLE_CREDENTIAL = "verifiableCredential";
     public static final String KEY_CREDENTIAL = "credential";
 
+    // STATUS PURPOSE
+    public static final String STATUS_PURPOSE_REVOKED = "revocation";
 }

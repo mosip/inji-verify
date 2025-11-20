@@ -1,184 +1,252 @@
-import { claim, credentialSubject, LdpVc, VcStatus } from "../types/data-types";
-import { EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders } from "./config";
+import {claim, LdpVc, VcStatus} from "../types/data-types";
+import {EXCLUDE_KEYS_SD_JWT_VC, getVCRenderOrders} from "./config";
+import { getLanguageCodes } from "./i18n";
 
-const getValue = (credentialElement: any): string | undefined => {
-  if (credentialElement === null || credentialElement === undefined) {
-    return undefined;
-  }
-
-  if (typeof credentialElement === "boolean") {
-    return credentialElement ? "true" : "false";
-  }
-
-  if (Array.isArray(credentialElement)) {
-    const engEntry = credentialElement.find((el) => el.language === "eng");
-    return engEntry ? engEntry.value : getValue(credentialElement[1]);
-  }
-
-  if (typeof credentialElement === "object") {
-    if ("value" in credentialElement) {
-      return getValue(credentialElement.value);
+const getValue = (credentialElement: any, currentLanguage: string): string | undefined => {
+    if (credentialElement === null || credentialElement === undefined) {
+        return undefined;
     }
 
-    for (const key of Object.keys(credentialElement)) {
-      const nestedValue = getValue(credentialElement[key]);
-      if (nestedValue !== undefined) return nestedValue;
+    if (typeof credentialElement === "boolean") {
+        return credentialElement ? "true" : "false";
     }
-  }
 
-  return String(credentialElement);
+    const languageAliases = getLanguageCodes(currentLanguage);
+    const fallbackAliases = getLanguageCodes("en");
+
+    if (Array.isArray(credentialElement)) {
+        const languageEntry = credentialElement.find(
+            (el) =>
+                languageAliases.includes(el?.["@language"]) ||
+                languageAliases.includes(el?.language)
+        );
+        if (languageEntry) {
+            return languageEntry["@value"] ?? languageEntry.value;
+        }
+
+        const fallbackEntry = credentialElement.find(
+            (el) =>
+                fallbackAliases.includes(el?.["@language"]) ||
+                fallbackAliases.includes(el?.language)
+        );
+        if (fallbackEntry) {
+            return fallbackEntry["@value"] ?? fallbackEntry.value;
+        }
+    }
+    if (typeof credentialElement === "object") {
+        if ("value" in credentialElement) {
+            return getValue(credentialElement.value, currentLanguage);
+        }
+        let finalValue: any = [];
+        for (const key of Object.keys(credentialElement)) {
+            const nestedValue = getValue(credentialElement[key], currentLanguage);
+            if (nestedValue !== undefined) {
+                if (Array.isArray(nestedValue)) {
+                    finalValue.push(...nestedValue);
+                } else {
+                    finalValue.push(nestedValue);
+                }
+            }
+        }
+        return finalValue.length > 0 ? finalValue : undefined;
+    }
+
+    return String(credentialElement);
 };
 
-export const getDetailsOrder = (vc: any) => {
-  if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
-    return [];
-  }
+export const getDetailsOrder = (vc: any, currentLanguage: string) => {
+    if (!vc || (typeof vc === "object" && Object.keys(vc).length === 0)) {
+        return [];
+    }
 
-  const credential =
-    vc?.regularClaims && vc?.disclosedClaims
-      ? { ...vc.regularClaims, ...vc.disclosedClaims }
-      : vc?.credentialSubject ?? vc;
+    const credential =
+        vc?.regularClaims && vc?.disclosedClaims
+            ? {...vc.regularClaims, ...vc.disclosedClaims}
+            : vc?.credentialSubject ?? vc;
 
-  const type = vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
+    const type =
+        vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.find((t: string) => t !== "VerifiableCredential");
 
-  switch (type) {
-    case "InsuranceCredential":
-    case "LifeInsuranceCredential":
-      return getVCRenderOrders().InsuranceCredentialRenderOrder.map((key:any) => {
-        if (key in credential) {
-          return {
-            key,
-            value: credential[key as keyof credentialSubject] || "N/A",
-          };
-        }
-        return { key, value: "N/A" };
-      });
-    case "farmer":
-      return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key: any) => {
-        if (typeof key === "string") {
-          return {
-            key,
-            value: credential[key as keyof typeof vc] || "N/A",
-          };
-        } else if (typeof key === "object" && key !== null) {
-          const [farmKey, farmOrder] = Object.entries(key)[0];
-          if (
-            farmKey in credential &&
-            typeof credential[farmKey] === "object"
-          ) {
-            return (farmOrder as string[]).map((farmField: any) => ({
-              key: farmField,
-              value: credential[farmKey][farmField] || "N/A",
-            }));
-          }
-          return { key: farmKey, value: "N/A" };
-        }
-        return { key, value: "N/A" };
-      });
-    case "FarmerCredential":
-      return getVCRenderOrders().farmerCredentialRenderOrder.map((key:any) => {
-        if (key in credential) {
-          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
-        }
-        return { key, value: "N/A" };
-      });
-    case "MOSIPVerifiableCredential":
-    case "MockVerifiableCredential":
-      return getVCRenderOrders().MosipVerifiableCredentialRenderOrder.map((key: any) => {
-        if (key in credential) {
-          
-          if(typeof(credential[key])=="object"){
-            return { key, value: getValue(credential[key]) } ;
-          }
-          return { key, value: credential[key as keyof credentialSubject] || "N/A" };
-        }
-        return { key, value: "N/A" };
-      });
-    case "IncomeTaxAccountCredential":
-      return getVCRenderOrders().IncomeTaxAccountCredentialRenderOrder.map(
-        (key: any) => {
-          if (key in credential) {
-            return {
-              key,
-              value: credential[key as keyof credentialSubject] || "N/A",
-            };
-          }
-          return { key, value: "N/A" };
-        }
-      );
-    case "SdJwtVC":
-      return Object.keys(credential)
-        .filter(
-          (key) =>
-            key !== "id" &&
-            credential[key] !== null &&
-            credential[key] !== undefined &&
-            credential[key] !== "" &&
-            !EXCLUDE_KEYS_SD_JWT_VC.includes(key.toLowerCase())
-        )
-        .map((key) => ({ key, value: getValue(credential[key]) }));
-    default:
-      return Object.keys(credential)
-        .filter((key) =>
-            key !== "id" &&
-            credential[key] !== null &&
-            credential[key] !== undefined &&
-            credential[key] !== ""
-        )
-        .map((key) => ({ key, value: getValue(credential[key]) }));
-  }
+    switch (type) {
+        case "InsuranceCredential":
+        case "LifeInsuranceCredential":
+            return getVCRenderOrders()
+                .InsuranceCredentialRenderOrder.map((key: string) => {
+                    const rawValue = credential?.[key];
+                    if (rawValue === undefined || rawValue === null) return null;
+
+                    const value = getValue(rawValue, currentLanguage);
+                    if (value !== undefined && value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
+                        return {key, value};
+                    }
+                    return null;
+                })
+                .filter(
+                    (keyValue: { key: string; value: string }) => keyValue !== null
+                );
+
+        case "farmer":
+            return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap(
+                (key: any) => {
+                    if (typeof key === "string") {
+                        return {
+                            key,
+                            value: getValue(credential[key], currentLanguage) || "N/A",
+                        };
+                    } else if (typeof key === "object" && key !== null) {
+                        const [farmKey, farmOrder] = Object.entries(key)[0];
+                        if (
+                            farmKey in credential &&
+                            typeof credential[farmKey] === "object"
+                        ) {
+                            return (farmOrder as string[]).map((farmField: any) => ({
+                                key: farmField,
+                                value: credential[farmKey][farmField] || "N/A",
+                            }));
+                        }
+                        return {key: farmKey, value: "N/A"};
+                    }
+                    return {key, value: "N/A"};
+                }
+            );
+
+        case "FarmerCredential":
+            return getVCRenderOrders().farmerCredentialRenderOrder.map((key: string) => {
+                const rawValue = credential?.[key];
+                if (rawValue === undefined || rawValue === null) return null;
+
+                const value = getValue(rawValue, currentLanguage);
+                if (value !== undefined && value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
+                    return {key, value};
+                }
+                return null;
+            })
+                .filter(
+                    (keyValue: { key: string; value: string }) => keyValue !== null
+                );
+
+        case "MOSIPVerifiableCredential":
+        case "MockVerifiableCredential":
+            return getVCRenderOrders()
+                .MosipVerifiableCredentialRenderOrder.map((key: string) => {
+                    const rawValue = credential?.[key];
+                    if (rawValue === undefined || rawValue === null) return null;
+
+                    const value = getValue(rawValue, currentLanguage);
+                    if (value !== undefined && value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
+                        return {key, value};
+                    }
+                    return null;
+                })
+                .filter(
+                    (keyValue: { key: string; value: string }) => keyValue !== null
+                );
+
+        case "IncomeTaxAccountCredential":
+            return getVCRenderOrders()
+                .IncomeTaxAccountCredentialRenderOrder.map((key: string) => {
+                    const rawValue = credential?.[key];
+                    if (rawValue === undefined || rawValue === null) return null;
+
+                    const value = getValue(rawValue, currentLanguage);
+                    if (value !== undefined && value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
+                        return {key, value};
+                    }
+                    return null;
+                })
+                .filter(
+                    (keyValue: { key: string; value: string }) => keyValue !== null
+                );
+
+        case "SdJwtVC":
+            return Object.keys(credential)
+                .filter(
+                    (key) =>
+                        key !== "id" &&
+                        credential[key] !== null &&
+                        credential[key] !== undefined &&
+                        credential[key] !== "" &&
+                        !EXCLUDE_KEYS_SD_JWT_VC.includes(key.toLowerCase())
+                )
+                .map((key) => ({
+                    key,
+                    value: getValue(credential[key], currentLanguage),
+                }));
+
+        default:
+            return Object.keys(credential)
+                .filter(
+                    (key) =>
+                        key !== "id" &&
+                        credential[key] !== null &&
+                        credential[key] !== undefined &&
+                        credential[key] !== ""
+                )
+                .map((key) => {
+                    const rawValue = credential[key];
+                    const value = getValue(rawValue, currentLanguage);
+
+                    if (value !== undefined && value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
+                        return {key, value};
+                    }
+
+                    return null;
+                })
+                .filter(
+                    (entry): entry is { key: string; value: string } => entry !== null
+                );
+    }
 };
-
 export const calculateVerifiedClaims = (
-  selectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
+    selectedClaims: claim[],
+    verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ) => {
-  return verificationSubmissionResult.filter((vc) =>
-    selectedClaims.some((claim) => getCredentialType(vc.vc) === claim.type)
-  );
+    return verificationSubmissionResult.filter((vc) =>
+        selectedClaims.some((claim) => getCredentialType(vc.vc) === claim.type)
+    );
 };
 
 export const calculateUnverifiedClaims = (
-  originalSelectedClaims: claim[],
-  verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
+    originalSelectedClaims: claim[],
+    verificationSubmissionResult: { vc: LdpVc | object; vcStatus: VcStatus }[]
 ): claim[] => {
-  return originalSelectedClaims.filter((claim) => {
-    return !verificationSubmissionResult.some(
-      (vcResult) => getCredentialType(vcResult.vc) === claim.type
-    );
-  });
+    return originalSelectedClaims.filter((claim) => {
+        return !verificationSubmissionResult.some(
+            (vcResult) => getCredentialType(vcResult.vc) === claim.type
+        );
+    });
 };
 
 const extractType = (type: any): string | undefined => {
-  if (!type) return undefined;
-  if (typeof type === "string")
-    return type !== "VerifiableCredential" ? type : undefined;
-  if (typeof type === "object" && "_value" in type) {
-    return type._value !== "VerifiableCredential" ? type._value : undefined;
-  }
-  return String(type);
+    if (!type) return undefined;
+    if (typeof type === "string")
+        return type !== "VerifiableCredential" ? type : undefined;
+    if (typeof type === "object" && "_value" in type) {
+        return type._value !== "VerifiableCredential" ? type._value : undefined;
+    }
+    return String(type);
 };
 
 export const getCredentialType = (credential: any): string => {
-  const sdType = credential?.regularClaims?.type || credential?.regularClaims?.vct;
-  if (sdType) {
-    if (Array.isArray(sdType)) {
-      for (const type of sdType) {
-        const credentialType = extractType(type);
-        if (credentialType) return credentialType;
-      }
-    } else {
-      const credentialType = extractType(sdType);
-      if (credentialType) return credentialType;
+    const sdType = credential?.regularClaims?.type || credential?.regularClaims?.vct;
+    if (sdType) {
+        if (Array.isArray(sdType)) {
+            for (const type of sdType) {
+                const credentialType = extractType(type);
+                if (credentialType) return credentialType;
+            }
+        } else {
+            const credentialType = extractType(sdType);
+            if (credentialType) return credentialType;
+        }
     }
-  }
 
-  if (Array.isArray(credential?.type)) {
-    for (const type of credential.type) {
-      const credentialType = extractType(type);
-      if (credentialType) return credentialType;
+    if (Array.isArray(credential?.type)) {
+        for (const type of credential.type) {
+            const credentialType = extractType(type);
+            if (credentialType) return credentialType;
+        }
     }
-  }
 
-  return "verifiableCredential";
+    return "verifiableCredential";
 };

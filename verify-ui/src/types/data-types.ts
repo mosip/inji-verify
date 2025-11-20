@@ -6,7 +6,7 @@ export type QrScanResult = {
 
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
-export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT";
+export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT" | "REVOKED";
 
 export type VerificationStep = {
   label: string;
@@ -141,6 +141,15 @@ export type QrCodeProps = {
   status: "SUCCESS" | "EXPIRED" | "INVALID";
 };
 
+export type RenderMethod = {
+  renderSuite: string;
+  template: {
+    id: string;
+    mediaType: string;
+  };
+  type: string;
+};
+
 export type LdpVc = {
   "@context": string[];
   credentialSubject: credentialSubject;
@@ -156,6 +165,7 @@ export type LdpVc = {
     verificationMethod: string;
   };
   type: string[];
+  renderMethod?: RenderMethod[];
 };
 
 export type SdJwtVc = {

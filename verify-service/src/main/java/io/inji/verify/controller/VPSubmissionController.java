@@ -1,5 +1,7 @@
 package io.inji.verify.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.nimbusds.jose.shaded.gson.JsonSyntaxException;
@@ -20,11 +22,15 @@ import jakarta.validation.Validation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 @RequestMapping(path = Constants.RESPONSE_SUBMISSION_URI_ROOT)
 @Slf4j
 public class VPSubmissionController {
+
+    @Value("${inji.verify.redirect-uri:#{null}}")
+    String redirectUri;
 
     final VerifiablePresentationRequestService verifiablePresentationRequestService;
 
@@ -75,7 +81,11 @@ public class VPSubmissionController {
 
                 VPSubmissionDto vpSubmissionDto = new VPSubmissionDto(vpToken, presentationSubmissionDto, state, null, null);
                 verifiablePresentationSubmissionService.submit(vpSubmissionDto);
-                return new ResponseEntity<>(HttpStatus.OK);
+                Map<String, Object> response = new HashMap<>();
+                if (StringUtils.hasText(redirectUri)) {
+                    response.put("redirect_uri", redirectUri);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } catch (JsonSyntaxException e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_PRESENTATION_SUBMISSION");
             }

@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --iv-font-base: Inter, sans-serif;
+}
+
 @layer base {
   [class="default_theme"] {
-    --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #951f6f;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
@@ -20,12 +23,15 @@
     --iv-success: #ecfff6;
     --iv-invalid: #ffdedd;
     --iv-expired: #fff5e3;
+    --iv-revoked: #FFDEED;
     --iv-successText: #1f9f60;
     --iv-invalidText: #cb4241;
     --iv-expiredText: #d98c00;
+    --iv-revokedText: #7D0038;
     --iv-successBorder: #abefc6;
     --iv-invalidBorder: #d68e8d;
     --iv-expiredBorder: #e2ca9f;
+    --iv-revokedBorder: #FFC5DF;
     --iv-success-alert: #57a04b;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #cb4241;
@@ -65,7 +71,6 @@
     --iv-qr-code-timer: #8e8e8e;
   }
   [class="purple_theme"] {
-    --iv-font-base: "Gentium Plus", serif;
     --iv-primary-color: #5a31ee;
     --iv-logo-start-color: #8f69ec;
     --iv-background-color: #ffffff;
@@ -81,12 +86,15 @@
     --iv-success: #4b9d1f;
     --iv-invalid: #d73e3e;
     --iv-expired: #d98c00;
+    --iv-revoked: #FFDEED;
     --iv-successText: #1f9f60;
     --iv-invalidText: #cb4241;
     --iv-expiredText: #d98c00;
+    --iv-revokedText: #7D0038;
     --iv-successBorder: #abefc6;
     --iv-invalidBorder: #d68e8d;
     --iv-expiredBorder: #e2ca9f;
+    --iv-revokedBorder: #FFC5DF;
     --iv-success-alert: #57a04b;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #d73e3e;
@@ -120,7 +128,6 @@
     --iv-qr-code-timer: #8e8e8e;
   }
   [class="car_theme"] {
-    --iv-font-base: "Inter", sans-serif;
     --iv-primary-color: #278834;
     --iv-logo-start-color: #ffb600;
     --iv-background-color: #ffffff;
@@ -136,12 +143,15 @@
     --iv-success: #1f9f60;
     --iv-invalid: #cb4241;
     --iv-expired: #d98c00;
+    --iv-revoked: #FFDEED;
     --iv-successText: #1f9f60;
     --iv-invalidText: #cb4241;
     --iv-expiredText: #d98c00;
+    --iv-revokedText: #7D0038;
     --iv-successBorder: #abefc6;
     --iv-invalidBorder: #d68e8d;
     --iv-expiredBorder: #e2ca9f;
+    --iv-revokedBorder: #FFC5DF;
     --iv-success-alert: #1f9f60;
     --iv-warning-alert: #d98c00;
     --iv-error-alert: #cb4241;
