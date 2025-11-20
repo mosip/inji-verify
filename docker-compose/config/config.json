@@ -46,7 +46,7 @@
       "logo": "/assets/cert.png",
       "name": "Life Insurance",
       "type": "LifeInsuranceCredential",
-      "isAuthRequestEmbedded": true,
+      "isAuthRequestEmbedded": false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {
@@ -169,7 +169,7 @@
       "logo": "/assets/cert.png",
       "name": "Land Registry",
       "type": "LandStatementCredential",
-      "isAuthRequestEmbedded": true,
+      "isAuthRequestEmbedded": false,
       "definition": {
         "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
         "format": {

@@ -31,6 +31,7 @@ function MyApp() {
         console.log("Something went wrong:", error);
       }}
       triggerElement={<button>📷 Scan ID Document</button>}
+      clientId="CLIENT_ID"
     />
   );
 }
@@ -51,6 +52,7 @@ function MyApp() {
       onQrCodeExpired={() => alert("QR code expired, please try again")}
       onError={(error) => console.log("Error:", error)}
       triggerElement={<button>📱 Verify with Digital Wallet</button>}
+      clientId="CLIENT_ID"
     />
   );
 }
@@ -107,6 +109,7 @@ https://your-backend.com
   onVCProcessed={(result) => handleResult(result)}
   onError={(error) => handleError(error)}
   triggerElement={<button>Start Verification</button>}
+  clientId="CLIENT_ID"
 />
 ```
 
@@ -117,6 +120,7 @@ https://your-backend.com
   verifyServiceUrl="https://your-backend.com"
   onVCProcessed={(result) => console.log(result)}  // OR use onVCReceived
   onError={(error) => console.log(error)}
+  clientId="CLIENT_ID"
 
   // Optional
   triggerElement={<button>Custom Trigger</button>}
@@ -207,6 +211,7 @@ presentationDefinition={{
 | `onError`          | function      | ✅        | What to do when something goes wrong        |
 | `triggerElement`   | React element | ❌        | Custom button/element to start verification |
 | `transactionId`    | string        | ❌        | Your own tracking ID                        |
+| `clientId`         | string        | ✅        | Your own client ID                          |
 
 ### QRCodeVerification Specific
 
