@@ -97,7 +97,7 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//label[@for='Health Insurance']")
 	WebElement HealthInsuranceChecklist;
 
-	@FindBy(xpath = "//label[@for='SD JWT PID (Talao)']")
+	@FindBy(xpath = "//label[@for='Mock Identity (SD JWT)']")
 	WebElement SDJwtVCChecklist;
 
 	@FindBy(xpath = "//span[@class='walletName' and text()='Inji Wallet']")

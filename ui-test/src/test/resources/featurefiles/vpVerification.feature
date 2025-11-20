@@ -88,4 +88,4 @@ Scenario: Verify VP verification same device flow
     
     Examples:
       | credential type |
-      | SD JWT PID      |
+      | SD JWT      |
