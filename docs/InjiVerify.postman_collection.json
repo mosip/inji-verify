@@ -460,15 +460,7 @@
 				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"clientId\": \"client123\",\r\n  \"presentationDefinition\": {\r\n    \"id\": \"32f54163-7166-48f1-93d8-ff217bdb0653\",\r\n    \"input_descriptors\": [\r\n      {\r\n        \"id\": \"wa_driver_license\",\r\n        \"name\": \"Washington State Business License\",\r\n        \"purpose\": \"We can only allow licensed Washington State business representatives into the WA Business Conference\",\r\n        \"constraints\": {\r\n          \"fields\": [\r\n            {\r\n              \"path\": [\r\n                \"$.credentialSubject.dateOfBirth\",\r\n                \"$.credentialSubject.dob\",\r\n                \"$.vc.credentialSubject.dateOfBirth\",\r\n                \"$.vc.credentialSubject.dob\"\r\n              ]\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"body": {},
 				"url": {
 					"raw": "https://{{base_url}}/v1/verify/vp-result/{{txnIdForOpenID4VP}}",
 					"protocol": "https",
