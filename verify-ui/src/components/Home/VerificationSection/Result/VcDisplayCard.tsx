@@ -30,15 +30,18 @@ function VcDisplayCard({ vc, onExpand }: { vc: any; onExpand: any }) {
     value: string;
   };
 
-  const orderedDetails: Detail[] = desiredOrder.map((value) => {
-    const key = Object.keys(vc.credentialSubject).find((key) => key === value);
-    if (key) {
-      return { key, value: vc.credentialSubject[key] };
-    }
-    return { key: value, value: "N/A" };
-  });
+    const orderedDetails: Detail[] = desiredOrder.map((field) => {
+        const key = Object.keys(vc.credentialSubject || {}).find((k) => k === field);
+        const rawValue = key ? vc.credentialSubject[key] : undefined;
+        const value =
+            rawValue !== undefined && rawValue !== null
+                ? getDisplayValue(rawValue)
+                : "N/A";
 
-  return (
+        return { key: field, value };
+    });
+
+    return (
     <div>
       <div
         className={`w-[410px] m-auto rounded-lg bg-white px-[15px] shadow-lg mb-4`}
