@@ -6,6 +6,23 @@
 		"_exporter_id": "47128896",
 		"_collection_link": "https://joint-operations-geoscientist-11518343-173253.postman.co/workspace/16549164-7704-4d4e-835a-c1fff0033167/collection/47128896-d2212bee-9155-491e-84f9-ab4422e5cc9c?action=share&source=collection_link&creator=47128896"
 	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "injiverify.dev-int-inji.mosip.net",
+			"type": "string"
+		},
+		{
+			"key": "txnId",
+			"value": "txn_062a935b-c38f-41ef-92d1-13fefa43014e",
+			"type": "string"
+		},
+		{
+			"key": "reqId",
+			"value": "req_35511802-13b3-44bc-ae33-fbc3b4084b35",
+			"type": "string"
+		}
+	],
 	"item": [
 		{
 			"name": "Create a new verification request",
@@ -25,13 +42,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-request",
+					"raw": "https://{{base_url}}/v1/verify/vp-request",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
@@ -60,13 +74,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-request",
+					"raw": "https://{{base_url}}/v1/verify/vp-request",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
@@ -97,19 +108,16 @@
 					}
 				],
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-request/req_4dcc56a2-9a03-44fd-a685-522af3c7e200",
+					"raw": "https://{{base_url}}/v1/verify/vp-request/{{reqId}}",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
 						"verify",
 						"vp-request",
-						"req_4dcc56a2-9a03-44fd-a685-522af3c7e200"
+						"{{reqId}}"
 					]
 				}
 			},
@@ -136,19 +144,16 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-request/req_4dcc56a2-9a03-44fd-a685-522af3c7e200/status",
+					"raw": "https://{{base_url}}/v1/verify/vp-request/{{reqId}}/status",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
 						"verify",
 						"vp-request",
-						"req_4dcc56a2-9a03-44fd-a685-522af3c7e200",
+						"{{reqId}}",
 						"status"
 					]
 				}
@@ -173,7 +178,7 @@
 						},
 						{
 							"key": "state",
-							"value": "req_4dcc56a2-9a03-44fd-a685-522af3c7e200",
+							"value": "{{reqId}}",
 							"type": "text"
 						},
 						{
@@ -194,13 +199,10 @@
 					]
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-submission/direct-post",
+					"raw": "https://{{base_url}}/v1/verify/vp-submission/direct-post",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
@@ -230,13 +232,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vc-submission",
+					"raw": "https://{{base_url}}/v1/verify/vc-submission",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
@@ -268,19 +267,16 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vp-result/txn_062a935b-c38f-41ef-92d1-13fefa43014e",
+					"raw": "https://{{base_url}}/v1/verify/vp-result/{{txnId}}",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
 						"verify",
 						"vp-result",
-						"txn_062a935b-c38f-41ef-92d1-13fefa43014e"
+						"{{txnId}}"
 					]
 				}
 			},
@@ -315,13 +311,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vc-verification",
+					"raw": "https://{{base_url}}/v1/verify/vc-verification",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
@@ -361,13 +354,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://injiverify.dev-int-inji.mosip.net/v1/verify/vc-verification",
+					"raw": "https://{{base_url}}/v1/verify/vc-verification",
 					"protocol": "https",
 					"host": [
-						"injiverify",
-						"dev-int-inji",
-						"mosip",
-						"net"
+						"{{base_url}}"
 					],
 					"path": [
 						"v1",
