@@ -391,7 +391,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     responseUri: string,
     nonce: string
   ) => {
-    const redirectUri = `${window.location.origin}/`;
+    const redirectUri = `${window.location.href}`;
 
     const url = new URL(baseRedirectUrl);
     url.hash = "";
@@ -417,7 +417,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           throw new Error("Failed to extract redirect URL from QR data");
 
         if (!isVPSubmissionSupported) {
-          const encodedOrigin = encodeURIComponent(window.location.origin);
+          const encodedOrigin = encodeURIComponent(window.location.href);
           window.location.href = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
           return;
         }
