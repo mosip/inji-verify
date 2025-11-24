@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { claim, VpSubmissionResultInt } from "../../../../types/data-types";
+import {claim, VcStatus, VpSubmissionResultInt} from "../../../../types/data-types";
 import { useVerifyFlowSelector } from "../../../../redux/features/verification/verification.selector";
 import {
   backgroundColorMapping,
@@ -43,9 +43,9 @@ const VpVerifyResultSummary: React.FC<VpVerifyResultSummaryProps> = ({
       <div className="flex justify-center w-[392px]">
         {verifiedVcs.map((vc, index) => {
           const status = vc.vcStatus;
-          const bgColor = backgroundColorMapping[status];
-          const textColor = textColorMapping[status];
-          const borderColor = borderColorMapping[status];
+          const bgColor = backgroundColorMapping[status as VcStatus];
+          const textColor = textColorMapping[status as VcStatus];
+          const borderColor = borderColorMapping[status as VcStatus];
           return (
             index ===
               verifiedVcs.findIndex(
