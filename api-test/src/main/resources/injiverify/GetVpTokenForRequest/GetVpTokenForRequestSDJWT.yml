@@ -1,5 +1,5 @@
 GetVpTokenForRequestSDJWT:
-  Injiverify_GetVpTokenForRequestSDJWT_All_Valid_Smoke:
+  Injiverify_GetVpTokenForRequestSDJWT_All_Valid_Sid:
       endPoint: /v1/verify/vp-result/{transactionId}
       description: Getting the VP token for the Request with SD-JWT
       uniqueIdentifier: TC_InjiVerify_GetVpTokenForRequestSDJWT_01
