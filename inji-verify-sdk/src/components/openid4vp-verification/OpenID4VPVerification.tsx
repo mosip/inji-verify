@@ -47,7 +47,18 @@ const OpenID4VPVerification: React.FC<OpenID4VPVerificationProps> = ({
   const isActiveRef = useRef(false);
   const sessionStateRef = useRef<SessionState | null>(null);
 
-  const shouldShowQRCode = !loading && qrCodeData;
+    useEffect(() => {
+        const handleVpReset = () => {
+            setQrCodeData(null);
+            setLoading(false);
+            isActiveRef.current = false;
+            sessionStateRef.current = null;
+        };
+        window.addEventListener("resetVpVerification", handleVpReset);
+        return () => window.removeEventListener("resetVpVerification", handleVpReset);
+    }, []);
+
+    const shouldShowQRCode = !loading && qrCodeData;
 
   const DEFAULT_PROTOCOL = "openid4vp://";
 
