@@ -28,7 +28,11 @@ export const LanguageSelector: React.FC = () => {
     <div
       className="flex flex-row justify-center items-center"
       data-testid="LanguageSelector-Outer-Div"
-      onBlur={() => setIsOpen(false)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          setIsOpen(false);
+        }
+      }}
       tabIndex={0}
       role="button"
     >
@@ -39,7 +43,9 @@ export const LanguageSelector: React.FC = () => {
           type="button"
           className="inline-flex items-center"
           data-testid="Language-Selector-Button"
-          onMouseDown={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
         >
           <p
             data-testid={`Language-Selector-Selected-DropDown-${language}`}
@@ -64,16 +70,18 @@ export const LanguageSelector: React.FC = () => {
               rtl ? "left-1 lg:left-0" : "right-1 lg:right-0"
             } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
           >
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200" role="listbox">
               {LanguagesSupported.map((item) => (
                 <li
                   key={item.value}
                   data-testid={`Language-Selector-DropDown-Item-${item.value}`}
+                  role="option"
+                  aria-selected={language === item.value}
                 >
                   <button
                     type="button"
                     className="w-full px-4 py-2 bg-white text-left text-sm hover:bg-gray-100 flex items-center justify-between flex-row"
-                    onMouseDown={(event) => {
+                    onClick={(event) => {
                       event.stopPropagation();
                       handleChange(item);
                     }}
