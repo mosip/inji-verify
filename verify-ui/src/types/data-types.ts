@@ -6,7 +6,7 @@ export type QrScanResult = {
 
 export type QrReadStatus = "SUCCESS" | "NOT_READ" | "FAILED";
 
-export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "TIMEOUT" | "REVOKED";
+export type VcStatus = "SUCCESS" | "INVALID" | "EXPIRED" | "REVOKED";
 
 export type VerificationStep = {
   label: string;
@@ -30,7 +30,7 @@ export type AlertInfo = {
   autoHideDuration?: number;
 };
 
-export type VerificationMethod = "SCAN" | "UPLOAD" | "VERIFY" | "TO_BE_SELECTED";
+export type VerificationMethod = "SCAN" | "UPLOAD" | "VERIFY";
 
 export type InternetConnectionStatus =
   | "ONLINE"

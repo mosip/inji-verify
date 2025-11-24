@@ -1,10 +1,11 @@
 // match fot the occurrence of an uppercase letter
 import i18next from "i18next";
-import { VerificationMethod, VerificationStepsContentType } from "../types/data-types";
+import {VerificationMethod, VerificationStep, VerificationStepsContentType} from "../types/data-types";
 import {
   InternetConnectivityCheckTimeout,
   InternetConnectivityCheckEndpoint,
   getVerificationStepsContent,
+    VerificationStepWithStatus
 } from "./config";
 
 const splitCamelCaseRegex: RegExp = /([A-Z][a-z]+)/g;
@@ -31,69 +32,52 @@ export const getDisplayValue = (data: any): string => {
     }
     return data?.toString();
 }
-
 export const fetchVerificationSteps = (
-  method: VerificationMethod,
-  isPartiallyShared: boolean,
-  flowType?: "sameDevice" | "crossDevice",
-  activeScreen: number = 1 // default to first step if not passed
-) => {
-  
-  let VerificationStepsContent: VerificationStepsContentType = getVerificationStepsContent();
+    method: VerificationMethod,
+    isPartiallyShared: boolean,
+    flowType?: "sameDevice" | "crossDevice",
+    activeScreen: number = 1
+): VerificationStepWithStatus[] => {
+    const verificationContent: VerificationStepsContentType = getVerificationStepsContent();
+    let selectedSteps: VerificationStep[] = [];
 
-  if (method !== "VERIFY") {
-    return VerificationStepsContent[method].map((step, index) => ({
-      ...step,
-      stepNumber: index + 1,
-      isCompleted: index + 1 < activeScreen,
-      isActive: index + 1 === activeScreen,
-    }));
-  }
+    if (method === "UPLOAD") {
+        selectedSteps = verificationContent.UPLOAD;
+    } else if (method === "SCAN") {
+        selectedSteps = verificationContent.SCAN;
+    } else if (method === "VERIFY") {
+        const verifySteps = verificationContent.VERIFY;
+        const stepMap = Object.fromEntries(verifySteps.map((step) => [step.label, step]));
 
-  const verifySteps = VerificationStepsContent.VERIFY;
-  const stepMap = Object.fromEntries(verifySteps.map((step) => [step.label, step]));
+        selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.InitiateVpRequest.label")]!);
 
-  const selectedSteps = [];
+        if (isPartiallyShared) {
+            selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.RequestMissingCredential.label")]!);
+        } else {
+            selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectCredential.label")]!);
+        }
 
-  selectedSteps.push(
-    stepMap[i18next.t("VerificationStepsContent:VERIFY.InitiateVpRequest.label")]
-  );
+        if (flowType === "sameDevice") {
+            selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectWallet.label")]!);
+        } else {
+            selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.ScanQrCode.label")]!);
+        }
 
-  if (isPartiallyShared) {
-    selectedSteps.push(
-      stepMap[i18next.t("VerificationStepsContent:VERIFY.RequestMissingCredential.label")]
-    );
-  } else {
-    selectedSteps.push(
-      stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectCredential.label")]
-    );
-  }
+        selectedSteps.push(stepMap[i18next.t("VerificationStepsContent:VERIFY.DisplayResult.label")]!);
+    }
 
-  if (flowType === "sameDevice") {
-    selectedSteps.push(
-      stepMap[i18next.t("VerificationStepsContent:VERIFY.SelectWallet.label")]
-    );
-  } else {
-    selectedSteps.push(
-      stepMap[i18next.t("VerificationStepsContent:VERIFY.ScanQrCode.label")]
-    );
-  }
-
-  selectedSteps.push(
-    stepMap[i18next.t("VerificationStepsContent:VERIFY.DisplayResult.label")]
-  );
-
-  return selectedSteps
-    .filter(Boolean)
-    .map((step, index) => ({
-      ...step,
-      stepNumber: index + 1,
-      isCompleted: index + 1 < activeScreen,
-      isActive: index + 1 === activeScreen,
-    }));
+    return selectedSteps
+        .filter(Boolean)
+        .map((step, index) => ({
+            ...step,
+            stepNumber: index + 1,
+            isCompleted: index + 1 < activeScreen,
+            isActive: index + 1 === activeScreen,
+        }));
 };
 
-export const getRangeOfNumbers = (length: number): number[] => {
+
+    export const getRangeOfNumbers = (length: number): number[] => {
     return Array.from(new Array(length), (x, i) => i + 1);
 }
 
