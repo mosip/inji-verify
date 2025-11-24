@@ -1,4 +1,10 @@
-import {AlertInfo, claim, VerificationStepsContentType } from "../types/data-types";
+import {
+    AlertInfo,
+    claim,
+    VcStatus,
+    VerificationMethod,
+    VerificationStep, VerificationStepsContentType,
+} from "../types/data-types";
 import i18next from 'i18next';
 
 export const Pages = {
@@ -157,24 +163,24 @@ export const initializeClaims = async () => {
 
 initializeClaims();
 
-export const backgroundColorMapping: any = {
-  SUCCESS: "bg-success",
-  EXPIRED: "bg-expired",
-  INVALID: "bg-invalid",
-  REVOKED: "bg-revoked",
+export const backgroundColorMapping: Record<VcStatus, string> ={
+    SUCCESS: "bg-success",
+    EXPIRED: "bg-expired",
+    INVALID: "bg-invalid",
+    REVOKED: "bg-revoked",
 };
-export const textColorMapping: any = {
-  SUCCESS: "text-successText",
-  EXPIRED: "text-expiredText",
-  INVALID: "text-invalidText",
-  REVOKED: "text-revokedText",
+export const textColorMapping: Record<VcStatus, string>  = {
+    SUCCESS: "text-successText",
+    EXPIRED: "text-expiredText",
+    INVALID: "text-invalidText",
+    REVOKED: "text-revokedText",
 };
 
-export const borderColorMapping: any = {
-  SUCCESS: "border-successBorder",
-  EXPIRED: "border-expiredBorder",
-  INVALID: "border-invalidBorder",
-  REVOKED: "border-revokedBorder",
+export const borderColorMapping: Record<VcStatus, string> = {
+    SUCCESS: "border-successBorder",
+    EXPIRED: "border-expiredBorder",
+    INVALID: "border-invalidBorder",
+    REVOKED: "border-revokedBorder",
 };
 
 export const isMobileDevice = (): boolean => {
@@ -205,3 +211,19 @@ export const EXCLUDE_KEYS_SD_JWT_VC = [
   "issuer",
   "vct",
 ].map((key) => key.toLowerCase());
+
+export const getStepConfig = (method: VerificationMethod | string) => {
+    switch (method) {
+        case "SCAN":
+        case "UPLOAD":
+        case "VERIFY":
+            return VerificationSteps[method];
+        default:
+            return null;
+    }
+};
+export interface VerificationStepWithStatus extends VerificationStep {
+    stepNumber: number;
+    isCompleted: boolean;
+    isActive: boolean;
+}
