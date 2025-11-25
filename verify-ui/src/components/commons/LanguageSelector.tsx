@@ -70,13 +70,11 @@ export const LanguageSelector: React.FC = () => {
               rtl ? "left-1 lg:left-0" : "right-1 lg:right-0"
             } mt-3 rounded-md shadow-lg bg-background overflow-hidden font-normal border border-gray-200`}
           >
-            <ul className="divide-y divide-gray-200" role="listbox">
+            <ul className="divide-y divide-gray-200">
               {LanguagesSupported.map((item) => (
                 <li
                   key={item.value}
                   data-testid={`Language-Selector-DropDown-Item-${item.value}`}
-                  role="option"
-                  aria-selected={language === item.value}
                 >
                   <button
                     type="button"
@@ -85,6 +83,8 @@ export const LanguageSelector: React.FC = () => {
                       event.stopPropagation();
                       handleChange(item);
                     }}
+                    role="option"
+                    aria-selected={language === item.value}
                   >
                     {language === item.value
                       ? renderGradientText(item.label)
