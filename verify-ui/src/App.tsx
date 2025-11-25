@@ -37,7 +37,6 @@ function switchToVerificationMethod(method: VerificationMethod) {
     sessionStorage.removeItem("pathName");
     sessionStorage.removeItem("transactionId");
     sessionStorage.removeItem("requestId");
-    sessionStoragePath.replace(sessionStoragePath, "");
   }
   if (sessionStoragePath?.includes(Pages.Scan) && method === "SCAN") {
     store.dispatch(selectMethod({ method: "SCAN" }));
