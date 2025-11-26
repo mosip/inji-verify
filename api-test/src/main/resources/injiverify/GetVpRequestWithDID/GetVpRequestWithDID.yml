@@ -8,7 +8,7 @@ GetVpRequestWithDID:
     inputTemplate: injiverify/GetVpRequestWithDID/GetVpRequestWithDID
     outputTemplate: injiverify/GetVpRequestWithDID/GetVpRequestWithDIDResult
     input: '{
-    "requestId": "$ID:CreateNewVerificationRequest_DID_ClientId_Valid_Sid_requestId$",
+    "requestId": "$ID:CreateNewVerificationRequest_DID_ClientId_Valid_Smoke_Sid_requestId$",
     "acceptHeader": "*/*"
 }'
     output: '{
