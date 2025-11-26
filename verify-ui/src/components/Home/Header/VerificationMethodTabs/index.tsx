@@ -114,10 +114,8 @@ function VerificationMethodTabs(props: any) {
               active={method === "VERIFY"}
               label={t('VP_Verification')}
               onClick={() => {
-                  dispatch(resetVpRequest());
-                  window.dispatchEvent(new Event("resetVpVerification"));
-                  switchToVerificationMethod("VERIFY");
-                  navigate(Pages.VerifyCredentials);
+                switchToVerificationMethod("VERIFY");
+                navigate(Pages.VerifyCredentials);
               }}
             />
             <Tab
