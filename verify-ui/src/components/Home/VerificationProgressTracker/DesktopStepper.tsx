@@ -87,7 +87,7 @@ const DesktopStepper: React.FC = () => {
                     id={`${convertToId(step.label)}-description`}
                     className={`${marginClass} text-normalTextSize text-stepperDescription font-normal col-end-13`}
                   >
-                    {(step.description || "").split("<span>").map((text, index) =>
+                    {(step.description || "").split("<span>").map((text:string, index:number) =>
                       index % 2 === 1 ? (
                         <span key={index} style={{ fontStyle: "italic" }}>
                           "{text.trim()}"

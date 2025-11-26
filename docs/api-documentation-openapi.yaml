@@ -202,6 +202,19 @@ paths:
       responses:
         '200':
           description: The response was processed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redirect_uri:
+                    type: string
+                    nullable: true
+                    description: >
+                      Optional redirect URL returned only if the verifier has been
+                      configured with `inji.verify.redirect-uri`.
+              example:
+                redirect_uri: "https://example.com/"
         '400':
           description: The submission failed due to an invalid request format or missing required fields.
         '404':

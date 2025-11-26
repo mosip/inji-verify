@@ -65,7 +65,7 @@ export const getDetailsOrder = (vc: any, currentLanguage: string) => {
             : vc?.credentialSubject ?? vc;
 
     const type =
-        vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.[1];
+        vc?.regularClaims && vc?.disclosedClaims ? "SdJwtVC" : vc?.type?.find((t: string) => t !== "VerifiableCredential");
 
     switch (type) {
         case "InsuranceCredential":
@@ -86,29 +86,25 @@ export const getDetailsOrder = (vc: any, currentLanguage: string) => {
                 );
 
         case "farmer":
-            return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap(
-                (key: any) => {
-                    if (typeof key === "string") {
-                        return {
-                            key,
-                            value: getValue(credential[key], currentLanguage) || "N/A",
-                        };
-                    } else if (typeof key === "object" && key !== null) {
-                        const [farmKey, farmOrder] = Object.entries(key)[0];
-                        if (
-                            farmKey in credential &&
-                            typeof credential[farmKey] === "object"
-                        ) {
-                            return (farmOrder as string[]).map((farmField: any) => ({
-                                key: farmField,
-                                value: credential[farmKey][farmField] || "N/A",
-                            }));
-                        }
-                        return {key: farmKey, value: "N/A"};
+            return getVCRenderOrders().farmerLandCredentialRenderOrder.flatMap((key: any) => {
+                if (typeof key === "string") {
+                    return {
+                        key,
+                        value: getValue(credential[key], currentLanguage) || "N/A",
+                    };
+                } else if (typeof key === "object" && key !== null) {
+                    const [farmKey, farmOrder] = Object.entries(key)[0];
+                    const farmObject = credential[farmKey];
+                    if (!farmObject || typeof farmObject !== "object") {
+                        return { key: farmKey, value: "N/A" };
                     }
-                    return {key, value: "N/A"};
+                    return (farmOrder as string[]).map((farmField) => {
+                        const value = farmObject?.[farmField] ?? "N/A";
+                        return { key: farmField, value };
+                    });
                 }
-            );
+                return {key, value: "N/A"};
+            });
 
         case "FarmerCredential":
             return getVCRenderOrders().farmerCredentialRenderOrder.map((key: string) => {

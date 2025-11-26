@@ -18,7 +18,7 @@ import PageTemplate from "./components/PageTemplate";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   const sessionStoragePath = sessionStorage.getItem('pathName');
-  let methodPath = "";
+  let methodPath;
   switch (method) {
     case "UPLOAD":
       methodPath = Pages.Home;
@@ -37,7 +37,7 @@ function switchToVerificationMethod(method: VerificationMethod) {
     sessionStorage.removeItem("transactionId");
     sessionStorage.removeItem("requestId");
   }
-  store.dispatch(goToHomeScreen({ method }));
+  store.dispatch(goToHomeScreen({method}));
   return null;
 }
 

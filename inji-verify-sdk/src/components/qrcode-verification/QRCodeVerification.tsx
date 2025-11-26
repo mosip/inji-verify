@@ -541,7 +541,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
   };
 
   const fetchVPStatus = async (transactionId: string, requestId: string) => {
-    setLoading(true);
     try {
       const response = await vpRequestStatus(verifyServiceUrl, requestId);
       const hasRequiredKeys = sessionStorage.getItem("transactionId") && sessionStorage.getItem("requestId");
@@ -610,6 +609,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const transactionId = sessionStorage.getItem("transactionId");
 
         if (requestId && transactionId && !vpToken && !error) {
+          setLoading(true);
           fetchVPStatus(transactionId, requestId);
         }
       }
