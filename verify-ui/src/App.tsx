@@ -12,13 +12,13 @@ import { useAppSelector } from "./redux/hooks";
 import store, { RootState } from "./redux/store";
 import { isRTL } from "./utils/i18n";
 import { VerificationMethod } from "./types/data-types";
-import { goToHomeScreen, qrReadInit } from "./redux/features/verification/verification.slice";
+import { goToHomeScreen } from "./redux/features/verification/verification.slice";
 import { Verify } from "./pages/Verify";
 import PageTemplate from "./components/PageTemplate";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   const sessionStoragePath = sessionStorage.getItem('pathName');
-  let methodPath = "";
+  let methodPath;
   switch (method) {
     case "UPLOAD":
       methodPath = Pages.Home;
