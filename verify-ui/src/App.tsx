@@ -15,7 +15,6 @@ import { VerificationMethod } from "./types/data-types";
 import { goToHomeScreen, qrReadInit } from "./redux/features/verification/verification.slice";
 import { Verify } from "./pages/Verify";
 import PageTemplate from "./components/PageTemplate";
-import { selectMethod } from "./redux/features/verification/verification.slice";
 
 function switchToVerificationMethod(method: VerificationMethod) {
   const sessionStoragePath = sessionStorage.getItem('pathName');
@@ -38,13 +37,8 @@ function switchToVerificationMethod(method: VerificationMethod) {
     sessionStorage.removeItem("transactionId");
     sessionStorage.removeItem("requestId");
   }
-  if (sessionStoragePath?.includes(Pages.Scan) && method === "SCAN") {
-    store.dispatch(selectMethod({ method: "SCAN" }));
-    store.dispatch(qrReadInit({ method: "SCAN" }));
-  } else {
-    store.dispatch(goToHomeScreen({method}));
-  }
-    return null;
+  store.dispatch(goToHomeScreen({method}));
+  return null;
 }
 
 const router = createBrowserRouter([
