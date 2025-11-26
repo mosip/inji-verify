@@ -38,17 +38,11 @@ public class InjiVerifyUtil extends AdminTestUtil {
 
 	public static String isTestCaseValidForExecution(TestCaseDTO testCaseDTO) {
 		String testCaseName = testCaseDTO.getTestCaseName();
-		currentTestCaseName = testCaseName;
 
 		int indexof = testCaseName.indexOf("_");
 		String modifiedTestCaseName = testCaseName.substring(indexof + 1);
 
 		addTestCaseDetailsToMap(modifiedTestCaseName, testCaseDTO.getUniqueIdentifier());
-		
-		if (!testCasesInRunScope.isEmpty()
-				&& testCasesInRunScope.contains(testCaseDTO.getUniqueIdentifier()) == false) {
-			throw new SkipException(GlobalConstants.NOT_IN_RUN_SCOPE_MESSAGE);
-		}
 
 		if (SkipTestCaseHandler.isTestCaseInSkippedList(testCaseName)) {
 			throw new SkipException(GlobalConstants.KNOWN_ISSUES);

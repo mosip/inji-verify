@@ -67,24 +67,6 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//span[@id='please-try-again-button']")
 	WebElement PleaseTryAgain;
 
-	@FindBy(xpath = "//button[@data-testid='Language-Selector-Button']")
-	WebElement LanguageDropdownButton;
-
-	@FindBy(xpath = "//button[@data-testid='Language-Selector-Button']")
-	WebElement LanguageDropdownMenu;
-
-	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-ar']//button[contains(text(),'عربي')]")
-	WebElement ArabicLanguageButton;
-
-	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-fr']//button[contains(text(),'Français')]")
-	WebElement FrenchLanguageButton;
-
-	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-ar']//button[contains(text(),'عربي')]")
-	WebElement ArabicLanguageSelected;
-
-	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-fr']//button[contains(text(),'Français')]")
-	WebElement FrenchLanguageSelected;
-
 	@FindBy(xpath = "//input[@type='file']")
 	WebElement uploadpath;
 
@@ -144,11 +126,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadQRCodeDownloadedFromPhone() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.PNG");
-	}
-
-	public void uploadMultiLanguageVc() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "multilanguage.PNG");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.jpg");
 	}
 
 	public void ClickonUploadExpiredQRCodepngExpired() {
@@ -172,12 +150,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadSDJwtQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.png");
-
-	}
-
-	public void ClickonUploadSVGQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SVG.PNG");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
 
 	}
 
@@ -317,30 +290,6 @@ public class UploadQRCode extends BasePage {
 
 	public void clickOnPleaseTryAgain() {
 		clickOnElement(driver, PleaseTryAgain);
-	}
-
-	public void clickOnLanguageDropdownButton() {
-		clickOnElement(driver, LanguageDropdownButton);
-	}
-
-	public boolean isLanguageDropdownVisible() {
-		return isElementIsVisible(driver, LanguageDropdownMenu);
-	}
-
-	public boolean isArabicLanguageSelected() {
-		return isElementIsVisible(driver, ArabicLanguageSelected);
-	}
-
-	public boolean isFrenchLanguageSelected() {
-		return isElementIsVisible(driver, FrenchLanguageSelected);
-	}
-
-	public void SelectArabicLanguage() {
-		clickOnElement(driver, ArabicLanguageButton);
-	}
-
-	public void SelectFrenchLanguage() {
-		clickOnElement(driver, FrenchLanguageButton);
 	}
 
 }

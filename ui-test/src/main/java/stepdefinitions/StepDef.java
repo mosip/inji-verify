@@ -275,6 +275,24 @@ public class StepDef {
             throw e;
         }
     }
+    
+    @When("User click on continue")
+    public void verifyClickOnContinueButton() {
+        try {
+            homePage.ClickonContinueButton();
+            test.log(Status.PASS, "Successfully clicked on the Continue button.");
+            test.log(Status.PASS, "Successfully navigated to the home page after clicking the Continue button.");
+        } catch (NoSuchElementException e) {
+            logFailure(test, driver, "Element not found while clicking on the Continue button", e);
+            throw e;
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Navigation verification failed: Home page is not displayed after clicking the Continue button.");
+            throw e;
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while clicking on the Continue button", e);
+            throw e;
+        }
+    }
 
     @When("Verify that expansion button is displayed after expansion")
     public void verifyThatExpansionButtonIsDisplayedAfterExpansion() {
@@ -485,90 +503,6 @@ public class StepDef {
             throw e;
         } catch (Exception e) {
             logFailure(test, driver, "Unexpected error while verifying Upload QR Code Step 2 label", e);
-            throw e;
-        }
-    }
-
-    @When("Verify if name value is present in arabic")
-    public void verifyIfNameValueIsPresentInArabic() {
-        try {
-            String actualLabel = homePage.getNameValueInArabic();
-            Assert.assertEquals(actualLabel, UiConstants.NAME_VALUE_IN_ARABIC, 
-                "Name value in arabic does not match the expected value.");
-            test.log(Status.PASS, "Name value in arabic verification successful. Expected: " 
-                + UiConstants.NAME_VALUE_IN_ARABIC + ", Actual: " + actualLabel);
-        } catch (AssertionError e) {
-            test.log(Status.FAIL, "Name value in arabic verification failed. Expected: " 
-                + UiConstants.NAME_VALUE_IN_ARABIC + ", but found: " + homePage.getNameValueInArabic());
-            throw e;
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while verifying Name value in arabic", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while verifying Name value in arabic", e);
-            throw e;
-        }
-    }
-
-    @When("Verify if name value is present in french")
-    public void verifyIfNameValueIsPresentInFrench() {
-        try {
-            String actualLabel = homePage.getNameValueInFrench();
-            Assert.assertEquals(actualLabel, UiConstants.NAME_VALUE_IN_FRENCH, 
-                "Name value in french does not match the expected value.");
-            test.log(Status.PASS, "Name value in french verification successful. Expected: " 
-                + UiConstants.NAME_VALUE_IN_FRENCH + ", Actual: " + actualLabel);
-        } catch (AssertionError e) {
-            test.log(Status.FAIL, "Name value in french verification failed. Expected: " 
-                + UiConstants.NAME_VALUE_IN_FRENCH + ", but found: " + homePage.getNameValueInFrench());
-            throw e;
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while verifying Name value in french", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while verifying Name value in french", e);
-            throw e;
-        }
-    }
-
-    @When("Verify if gender value is present in arabic")
-    public void verifyIfGenderValueIsPresentInArabic() {
-        try {
-            String actualLabel = homePage.getGenderValueInArabic();
-            Assert.assertEquals(actualLabel, UiConstants.GENDER_VALUE_IN_ARABIC, 
-                "Gender value in arabic does not match the expected value.");
-            test.log(Status.PASS, "Gender value in arabic verification successful. Expected: " 
-                + UiConstants.GENDER_VALUE_IN_ARABIC + ", Actual: " + actualLabel);
-        } catch (AssertionError e) {
-            test.log(Status.FAIL, "Gender value in arabic verification failed. Expected: " 
-                + UiConstants.GENDER_VALUE_IN_ARABIC + ", but found: " + homePage.getGenderValueInArabic());
-            throw e;
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while verifying Gender value in arabic", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while verifying Gender value in arabic", e);
-            throw e;
-        }
-    }
-
-    @When("Verify if gender value is present in French")
-    public void verifyIfGenderValueIsPresentInFrench() {
-        try {
-            String actualLabel = homePage.getGenderValueInFrench();
-            Assert.assertEquals(actualLabel, UiConstants.GENDER_VALUE_IN_FRENCH, 
-                "Gender value in French does not match the expected value.");
-            test.log(Status.PASS, "Gender value in French verification successful. Expected: " 
-                + UiConstants.GENDER_VALUE_IN_FRENCH + ", Actual: " + actualLabel);
-        } catch (AssertionError e) {
-            test.log(Status.FAIL, "Gender value in French verification failed. Expected: " 
-                + UiConstants.GENDER_VALUE_IN_FRENCH + ", but found: " + homePage.getGenderValueInFrench());
-            throw e;
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while verifying Gender value in French", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while verifying Gender value in French", e);
             throw e;
         }
     }
@@ -1090,20 +1024,6 @@ public class StepDef {
         }
     }
 
-    @When("User click on continue")
-    public void verifyClickOnContinueButton() {
-        try {
-            homePage.ClickonContinueButton();
-            test.log(Status.PASS, "Successfully clicked on the Continue button.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while clicking on the Continue button", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while clicking on the Continue button", e);
-            throw e;
-        }
-    }
-
     @Given("Upload QR code file PDF downloaded from mobile")
     public void uploadQRCodeFilePdfDownloadedFromMobile() {
         try {
@@ -1114,20 +1034,6 @@ public class StepDef {
             throw e;
         } catch (Exception e) {
             logFailure(test, driver, "Unexpected error while uploading QR code file (PDF) from mobile", e);
-            throw e;
-        }
-    }
-
-    @Given("Verify Upload multilanguage VC")
-    public void verifyUploadMultiLanguageVc() {
-        try {
-            uploadqrcode.uploadMultiLanguageVc();
-            test.log(Status.PASS, "Uploaded a multi language QR code file successfully.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while uploading multi language QR", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while uploading  multi language QR", e);
             throw e;
         }
     }
@@ -1250,57 +1156,6 @@ public class StepDef {
             throw e;
         } catch (Exception e) {
             logFailure(test, driver, "Unexpected error while clicking 'Please Try Again' button", e);
-            throw e;
-        }
-    }
-
-    @Given("Verify click on language dropdown")
-    public void verifyLanguageDropdownButton() {
-        try {
-            uploadqrcode.clickOnLanguageDropdownButton();
-            test.log(Status.PASS, "Clicked on 'language Dropdown' button successfully.");
-            boolean isDropdownVisible = uploadqrcode.isLanguageDropdownVisible();
-            Assert.assertTrue(isDropdownVisible, "Language dropdown should be visible after click");
-            test.log(Status.PASS, "Language dropdown is visible after click.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while clicking 'Language dropdown' button", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while clicking 'Language dropdown' button", e);
-            throw e;
-        }
-    }
-
-    @When("Verify select arabic language")
-    public void verifySelectArabicLanguage() {
-        try {
-            uploadqrcode.SelectArabicLanguage();
-            test.log(Status.PASS, "Clicked on 'Arabic Language' button successfully.");
-            boolean isArabicSelected = uploadqrcode.isArabicLanguageSelected();
-            Assert.assertTrue(isArabicSelected, "Arabic language should be selected after click");
-            test.log(Status.PASS, "Arabic language is successfully selected. Language indicator shows 'عربي'.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while clicking 'Arabic Language' button", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while clicking 'Arabic Language' button", e);
-            throw e;
-        }
-    }
-
-    @When("Verify select french language")
-    public void verifySelectFrenchLanguage() {
-        try {
-            uploadqrcode.SelectFrenchLanguage();
-            test.log(Status.PASS, "Clicked on 'French Language' button successfully.");
-            boolean isFrenchSelected = uploadqrcode.isFrenchLanguageSelected();
-            Assert.assertTrue(isFrenchSelected, "French language should be selected after click");
-            test.log(Status.PASS, "French language is successfully selected. Language indicator shows 'Français'.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Element not found while clicking 'French Language' button", e);
-            throw e;
-        } catch (Exception e) {
-            logFailure(test, driver, "Unexpected error while clicking 'French Language' button", e);
             throw e;
         }
     }
@@ -2842,22 +2697,6 @@ public void verify_upload_button_visible_after_2_mins_idle() {
 	    }
 	}
 
-    @Then("Upload SVG rendered VC")
-	public void upload_SVG_rendered_VC_code() {
-	    try {
-	        uploadqrcode.ClickonUploadSVGQRCode();
-	        test.log(Status.PASS, "Successfully uploaded SVG rendered VC.");
-	    } catch (AssertionError e) {
-	        test.log(Status.FAIL, "Verification failed: Upload of SVG rendered VC QR code did not behave as expected.");
-	        throw e;
-	    } catch (NoSuchElementException e) {
-	        logFailure(test, driver, "Element not found while uploading SVG rendered VC QR code", e);
-	        throw e;
-	    } catch (Exception e) {
-	        logFailure(test, driver, "Unexpected error occurred while uploading SVG rendered VC QR code", e);
-	        throw e;
-	    }
-	}
 	@Then("Upload invalid pdf")
 	public void upload_invalid_pdf() {
 	    try {

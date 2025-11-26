@@ -50,6 +50,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='help-button']")
 	WebElement helpButton;
+	
+	@FindBy(xpath = "//button[.//span[text()='Continue as Guest']]")
+	WebElement continueButton;
 
 	@FindBy(xpath = "(//*[@id='help-button']//*[@class='mx-1.5 rotate-180']//*)[1]")
 	WebElement Expansionbutton;
@@ -81,12 +84,6 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//*[@id='verify-document']")
 	WebElement UploadQRCodeStep2Label;
 
-	@FindBy(id = "fullname-value")
-	WebElement FullNameValue;
-
-	@FindBy(id = "gender-value")
-	WebElement FullGenderValue;
-
 	@FindBy(xpath = "//*[@id='verify-document-description']")
 	WebElement UploadQRCodeStep2Description;
 
@@ -101,9 +98,6 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//span[@class='mr-1.5']")
 	WebElement UploadIcon;
-
-	@FindBy(xpath = "//button[.//span[text()='Continue as Guest']]")
-	WebElement continueButton;
 
 	@FindBy(id = "upload-qr-code-button")
 	WebElement UploadButton;
@@ -134,6 +128,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[contains(@data-testid, 'DataShareFooter-Success-Button')]")
 	WebElement getOnOnProceed;
+	
+	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text' and text()='Health Insurance']")
+	WebElement healthInsurance;
 
 	@FindBy(xpath = "//div[@data-testid='ItemBox-Outer-Container-0']")
 	WebElement isMosipNationalId;
@@ -155,9 +152,6 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='verify_form']")
 	WebElement verifyButton;
-
-	@FindBy(xpath = "//h3[@data-testid='ItemBox-Text' and text()='Health Insurance']")
-	WebElement healthInsurance;
 
 	@FindBy(xpath = "//*[@data-testid='DownloadResult-Home-Button']")
 	WebElement HomeButton;
@@ -212,6 +206,10 @@ public class HomePage extends BasePage {
 	public void ClickonHomeButton() {
 		clickOnElement(driver, helpButton);
 	}
+	
+	public void ClickonContinueButton() {
+		clickOnElement(driver, continueButton);
+	}
 
 	public Boolean isExpansionbuttonDisplayedAfter() {
 		return isElementIsVisible(driver, ExpansionbuttonAfter);
@@ -262,26 +260,6 @@ public class HomePage extends BasePage {
 
 	}
 
-	public String getNameValueInArabic() {
-		return getText(driver, FullNameValue);
-
-	}
-
-	public String getNameValueInFrench() {
-		return getText(driver, FullNameValue);
-
-	}
-
-	public String getGenderValueInArabic() {
-		return getText(driver, FullGenderValue);
-
-	}
-
-	public String getGenderValueInFrench() {
-		return getText(driver, FullGenderValue);
-
-	}
-
 	public String getUploadQRCodeStep2Description() {
 		return getText(driver, UploadQRCodeStep2Description);
 
@@ -303,10 +281,6 @@ public class HomePage extends BasePage {
 
 	public Boolean isUploadIconIsVisible() {
 		return isElementIsVisible(driver, UploadIcon);
-	}
-
-	public void ClickonContinueButton() {
-		clickOnElement(driver, continueButton);
 	}
 
 	public Boolean isUploadButtonIsVisible() {
@@ -339,6 +313,10 @@ public class HomePage extends BasePage {
 		clickOnElement(driver,mosipCrdentials);
 	}
 
+    public void clickOnStayProtectedCredentials() {
+        WebElement stayProtectedIssuerElement = driver.findElement(By.xpath("//h3[text()='" + stayProtectedIssuer + "']"));
+        clickOnElement(driver,stayProtectedIssuerElement);
+    }
 
 	public void clickOnGetStartedButton() {
 		if(isElementIsVisible(driver,getStartedButton)) {
@@ -374,10 +352,12 @@ public class HomePage extends BasePage {
 		clickOnElement(driver, isMosipNationalId);
 	}
 
-    public void clickOnStayProtectedCredentials() {
-        WebElement stayProtectedIssuerElement = driver.findElement(By.xpath("//h3[text()='" + stayProtectedIssuer + "']"));
-        clickOnElement(driver,stayProtectedIssuerElement);
-    }
+	public void clickOnStayProtectedCredentialType() {
+       		// Use explicit wait (configured via explicitWaitTimeout) instead of Thread.sleep
+		WaitUtil.waitForClickability(driver, healthInsurance);
+		clickOnElement(driver, healthInsurance);
+	}
+
 
 	public void clickOnOnProceed() {
 		try {
@@ -488,12 +468,6 @@ public class HomePage extends BasePage {
 
 	public void clickOnLogin() {
 		clickOnElement(driver,verifyButton );
-	}
-
-	public void clickOnStayProtectedCredentialType() {
-       		// Use explicit wait (configured via explicitWaitTimeout) instead of Thread.sleep
-		WaitUtil.waitForClickability(driver, healthInsurance);
-		clickOnElement(driver, healthInsurance);
 	}
 
 	public void clickOnHomebutton() {
