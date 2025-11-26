@@ -391,7 +391,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     responseUri: string,
     nonce: string
   ) => {
-    const redirectUri = `${window.location.origin}${window.location.pathname}`;
+    const redirectUri = `${window.location.origin}/`;
 
     const url = new URL(baseRedirectUrl);
     url.hash = "";
@@ -417,8 +417,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
           throw new Error("Failed to extract redirect URL from QR data");
 
         if (!isVPSubmissionSupported) {
-          sessionStorage.setItem("pathName", window.location.pathname);
-          const encodedOrigin = encodeURIComponent(`${window.location.origin}${window.location.pathname}`);
+          const encodedOrigin = encodeURIComponent(window.location.origin);
           window.location.href = `${redirectUrl}&client_id=${clientId}&redirect_uri=${encodedOrigin}%2F#`;
           return;
         }
@@ -582,8 +581,6 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
 
   useEffect(() => {
     let vpToken, presentationSubmission, error, errorDescripton;
-    const pathName = sessionStorage.getItem("pathName");
-    if (pathName) setLoading(true);
     try {
       const searchParams = new URLSearchParams(window.location.search); //"?error=abc123&error_description=xyz
       const hash = window.location.hash; // "#vp_token=abc123&state=xyz"
@@ -612,6 +609,7 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
         const transactionId = sessionStorage.getItem("transactionId");
 
         if (requestId && transactionId && !vpToken && !error) {
+          setLoading(true);
           fetchVPStatus(transactionId, requestId);
         }
       }
