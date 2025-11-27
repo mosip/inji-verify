@@ -7,7 +7,6 @@ import {
 } from "../../../redux/features/verification/verification.slice";
 import { raiseAlert } from "../../../redux/features/alerts/alerts.slice";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
-import { DisplayTimeout } from "../../../utils/config";
 
 function QrScanner({ onClose, scannerActive }: {
   onClose: () => void;
@@ -21,18 +20,11 @@ function QrScanner({ onClose, scannerActive }: {
     setIsScanning(true);
   }, []);
 
-  const scheduleVcDisplayTimeOut = () => {
-    setTimeout(() => {
-      dispatch(goToHomeScreen({}));
-    }, DisplayTimeout)
-  };
-
   const handleOnVCProcessed = (data: {
     vc: unknown;
     vcStatus: string
   }[]) => {
     dispatch(verificationComplete({verificationResult: data[0]}));
-    scheduleVcDisplayTimeOut();
   }
 
   function getClientId() {
