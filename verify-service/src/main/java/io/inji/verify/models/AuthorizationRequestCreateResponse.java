@@ -16,6 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor(force = true)
 @Table(name = "authorization_request_details")
 public class AuthorizationRequestCreateResponse implements Serializable {
+
     @Id
     private final String requestId;
 
@@ -24,7 +25,7 @@ public class AuthorizationRequestCreateResponse implements Serializable {
 
     @NotNull
     @Convert(converter = AuthorizationRequestResponseDtoConverter.class)
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private final AuthorizationRequestResponseDto authorizationDetails;
 
     @NotNull
