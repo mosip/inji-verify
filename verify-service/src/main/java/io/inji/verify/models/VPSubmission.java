@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "vp_submission", schema = "verify")
+@Table(name = "vp_submission")
 @Getter
 @Entity
 @AllArgsConstructor

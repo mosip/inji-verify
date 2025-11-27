@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Table(name = "authorization_request_details", schema = "verify")
+@Table(name = "authorization_request_details")
 public class AuthorizationRequestCreateResponse implements Serializable {
 
     @Id
