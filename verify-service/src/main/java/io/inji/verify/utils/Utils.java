@@ -5,12 +5,12 @@ import io.mosip.vercred.vcverifier.data.CredentialStatusResult;
 import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
+import io.mosip.vercred.vcverifier.exception.StatusCheckException;
 import io.mosip.vercred.vcverifier.utils.Base64Decoder;
 import io.mosip.vercred.vcverifier.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -52,24 +52,26 @@ public final class Utils {
         return verificationStatus;
     }
 
-    public static boolean checkIfVCIsRevoked(List<CredentialStatusResult> credentialStatusResults) {
-
+    public static boolean checkIfVCIsRevoked(Map<String, CredentialStatusResult> credentialStatusResults) {
         if (!credentialStatusResults.isEmpty()) {
-            for (CredentialStatusResult credentialStatusResult : credentialStatusResults) {
-                String purpose = credentialStatusResult.getPurpose();
-                int status = credentialStatusResult.getStatus();
-                if (Constants.STATUS_PURPOSE_REVOKED.equalsIgnoreCase(purpose)) {
-                    if (status == 1) {
-                        log.info("VC is Revoked");
-                        return true;
-                    }
+            CredentialStatusResult credentialStatusResult = credentialStatusResults.get(Constants.STATUS_PURPOSE_REVOKED);
+            if (credentialStatusResult != null) {
+                StatusCheckException error = credentialStatusResult.getError();
+                boolean isStatusValid = credentialStatusResult.isValid();
+                if (error == null) {
+                    // VC is Revoked if status is Not Valid
+                    return !isStatusValid;
+                } else {
+                    return false; // todo : to be confirmed
                 }
+            } else {
+                return false;
             }
         }
         return false;
     }
 
-    public static VerificationStatus applyRevocationStatus(VerificationStatus originalStatus, List<CredentialStatusResult> credentialStatus) {
+    public static VerificationStatus applyRevocationStatus(VerificationStatus originalStatus, Map<String, CredentialStatusResult> credentialStatus) {
         boolean isRevoked = checkIfVCIsRevoked(credentialStatus);
         return isRevoked ? VerificationStatus.REVOKED : originalStatus;
     }
