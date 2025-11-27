@@ -23,13 +23,11 @@ import utils.WaitUtil;
 
 public class HomePage extends BasePage {
 
-	private WebDriver driver;
-
     private static final String stayProtectedIssuer = InjiVerifyConfigManager.getproperty("stayProtectedIssuer");
     private static final String stayProtectedIssuerCredentialType = InjiVerifyConfigManager.getproperty("stayProtectedIssuerCredentialType");
 
 	public HomePage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
@@ -153,7 +151,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//button[@id='verify_form']")
 	WebElement verifyButton;
 
-	@FindBy(xpath = "//*[@data-testid='DownloadResult-Home-Button']")
+	@FindBy(xpath = "//button[@id='home-button']")
 	WebElement HomeButton;
 
 	@FindBy(xpath = "//*[@data-testid='HomeBanner-Guest-Login']")
@@ -204,7 +202,7 @@ public class HomePage extends BasePage {
 	}
 
 	public void ClickonHomeButton() {
-		clickOnElement(driver, helpButton);
+		clickOnElement(driver, homeButton);
 	}
 	
 	public void ClickonContinueButton() {

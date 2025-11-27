@@ -9,10 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ScanQRCodePage extends BasePage {
 
-	private WebDriver driver;
-
 	public ScanQRCodePage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 

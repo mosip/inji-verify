@@ -20,7 +20,11 @@ import utils.WaitUtil;
 
 public class BasePage {
 
-    public WebDriver driver;
+    protected WebDriver driver;
+
+    protected BasePage(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public void waitForElementVisible(WebDriver driver, WebElement element) {
         WaitUtil.waitForVisibility(driver, element);
@@ -222,18 +226,13 @@ public class BasePage {
         WaitUtil.waitForVisibility(driver, element);
         element.sendKeys(text);
     }
-
-    protected void sendKeysToTextBox(WebElement element, String text) {
-        WaitUtil.waitForVisibility(driver, element);
-        element.sendKeys(text);
-    }
     
 	public static int getTimeout() {
 		try {
 			return Integer.parseInt(System.getProperty("explicitWaitTimeout", "30"));
 		} catch (NumberFormatException e) {
-			System.out.println("Invalid explicitWaitTimeout value in config.properties. Using default 10 seconds.");
-			return 30;
+            System.out.println("Invalid explicitWaitTimeout value in config.properties. Using default 30 seconds.");
+            return 30;
 		}
 }
 }

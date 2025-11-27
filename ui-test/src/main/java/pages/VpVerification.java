@@ -12,10 +12,8 @@ import base.BasePage;
 
 public class VpVerification extends BasePage {
 
-	private WebDriver driver;
-
 	public VpVerification(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
