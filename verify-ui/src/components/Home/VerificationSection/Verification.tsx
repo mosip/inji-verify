@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Loader from "../../commons/Loader";
 import QrScanner from "./QrScanner";
 import { Button } from "./commons/Button";
 import { useAppDispatch } from "../../../redux/hooks";
 import { goToHomeScreen } from "../../../redux/features/verification/verification.slice";
-import {Pages, VerificationSteps} from "../../../utils/config";
+import { VerificationSteps } from "../../../utils/config";
 import { useVerificationFlowSelector } from "../../../redux/features/verification/verification.selector";
 import { ScanOutline } from "../../../utils/theme-utils";
 import { useTranslation } from "react-i18next";
@@ -17,13 +17,6 @@ const Verification = () => {
   }));
   const {t} = useTranslation()
   const [scannerActive, setScannerActive] = useState(true);
-
-  useEffect(() => {
-    const pathName = sessionStorage.getItem("pathName");
-    if (pathName?.includes(Pages.Scan)) {
-      setScannerActive(false);
-    }
-  }, []);
 
   const handleBack = () => {
     setScannerActive(false);
@@ -40,7 +33,7 @@ const Verification = () => {
           backgroundImage: `url(${ScanOutline})`,
         }}
       >
-        {method && activeScreen === VerificationSteps[method].Verifying ? (
+        {activeScreen === VerificationSteps[method].Verifying ? (
           <Loader innerBg="bg-white"/>
         ) : (
           <QrScanner scannerActive={scannerActive} onClose={handleBack}/>

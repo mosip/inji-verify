@@ -9,7 +9,6 @@ import {
 import { raiseAlert } from "../redux/features/alerts/alerts.slice";
 import { useAppDispatch } from "../redux/hooks";
 import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
-import { DisplayTimeout } from "../utils/config";
 
 export const Upload = () => {
   const { t } = useTranslation("Upload");
@@ -30,18 +29,11 @@ export const Upload = () => {
     </div>
   );
 
-  const scheduleVcDisplayTimeOut = () => {
-    setTimeout(() => {
-      dispatch(goToHomeScreen({}));
-    }, DisplayTimeout)
-  };
-
   const handleOnVCProcessed = (data: {
     vc: unknown;
     vcStatus: string
   }[]) => {
     dispatch(verificationComplete({verificationResult: data[0]}));
-    scheduleVcDisplayTimeOut();
   }
 
   function getClientId() {

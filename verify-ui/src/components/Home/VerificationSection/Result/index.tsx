@@ -12,7 +12,6 @@ import {
 } from "../../../../redux/features/verification/verification.slice";
 import { decodeSdJwtToken } from "../../../../utils/decodeSdJwt";
 import { AnyVc, LdpVc, SdJwtVc } from "../../../../types/data-types";
-import { resetVpRequest } from "../../../../redux/features/verify/vpVerificationState";
 import { DisplayTimeout } from "../../../../utils/config";
 
 const Result = () => {
@@ -65,7 +64,7 @@ const Result = () => {
   useEffect(() => {
     clearTimer();
     timerRef.current = setTimeout(() => {
-      dispatch(resetVpRequest());
+       dispatch(goToHomeScreen({}));
     }, DisplayTimeout);
 
     return () => clearTimer();
