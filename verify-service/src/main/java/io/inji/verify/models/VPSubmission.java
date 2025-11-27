@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "vp_submission")
+@Table(name = "vp_submission", schema = "verify")
 @Getter
 @Entity
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class VPSubmission {
     private final String vpToken;
 
     @Convert(converter = PresentationSubmissionDtoConverter.class)
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private final PresentationSubmissionDto presentationSubmission;
 
     private final String error;
