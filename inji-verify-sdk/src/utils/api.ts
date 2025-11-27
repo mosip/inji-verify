@@ -33,6 +33,7 @@ export const vcVerification = async (credential: unknown, url: string) => {
   try {
     const response = await fetch(url + "/vc-verification", requestOptions);
     const data = await response.json();
+    if (response.status !== 200) throw new Error(`Failed VC Verification due to: ${data.error}`);
     return data.verificationStatus;
   } catch (error) {
     console.error(error);
@@ -64,6 +65,7 @@ export const vcSubmission = async (
   try {
     const response = await fetch(url + "/vc-submission", requestOptions);
     const data = await response.json();
+    if (response.status !== 200) throw new Error(`Failed to Submit VC due to: ${data.error}`);
     return data.transactionId;
   } catch (error) {
     console.error(error);
