@@ -28,7 +28,7 @@ public class VPSubmission {
     private final String vpToken;
 
     @Convert(converter = PresentationSubmissionDtoConverter.class)
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private final PresentationSubmissionDto presentationSubmission;
 
     private final String error;
