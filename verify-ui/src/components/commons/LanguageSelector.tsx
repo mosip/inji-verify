@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isRTL, LanguagesSupported, switchLanguage } from "../../utils/i18n";
 import { storeLanguage } from "../../redux/features/common/commonSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -16,6 +16,8 @@ export const LanguageSelector: React.FC = () => {
   let language = useAppSelector((state: RootState) => state.common.language);
   language = language ?? window._env_.DEFAULT_LANG;
   const rtl = isRTL(language);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (item: DropdownItem) => {
@@ -24,15 +26,21 @@ export const LanguageSelector: React.FC = () => {
     dispatch(storeLanguage({ language: item.value }));
   };
 
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (isOpen && !containerRef.current?.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return (
     <div
       className="flex flex-row justify-center items-center"
       data-testid="LanguageSelector-Outer-Div"
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-          setIsOpen(false);
-        }
-      }}
+      ref={containerRef}
       tabIndex={0}
       role="button"
     >
