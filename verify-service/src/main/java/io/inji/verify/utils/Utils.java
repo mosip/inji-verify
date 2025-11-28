@@ -63,7 +63,7 @@ public final class Utils {
                     // VC is Revoked if status is Not Valid
                     return !isStatusValid;
                 } else {
-                    return false; // todo : to be confirmed
+                    return false; // Since got error while checking Revocation Status, VC is considered as not Revoked
                 }
             } else {
                 return false;
