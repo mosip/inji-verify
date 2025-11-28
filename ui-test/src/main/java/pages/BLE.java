@@ -9,10 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 
 public class BLE extends BasePage {
 
-	private WebDriver driver;
-
 	public BLE(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 

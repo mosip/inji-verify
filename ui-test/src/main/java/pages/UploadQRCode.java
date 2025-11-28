@@ -12,10 +12,8 @@ import org.openqa.selenium.support.PageFactory;
 
 public class UploadQRCode extends BasePage {
 
-	private WebDriver driver;
-
 	public UploadQRCode(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
@@ -150,7 +148,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void ClickonUploadSDJwtQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.png");
+		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
 
 	}
 
