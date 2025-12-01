@@ -241,5 +241,5 @@ export const getClientId = () => window._env_?.CLIENT_ID;
 
 export const isVPSubmissionSupported = () => {
     const value = window._env_?.VP_SUBMISSION_SUPPORTED;
-    return value.toLowerCase() === "true";
+    return value?.toLowerCase() === "true";
 };
