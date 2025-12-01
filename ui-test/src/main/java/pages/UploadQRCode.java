@@ -50,6 +50,21 @@ public class UploadQRCode extends BasePage {
 	@FindBy(xpath = "//span[text()='Verify Another QR code']")
 	WebElement VerifyAnotherQRcodeButton;
 
+	@FindBy(xpath = "//button[@data-testid='Language-Selector-Button']")
+	WebElement LanguageDropdownButton;
+
+	@FindBy(xpath = "//button[@type='button' and text()='عربي']")
+	WebElement ArabicLanguageButton;
+
+	@FindBy(xpath = "//button[@type='button' and contains(normalize-space(.), 'Français')]")
+	WebElement FrenchLanguageButton;
+
+	@FindBy(xpath = "//li[@data-testid='Language-Selector-DropDown-Item-ar']//button[contains(text(),'عربي')]")
+	WebElement ArabicLanguageSelected;
+
+	@FindBy(xpath = "//button[@type='button' and contains(normalize-space(.), 'Français')]")
+	WebElement FrenchLanguageSelected;
+
 	@FindBy(xpath = "//a[@id='home-button']")
 	WebElement HomeButton;
 
@@ -97,6 +112,10 @@ public class UploadQRCode extends BasePage {
 
 	public void ClickonAnotherUploadQRCodeJpg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
+	}
+
+	public void uploadMultiLanguageVc() {
+		uploadFileForInvalid(driver, UploadQRCodeButton, "multilanguage.PNG");
 	}
 
 	public void ClickonUploadQRCodePdf() {
@@ -149,6 +168,11 @@ public class UploadQRCode extends BasePage {
 
 	public void ClickonUploadSDJwtQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
+
+	}
+
+	public void ClickonUploadSVGQRCode() {
+		uploadFileForInvalid(driver, UploadQRCodeButton, "SVG.PNG");
 
 	}
 
@@ -240,9 +264,15 @@ public class UploadQRCode extends BasePage {
 		return isElementIsVisible(driver, FullNameValue);
 
 	}
+	
 
 	public void clickOnAnotherQRcodeButton() {
 		clickOnElement(driver, VerifyAnotherQRcodeButton);
+
+	}
+
+	public void clickOnLanguageDropdown() {
+		clickOnElement(driver, LanguageDropdownButton);
 
 	}
 
@@ -288,6 +318,26 @@ public class UploadQRCode extends BasePage {
 
 	public void clickOnPleaseTryAgain() {
 		clickOnElement(driver, PleaseTryAgain);
+	}
+
+	public boolean isLanguageDropdownVisible() {
+		return isElementIsVisible(driver, LanguageDropdownButton);
+	}
+
+	public boolean isArabicLanguageSelected() {
+		return isElementIsVisible(driver, ArabicLanguageSelected);
+	}
+
+	public boolean isFrenchLanguageSelected() {
+		return isElementIsVisible(driver, FrenchLanguageSelected);
+	}
+
+	public void SelectArabicLanguage() {
+		clickOnElement(driver, ArabicLanguageButton);
+	}
+
+	public void SelectFrenchLanguage() {
+		clickOnElement(driver, FrenchLanguageButton);
 	}
 
 }

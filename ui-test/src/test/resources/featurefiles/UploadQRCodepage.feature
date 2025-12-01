@@ -296,6 +296,15 @@ Feature: Inji Verify upload qr code testing
     And Upload SD-Jwt QR code 
     And Verify message for valid QR code
 
+  @smoke @verifyuploadValidSDJWTqrcode
+  Scenario: Verify upload valid SVG qr code
+    And Verify browser refresh
+    And Verify upload QR code step2 label
+    And Verify upload QR code step3 label
+    And Verify that Upload button visible
+    And Upload SVG rendered VC
+    And Verify message for valid QR code
+
   @smoke @verifyVcVerificationStatusExpiry
   Scenario: Verify valid vc verification status expiry
     And Open inji web in new tab

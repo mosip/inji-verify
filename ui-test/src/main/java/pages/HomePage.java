@@ -43,6 +43,12 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//a[@id='home-button']")
 	WebElement homeButton;
 
+	@FindBy(id = "fullname-value")
+	WebElement FullNameValue;
+
+	@FindBy(id = "gender-value")
+	WebElement FullGenderValue;
+
 	@FindBy(xpath = "//a[@id='verify-credentials-button']")
 	WebElement Credentialsbutton;
 
@@ -162,6 +168,7 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath = "(//span[contains(@class, 'bg-gradient-to-r') and contains(text(), 'Get Started')])[1]")
 	WebElement getStartedButton;
+
 
 	public Boolean isLogoDisplayed() {
 		return injiVerifyLogo.isDisplayed();
@@ -479,5 +486,27 @@ public class HomePage extends BasePage {
 	public void clickOnContinueAsGuest() {
 		clickOnElement(driver,guestLogin );
 	}
+
+	public String getNameValueInArabic() {
+		return getText(driver, FullNameValue);
+
+	}
+
+	public String getNameValueInFrench() {
+		return getText(driver, FullNameValue);
+
+	}
+
+	public String getGenderValueInArabic() {
+		return getText(driver, FullGenderValue);
+
+	}
+
+	public String getGenderValueInFrench() {
+		return getText(driver, FullGenderValue);
+
+	}
+
+
 
 	}
