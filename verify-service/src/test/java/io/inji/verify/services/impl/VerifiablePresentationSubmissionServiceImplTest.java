@@ -666,10 +666,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        // Mock CredentialVerificationSummary and VerificationResult
+        io.mosip.vercred.vcverifier.data.CredentialVerificationSummary mockSummary = mock(io.mosip.vercred.vcverifier.data.CredentialVerificationSummary.class);
         VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
-        when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.LDP_VC)))
-            .thenReturn(mockResult);
+        when(mockSummary.getVerificationResult()).thenReturn(mockResult);
+
+        when(credentialsVerifier.verifyAndGetCredentialStatus(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.LDP_VC), anyList()))
+            .thenReturn(mockSummary);
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
             .thenReturn(new AuthorizationRequestCreateResponse());
 
@@ -700,10 +705,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        // Mock CredentialVerificationSummary and VerificationResult
+        io.mosip.vercred.vcverifier.data.CredentialVerificationSummary mockSummary = mock(io.mosip.vercred.vcverifier.data.CredentialVerificationSummary.class);
         VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
-        when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.VC_SD_JWT)))
-            .thenReturn(mockResult);
+        when(mockSummary.getVerificationResult()).thenReturn(mockResult);
+
+        when(credentialsVerifier.verifyAndGetCredentialStatus(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.VC_SD_JWT), anyList()))
+            .thenReturn(mockSummary);
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
             .thenReturn(new AuthorizationRequestCreateResponse());
 
