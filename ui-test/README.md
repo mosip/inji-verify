@@ -54,7 +54,7 @@ Note :- update as per the env ex. if it needs to select the for dev use it as 'N
 3. Update the device from tag `platforms` from `https://www.browserstack.com/list-of-browsers-and-platforms/automate` (Windows, Mac)
 4. Open command prompt and change directory by using command 'cd ../inji-verify'
 5. Hit the command `mvn clean package -DskipTests` to build the jar.
-6. Then use `java -DBROWSERSTACK_USERNAME="username" -DBROWSERSTACK_ACCESS_KEY="accessKey" -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-*-SNAPSHOT.jar` to run the automation 
+6. Then use `java -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-0.15.2-SNAPSHOT.jar` to run the automation 
 
 Note:- in above command please replace the userName,accessKey and actual env url.
 
@@ -78,7 +78,7 @@ Note:- in above command please replace the userName,accessKey and actual env url
 3. **Build and Run:**
    - Open command prompt and change directory by using command 'cd ../inji-verify'
    - Hit the command `mvn clean package -DskipTests` to build the jar.
-   - Then use `java -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-*-SNAPSHOT.jar` to run the automation locally
+   - Then use `java -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression -jar target/uitest-injiverify-0.15.2-SNAPSHOT.jar` to run the automation locally
 
 Note:- Remove the BrowserStack credentials from the command when running locally.
 
@@ -119,7 +119,7 @@ To execute the tests using Eclipse IDE, use the following steps:
    - In the **Arguments** tab, add the necessary **VM arguments**:
      - **VM Arguments**:
        ```
-       -DBROWSERSTACK_USERNAME="username" -DBROWSERSTACK_ACCESS_KEY="accesskey" -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression
+       -Dmodules=ui-test -Denv.user=api-internal.dev -Denv.endpoint=https://api-internal.dev.mosip.net -Denv.testLevel=smokeAndRegression
        ```
 
 ### **Option B: Run Locally**
