@@ -27,7 +27,7 @@ Before running the automation tests, ensure the following software is installed 
 - **Maven 3.9.6** or higher ([installation guide](https://maven.apache.org/install.html))
 - **Lombok** (Refer to [Lombok Project](https://projectlombok.org/))
 - **setting.xml** ([download here](https://github.com/mosip/mosip-functional-tests/blob/master/settings.xml))
-- **apitest-commons** library should be cloned and the JAR should be built. Refer to ([README](https://github.com/mosip/mosip-functional-tests/blob/release-1.5.0/apitest-commons/README.md))
+- **apitest-commons** library should be cloned and the JAR should be built. Refer to ([README](https://github.com/mosip/mosip-functional-tests/blob/v1.3.4/README.md))
 
 ### For Windows
 
