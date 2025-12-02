@@ -28,7 +28,7 @@ Feature: Inji Verify vpVerification testing
 
 
   @smoke @verifyingVpVerification
-  Scenario: Verify the VP verification QR code
+  Scenario: Verify if the VP verification QR code is generated
 
     Given User gets the title of the page
     Then Validate the title of the page

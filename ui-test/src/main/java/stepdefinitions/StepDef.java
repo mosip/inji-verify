@@ -2378,7 +2378,7 @@ public class StepDef {
 	    }
 	}
 
-@Then("Verify that Upload button after 2 mins idle")
+@Then("Verify the Upload button after 2 mins idle")
 public void verify_upload_button_visible_after_2_mins_idle() {
      try {
 	        boolean isUploadButtonVisibleAfterIdle = homePage.isUploadButtonIsVisibleAfterIdle();

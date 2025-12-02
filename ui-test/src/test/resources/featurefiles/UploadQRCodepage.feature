@@ -332,10 +332,10 @@ Feature: Inji Verify upload qr code testing
     And Verify that user convert pdf into png
     And Upload QR code file JPEG
     And Verify message for valid QR code
-    And Verify that Upload button after 2 mins idle 
+    And Verify the Upload button after 2 mins idle 
 
   @smoke @verifyInvalidVcVerificationStatusExpiry
-  Scenario: Verify invalid vc verification status expiry
+  Scenario: Verify invalid vc verification status expir after countdown
     And Verify browser refresh
     And Verify upload QR code step2 label
     And Verify upload QR code step3 label
