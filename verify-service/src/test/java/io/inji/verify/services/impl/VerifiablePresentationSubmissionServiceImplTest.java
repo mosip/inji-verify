@@ -67,13 +67,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         verifiablePresentationSubmissionService = new VerifiablePresentationSubmissionServiceImpl(
-            vpSubmissionRepository, credentialsVerifier, presentationVerifier, verifiablePresentationRequestService);
+                vpSubmissionRepository, credentialsVerifier, presentationVerifier, verifiablePresentationRequestService);
     }
 
     @Test
     public void testSubmit_Success() {
-        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto("vpToken123", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()),
+        VPSubmissionDto vpSubmissionDto = new VPSubmissionDto("vpToken123",
+                new PresentationSubmissionDto("id", "dId", new ArrayList<>()),
                 "state123", null, null);
 
         verifiablePresentationSubmissionService.submit(vpSubmissionDto);
@@ -102,9 +102,9 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
-            new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
         assertNotNull(resultDto);
@@ -122,14 +122,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
                 new VCResultWithCredentialStatus("", VerificationStatus.SUCCESS, new HashMap<>())
         );
         VPSubmission vpSubmission = new VPSubmission("state123", "\"" + base64Token + "\"",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
-            new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
         assertNotNull(resultDto);
         assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
@@ -160,10 +160,10 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         );
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults1))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults2));
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults1))
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults2));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
         assertNotNull(resultDto);
         assertEquals(VPResultStatus.SUCCESS, resultDto.getVpResultStatus());
@@ -177,22 +177,22 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         String vpToken1Json = "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}";
         String base64Token1 = Base64.getUrlEncoder().encodeToString(vpToken1Json.getBytes());
-        
+
         List<VCResultWithCredentialStatus> vcResults = List.of(
                 new VCResultWithCredentialStatus("", VerificationStatus.SUCCESS, new HashMap<>())
         );
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "[\"" + base64Token1 + "\", \"{\\\"type\\\":[\\\"VerifiablePresentation\\\"],\\\"proof\\\":{\\\"type\\\":\\\"Ed25519Signature2018\\\"},\\\"VerifiablePresentation\\\":[{\\\"type\\\":[\\\"VerifiablePresentation\\\"]}]}\"]",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "[\"" + base64Token1 + "\", \"{\\\"type\\\":[\\\"VerifiablePresentation\\\"],\\\"proof\\\":{\\\"type\\\":\\\"Ed25519Signature2018\\\"},\\\"VerifiablePresentation\\\":[{\\\"type\\\":[\\\"VerifiablePresentation\\\"]}]}\"]",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -207,8 +207,8 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(new ArrayList<>());
 
-        assertThrows(VPSubmissionNotFoundException.class, 
-            () -> verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId));
+        assertThrows(VPSubmissionNotFoundException.class,
+                () -> verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId));
     }
 
     @Test
@@ -216,17 +216,17 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
-            new PresentationResultWithCredentialStatus(VPVerificationStatus.INVALID, new ArrayList<>()));
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.INVALID, new ArrayList<>()));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -244,17 +244,17 @@ public class VerifiablePresentationSubmissionServiceImplTest {
                         VerificationStatus.INVALID, new HashMap<>())
         );
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
-            new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -272,17 +272,17 @@ public class VerifiablePresentationSubmissionServiceImplTest {
                         VerificationStatus.SUCCESS, new HashMap<>())
         );
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(
-            new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -295,14 +295,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", "null", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123", "null",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -315,12 +315,12 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
 
@@ -335,13 +335,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", new ArrayList<>()), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", new ArrayList<>()), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -354,13 +354,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", null), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", null), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -373,15 +373,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
         when(presentationVerifier.verify(anyString())).thenThrow(new RuntimeException("Verification error"));
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
@@ -396,13 +396,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "12345", // Invalid format (number)
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -416,13 +416,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         String transactionId = "tx123";
 
         VPSubmission vpSubmission = new VPSubmission("state123", "[123, \"invalid\"]", // Invalid array items
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -435,14 +435,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", "[\"invalid-base64!!!\"]", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123", "[\"invalid-base64!!!\"]",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -455,14 +455,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", "\"invalid-base64!!!\"", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123", "\"invalid-base64!!!\"",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -477,14 +477,14 @@ public class VerifiablePresentationSubmissionServiceImplTest {
 
         VPSubmission vpSubmission = new VPSubmission("state123",
                 "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList())).thenReturn(null);
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -502,15 +502,15 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         );
         VPSubmission vpSubmission = new VPSubmission("state123",
                 "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -524,19 +524,19 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
-        
+                .thenReturn(new AuthorizationRequestCreateResponse());
+
         List<VCResult> vcResults = List.of(new VCResult("", VerificationStatus.INVALID));
         when(presentationVerifier.verify(anyString())).thenReturn(
-            new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
+                new PresentationVerificationResult(VPVerificationStatus.VALID, vcResults));
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -544,17 +544,17 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
     }
 
-    @Test 
+    @Test
     public void testGetVPResult_TokenMatchingFailedException() throws VPSubmissionNotFoundException, VPSubmissionWalletError {
         List<String> requestIds = List.of("req123");
         String transactionId = "tx123";
 
-        VPSubmission vpSubmission = new VPSubmission("state123", 
-            "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}", 
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+        VPSubmission vpSubmission = new VPSubmission("state123",
+                "{\"proof\":{\"type\":\"Ed25519Signature2018\"},\"verifiableCredential\":[]}",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId)).thenReturn(null);
 
@@ -583,13 +583,13 @@ public class VerifiablePresentationSubmissionServiceImplTest {
                 null,
                 null
         );
-        
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.INVALID, new ArrayList<>()));
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, vcResults))
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.INVALID, new ArrayList<>()));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -612,33 +612,33 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         List<VCResultWithCredentialStatus> invalidResults = List.of(new VCResultWithCredentialStatus("vc_invalid", VerificationStatus.INVALID, new HashMap<>()));
 
         VPSubmission vpSubmission = new VPSubmission("state123",
-            "[{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}, " +
-            "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}, " +
-            "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}]",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                    new DescriptorMapDto("id", "format", "path", new PathNestedDto(
-                            "format", "path")))), null, null);
-        
+                "[{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}, " +
+                        "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}, " +
+                        "{\"type\":[\"VerifiablePresentation\"],\"proof\":{\"type\":\"Ed25519Signature2018\"},\"VerifiablePresentation\":[{\"type\":[\"VerifiablePresentation\"]}]}]",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto(
+                                "format", "path")))), null, null);
+
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
         when(presentationVerifier.verifyAndGetCredentialStatus(anyString(), anyList()))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, successResults))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, expiredResults))
-            .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, invalidResults));
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, successResults))
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, expiredResults))
+                .thenReturn(new PresentationResultWithCredentialStatus(VPVerificationStatus.VALID, invalidResults));
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
         assertNotNull(resultDto);
         assertEquals(VPResultStatus.FAILED, resultDto.getVpResultStatus());
         assertEquals(3, resultDto.getVcResults().size());
-        
+
         assertTrue(resultDto.getVcResults().stream()
-            .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.SUCCESS));
+                .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.SUCCESS));
         assertTrue(resultDto.getVcResults().stream()
-            .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.EXPIRED));
+                .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.EXPIRED));
         assertTrue(resultDto.getVcResults().stream()
-            .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.INVALID));
+                .anyMatch(vc -> vc.getVerificationStatus() == VerificationStatus.INVALID));
     }
 
     @Test
@@ -653,25 +653,30 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         jsonVpTokens.add(vc);
 
         VPSubmission vpSubmission = new VPSubmission(
-            "state123",
-            vc.toString(),
-            new PresentationSubmissionDto("id", "dId", List.of(
-                new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
-            )),
-            null,
-            null
+                "state123",
+                vc.toString(),
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
+                )),
+                null,
+                null
         );
 
         String transactionId = "tx123";
         List<String> requestIds = List.of("req123");
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        // Mock CredentialVerificationSummary and VerificationResult
+        io.mosip.vercred.vcverifier.data.CredentialVerificationSummary mockSummary = mock(io.mosip.vercred.vcverifier.data.CredentialVerificationSummary.class);
         VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
-        when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.LDP_VC)))
-            .thenReturn(mockResult);
+        when(mockSummary.getVerificationResult()).thenReturn(mockResult);
+
+        when(credentialsVerifier.verifyAndGetCredentialStatus(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.LDP_VC), anyList()))
+                .thenReturn(mockSummary);
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 
@@ -687,25 +692,30 @@ public class VerifiablePresentationSubmissionServiceImplTest {
         String signature = Base64.getUrlEncoder().encodeToString("signature".getBytes());
         String sdJwtToken = header + "." + payload + "." + signature;
         VPSubmission vpSubmission = new VPSubmission(
-            "state123",
-            "\"" + sdJwtToken + "\"",
-            new PresentationSubmissionDto("id", "dId", List.of(
-                new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
-            )),
-            null,
-            null
+                "state123",
+                "\"" + sdJwtToken + "\"",
+                new PresentationSubmissionDto("id", "dId", List.of(
+                        new DescriptorMapDto("id", "format", "path", new PathNestedDto("format", "path"))
+                )),
+                null,
+                null
         );
 
         String transactionId = "tx123";
         List<String> requestIds = List.of("req123");
 
         when(vpSubmissionRepository.findAllById(requestIds)).thenReturn(List.of(vpSubmission));
+
+        // Mock CredentialVerificationSummary and VerificationResult
+        io.mosip.vercred.vcverifier.data.CredentialVerificationSummary mockSummary = mock(io.mosip.vercred.vcverifier.data.CredentialVerificationSummary.class);
         VerificationResult mockResult = mock(VerificationResult.class);
         when(mockResult.getVerificationStatus()).thenReturn(true);
-        when(credentialsVerifier.verify(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.VC_SD_JWT)))
-            .thenReturn(mockResult);
+        when(mockSummary.getVerificationResult()).thenReturn(mockResult);
+
+        when(credentialsVerifier.verifyAndGetCredentialStatus(anyString(), eq(io.mosip.vercred.vcverifier.constants.CredentialFormat.VC_SD_JWT), anyList()))
+                .thenReturn(mockSummary);
         when(verifiablePresentationRequestService.getLatestAuthorizationRequestFor(transactionId))
-            .thenReturn(new AuthorizationRequestCreateResponse());
+                .thenReturn(new AuthorizationRequestCreateResponse());
 
         VPTokenResultDto resultDto = verifiablePresentationSubmissionService.getVPResult(requestIds, transactionId);
 

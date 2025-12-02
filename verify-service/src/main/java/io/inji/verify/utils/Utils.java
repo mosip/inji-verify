@@ -43,13 +43,13 @@ public final class Utils {
     }
 
     public static VerificationStatus getVcVerificationStatus(CredentialVerificationSummary credentialVerificationSummary) {
-        log.info("Credential Verification Summary: {}", credentialVerificationSummary);
+        log.debug("Credential Verification Summary: {}", credentialVerificationSummary);
         VerificationResult verificationResult = credentialVerificationSummary.getVerificationResult();
         VerificationStatus verificationStatus = Util.INSTANCE.getVerificationStatus(verificationResult);
         boolean isRevoked = checkIfVCIsRevoked(credentialVerificationSummary.getCredentialStatus());
         if (isRevoked) return VerificationStatus.REVOKED;
 
-        log.info("VC verification status is {}", verificationStatus );
+        log.debug("VC verification status is {}", verificationStatus );
         return verificationStatus;
     }
 
@@ -63,7 +63,7 @@ public final class Utils {
                     // VC is Revoked if status is Not Valid
                     return !isStatusValid;
                 } else {
-                    return false; // Since got error while checking Revocation Status, VC is considered as not Revoked
+                    return false; // todo : Under Discussion
                 }
             } else {
                 return false;
