@@ -105,6 +105,7 @@ To test the Cross Device flow on your mobile / tablet device, scan the VP reques
 For Credentials which use `client_id_scheme` as`pre_registered` in the VP request, the wallet will not be able to share the VC since
 your locally running Verify application will not be pre registered with the wallet. 
 For other Credentials which use `client_id_scheme` as `DID` in the VP request, the wallet will be able to share the VC. 
+For `pre_registered`, we should add our client_id into `mimoto-trusted-verifiers.json` which is referred by Inji Wallet.
 
 ### Same Device Flow
 
