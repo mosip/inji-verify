@@ -34,7 +34,12 @@ The API documentations can be found [here](https://mosip.stoplight.io/docs/inji-
 - Once the wallet scans the QR code, wallet generates the VP token and submission request. This will be posted to the Inji verify backend.
 
 #####  Submission Result:
-- Once the wallet submits the VC, The status will be changed to **_VP_SUBMITTED_**.
+- Once the wallet submits the VC, the verify endpoint returns a redirect_uri without a response_code. The status will be changed to **_VP_SUBMITTED_**.
+  
+  > **Important Implementation Note:**  
+  > The VP submission endpoint (`/vp-submission/direct-post`) intentionally returns **only a `redirect_uri` without including a `response_code` parameter**. 
+  > This is a minimal feature implementation provided to enable integration with other modules (wallets, verifier applications). Full `response_code` support is being tracked and will be implemented in future releases to provide complete compliance with the OpenID4VP specification.
+
 - Inji verify UI can fetch the result of the submission through APIs. The result will contain two things.
   - Overall status of submission, either its **_SUCCESS_** or **_INVALID_**
   - List of VC with its own verification status.

@@ -45,6 +45,10 @@ The flow here utilizes the simple redirection to pass the Authorization request 
 
 6. **Transmission of Authorization Response**: Once the Wallet prepares the VP, Wallet sends it back to verifier application (using redirect URI) based on the response_mode and the response_type specified by the verifier application in the Authorization Request
 
+   > **Note on redirect_uri Implementation**: 
+   > When the wallet submits the VP token via direct post to the verifier backend, Inji Verify returns a `redirect_uri` in the response **without including a `response_code`**. This implementation allows the wallet to redirect the user back to the verifier application while keeping the VP submission processing asynchronous. The verifier application tracks the submission status using the transaction ID rather than relying on a response_code in the redirect.
+  > This is a minimal feature implementation provided to enable integration with other modules (wallets, verifier applications). Full `response_code` support is being tracked and will be implemented in future releases to provide complete compliance with the OpenID4VP specification.
+
 7. **Validation of the Authorization Response**: Upon receiving the Response (Authorization Response) from the Wallet, the verifier validates the signature of the Verifiable Presentation (VP) using its public key. Additionally, the verifier checks the signature of each Verifiable Credential (VC) by examining the proof details provided in each VC by the issuer. 
    
    If validation is successful, the verifier grants access or approval to the user. If validation fails, the verifier notifies the user of the failure
