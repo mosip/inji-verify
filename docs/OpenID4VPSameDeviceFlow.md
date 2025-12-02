@@ -1,6 +1,7 @@
 # OpenID4VP - Online Sharing (Same Device Flow)
 
 ## Description
+
 The **Same Device Flow** in OpenID for Verifiable Presentations (OpenID4VP) enables interaction between a Verifier and a Wallet when both applications reside on the same device. This contrasts with the Cross-Device flow, where a user manually scans a QR code displayed on a different screen.
 
 This flow utilizes simple redirection (Deep Linking) to pass the Authorization Request and Authorization Response between the Verifier and the Wallet.

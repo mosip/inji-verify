@@ -207,6 +207,7 @@ If the wallet cannot create/obtain/submit a VP (user cancels, wallet fails to fe
   "errorCode": "USER_CANCELLED",
   "errorDescription": "User rejected the credential share request in the wallet UI."
 }
+```
 
 ### Example Response
 
