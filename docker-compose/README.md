@@ -34,7 +34,7 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
   "name": "MOSIP ID",
   "type": "MOSIPVerifiableCredential",
   "essential": true,
-  "isAuthRequestEmbedded": false,
+  "clientIdScheme":"did",
   "definition": {
     "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication",
     "format": {
@@ -80,9 +80,9 @@ Let's look at the "MOSIP ID" example to understand how these properties work tog
 
 `essential`: This credential is required for the verification to succeed.
 
-`isAuthRequestEmbedded: false`: The corresponding VP request will use `client_id_scheme` as `DID` and Auth Request will be available to wallet via Request_Uri within the VP request.
+`clientIdScheme: did`: The corresponding VP request will use `client_id_scheme` as `DID` and Auth Request will be available to wallet via Request_Uri within the VP request.
 
-`isAuthRequestEmbedded: true`: The corresponding VP request will use `client_id_scheme` as `pre_registered` and Auth Request will be available to wallet directly within the VP request.
+`clientIdScheme: pre_registered`: The corresponding VP request will use `client_id_scheme` as `pre_registered` and Auth Request will be available to wallet directly within the VP request.
 
 `definition` : The presentation definition for the particular type of credential. For more details check [[DIF.PresentationExchange]](https://identity.foundation/presentation-exchange/spec/v2.0.0/)
 
