@@ -131,7 +131,7 @@ public class ScanQRCodePage extends BasePage {
 		return isElementIsVisible(driver, ScanQRCodeButtonTo);
 	}
 
-	public void clickonScanQRButtonButton() {
+	public void clickOnScanQRButtonButton() {
 		clickOnElement(driver, ScanQRCodeButtonTo);
 	}
 

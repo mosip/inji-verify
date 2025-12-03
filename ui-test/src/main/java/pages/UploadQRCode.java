@@ -106,7 +106,7 @@ public class UploadQRCode extends BasePage {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
-	public void clickonUploadQRCodeJpg() {
+	public void clickOnUploadQRCodeJpg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
@@ -115,7 +115,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void uploadMultiLanguageVc() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "multilanguage.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "multilanguage.PNG");
 	}
 
 	public void clickonUploadQRCodePdf() {
@@ -135,69 +135,69 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void clickonUploadQRCodeHtml() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
 	public void clickonUploadQRCodeInvalid() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Invalid.png");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "Invalid.png");
 	}
 
 	public void clickonUploadQRCodeDownloadedFromPhone() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.jpg");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.jpg");
 	}
 
 	public void clickonUploadExpiredQRCodepngExpired() {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "Expired_QRCode.png");
 	}
 
 	public void clickonUploadLargeSizeQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "largesize.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "largesize.PNG");
 
 	}
 
 	public void clickonUploadBlurQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "blur.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "blur.PNG");
 
 	}
 
 	public void clickonUploadmultipleQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "multiple_image.jpg");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "multiple_image.jpg");
 
 	}
 
 	public void clickonUploadSDJwtQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
 
 	}
 
 	public void clickonUploadSVGQRCode() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "SVG.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "SVG.PNG");
 
 	}
 
 	public void clickonUploadInvalidPdf() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "invalid.pdf");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "invalid.pdf");
 
 	}
 
 	public void clickonUploadExpiredQRCodeJpgExpired() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpg");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "Expired_QRCode.jpg");
 
 	}
 
 	public void clickonUploadExpiredQRCodejpegExpired() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpeg");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "Expired_QRCode.jpeg");
 
 	}
 
 	public void clickonUploadExpiredQRCodepdfExpired() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.pdf");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "Expired_QRCode.pdf");
 
 	}
 
 	public void clickonUploadQRCodeLageFileSize() {
-		uploadFileForInvalid(driver, UploadQRCodeButton, "LargeFileSize.png");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "LargeFileSize.png");
 
 	}
 
@@ -276,7 +276,7 @@ public class UploadQRCode extends BasePage {
 
 	}
 
-	public void clickonHomeButton() {
+	public void clickOnHomeButton() {
 		clickOnElement(driver, HomeButton);
 	}
 
@@ -332,11 +332,11 @@ public class UploadQRCode extends BasePage {
 		return isElementIsVisible(driver, FrenchLanguageSelected);
 	}
 
-	public void SelectArabicLanguage() {
+	public void selectArabicLanguage() {
 		clickOnElement(driver, ArabicLanguageButton);
 	}
 
-	public void SelectFrenchLanguage() {
+	public void selectFrenchLanguage() {
 		clickOnElement(driver, FrenchLanguageButton);
 	}
 

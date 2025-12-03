@@ -20,7 +20,7 @@ public class BLE extends BasePage {
 	@FindBy(xpath = "//p[@id='alert-message']")
 	WebElement bleAlertMsg;
 
-	public void clickonBleTab() {
+	public void clickOnBleTab() {
 		clickOnElement(driver, bleTab);
 	}
 

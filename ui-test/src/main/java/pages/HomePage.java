@@ -208,7 +208,7 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, Expansionbutton);
 	}
 
-	public void clickonHomeButton() {
+	public void clickOnHomeButton() {
 		clickOnElement(driver, homeButton);
 	}
 	
@@ -473,10 +473,6 @@ public class HomePage extends BasePage {
 
 	public void clickOnLogin() {
 		clickOnElement(driver,verifyButton );
-	}
-
-	public void clickOnHomebutton() {
-		clickOnElement(driver,HomeButton );
 	}
 
 	public Boolean isErrorMessageVisible() {

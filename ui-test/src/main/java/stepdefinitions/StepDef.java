@@ -259,9 +259,9 @@ public class StepDef {
     }
 
     @When("Verify click on home button")
-    public void verifyClickOnHomeButton() {
+    public void verifyclickOnHomeButton() {
         try {
-            homePage.clickonHomeButton();
+            homePage.clickOnHomeButton();
             test.log(Status.PASS, "Successfully clicked on the Home button.");
             test.log(Status.PASS, "Successfully navigated to the home page after clicking the Home button.");
         } catch (NoSuchElementException e) {
@@ -949,7 +949,7 @@ public class StepDef {
     @When("Upload QR code file JPG")
     public void uploadQRCodeFileJpg() {
         try {
-            uploadqrcode.clickonUploadQRCodeJpg();
+            uploadqrcode.clickOnUploadQRCodeJpg();
             test.log(Status.PASS, "Successfully uploaded the QR code file in JPG format.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while uploading the QR code JPG file", e);
@@ -1005,7 +1005,7 @@ public class StepDef {
     @When("Click on Home button")
     public void clickOnHomeButton() {
         try {
-            uploadqrcode.clickonHomeButton();
+            uploadqrcode.clickOnHomeButton();
             test.log(Status.PASS, "Successfully clicked on the Home button.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking on the Home button", e);
@@ -1530,7 +1530,7 @@ public class StepDef {
 	@When("Click on BLE tab")
 	public void click_on_ble_tab() {
 	    try {
-	        ble.clickonBleTab();
+	        ble.clickOnBleTab();
 	        test.log(Status.PASS, "Successfully clicked on the BLE tab.");
 	        test.log(Status.PASS, "BLE tab is active after clicking.");
 	    } catch (NoSuchElementException e) {
@@ -2398,7 +2398,7 @@ public void verify_upload_button_visible_after_2_mins_idle() {
 	@When("verify click on home button")
 	public void user_click_on_home_button() {
 	    try {
-	        homePage.clickOnHomebutton();
+	        homePage.clickOnHomeButton();
 	        test.log(Status.PASS, "Successfully clicked on home button.");
 	    } catch (NoSuchElementException e) {
 	        logFailure(test, driver, "Element not found while clicking home button", e);
@@ -2636,7 +2636,7 @@ public void verify_upload_button_visible_after_2_mins_idle() {
 	@Then("Click on ble tab")
 	public void click_on_ble_tab1() {
 	    try {
-	        ble.clickonBleTab();
+	        ble.clickOnBleTab();
 	        test.log(Status.PASS, "Successfully clicked on BLE tab and verified it is active.");
 	    } catch (AssertionError e) {
 	        test.log(Status.FAIL, "Verification failed: BLE tab did not activate.");
@@ -3143,9 +3143,9 @@ public void verify_upload_button_visible_after_2_mins_idle() {
     }
 
     @When("Verify select arabic language")
-    public void verifySelectArabicLanguage() {
+    public void verifyselectArabicLanguage() {
         try {
-            uploadqrcode.SelectArabicLanguage();
+            uploadqrcode.selectArabicLanguage();
             test.log(Status.PASS, "Clicked on 'Arabic Language' button successfully.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while clicking 'Arabic Language' button", e);
@@ -3157,9 +3157,9 @@ public void verify_upload_button_visible_after_2_mins_idle() {
     }
 
     @When("Verify select french language")
-    public void verifySelectFrenchLanguage() {
+    public void verifyselectFrenchLanguage() {
         try {
-            uploadqrcode.SelectFrenchLanguage();
+            uploadqrcode.selectFrenchLanguage();
             test.log(Status.PASS, "Clicked on 'French Language' button successfully.");
             boolean isFrenchSelected = uploadqrcode.isFrenchLanguageSelected();
             Assert.assertTrue(isFrenchSelected, "French language should be selected after click");
