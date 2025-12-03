@@ -521,5 +521,11 @@
 				]
 			}
 		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": ""
+		}
 	]
 }
