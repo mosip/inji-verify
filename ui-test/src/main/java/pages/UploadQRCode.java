@@ -98,19 +98,19 @@ public class UploadQRCode extends BasePage {
 	@FindBy(id = "fullname-value")
 	WebElement FullNameValue;
 
-	public void ClickonUploadQRCodePng() {
+	public void clickonUploadQRCodePng() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
-	public void ClickonAnotherUploadQRCodePng() {
+	public void clickonAnotherUploadQRCodePng() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.png");
 	}
 
-	public void ClickonUploadQRCodeJpg() {
+	public void clickonUploadQRCodeJpg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
-	public void ClickonAnotherUploadQRCodeJpg() {
+	public void clickonAnotherUploadQRCodeJpg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpg");
 	}
 
@@ -118,85 +118,85 @@ public class UploadQRCode extends BasePage {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "multilanguage.PNG");
 	}
 
-	public void ClickonUploadQRCodePdf() {
+	public void clickonUploadQRCodePdf() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
 
-	public void ClickonAnotherUploadQRCodePdf() {
+	public void clickonAnotherUploadQRCodePdf() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential.pdf");
 	}
 
-	public void ClickonUploadQRCodeJpeg() {
+	public void clickonUploadQRCodeJpeg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
-	public void ClickonAnotherUploadQRCodeJpeg() {
+	public void clickonAnotherUploadQRCodeJpeg() {
 		uploadFile(driver, UploadQRCodeButton, "InsuranceCredential0.jpeg");
 	}
 
-	public void ClickonUploadQRCodeHtml() {
+	public void clickonUploadQRCodeHtml() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "QRCode_UnsupportedHtml.html");
 	}
 
-	public void ClickonUploadQRCodeInvalid() {
+	public void clickonUploadQRCodeInvalid() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Invalid.png");
 	}
 
-	public void ClickonUploadQRCodeDownloadedFromPhone() {
+	public void clickonUploadQRCodeDownloadedFromPhone() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "VcDownloadedFromMobileApp.jpg");
 	}
 
-	public void ClickonUploadExpiredQRCodepngExpired() {
+	public void clickonUploadExpiredQRCodepngExpired() {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.png");
 	}
 
-	public void ClickonUploadLargeSizeQRCode() {
+	public void clickonUploadLargeSizeQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "largesize.PNG");
 
 	}
 
-	public void ClickonUploadBlurQRCode() {
+	public void clickonUploadBlurQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "blur.PNG");
 
 	}
 
-	public void ClickonUploadmultipleQRCode() {
+	public void clickonUploadmultipleQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "multiple_image.jpg");
 
 	}
 
-	public void ClickonUploadSDJwtQRCode() {
+	public void clickonUploadSDJwtQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "SD_Jwt_QRCode.PNG");
 
 	}
 
-	public void ClickonUploadSVGQRCode() {
+	public void clickonUploadSVGQRCode() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "SVG.PNG");
 
 	}
 
-	public void ClickonUploadInvalidPdf() {
+	public void clickonUploadInvalidPdf() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "invalid.pdf");
 
 	}
 
-	public void ClickonUploadExpiredQRCodeJpgExpired() {
+	public void clickonUploadExpiredQRCodeJpgExpired() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpg");
 
 	}
 
-	public void ClickonUploadExpiredQRCodejpegExpired() {
+	public void clickonUploadExpiredQRCodejpegExpired() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.jpeg");
 
 	}
 
-	public void ClickonUploadExpiredQRCodepdfExpired() {
+	public void clickonUploadExpiredQRCodepdfExpired() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "Expired_QRCode.pdf");
 
 	}
 
-	public void ClickonUploadQRCodeLageFileSize() {
+	public void clickonUploadQRCodeLageFileSize() {
 		uploadFileForInvalid(driver, UploadQRCodeButton, "LargeFileSize.png");
 
 	}
@@ -276,7 +276,7 @@ public class UploadQRCode extends BasePage {
 
 	}
 
-	public void ClickonHomeButton() {
+	public void clickonHomeButton() {
 		clickOnElement(driver, HomeButton);
 	}
 
