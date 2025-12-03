@@ -381,12 +381,12 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/vc+ld+json:
             schema:
               $ref: '#/components/schemas/VCVerificationRequest'
             examples:
               example:
-                summary: Example VC to be verified
+                summary: Example JSON LD format VC to be verified
                 value:
                   vc:
                     '@context':
@@ -405,6 +405,14 @@ paths:
                       verificationMethod: 'did:web:example.com#key-1'
                       proofPurpose: assertionMethod
                       jws: eyJhbGciOiJFZERTQSJ9.eyJpYXQiOiIwMjMxMTIzMTIzMTMiLCJ...signature
+          application/vc+sd-jwt:
+            schema:
+              $ref: '#/components/schemas/VCVerificationSDJWTRequest'
+            examples:
+              example:
+                summary: Example SD-JWT format VC to be verified
+                value:
+                  vc: eyJhbGciOiJFZERTQSJ9.eyJpYXQiOiIwMjMxMTIzMTIzMTMiLCJ...signature
         description: The Verifiable Credential to be verified.
       responses:
         '200':
@@ -435,13 +443,7 @@ paths:
         '400':
           description: The request body format is invalid.
         '500':
-          description: Internal Server Error - possible when some runtime error o
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Content-Type
-          description: application/vc+ld+json or application/vc+sd-jwt based on VC format
+          description: Internal Server Error - possible when some runtime error occurs
   /well-known/did.json:
     post:
       summary: Get the did document
@@ -1005,6 +1007,15 @@ components:
               verificationMethod: 'did:web:example.com#key-1'
               proofPurpose: assertionMethod
               jws: eyJhbGciOiJFZERTQSJ9.eyJpYXQiOiIwMjMxMTIzMTIzMTMiLCJ...signature
+    VCVerificationSDJWTRequest:
+      title: VCVerificationSDJWTRequest
+      type: object
+      properties:
+        vc:
+          type: string
+          description: The complete verifiable credential object to be verified by the server.
+          example:
+            eyJhbGciOiJFZERTQSJ9.eyJpYXQiOiIwMjMxMTIzMTIzMTMiLCJ...signature
     VpTokenResult:
       title: VpTokenResult
       type: object
