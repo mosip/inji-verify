@@ -165,7 +165,7 @@ public class VCSubmissionServiceImplTest {
     }
 
     @Test
-    void getVcWithVerification_shouldReturnExpiredStatus_whenVerificationPassesButVCIsExpired() throws CredentialStatusCheckException{
+    void getVcWithVerification_shouldReturnExpiredStatus_whenVerificationPassesButVCExpired() throws CredentialStatusCheckException{
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID))
                 .thenReturn(Optional.of(foundVCSubmission));
