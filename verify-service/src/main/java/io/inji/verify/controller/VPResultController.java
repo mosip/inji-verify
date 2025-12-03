@@ -35,7 +35,7 @@ public class VPResultController {
     }
 
     @GetMapping(path = "/vp-result/{transactionId}")
-    public ResponseEntity<Object> getVPResult(@PathVariable String transactionId, HttpServletRequest request) {
+    public ResponseEntity<Object> getVPResult(@PathVariable String transactionId, HttpServletRequest request) throws CredentialStatusCheckException {
         List<String> requestIds = verifiablePresentationRequestService.getLatestRequestIdFor(transactionId);
 
         if (!requestIds.isEmpty()) {
@@ -50,14 +50,16 @@ public class VPResultController {
                 log.error("Received wallet error for transactionId: {} - {} - {}", e.getErrorCode(), e.getErrorDescription(), transactionId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(e.getErrorCode(), e.getErrorDescription()));
             } catch (CredentialStatusCheckException ex) {
-                log.error("Received Credential Status Check error for " +
-                        "transactionId: {} - {} - {}: ", ex.getErrorCode(), ex.getErrorDescription(), transactionId);
                 return getResponseEntityForCredentialStatusException(ex, request);
             }
         } else {
+            try {
             return Optional.ofNullable(vcSubmissionService.getVcWithVerification(transactionId))
                     .map(vc -> ResponseEntity.status(HttpStatus.OK).body((Object) vc))
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ErrorCode.INVALID_TRANSACTION_ID)));
+            } catch (CredentialStatusCheckException ex) {
+                return getResponseEntityForCredentialStatusException(ex, request);
+            }
         }
     }
 }
