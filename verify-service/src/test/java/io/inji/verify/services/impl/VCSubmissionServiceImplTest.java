@@ -201,7 +201,7 @@ public class VCSubmissionServiceImplTest {
     }
 
     @Test
-    void getVcWithVerification_shouldReturnInExpiredStatus_whenSDJWTVerificationPassesButVcIsExpired() throws CredentialStatusCheckException {
+    void getVcWithVerification_shouldReturnInExpiredStatus_whenSDJWTVerificationPassesButVcExpired() throws CredentialStatusCheckException {
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_SDJWT_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
@@ -270,7 +270,7 @@ public class VCSubmissionServiceImplTest {
     }
 
     @Test
-    void getVcWithVerification_shouldReturnInValidStatus_whenSDJWTVerificationFails() throws CredentialStatusCheckException {
+    void getVcWithVerification_shouldReturnInvalidStatus_whenSDJWTVerificationFails() throws CredentialStatusCheckException {
         VCSubmission foundVCSubmission = new VCSubmission(TEST_TRANSACTION_ID, TEST_SDJWT_VC_STRING);
         when(vcSubmissionRepository.findById(TEST_TRANSACTION_ID)).thenReturn(Optional.of(foundVCSubmission));
 
