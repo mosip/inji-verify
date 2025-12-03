@@ -208,11 +208,11 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, Expansionbutton);
 	}
 
-	public void ClickonHomeButton() {
+	public void clickonHomeButton() {
 		clickOnElement(driver, homeButton);
 	}
 	
-	public void ClickonContinueButton() {
+	public void clickonContinueButton() {
 		clickOnElement(driver, continueButton);
 	}
 
@@ -304,7 +304,7 @@ public class HomePage extends BasePage {
 
 	}
 
-	public void ClickonQRUploadButton() {
+	public void clickonQRUploadButton() {
 		clickOnElement(driver, QRUploadButton);
 	}
 
@@ -432,7 +432,7 @@ public class HomePage extends BasePage {
 		}
 	}
 
-	public  void SwitchToWebTab(){
+	public  void switchToWebTab(){
 		Set<String> allWindowHandles = driver.getWindowHandles();
 		System.out.println(allWindowHandles);
 		if (allWindowHandles.size() >= 2) {
@@ -443,7 +443,7 @@ public class HomePage extends BasePage {
 		}
 	}
 
-	public  void SwitchToVerifyTab(){
+	public  void switchToVerifyTab(){
 		Set<String> allWindowHandles = driver.getWindowHandles();
 		System.out.println(allWindowHandles);
 		if (allWindowHandles.size() >= 2) {
