@@ -259,7 +259,7 @@ public class StepDef {
     }
 
     @When("Verify click on home button")
-    public void verifyclickOnHomeButton() {
+    public void verifyClickOnHomeButton() {
         try {
             homePage.clickOnHomeButton();
             test.log(Status.PASS, "Successfully clicked on the Home button.");
@@ -758,7 +758,7 @@ public class StepDef {
     @Then("verify full name value")
     public void verify_full_name_value() {
         try {
-            boolean isfullNameValueVisible = uploadqrcode.isVisibleFullNameValue();
+            boolean isFullNameValueVisible = uploadqrcode.isVisibleFullNameValue();
             Assert.assertTrue(isfullNameValueVisible, "Full Name value is not visible.");
             test.log(Status.PASS, "Full Name value is successfully visible.");
         } catch (NoSuchElementException e) {
@@ -1497,7 +1497,7 @@ public class StepDef {
     }
 
     @When("verify click on okay button")
-    public void verifyclickOnOkayButton() {
+    public void verifyClickOnOkayButton() {
         try {
             scanqrcode.clickOnOkayButton();
             test.log(Status.PASS, "Successfully clicked on the Okay button.");
@@ -1511,7 +1511,7 @@ public class StepDef {
     }
 
     @When("verify click on back button")
-    public void verifyclickOnBackButton() {
+    public void verifyClickOnBackButton() {
         try {
             scanqrcode.clickOnBackButton();
             Assert.assertTrue(true, "Back button click action performed.");

@@ -24,7 +24,7 @@ import utils.WaitUtil;
 
 public class BasePage {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BasePage.class);
 
     protected WebDriver driver;
 
