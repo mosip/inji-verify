@@ -44,10 +44,10 @@ public class HomePage extends BasePage {
 	WebElement homeButton;
 
 	@FindBy(id = "fullname-value")
-	WebElement FullNameValue;
+	WebElement fullNameValue;
 
 	@FindBy(id = "gender-value")
-	WebElement FullGenderValue;
+	WebElement fullGenderValue;
 
 	@FindBy(xpath = "//a[@id='verify-credentials-button']")
 	WebElement Credentialsbutton;
@@ -212,7 +212,7 @@ public class HomePage extends BasePage {
 		clickOnElement(driver, homeButton);
 	}
 	
-	public void clickonContinueButton() {
+	public void clickOnContinueButton() {
 		clickOnElement(driver, continueButton);
 	}
 
@@ -304,7 +304,7 @@ public class HomePage extends BasePage {
 
 	}
 
-	public void clickonQRUploadButton() {
+	public void clickOnQRUploadButton() {
 		clickOnElement(driver, QRUploadButton);
 	}
 
@@ -484,22 +484,22 @@ public class HomePage extends BasePage {
 	}
 
 	public String getNameValueInArabic() {
-		return getText(driver, FullNameValue);
+		return getText(driver, fullNameValue);
 
 	}
 
 	public String getNameValueInFrench() {
-		return getText(driver, FullNameValue);
+		return getText(driver, fullNameValue);
 
 	}
 
 	public String getGenderValueInArabic() {
-		return getText(driver, FullGenderValue);
+		return getText(driver, fullGenderValue);
 
 	}
 
 	public String getGenderValueInFrench() {
-		return getText(driver, FullGenderValue);
+		return getText(driver, fullGenderValue);
 
 	}
 

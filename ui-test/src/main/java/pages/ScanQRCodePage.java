@@ -75,7 +75,7 @@ public class ScanQRCodePage extends BasePage {
 	@FindBy(xpath = "//span[@id='upload-qr-code-button']")
 	WebElement UploadQRCodeButton;
 
-	public void clickonScanQRButtonTab() {
+	public void clickOnScanQRButtonTab() {
 		clickOnElement(driver, ScanQRButtonTab);
 	}
 
@@ -147,11 +147,11 @@ public class ScanQRCodePage extends BasePage {
 		return isElementIsVisible(driver, BackButton);
 	}
 
-	public void clickonBackButton() {
+	public void clickOnBackButton() {
 		clickOnElement(driver, BackButton);
 	}
 
-	public void clickonOkayButton() {
+	public void clickOnOkayButton() {
 		clickOnElement(driver, OkayButton);
 	}
 
