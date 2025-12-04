@@ -759,7 +759,7 @@ public class StepDef {
     public void verify_full_name_value() {
         try {
             boolean isFullNameValueVisible = uploadqrcode.isVisibleFullNameValue();
-            Assert.assertTrue(isfullNameValueVisible, "Full Name value is not visible.");
+            Assert.assertTrue(isFullNameValueVisible, "Full Name value is not visible.");
             test.log(Status.PASS, "Full Name value is successfully visible.");
         } catch (NoSuchElementException e) {
             logFailure(test, driver, "Element not found while verifying Full Name value", e);
