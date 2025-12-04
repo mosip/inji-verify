@@ -45,7 +45,7 @@ The flow here utilizes the simple redirection to pass the Authorization request 
 
       Or
      * **error** - String to allow the wallet to report errors.
-     * **errorDescription** - String which contain human readable description about the error reported by wallet.
+     * **errorDescription** - String which contains human readable description about the error reported by wallet.
 
       And
      * **other parameters include** - state(**request-id**), code, id_token

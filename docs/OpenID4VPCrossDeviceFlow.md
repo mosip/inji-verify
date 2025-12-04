@@ -67,7 +67,7 @@ sequenceDiagram
     Verify UI--)Verify UI: 5. Polling Status BACKEND_URL/vp-request/${reqId}/status (ACTIVE, VP_SUBMITTED, EXPIRED)
     Wallet--)Wallet: 6. Scan QR Code
     Wallet--)Wallet: 7. Process the QR Data and List the matching VC's
-    Wallet->>Verify Backend: 8.Authenticate User & Submitts VP Token | Error <br> (BACKEND_URL/vp-submission/direct-post)
+    Wallet->>Verify Backend: 8.Authenticate User & Submits VP Token | Error <br> (BACKEND_URL/vp-submission/direct-post)
     Verify Backend->>Wallet: 9. Returns only redirect_uri (from INJI_VERIFY_REDIRECT_URI). <br/> If not configured, no redirect_uri is returned.
     Verify Backend--)Verify UI: 10. Status == VP_SUBMITTED
     Verify UI->>Verify Backend: 11. Request the response from the respective endpoints <br> Ex- (BACKEND_URL/vp-result/${txnId})
