@@ -72,7 +72,7 @@ To support such visual customization, the VC can include a `renderMethod` sectio
 }
 ```
 
-### Each Render Method entry describes:
+## Each Render Method entry describes:
 
 | Field        | Meaning                                                                                 |
 |--------------|-----------------------------------------------------------------------------------------|
@@ -83,7 +83,7 @@ To support such visual customization, the VC can include a `renderMethod` sectio
 | mediaType    | Specifies format (`image/svg+xml`)                                                      |
 
 
-### Common Media Types Supported
+## Common Media Types Supported
 
 | MediaType          | Usage                                      |
 |--------------------|---------------------------------------------|
@@ -92,13 +92,13 @@ To support such visual customization, the VC can include a `renderMethod` sectio
 | application/pdf    | PDF-based renders                           |
 
 
-### What svg-mustache Means
+## What svg-mustache Means
 
 `svg-mustache` is a renderSuite that instructs the verifier:
 
 - “Render this credential using an SVG template that contains Mustache-style placeholders.”
 
-#### Components
+### Components
 
 | Part     | Meaning                                                                                         |
 |----------|-------------------------------------------------------------------------------------------------|
