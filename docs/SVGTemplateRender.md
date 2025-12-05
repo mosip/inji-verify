@@ -47,7 +47,7 @@ To support such visual customization, the VC can include a `renderMethod` sectio
   ]
 ```
 
-### Example Credential with RenderMethod
+**_Example Credential with RenderMethod_**
 
 ```json
 {
