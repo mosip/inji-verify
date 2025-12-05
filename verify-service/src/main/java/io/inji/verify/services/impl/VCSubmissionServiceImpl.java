@@ -1,10 +1,8 @@
 package io.inji.verify.services.impl;
 
+import io.inji.verify.exception.CredentialStatusCheckException;
 import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
-import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.data.VerificationStatus;
-import io.mosip.vercred.vcverifier.utils.Util;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import io.inji.verify.dto.submission.VCSubmissionDto;
 import io.inji.verify.dto.submission.VCSubmissionResponseDto;
@@ -18,9 +16,9 @@ import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import static io.inji.verify.utils.Utils.isSdJwt;
 
-@Slf4j
 @Service
 public class VCSubmissionServiceImpl implements VCSubmissionService {
 
@@ -42,9 +40,10 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
     }
 
     @Override
-    public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) {
-        return vcSubmissionRepository.findById(transactionId).map(vcSubmission -> {
-            String vc = vcSubmission.getVc();
+    public VCSubmissionVerificationStatusDto getVcWithVerification(String transactionId) throws CredentialStatusCheckException {
+        Optional<VCSubmission> vcSubmission = vcSubmissionRepository.findById(transactionId);
+        if (vcSubmission.isPresent()) {
+            String vc = vcSubmission.get().getVc();
             boolean isSdJwtVc = isSdJwt(vc);
             CredentialFormat credentialFormat = isSdJwtVc ? CredentialFormat.VC_SD_JWT : CredentialFormat.LDP_VC;
             List<String> statusPurposeList = new ArrayList<>();
@@ -53,6 +52,8 @@ public class VCSubmissionServiceImpl implements VCSubmissionService {
             VerificationStatus vcVerificationStatus = Utils.getVcVerificationStatus(credentialVerificationSummary);
 
             return new VCSubmissionVerificationStatusDto(vc, vcVerificationStatus);
-        }).orElse(null);
+        } else {
+            return null;
+        }
     }
 }
