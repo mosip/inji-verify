@@ -172,7 +172,7 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void clickOnUploadSVGQRCode() {
-		uploadFileForStaticQr(driver, UploadQRCodeButton, "SVG.PNG");
+		uploadFileForStaticQr(driver, UploadQRCodeButton, "SVG.png");
 
 	}
 

@@ -208,8 +208,8 @@ public class HomePage extends BasePage {
 		return isElementIsVisible(driver, Expansionbutton);
 	}
 
-	public void clickOnHomeButton() {
-		clickOnElement(driver, homeButton);
+	public void clickOnHelpButton() {
+		clickOnElement(driver, helpButton);
 	}
 	
 	public void clickOnContinueButton() {
@@ -227,6 +227,10 @@ public class HomePage extends BasePage {
 
 	public void minimizeHelpButton() {
 		clickOnElement(driver, minimizeHelpButton);
+	}
+
+	public void clickOnHomeButton() {
+		clickOnElement(driver, homeButton);
 	}
 
 	public Boolean isUploadQRButtonVisible() {
