@@ -68,7 +68,7 @@ Scenario: Verify VP verification same device flow
     And verify loading screen
 
   @smoke @verifyingVpVerification
-  Scenario: Verify the VP verification QR code is generated
+  Scenario Outline: Verify the VP verification QR code is generated
 
     Given User gets the title of the page
     Then Validate the title of the page
