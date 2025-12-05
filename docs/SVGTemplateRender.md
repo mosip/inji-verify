@@ -74,23 +74,22 @@ To support such visual customization, the VC can include a `renderMethod` sectio
 
 ### Each Render Method entry describes:
 
-| Field                 | Meaning                                                                                                   |
-|-----------------------|-----------------------------------------------------------------------------------------------------------|
-| renderMethod          | Parent object describing how to render the VC                                                             |
-| type                  | Method type (e.g., TemplateRenderMethod)                                                                  |
-| renderSuite           | Rendering suite, e.g., svg-mustache                                                                       |
-| template              | Inline or external template definition                                                                    |
-| id                    | URL pointing to the SVG template stored by the issuer                                                     |
-| mediaType             | MIME type of the template (e.g., image/svg+xml)                                                           |
+| Field        | Meaning                                                                                 |
+|--------------|-----------------------------------------------------------------------------------------|
+| renderMethod | Describes how the VC should be visually rendered.                                       |
+| type         | Rendering method type (e.g., `TemplateRenderMethod`)                                    |
+| renderSuite  | Defines rendering engine (e.g., `svg-mustache`)                                         |
+| id           | URL pointing to where the SVG template is hosted                                        |
+| mediaType    | Specifies format (`image/svg+xml`)                                                      |
 
 
 ### Common Media Types Supported
 
-| MediaType	            | Usage                                                                                                     | 
-|-----------------------|-----------------------------------------------------------------------------------------------------------|
-| "text/html"           |	HTML templates                                                                                            |
-| "image/svg+xml"	      | SVG templates (most commonly with `Mustache`)                                                               |
-| "application/pdf"	    | PDF-based renders                                                                                         |
+| MediaType          | Usage                                      |
+|--------------------|---------------------------------------------|
+| text/html          | HTML templates                              |
+| image/svg+xml      | SVG templates (commonly used with Mustache) |
+| application/pdf    | PDF-based renders                           |
 
 
 ### What svg-mustache Means
@@ -101,12 +100,10 @@ To support such visual customization, the VC can include a `renderMethod` sectio
 
 #### Components
 
-|Part                   |	Meaning                                                                                                    |
-|-----------------------|------------------------------------------------------------------------------------------------------------|
-|SVG                    |	The template is an SVG graphic (cards, certificates, identity badges).                                     |
-|Mustache               |	Template variables like {{credentialSubject.name}} are replaced with real VC data.                         |
-
----
+| Part     | Meaning                                                                                         |
+|----------|-------------------------------------------------------------------------------------------------|
+| SVG      | The template is an SVG graphic (cards, certificates, identity badges).                          |
+| Mustache | Template variables like `{{credentialSubject.name}}` are replaced with actual VC data.          |
 
 # Functionalities 
 
