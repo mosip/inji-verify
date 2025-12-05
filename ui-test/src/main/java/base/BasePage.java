@@ -16,8 +16,6 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import utils.BaseTest;
 import utils.WaitUtil;
@@ -144,7 +142,9 @@ public class BasePage {
                 return;
             } catch (StaleElementReferenceException e) {
                 logger.error("⚠️ Caught stale element exception, retrying...");
-                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+                try { Thread.sleep(1000); } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                }
             }
         }
 
@@ -237,7 +237,7 @@ public class BasePage {
 		try {
 			return Integer.parseInt(System.getProperty("explicitWaitTimeout", "30"));
 		} catch (NumberFormatException e) {
-            logger.error("Invalid explicitWaitTimeout value in config.properties. Using default 30 seconds.");
+            logger.error("Invalid explicitWaitTimeout system property value. Using default 30 seconds.");
             return 30;
 		}
 }
