@@ -333,7 +333,8 @@ public class StepDef {
     @When("Verify minimize help option")
     public void verifyMinimizeHelpOption() {
         try {
-            homePage.minimizeHelpButton();
+          //  homePage.minimizeHelpButton();
+        	homePage.minimizeHelpButton();
             test.log(Status.PASS, "Clicked on minimize Help button successfully.");
 
             boolean isMinimized = homePage.isExpansionbuttonDisplayedBefore();
@@ -2395,10 +2396,10 @@ public void verify_upload_button_visible_after_2_mins_idle() {
 
 
 
-	@When("verify click on home button")
+	@When("Verify click on Help button")
 	public void user_click_on_home_button() {
 	    try {
-	        homePage.clickOnHomeButton();
+	        homePage.clickOnHelpButton();
 	        test.log(Status.PASS, "Successfully clicked on home button.");
 	    } catch (NoSuchElementException e) {
 	        logFailure(test, driver, "Element not found while clicking home button", e);
