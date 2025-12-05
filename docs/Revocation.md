@@ -21,10 +21,10 @@ The API documentations can be found [here](https://mosip.stoplight.io/docs/inji-
 
 ## Functionalities 
 
-## UPLOAD & SCAN
+## 1. UPLOAD & SCAN
 
 ###  Verifiable Credential Submission:
-- Inji Verify have API to submit Verifiable Credential/Presentation.
+- Inji Verify have API to submit Verifiable Credential.
 
 > **Note** that Verifiable Credential Submission endpoint(`/vc-submission`) is specifically for submitting individual credentials and is distinct from a Verifiable Presentation (VP) submission.
 
@@ -58,18 +58,18 @@ The API documentations can be found [here](https://mosip.stoplight.io/docs/inji-
 
 - This API performs server-side verification of a Verifiable Credential (VC) to validate its integrity and authenticity. It executes checks such as cryptographic signature validation and ensures that the credential has not been altered or tampered with.
 
-    ### How it check for revocation
-       
-    - **_Issuer_** : assigns each new credential a statusListIndex and puts that index into the VC’s credentialStatus object.
-    
-    - **_Inji Verify Banckend_** : retrieves the `statusListCredential`, decodes its encodedList, checks the bit at that index to see whether it’s revoked/suspended.
+    > ### How it check for revocation
+    >    
+    > - **_Issuer_** : assigns each new credential a statusListIndex and puts that index into the VC’s credentialStatus object.
+    > 
+    > - **_Inji Verify Banckend_** : retrieves the `statusListCredential`, decodes its encodedList, checks the bit at that index to see whether it’s revoked/suspended.
 
 - The verification status returned can be **_SUCCESS_**, **_INVALID_**, **_EXPIRED_** or **_REVOKED_**.
 
 - If the Inji Verify Backend encounters any error while retrieving the `statusListCredential` or verifing the status, it will post the error back to the Verify UI along with an error description and `status code` as `500`.
 
 
-## OPENID4VP
+## 2. OPENID4VP
 
 ###  Verifiable Presentation Submission:
 
