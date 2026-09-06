@@ -114,6 +114,7 @@ export const readQRcodeFromImageFile = async (
         tryInvert: true,
         tryDownscale: false,
         tryDenoise: true,
+        maxNumberOfSymbols: 10,
     });
 
     const validQrCodes = results.filter((result) => result.isValid);
