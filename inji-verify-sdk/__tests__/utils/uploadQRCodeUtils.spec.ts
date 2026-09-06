@@ -63,7 +63,9 @@ describe("readQRcodeFromImageFile", () => {
         jest.spyOn(document, "createElement").mockImplementation(((tagName: string) => {
             if (tagName === "canvas") {
                 return {
-                    getContext: jest.fn(() => ({})),
+                    getContext: jest.fn(() => ({drawImage: jest.fn()})),
+                    width: 100,
+                    height: 100,
                     toDataURL: jest.fn(() => "data:image/png;base64,test"),
                 } as unknown as HTMLCanvasElement;
             }
