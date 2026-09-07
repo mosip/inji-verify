@@ -132,6 +132,29 @@ describe("vp token redirect helpers", () => {
     });
   });
 
+  it("restores spaces from form-urlencoded + in vp_token fragments", () => {
+    const payload = {
+      "cred-id": [
+        {
+          type: ["VerifiableCredential"],
+          credentialSubject: {
+            fullName: "Alheri Bobby",
+            phone: "+919427357934",
+            region: "yuan wee 3",
+          },
+        },
+      ],
+    };
+    // Java URLEncoder / form-urlencoded: space → +, literal + → %2B
+    const formEncoded = encodeURIComponent(JSON.stringify(payload)).replace(
+      /%20/g,
+      "+"
+    );
+    expect(formEncoded).toContain("Alheri+Bobby");
+    expect(formEncoded).toContain("%2B919427357934");
+    expect(parseVpTokenFromFragment(formEncoded)).toEqual(payload);
+  });
+
   it("parses plain JSON vp_token fragments", () => {
     const payload = {
       "cred-id": [
