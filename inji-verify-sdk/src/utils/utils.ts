@@ -119,26 +119,35 @@ export const isDcqlVpToken = (vpToken: unknown): vpToken is Record<string, unkno
  * Read a hash query param without URLSearchParams decoding, so literal
  * percent sequences in plain JSON vp_token values are preserved.
  */
-export const getRawHashParam = (
-  hash: string,
-  key: string
-): string | undefined => {
+export const getRawHashParam = (hash: string, key: string): string | undefined => { 
   const prefix = `${key}=`;
-  return hash
-    .replace(/^#/, "")
-    .split("&")
-    .find((param) => param.startsWith(prefix))
-    ?.slice(prefix.length);
+  const params = hash.replace(/^#/, "").split("&"); 
+  for (const param of params) {
+    if (param.startsWith(prefix)) {
+      return param.slice(prefix.length);
+    }
+  }
+  return undefined;
 };
 
 /**
+ * Decode application/x-www-form-urlencoded text (spaces as `+`, then %-escapes).
+ * Matches Java URLEncoder / Spring @RequestParam so redirect vp_tokens verify
+ * the same claim bytes as direct-post submissions.
+ */
+const decodeFormUrlEncoded = (value: string): string =>
+  decodeURIComponent(value.replace(/\+/g, " "));
+
+/**
  * Parse vp_token from a redirect hash fragment (URL-encoded or plain JSON).
+ * Plain JSON is tried first so literal `%` sequences in claim values are kept;
+ * the fallback applies form-urlencoded decoding (`+` → space, then percent-decode).
  */
 export const parseVpTokenFromFragment = (vpTokenParam: string): unknown => {
   try {
     return JSON.parse(vpTokenParam);
   } catch {
-    return JSON.parse(decodeURIComponent(vpTokenParam));
+    return JSON.parse(decodeFormUrlEncoded(vpTokenParam));
   }
 };
 
