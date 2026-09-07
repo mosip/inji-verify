@@ -150,7 +150,7 @@ CreateNewVerificationRequest:
 }'
   Injiverify_CreateNewVerificationRequest_All_ValidForECCR1_Smoke_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Creating a new verification request for ECCR1 with a valid DCQL query
+      description: Creating a new verification request for ECCR1 with a valid DCQL query and expect 201 status code.
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_10
       role: noauth
       restMethod: post
@@ -169,7 +169,7 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_All_ValidForECCK1_Smoke_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Creating a new verification request for ECCK1 with a valid DCQL query
+      description: Creating a new verification request for ECCK1 with a valid DCQL query and expect 201 status code.
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_11
       role: noauth
       restMethod: post
@@ -330,10 +330,9 @@ CreateNewVerificationRequest:
   Injiverify_CreateNewVerificationRequest_Invalid_JSON_Body_Neg:
       endPoint: /v1/verify/v2/vp-request
       description: Creating a new verification request with invalid JSON body and expect error response
-      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_018
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_45
       role: noauth
-      restMethod: post
-      checkErrorsOnlyInResponse: true
+      restMethod: post      
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestInvalidJson
       outputTemplate: injiverify/error2
       input: '{}'
@@ -344,10 +343,9 @@ CreateNewVerificationRequest:
   Injiverify_CreateNewVerificationRequest_Unknown_Field_In_Request_Body_Neg:
       endPoint: /v1/verify/v2/vp-request
       description: Creating a new verification request with unknown field in request body and expect error response
-      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_019
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_46
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestUnknownField
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -363,10 +361,9 @@ CreateNewVerificationRequest:
   Injiverify_CreateNewVerificationRequest_Invalid_Field_Value_Type_Neg:
       endPoint: /v1/verify/v2/vp-request
       description: Creating a new verification request with invalid field value type and expect error response
-      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_020
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_47
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestOptionalDcql
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -383,11 +380,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Missing_DcqlQuery_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Creating a new verification request without dcqlQuery
-      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_021
+      description: Creating a new verification request without a DCQL query and expecting a dcql_query_required error
+      uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_48
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequestOptionalDcql
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -403,11 +399,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Empty_Credentials_Array_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Empty DCQL credentials array
+      description: Creating a new verification request with an empty DCQL credentials array and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_22
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -420,11 +415,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Null_Credential_Entry_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Null entry in DCQL credentials array
+      description: Creating a new verification request with a null DCQL credential entry and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_23
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -437,11 +431,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Missing_Credential_Id_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Missing id in DCQL credential entry
+      description: Creating a new verification request without an ID in the DCQL credential entry and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_24
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -454,11 +447,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Invalid_Credential_Id_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Invalid characters in credential id
+      description: Creating a new verification request with invalid characters in the credential ID and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_25
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -471,11 +463,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Duplicate_Credential_Ids_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Duplicate DCQL credential ids
+      description: Creating a new verification request with duplicate credential IDs and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_26
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -488,11 +479,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Missing_Credential_Format_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Missing format in DCQL credential entry
+      description: Creating a new verification request without a DCQL format and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_27
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -505,11 +495,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Unsupported_Credential_Format_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Unsupported DCQL credential format
+      description: Creating a new verification request with an unsupported DCQL format and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_28
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -522,11 +511,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Missing_Credential_Meta_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Missing meta in DCQL credential entry
+      description: Creating a new verification request without credential metadata and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_29
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -539,11 +527,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Null_Meta_Value_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Null value in DCQL meta
+      description: Creating a new verification request with a null value in the credential metadata and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_30
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -556,11 +543,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Duplicate_Meta_Value_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Duplicate values in DCQL meta
+      description: Creating a new verification request with duplicate values in the credential metadata and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_31
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -573,11 +559,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Meta_Format_Mismatch_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: DCQL meta fields do not match credential format
+      description: Creating a new verification request with metadata fields that do not match the credential format and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_32
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -590,11 +575,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Invalid_Iri_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Invalid IRI in DCQL type values
+      description: Creating a new verification request with an invalid IRI in the DCQL type values and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_33
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlCredentialValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{}'
@@ -605,11 +589,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Claim_Missing_Path_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Claim entry missing path
+      description: Creating a new verification request with a missing claim path and expecting a dcql_query.credentials error.
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_34
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -617,16 +600,15 @@ CreateNewVerificationRequest:
       }'
       output: '{
       "errorCode": "dcql_query.credentials",
-      "errorMessage": "DCQL claim path must be a valid path."
+      "errorMessage": "Each claim must contain path."
 }'
 
   Injiverify_CreateNewVerificationRequest_Invalid_Claim_Path_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Invalid claim path
+      description: Creating a new verification request with an invalid claim path and expecting a MALFORMED_REQUEST error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_35
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -639,11 +621,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Duplicate_Claim_Paths_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Duplicate claim paths
+      description: Creating a new verification request with duplicate claim paths and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_36
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -656,11 +637,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Invalid_Claim_Id_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Invalid claim id characters
+      description: Creating a new verification request with invalid characters in the claim ID and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_37
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -673,11 +653,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Duplicate_Claim_Ids_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Duplicate claim ids
+      description: Creating a new verification request with duplicate claim IDs and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_38
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -690,11 +669,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Empty_Claim_Values_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Empty claim values array
+      description: Creating a new verification request with an empty claim values array and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_39
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlClaimsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -707,11 +685,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Empty_Claim_Sets_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Empty claim sets array
+      description: Creating a new verification request with an empty claim sets array and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_40
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlSetsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -725,11 +702,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Missing_Claim_Set_Reference_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Claim sets with missing claim id reference
+      description: Creating a new verification request with a missing claim ID reference in the claim sets and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_41
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlSetsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -743,11 +719,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Unknown_Claim_Set_Reference_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Claim sets with unknown claim id reference
+      description: Creating a new verification request with an unknown claim ID reference in the claim sets and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_42
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlSetsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -760,11 +735,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_Unknown_Credential_Set_Id_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Credential sets contains an unknown credential id
+      description: Creating a new verification request with an unknown credential ID reference in the credential sets and expecting a dcql_query.credentials error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_43
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlSetsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
@@ -777,11 +751,10 @@ CreateNewVerificationRequest:
 
   Injiverify_CreateNewVerificationRequest_All_Credential_Sets_Optional_Neg:
       endPoint: /v1/verify/v2/vp-request
-      description: Credential sets contain no required entry
+      description: Creating a new verification request with no required entry in the credential sets and expecting a dcql_query.credential_sets error
       uniqueIdentifier: TC_InjiVerify_CreateNewVerificationRequest_44
       role: noauth
       restMethod: post
-      checkOnlyStatusCodeInResponse: false
       inputTemplate: injiverify/CreateNewVerificationRequest/DcqlSetsValidation
       outputTemplate: injiverify/errorCodeAndMessage
       input: '{
