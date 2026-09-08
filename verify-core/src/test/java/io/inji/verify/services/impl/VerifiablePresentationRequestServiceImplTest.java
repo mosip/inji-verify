@@ -568,7 +568,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("createAuthorizationRequest should reject redirect_uri client_id whose URI does not match this deployment's response_uri")
-    void createAuthorizationRequest_RedirectUriClientIdMismatch_ThrowsValidationException() throws Exception {
+    void should_throwValidationException_when_redirectUriClientIdDoesNotMatchResponseUri() throws Exception {
         VPRequestCreateDto dto = new VPRequestCreateDto(
                 "redirect_uri:https://evil.example/cb", "tx_redirect_mismatch", null, minimalDcqlQuery(), false);
 
@@ -579,7 +579,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("createAuthorizationRequest should reject redirect_uri client_id with an empty URI part")
-    void createAuthorizationRequest_RedirectUriClientIdEmpty_ThrowsValidationException() throws Exception {
+    void should_throwValidationException_when_redirectUriClientIdIsEmpty() throws Exception {
         VPRequestCreateDto dto = new VPRequestCreateDto(
                 "redirect_uri:", "tx_redirect_empty", null, minimalDcqlQuery(), false);
 
@@ -590,7 +590,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("createAuthorizationRequest should reject redirect_uri client_id with a malformed URI part")
-    void createAuthorizationRequest_RedirectUriClientIdMalformed_ThrowsValidationException() throws Exception {
+    void should_throwValidationException_when_redirectUriClientIdIsMalformed() throws Exception {
         VPRequestCreateDto dto = new VPRequestCreateDto(
                 "redirect_uri:not-a-url", "tx_redirect_malformed", null, minimalDcqlQuery(), false);
 
@@ -601,7 +601,7 @@ class VerifiablePresentationRequestServiceImplTest {
 
     @Test
     @DisplayName("createAuthorizationRequest should use the URI from a matching redirect_uri client_id as response_uri (by-value)")
-    void createAuthorizationRequest_RedirectUriClientIdMatching_UsesClaimedResponseUri() throws Exception {
+    void should_useClaimedResponseUri_when_redirectUriClientIdMatchesDeploymentResponseUri() throws Exception {
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class)))
                 .thenReturn(null);
         String expectedResponseUri = service.verifyServiceBaseUrl + Constants.VP_DIRECT_POST_SUBMISSION_URI;
