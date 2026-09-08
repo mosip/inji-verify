@@ -40,7 +40,8 @@ public final class Constants {
     public static final String CLIENT_ID_PREFIX_DECENTRALIZED_IDENTIFIER = "decentralized_identifier";
     public static final String CLIENT_ID_PREFIX_X509_SAN_DNS = "x509_san_dns";
     // redirect_uri: prefix — unsigned by-value Authorization Request. The URI after the prefix is
-    // the Verifier response_uri (direct_post) and must match this deployment's submission URL.
+    // the Verifier response_uri (direct_post), must be absolute HTTPS, and must match this
+    // deployment's submission URL.
     public static final String CLIENT_ID_PREFIX_REDIRECT_URI = "redirect_uri";
 
     // Fixed symbolic `aud` value for Self-Issued OpenID Provider v2 (Static Discovery), per

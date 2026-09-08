@@ -189,9 +189,9 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
 
     /**
      * Per OpenID4VP 1.0, a {@code redirect_uri:} client_id is the Verifier {@code response_uri}
-     * (direct_post). Extract that URI, reject empty/malformed values, and reject a URI that does
-     * not match this deployment's submission URL — otherwise a spec-compliant wallet would POST
-     * the VP to an attacker-controlled endpoint.
+     * (direct_post). Extract that URI, reject empty/malformed/non-HTTPS values, and reject a URI
+     * that does not match this deployment's submission URL — otherwise a spec-compliant wallet
+     * would POST the VP to an attacker-controlled endpoint.
      */
     private String validateAndResolveRedirectUriClientId(String clientId, String serviceResponseUri) {
         String prefix = Constants.CLIENT_ID_PREFIX_REDIRECT_URI + ":";
@@ -203,10 +203,10 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
             throw new VPRequestValidationException(ErrorCode.CLIENT_ID_REDIRECT_URI_INVALID,
                     "client_id value after the redirect_uri: prefix must not be empty.");
         }
-        if (!isAbsoluteHttpUri(claimedUri)) {
+        if (!isAbsoluteHttpsUri(claimedUri)) {
             throw new VPRequestValidationException(ErrorCode.CLIENT_ID_REDIRECT_URI_INVALID,
                     "client_id value '" + claimedUri + "' after the redirect_uri: prefix is not a "
-                            + "well-formed absolute http(s) URI.");
+                            + "well-formed absolute https URI.");
         }
         if (!claimedUri.equals(serviceResponseUri)) {
             throw new VPRequestValidationException(ErrorCode.CLIENT_ID_REDIRECT_URI_MISMATCH,
@@ -216,7 +216,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
         return claimedUri;
     }
 
-    private static boolean isAbsoluteHttpUri(String value) {
+    private static boolean isAbsoluteHttpsUri(String value) {
         try {
             URI uri = new URI(value);
             String scheme = uri.getScheme();
@@ -225,7 +225,7 @@ public class VerifiablePresentationRequestServiceImpl implements VerifiablePrese
                     && scheme != null
                     && host != null
                     && !host.isEmpty()
-                    && ("https".equalsIgnoreCase(scheme) || "http".equalsIgnoreCase(scheme));
+                    && "https".equalsIgnoreCase(scheme);
         } catch (URISyntaxException e) {
             return false;
         }

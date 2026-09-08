@@ -600,6 +600,19 @@ class VerifiablePresentationRequestServiceImplTest {
     }
 
     @Test
+    @DisplayName("createAuthorizationRequest should reject redirect_uri client_id with an http URI")
+    void should_throwValidationException_when_redirectUriClientIdUsesHttp() throws Exception {
+        VPRequestCreateDto dto = new VPRequestCreateDto(
+                "redirect_uri:http://verify.example.com/v1/verify/v2/vp-submission/direct-post",
+                "tx_redirect_http", null, minimalDcqlQuery(), false);
+
+        VPRequestValidationException ex = assertThrows(VPRequestValidationException.class,
+                () -> service.createAuthorizationRequest(dto, Optional.empty()));
+        assertEquals(ErrorCode.CLIENT_ID_REDIRECT_URI_INVALID, ex.getErrorCode());
+        assertTrue(ex.getMessage().contains("well-formed absolute https URI"));
+    }
+
+    @Test
     @DisplayName("createAuthorizationRequest should use the URI from a matching redirect_uri client_id as response_uri (by-value)")
     void should_useClaimedResponseUri_when_redirectUriClientIdMatchesDeploymentResponseUri() throws Exception {
         when(mockAuthorizationRequestCreateResponseRepository.save(any(AuthorizationRequestCreateResponse.class)))
