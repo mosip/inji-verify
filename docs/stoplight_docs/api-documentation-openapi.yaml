@@ -89,7 +89,6 @@ paths:
         - Example: `redirect_uri:https://injiverify.example.com/v1/verify/v2/vp-submission/direct-post`
         - Authorization Request is returned **by value** in `authorizationDetails` (unsigned / no `requestUri`)
         - The URI part after the prefix **MUST** equal `authorizationDetails.responseUri` (the Verifier's `direct_post` endpoint)
-        - `client_metadata` **MUST** be included in-band (with `vp_formats_supported`) — required because this scheme has no pre-established Client Metadata
         - Not valid with `responseMode=dc_api`
 
         ---
@@ -1382,7 +1381,7 @@ components:
             - **Pre-registered**: simple string (e.g., `client123`). Authorization Request is returned by value. `client_metadata` MUST NOT be included. Not valid with `responseMode=dc_api`.
             - **Decentralized Identifier**: `decentralized_identifier:` prefix (e.g., `decentralized_identifier:did:web:verify.example.com`). Authorization Request is returned by reference (`kid` JWT header).
             - **Certificate SAN DNS**: `x509_san_dns:` prefix (e.g., `x509_san_dns:verify.example.com`). Authorization Request is returned by reference with `x5c` JWT header. DNS name must match `inji.verify.x509-san-dns.host`.
-            - **Redirect URI**: `redirect_uri:` prefix (e.g., `redirect_uri:https://injiverify.example.com/v1/verify/v2/vp-submission/direct-post`). Authorization Request is returned by value. URI part MUST equal `responseUri`. `client_metadata` MUST be included. Not valid with `responseMode=dc_api`.
+            - **Redirect URI**: `redirect_uri:` prefix (e.g., `redirect_uri:https://injiverify.example.com/v1/verify/v2/vp-submission/direct-post`). Authorization Request is returned by value. URI part MUST equal `responseUri`. Not valid with `responseMode=dc_api`.
 
             DC API (`responseMode=dc_api`) requires `decentralized_identifier:` or `x509_san_dns:`.
           example: client123
