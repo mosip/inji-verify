@@ -76,7 +76,9 @@ return (
                                                 ? t("AlertMessages:qrDecodeFailed")
                                                 : error.name === "QR_NOT_FOUND"
                                                     ? t("AlertMessages:qrNotDetected")
-                                                : error.message,
+                                                    : error.name === "MULTIPLE_QR_FOUND"
+                                                        ? t("AlertMessages:multipleQrFound")
+                                                        : error.message,
                                     severity: "error",
                                     open: true,
                                 })
