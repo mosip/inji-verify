@@ -1662,6 +1662,14 @@ components:
     # VP Request schemas
     # -------------------------------------------------------------------------
     VPRequestCreate:
+      description: |-
+        VP request create body. `responseMode=dc_api` requires a signed-request `clientId`
+        (`decentralized_identifier:` or `x509_san_dns:`) and `responseCodeValidationRequired=false`.
+        Omit `responseMode` or use `direct_post` for all `client_id_prefix` values.
+      oneOf:
+        - $ref: '#/components/schemas/VPRequestCreateDirectPost'
+        - $ref: '#/components/schemas/VPRequestCreateDcApi'
+    VPRequestCreateBase:
       type: object
       required:
         - clientId
@@ -1696,10 +1704,6 @@ components:
 
             `dc_api` requires `client_id_prefix` `decentralized_identifier:` or `x509_san_dns:`.
             Pre-registered and `redirect_uri:` support `direct_post` only.
-          enum:
-            - direct_post
-            - dc_api
-          default: direct_post
           example: direct_post
         responseCodeValidationRequired:
           type: boolean
@@ -1723,6 +1727,44 @@ components:
 
             If not provided, a cryptographically secure nonce is generated (Base64URL without padding, ≥ 128 bits entropy).
           example: T3yeEqs0zVbveJASNFZ4kA
+    VPRequestCreateDirectPost:
+      title: direct_post
+      description: Wallet HTTP submission. All `client_id_prefix` values are valid. `responseMode` may be omitted.
+      allOf:
+        - $ref: '#/components/schemas/VPRequestCreateBase'
+        - type: object
+          properties:
+            responseMode:
+              type: string
+              enum:
+                - direct_post
+              default: direct_post
+              example: direct_post
+    VPRequestCreateDcApi:
+      title: dc_api
+      description: Digital Credentials API. Signed-request `clientId` only; `responseCodeValidationRequired` must be false.
+      allOf:
+        - $ref: '#/components/schemas/VPRequestCreateBase'
+        - type: object
+          required:
+            - responseMode
+          properties:
+            clientId:
+              type: string
+              pattern: '^(decentralized_identifier:|x509_san_dns:).+$'
+              description: Must use `decentralized_identifier:` or `x509_san_dns:` when `responseMode` is `dc_api`.
+              example: 'decentralized_identifier:did:web:verify.example.com'
+            responseMode:
+              type: string
+              enum:
+                - dc_api
+              example: dc_api
+            responseCodeValidationRequired:
+              type: boolean
+              enum:
+                - false
+              default: false
+              example: false
     DcqlQuery:
       type: object
       required:
