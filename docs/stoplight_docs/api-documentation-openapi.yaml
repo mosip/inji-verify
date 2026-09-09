@@ -154,7 +154,9 @@ paths:
         This endpoint accepts `responseMode=dc_api` and does **not** set a `transaction_id` cookie.
 
         After the wallet/SDK submits via `POST /vp-submission/dc-api`, fetch results with
-        `POST /v2/vp-results/{transactionId}` using the `transactionId` from this response.
+        `POST /v2/vp-results/{transactionId}` using the `transactionId` returned by
+        `POST /v2/vp-request`. The submission response does not include `transactionId`;
+        clients must retain it from request creation.
 
         **Requirements:**
         - `client_id_prefix` must be `decentralized_identifier:` or `x509_san_dns:`
