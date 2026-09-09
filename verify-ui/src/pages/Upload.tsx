@@ -78,7 +78,9 @@ return (
                                                     ? t("AlertMessages:qrNotDetected")
                                                     : error.name === "MULTIPLE_QR_FOUND"
                                                         ? t("AlertMessages:multipleQrFound")
-                                                        : error.message,
+                                                        : /(?:status\s*401|unauthorized|resource_not_found|resource expired)/i.test(error.message || "")
+                                                                ? t("AlertMessages:verificationLimitReached")
+                                                                : error.message,
                                     severity: "error",
                                     open: true,
                                 })

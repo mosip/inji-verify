@@ -48,4 +48,20 @@ describe("Upload", () => {
       );
     });
   });
+
+  test("shows the limit message for an expired verification response", async () => {
+    render(<Upload />);
+
+    await onError!(new Error("Verification failed with status 401"));
+
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            message: "The verification limit for this QR code has been reached.",
+          }),
+        }),
+      );
+    });
+  });
 });
