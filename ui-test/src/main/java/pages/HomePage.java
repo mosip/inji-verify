@@ -163,7 +163,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//label[text() = 'Enter Full Name']")
 	WebElement enterFullnameTextBox;
 
-	@FindBy(xpath = "//button[@id='verify_form']")
+	@FindBy(xpath = "//button[@id='form-submit-button']")
 	WebElement verifyButton;
 
 	@FindBy(xpath = "//button[@id='home-button']")
@@ -460,25 +460,39 @@ public String isSuccessMessageDisplayed() {
 		}
 	}
 	public void enterPolicyNumer(String string) {
-		enterText(driver, By.xpath("//input[@id='_form_policyNumber']"), string);
+		enterText(driver, By.xpath("//input[@id='policyNumber']"), string);
 	}
 
 	public void enterFullName(String string) {
-		enterText(driver, By.xpath("//input[@id='_form_fullName']"), string);
+		enterText(driver, By.xpath("//input[@id='fullName']"), string);
 	}
 	public void selectDateOfBirth(String dob) {
 
-    WebElement fullNameField = driver.findElement(By.id("_form_fullName"));
-    WebElement dobField = driver.findElement(By.id("_form_dob"));
-    String formattedDob = resolveAcceptedDateOfBirthFormat(dob, dobField);
+     WebElement fullNameField = driver.findElement(By.id("fullName"));
+        WebElement displayDobField = driver.findElement(By.className("date-display-input"));
+        WebElement realDobField = driver.findElement(By.className("real-date-input"));
+        String formattedDob = resolveAcceptedDateOfBirthFormat(dob, displayDobField);
 
-    WaitUtil.waitForClickability(driver, fullNameField);
-    fullNameField.sendKeys(Keys.TAB);
+        WaitUtil.waitForClickability(driver, fullNameField);
+        fullNameField.sendKeys(Keys.TAB);
 
-    WaitUtil.waitForClickability(driver, dobField);
-    dobField.clear();
-    dobField.sendKeys(formattedDob);
-    dobField.sendKeys(Keys.TAB);
+        // WaitUtil.waitForClickability(driver, displayDobField);
+        // displayDobField.sendKeys(Keys.TAB);
+
+        //to make the element visible on sccreen, as it is hidden by default and cannot be interacted with directly
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(
+                "arguments[0].style.cssText = 'position:fixed;top:0;left:0;width:120px;height:30px;"
+                + "display:block;visibility:visible;opacity:1;z-index:9999;';",
+                realDobField);
+
+        WaitUtil.waitForClickability(driver, realDobField);
+        realDobField.clear();
+        realDobField.sendKeys(formattedDob);
+        realDobField.sendKeys(Keys.TAB);
+
+        //to make the element hidden again after interaction
+         js.executeScript("arguments[0].style.cssText = '';", realDobField);
 }
 
     private String resolveAcceptedDateOfBirthFormat(String rawDate, WebElement dobField) {
