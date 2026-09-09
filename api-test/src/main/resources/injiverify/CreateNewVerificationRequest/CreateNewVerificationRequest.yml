@@ -389,8 +389,7 @@ CreateNewVerificationRequest:
       input: '{
       "clientId": "client123",
       "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
-      "responseCodeValidationRequired": false,
-      "includeDcqlQuery": false
+      "responseCodeValidationRequired": false
       }'
       output: '{
       "errorCode": "dcql_query_required",
