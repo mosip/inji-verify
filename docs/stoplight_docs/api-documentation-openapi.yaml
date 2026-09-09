@@ -64,12 +64,33 @@ paths:
         - `clientId` is a simple string (e.g., `client123`)
         - Authorization Request is returned **by value** in `authorizationDetails`
         - `client_metadata` **MUST NOT** be included — rejected with `invalid_request` per OpenID4VP v1.0 Section 8.5
+        - Not valid with `responseMode=dc_api`
 
         ### Decentralized Identifier
         - `clientId` must use the `decentralized_identifier:` prefix per OpenID4VP v1.0 Section 5.9.3
         - Example: `decentralized_identifier:did:example:verifier123`
         - Authorization Request is returned **by reference** (`requestUri`)
+        - Request JWT is signed with a `kid` header resolved via the Verifier DID document
         - The legacy `did:` prefix is **rejected** with `INVALID_CLIENT_IDENTIFIER`
+        - Valid with `responseMode=dc_api`
+
+        ### Certificate SAN DNS
+        - `clientId` must use the `x509_san_dns:` prefix per OpenID4VP v1.0 Section 5.9.3
+        - Example: `x509_san_dns:verify.example.com`
+        - Authorization Request is returned **by reference** (`requestUri`)
+        - Request JWT is signed with an `x5c` header (leaf-first X.509 certificate chain); no `kid`
+        - The DNS name after the prefix must be syntactically valid and must match this deployment's configured `inji.verify.x509-san-dns.host`
+        - A signing certificate chain must be configured; outside local/dev hosts, `request_uri` must be served over HTTPS
+        - The wallet validates the cert chain and checks that the DNS name in `clientId` appears in the leaf certificate SAN
+        - Valid with `responseMode=dc_api`
+
+        ### Redirect URI
+        - `clientId` must use the `redirect_uri:` prefix per OpenID4VP v1.0 Section 5.9.3
+        - Example: `redirect_uri:https://injiverify.example.com/v1/verify/v2/vp-submission/direct-post`
+        - Authorization Request is returned **by value** in `authorizationDetails` (unsigned / no `requestUri`)
+        - The URI part after the prefix **MUST** be an absolute **HTTPS** URI and **MUST** equal `authorizationDetails.responseUri` (the Verifier's `direct_post` endpoint)
+        - Plain `http://` URIs are rejected with `invalid_request`
+        - Not valid with `responseMode=dc_api`
 
         ---
 
@@ -154,8 +175,8 @@ paths:
         '201':
           description: |-
             The VP request was created successfully. The response includes a `transactionId` and `requestId`, along with either:
-            - The full `authorizationDetails` object (pre-registered clientId), or
-            - A `requestUri` pointing to the authorization request JWT (decentralized_identifier clientId).
+            - The full `authorizationDetails` object (pre-registered or `redirect_uri:` clientId), or
+            - A `requestUri` pointing to the authorization request JWT (`decentralized_identifier:` or `x509_san_dns:` clientId).
           content:
             application/json:
               schema:
@@ -236,6 +257,7 @@ paths:
             | `invalid_request` | DC API response_mode requires a decentralized_identifier or x509_san_dns client_id. |
             | `invalid_request` | responseCodeValidationRequired is not supported with response_mode=dc_api. |
             | `invalid_request` | Unable to determine verifier origin from Origin or Referer headers. |
+            | `invalid_request` | For the redirect_uri client_id scheme, the value after the prefix must be a non-empty, well-formed absolute https URI. |
 
             **DCQL structure validation errors:**
 
@@ -1359,8 +1381,9 @@ components:
             Identifier of the verifier. Supported schemes:
 
             - **Pre-registered**: simple string (e.g., `client123`). Authorization Request is returned by value. `client_metadata` MUST NOT be included. Not valid with `responseMode=dc_api`.
-            - **Decentralized Identifier**: `decentralized_identifier:` prefix (e.g., `decentralized_identifier:did:web:verify.example.com`). Authorization Request is returned by reference.
-            - **Certificate SAN DNS**: `x509_san_dns:` prefix (e.g., `x509_san_dns:verify.example.com`). Authorization Request is returned by reference with `x5c` JWT header.
+            - **Decentralized Identifier**: `decentralized_identifier:` prefix (e.g., `decentralized_identifier:did:web:verify.example.com`). Authorization Request is returned by reference (`kid` JWT header).
+            - **Certificate SAN DNS**: `x509_san_dns:` prefix (e.g., `x509_san_dns:verify.example.com`). Authorization Request is returned by reference with `x5c` JWT header. DNS name must match `inji.verify.x509-san-dns.host`.
+            - **Redirect URI**: `redirect_uri:` prefix (e.g., `redirect_uri:https://injiverify.example.com/v1/verify/v2/vp-submission/direct-post`). Authorization Request is returned by value. URI part MUST be an absolute HTTPS URI and MUST equal `responseUri`. Plain HTTP is rejected. Not valid with `responseMode=dc_api`.
 
             DC API (`responseMode=dc_api`) requires `decentralized_identifier:` or `x509_san_dns:`.
           example: client123
