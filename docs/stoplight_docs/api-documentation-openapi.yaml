@@ -47,11 +47,7 @@ paths:
         This replaces the legacy `/vp-request` endpoint and is **not backward compatible**.
 
         Does **not** set a session cookie. Use this for **server-to-server** integrations and pair with
-        `POST /v2/vp-results/{transactionId}`. Browser/SDK flows that later call `/vp-session-results`
-        should use `POST /v2/vp-session-request` instead.
-
-        The request body, `client_id_prefix` rules, `responseMode` values (including Digital Credentials API),
-        and response shapes are the same as `POST /v2/vp-session-request`.
+        `POST /v2/vp-results/{transactionId}`.
 
         ---
 
@@ -155,10 +151,12 @@ paths:
         ## Digital Credentials API (`responseMode=dc_api`)
 
         Same-device browser mediation via W3C Digital Credentials API (`navigator.credentials.get`).
-        Both `POST /v2/vp-request` and `POST /v2/vp-session-request` accept `responseMode=dc_api`.
+        This endpoint accepts `responseMode=dc_api` and does **not** set a `transaction_id` cookie.
 
-        - Browser/SDK flows that later call `POST /vp-session-results` **must** use `/v2/vp-session-request` so the `transaction_id` cookie is set
-        - Server-to-server integrations use this cookie-free endpoint and fetch results via `POST /v2/vp-results/{transactionId}`
+        After the wallet/SDK submits via `POST /vp-submission/dc-api`, fetch results with
+        `POST /v2/vp-results/{transactionId}` using the `transactionId` returned by
+        `POST /v2/vp-request`. The submission response does not include `transactionId`;
+        clients must retain it from request creation.
 
         **Requirements:**
         - `client_id_prefix` must be `decentralized_identifier:` or `x509_san_dns:`
@@ -409,10 +407,7 @@ paths:
 
         Sets a base64-encoded `transaction_id` as an **HttpOnly cookie** upon success. Intended for
         **session-based flows** (e.g., `@injistack/react-inji-verify-sdk`) that later call
-        `POST /vp-session-results`. For cookie-free server-to-server integrations, use `POST /v2/vp-request`.
-
-        The request body, `client_id_prefix` rules, `responseMode` values (including Digital Credentials API),
-        and response shapes are the same as `POST /v2/vp-request`.
+        `POST /vp-session-results`.
 
         ---
 
@@ -426,8 +421,6 @@ paths:
         |---|---|---|---|---|
         | Production | true | true | None | 15 min |
         | Local | true | false | Lax | 15 min |
-
-        > This cookie is **only set** by `/v2/vp-session-request`, not by `/v2/vp-request`.
 
         ---
 
@@ -531,10 +524,10 @@ paths:
         ## Digital Credentials API (`responseMode=dc_api`)
 
         Same-device browser mediation via W3C Digital Credentials API (`navigator.credentials.get`).
-        Both `POST /v2/vp-request` and `POST /v2/vp-session-request` accept `responseMode=dc_api`.
+        This endpoint accepts `responseMode=dc_api` and sets the `transaction_id` HttpOnly cookie.
 
-        - Browser/SDK flows that later call `POST /vp-session-results` **must** use this endpoint so the `transaction_id` cookie is set
-        - Server-to-server integrations use `POST /v2/vp-request` and fetch results via `POST /v2/vp-results/{transactionId}`
+        After the wallet/SDK submits via `POST /vp-submission/dc-api`, fetch results with
+        `POST /vp-session-results` using that cookie.
 
         **Requirements:**
         - `client_id_prefix` must be `decentralized_identifier:` or `x509_san_dns:`
@@ -637,7 +630,7 @@ paths:
       responses:
         '201':
           description: |-
-            The VP session request was created successfully. Response body is the same as `POST /v2/vp-request`:
+            The VP session request was created successfully. The response includes a `transactionId` and `requestId`, along with either:
             - The full `authorizationDetails` object (**by value** — pre-registered or `redirect_uri:` `client_id_prefix`), or
             - A `requestUri` pointing to the authorization request JWT (**by reference** — `decentralized_identifier:` or `x509_san_dns:`).
             For `responseMode=dc_api`, the by-reference body also includes `responseUri` (`POST /vp-submission/dc-api`).
