@@ -130,7 +130,7 @@
     "qrUploadSuccess": "QR code uploaded successfully!",
     "qrScanSuccess": "QR code scanned successfully!",
     "sessionExpired": "Session expired. Please re-initiate the request.",
-    "qrNotDetected": "No QRCode found",
+    "qrNotDetected": "No QR code found",
     "qrDecodeFailed": "QR size too small/low quality, please retry with a clear QR",
     "multipleQrFound": "Multiple QR codes detected, please retry with an image containing a single QR code.",
     "qrNotSupported": "QR code format is not supported.",
