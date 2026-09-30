@@ -77,7 +77,7 @@ function installing_apitestrig() {
 
   read -p "Please provide slack webhook URL to notify server end issues on your slack channel : " slackWebhookUrl
 
-  if [ -z $slackWebhookUrl ]; then
+  if [ -z "$slackWebhookUrl" ]; then
     echo "slack webhook URL not provided; EXITING;"
     exit 1;
   fi
@@ -87,7 +87,11 @@ function installing_apitestrig() {
 
  while [[ ! " ${valid_inputs[@]} " =~ " ${eSignetDeployed} " ]]; do
      read -p "Is the eSignet service deployed? (yes/no): " eSignetDeployed
-     eSignetDeployed=${eSignetDeployed,,}  # Convert input to lowercase
+     eSignetDeployed=$(echo "$eSignetDeployed" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase (bash 3.2 compatible)
+     case "$eSignetDeployed" in
+       y) eSignetDeployed="yes" ;;
+       n) eSignetDeployed="no" ;;
+     esac
  done
 
  if [[ $eSignetDeployed == "yes" ]]; then
