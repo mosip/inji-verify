@@ -48,17 +48,24 @@ const matchingResult = (
 
 describe("commonUtils credential matching", () => {
   describe("getQrErrorMessage", () => {
-    test("maps the expired-resource error through the translation function", () => {
+    test("shows the error message when both an error code and an error message are present", () => {
       const t = jest.fn((key: string) => key);
       expect(
         getQrErrorMessage(
-          new Error("  The requested resource expired., resource_not_found  "),
+          {
+            errorCode: "invalid_transaction_data",
+            errorMessage: "No matching credentials found to fulfill the request",
+          },
           t as any,
         ),
-      ).toBe("AlertMessages:qrVerificationLimitReached");
-      expect(t).toHaveBeenCalledWith(
-        "AlertMessages:qrVerificationLimitReached",
-        expect.objectContaining({ defaultValue: expect.any(String) }),
+      ).toBe("No matching credentials found to fulfill the request");
+      expect(t).not.toHaveBeenCalled();
+    });
+
+    test("uses the generic message when an error code has no error message", () => {
+      const t = jest.fn((key: string) => key);
+      expect(getQrErrorMessage({ errorCode: "resource_not_found" }, t as any)).toBe(
+        "AlertMessages:requestFailedGeneric",
       );
     });
 
@@ -68,6 +75,13 @@ describe("commonUtils credential matching", () => {
         "camera unavailable",
       );
       expect(t).not.toHaveBeenCalled();
+    });
+
+    test("uses the generic message when the error has no usable text", () => {
+      const t = jest.fn((key: string) => key);
+      expect(getQrErrorMessage(null, t as any)).toBe("AlertMessages:requestFailedGeneric");
+      expect(getQrErrorMessage(undefined, t as any)).toBe("AlertMessages:requestFailedGeneric");
+      expect(getQrErrorMessage("failed", t as any)).toBe("AlertMessages:requestFailedGeneric");
     });
   });
 

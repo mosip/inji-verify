@@ -4,13 +4,24 @@ import { getLanguageCodes } from "./i18n";
 import { TFunction } from "i18next";
 import en from "../locales/en.json";
 
-export const getQrErrorMessage = (error: Error, t: TFunction): string => {
-  if (error.message.trim() === "The requested resource expired., resource_not_found") {
-    return t("AlertMessages:qrVerificationLimitReached", {
-      defaultValue: en.AlertMessages.qrVerificationLimitReached,
-    });
+const genericQrErrorMessage = (t: TFunction) =>
+  t("AlertMessages:requestFailedGeneric", {
+    defaultValue: en.AlertMessages.requestFailedGeneric,
+  });
+
+export const getQrErrorMessage = (error: unknown, t: TFunction): string => {
+  const err =
+    error !== null && typeof error === "object"
+      ? (error as { message?: unknown; errorCode?: unknown; errorMessage?: unknown })
+      : {};
+  const errorCode = typeof err.errorCode === "string" ? err.errorCode.trim() : "";
+  const errorMessage = typeof err.errorMessage === "string" ? err.errorMessage.trim() : "";
+  if (errorCode) {
+    return errorMessage || genericQrErrorMessage(t);
   }
-  return error.message;
+
+  const message = typeof err.message === "string" ? err.message.trim() : "";
+  return message || genericQrErrorMessage(t);
 };
 
 const isSafeKey = (key: string) =>

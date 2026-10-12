@@ -13,7 +13,7 @@ import {
 } from "../../../redux/features/verify/vpVerificationState";
 import { VCShareType, VpSubmissionResultInt, VpSummarisedVerificationResponse } from "../../../types/data-types";
 import { closeAlert, raiseAlert } from "../../../redux/features/alerts/alerts.slice";
-import { AlertMessages, getWalletErrorAlert } from "../../../utils/config";
+import { AlertMessages } from "../../../utils/config";
 import { OpenID4VPVerification } from "@injistack/react-inji-verify-sdk";
 import { Button } from "./commons/Button";
 import { useTranslation } from "react-i18next";
@@ -99,17 +99,19 @@ const DisplayActiveStep = () => {
   const handleOnError = (error: any) => {
     dispatch(closeAlert({}));
     dispatch(resetVpRequest());
-    const walletAlert = getWalletErrorAlert(error.errorCode);
-    const message =
-      error.errorMessage ||
-      walletAlert?.message ||
-      (error.errorCode
-        ? AlertMessages().requestFailedGeneric.message
-        : error.message);
+    const err = (error ?? {}) as {
+      errorCode?: string;
+      errorMessage?: string;
+      transactionId?: string;
+    };
+    const errorMessage = typeof err.errorMessage === "string" ? err.errorMessage.trim() : "";
+    const message = err.errorCode && errorMessage
+      ? errorMessage
+      : AlertMessages().requestFailedGeneric.message;
     dispatch(raiseAlert({
       title: "Request Failed",
       message,
-      referenceId: error.transactionId,
+      referenceId: err.transactionId,
       severity: "error",
       open: true,
       autoHideDuration: 120000,

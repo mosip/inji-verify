@@ -58,12 +58,16 @@ const handleOnVCProcessed = (data: any[]) => {
           onVCProcessed={handleOnVCProcessed}
           onClose={onClose}
           onError={(error) => {
-            if (error.name === "NotAllowedError") {
+            const name =
+              error !== null && typeof error === "object"
+                ? (error as { name?: string }).name
+                : undefined;
+            if (name === "NotAllowedError") {
               setIsCameraBlocked(true);
             } else {
               dispatch(goToHomeScreen({}));
               dispatch(
-                raiseAlert({ message: getQrErrorMessage(error, t), severity: "error" })
+                raiseAlert({ message: getQrErrorMessage(error, t), severity: "error", open: true })
               );
             }
           }}

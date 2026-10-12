@@ -406,7 +406,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     } catch (error) {
       resetState();
       if(isAppError(error)) {
-        throw new Error(error.errorMessage);
+        throw Object.assign(new Error(error.errorMessage), {
+          errorCode: error.errorCode,
+          errorMessage: error.errorMessage,
+        });
       }
       throw error instanceof Error ? error : new Error(String(error));
     }
@@ -770,10 +773,13 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const responseCode = hashParams.get("response_code") ?? searchParams.get("response_code");
       const error = hashParams.get("error") || searchParams.get("error");
-      const errorDescripton = hashParams.get("error_description") || searchParams.get("error_description") || `We’re unable to complete your request`;
+      const errorDescription = hashParams.get("error_description") || searchParams.get("error_description");
 
       if (error) {
-        onError(new Error(`${errorDescripton}, ${error}`));
+        onError(Object.assign(new Error(errorDescription || error), {
+          errorCode: error,
+          errorMessage: errorDescription || undefined,
+        }));
         resetState();
         clearUrl(["error", "error_description"]);
         return;

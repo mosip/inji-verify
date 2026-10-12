@@ -98,6 +98,8 @@ jest.mock("@injistack/react-inji-verify-sdk", () => {
                             transactionId: "tx-1",
                         });
                     },
+                    onMouseDown: () => props.onError?.(null),
+                    onMouseUp: () => props.onError?.("failed"),
                 },
                 "SDK MOCK"
             ),
@@ -278,7 +280,7 @@ describe("VpVerification Component", () => {
         );
     });
 
-    test("keeps the localized message when the wallet sends only an error code", async () => {
+    test("shows the generic message when the wallet sends only an error code", async () => {
         const { raiseAlert } = jest.requireMock("../../../../redux/features/alerts/alerts.slice");
         raiseAlert.mockImplementation((payload: any) => ({ type: "alerts/raiseAlert", payload }));
 
@@ -290,8 +292,30 @@ describe("VpVerification Component", () => {
         await waitFor(() =>
             expect(raiseAlert).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    message: "Wallet access denied",
+                    message: "Generic request failed",
                     referenceId: "tx-1",
+                    open: true,
+                })
+            )
+        );
+    });
+
+    test.each([
+        ["null", "mouseDown"],
+        ["a thrown string", "mouseUp"],
+    ])("shows the generic request-failed message for %s", async (_label, eventName) => {
+        const { raiseAlert } = jest.requireMock("../../../../redux/features/alerts/alerts.slice");
+        raiseAlert.mockImplementation((payload: any) => ({ type: "alerts/raiseAlert", payload }));
+
+        mockState({ isShowResult: false, flowType: "crossDevice" });
+        render(<VpVerification />);
+
+        fireEvent[eventName](screen.getByTestId("openid-verification-sdk"));
+
+        await waitFor(() =>
+            expect(raiseAlert).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: "Generic request failed",
                     open: true,
                 })
             )

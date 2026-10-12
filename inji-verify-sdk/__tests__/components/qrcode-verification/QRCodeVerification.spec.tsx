@@ -194,6 +194,8 @@ describe("QRCodeVerification", () => {
       expect(onError).toHaveBeenCalledWith(
         expect.objectContaining({
           message: "Each DCQL credential entry must contain meta.",
+          errorCode: "dcql_query_meta_required",
+          errorMessage: "Each DCQL credential entry must contain meta.",
         })
       );
     });

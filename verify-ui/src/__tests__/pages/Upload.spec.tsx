@@ -17,6 +17,9 @@ jest.mock("../../utils/commonUtils", () => ({
   getClientId: jest.fn().mockReturnValue("client-id"),
   isVPSubmissionSupported: jest.fn().mockReturnValue(false),
   vcVerificationV2Request: jest.fn(),
+  getQrErrorMessage: jest.fn((error: { message?: string } | null) =>
+    error?.message || "generic failure"
+  ),
 }));
 
 jest.mock("@injistack/react-inji-verify-sdk", () => ({
@@ -43,6 +46,22 @@ describe("Upload", () => {
         expect.objectContaining({
           payload: expect.objectContaining({
             message: "Multiple QR codes detected, please retry with an image containing a single QR code.",
+          }),
+        }),
+      );
+    });
+  });
+
+  test("shows the error message when upload fails", async () => {
+    render(<Upload />);
+
+    await onError!(new Error("No matching credentials found to fulfill the request"));
+
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            message: "No matching credentials found to fulfill the request",
           }),
         }),
       );

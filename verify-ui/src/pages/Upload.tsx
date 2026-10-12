@@ -69,14 +69,15 @@ return (
                         );
                         if (isOnline) {
                             document.getElementById("trigger-upload")?.click();
+                            const err = (error ?? {}) as { name?: string };
                             dispatch(
                                 raiseAlert({
                                         message:
-                                            error.name === "QR_DECODE_FAILED"
+                                            err.name === "QR_DECODE_FAILED"
                                                 ? t("AlertMessages:qrDecodeFailed")
-                                                : error.name === "QR_NOT_FOUND"
+                                                : err.name === "QR_NOT_FOUND"
                                                     ? t("AlertMessages:qrNotDetected")
-                                                    : error.name === "MULTIPLE_QR_FOUND"
+                                                    : err.name === "MULTIPLE_QR_FOUND"
                                                         ? t("AlertMessages:multipleQrFound")
                                                         : getQrErrorMessage(error, t),
                                     severity: "error",
