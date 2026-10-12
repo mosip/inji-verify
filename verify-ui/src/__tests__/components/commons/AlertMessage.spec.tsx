@@ -34,11 +34,12 @@ describe("AlertMessage", () => {
         expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
     });
 
-    test("omits the top message when only error code and reason are set", () => {
+    test("shows the reason as the alert message when error code and reason are both set", () => {
         const store = mockStore({
             verification: PreloadedState,
             alert: {
                 title: "Request Failed",
+                message: "The wallet declined the request or does not have the requested credentials. Please try again.",
                 errorCode: "access_denied",
                 errorReason: "user cancelled",
                 severity: "error",
@@ -52,8 +53,10 @@ describe("AlertMessage", () => {
             </Provider>
         );
 
-        expect(document.getElementById("alert-message")).toBeNull();
-        expect(screen.getByText(/access_denied/)).toBeInTheDocument();
-        expect(screen.getByText(/user cancelled/)).toBeInTheDocument();
+        expect(screen.getByText("user cancelled")).toBeInTheDocument();
+        expect(screen.queryByText(/Error Code/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Reason:/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/access_denied/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/does not have the requested credentials/)).not.toBeInTheDocument();
     });
 });

@@ -258,7 +258,7 @@ describe("VpVerification Component", () => {
         );
     });
 
-    test("shows wallet error code and reason without the localized message", async () => {
+    test("shows the wallet reason as the alert message", async () => {
         const { raiseAlert } = jest.requireMock("../../../../redux/features/alerts/alerts.slice");
         raiseAlert.mockImplementation((payload: any) => ({ type: "alerts/raiseAlert", payload }));
 
@@ -270,9 +270,8 @@ describe("VpVerification Component", () => {
         await waitFor(() =>
             expect(raiseAlert).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    message: undefined,
-                    errorCode: "access_denied",
-                    errorReason: "user cancelled",
+                    message: "user cancelled",
+                    referenceId: "tx-1",
                     open: true,
                 })
             )
@@ -292,7 +291,7 @@ describe("VpVerification Component", () => {
             expect(raiseAlert).toHaveBeenCalledWith(
                 expect.objectContaining({
                     message: "Wallet access denied",
-                    errorCode: "access_denied",
+                    referenceId: "tx-1",
                     open: true,
                 })
             )

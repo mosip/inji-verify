@@ -15,6 +15,11 @@ const AlertMessage = (props:any) => {
     const dispatch = useAppDispatch();
     const {isRtl} = props
     const handleClose = () => dispatch(closeAlert({}));
+    const hasErrorCodeAndReason = Boolean(alertInfo.errorCode && alertInfo.errorReason);
+    const alertMessage = hasErrorCodeAndReason ? alertInfo.errorReason : alertInfo.message;
+    const showErrorCode = Boolean(alertInfo.errorCode) && !hasErrorCodeAndReason;
+    const showErrorReason = Boolean(alertInfo.errorReason) && !hasErrorCodeAndReason;
+    const showDetailBox = showErrorCode || showErrorReason || Boolean(alertInfo.referenceId);
 
     useEffect(() => {
         if (alertInfo.open) {
@@ -29,7 +34,7 @@ const AlertMessage = (props:any) => {
     <>
       <div
         className={`fixed top-[70px] ${isRtl ? 'left-1 lg:left-[2]' : 'right-1 lg:right-[2]'} py-[22px] px-[18px] text-white rounded-[12px] shadow-lg ${backgroundColorMapping[alertInfo.severity ?? "success"]} ${alertInfo.open ? "" : "hidden"} z-10`}>
-        {alertInfo.errorCode || alertInfo.errorReason || alertInfo.referenceId ? (
+        {showDetailBox || alertInfo.title ? (
           <div className="flex items-center">
             <div>
               <header className="flex items-center justify-between mb-4">
@@ -45,17 +50,18 @@ const AlertMessage = (props:any) => {
                   <CloseIcon/>
                 </button>
               </header>
-              {alertInfo.message ? (
+              {alertMessage ? (
                 <p id="alert-message">
-                  {alertInfo.message}
+                  {alertMessage}
                 </p>
               ) : null}
+              {showDetailBox && (
               <div
                 className="mt-4 py-4 px-4 rounded-[12px] bg-white bg-opacity-20">
-                {alertInfo.errorCode &&
+                {showErrorCode &&
                     <p className="mt-1"><span className="text-lg font-semibold">Error Code: </span>{alertInfo.errorCode}
                     </p>}
-                {alertInfo.errorReason &&
+                {showErrorReason &&
                     <p className="mt-1"><span
                         className="text-lg font-semibold">Reason: </span>{alertInfo.errorReason}
                     </p>}
@@ -63,12 +69,13 @@ const AlertMessage = (props:any) => {
                     <p className="mt-1"><span className="text-lg font-semibold">Reference ID: </span>{alertInfo.referenceId}
                     </p>}
               </div>
+              )}
             </div>
           </div>
         ) : (
           <div className="flex items-center">
             <p id="alert-message">
-              {alertInfo.message}
+              {alertMessage}
             </p>
             <button
               type="button"
