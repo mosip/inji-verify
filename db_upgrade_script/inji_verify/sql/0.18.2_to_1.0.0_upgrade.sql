@@ -4,9 +4,9 @@
 
 -- -------------------------------------------------------------------------------------------------
 -- Upgrade Script : v0.18.2 to v1.0.0
--- Release name   : 1.0.0-alpha.1, 1.0.0-alpha.2, 1.0.0-alpha.3
+-- Release name   : 1.0.0-alpha.1, 1.0.0-alpha.2, 1.0.0-rc.2
 -- Database       : inji_verify
--- Purpose        : Apply schema changes introduced in 1.0.0-alpha.1; also used for 1.0.0-alpha.2 and 1.0.0-alpha.3
+-- Purpose        : Apply schema changes introduced in 1.0.0-alpha.1; also used for 1.0.0-alpha.2 and 1.0.0-rc.2
 -- -------------------------------------------------------------------------------------------------
 \c inji_verify
 

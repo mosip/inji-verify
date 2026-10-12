@@ -4,9 +4,9 @@
 
 -- -------------------------------------------------------------------------------------------------
 -- Rollback Script: v1.0.0 to v0.18.2
--- Release name   : 1.0.0-alpha.1, 1.0.0-alpha.2, 1.0.0-alpha.3
+-- Release name   : 1.0.0-alpha.1, 1.0.0-alpha.2, 1.0.0-rc.2
 -- Database       : inji_verify
--- Purpose        : Revert schema changes introduced in 1.0.0-alpha.1; also used for 1.0.0-alpha.2 and 1.0.0-alpha.3
+-- Purpose        : Revert schema changes introduced in 1.0.0-alpha.1; also used for 1.0.0-alpha.2 and 1.0.0-rc.2
 -- -------------------------------------------------------------------------------------------------
 
 \c inji_verify
