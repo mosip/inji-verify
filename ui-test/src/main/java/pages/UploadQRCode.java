@@ -155,7 +155,8 @@ public class UploadQRCode extends BasePage {
 	}
 
 	public void uploadOnetimeQRCodeAndWaitForVerificationResult() {
-		uploadWithSingleRecovery(() -> clickOnUploadOnetimeQRCodePdf());
+		clickOnUploadOnetimeQRCodePdf();
+        waitForVerificationResultState();;
 	}
 
 	public void uploadAnotherPdfAndWaitForVerificationResult() {

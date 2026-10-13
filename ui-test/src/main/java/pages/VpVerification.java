@@ -2,6 +2,8 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -494,7 +496,7 @@ public class VpVerification extends BasePage {
 	public boolean isCredentialPopupAbsent() {
 		try {
 			return !credentialPopupContainer.isDisplayed();
-		} catch (Exception e) {
+		} catch (NoSuchElementException e) {
 			return true;
 		}
 	}
@@ -512,14 +514,21 @@ public class VpVerification extends BasePage {
 		try {
 			return credentialPopupContainer.findElements(
 					By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]"));
-		} catch (Exception e) {
+		} catch (NoSuchElementException e) {
 			return List.of();
 		}
 	}
 
 	public boolean isPopupFieldVisible(String fieldId) {
-		List<WebElement> elements = findPopupFields(fieldId);
-		return !elements.isEmpty() && isElementIsVisible(driver, elements.get(0));
+		By popupLocator = By.xpath("//div[contains(@class,'h-[90vh]')]");
+		By fieldLocator = By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]");
+		try {
+			return new WebDriverWait(driver, Duration.ofSeconds(getTimeout()))
+					.ignoring(StaleElementReferenceException.class, NoSuchElementException.class)
+					.until(d -> d.findElement(popupLocator).findElement(fieldLocator).isDisplayed());
+		} catch (TimeoutException e) {
+			return false;
+		}
 	}
 
 	public boolean isPopupFieldAbsent(String fieldId) {

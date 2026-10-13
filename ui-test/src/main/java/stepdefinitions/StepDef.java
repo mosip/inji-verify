@@ -3251,6 +3251,143 @@ public void verifyUploadButtonVisibleAfter2MinsIdle() {
             throw e;
         }
     }
+
+    @When("User clicks on insurance credential button")
+    public void user_clicks_on_insurance_credential_button() {
+        try {
+            vpverification.clickOnInsuranceCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the insurance credential button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the insurance credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on expand credential button")
+    public void user_clicks_on_expand_credential_button() {
+        try {
+            vpverification.clickOnExpandCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the expand (Open In Full) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the expand credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on close popup button")
+    public void user_clicks_on_close_popup_button() {
+        try {
+            vpverification.clickOnClosePopupButton();
+            test.log(Status.PASS, "Successfully clicked on the close popup (✕) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the close popup button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on collapse credential button")
+    public void user_clicks_on_collapse_credential_button() {
+        try {
+            vpverification.clickOnCollapseCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the collapse (Close Fullscreen) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the collapse credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on inner download button")
+    public void user_clicks_on_inner_download_button() {
+        try {
+            vpverification.clickOnInnerDownloadButton();
+            test.log(Status.PASS, "Successfully clicked on the download button inside the popup.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the inner download button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on outer download button")
+    public void user_clicks_on_outer_download_button() {
+        try {
+            vpverification.clickOnOuterDownloadButton();
+            test.log(Status.PASS, "Successfully clicked on the download button in the credential card.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the outer download button", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is visible")
+    public void dataShowcaseFieldIsVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isDataShowcaseFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the data showcase.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is not visible")
+    public void dataShowcaseFieldIsNotVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isDataShowcaseFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in the data showcase but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is visible")
+    public void popupFieldIsVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isPopupFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the credential popup.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is not visible")
+    public void popupFieldIsNotVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isPopupFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in popup but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is visible")
+    public void credentialPopupIsVisible() {
+        try {
+            Assert.assertTrue(vpverification.isCredentialPopupVisible(), "Credential popup is not visible.");
+            test.log(Status.PASS, "Credential popup is visible.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup is not visible", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is not visible")
+    public void credentialPopupIsNotVisible() {
+        try {
+            Assert.assertTrue(vpverification.isCredentialPopupAbsent(),
+                    "Credential popup is still visible but should not be.");
+            test.log(Status.PASS, "Credential popup is correctly absent.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup unexpectedly present", e);
+            throw e;
+        }
+    }
 }
 
 
