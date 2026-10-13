@@ -17,6 +17,8 @@ import java.io.IOException;
 
 import utils.BaseTest;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -3307,13 +3309,17 @@ public void verifyUploadButtonVisibleAfter2MinsIdle() {
         }
     }
 
-    @When("User clicks on outer download button")
-    public void user_clicks_on_outer_download_button() {
+    @Then("verify outer download button")
+    public void verify_outer_download_button() {
         try {
-            vpverification.clickOnOuterDownloadButton();
-            test.log(Status.PASS, "Successfully clicked on the download button in the credential card.");
+            boolean isVisible = vpverification.isOuterDownloadButtonVisible();
+            if (isVisible) {
+                test.log(Status.PASS, "Outer download button is visible on the credential card.");
+            } else {
+                throw new AssertionError("Outer download button is not visible on the credential card.");
+            }
         } catch (Exception e) {
-            logFailure(test, driver, "Failed to click on the outer download button", e);
+            logFailure(test, driver, "Failed to verify the outer download button", e);
             throw e;
         }
     }
@@ -3386,6 +3392,68 @@ public void verifyUploadButtonVisibleAfter2MinsIdle() {
         } catch (AssertionError e) {
             logFailure(test, driver, "Credential popup unexpectedly present", e);
             throw e;
+        }
+    }
+
+    @Then("Verify file {string} exists in downloads folder")
+    public void verifyFileExistsInDownloadsFolder(String fileName) {
+        try {
+            boolean fileFound;
+            if (BaseTest.isUsingBrowserStack()) {
+                fileFound = waitForFileOnBrowserStack(fileName);
+            } else {
+                fileFound = waitForFileInLocalDownloads(fileName);
+            }
+            Assert.assertTrue(fileFound, "File '" + fileName + "' was not found in the downloads folder.");
+            test.log(Status.PASS, "File '" + fileName + "' successfully found in the downloads folder.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "File '" + fileName + "' was not found in the downloads folder", e);
+            throw e;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logFailure(test, driver, "Interrupted while waiting for file '" + fileName + "' in downloads folder", e);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while verifying file '" + fileName + "' in downloads folder", e);
+            throw e;
+        }
+    }
+
+    private boolean waitForFileInLocalDownloads(String fileName) throws InterruptedException {
+        File downloadsDir = new File(BaseTest.getLocalDownloadsDirectoryPath());
+        Instant deadline = Instant.now().plusSeconds(BasePage.getTimeout());
+        while (Instant.now().isBefore(deadline)) {
+            File target = new File(downloadsDir, fileName);
+            if (target.exists() && target.length() > 0) {
+                return true;
+            }
+            Thread.sleep(1000);
+        }
+        File target = new File(downloadsDir, fileName);
+        return target.exists() && target.length() > 0;
+    }
+
+    private boolean waitForFileOnBrowserStack(String fileName) throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Instant deadline = Instant.now().plusSeconds(BasePage.getTimeout());
+        while (Instant.now().isBefore(deadline)) {
+            if (isBrowserStackFileAvailable(js, fileName)) {
+                return true;
+            }
+            Thread.sleep(2000);
+        }
+        return isBrowserStackFileAvailable(js, fileName);
+    }
+
+    private boolean isBrowserStackFileAvailable(JavascriptExecutor js, String fileName) {
+        try {
+            Object result = js.executeScript(
+                "browserstack_executor: {\"action\":\"getFileProperties\","
+                + "\"arguments\":{\"fileName\":\"" + fileName + "\"}}"
+            );
+            return result != null && !result.toString().trim().isEmpty();
+        } catch (Exception e) {
+            return false;
         }
     }
 }

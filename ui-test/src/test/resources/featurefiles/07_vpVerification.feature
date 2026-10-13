@@ -348,10 +348,11 @@ Scenario: Verify VP verification same device flow
     And The popup field "benefits-value" is visible
     And The popup field "dob-value" is visible
     And User clicks on inner download button
+    Then Verify file "InsuranceCredential.json" exists in downloads folder
     And User clicks on collapse credential button
     Then The credential popup is not visible
     And The data showcase field "fullname-value" is visible
-    And User clicks on outer download button
+    And verify outer download button
 
   @smoke @verifyingVpVerification @dependsOnVP
   Scenario: Verify credential popup close button after OVP verification

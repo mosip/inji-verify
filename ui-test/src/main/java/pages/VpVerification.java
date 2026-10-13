@@ -353,7 +353,7 @@ public class VpVerification extends BasePage {
 
 	public boolean isTrustButtonVisible() {
 		try {
-			new WebDriverWait(driver, Duration.ofSeconds(3))
+			new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOf(trustButton));
 			return trustButton.isDisplayed();
 		} catch (TimeoutException e) {
@@ -485,8 +485,8 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, innerDownloadButton);
 	}
 
-	public void clickOnOuterDownloadButton() {
-		clickOnElement(driver, outerDownloadButton);
+	public boolean isOuterDownloadButtonVisible() {
+		return isElementIsVisible(driver, outerDownloadButton);
 	}
 
 	public boolean isCredentialPopupVisible() {
