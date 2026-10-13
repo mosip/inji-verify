@@ -90,6 +90,7 @@ public class BaseTest extends BaseTestUtil {
 	private static final AtomicBoolean insuranceArtifactsPreparedForRun = new AtomicBoolean(false);
 	private static final AtomicBoolean insuranceArtifactsRunInitialised = new AtomicBoolean(false);
 	private static volatile String downloadedInsurancePdfPath;
+	private static volatile String onetimeInsuranceCredentialPdfPath;
 	private static volatile String insuranceCredentialPngPath;
 	private static volatile String insuranceCredentialJpgPath;
 	private static volatile String insuranceCredentialJpegPath;
@@ -272,14 +273,16 @@ public class BaseTest extends BaseTestUtil {
 	}
 
 	private void initialiseSharedInsuranceArtifactPaths() {
-		if (downloadedInsurancePdfPath != null && insuranceCredentialPngPath != null
+		if (downloadedInsurancePdfPath != null && onetimeInsuranceCredentialPdfPath != null
+				&& insuranceCredentialPngPath != null
 				&& insuranceCredentialJpgPath != null
 				&& insuranceCredentialJpegPath != null) {
 			return;
 		}
 
 		synchronized (insuranceArtifactsLock) {
-			if (downloadedInsurancePdfPath != null && insuranceCredentialPngPath != null
+			if (downloadedInsurancePdfPath != null && onetimeInsuranceCredentialPdfPath != null
+					&& insuranceCredentialPngPath != null
 					&& insuranceCredentialJpgPath != null
 					&& insuranceCredentialJpegPath != null) {
 				return;
@@ -291,6 +294,7 @@ public class BaseTest extends BaseTestUtil {
 								+ "runtime-media" + File.separator + "shared-insurance-artifacts");
 				Files.createDirectories(sharedDir.toPath());
 				downloadedInsurancePdfPath = new File(sharedDir, "InsuranceCredential.pdf").getAbsolutePath();
+				onetimeInsuranceCredentialPdfPath = new File(sharedDir, "OneTimeInsuranceCredential.pdf").getAbsolutePath();
 				insuranceCredentialPngPath = new File(sharedDir, "InsuranceCredential0.png").getAbsolutePath();
 				insuranceCredentialJpgPath = new File(sharedDir, "InsuranceCredential0.jpg").getAbsolutePath();
 				insuranceCredentialJpegPath = new File(sharedDir, "InsuranceCredential0.jpeg").getAbsolutePath();
@@ -484,7 +488,7 @@ public class BaseTest extends BaseTestUtil {
 				ExtentReportManager.getTest().info(
 						"<a href='" + escapeHtmlAttribute(link)
 								+ "' target='_blank'>Click here for BrowserStack video/session</a>");
-				logger.info("Attached BrowserStack video/session link for failed scenario: {}", scenario.getName());
+				logger.info("Attached BrowserStack video/session link for {} scenario: {}", scenario.getStatus(), scenario.getName());
 				return;
 			}
 
@@ -654,6 +658,10 @@ public class BaseTest extends BaseTestUtil {
 		return downloadedInsurancePdfPath;
 	}
 
+	public static String getOnetimeInsuranceCredentialPdfPath() {
+		return onetimeInsuranceCredentialPdfPath;
+	}
+
 	public static String getInsuranceCredentialPngPath() {
 		return insuranceCredentialPngPath;
 	}
@@ -692,6 +700,7 @@ public class BaseTest extends BaseTestUtil {
 
 	private static void deleteSharedInsuranceArtifacts() throws IOException {
 		deleteIfExists(downloadedInsurancePdfPath);
+		deleteIfExists(onetimeInsuranceCredentialPdfPath);
 		deleteIfExists(insuranceCredentialPngPath);
 		deleteIfExists(insuranceCredentialJpgPath);
 		deleteIfExists(insuranceCredentialJpegPath);

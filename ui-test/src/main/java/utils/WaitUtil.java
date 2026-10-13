@@ -16,7 +16,8 @@ public class WaitUtil {
 
     public static void waitForVisibility(WebDriver driver, WebElement element, int timeout) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.ignoring(org.openqa.selenium.StaleElementReferenceException.class)
+            .until(ExpectedConditions.visibilityOf(element));
     }
 
     public static void waitForCondition(WebDriver driver, Supplier<Boolean> condition, int timeoutInSeconds) {

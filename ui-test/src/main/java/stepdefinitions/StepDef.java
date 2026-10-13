@@ -839,6 +839,23 @@ public class StepDef extends BaseSteps {
         }
     }
 
+    @Then("Verify multiple VC verification success message")
+    public void verify_multiple_vc_verification_success_message() {
+        try {  
+            String actualMessage = vpverification.getMultipleVcVerificationSuccessMessage();
+            Assert.assertEquals(actualMessage, UiConstants.MULTIPLE_VC_VERIFICATION_SUCCESS_MESSAGE,
+                "Multiple VC verification success message does not match the expected value.");
+            test.log(Status.PASS, "Successfully verified the multiple VC verification success message: " + actualMessage);
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Multiple VC verification success message failed. Expected: "
+                + UiConstants.MULTIPLE_VC_VERIFICATION_SUCCESS_MESSAGE + ", but found: " + vpverification.getMultipleVcVerificationSuccessMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while verifying the multiple VC verification success message", e);
+            throw e;
+        }
+    }
+
     @When("Verify toast message")
     public void verifyToastMessage() {
         try {
@@ -1821,10 +1838,14 @@ public class StepDef extends BaseSteps {
 	}
 	@When("User verify pdf is downloaded")
 	public void userVerifyPdfIsDownloaded() throws IOException {
+	    userVerifyPdfIsDownloaded(null);
+	}
+
+	public void userVerifyPdfIsDownloaded(String targetFileName) throws IOException {
 	    try {
 	        File pdfFile = BaseTest.isUsingBrowserStack()
-	                ? copyInsurancePdfFromBrowserStack()
-	                : copyInsurancePdfFromLocalDownloads();
+	                ? copyInsurancePdfFromBrowserStack(targetFileName)
+	                : moveInsurancePdfFromLocalDownloads(targetFileName);
 	        assertPdfHasText(pdfFile);
 	        test.log(Status.PASS, "PDF file 'InsuranceCredential.pdf' downloaded and contains content.");
 
@@ -1841,7 +1862,7 @@ public class StepDef extends BaseSteps {
 	    }
 	}
 
-	private File copyInsurancePdfFromBrowserStack() throws IOException, InterruptedException {
+	private File copyInsurancePdfFromBrowserStack(String targetFileName) throws IOException, InterruptedException {
 	    boolean fileExists = false;
 	    for (int i = 0; i < 5; i++) {
 	        fileExists = (boolean) baseTest.getJse().executeScript(
@@ -1858,21 +1879,28 @@ public class StepDef extends BaseSteps {
 	            "browserstack_executor: {\"action\": \"getFileContent\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}");
 
 	    byte[] data = Base64.getDecoder().decode(base64EncodedFile);
-	    File targetFile = new File(BaseTest.getDownloadedInsurancePdfPath());
+	    File canonicalFile = new File(BaseTest.getDownloadedInsurancePdfPath());
+	    File targetFile = (targetFileName != null && !targetFileName.isBlank())
+	            ? new File(canonicalFile.getParent(), targetFileName)
+	            : canonicalFile;
+	    Files.createDirectories(targetFile.getParentFile().toPath());
 	    try (OutputStream stream = new FileOutputStream(targetFile)) {
 	        stream.write(data);
 	    }
+	    test.log(Status.PASS, "PDF saved as: " + targetFile.getAbsolutePath());
 	    return targetFile;
 	}
 
-	private File copyInsurancePdfFromLocalDownloads() throws IOException, InterruptedException {
+	private File moveInsurancePdfFromLocalDownloads(String targetFileName) throws IOException, InterruptedException {
 	    Path downloadDirectory = Path.of(BaseTest.getLocalDownloadsDirectoryPath());
 	    Path downloadedPdf = waitForLocalInsurancePdf(downloadDirectory);
-	    Path targetPdf = Path.of(BaseTest.getDownloadedInsurancePdfPath());
-
-	    Files.createDirectories(targetPdf.getParent());
-	    Files.copy(downloadedPdf, targetPdf, StandardCopyOption.REPLACE_EXISTING);
-	    test.log(Status.PASS, "PDF file 'InsuranceCredential.pdf' copied from local downloads: " + downloadedPdf);
+	    Path canonicalPdf = Path.of(BaseTest.getDownloadedInsurancePdfPath());
+	    Files.createDirectories(canonicalPdf.getParent());
+	    Path targetPdf = (targetFileName != null && !targetFileName.isBlank())
+	            ? canonicalPdf.resolveSibling(targetFileName)
+	            : canonicalPdf;
+	    Files.move(downloadedPdf, targetPdf, StandardCopyOption.REPLACE_EXISTING);
+	    test.log(Status.PASS, "PDF saved as: " + targetPdf.toAbsolutePath());
 	    return targetPdf.toFile();
 	}
 
@@ -1960,6 +1988,39 @@ public class StepDef extends BaseSteps {
 	    }
 	}
 
+@Before(value = "@needsOnetimeInsuranceArtifacts", order = 13000)
+	public void prepareOnetimeInsuranceCredentialArtifactsHook() throws Exception {
+	    ensureStepDependenciesInitialized();
+	    try {
+	        synchronized (BaseTest.getInsuranceArtifactsLock()) {
+	                openInjiWebInNewTab();
+	                verifyClickOnContinueButton();
+	                userSearchTheIssuersSunbird();
+	                userClickOnDownloadStayProtectedInsuranceButton();
+	                userClickOnHealthInsuranceIdByESignetButton();
+	                userClickOnValidityDropdownButton();
+	                userClickOnProceedButton();
+	                userEnterThePolicyNumber();
+	                userEnterTheFullName();
+	                userEnterTheDateOfBirth();
+	                userClickOnLoginButton();
+	                userVerifyDownloadSuccessTextDisplayed();
+	                userVerifyPdfIsDownloaded("OneTimeInsuranceCredential.pdf");
+	                test.log(Status.PASS, "Prepared onetime insurance credential artifacts for this run.");
+	            if (BaseTest.getCurrentScenarioTags().contains("@scan")
+	                    && BaseTest.getCurrentScenarioTags().contains("@qr_valid")) {
+	                baseTest.refreshRuntimeScanMediaForCurrentScenario();
+	                test.log(Status.PASS, "Regenerated runtime scan media from current-run insurance artifacts.");
+	            }
+	        }
+
+	        openInjiVerifyInNewTab();
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Failed while preparing insurance credential artifacts", e);
+	        throw e;
+	    }
+	}
+
 	@When("Verify that user convert pdf into png")
 	public void verifyThatUserConvertPdfIntoPng() throws IOException {
 	    String pdfPath = BaseTest.getDownloadedInsurancePdfPath();
@@ -2004,6 +2065,41 @@ public class StepDef extends BaseSteps {
 	        throw e;
 	    }
 	}
+	@When("Upload one time use QR code file")
+	public void uploadOnetimeQRCodeFile() {
+	    try {
+	        uploadqrcode.uploadOnetimeQRCodeAndWaitForVerificationResult();
+	        test.log(Status.PASS, "Successfully uploaded the one-time use QR code file.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading one-time use QR code file", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while uploading one-time use QR code file", e);
+	        throw e;
+	    }
+	}
+
+	@When("Verify message when vc ran out of verification chances")
+	public void verifyMessageWhenVcRanOutOfVerificationChances() {
+	    try {
+	        Assert.assertEquals(uploadqrcode.getErrorMessageForVerificationLimitReached(), UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED,
+	            "Mismatch in error message for verification limit reached.");
+	        test.log(Status.PASS, "Verified verification limit reached message successfully. Expected: " +
+	            UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED + ", Actual: " + uploadqrcode.getErrorMessageForVerificationLimitReached());
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying the verification limit reached message", e);
+	        throw e;
+	    } catch (AssertionError e) {
+	        logFailure(test, driver, "Error message validation failed for verification limit reached. Expected: " +
+	            UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED + ", but found: " +
+	            uploadqrcode.getErrorMessageForVerificationLimitReached(), e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while verifying the verification limit reached message", e);
+	        throw e;
+	    }
+	}
+
 	@When("User enter the policy number {string}")
 	public void userEnterThePolicyNumber(String string) {
 	    try {

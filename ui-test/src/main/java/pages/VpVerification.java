@@ -10,6 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.List;
 
 import base.BasePage;
 
@@ -113,6 +114,33 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//span[text()='Yes, I trust this Verifier']/parent::div")
 	WebElement trustButton;
 
+	@FindBy(xpath = "//p[contains(@class,'text-successText')]")
+	WebElement multipleVcSuccessMessage;
+
+	@FindBy(xpath = "//p[@id='insurancecredential-value']/ancestor::button[1]")
+	WebElement insuranceCredentialButton;
+
+	@FindBy(xpath = "//p[normalize-space()='Open In Full']/following-sibling::button")
+	WebElement expandCredentialButton;
+
+	@FindBy(xpath = "//button[normalize-space()='✕']")
+	WebElement closePopupButton;
+
+	@FindBy(xpath = "//p[normalize-space()='Close Fullscreen']/following-sibling::button")
+	WebElement collapseCredentialButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[90vh]')]//p[normalize-space()='Download']/following-sibling::button")
+	WebElement innerDownloadButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[257px]')]//p[normalize-space()='Download']/following-sibling::button")
+	WebElement outerDownloadButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[90vh]')]")
+	WebElement credentialPopupContainer;
+
+	public String getMultipleVcVerificationSuccessMessage() {
+		return getText(driver, multipleVcSuccessMessage);
+	}
 
 	public String getVpVerificationQrCodeStep1Description() {
 		return getText(driver, VpVerificationQrCodeStep1Description);
@@ -430,10 +458,72 @@ public class VpVerification extends BasePage {
 	public void waitForVerifyResults() {
 		new WebDriverWait(driver, Duration.ofSeconds(getTimeout() * 2))
 				.until(ExpectedConditions.or(
-						ExpectedConditions.urlContains("injiverify"),
-						ExpectedConditions.presenceOfElementLocated(By.id("vc-result-display-message")),
-						ExpectedConditions.presenceOfElementLocated(By.id("success_message_icon"))));
+						ExpectedConditions.visibilityOfElementLocated(By.id("vc-result-display-message")),
+						ExpectedConditions.visibilityOfElementLocated(By.id("success_message_icon")),
+						ExpectedConditions.visibilityOfElementLocated(By.id("alert-message"))));
 	}
 
+	public void clickOnInsuranceCredentialButton() {
+		clickOnElement(driver, insuranceCredentialButton);
+	}
+
+	public void clickOnExpandCredentialButton() {
+		clickOnElement(driver, expandCredentialButton);
+	}
+
+	public void clickOnClosePopupButton() {
+		clickOnElement(driver, closePopupButton);
+	}
+
+	public void clickOnCollapseCredentialButton() {
+		clickOnElement(driver, collapseCredentialButton);
+	}
+
+	public void clickOnInnerDownloadButton() {
+		clickOnElement(driver, innerDownloadButton);
+	}
+
+	public void clickOnOuterDownloadButton() {
+		clickOnElement(driver, outerDownloadButton);
+	}
+
+	public boolean isCredentialPopupVisible() {
+		return isElementIsVisible(driver, credentialPopupContainer);
+	}
+
+	public boolean isCredentialPopupAbsent() {
+		try {
+			return !credentialPopupContainer.isDisplayed();
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	public boolean isDataShowcaseFieldVisible(String fieldId) {
+		List<WebElement> elements = driver.findElements(By.id(fieldId));
+		return !elements.isEmpty() && isElementIsVisible(driver, elements.get(0));
+	}
+
+	public boolean isDataShowcaseFieldAbsent(String fieldId) {
+		return driver.findElements(By.id(fieldId)).isEmpty();
+	}
+
+	private List<WebElement> findPopupFields(String fieldId) {
+		try {
+			return credentialPopupContainer.findElements(
+					By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]"));
+		} catch (Exception e) {
+			return List.of();
+		}
+	}
+
+	public boolean isPopupFieldVisible(String fieldId) {
+		List<WebElement> elements = findPopupFields(fieldId);
+		return !elements.isEmpty() && isElementIsVisible(driver, elements.get(0));
+	}
+
+	public boolean isPopupFieldAbsent(String fieldId) {
+		return findPopupFields(fieldId).isEmpty();
+	}
 
 }

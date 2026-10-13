@@ -28,7 +28,7 @@ public class InjiWebWalletPage extends BasePage {
 	@FindBy(xpath = "//input[@type='checkbox' and @aria-label='Select Health Insurance credential']")
 	WebElement selectVCButton;
 
-	@FindBy(xpath = "(//input[@type='checkbox' and @aria-label='Select Health Insurance credential'])[2]")
+	@FindBy(xpath = "(//div[@aria-hidden='true' and contains(@class,'rounded-full') and contains(@class,'border-2') and contains(@class,'bg-white')])[1]")
 	WebElement selectSecondVCButton;
 
 	@FindBy(xpath = "(//button[@data-testid='show-consent-modal-button'])")
@@ -36,6 +36,9 @@ public class InjiWebWalletPage extends BasePage {
 
 	@FindBy(xpath = "(//button[@data-testid='CredentialShareCard-ShareButton'])")
 	WebElement consentAndShareCardButton;
+
+	@FindBy(xpath = "//button[@data-testid='verifier-decline-button']")
+	WebElement declineButton;
 
 	@FindBy(xpath = "//button[@data-testid='google-login-button']")
 	WebElement googleButton;
@@ -52,6 +55,9 @@ public class InjiWebWalletPage extends BasePage {
 	@FindBy(xpath = "//span[normalize-space()='Home']")
 	WebElement homeButton;
 
+	@FindBy(css = "button[data-testid*='show-more']")
+	WebElement showMoreCardsButton;
+
 	private static final String PRESENT_BUTTON_XPATH =
 			"//button[normalize-space()='Present' or normalize-space()='Share' or normalize-space()='Proceed']";
 
@@ -62,7 +68,7 @@ public class InjiWebWalletPage extends BasePage {
 
 		public boolean isConfirmPasscodeVisible() {
     try {
-        WebElement confirmField = new WebDriverWait(driver, Duration.ofSeconds(3))
+        WebElement confirmField = new WebDriverWait(driver, Duration.ofSeconds(10))
             .until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@data-testid='confirm-passcode-container']//input[@type='password' and @maxlength='1']")
             ));
@@ -212,6 +218,10 @@ public void enterConfirmPasscode(String string) {
 		clickOnElement(driver, consentAndShareCardButton);
 	}
 
+	public void clickDeclineButton() {
+		clickOnElement(driver, declineButton);
+	}
+
 	public void switchToNewestWindowIfNeeded() {
 		Set<String> windowHandles = driver.getWindowHandles();
 		if (windowHandles.size() <= 2) {
@@ -249,6 +259,10 @@ public void enterConfirmPasscode(String string) {
 
 	public void clickOnHomeButton() {
 		clickOnElement(driver, homeButton);
+	}
+
+	public void clickShowMoreCardsButton() {
+		clickOnElement(driver, showMoreCardsButton);
 	}
 
 	public void focusCurrentWindow() {

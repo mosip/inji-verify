@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import api.InjiVerifyConfigManager;
 import constants.UiConstants;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.HomePage;
@@ -236,6 +237,34 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
         }
     }
 
+    @Then("User clicks disagree button")
+    public void user_clicks_disagree_button() {
+        try {
+            injiWebWalletPage.clickDeclineButton();
+            test.log(Status.PASS, "Successfully clicked the decline button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click the decline button", e);
+            throw e;
+        }
+    }
+
+    @Then("verify disagreed to share error message")
+    public void verify_disagreed_to_share_error_message() {
+        try {
+            injiWebWalletPage.waitForVerifyRedirect();
+            vpVerification.waitForVerifyResults();
+            String actualMessage = vpVerification.getInformationMessage();
+            assertEquals(actualMessage, UiConstants.DECLINED_TO_SHARE_ERROR,
+                "Declined to share error message does not match the expected value.");
+            test.log(Status.PASS, "Successfully verified the declined to share error message: " + actualMessage);
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to verify declined to share error message. Expected: "
+                + UiConstants.DECLINED_TO_SHARE_ERROR
+                + ", but found: " + vpVerification.getInformationMessage(), e);
+            throw e;
+        }
+    }
+
     @Then("User clicks consent and share button")
     public void user_clicks_consent_and_share_button() {
         try {
@@ -325,6 +354,154 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
             test.log(Status.PASS, "Verified '" + selectedName + "' is selected and '" + unselectedName + "' is unselected.");
         } catch (Exception e) {
             logFailure(test, driver, "Failed to verify VP credential selection state", e);
+            throw e;
+        }
+    }
+
+    @And("User clicks on show more cards")
+    public void user_clicks_on_show_more_cards() {
+        try {
+            injiWebWalletPage.clickShowMoreCardsButton();
+            test.log(Status.PASS, "Successfully clicked on show more cards button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on show more cards button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on insurance credential button")
+    public void user_clicks_on_insurance_credential_button() {
+        try {
+            vpVerification.clickOnInsuranceCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the insurance credential button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the insurance credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on expand credential button")
+    public void user_clicks_on_expand_credential_button() {
+        try {
+            vpVerification.clickOnExpandCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the expand (Open In Full) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the expand credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on close popup button")
+    public void user_clicks_on_close_popup_button() {
+        try {
+            vpVerification.clickOnClosePopupButton();
+            test.log(Status.PASS, "Successfully clicked on the close popup (✕) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the close popup button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on collapse credential button")
+    public void user_clicks_on_collapse_credential_button() {
+        try {
+            vpVerification.clickOnCollapseCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the collapse (Close Fullscreen) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the collapse credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on inner download button")
+    public void user_clicks_on_inner_download_button() {
+        try {
+            vpVerification.clickOnInnerDownloadButton();
+            test.log(Status.PASS, "Successfully clicked on the download button inside the popup.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the inner download button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on outer download button")
+    public void user_clicks_on_outer_download_button() {
+        try {
+            vpVerification.clickOnOuterDownloadButton();
+            test.log(Status.PASS, "Successfully clicked on the download button in the credential card.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the outer download button", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is visible")
+    public void dataShowcaseFieldIsVisible(String fieldId) {
+        try {
+            assertTrue(vpVerification.isDataShowcaseFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the data showcase.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is not visible")
+    public void dataShowcaseFieldIsNotVisible(String fieldId) {
+        try {
+            assertTrue(vpVerification.isDataShowcaseFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in the data showcase but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is visible")
+    public void popupFieldIsVisible(String fieldId) {
+        try {
+            assertTrue(vpVerification.isPopupFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the credential popup.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is not visible")
+    public void popupFieldIsNotVisible(String fieldId) {
+        try {
+            assertTrue(vpVerification.isPopupFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in popup but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is visible")
+    public void credentialPopupIsVisible() {
+        try {
+            assertTrue(vpVerification.isCredentialPopupVisible(), "Credential popup is not visible.");
+            test.log(Status.PASS, "Credential popup is visible.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup is not visible", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is not visible")
+    public void credentialPopupIsNotVisible() {
+        try {
+            assertTrue(vpVerification.isCredentialPopupAbsent(),
+                    "Credential popup is still visible but should not be.");
+            test.log(Status.PASS, "Credential popup is correctly absent.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup unexpectedly present", e);
             throw e;
         }
     }
