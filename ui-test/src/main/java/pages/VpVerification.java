@@ -511,12 +511,8 @@ public class VpVerification extends BasePage {
 	}
 
 	private List<WebElement> findPopupFields(String fieldId) {
-		try {
 			return credentialPopupContainer.findElements(
 					By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]"));
-		} catch (NoSuchElementException e) {
-			return List.of();
-		}
 	}
 
 	public boolean isPopupFieldVisible(String fieldId) {
