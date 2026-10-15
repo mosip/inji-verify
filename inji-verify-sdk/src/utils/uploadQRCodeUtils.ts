@@ -209,12 +209,15 @@ const readQRcodeFromPdf = async (file: File, format: string) => {
             }
         }
     }
-    if (decodeFailure) {
-        throw decodeFailure;
-    }
-
     if (detectedQrCode) {
         return detectedQrCode;
+    }
+
+    // A lower-resolution or cropped pass may identify, but fail to decode, a
+    // dense QR. A later pass can still decode that same QR successfully, so a
+    // successful result must always take precedence over an earlier failure.
+    if (decodeFailure) {
+        throw decodeFailure;
     }
 
     throw createQrNotFoundError(`No ${format} found`);
