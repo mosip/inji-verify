@@ -467,30 +467,40 @@ public String isSuccessMessageDisplayed() {
 		enterText(driver, By.xpath("//input[@id='fullName']"), string);
 	}
 	public void selectDateOfBirth(String dob) {
-		WebElement fullNameField = driver.findElement(By.id("fullName"));
-        WebElement realDobField = driver.findElement(By.className("real-date-input"));
-				
-		//to make the element visible on sccreen, as it is hidden by default and cannot be interacted with directly
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(
-                "arguments[0].style.cssText = 'position:fixed;top:0;left:0;width:120px;height:30px;"
-                + "display:block;visibility:visible;opacity:1;z-index:9999;';",
-                realDobField);
-		
-		try {
-			String formattedDob = resolveAcceptedDateOfBirthFormat(dob, realDobField);
-			WaitUtil.waitForClickability(driver, fullNameField);
-        	fullNameField.sendKeys(Keys.TAB);
-        	
-			WaitUtil.waitForClickability(driver, realDobField);
-        	realDobField.clear();
-        	realDobField.sendKeys(formattedDob);
-        	realDobField.sendKeys(Keys.TAB);
-		}
-		finally {
-        	//to make the element hidden again after interaction
-         	js.executeScript("arguments[0].style.cssText = '';", realDobField);
-		}
+
+        WaitUtil.waitForPresence(driver, By.id("dob"), BasePage.getTimeout());
+        WebElement dobField = driver.findElement(By.id("dob"));
+        String formattedDob = resolveAcceptedDateOfBirthFormat(dob, dobField);
+        WaitUtil.waitForClickability(driver, dobField);
+        dobField.clear();
+        dobField.sendKeys(formattedDob);
+        dobField.sendKeys(Keys.TAB);
+
+//		WebElement fullNameField = driver.findElement(By.id("fullName"));
+//		WebElement realDobField = driver.findElement(By.className("real-date-input"));
+//
+//		// to make the element visible on screen, as it is hidden by default and cannot be interacted with directly
+//		JavascriptExecutor js = (JavascriptExecutor) driver;
+//		js.executeScript(
+//				"arguments[0].style.cssText = 'position:fixed;top:0;left:0;width:120px;height:30px;"
+//				+ "display:block;visibility:visible;opacity:1;z-index:9999;';",
+//				realDobField);
+//
+//		try {
+//			String formattedDob = resolveAcceptedDateOfBirthFormat(dob, realDobField);
+//			WaitUtil.waitForClickability(driver, fullNameField);
+//			fullNameField.sendKeys(Keys.TAB);
+//
+//			WaitUtil.waitForClickability(driver, realDobField);
+//			realDobField.clear();
+//			realDobField.sendKeys(formattedDob);
+//			realDobField.sendKeys(Keys.TAB);
+//		}
+//		finally {
+//			// to make the element hidden again after interaction
+//			js.executeScript("arguments[0].style.cssText = '';", realDobField);
+//		}
+
 }
 
     private String resolveAcceptedDateOfBirthFormat(String rawDate, WebElement dobField) {
@@ -516,6 +526,9 @@ public String isSuccessMessageDisplayed() {
 
     private List<String> resolveCandidateDatePatterns(WebElement dobField) {
         LinkedHashSet<String> candidatePatterns = new LinkedHashSet<>();
+		
+		candidatePatterns.add("yyyy-MM-dd");
+		
         String placeholderPattern = sanitizePattern(dobField.getAttribute("placeholder"));
         if (placeholderPattern != null) {
             candidatePatterns.add(placeholderPattern);
@@ -532,7 +545,7 @@ public String isSuccessMessageDisplayed() {
         candidatePatterns.add("MM-dd-yyyy");
         candidatePatterns.add("dd/MM/yyyy");
         candidatePatterns.add("MM/dd/yyyy");
-        candidatePatterns.add("yyyy-MM-dd");
+//      candidatePatterns.add("yyyy-MM-dd"); 
 
         return new ArrayList<>(candidatePatterns);
     }
