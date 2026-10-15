@@ -10,9 +10,9 @@ on:
         default: 'Triggered for Updates'
         type: string
   push:
-    branches: [ "master", "develop", "release-*" ]
+    branches: [ "master", "develop", "release-*", "issue-*" ]
   pull_request:
-    branches: [ "master", "develop", "release-*" ]
+    branches: [ "master", "develop", "release-*", "issue-*" ]
   schedule:
     - cron: '30 10 * * 2'
 
