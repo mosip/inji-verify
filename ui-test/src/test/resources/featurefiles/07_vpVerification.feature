@@ -304,24 +304,15 @@ Scenario: Verify VP verification same device flow
     And User performs token-based login to inji-web wallet
     And User unlocks inji-web wallet with configured passcode
     And User confirms inji-web wallet with configured passcode
-    #And User click on submit button
-    #And User opens the inji-web issuer catalog
     Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
-    #And User click on validity dropdown
-    #And User click on no limit
-    #And User click on proceed
     And User enter the policy number
     And User enter the full name
     And User enter the date of birth
     And User click on login button
-    #Then User verify Download Success text displayed
-    #And User verifies health insurance credential is stored in inji-web wallet
     And User switches back to inji-verify tab
     Given User gets the title of the page
-    #Then Validate the title of the page
-    #And Click on right arrow
     And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Uncheck credential "mosipId"
@@ -330,9 +321,7 @@ Scenario: Verify VP verification same device flow
     And Verify Click on open wallet button
     And User selects configured inji-web wallet in verifier
     And User clicks on Proceed button
-    #And User is redirected to inji-web wallet presentation page
     And User click on trust verifier
-    #And User selects the credential for verification
     And User clicks consent and share button
     And User clicks consent and share card button
     And VP result is posted back to inji-verify successfully
