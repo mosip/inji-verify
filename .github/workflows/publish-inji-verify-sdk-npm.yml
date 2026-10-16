@@ -20,7 +20,7 @@ on:
       - release*
       - master
       - develop*
-      - MOSIP*
+      - issue*
 
 jobs:
   publish-inji-verify-sdk-to-npm-registry:
