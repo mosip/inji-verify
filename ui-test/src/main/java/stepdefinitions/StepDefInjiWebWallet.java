@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import api.InjiVerifyConfigManager;
 import constants.UiConstants;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.HomePage;
@@ -236,6 +237,34 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
         }
     }
 
+    @Then("User clicks disagree button")
+    public void user_clicks_disagree_button() {
+        try {
+            injiWebWalletPage.clickDeclineButton();
+            test.log(Status.PASS, "Successfully clicked the decline button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click the decline button", e);
+            throw e;
+        }
+    }
+
+    @Then("verify disagreed to share error message")
+    public void verify_disagreed_to_share_error_message() {
+        try {
+            injiWebWalletPage.waitForVerifyRedirect();
+            vpVerification.waitForVerifyResults();
+            String actualMessage = vpVerification.getInformationMessage();
+            assertEquals(actualMessage, UiConstants.DECLINED_TO_SHARE_ERROR,
+                "Declined to share error message does not match the expected value.");
+            test.log(Status.PASS, "Successfully verified the declined to share error message: " + actualMessage);
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to verify declined to share error message. Expected: "
+                + UiConstants.DECLINED_TO_SHARE_ERROR
+                + ", but found: " + vpVerification.getInformationMessage(), e);
+            throw e;
+        }
+    }
+
     @Then("User clicks consent and share button")
     public void user_clicks_consent_and_share_button() {
         try {
@@ -325,6 +354,17 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
             test.log(Status.PASS, "Verified '" + selectedName + "' is selected and '" + unselectedName + "' is unselected.");
         } catch (Exception e) {
             logFailure(test, driver, "Failed to verify VP credential selection state", e);
+            throw e;
+        }
+    }
+
+    @And("User clicks on show more cards")
+    public void user_clicks_on_show_more_cards() {
+        try {
+            injiWebWalletPage.clickShowMoreCardsButton();
+            test.log(Status.PASS, "Successfully clicked on show more cards button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on show more cards button", e);
             throw e;
         }
     }

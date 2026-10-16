@@ -283,6 +283,16 @@ Feature: Inji Verify upload qr code testing
     And Verify message for valid QR code
     And Verify the Upload button after 2 mins idle
 
+  @smoke @verifyuploadOnetimeQRCode @needsOnetimeInsuranceArtifacts
+  Scenario: Verify upload of one time valid qr code
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Upload one time use QR code file
+    And verify congratulations message on successful verification
+    And Verify click on 'Verify Another QR Code' button
+    And Upload one time use QR code file
+    And Verify message when vc ran out of verification chances
+
   @smoke @verifyInvalidVcVerificationStatusExpiry
   Scenario: Verify invalid vc verification status expire after countdown
     And Verify browser refresh

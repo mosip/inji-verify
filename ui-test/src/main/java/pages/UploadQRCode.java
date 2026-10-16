@@ -150,6 +150,15 @@ public class UploadQRCode extends BasePage {
 		uploadWithSingleRecovery(() -> clickOnUploadQRCodePdf());
 	}
 
+	public void clickOnUploadOnetimeQRCodePdf() {
+		uploadFile(driver, uploadpath, BaseTest.getOnetimeInsuranceCredentialPdfPath());
+	}
+
+	public void uploadOnetimeQRCodeAndWaitForVerificationResult() {
+		clickOnUploadOnetimeQRCodePdf();
+        waitForVerificationResultState();;
+	}
+
 	public void uploadAnotherPdfAndWaitForVerificationResult() {
 		uploadWithSingleRecovery(() -> clickOnAnotherUploadQRCodePdf());
 	}
@@ -387,6 +396,12 @@ public class UploadQRCode extends BasePage {
 		waitForVerificationMessageState();
 
 		return getText(driver, ErrorTextExpiredQRCode);
+	}
+
+	public String getErrorMessageForVerificationLimitReached() {
+		waitForAlertMessageState();
+
+		return getText(driver, ErrorTextLargeSizeQRCode);
 	}
 
 	public String getErrorMessageForLargeSizeQRCode() {

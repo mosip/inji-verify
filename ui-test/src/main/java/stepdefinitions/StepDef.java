@@ -17,6 +17,8 @@ import java.io.IOException;
 
 import utils.BaseTest;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -835,6 +837,23 @@ public class StepDef extends BaseSteps {
             throw e;
         } catch (Exception e) {
             logFailure(test, driver, "Unexpected error while verifying the congratulations message", e);
+            throw e;
+        }
+    }
+
+    @Then("Verify multiple VC verification success message")
+    public void verify_multiple_vc_verification_success_message() {
+        try {  
+            String actualMessage = vpverification.getMultipleVcVerificationSuccessMessage();
+            Assert.assertEquals(actualMessage, UiConstants.MULTIPLE_VC_VERIFICATION_SUCCESS_MESSAGE,
+                "Multiple VC verification success message does not match the expected value.");
+            test.log(Status.PASS, "Successfully verified the multiple VC verification success message: " + actualMessage);
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Multiple VC verification success message failed. Expected: "
+                + UiConstants.MULTIPLE_VC_VERIFICATION_SUCCESS_MESSAGE + ", but found: " + vpverification.getMultipleVcVerificationSuccessMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while verifying the multiple VC verification success message", e);
             throw e;
         }
     }
@@ -1821,10 +1840,14 @@ public class StepDef extends BaseSteps {
 	}
 	@When("User verify pdf is downloaded")
 	public void userVerifyPdfIsDownloaded() throws IOException {
+	    userVerifyPdfIsDownloaded(null);
+	}
+
+	public void userVerifyPdfIsDownloaded(String targetFileName) throws IOException {
 	    try {
 	        File pdfFile = BaseTest.isUsingBrowserStack()
-	                ? copyInsurancePdfFromBrowserStack()
-	                : copyInsurancePdfFromLocalDownloads();
+	                ? copyInsurancePdfFromBrowserStack(targetFileName)
+	                : moveInsurancePdfFromLocalDownloads(targetFileName);
 	        assertPdfHasText(pdfFile);
 	        test.log(Status.PASS, "PDF file 'InsuranceCredential.pdf' downloaded and contains content.");
 
@@ -1841,7 +1864,7 @@ public class StepDef extends BaseSteps {
 	    }
 	}
 
-	private File copyInsurancePdfFromBrowserStack() throws IOException, InterruptedException {
+	private File copyInsurancePdfFromBrowserStack(String targetFileName) throws IOException, InterruptedException {
 	    boolean fileExists = false;
 	    for (int i = 0; i < 5; i++) {
 	        fileExists = (boolean) baseTest.getJse().executeScript(
@@ -1858,21 +1881,28 @@ public class StepDef extends BaseSteps {
 	            "browserstack_executor: {\"action\": \"getFileContent\", \"arguments\": {\"fileName\": \"InsuranceCredential.pdf\"}}");
 
 	    byte[] data = Base64.getDecoder().decode(base64EncodedFile);
-	    File targetFile = new File(BaseTest.getDownloadedInsurancePdfPath());
+	    File canonicalFile = new File(BaseTest.getDownloadedInsurancePdfPath());
+	    File targetFile = (targetFileName != null && !targetFileName.isBlank())
+	            ? new File(canonicalFile.getParent(), targetFileName)
+	            : canonicalFile;
+	    Files.createDirectories(targetFile.getParentFile().toPath());
 	    try (OutputStream stream = new FileOutputStream(targetFile)) {
 	        stream.write(data);
 	    }
+	    test.log(Status.PASS, "PDF saved as: " + targetFile.getAbsolutePath());
 	    return targetFile;
 	}
 
-	private File copyInsurancePdfFromLocalDownloads() throws IOException, InterruptedException {
+	private File moveInsurancePdfFromLocalDownloads(String targetFileName) throws IOException, InterruptedException {
 	    Path downloadDirectory = Path.of(BaseTest.getLocalDownloadsDirectoryPath());
 	    Path downloadedPdf = waitForLocalInsurancePdf(downloadDirectory);
-	    Path targetPdf = Path.of(BaseTest.getDownloadedInsurancePdfPath());
-
-	    Files.createDirectories(targetPdf.getParent());
-	    Files.copy(downloadedPdf, targetPdf, StandardCopyOption.REPLACE_EXISTING);
-	    test.log(Status.PASS, "PDF file 'InsuranceCredential.pdf' copied from local downloads: " + downloadedPdf);
+	    Path canonicalPdf = Path.of(BaseTest.getDownloadedInsurancePdfPath());
+	    Files.createDirectories(canonicalPdf.getParent());
+	    Path targetPdf = (targetFileName != null && !targetFileName.isBlank())
+	            ? canonicalPdf.resolveSibling(targetFileName)
+	            : canonicalPdf;
+	    Files.move(downloadedPdf, targetPdf, StandardCopyOption.REPLACE_EXISTING);
+	    test.log(Status.PASS, "PDF saved as: " + targetPdf.toAbsolutePath());
 	    return targetPdf.toFile();
 	}
 
@@ -1960,6 +1990,39 @@ public class StepDef extends BaseSteps {
 	    }
 	}
 
+@Before(value = "@needsOnetimeInsuranceArtifacts", order = 13000)
+	public void prepareOnetimeInsuranceCredentialArtifactsHook() throws Exception {
+	    ensureStepDependenciesInitialized();
+	    try {
+	        synchronized (BaseTest.getInsuranceArtifactsLock()) {
+	                openInjiWebInNewTab();
+	                verifyClickOnContinueButton();
+	                userSearchTheIssuersSunbird();
+	                userClickOnDownloadStayProtectedInsuranceButton();
+	                userClickOnHealthInsuranceIdByESignetButton();
+	                userClickOnValidityDropdownButton();
+	                userClickOnProceedButton();
+	                userEnterThePolicyNumber();
+	                userEnterTheFullName();
+	                userEnterTheDateOfBirth();
+	                userClickOnLoginButton();
+	                userVerifyDownloadSuccessTextDisplayed();
+	                userVerifyPdfIsDownloaded("OneTimeInsuranceCredential.pdf");
+	                test.log(Status.PASS, "Prepared onetime insurance credential artifacts for this run.");
+	            if (BaseTest.getCurrentScenarioTags().contains("@scan")
+	                    && BaseTest.getCurrentScenarioTags().contains("@qr_valid")) {
+	                baseTest.refreshRuntimeScanMediaForCurrentScenario();
+	                test.log(Status.PASS, "Regenerated runtime scan media from current-run insurance artifacts.");
+	            }
+	        }
+
+	        openInjiVerifyInNewTab();
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Failed while preparing insurance credential artifacts", e);
+	        throw e;
+	    }
+	}
+
 	@When("Verify that user convert pdf into png")
 	public void verifyThatUserConvertPdfIntoPng() throws IOException {
 	    String pdfPath = BaseTest.getDownloadedInsurancePdfPath();
@@ -2004,6 +2067,41 @@ public class StepDef extends BaseSteps {
 	        throw e;
 	    }
 	}
+	@When("Upload one time use QR code file")
+	public void uploadOnetimeQRCodeFile() {
+	    try {
+	        uploadqrcode.uploadOnetimeQRCodeAndWaitForVerificationResult();
+	        test.log(Status.PASS, "Successfully uploaded the one-time use QR code file.");
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while uploading one-time use QR code file", e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while uploading one-time use QR code file", e);
+	        throw e;
+	    }
+	}
+
+	@When("Verify message when vc ran out of verification chances")
+	public void verifyMessageWhenVcRanOutOfVerificationChances() {
+	    try {
+	        Assert.assertEquals(uploadqrcode.getErrorMessageForVerificationLimitReached(), UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED,
+	            "Mismatch in error message for verification limit reached.");
+	        test.log(Status.PASS, "Verified verification limit reached message successfully. Expected: " +
+	            UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED + ", Actual: " + uploadqrcode.getErrorMessageForVerificationLimitReached());
+	    } catch (NoSuchElementException e) {
+	        logFailure(test, driver, "Element not found while verifying the verification limit reached message", e);
+	        throw e;
+	    } catch (AssertionError e) {
+	        logFailure(test, driver, "Error message validation failed for verification limit reached. Expected: " +
+	            UiConstants.ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED + ", but found: " +
+	            uploadqrcode.getErrorMessageForVerificationLimitReached(), e);
+	        throw e;
+	    } catch (Exception e) {
+	        logFailure(test, driver, "Unexpected error while verifying the verification limit reached message", e);
+	        throw e;
+	    }
+	}
+
 	@When("User enter the policy number {string}")
 	public void userEnterThePolicyNumber(String string) {
 	    try {
@@ -3153,6 +3251,209 @@ public void verifyUploadButtonVisibleAfter2MinsIdle() {
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Error page validation failed: " + e.getMessage());
             throw e;
+        }
+    }
+
+    @When("User clicks on insurance credential button")
+    public void user_clicks_on_insurance_credential_button() {
+        try {
+            vpverification.clickOnInsuranceCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the insurance credential button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the insurance credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on expand credential button")
+    public void user_clicks_on_expand_credential_button() {
+        try {
+            vpverification.clickOnExpandCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the expand (Open In Full) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the expand credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on close popup button")
+    public void user_clicks_on_close_popup_button() {
+        try {
+            vpverification.clickOnClosePopupButton();
+            test.log(Status.PASS, "Successfully clicked on the close popup (✕) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the close popup button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on collapse credential button")
+    public void user_clicks_on_collapse_credential_button() {
+        try {
+            vpverification.clickOnCollapseCredentialButton();
+            test.log(Status.PASS, "Successfully clicked on the collapse (Close Fullscreen) button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the collapse credential button", e);
+            throw e;
+        }
+    }
+
+    @When("User clicks on inner download button")
+    public void user_clicks_on_inner_download_button() {
+        try {
+            vpverification.clickOnInnerDownloadButton();
+            test.log(Status.PASS, "Successfully clicked on the download button inside the popup.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on the inner download button", e);
+            throw e;
+        }
+    }
+
+    @Then("verify outer download button")
+    public void verify_outer_download_button() {
+        try {
+            boolean isVisible = vpverification.isOuterDownloadButtonVisible();
+            if (isVisible) {
+                test.log(Status.PASS, "Outer download button is visible on the credential card.");
+            } else {
+                throw new AssertionError("Outer download button is not visible on the credential card.");
+            }
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to verify the outer download button", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is visible")
+    public void dataShowcaseFieldIsVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isDataShowcaseFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the data showcase.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The data showcase field {string} is not visible")
+    public void dataShowcaseFieldIsNotVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isDataShowcaseFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in the data showcase but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the data showcase.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in data showcase", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is visible")
+    public void popupFieldIsVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isPopupFieldVisible(fieldId),
+                    "Field '" + fieldId + "' is not visible in the credential popup.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is visible in the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' not found in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The popup field {string} is not visible")
+    public void popupFieldIsNotVisible(String fieldId) {
+        try {
+            Assert.assertTrue(vpverification.isPopupFieldAbsent(fieldId),
+                    "Field '" + fieldId + "' is still present in popup but should not be.");
+            test.log(Status.PASS, "Field '" + fieldId + "' is correctly absent from the credential popup.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Field '" + fieldId + "' unexpectedly present in credential popup", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is visible")
+    public void credentialPopupIsVisible() {
+        try {
+            Assert.assertTrue(vpverification.isCredentialPopupVisible(), "Credential popup is not visible.");
+            test.log(Status.PASS, "Credential popup is visible.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup is not visible", e);
+            throw e;
+        }
+    }
+
+    @Then("The credential popup is not visible")
+    public void credentialPopupIsNotVisible() {
+        try {
+            Assert.assertTrue(vpverification.isCredentialPopupAbsent(),
+                    "Credential popup is still visible but should not be.");
+            test.log(Status.PASS, "Credential popup is correctly absent.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "Credential popup unexpectedly present", e);
+            throw e;
+        }
+    }
+
+    @Then("Verify file {string} exists in downloads folder")
+    public void verifyFileExistsInDownloadsFolder(String fileName) {
+        try {
+            boolean fileFound;
+            if (BaseTest.isUsingBrowserStack()) {
+                fileFound = waitForFileOnBrowserStack(fileName);
+            } else {
+                fileFound = waitForFileInLocalDownloads(fileName);
+            }
+            Assert.assertTrue(fileFound, "File '" + fileName + "' was not found in the downloads folder.");
+            test.log(Status.PASS, "File '" + fileName + "' successfully found in the downloads folder.");
+        } catch (AssertionError e) {
+            logFailure(test, driver, "File '" + fileName + "' was not found in the downloads folder", e);
+            throw e;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logFailure(test, driver, "Interrupted while waiting for file '" + fileName + "' in downloads folder", e);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while verifying file '" + fileName + "' in downloads folder", e);
+            throw e;
+        }
+    }
+
+    private boolean waitForFileInLocalDownloads(String fileName) throws InterruptedException {
+        File downloadsDir = new File(BaseTest.getLocalDownloadsDirectoryPath());
+        Instant deadline = Instant.now().plusSeconds(BasePage.getTimeout());
+        while (Instant.now().isBefore(deadline)) {
+            File target = new File(downloadsDir, fileName);
+            if (target.exists() && target.length() > 0) {
+                return true;
+            }
+            Thread.sleep(1000);
+        }
+        File target = new File(downloadsDir, fileName);
+        return target.exists() && target.length() > 0;
+    }
+
+    private boolean waitForFileOnBrowserStack(String fileName) throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Instant deadline = Instant.now().plusSeconds(BasePage.getTimeout());
+        while (Instant.now().isBefore(deadline)) {
+            if (isBrowserStackFileAvailable(js, fileName)) {
+                return true;
+            }
+            Thread.sleep(2000);
+        }
+        return isBrowserStackFileAvailable(js, fileName);
+    }
+
+    private boolean isBrowserStackFileAvailable(JavascriptExecutor js, String fileName) {
+        try {
+            Object result = js.executeScript(
+                "browserstack_executor: {\"action\":\"getFileProperties\","
+                + "\"arguments\":{\"fileName\":\"" + fileName + "\"}}"
+            );
+            return result != null && !result.toString().trim().isEmpty();
+        } catch (Exception e) {
+            return false;
         }
     }
 }
