@@ -40,7 +40,6 @@ on:
       - issue*
       - release*
       - INJI*
-      - issue*
     paths:
       - 'helm/**'
 
