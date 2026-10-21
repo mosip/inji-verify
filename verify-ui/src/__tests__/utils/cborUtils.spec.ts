@@ -1,6 +1,6 @@
 import { decode, decodeMultiple } from "cbor-x";
 import { decodeMappedData } from "@injistack/pixelpass";
-import { extractMappedClaim, isCWT, uint8ArrayToHex } from "../../utils/cborUtils";
+import { extractMappedClaim, extractMdocDisplayClaims, isCWT, isMsoMdoc, uint8ArrayToHex } from "../../utils/cborUtils";
 
 jest.mock("cbor-x", () => ({
   decode: jest.fn(),
@@ -33,6 +33,28 @@ describe("cborUtils", () => {
     expect(isCWT(new Uint8Array([1, 2]))).toBe(true);
     expect(isCWT(new Uint8Array([1, 2]).buffer)).toBe(true);
     expect(isCWT("A0ff")).toBe(true);
+  });
+
+  it("flattens mdoc data elements from the credential", () => {
+    mockDecode.mockReturnValue({
+      docType: "org.iso.18013.5.1.mDL",
+      issuerSigned: {
+        nameSpaces: {
+          "org.iso.18013.5.1": [
+            { elementIdentifier: "family_name", elementValue: "Cooper" },
+            { elementIdentifier: "birth_date", elementValue: { tag: 1004, value: "1985-04-29" } },
+          ],
+        },
+      },
+    } as never);
+
+    expect(isMsoMdoc("omppc3N1ZXJBdXRo")).toBe(true);
+    expect(extractMdocDisplayClaims("omppc3N1ZXJBdXRo")).toEqual({
+      docType: "org.iso.18013.5.1.mDL",
+      family_name: "Cooper",
+      birth_date: "1985-04-29",
+    });
+    expect(isMsoMdoc("header.payload.signature")).toBe(false);
   });
 
   it("rejects invalid CWT values", () => {

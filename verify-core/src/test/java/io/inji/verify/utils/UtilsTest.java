@@ -121,6 +121,47 @@ public class UtilsTest {
     }
 
     @Test
+    void shouldReturnMsoMdocBeforeCwtForAnMdl() {
+        CBORObject issuerSigned = CBORObject.NewMap();
+        issuerSigned.Add("issuerAuth", CBORObject.NewArray());
+        issuerSigned.Add("nameSpaces", CBORObject.NewMap());
+        CBORObject document = CBORObject.NewMap();
+        document.Add("docType", "org.iso.18013.5.1.mDL");
+        document.Add("issuerSigned", issuerSigned);
+        String mdl = Base64.getUrlEncoder().withoutPadding().encodeToString(document.EncodeToBytes());
+
+        assertTrue(Utils.isMdl(mdl));
+        assertEquals(CredentialFormat.MSO_MDOC, Utils.getCredentialFormat(mdl));
+        assertFalse(Utils.isMdl("{\"type\":[\"VerifiableCredential\"]}"));
+        assertFalse(Utils.isMdl("eyJ0eXAiOiJkYytzZC1qd3QifQ.payload.signature"));
+
+        byte[] withTrailingBytes = Arrays.copyOf(document.EncodeToBytes(), document.EncodeToBytes().length + 8);
+        String mdlWithTrailingBytes = Base64.getUrlEncoder().withoutPadding().encodeToString(withTrailingBytes);
+        assertEquals(CredentialFormat.MSO_MDOC, Utils.getCredentialFormat(mdlWithTrailingBytes));
+    }
+
+    @Test
+    void shouldExtractMdocDataElements() {
+        CBORObject item = CBORObject.NewMap();
+        item.Add("elementIdentifier", "family_name");
+        item.Add("elementValue", "Cooper");
+        CBORObject items = CBORObject.NewArray();
+        items.Add(CBORObject.FromObject(item.EncodeToBytes()));
+        CBORObject namespaces = CBORObject.NewMap();
+        namespaces.Add("org.iso.18013.5.1", items);
+        CBORObject document = CBORObject.NewMap();
+        document.Add("docType", "org.iso.18013.5.1.mDL");
+        document.Add("issuerAuth", CBORObject.NewArray());
+        document.Add("nameSpaces", namespaces);
+        String mdl = Base64.getUrlEncoder().withoutPadding().encodeToString(document.EncodeToBytes());
+
+        Map<String, Object> claims = Utils.extractMdocClaims(mdl);
+
+        assertEquals("org.iso.18013.5.1.mDL", claims.get("docType"));
+        assertEquals("Cooper", claims.get("family_name"));
+    }
+
+    @Test
     void shouldReturnCwtFormatByMocking() {
         try (var mockedUtils = mockStatic(Utils.class)) {
             mockedUtils.when(() -> Utils.isCwt("abcabcabcbabc")).thenReturn(true);
