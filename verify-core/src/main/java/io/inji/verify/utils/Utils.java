@@ -367,9 +367,12 @@ public final class Utils {
             case LDP_VC -> extractLdpClaims(verifiableCredential);
             case CWT_VC -> extractCwtClaims(verifiableCredential, pixelPass, metaClaims);
             case MSO_MDOC -> extractMdocClaims(verifiableCredential);
-            case JWT_VC_JSON -> null;
+            case JWT_VC_JSON -> Map.of();
         };
     }
+
+    private static final int MAX_MDOC_BASE64_LENGTH = 1_048_576;
+    private static final int MAX_MDOC_DEPTH = 32;
 
     /**
      * Data elements from an ISO mdoc, keyed by element identifier.
@@ -377,9 +380,14 @@ public final class Utils {
      */
     public static Map<String, Object> extractMdocClaims(String credential) {
         try {
-            byte[] encoded = Base64.getUrlDecoder().decode(credential.trim());
+            String trimmed = credential.trim();
+            if (trimmed.length() > MAX_MDOC_BASE64_LENGTH) {
+                throw new IllegalArgumentException("mdoc credential exceeds maximum size");
+            }
+            byte[] encoded = Base64.getUrlDecoder().decode(trimmed);
             CBORObject root = CBORObject.Read(new ByteArrayInputStream(encoded));
             Map<String, Object> claims = new LinkedHashMap<>();
+            Map<String, String> claimNamespaces = new LinkedHashMap<>();
             String docType = mdocDocType(root);
             if (docType != null) {
                 claims.put("docType", docType);
@@ -389,6 +397,7 @@ public final class Utils {
                 return claims;
             }
             for (CBORObject namespace : namespaces.getKeys()) {
+                String namespaceName = namespace.getType() == CBORType.TextString ? namespace.AsString() : namespace.toString();
                 CBORObject items = namespaces.get(namespace);
                 if (items.getType() != CBORType.Array) {
                     continue;
@@ -398,13 +407,34 @@ public final class Utils {
                     if (item == null || !item.ContainsKey("elementIdentifier")) {
                         continue;
                     }
-                    claims.put(item.get("elementIdentifier").AsString(), toJava(item.get("elementValue")));
+                    putMdocClaim(claims, claimNamespaces, namespaceName,
+                            item.get("elementIdentifier").AsString(), toJava(item.get("elementValue"), 0));
                 }
             }
             return claims;
+        } catch (InvalidCredentialException e) {
+            throw e;
         } catch (Exception e) {
             throw new InvalidCredentialException("Failed to extract mdoc claims", e);
         }
+    }
+
+    private static void putMdocClaim(Map<String, Object> claims, Map<String, String> claimNamespaces,
+                                     String namespace, String identifier, Object value) {
+        if ("docType".equals(identifier)) {
+            claims.put(namespace + "." + identifier, value);
+            return;
+        }
+        if (claims.containsKey(identifier)) {
+            String previousNamespace = claimNamespaces.remove(identifier);
+            if (previousNamespace != null) {
+                claims.put(previousNamespace + "." + identifier, claims.remove(identifier));
+            }
+            claims.put(namespace + "." + identifier, value);
+            return;
+        }
+        claims.put(identifier, value);
+        claimNamespaces.put(identifier, namespace);
     }
 
     private static CBORObject mdocNamespaces(CBORObject root) {
@@ -460,30 +490,37 @@ public final class Utils {
         return current.getType() == CBORType.Map ? current : null;
     }
 
-    private static Object toJava(CBORObject value) {
+    private static Object toJava(CBORObject value, int depth) {
+        if (depth > MAX_MDOC_DEPTH) {
+            throw new IllegalArgumentException("mdoc claim nesting is too deep");
+        }
         if (value == null || value.isNull()) {
             return null;
         }
         if (value.HasMostOuterTag(24) && value.getType() == CBORType.ByteString) {
-            return toJava(CBORObject.DecodeFromBytes(value.Untag().GetByteString()));
+            return toJava(CBORObject.DecodeFromBytes(value.Untag().GetByteString()), depth + 1);
         }
         return switch (value.getType()) {
             case TextString -> value.AsString();
-            case Integer, Number -> value.AsNumber().ToInt64Checked();
+            case Integer, Number -> {
+                var number = value.AsNumber();
+                yield number.CanTruncatedIntFitInInt64() ? (Object) number.ToInt64Checked() : number.toString();
+            }
             case Boolean -> value.AsBoolean();
             case ByteString -> Base64.getEncoder().encodeToString(value.GetByteString());
             case FloatingPoint -> value.AsDouble();
             case Array -> {
                 List<Object> values = new ArrayList<>();
                 for (int index = 0; index < value.size(); index++) {
-                    values.add(toJava(value.get(index)));
+                    values.add(toJava(value.get(index), depth + 1));
                 }
                 yield values;
             }
             case Map -> {
                 Map<String, Object> values = new LinkedHashMap<>();
                 for (CBORObject key : value.getKeys()) {
-                    values.put(key.AsString(), toJava(value.get(key)));
+                    String name = key.getType() == CBORType.TextString ? key.AsString() : key.toString();
+                    values.put(name, toJava(value.get(key), depth + 1));
                 }
                 yield values;
             }
@@ -578,7 +615,8 @@ public final class Utils {
             return false;
         }
         String trimmed = credential.trim();
-        if (trimmed.isEmpty() || trimmed.indexOf('.') >= 0 || trimmed.charAt(0) == '{' || trimmed.charAt(0) == '[') {
+        if (trimmed.isEmpty() || trimmed.length() > MAX_MDOC_BASE64_LENGTH
+                || trimmed.indexOf('.') >= 0 || trimmed.charAt(0) == '{' || trimmed.charAt(0) == '[') {
             return false;
         }
         try {

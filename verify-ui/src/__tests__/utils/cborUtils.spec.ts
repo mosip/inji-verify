@@ -57,6 +57,20 @@ describe("cborUtils", () => {
     expect(isMsoMdoc("header.payload.signature")).toBe(false);
   });
 
+  it("renders a decoded CBOR date instead of an empty object", () => {
+    const birth = new Date("1985-04-29T00:00:00.000Z");
+    mockDecode.mockReturnValue({
+      docType: "org.iso.18013.5.1.mDL",
+      nameSpaces: {
+        "org.iso.18013.5.1": [
+          { elementIdentifier: "birth_date", elementValue: birth },
+        ],
+      },
+    } as never);
+
+    expect(extractMdocDisplayClaims("omppc3N1ZXJBdXRo").birth_date).toBe(birth.toISOString());
+  });
+
   it("rejects invalid CWT values", () => {
     expect(isCWT("")).toBe(false);
     expect(isCWT("abc")).toBe(false);

@@ -740,8 +740,7 @@
                   "script": {
                     "exec": [
                       "const body = pm.response.json();",
-                      "console.log(JSON.stringify(body, null, 2));",
-                      "",
+                                            "",
                       "pm.test(\"Status code is 200\", function () {",
                       "    pm.response.to.have.status(200);",
                       "});",

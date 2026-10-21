@@ -779,6 +779,23 @@ describe("commonUtils credential matching", () => {
           verificationStatus: "EXPIRED",
         }),
       ).toBe("EXPIRED");
+      expect(
+        vcStatusFromVerificationResponse({
+          schemaAndSignatureCheck: { valid: false },
+        }),
+      ).toBe("INVALID");
+      expect(
+        vcStatusFromVerificationResponse({
+          schemaAndSignatureCheck: { valid: true },
+          expiryCheck: { valid: false },
+        }),
+      ).toBe("EXPIRED");
+      expect(
+        vcStatusFromVerificationResponse({
+          schemaAndSignatureCheck: { valid: true },
+          statusCheck: [{ purpose: "revocation", valid: false, error: null }],
+        }),
+      ).toBe("REVOKED");
     });
 
     test("extracts credential types from object and fallback forms", () => {

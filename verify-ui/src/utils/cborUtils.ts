@@ -149,6 +149,9 @@ function renderMdocValue(value: unknown): unknown {
   if (Array.isArray(value)) {
     return value.map((entry) => renderMdocValue(entry));
   }
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
   if (typeof value === "object") {
     return Object.fromEntries(
       Object.entries(value as Record<string, unknown>).map(([key, entry]) => [key, renderMdocValue(entry)])
@@ -210,15 +213,43 @@ export function extractMdocDisplayClaims(mdoc: string): Record<string, unknown> 
     claims.docType = docType;
   }
   const namespaces = mdocNamespaces(root) ?? {};
-  Object.values(namespaces).forEach((items) => {
-    const list = Array.isArray(items) ? items : [];
-    list.forEach((item) => {
+  const claimNamespaces: Record<string, string> = {};
+  Object.entries(namespaces).forEach(([namespace, items]) => {
+    if (!Array.isArray(items)) {
+      throw new Error("Invalid mdoc namespace: expected an item array");
+    }
+    items.forEach((item) => {
       const decoded = unwrapMdocItem(item);
-      const identifier = decoded?.elementIdentifier;
-      if (typeof identifier === "string") {
-        claims[identifier] = renderMdocValue(decoded?.elementValue);
+      if (!decoded || typeof decoded.elementIdentifier !== "string" || !("elementValue" in decoded)) {
+        throw new Error("Invalid mdoc issuer-signed item");
       }
+      assignMdocClaim(claims, claimNamespaces, namespace, decoded.elementIdentifier, renderMdocValue(decoded.elementValue));
     });
   });
   return claims;
+}
+
+function assignMdocClaim(
+  claims: Record<string, unknown>,
+  claimNamespaces: Record<string, string>,
+  namespace: string,
+  identifier: string,
+  value: unknown,
+) {
+  if (identifier === "docType") {
+    claims[`${namespace}.${identifier}`] = value;
+    return;
+  }
+  if (Object.prototype.hasOwnProperty.call(claims, identifier)) {
+    const previousNamespace = claimNamespaces[identifier];
+    if (previousNamespace) {
+      claims[`${previousNamespace}.${identifier}`] = claims[identifier];
+      delete claims[identifier];
+      delete claimNamespaces[identifier];
+    }
+    claims[`${namespace}.${identifier}`] = value;
+    return;
+  }
+  claims[identifier] = value;
+  claimNamespaces[identifier] = namespace;
 }
