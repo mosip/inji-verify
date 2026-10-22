@@ -1,0 +1,361 @@
+DcApiSubmissionSetup:
+  DC_13_ValidVpToken_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_13
+      uniqueIdentifier: DC_13_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_AccessDenied_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 access_denied
+      uniqueIdentifier: DC_14_ACCESS_DENIED_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_ACCESS_DENIED_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidScope_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_scope
+      uniqueIdentifier: DC_14_INVALID_SCOPE_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_INVALID_SCOPE_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidRequest_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_request
+      uniqueIdentifier: DC_14_INVALID_REQUEST_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_INVALID_REQUEST_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidClient_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_client
+      uniqueIdentifier: DC_14_INVALID_CLIENT_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_INVALID_CLIENT_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_VpFormatsNotSupported_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 vp_formats_not_supported
+      uniqueIdentifier: DC_14_VP_FORMATS_NOT_SUPPORTED_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_VP_FORMATS_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidPresentationDefinitionUri_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_presentation_definition_uri
+      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_URI_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_PD_URI_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidPresentationDefinitionReference_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_presentation_definition_reference
+      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_REFERENCE_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_PD_REFERENCE_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_14_InvalidTransactionData_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_14 invalid_transaction_data
+      uniqueIdentifier: DC_14_INVALID_TRANSACTION_DATA_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC14_TRANSACTION_DATA_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_15_Referer_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_15 using Referer
+      uniqueIdentifier: DC_15_REFERER_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC15_REFERER_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_24_SecondSubmit_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_24
+      uniqueIdentifier: DC_24_SECOND_SUBMIT_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC24_SECOND_SUBMIT_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_25_NoOrigin_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_25
+      uniqueIdentifier: DC_25_NO_ORIGIN_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC25_NO_ORIGIN_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_26_InvalidOrigin_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_26
+      uniqueIdentifier: DC_26_INVALID_ORIGIN_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC26_INVALID_ORIGIN_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_27_Form_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_27
+      uniqueIdentifier: DC_27_FORM_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_30_VpToken_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_30
+      uniqueIdentifier: DC_30_VP_TOKEN_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC30_VP_TOKEN_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_31_EmptyVpToken_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_31
+      uniqueIdentifier: DC_31_EMPTY_VP_TOKEN_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC31_EMPTY_VP_TOKEN_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_32_VpTokenValue_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_32
+      uniqueIdentifier: DC_32_VP_TOKEN_VALUE_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC32_VP_TOKEN_VALUE_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_33_EmptyArray_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_33
+      uniqueIdentifier: DC_33_EMPTY_ARRAY_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC33_EMPTY_ARRAY_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'
+
+  DC_34_UnknownCredential_Request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: Create request for DC_34
+      uniqueIdentifier: DC_34_UNKNOWN_CREDENTIAL_SETUP
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+        "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+        "nonce": "DC34_UNKNOWN_CREDENTIAL_NONCE",
+        "responseMode": "dc_api",
+        "responseCodeValidationRequired": false
+      }'
+      output: '{
+        "responseCode": "201"
+}'

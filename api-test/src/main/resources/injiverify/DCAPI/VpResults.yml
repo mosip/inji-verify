@@ -1,0 +1,64 @@
+VpResults:
+  DC_39_ResultAfterValidVpSubmission:
+      endPoint: /v1/verify/v2/vp-results/{transactionId}
+      description: Read result after DC_13
+      uniqueIdentifier: DC_39
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/VpResults
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "transactionId": "$ID:13_ValidVpToken_Request_Sid_transactionId$"
+      }'
+      output: '{
+      "responseCode": "200"
+}'
+
+  DC_41_ResultAfterAccessDenied:
+      endPoint: /v1/verify/v2/vp-results/{transactionId}
+      description: Read result after access denied
+      uniqueIdentifier: DC_41
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/VpResults
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "transactionId": "$ID:14_AccessDenied_Request_Sid_transactionId$"
+      }'
+      output: '{
+      "responseCode": "404"
+}'
+
+  DC_42_ResultBeforeSubmission:
+      endPoint: /v1/verify/v2/vp-results/{transactionId}
+      description: Read result before submission
+      uniqueIdentifier: DC_42
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/VpResults
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "transactionId": "$ID:01_decentralized_identifier_vp_request_Sid_transactionId$"
+      }'
+      output: '{
+      "responseCode": "404"
+}'
+
+  DC_43_ResultAfterOriginRejection:
+      endPoint: /v1/verify/v2/vp-results/{transactionId}
+      description: Result after origin rejection
+      uniqueIdentifier: DC_43
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/VpResults
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "transactionId": "$ID:26_InvalidOrigin_Request_Sid_transactionId$"
+      }'
+      output: '{
+      "responseCode": "404"
+}'

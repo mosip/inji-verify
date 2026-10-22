@@ -1,0 +1,170 @@
+DCAPI:
+  DC_01_decentralized_identifier_vp_request_Sid:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API request with decentralized_identifier client
+      uniqueIdentifier: DC_01
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "201"
+}'
+
+  DC_02_x509_san_dns_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API request with x509_san_dns client
+      uniqueIdentifier: DC_02
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "x509_san_dns:test.example.com",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "201"
+}'
+
+  DC_03_referer_only_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API request using Referer header
+      uniqueIdentifier: DC_03
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "201"
+}'
+
+  DC_04_preregistered_client_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API must reject pre-registered client
+      uniqueIdentifier: DC_04
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "client123",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "400"
+    }'
+
+  DC_05_redirect_uri_client_vp_request:
+    endPoint: /v1/verify/v2/vp-request
+    description: DC API must reject redirect_uri client
+    uniqueIdentifier: DC_05
+    role: noauth
+    restMethod: post
+    checkOnlyStatusCodeInResponse: true
+    inputTemplate: injiverify/DCAPI/DCAPI
+    outputTemplate: injiverify/responseCode
+    input: '{
+      "clientId": "redirect_uri:https://client.example.com/callback",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+    }'
+    output: '{
+      "responseCode": "400"
+}'
+
+  DC_06_response_code_requested_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API must reject responseCodeValidationRequired
+      uniqueIdentifier: DC_06
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": true
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  DC_07_no_origin_or_referer_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API must reject request without Origin or Referer
+      uniqueIdentifier: DC_07
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "dc_api",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  DC_08_unknown_response_mode_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: DC API must reject unknown response mode
+      uniqueIdentifier: DC_08
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/DCAPI/DCAPI
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseMode": "unknown",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "400"
+}'
+
+  DC_09_response_mode_omitted_vp_request:
+      endPoint: /v1/verify/v2/vp-request
+      description: Existing direct_post flow when responseMode is omitted
+      uniqueIdentifier: DC_09
+      role: noauth
+      restMethod: post
+      checkOnlyStatusCodeInResponse: true
+      inputTemplate: injiverify/CreateNewVerificationRequest/CreateNewVerificationRequest
+      outputTemplate: injiverify/responseCode
+      input: '{
+      "clientId": "decentralized_identifier:did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs",
+      "nonce": "NkdHJkBIbdOdQaAjWm8gpA",
+      "responseCodeValidationRequired": false
+      }'
+      output: '{
+      "responseCode": "201"
+}'

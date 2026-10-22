@@ -199,7 +199,7 @@ public class InjiTestRunner {
 			path = new File(jarUrl).getParentFile().getAbsolutePath() + "/MosipTestResource/MosipTemporaryTestResource";
 		} else if (getRunType().equalsIgnoreCase("IDE")) {
 			path = new File(InjiTestRunner.class.getClassLoader().getResource("").getPath()).getAbsolutePath()
-					+ "/MosipTestResource/MosipTemporaryTestResource";
+					;
 			if (path.contains(GlobalConstants.TESTCLASSES))
 				path = path.replace(GlobalConstants.TESTCLASSES, "classes");
 		}
