@@ -150,6 +150,15 @@ public class UploadQRCode extends BasePage {
 		uploadWithSingleRecovery(() -> clickOnUploadQRCodePdf());
 	}
 
+	public void clickOnUploadOnetimeQRCodePdf() {
+		uploadFile(driver, uploadpath, BaseTest.getOnetimeInsuranceCredentialPdfPath());
+	}
+
+	public void uploadOnetimeQRCodeAndWaitForVerificationResult() {
+		clickOnUploadOnetimeQRCodePdf();
+        waitForVerificationResultState();;
+	}
+
 	public void uploadAnotherPdfAndWaitForVerificationResult() {
 		uploadWithSingleRecovery(() -> clickOnAnotherUploadQRCodePdf());
 	}
@@ -166,6 +175,11 @@ public class UploadQRCode extends BasePage {
 		uploadWithSingleRecovery(() -> clickOnUploadQRCodeJpeg());
 	}
 
+	public void uploadJpegAndWaitForOfflineResult() {
+		clickOnUploadQRCodeJpeg();
+		new WebDriverWait(driver, Duration.ofSeconds((long) getTimeout() * 4L))
+				.until(webDriver -> hasAnyOfflineVerificationResultVisible());
+	}
 	public void uploadAnotherJpegAndWaitForVerificationResult() {
 		uploadWithSingleRecovery(() -> clickOnAnotherUploadQRCodeJpeg());
 	}
@@ -384,6 +398,12 @@ public class UploadQRCode extends BasePage {
 		return getText(driver, ErrorTextExpiredQRCode);
 	}
 
+	public String getErrorMessageForVerificationLimitReached() {
+		waitForAlertMessageState();
+
+		return getText(driver, ErrorTextLargeSizeQRCode);
+	}
+
 	public String getErrorMessageForLargeSizeQRCode() {
 		waitForAlertMessageState();
 
@@ -474,6 +494,15 @@ public class UploadQRCode extends BasePage {
 	}
 
 	private boolean hasAnyVerificationResultVisible() {
+		return isDisplayedWithoutWaiting(TickIconVisible)
+				|| isDisplayedWithoutWaiting(VerifyAnotherQRcodeButton)
+				|| isDisplayedWithoutWaiting(ErrorTextExpiredQRCode)
+				|| isDisplayedWithoutWaiting(ErrorTextLargeSizeQRCode)
+				|| isDisplayedWithoutWaiting(UploadQRCodeStep2LabelAfter)
+				|| isDisplayedWithoutWaiting(UploadQRCodeStep3LabelAfter);
+	}
+
+	private boolean hasAnyOfflineVerificationResultVisible() {
 		return isDisplayedWithoutWaiting(TickIconVisible)
 				|| isDisplayedWithoutWaiting(VerifyAnotherQRcodeButton)
 				|| isDisplayedWithoutWaiting(ErrorTextExpiredQRCode)

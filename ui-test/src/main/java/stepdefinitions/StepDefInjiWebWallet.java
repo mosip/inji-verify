@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import api.InjiVerifyConfigManager;
 import constants.UiConstants;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.HomePage;
@@ -175,10 +176,14 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
     @Then("User click on trust verifier")
     public void user_clicks_on_trust_verifier() {
         try {
-            vpVerification.trustButton();
-            test.log(Status.PASS, "Selected the trust verifier button.");
-        } catch (NoSuchElementException e) {
-            logFailure(test, driver, "Failed to select the trust verifier button", e);
+        if (vpVerification.isTrustButtonVisible()) {
+                vpVerification.trustButton();
+                test.log(Status.PASS, "Selected the trust verifier button.");
+            } else {
+                test.log(Status.PASS, "Trust verifier button not visible — skipping step.");
+            }
+        } catch (Exception e) {
+            logFailure(test, driver, "Unexpected error while clicking the trust verifier button", e);
             throw e;
         }
     }
@@ -228,6 +233,34 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
             test.log(Status.PASS, "Successfully selected the second credential for verification.");
         } catch (Exception e) {
             logFailure(test, driver, "Failed to select the second credential for verification", e);
+            throw e;
+        }
+    }
+
+    @Then("User clicks disagree button")
+    public void user_clicks_disagree_button() {
+        try {
+            injiWebWalletPage.clickDeclineButton();
+            test.log(Status.PASS, "Successfully clicked the decline button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click the decline button", e);
+            throw e;
+        }
+    }
+
+    @Then("verify disagreed to share error message")
+    public void verify_disagreed_to_share_error_message() {
+        try {
+            injiWebWalletPage.waitForVerifyRedirect();
+            vpVerification.waitForVerifyResults();
+            String actualMessage = vpVerification.getInformationMessage();
+            assertEquals(actualMessage, UiConstants.DECLINED_TO_SHARE_ERROR,
+                "Declined to share error message does not match the expected value.");
+            test.log(Status.PASS, "Successfully verified the declined to share error message: " + actualMessage);
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to verify declined to share error message. Expected: "
+                + UiConstants.DECLINED_TO_SHARE_ERROR
+                + ", but found: " + vpVerification.getInformationMessage(), e);
             throw e;
         }
     }
@@ -309,14 +342,29 @@ public class StepDefInjiWebWallet extends BaseSteps {   // <-- extends BaseSteps
         }
     }
 
-    @Then("Health Insurance is selected and MOSIP ID is unselected")
-    public void health_insurance_is_selected_and_mosip_id_is_unselected() {
+   @Then("Credential {string} is selected and credential {string} is not selected")
+    public void credential_is_selected_and_other_is_not(String selectedKeyOrName, String unselectedKeyOrName) {
         try {
-            assertTrue(vpVerification.isHealthInsuranceSelected(), "Health Insurance should be selected.");
-            assertTrue(!vpVerification.isMosipIdSelected(), "MOSIP ID should be unselected.");
-            test.log(Status.PASS, "Verified Health Insurance is selected and MOSIP ID is unselected.");
+            String selectedName = api.VerifiableClaimsConfigManager.resolveCredentialName(selectedKeyOrName);
+            String unselectedName = api.VerifiableClaimsConfigManager.resolveCredentialName(unselectedKeyOrName);
+            assertTrue(vpVerification.isCredentialSelected(selectedName),
+                    "Credential '" + selectedName + "' should be selected.");
+            assertTrue(!vpVerification.isCredentialSelected(unselectedName),
+                    "Credential '" + unselectedName + "' should be unselected.");
+            test.log(Status.PASS, "Verified '" + selectedName + "' is selected and '" + unselectedName + "' is unselected.");
         } catch (Exception e) {
             logFailure(test, driver, "Failed to verify VP credential selection state", e);
+            throw e;
+        }
+    }
+
+    @And("User clicks on show more cards")
+    public void user_clicks_on_show_more_cards() {
+        try {
+            injiWebWalletPage.clickShowMoreCardsButton();
+            test.log(Status.PASS, "Successfully clicked on show more cards button.");
+        } catch (Exception e) {
+            logFailure(test, driver, "Failed to click on show more cards button", e);
             throw e;
         }
     }

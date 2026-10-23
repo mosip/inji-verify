@@ -26,9 +26,9 @@ Feature: Inji Verify vpVerification testing
     #And Click on right arrow
     And Click on vp verification tab
     And Verify click on request verifiable credentials button
-    And Uncheck MOSIP ID
-    And Select Health Insurance
-    And Health Insurance is selected and MOSIP ID is unselected
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
     And Verify Click on open wallet button
     And User selects configured inji-web wallet in verifier
     And User clicks on Proceed button
@@ -38,6 +38,7 @@ Feature: Inji Verify vpVerification testing
     And User clicks consent and share button
     And User clicks consent and share card button
     And VP result is posted back to inji-verify successfully
+    
 
   @smoke @verifyingVpVerification
   Scenario Outline: Verify the VP verification panel
@@ -81,9 +82,9 @@ Feature: Inji Verify vpVerification testing
     And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
-    And Uncheck MOSIP ID
-    And Select Health Insurance
-    And Select Land Registry
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Select credential "landRegistry"
     And Verify Click on Generate QR Code button
     And Verify QR code generated
     And Click on vp verification tab
@@ -116,13 +117,13 @@ Scenario: Verify VP verification same device flow
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
     And User enter the credential type "<credential type>"
-    And Select SD JWT VC
+    And Select credential "sdJwt"
     And Verify Click on Generate QR Code button
     And Verify QR code generated
     And Click on vp verification tab
     And Verify click on request verifiable credentials button
     And Verify Verifiable Credential Panel label
-    And Select Health Insurance
+    And Select credential "healthInsurance"
     And Verify Click on Generate QR Code button
     And Verify QR code generated
     
@@ -142,17 +143,46 @@ Scenario: Verify VP verification same device flow
     #And User is redirected to inji-web wallet presentation page
     And User performs token-based login to inji-web wallet
     And User unlocks inji-web wallet with configured passcode
-    And User click on submit button
-    And Then Verify error message is displayed
+    And User confirms inji-web wallet with configured passcode
+    #And User click on submit button
+    And User click on trust verifier
+    Then Verify error message is displayed
+
+	@smoke @verifyingVpVerificationNegative @dependsOnVP
+  Scenario: Verify VP verification error when user declines to share credentials
+    When Open inji web in new tab
+    And User performs token-based login to inji-web wallet
+    And User unlocks inji-web wallet with configured passcode
+    And User confirms inji-web wallet with configured passcode
+    Then User search the issuers sunbird
+    When User click on StayProtected Insurance credentials button
+    When User click on health insurance by e-signet button
+    And User enter the policy number
+    And User enter the full name
+    And User enter the date of birth
+    And User click on login button
+    And User switches back to inji-verify tab
+    Given User gets the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
+    And Verify Click on open wallet button
+    And User selects configured inji-web wallet in verifier
+    And User clicks on Proceed button
+    And User click on trust verifier
+    And User clicks disagree button
+    Then verify disagreed to share error message
 	
 	@smoke @verifyingVpVerification @dependsOnVP
     Scenario: Verify multiple VC OVP verification using inji-web wallet 
     When Open inji web in new tab
     And User performs token-based login to inji-web wallet
     And User unlocks inji-web wallet with configured passcode
-    #And User confirms inji-web wallet with configured passcode
-    And User click on submit button
-    And User opens the inji-web issuer catalog
+    And User confirms inji-web wallet with configured passcode
+    #And User click on submit button
+    #And User opens the inji-web issuer catalog
     Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
     When User click on health insurance by e-signet button
@@ -172,26 +202,28 @@ Scenario: Verify VP verification same device flow
     Given User gets the title of the page
     Then Click on vp verification tab
     And Verify click on request verifiable credentials button
-    And Uncheck MOSIP ID
-    And Select Health Insurance
-    And Health Insurance is selected and MOSIP ID is unselected
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
     And Verify Click on open wallet button
     And User selects configured inji-web wallet in verifier
     And User clicks on Proceed button
     #And User is redirected to inji-web wallet presentation page
-    #And User click on trust verifier
-    And User selects the credential for verification
+    And User click on trust verifier
+    And User clicks on show more cards
+    #And User selects the credential for verification
     And User select the second credential for verification
     And User clicks consent and share button
-    And VP result is posted back to inji-verify successfully
+    And User clicks consent and share card button
+    Then Verify multiple VC verification success message
 
   @smoke @verifyingVpVerification @dependsOnVP
   Scenario: Verify partial sharing in OVP verification using inji-web wallet 
     When Open inji web in new tab
     And User performs token-based login to inji-web wallet
     And User unlocks inji-web wallet with configured passcode
-    #And User confirms inji-web wallet with configured passcode
-    And User click on submit button
+    And User confirms inji-web wallet with configured passcode
+    #And User click on submit button
     And User opens the inji-web issuer catalog
     Then User search the issuers sunbird
     When User click on StayProtected Insurance credentials button
@@ -205,13 +237,147 @@ Scenario: Verify VP verification same device flow
     Given User gets the title of the page
     Then Click on vp verification tab
     And Verify click on request verifiable credentials button
-    And Select Health Insurance
-    #And Health Insurance is selected and MOSIP ID is unselected
+    And Select credential "healthInsurance"
+    #And Credential "healthInsurance" is selected and credential "mosipId" is not selected
     And Verify Click on open wallet button
     And User selects configured inji-web wallet in verifier
     And User clicks on Proceed button
     And User click on trust verifier
-    And User selects the credential for verification
-    And User clicks consent and share button
-    And VP result for partial sharing
+    #And User selects the credential for verification
+    #And User clicks consent and share button
+    #And User clicks consent and share card button
+    #And VP result for partial sharing
+    Then Verify error message is displayed
 
+  @smoke @verifyingVpVerification @credentialAutoSelect
+  Scenario: Verify essential credential from config.json is auto selected
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    Then Essential credential from config is auto selected
+    And Non essential credentials from config are not auto selected
+
+  @smoke @verifyingVpVerification @credentialAutoSelect
+  Scenario: Verify QR code generation with auto selected essential credential
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    Then Essential credential from config is auto selected
+    And Verify Click on Generate QR Code button
+    And Verify QR code generated
+
+  @smoke @verifyingVpVerification @credentialAutoSelect
+  Scenario: Verify user can override auto selected credential from config.json
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    Then Essential credential from config is auto selected
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
+   And Verify Click on Generate QR Code button
+    And Verify QR code generated
+
+  @smoke @verifyingVpVerification @credentialAutoSelect
+  Scenario: Verify multi credential selection on top of auto selected essential credential
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Verify Verifiable Credential Panel label
+    Then Essential credential from config is auto selected
+    And Select credential "healthInsurance"
+    And Select credential "landRegistry"
+    And Select credential "lifeInsurance"
+    And Verify Click on Generate QR Code button
+    And Verify QR code generated
+
+  @smoke @verifyingVpVerification @dependsOnVP
+  Scenario: Verify VC controls after OVP verification using inji-web wallet
+    When Open inji web in new tab
+    And User performs token-based login to inji-web wallet
+    And User unlocks inji-web wallet with configured passcode
+    And User confirms inji-web wallet with configured passcode
+    Then User search the issuers sunbird
+    When User click on StayProtected Insurance credentials button
+    When User click on health insurance by e-signet button
+    And User enter the policy number
+    And User enter the full name
+    And User enter the date of birth
+    And User click on login button
+    And User switches back to inji-verify tab
+    Given User gets the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
+    And Verify Click on open wallet button
+    And User selects configured inji-web wallet in verifier
+    And User clicks on Proceed button
+    And User click on trust verifier
+    And User clicks consent and share button
+    And User clicks consent and share card button
+    And VP result is posted back to inji-verify successfully
+    And User clicks on insurance credential button
+    Then The data showcase field "fullname-value" is visible
+    And The data showcase field "policynumber-value" is visible
+    And The data showcase field "policyissuedon-value" is visible
+    And The data showcase field "policyexpireson-value" is visible
+    And The credential popup is not visible
+    And User clicks on expand credential button
+    Then The credential popup is visible
+    And The popup field "fullname-value" is visible
+    And The popup field "benefits-value" is visible
+    And The popup field "dob-value" is visible
+    And User clicks on inner download button
+    Then Verify file "InsuranceCredential.json" exists in downloads folder
+    And User clicks on collapse credential button
+    Then The credential popup is not visible
+    And The data showcase field "fullname-value" is visible
+    And verify outer download button
+
+  @smoke @verifyingVpVerification @dependsOnVP
+  Scenario: Verify credential popup close button after OVP verification
+    When Open inji web in new tab
+    And User performs token-based login to inji-web wallet
+    And User unlocks inji-web wallet with configured passcode
+    And User confirms inji-web wallet with configured passcode
+    Then User search the issuers sunbird
+    When User click on StayProtected Insurance credentials button
+    When User click on health insurance by e-signet button
+    And User enter the policy number
+    And User enter the full name
+    And User enter the date of birth
+    And User click on login button
+    And User switches back to inji-verify tab
+    Given User gets the title of the page
+    And Click on vp verification tab
+    And Verify click on request verifiable credentials button
+    And Uncheck credential "mosipId"
+    And Select credential "healthInsurance"
+    And Credential "healthInsurance" is selected and credential "mosipId" is not selected
+    And Verify Click on open wallet button
+    And User selects configured inji-web wallet in verifier
+    And User clicks on Proceed button
+    And User click on trust verifier
+    And User clicks consent and share button
+    And User clicks consent and share card button
+    And VP result is posted back to inji-verify successfully
+    And User clicks on insurance credential button
+    Then The data showcase field "fullname-value" is visible
+    And The data showcase field "policynumber-value" is visible
+    And The credential popup is not visible
+    And User clicks on expand credential button
+    Then The credential popup is visible
+    And The popup field "fullname-value" is visible
+    And The popup field "benefits-value" is visible
+    And User clicks on close popup button
+    Then The credential popup is not visible
+    And The data showcase field "fullname-value" is visible

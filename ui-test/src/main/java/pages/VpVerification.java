@@ -2,14 +2,17 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.List;
 
 import base.BasePage;
 
@@ -32,12 +35,6 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//div[contains(@class, 'bg-default_theme-gradient')]/span[text()='✓']")
 	WebElement mosipVC;
 
-	@FindBy(xpath = "//label[@for='Health Insurance']//input[@type='checkbox']")
-	WebElement healthInsurance;
-
-	@FindBy(xpath = "//label[@for='Life Insurance']//input[@type='checkbox']")
-	WebElement lifeInsurance;
-
 	@FindBy(xpath = "//p[@id='alert-message']")
 	WebElement vpVerificationAlertMsg;
 
@@ -58,9 +55,6 @@ public class VpVerification extends BasePage {
 
 	@FindBy(xpath = "(//div[contains(@class,'bg-default_theme-gradient') and contains(@class,'rounded-full')]/div[text()='2'])")
 	WebElement VPverificationstep3LabelAfter;
-
-	@FindBy(xpath = "//span[contains(@class, 'text-smallTextSize') and contains(text(), 'MOSIP ID')]")
-	WebElement MosipTypeCredential;
 
 	@FindBy(id = "initiate-vp-request-process-description")
 	WebElement VpVerificationQrCodeStep1Description;
@@ -92,23 +86,11 @@ public class VpVerification extends BasePage {
 	@FindBy(id = "verification-generate-qr-code-button")
 	WebElement GenerateQrCodeButton;
 
-	@FindBy(xpath = "//label[@for='MOSIP ID']")
-	WebElement MosipIdChecklist;
-
-	@FindBy(xpath = "//label[@for='Health Insurance']")
-	WebElement HealthInsuranceChecklist;
-
-	@FindBy(xpath = "//label[@for='Mock Identity (SD JWT)']")
-	WebElement SDJwtVCChecklist;
-
 	@FindBy(xpath = "//span[@class='walletName' and text()='Inji Wallet']")
 	WebElement WalletButton;
 
 	@FindBy(id = "wallet-selector-proceed-button")
 	WebElement ProceedButton;
-
-	@FindBy(xpath = "//label[@for='Land Registry']")
-	WebElement LandRegistryChecklist;
 
 	@FindBy(xpath = "//button[contains(@class,'text-sortByText') and contains(text(),'Sort (A-Z)')]")
 	WebElement SortAtoZButton;
@@ -134,6 +116,33 @@ public class VpVerification extends BasePage {
 	@FindBy(xpath = "//span[text()='Yes, I trust this Verifier']/parent::div")
 	WebElement trustButton;
 
+	@FindBy(xpath = "//p[contains(@class,'text-successText')]")
+	WebElement multipleVcSuccessMessage;
+
+	@FindBy(xpath = "//p[@id='insurancecredential-value']/ancestor::button[1]")
+	WebElement insuranceCredentialButton;
+
+	@FindBy(xpath = "//p[normalize-space()='Open In Full']/following-sibling::button")
+	WebElement expandCredentialButton;
+
+	@FindBy(xpath = "//button[normalize-space()='✕']")
+	WebElement closePopupButton;
+
+	@FindBy(xpath = "//p[normalize-space()='Close Fullscreen']/following-sibling::button")
+	WebElement collapseCredentialButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[90vh]')]//p[normalize-space()='Download']/following-sibling::button")
+	WebElement innerDownloadButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[257px]')]//p[normalize-space()='Download']/following-sibling::button")
+	WebElement outerDownloadButton;
+
+	@FindBy(xpath = "//div[contains(@class,'h-[90vh]')]")
+	WebElement credentialPopupContainer;
+
+	public String getMultipleVcVerificationSuccessMessage() {
+		return getText(driver, multipleVcSuccessMessage);
+	}
 
 	public String getVpVerificationQrCodeStep1Description() {
 		return getText(driver, VpVerificationQrCodeStep1Description);
@@ -184,6 +193,13 @@ public class VpVerification extends BasePage {
 	}
 
 	public void clickOnVerifiableCredentialsButton() {
+		openVerifiableCredentialsPanel();
+		// Re-open recovery is first-open only. Later selection/assertion helpers must not
+		// close/reopen the panel or they would discard multi-select checkbox state.
+		ensureCredentialOptionsLoadedOnOpen();
+	}
+
+	private void openVerifiableCredentialsPanel() {
 		try {
 			// Set viewport and prevent zooming
 			((JavascriptExecutor) driver)
@@ -209,7 +225,40 @@ public class VpVerification extends BasePage {
 		}
 	}
 
+	/**
+	 * Claims are loaded asynchronously from config.json. Opening the panel before that
+	 * finishes leaves an empty list that does not refresh. Re-open until rows appear.
+	 * Only used on first open — not from per-credential guards after selections start.
+	 */
+	private void ensureCredentialOptionsLoadedOnOpen() {
+		By credentialRow = By.xpath("//li[contains(@id,'-ItemBox')]");
+		int rowWaitSeconds = Math.max(8, getTimeout() / 3);
+		utils.WaitUtil.retryWithRecovery(
+				() -> utils.WaitUtil.waitForPresence(driver, credentialRow, rowWaitSeconds),
+				() -> {
+					if (!driver.findElements(By.id("selection-panel-back-button")).isEmpty()) {
+						clickOnGoBack();
+					}
+					new WebDriverWait(driver, Duration.ofSeconds(getTimeout()))
+							.until(ExpectedConditions.elementToBeClickable(verifiableCredentialsButton));
+					openVerifiableCredentialsPanel();
+					new WebDriverWait(driver, Duration.ofSeconds(getTimeout()))
+							.until(ExpectedConditions.visibilityOf(verifiableCredentialPanel));
+				},
+				4);
+	}
+
+	/**
+	 * Waits for any credential row to be present without closing/reopening the panel.
+	 * Safe to call after checkboxes have already been selected.
+	 */
+	public void waitForCredentialOptionsToLoad() {
+		By credentialRow = By.xpath("//li[contains(@id,'-ItemBox')]");
+		utils.WaitUtil.waitForPresence(driver, credentialRow, Math.max(8, getTimeout() / 3));
+	}
+
 	public String isVerifiableCredentialSelectionPannelDisplayed() {
+		waitForCredentialOptionsToLoad();
 		return getText(driver, verifiableCredentialPanel);
 	}
 
@@ -233,16 +282,8 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, mosipVC);
 	}
 
-	public void clickOnHealthInsurance() {
-		clickOnElement(driver, healthInsurance);
-	}
-
 	public void clickOnGenerateQRCodeButton() {
 		clickOnElement(driver, generateQRCodeButton);
-	}
-
-	public void clickOnLifeInsurance() {
-		clickOnElement(driver, lifeInsurance);
 	}
 
 	public String getInformationMessage() {
@@ -260,10 +301,6 @@ public class VpVerification extends BasePage {
 		return isElementIsVisible(driver, VPverificationstep3LabelAfter);
 	}
 
-	public boolean isMosipTypeCredentialVisible() {
-		return isElementIsVisible(driver, MosipTypeCredential);
-	}
-
 	public void clickOnSortButton() {
 		clickOnElement(driver, SortButton);
 	}
@@ -272,28 +309,12 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, GenerateQrCodeButton);
 	}
 
-	public void clickOnMosipIdChecklist() {
-		clickOnElement(driver, MosipIdChecklist);
-	}
-
-	public void clickOnHealthInsuranceChecklist() {
-		clickOnElement(driver, HealthInsuranceChecklist);
-	}
-
-	public void clickOnSDJwtVCChecklist() {
-		clickOnElement(driver, SDJwtVCChecklist);
-	}
-
 	public void clickOnWalletButton() {
 		clickOnElement(driver, WalletButton);
 	}
 
 	public void clickOnProceedButton() {
 		clickOnElement(driver, ProceedButton);
-	}
-
-	public void clickOnLandRegistryChecklist() {
-		clickOnElement(driver, LandRegistryChecklist);
 	}
 
 	public void clickOnSortAtoZButton() {
@@ -330,6 +351,16 @@ public class VpVerification extends BasePage {
 		clickOnElement(driver, proccedButton);
 	}
 
+	public boolean isTrustButtonVisible() {
+		try {
+			new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(trustButton));
+			return trustButton.isDisplayed();
+		} catch (TimeoutException e) {
+			return false;
+		}
+	}
+	
 	public void trustButton() {
 		new WebDriverWait(driver, Duration.ofSeconds(getTimeout()));
 		clickOnElement(driver, trustButton);
@@ -347,20 +378,66 @@ public class VpVerification extends BasePage {
 						+ "')]")).isEmpty();
 	}
 
-	public boolean isHealthInsuranceSelected() {
-		WebElement checkbox = new WebDriverWait(driver, Duration.ofSeconds(getTimeout())).until(
-				ExpectedConditions.presenceOfElementLocated(
-						By.xpath("//label[@for='Health Insurance']//input[@type='checkbox']")));
-		return checkbox.isSelected() || "true".equalsIgnoreCase(checkbox.getAttribute("checked"))
-				|| "true".equalsIgnoreCase(checkbox.getAttribute("aria-checked"));
+	private static String toXPathLiteral(String value) {
+		if (value == null) {
+			return "''";
+		}
+		if (!value.contains("'")) {
+			return "'" + value + "'";
+		}
+		if (!value.contains("\"")) {
+			return "\"" + value + "\"";
+		}
+		StringBuilder expression = new StringBuilder("concat(");
+		String[] parts = value.split("'");
+		for (int i = 0; i < parts.length; i++) {
+			if (i > 0) {
+				expression.append(", \"'\", ");
+			}
+			expression.append("'").append(parts[i]).append("'");
+		}
+		expression.append(")");
+		return expression.toString();
 	}
 
-	public boolean isMosipIdSelected() {
+	//public boolean isMosipIdSelected() {
+	public void clickOnCredentialChecklist(String credentialName) {
+		waitForCredentialOptionsToLoad();
+		By locator = By.xpath("//li[@id=" + toXPathLiteral(credentialName + "-ItemBox")
+				+ "]//label | //label[@for=" + toXPathLiteral(credentialName) + "]");
+		clickOnElement(driver, waitForElementClickable(driver, locator));
+	}
+
+	public boolean isCredentialTypeVisible(String credentialName) {
+		waitForCredentialOptionsToLoad();
+		By locator = By.xpath(
+				"//li[@id=" + toXPathLiteral(credentialName + "-ItemBox") + "] | "
+						+ "//span[contains(@class, 'text-smallTextSize') and contains(text(), "
+						+ toXPathLiteral(credentialName) + ")]");
+		try {
+			new WebDriverWait(driver, Duration.ofSeconds(getTimeout()))
+					.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			return true;
+		} catch (org.openqa.selenium.TimeoutException e) {
+			return false;
+		}
+	}
+
+	public boolean isCredentialSelected(String credentialName) {
+		waitForCredentialOptionsToLoad();
+		By checkboxLocator = By.xpath("//li[@id=" + toXPathLiteral(credentialName + "-ItemBox")
+				+ "]//input[@type='checkbox'] | //label[@for=" + toXPathLiteral(credentialName)
+				+ "]//input[@type='checkbox']");		
 		WebElement checkbox = new WebDriverWait(driver, Duration.ofSeconds(getTimeout())).until(
-				ExpectedConditions.presenceOfElementLocated(
-						By.xpath("//label[@for='MOSIP ID']//input[@type='checkbox']")));
-		return checkbox.isSelected() || "true".equalsIgnoreCase(checkbox.getAttribute("checked"))
-				|| "true".equalsIgnoreCase(checkbox.getAttribute("aria-checked"));
+				ExpectedConditions.presenceOfElementLocated(checkboxLocator));
+		if (checkbox.isSelected() || "true".equalsIgnoreCase(checkbox.getAttribute("checked"))
+				|| "true".equalsIgnoreCase(checkbox.getAttribute("aria-checked"))) {
+			return true;
+		}
+		// Custom checkbox UI keeps the input hidden; selected state is shown via checkmark.
+		return !driver.findElements(By.xpath("//li[@id=" + toXPathLiteral(credentialName + "-ItemBox")
+				+ "]//span[normalize-space()='✓' and contains(@class,'block')] | //label[@for="
+				+ toXPathLiteral(credentialName) + "]//span[normalize-space()='✓' and contains(@class,'block')]")).isEmpty();
 	}
 
 	public void waitForOpenWalletButton() {
@@ -383,10 +460,75 @@ public class VpVerification extends BasePage {
 	public void waitForVerifyResults() {
 		new WebDriverWait(driver, Duration.ofSeconds(getTimeout() * 2))
 				.until(ExpectedConditions.or(
-						ExpectedConditions.urlContains("injiverify"),
-						ExpectedConditions.presenceOfElementLocated(By.id("vc-result-display-message")),
-						ExpectedConditions.presenceOfElementLocated(By.id("success_message_icon"))));
+						ExpectedConditions.visibilityOfElementLocated(By.id("vc-result-display-message")),
+						ExpectedConditions.visibilityOfElementLocated(By.id("success_message_icon")),
+						ExpectedConditions.visibilityOfElementLocated(By.id("alert-message"))));
 	}
 
+	public void clickOnInsuranceCredentialButton() {
+		clickOnElement(driver, insuranceCredentialButton);
+	}
+
+	public void clickOnExpandCredentialButton() {
+		clickOnElement(driver, expandCredentialButton);
+	}
+
+	public void clickOnClosePopupButton() {
+		clickOnElement(driver, closePopupButton);
+	}
+
+	public void clickOnCollapseCredentialButton() {
+		clickOnElement(driver, collapseCredentialButton);
+	}
+
+	public void clickOnInnerDownloadButton() {
+		clickOnElement(driver, innerDownloadButton);
+	}
+
+	public boolean isOuterDownloadButtonVisible() {
+		return isElementIsVisible(driver, outerDownloadButton);
+	}
+
+	public boolean isCredentialPopupVisible() {
+		return isElementIsVisible(driver, credentialPopupContainer);
+	}
+
+	public boolean isCredentialPopupAbsent() {
+		try {
+			return !credentialPopupContainer.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return true;
+		}
+	}
+
+	public boolean isDataShowcaseFieldVisible(String fieldId) {
+		List<WebElement> elements = driver.findElements(By.id(fieldId));
+		return !elements.isEmpty() && isElementIsVisible(driver, elements.get(0));
+	}
+
+	public boolean isDataShowcaseFieldAbsent(String fieldId) {
+		return driver.findElements(By.id(fieldId)).isEmpty();
+	}
+
+	private List<WebElement> findPopupFields(String fieldId) {
+			return credentialPopupContainer.findElements(
+					By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]"));
+	}
+
+	public boolean isPopupFieldVisible(String fieldId) {
+		By popupLocator = By.xpath("//div[contains(@class,'h-[90vh]')]");
+		By fieldLocator = By.xpath(".//*[@id=" + toXPathLiteral(fieldId) + "]");
+		try {
+			return new WebDriverWait(driver, Duration.ofSeconds(getTimeout()))
+					.ignoring(StaleElementReferenceException.class, NoSuchElementException.class)
+					.until(d -> d.findElement(popupLocator).findElement(fieldLocator).isDisplayed());
+		} catch (TimeoutException e) {
+			return false;
+		}
+	}
+
+	public boolean isPopupFieldAbsent(String fieldId) {
+		return findPopupFields(fieldId).isEmpty();
+	}
 
 }

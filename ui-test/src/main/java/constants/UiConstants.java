@@ -54,6 +54,7 @@ public class UiConstants {
 	public static final String HALF_QRCODE_FAILURE_MESSAGE = "Couldn't read the QR code. Make sure the entire QR code is inside the frame and try again.";
 	public static final String ERROR_MULTIPLE_QR_CODES = "Multiple QR codes detected, please retry with an image containing a single QR code.";
 	public static final String ERROR_SESSION_EXPIRED = "Session expired. Please Scan again.";
+	public static final String ERROR_MESSAGE_VERIFICATION_LIMIT_REACHED = "This QR code has reached its verification limit. Please request a new one.";
 
 	public static final String SCAN_QR_CODE_LABEL_FONT_AFTER_STEP = "ml-[10px] text-lgNormalTextSize font-bold text-black";
 	public static final String CLASS = "class";
@@ -63,9 +64,11 @@ public class UiConstants {
 	public static final String CAMERA_ACCESS_DENIED_DESCRIPTION = "We need your camera to scan the code. Go to your browser settings and allow camera access for this website.";
 	public static final String CAMERA_ACCESS_DENIED_OKAY_BUTTON = "Okay";
 
-	public static final String NO_MATCHING_CREDENTIALS_ERROR = "No matching credentials found";
+	public static final String NO_MATCHING_CREDENTIALS_ERROR = "Required Card(s) Not Found!";
 	public static final String PARTIAL_SHARING_MESSAGE = "Not Shared";
 	public static final String CONGRATULATIONS_MESSAGE = "Congratulations, the given credential is valid!";
+	public static final String DECLINED_TO_SHARE_ERROR = "The wallet declined the request or does not have the requested credentials. Please try again.";
+	public static final String MULTIPLE_VC_VERIFICATION_SUCCESS_MESSAGE = "Valid 2/2";
 
 
 }

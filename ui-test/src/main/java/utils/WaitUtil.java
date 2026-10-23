@@ -16,7 +16,8 @@ public class WaitUtil {
 
     public static void waitForVisibility(WebDriver driver, WebElement element, int timeout) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.ignoring(org.openqa.selenium.StaleElementReferenceException.class)
+            .until(ExpectedConditions.visibilityOf(element));
     }
 
     public static void waitForCondition(WebDriver driver, Supplier<Boolean> condition, int timeoutInSeconds) {
@@ -42,5 +43,30 @@ public class WaitUtil {
     public static void waitForPresence(WebDriver driver, By locator, int timeout) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    /**
+     * Retries {@code attempt} until it succeeds without throwing a timeout-style failure.
+     * Between attempts, {@code recover} is run (e.g. close and reopen a panel).
+     */
+    public static void retryWithRecovery(Runnable attempt, Runnable recover, int maxAttempts) {
+        RuntimeException lastFailure = null;
+        for (int i = 1; i <= maxAttempts; i++) {
+            try {
+                attempt.run();
+                return;
+            } catch (org.openqa.selenium.TimeoutException e) {
+                lastFailure = e;
+                if (i == maxAttempts) {
+                    throw e;
+                }
+                if (recover != null) {
+                    recover.run();
+                }
+            }
+        }
+        if (lastFailure != null) {
+            throw lastFailure;
+        }
     }
 }

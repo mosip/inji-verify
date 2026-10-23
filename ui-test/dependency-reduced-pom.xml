@@ -4,7 +4,7 @@
   <groupId>io.inji.verify</groupId>
   <artifactId>uitest-injiverify</artifactId>
   <name>inji-ui-verify</name>
-  <version>1.0.0-alpha.3-SNAPSHOT</version>
+  <version>1.0.0-rc.2-SNAPSHOT</version>
   <description>Parent project of ui automation of inji-verify</description>
   <url>https://github.com/inji/inji-verify</url>
   <developers>

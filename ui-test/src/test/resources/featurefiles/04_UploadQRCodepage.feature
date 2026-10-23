@@ -212,7 +212,7 @@ Feature: Inji Verify upload qr code testing
   Scenario: Verify upload qr code when internet is unavailable
     And Verify that Upload button visible
     And turn off internet connection
-    And Upload QR code file JPEG
+    And Upload QR code file JPEG offline
     Then Validate offline upload error message with please try again button
     And Verify click on please try again button
     Then Validate offline upload error message with please try again button
@@ -282,6 +282,16 @@ Feature: Inji Verify upload qr code testing
     And Upload QR code file JPEG
     And Verify message for valid QR code
     And Verify the Upload button after 2 mins idle
+
+  @smoke @verifyuploadOnetimeQRCode @needsOnetimeInsuranceArtifacts
+  Scenario: Verify upload of one time valid qr code
+    Given User gets the title of the page
+    Then Validate the title of the page
+    And Upload one time use QR code file
+    And verify congratulations message on successful verification
+    And Verify click on 'Verify Another QR Code' button
+    And Upload one time use QR code file
+    And Verify message when vc ran out of verification chances
 
   @smoke @verifyInvalidVcVerificationStatusExpiry
   Scenario: Verify invalid vc verification status expire after countdown

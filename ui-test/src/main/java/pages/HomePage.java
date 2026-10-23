@@ -476,24 +476,21 @@ public String isSuccessMessageDisplayed() {
                 + "display:block;visibility:visible;opacity:1;z-index:9999;';",
                 realDobField);
 		
-        String formattedDob = resolveAcceptedDateOfBirthFormat(dob, realDobField);
+		try{
+			String formattedDob = resolveAcceptedDateOfBirthFormat(dob, realDobField);
+			WaitUtil.waitForClickability(driver, fullNameField);
+			fullNameField.sendKeys(Keys.TAB);
+			
+			WaitUtil.waitForClickability(driver, realDobField);
+			realDobField.clear();
+			realDobField.sendKeys(formattedDob);
+			realDobField.sendKeys(Keys.TAB);
+		}
+		finally {
+			//to make the element hidden again after interaction
+			 js.executeScript("arguments[0].style.cssText = '';", realDobField);
+		}
 
-        WaitUtil.waitForClickability(driver, fullNameField);
-        fullNameField.sendKeys(Keys.TAB);
-
-        // WaitUtil.waitForClickability(driver, displayDobField);
-        // displayDobField.sendKeys(Keys.TAB);
-
-        //to make the element visible on sccreen, as it is hidden by default and cannot be interacted with directly
-        
-
-        WaitUtil.waitForClickability(driver, realDobField);
-        realDobField.clear();
-        realDobField.sendKeys(formattedDob);
-        realDobField.sendKeys(Keys.TAB);
-
-        //to make the element hidden again after interaction
-         js.executeScript("arguments[0].style.cssText = '';", realDobField);
 }
 
     private String resolveAcceptedDateOfBirthFormat(String rawDate, WebElement dobField) {
