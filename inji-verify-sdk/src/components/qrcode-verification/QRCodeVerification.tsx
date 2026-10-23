@@ -582,6 +582,10 @@ const QRCodeVerification: React.FC<QRCodeVerificationProps> = ({
     const handleError = (error: unknown) => {
         frameProcessingRef.current = false;
         stopVideoStream();
+        if (isAppError(error)) {
+            onError(new Error(error.errorMessage));
+            return;
+        }
         onError(
             error instanceof Error ? error : new Error("An unexpected error occurred while processing VC")
         );
