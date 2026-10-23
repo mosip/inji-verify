@@ -1,9 +1,8 @@
 DCAPI:
   DC_01_decentralized_identifier_vp_request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API request with decentralized_identifier client
-      uniqueIdentifier: DC_01
-      role: noauth
+      description: Create a DC API verification request using a decentralized identifier client
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_01
       restMethod: post
       checkOnlyStatusCodeInResponse: true
       inputTemplate: injiverify/DCAPI/DCAPI
@@ -20,8 +19,8 @@ DCAPI:
 
   DC_02_x509_san_dns_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API request with x509_san_dns client
-      uniqueIdentifier: DC_02
+      description: Create a DC API verification request using an X.509 SAN DNS client
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_02
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -39,8 +38,8 @@ DCAPI:
 
   DC_03_referer_only_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API request using Referer header
-      uniqueIdentifier: DC_03
+      description: Create a DC API verification request using only the Referer header
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_03
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -58,8 +57,8 @@ DCAPI:
 
   DC_04_preregistered_client_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API must reject pre-registered client
-      uniqueIdentifier: DC_04
+      description: Reject a DC API verification request using a pre-registered client
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_04
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -77,8 +76,8 @@ DCAPI:
 
   DC_05_redirect_uri_client_vp_request:
     endPoint: /v1/verify/v2/vp-request
-    description: DC API must reject redirect_uri client
-    uniqueIdentifier: DC_05
+    description: Reject a DC API verification request using a redirect URI client
+    uniqueIdentifier: TC_InjiVerify_DcApiRequest_05
     role: noauth
     restMethod: post
     checkOnlyStatusCodeInResponse: true
@@ -96,8 +95,8 @@ DCAPI:
 
   DC_06_response_code_requested_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API must reject responseCodeValidationRequired
-      uniqueIdentifier: DC_06
+      description: Reject a DC API request when response code validation is requested
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_06
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -115,8 +114,8 @@ DCAPI:
 
   DC_07_no_origin_or_referer_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API must reject request without Origin or Referer
-      uniqueIdentifier: DC_07
+      description: Reject a DC API request without Origin or Referer headers
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_07
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -134,8 +133,8 @@ DCAPI:
 
   DC_08_unknown_response_mode_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: DC API must reject unknown response mode
-      uniqueIdentifier: DC_08
+      description: Reject a DC API request with an unsupported response mode
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_08
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -153,8 +152,8 @@ DCAPI:
 
   DC_09_response_mode_omitted_vp_request:
       endPoint: /v1/verify/v2/vp-request
-      description: Existing direct_post flow when responseMode is omitted
-      uniqueIdentifier: DC_09
+      description: Create a direct post verification request when response mode is omitted
+      uniqueIdentifier: TC_InjiVerify_DcApiRequest_09
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

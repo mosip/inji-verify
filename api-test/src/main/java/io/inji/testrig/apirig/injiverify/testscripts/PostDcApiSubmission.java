@@ -94,9 +94,6 @@ public class PostDcApiSubmission extends InjiVerifyUtil implements ITest {
         if (testCaseDTO.getEndPoint().contains("/dc-api")) {
             body = convertStateToRequestId(body);
         }
-        System.out.println("SUBMISSION BODY = " + body);
-
-
         Map<String, String> headers = getHeaders();
 
         if (testCaseName.contains("DC_24")) {

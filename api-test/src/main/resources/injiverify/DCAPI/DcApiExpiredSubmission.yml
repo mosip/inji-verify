@@ -1,8 +1,8 @@
 DcApiExpiredSubmission:
   DC_23_ExpiredRequest:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Expired DC API request
-      uniqueIdentifier: DC_23
+      description: Submit an expired DC API verification request
+      uniqueIdentifier: TC_InjiVerify_DcApiExpiredSubmission_23
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

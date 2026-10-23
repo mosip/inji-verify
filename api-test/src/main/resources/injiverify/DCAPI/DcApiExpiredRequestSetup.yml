@@ -1,8 +1,8 @@
 DcApiExpiredRequestSetup:
   DC_23_ExpiredRequest_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_23 expiry validation
-      uniqueIdentifier: DC_23_EXPIRED_REQUEST_SETUP
+      description: Create a DC API verification request for expiry validation
+      uniqueIdentifier: TC_InjiVerify_DcApiExpiredRequest_Setup_23
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

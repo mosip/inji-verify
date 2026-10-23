@@ -1,8 +1,8 @@
 VpResults:
   DC_39_ResultAfterValidVpSubmission:
       endPoint: /v1/verify/v2/vp-results/{transactionId}
-      description: Read result after DC_13
-      uniqueIdentifier: DC_39
+      description: Read the result after a valid VP token submission
+      uniqueIdentifier: TC_InjiVerify_VpResults_AfterValidVpSubmission_39
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -17,8 +17,8 @@ VpResults:
 
   DC_41_ResultAfterAccessDenied:
       endPoint: /v1/verify/v2/vp-results/{transactionId}
-      description: Read result after access denied
-      uniqueIdentifier: DC_41
+      description: Read the result after an access denied response
+      uniqueIdentifier: TC_InjiVerify_VpResults_AfterAccessDenied_41
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -33,8 +33,8 @@ VpResults:
 
   DC_42_ResultBeforeSubmission:
       endPoint: /v1/verify/v2/vp-results/{transactionId}
-      description: Read result before submission
-      uniqueIdentifier: DC_42
+      description: Read the result before VP submission
+      uniqueIdentifier: TC_InjiVerify_VpResults_BeforeSubmission_42
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -49,8 +49,8 @@ VpResults:
 
   DC_43_ResultAfterOriginRejection:
       endPoint: /v1/verify/v2/vp-results/{transactionId}
-      description: Result after origin rejection
-      uniqueIdentifier: DC_43
+      description: Read the result after Origin validation rejection
+      uniqueIdentifier: TC_InjiVerify_VpResults_AfterOriginRejection_43
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

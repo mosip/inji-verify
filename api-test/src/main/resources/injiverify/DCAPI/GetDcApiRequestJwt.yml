@@ -1,8 +1,8 @@
 GetDcApiRequestJwt:
   DC_10_DecodeDecentralizedIdentifierJwt:
       endPoint: /v1/verify/v2/vp-request/{requestId}
-      description: Decode DC API JWT created by DC_01
-      uniqueIdentifier: DC_10
+      description: Decode the DC API JWT created for a decentralized identifier client
+      uniqueIdentifier: TC_InjiVerify_GetDcApiRequestJwt_DecentralizedIdentifier_10
       role: noauth
       restMethod: get
       checkOnlyStatusCodeInResponse: true
@@ -18,8 +18,8 @@ GetDcApiRequestJwt:
 
   DC_11_DecodeX509SanDnsJwt:
       endPoint: /v1/verify/v2/vp-request/{requestId}
-      description: Decode DC API JWT created by DC_02
-      uniqueIdentifier: DC_11
+      description: Decode the DC API JWT created for an X.509 SAN DNS client
+      uniqueIdentifier: TC_InjiVerify_GetDcApiRequestJwt_X509SanDns_11
       role: noauth
       restMethod: get
       checkOnlyStatusCodeInResponse: true
@@ -35,8 +35,8 @@ GetDcApiRequestJwt:
 
   DC_12_UnknownRequestId:
       endPoint: /v1/verify/v2/vp-request/unknown-request-id
-      description: Unknown requestId returns 404
-      uniqueIdentifier: DC_12
+      description: Reject a request with an unknown request identifier
+      uniqueIdentifier: TC_InjiVerify_GetDcApiRequestJwt_UnknownRequestId_12
       role: noauth
       restMethod: get
       checkOnlyStatusCodeInResponse: true

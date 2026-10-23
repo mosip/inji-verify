@@ -1,8 +1,8 @@
 DCAPISession:
   DC_01_DecentralizedIdentifier_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: Valid DC API session request with decentralized_identifier client
-      uniqueIdentifier: DC_01_SESSION
+      description: Create a DC API session request using a decentralized identifier client
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_01
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -20,8 +20,8 @@ DCAPISession:
 
   DC_02_X509SanDns_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: Valid DC API session request with x509_san_dns client
-      uniqueIdentifier: DC_02_SESSION
+      description: Create a DC API session request using an X.509 SAN DNS client
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_02
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -39,8 +39,8 @@ DCAPISession:
 
   DC_03_RefererOnly_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request with Referer and no Origin
-      uniqueIdentifier: DC_03_SESSION
+      description: Create a DC API session request using Referer without Origin
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_03
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -58,8 +58,8 @@ DCAPISession:
 
   DC_04_PreRegisteredClient_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request rejects pre-registered client
-      uniqueIdentifier: DC_04_SESSION
+      description: Reject a DC API session request using a pre-registered client
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_04
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -77,8 +77,8 @@ DCAPISession:
 
   DC_05_RedirectUriClient_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request rejects redirect_uri client
-      uniqueIdentifier: DC_05_SESSION
+      description: Reject a DC API session request using a redirect URI client
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_05
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -96,8 +96,8 @@ DCAPISession:
 
   DC_06_ResponseCodeValidation_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request rejects responseCodeValidationRequired
-      uniqueIdentifier: DC_06_SESSION
+      description: Reject a DC API session request when response code validation is requested
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_06
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -115,8 +115,8 @@ DCAPISession:
 
   DC_07_NoOriginOrReferer_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request rejects missing Origin and Referer
-      uniqueIdentifier: DC_07_SESSION
+      description: Reject a DC API session request without Origin or Referer headers
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_07
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -134,8 +134,8 @@ DCAPISession:
 
   DC_08_UnknownResponseMode_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: DC API session request rejects unknown response mode
-      uniqueIdentifier: DC_08_SESSION
+      description: Reject a DC API session request with an unsupported response mode
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_08
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -153,8 +153,8 @@ DCAPISession:
 
   DC_09_ResponseModeOmitted_Session:
       endPoint: /v1/verify/v2/vp-session-request
-      description: Existing direct_post session flow when responseMode is omitted
-      uniqueIdentifier: DC_09_SESSION
+      description: Create a direct post session request when response mode is omitted
+      uniqueIdentifier: TC_InjiVerify_DcApiSession_09
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

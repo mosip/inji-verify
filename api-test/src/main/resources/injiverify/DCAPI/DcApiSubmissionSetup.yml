@@ -1,8 +1,8 @@
 DcApiSubmissionSetup:
   DC_13_ValidVpToken_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_13
-      uniqueIdentifier: DC_13_SETUP
+      description: Create a DC API verification request for valid VP token submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_13
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -20,8 +20,8 @@ DcApiSubmissionSetup:
 
   DC_14_AccessDenied_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 access_denied
-      uniqueIdentifier: DC_14_ACCESS_DENIED_SETUP
+      description: Create a DC API verification request for access denied submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_AccessDenied_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -39,8 +39,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidScope_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_scope
-      uniqueIdentifier: DC_14_INVALID_SCOPE_SETUP
+      description: Create a DC API verification request for invalid scope submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidScope_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -58,8 +58,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidRequest_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_request
-      uniqueIdentifier: DC_14_INVALID_REQUEST_SETUP
+      description: Create a DC API verification request for invalid request submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidRequest_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -77,8 +77,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidClient_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_client
-      uniqueIdentifier: DC_14_INVALID_CLIENT_SETUP
+      description: Create a DC API verification request for invalid client submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidClient_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -96,8 +96,8 @@ DcApiSubmissionSetup:
 
   DC_14_VpFormatsNotSupported_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 vp_formats_not_supported
-      uniqueIdentifier: DC_14_VP_FORMATS_NOT_SUPPORTED_SETUP
+      description: Create a DC API verification request for unsupported VP formats submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_VpFormatsNotSupported_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -115,8 +115,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidPresentationDefinitionUri_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_presentation_definition_uri
-      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_URI_SETUP
+      description: Create a DC API verification request for invalid presentation definition URI submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidPresentationDefinitionUri_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -134,8 +134,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidPresentationDefinitionReference_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_presentation_definition_reference
-      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_REFERENCE_SETUP
+      description: Create a DC API verification request for invalid presentation definition reference submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidPresentationDefinitionReference_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -153,8 +153,8 @@ DcApiSubmissionSetup:
 
   DC_14_InvalidTransactionData_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_14 invalid_transaction_data
-      uniqueIdentifier: DC_14_INVALID_TRANSACTION_DATA_SETUP
+      description: Create a DC API verification request for invalid transaction data submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidTransactionData_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -172,8 +172,8 @@ DcApiSubmissionSetup:
 
   DC_15_Referer_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_15 using Referer
-      uniqueIdentifier: DC_15_REFERER_SETUP
+      description: Create a DC API verification request for Referer header validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_Referer_15
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -191,8 +191,8 @@ DcApiSubmissionSetup:
 
   DC_24_SecondSubmit_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_24
-      uniqueIdentifier: DC_24_SECOND_SUBMIT_SETUP
+      description: Create a DC API verification request for second submission validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_SecondSubmit_24
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -210,8 +210,8 @@ DcApiSubmissionSetup:
 
   DC_25_NoOrigin_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_25
-      uniqueIdentifier: DC_25_NO_ORIGIN_SETUP
+      description: Create a DC API verification request for missing Origin validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_NoOrigin_25
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -229,8 +229,8 @@ DcApiSubmissionSetup:
 
   DC_26_InvalidOrigin_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_26
-      uniqueIdentifier: DC_26_INVALID_ORIGIN_SETUP
+      description: Create a DC API verification request for invalid Origin validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_InvalidOrigin_26
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -248,8 +248,8 @@ DcApiSubmissionSetup:
 
   DC_27_Form_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_27
-      uniqueIdentifier: DC_27_FORM_SETUP
+      description: Create a DC API verification request for form body validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_Form_27
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -267,8 +267,8 @@ DcApiSubmissionSetup:
 
   DC_30_VpToken_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_30
-      uniqueIdentifier: DC_30_VP_TOKEN_SETUP
+      description: Create a DC API verification request for VP token type validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_VpToken_30
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -286,8 +286,8 @@ DcApiSubmissionSetup:
 
   DC_31_EmptyVpToken_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_31
-      uniqueIdentifier: DC_31_EMPTY_VP_TOKEN_SETUP
+      description: Create a DC API verification request for empty VP token validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_EmptyVpToken_31
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -305,8 +305,8 @@ DcApiSubmissionSetup:
 
   DC_32_VpTokenValue_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_32
-      uniqueIdentifier: DC_32_VP_TOKEN_VALUE_SETUP
+      description: Create a DC API verification request for VP token value validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_VpTokenValue_32
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -324,8 +324,8 @@ DcApiSubmissionSetup:
 
   DC_33_EmptyArray_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_33
-      uniqueIdentifier: DC_33_EMPTY_ARRAY_SETUP
+      description: Create a DC API verification request for empty presentation array validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_EmptyArray_33
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -343,8 +343,8 @@ DcApiSubmissionSetup:
 
   DC_34_UnknownCredential_Request_Sid:
       endPoint: /v1/verify/v2/vp-request
-      description: Create request for DC_34
-      uniqueIdentifier: DC_34_UNKNOWN_CREDENTIAL_SETUP
+      description: Create a DC API verification request for unknown credential validation
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmissionSetup_UnknownCredential_34
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true

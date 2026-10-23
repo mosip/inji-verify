@@ -2,7 +2,7 @@ DcApiSubmission:
   DC_13_ValidVpToken:
       endPoint: /v1/verify/vp-submission/dc-api
       description: Submit a valid VP token to the DC API endpoint
-      uniqueIdentifier: DC_13
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_13
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -17,8 +17,8 @@ DcApiSubmission:
 
   DC_14_AccessDenied:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet access_denied error
-      uniqueIdentifier: DC_14_ACCESS_DENIED
+      description: Submit an access denied response from the wallet to the DC API endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_AccessDenied_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -35,8 +35,8 @@ DcApiSubmission:
 
   DC_14_InvalidScope:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_scope error
-      uniqueIdentifier: DC_14_INVALID_SCOPE
+      description: Submit an invalid scope error from the wallet to the DC API endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidScope_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -53,8 +53,8 @@ DcApiSubmission:
 
   DC_14_InvalidRequest:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_request error
-      uniqueIdentifier: DC_14_INVALID_REQUEST
+      description: Submit an invalid request error from the wallet to the DC API endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidRequest_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -71,8 +71,8 @@ DcApiSubmission:
 
   DC_14_InvalidClient:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_client error
-      uniqueIdentifier: DC_14_INVALID_CLIENT
+      description: Submit an invalid client error from the wallet to the DC API endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidClient_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -89,8 +89,8 @@ DcApiSubmission:
 
   DC_14_VpFormatsNotSupported:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet vp_formats_not_supported error
-      uniqueIdentifier: DC_14_VP_FORMATS_NOT_SUPPORTED
+      description: Submit a VP formats not supported error from the wallet
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_VpFormatsNotSupported_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -107,8 +107,8 @@ DcApiSubmission:
 
   DC_14_InvalidPresentationDefinitionUri:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_presentation_definition_uri error
-      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_URI
+      description: Submit an invalid presentation definition URI error from the wallet
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidPresentationDefinitionUri_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -125,8 +125,8 @@ DcApiSubmission:
 
   DC_14_InvalidPresentationDefinitionReference:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_presentation_definition_reference error
-      uniqueIdentifier: DC_14_INVALID_PRESENTATION_DEFINITION_REFERENCE
+      description: Submit an invalid presentation definition reference error from the wallet
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidPresentationDefinitionReference_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -143,8 +143,8 @@ DcApiSubmission:
 
   DC_14_InvalidTransactionData:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Wallet invalid_transaction_data error
-      uniqueIdentifier: DC_14_INVALID_TRANSACTION_DATA
+      description: Submit an invalid transaction data error from the wallet
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_InvalidTransactionData_14
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -161,8 +161,8 @@ DcApiSubmission:
 
   DC_15_RefererInsteadOfOrigin:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Submit using Referer instead of Origin
-      uniqueIdentifier: DC_15
+      description: Submit a VP response using Referer instead of Origin
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_RefererInsteadOfOrigin_15
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -177,8 +177,8 @@ DcApiSubmission:
 
   DC_16_MissingRequestId:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Missing requestId
-      uniqueIdentifier: DC_16
+      description: Reject a DC API submission with a missing request identifier
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_MissingRequestId_16
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -193,8 +193,8 @@ DcApiSubmission:
 
   DC_17_BlankRequestId:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Blank requestId
-      uniqueIdentifier: DC_17
+      description: Reject a DC API submission with a blank request identifier
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_BlankRequestId_17
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -209,8 +209,8 @@ DcApiSubmission:
 
   DC_18_NeitherTokenNorError:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Neither vp_token nor error
-      uniqueIdentifier: DC_18
+      description: Reject a submission without a VP token or wallet error
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_NeitherTokenNorError_18
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -225,8 +225,8 @@ DcApiSubmission:
 
   DC_19_BothTokenAndError:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Both vp_token and error
-      uniqueIdentifier: DC_19
+      description: Reject a submission containing both a VP token and an error
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_BothTokenAndError_19
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -243,8 +243,8 @@ DcApiSubmission:
 
   DC_20_ErrorDescriptionWithVpToken:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: error_description with vp_token
-      uniqueIdentifier: DC_20
+      description: Reject a submission containing error description with a VP token
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_ErrorDescriptionWithVpToken_20
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -261,8 +261,8 @@ DcApiSubmission:
 
   DC_21_ErrorDescriptionWithoutError:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: error_description without error
-      uniqueIdentifier: DC_21
+      description: Reject a submission containing error description without an error
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_ErrorDescriptionWithoutError_21
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -278,8 +278,8 @@ DcApiSubmission:
 
   DC_22_UnknownRequestId:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Unknown requestId
-      uniqueIdentifier: DC_22
+      description: Reject a submission with an unknown request identifier
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_UnknownRequestId_22
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -294,8 +294,8 @@ DcApiSubmission:
 
   DC_24_SecondSubmit:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Second submission for same requestId
-      uniqueIdentifier: DC_24
+      description: Reject a second submission for the same request identifier
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_SecondSubmit_24
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -310,8 +310,8 @@ DcApiSubmission:
 
   DC_25_NoOriginOrReferer:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Submission without Origin or Referer
-      uniqueIdentifier: DC_25
+      description: Reject a submission without Origin or Referer headers
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_NoOriginOrReferer_25
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -326,8 +326,8 @@ DcApiSubmission:
 
   DC_26_OriginNotAllowed:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Submission with an unapproved Origin
-      uniqueIdentifier: DC_26
+      description: Reject a submission with an unapproved Origin
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_OriginNotAllowed_26
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -342,8 +342,8 @@ DcApiSubmission:
 
   DC_27_FormBody:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Form body is not accepted
-      uniqueIdentifier: DC_27
+      description: Reject a form-encoded DC API submission
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_FormBody_27
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -358,8 +358,8 @@ DcApiSubmission:
 
   DC_28_DirectPostRequestSubmittedToDcApi:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Normal direct_post request submitted to DC API endpoint
-      uniqueIdentifier: DC_28
+      description: Reject a direct post request submitted to the DC API endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_DirectPostRequest_28
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -376,8 +376,8 @@ DcApiSubmission:
 
   DC_29_DcApiSessionSubmittedToDirectPost:
       endPoint: /v1/verify/v2/vp-submission/direct-post
-      description: DC API session submitted to direct_post endpoint
-      uniqueIdentifier: DC_29
+      description: Reject a DC API session submitted to the direct post endpoint
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_SessionToDirectPost_29
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -392,8 +392,8 @@ DcApiSubmission:
 
   DC_30_VpTokenString:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: vp_token is a string instead of an object
-      uniqueIdentifier: DC_30
+      description: Reject a VP token represented as a string
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_VpTokenString_30
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -409,8 +409,8 @@ DcApiSubmission:
 
   DC_31_EmptyVpTokenObject:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Empty vp_token object
-      uniqueIdentifier: DC_31
+      description: Reject an empty VP token object
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_EmptyVpToken_31
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -426,8 +426,8 @@ DcApiSubmission:
 
   DC_32_VpTokenValueNotArray:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: vp_token value is not an array
-      uniqueIdentifier: DC_32
+      description: Reject a VP token value that is not an array
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_VpTokenValueNotArray_32
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -443,8 +443,8 @@ DcApiSubmission:
 
   DC_33_EmptyPresentationArray:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Empty VP presentation array
-      uniqueIdentifier: DC_33
+      description: Reject an empty VP presentation array
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_EmptyPresentationArray_33
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
@@ -460,8 +460,8 @@ DcApiSubmission:
 
   DC_34_UnknownCredentialId:
       endPoint: /v1/verify/vp-submission/dc-api
-      description: Credential ID is not in the DCQL query
-      uniqueIdentifier: DC_34
+      description: Reject a VP token containing an unknown credential identifier
+      uniqueIdentifier: TC_InjiVerify_DcApiSubmission_UnknownCredentialId_34
       role: noauth
       restMethod: post
       checkOnlyStatusCodeInResponse: true
